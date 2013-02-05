@@ -1,0 +1,57 @@
+============================================================================================================
+                                        POOP
+                          RULES FOR PARTIAL OOP IN F77 (by S. Jadach)
+   The aim is to improve programs in f77 and make future translation to c++ (or java) very easy.
+============================================================================================================
+1. Source and general rules:
+      a. Lines may extend to 132 columns
+      b. Preserved traditional fixed format with with instructions starting at 7-th column;
+         Indentations with 3 blanks, as in emacs (with TAB).
+      c. Comment lines start with *, trailing comments with !
+      d. Fortran KeyWords like DIMENSION, SUBROUTINE, IF, GOTO, EXP all in upper case.
+      e. Variable names are in upper and lower case, i,j,k, x,y,z, KeyFix, UnpolarizedXSection etc.
+      f. Names of variables, subprograms have unlimited length, see comments below.
+      g. IMPLICIT NONE is mandatory!
+2. Classes:
+      a. All of Class with name Name is located in two files: Name.f and Name.h
+      b. Class contains ONLY single common block /c_Name/ which is placed in Name.h,
+         together with SAVE /c_Name/.
+      c. All routines and functions in class "Name" have name with prefix Name_
+         for example Name_Rotate, Name_Make etc. 
+      d. Statement INCLUDE 'Name.h' is present in every routine of the class Name, in Name.f
+      e. All variables in /c_Name/ have prefix m_, for example m_x, m_Alpha etc.
+      f. Header file Name.h may contain PARAMETER and DATA statements.
+3. Methods. Subprograms in the class are loosely organized in several categories:
+      a. Initializator (constructor) with name Name_Initialize, which sets initial values
+         in /c_Name/ and calls Initializators from other classes, reads input etc.
+      b. Finalizator with name Name_Finalize, which summarizes on the whole run, sets output
+         values in /c_Name/, prints output etc.
+      c. Makers with the name Name_MakeSomething or similar one which does essential part of job.
+      d. Setters with the name Name_SetVariable, is called from the outside world to set m_Variable
+         in the /c_Name/. Only certain privileged variables have a right to be served by its own Setter.
+      e. Getters with the name Name_GetVariable, is called from the outside world to get m_Variable
+         from /c_Name/, it is a preferred way of sending output information to outside world.
+4. Semantics and cosmetics:
+      a. DO ... ENDDO is used instead of labelled DO
+      b. GOTO statement only as a last resort, for exceptions (i.e. emergency exits)
+      c. Avoid PRINT, use of WRITE instead
+      d. No RETURN before END statement.
+      e. Use of "global" SAVE is not obligatory.
+5. Comments: 
+      a. The above rules go slightly beyond standard f77, they are realizable however on all platforms:
+	 Compilation flags AIX:   -qfixed=120 -qextname -O -C -qextchk
+                           HPUX:  +es -K +B -O
+                           ALPHA: -extend_source -qfixed=132 -qextname -O  -C -qextchk 
+                           LINUX: -static -f +B
+         ( -static or -K is not realy mandatory)
+      b. Excessively long names of variables may be inconvenient in the math expressions, 
+         for subprograms however long names are OK.
+      c. Inheritance by embeding one class into another would be able along these lines,
+         but it should be avoided.
+      d. Making copy of a class Name into class Name1 is trivial with help of the stream editor sed:
+         (sed -e 's#NameA#NameB#'    NameA.h > MameB.h)
+         (sed -e 's#NameA#NameB#'    NameA.f > MameB.f)
+         In this way you easily get several copies of the program for random numbers, integration etc.
+============================================================================================================
+
+

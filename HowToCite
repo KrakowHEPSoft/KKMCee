@@ -1,0 +1,35 @@
+At the moment the basic paper on KKMC and CEEX exponentiation are:
+
+
+@Misc{ceex2:2000,
+  title = 	 {Coherent Exclusive Exponentiation For Precision Monte Carlo Calculations},
+  author = 	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
+  year = 	 2000,
+  month =	 {March},
+  note =	 {preprint CERN-TH/2000-087,UTHEP-99-09-01, hep-ph/0006359}
+}
+
+
+@Article{kkcpc:1999,
+  author =	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
+  title =	 {The Precision Monte Carlo Event Generator ${\cal KK}$ 
+                  For Two-Fermion Final States In $e^+e^-$ Collisions},
+  journal =      {Comput. Phys. Commun. },
+  volume =       "130",
+  pages =        "260-325",
+  year =	 2000,
+  note =	 {preprint DESY-99-106, CERN-TH/99-235,UTHEP-99-08-01}}
+
+
+@Article{ceex1:1999,
+     author = 	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
+     title = 	 {Coherent Exclusive Exponentiation (CEEX) The Case of
+                  Resonant $e^+e^-$ Annihilation},
+     journal   = "Phys. Lett.",
+     volume    = "B449",
+     year      = "1999",
+     pages     = "97-108",
+     eprint    = "hep-ph/9905453",
+     SLACcitation  = "%%CITATION = PHLTA,B449,97;%%"
+}
+

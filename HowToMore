@@ -1,0 +1,13 @@
+
+How to update tables of electroweak corrections,
+in the case you want to use EW corrections stored on the disk?
+   cd dizet
+   make all (or make table.tau etc.)
+If any problems read more in comments in the makefile
+Change names of the produced tables if necessary...
+
+
+How to switch off radiation for quarks?
+See example: ffbench/Inclusive/hadronic_FSRoff.input
+
+

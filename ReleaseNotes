@@ -1,0 +1,125 @@
+--------------------------------------------------------------------------------
+                Release Notes in anti-chronological order
+********************************************************************************
+Corrections for running under CERN linux SLC5 june 2012
+- fortran compiler "gfortran"
+- in tauola/formf.f tabulator beyond 72 line removed
+********************************************************************************
+Changes in v. 4.19, DEVELOPEMENT VERSION, sept 27-th 2002
+--------------------------------------------------------------------------------
+1. Better Rho formfactor in RRes
+2. Photos included for rho0 decay in RRes with Photos, KeyRes=2
+   It adds extra photons but otherwise this option not really tested!
+3. Improved matrix element for nunu channel.
+********************************************************************************
+Changes in v. 4.18, DEVELOPEMENT VERSION, Feb. 02-nd 2002
+--------------------------------------------------------------------------------
+1. Corrected and improved nu-nu matrix element.
+   RRes the same as in 4.17.
+--------------------------------------------------------------------------------
+Changes in v. 4.17, DEVELOPEMENT VERSION, Nov. 19-th 2001
+--------------------------------------------------------------------------------
+1. Improved RRes package with DEDICATED RHO DECAY subroutine
+2. Template for C++ wrapper in subdirectory KK-all/droot
+   main program and example of user program, c++ wrappers for principal
+   KK subprograms and data structure, HEPEVT/LUND record, reading input,
+   storing histograms, all that in c++!
+3. A few getters added in KK2f.f added for better communication with c++.
+--------------------------------------------------------------------------------
+Changes in v. 4.16, Oct 30-th, 2001, with respect to v. 4.15 (May 31-th, 2001)
+--------------------------------------------------------------------------------
+1. Stable CEEX matrix element for Nu-Nu  channel (better than in KORALZ),
+   including electroweak corrections of DIZET and exact double bremsstrahlung.
+    - Matrix element and test are in the paper CERN-TH/2001-161, see LANL.
+    - Neutrino channel is added in the basic benchmarks, see file HowToStart.
+   Note that Nu-Nu chanel matrix elemet in v. 4.15 was a very preliminary one.
+2. For quark final states gamma*-->hadrons below 10GeV are modelled using exper.
+   values of R_hadr(s). This is done using RRes package of  Maarten Boonekamp.
+   Decays into pions below 2GeV are also generated using RRes package 
+   for nonresonant u,d,s (for resoant part jetset is used).
+   The use of RRes package is not yet default, on request only,
+   by setteing new switck KeyRes=1, see .KK2f_Defaults.
+3. Switching EEX <--> CEEX is now done using MinMassCEEX variable [GeV]
+   (instead of vmaxGPS), see .KK2f_Defaults file.
+4. Latest Pythia 6.2 interfaced with the program.
+--------------------------------------------------------------------------------
+Changes in v. 4.15, May 31-th, 2001, with respect to v. 4.14 (June, 2000)
+--------------------------------------------------------------------------------
+1. Nu-Nu chanel (re)introduced and tested, matrix element is now definitely 
+   better for nunu than in old KORALZ!!!
+2. Hadronization in KKMC:
+    - Jetset replaced with Pythia (luxxx->pyxxx everywhere)
+    - Z/gamma introduced in HepEvt record
+    - Position (pointer) of the final f and fbar are memorized and transferred
+      to tauola and photos using getters  HepEvt_GetF(ih1) and HepEvt_GetFbar(ih2).
+    - Introduced new setter Taupair_SetFermPos(np1,np2) caled in Taupair_Make2,
+      which sets np1,np2 in /TAUPOS/ dynamically, see Taupair.h
+    - old versions HepEvt.f.old,  HepEvt.h.old, Taupair.f.old, Taupair.h.old are kept
+3. Necessary changes in the user code:
+    - User should replace previous double prec. /d_hepevt/ of 2000 lenght 
+      with double prec. /hepevt/ of 4000 lenght. 
+    - In the user code one has to correct for the change of the position of the final 
+      fermion and photons.
+      (The best is to use getters of HepEvt class instead of direct access to  /hepevt/)
+4. In beamstrahlung implementation Vegas is removed, only Foam is now used.
+
+IMPORTANT!!! Quark masses in KK2f_defaults are different from Pythia masses (in PMS)
+
+-------------------------------------------------------------------------------------------------
+Changes in v. 4.14 (June 30-th, 2000) with respect to v. 4.13 (Febr, 2000)
+-------------------------------------------------------------------------------------------------
+                   *** VERSION USED IN LEP2 MC WORKSHOP ***
+1. Bug in initialization of Dizet 'in flight' for charm and strange quarks is corrected.
+2. Makefiles reorganized to make it easier to switch among 2 ways of initializing
+   EW formfactors:
+           (a) from the disk file 
+           (b) in flight, directly from DIZET.
+   See ffbench/Makefile for instruction.
+3. Mode (b) is now default, it was checked that it is safe (no overwriting from Dizet).
+4. Centralized possibility to replace f77 by g77 in all makefiles with "make makflag".
+5. NEW!!! IMPORTANT!!! New getter
+          CALL  KK2f_GetWtList(WtMain,WtList)
+   provides user with array of all possible weights for WT-ed events and for WT=1 events.
+   It is especially useful for WT=1 events where WtMain=WtList(203)=1d0 is the principal weight
+   and the other weights are for the alternative models. In particular 
+          WtList(253) represents the case without IFI=ISR*FSR interference.
+   No need to worry about WtCrude and WtBest anymore. The same WtList may be used for WT-ed events.
+   For weighted events one has to check on WtCrude=0d0 events with incomplete kinematics.
+          CALL  KK2f_GetWtCrude(WtCrude) will provide it.
+6. New testing flag KeyQCD=xpar(53) for switching on/off final state QCD naive factor for quarks.
+7. Improved QCD FSR, QCDCOR of DIZET implemented through gV and gA.
+8. Virtual pairs init. and final state added as and alternative weights:
+          WtList(213) represents the case with Virtual Pairs and IFI on,
+          WtList(263) represents the case with Virtual Pairs and IFI off.
+   Exact formula with effective quark masses is used.
+   Quark effective masses are set (temprarily) in DATA Mquark / ../ in BVR_MakeF2Pair.
+9. IMPORTANT!!! Emission of photons from quarks is now a default.
+   (One can of course switch QED FSR off, see example ffbench/Inclusive/hadronic_FSRoff.input)
+   If KeyQSR=1 then MSTJ(41)=1. i.e. No photon emission from quarks in parton shower.
+
+-------------------------------------------------------------------------------------------------
+Changes in version 4.13 (Feb 2000)
+-------------------------------------------------------------------------------------------------
+ This is version send to CPC some cosmetic changes and small bugs corrected
+ The most important was related to running for quarks in wt=1 mode.
+ Initialization of Dizet 'in flight' is now possible.
+
+-------------------------------------------------------------------------------------------------
+Changes in version 4.12 (oct. 99) with respect to 4.11 (sept 99)
+-------------------------------------------------------------------------------------------------
+  Apart form cosmetic changes, for quarks FSR and Initial-final state
+  interference is now the default mode
+
+  In Tauola there is a slight change in the input data, see .KK2f_defaults
+
+-------------------------------------------------------------------------------------------------
+Changes in version 4.11 (sept 99) with respect to 4.01 (April 99)
+-------------------------------------------------------------------------------------------------
+  Second order CEEX matr. ele. in is now implemented for the first time!
+
+  In the default input configuration the FSR from quarks is now ON.
+
+  EW corrections upgraded, Dizet6.x instead of Dizet5.x.
+
+  Beamstrahlung upgraded, use of more efficient Foam instead of Vegas.
+-------------------------------------------------------------------------------------------------

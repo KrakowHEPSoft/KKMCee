@@ -1,0 +1,60 @@
+------------------------------------------------------------------------------
+Highlights of the present version 4.14 of KK Monte Carlo of 30 June 2000
+------------------------------------------------------------------------------
+
+Physics:
+  Coherent Eclusive EXponentiation CEEX
+  -- exponentiation at the level of spin amplitudes.
+  Second order CEEX matr. ele. in is now implemented for the first time!
+  Many internal tests show generic theoretical precision 0.2% in x-sections and A_FB.
+  According to LEP2 MC workshop tests 0.2 agreement with Zfitter is found.
+
+  ISR*FSR interference is now included, CEEX is mandatory for this.
+  Note that in the default input configuration the FSR from quarks is now ON.
+
+  Transverse and longitudinal spin correlations of tau (CEEX mandatory).
+
+  Longitudinal and transverse polarization of beams possible, 
+  but special arangement of input data required (CEEX mandatory).
+
+  Generation of final state fermion-pair flavour event-per-event
+  including consistently ISR+FSR QED radiation.
+
+  Quark showering and hadronization using Jetset.
+
+  Very much improved EEX (old) type exponentiated matrix element, BHLUMI style;
+  more stable numericaly, no negative weights, no large weights,
+  added O(alf^3L^3) contribution in ISR and FSR matrix element,
+  also for quarks (but physics of the QED FSR from quarks is shaky!!!)
+  also faster, no "reduction procedure" any more!
+
+  Electroweak and QCD corrections are from Dizet6.x (as in KORALZ)
+
+  For FSR: finite mass effects at the crude level,
+  including option of photon removal below E_min in CMS frame,
+  final state particles may have different mass and arbitrary charge.
+
+  Beamstrahlung with realistic spectra from CIRCE/GuineaPig packages.
+
+Programming:
+  Output in /hepevt/ and /lujets/ formats.
+  Almost entire code is organized in pseudo-classes, see appendix A below.
+  No hidden input in source code, ALL input data in the disk files.
+  The default input data are stored in /KK-all/KK2ff.defaults file.
+
+  The reader may read its own input using ReaDataX(lun,xpar,imax)
+  in the initialization process -- the defaults will be overwritten.
+
+  Tables of Electroweak corrections are created and stored in directory
+  DIZET, this is done once for ever for given Higgs and Top mass.
+  Present pretabulation up to 1020GeV
+
+  Partial OOP is implementer, see OOPrules file for more.
+------------------------------------------------------------------------------
+Limitations:
+  Neutrino channel not tested,
+  Lack of t-chanel exchange for electron chanel.
+  Incomplete second order for FSR CEEX.
+------------------------------------------------------------------------------
+
+
