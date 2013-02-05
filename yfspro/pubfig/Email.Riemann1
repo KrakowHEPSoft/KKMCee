@@ -1,0 +1,114 @@
+From riemann@ifh.de Mon Feb  8 11:57:43 EST 1999
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	[nil "Mon" "8" "February" "1999" "17:56:38" "+0100" "Tord Riemann" "riemann@ifh.de" nil "86" "Re: some numbers for acol cuts (fwd)" "^From:" "Stanislaw.Jadach@cern.ch, riemann@ifh.de" "Jadach; Stashek CERN, Riemann; Tord" "2" nil nil nil nil nil]
+	nil)
+Received: from mail2.cern.ch (mail2.cern.ch [137.138.128.20]) by hpjmiady.ifj.edu.pl with ESMTP (8.7.1/8.7.1) id RAA10172 for <jadach@hpjmiady.ifj.edu.pl>; Mon, 8 Feb 1999 17:57:15 +0100 (MET)
+Received: from smtp1.cern.ch (smtp1.cern.ch [137.138.128.38])
+	by mail2.cern.ch (8.9.1a/8.9.1) with ESMTP id RAA01686
+	for <jadach@mail2.cern.ch>; Mon, 8 Feb 1999 17:56:40 +0100 (MET)
+Received: from znsun1.ifh.de (znsun1.ifh.de [141.34.1.16])
+	by smtp1.cern.ch (8.9.1a/8.9.1) with ESMTP id RAA05807
+	for <Stanislaw.Jadach@cern.ch>; Mon, 8 Feb 1999 17:56:40 +0100 (MET)
+Received: from phoenix.ifh.de (phoenix.ifh.de [141.34.100.43])
+	by znsun1.ifh.de (8.8.5/8.8.5) with ESMTP id RAA28630;
+	Mon, 8 Feb 1999 17:56:39 +0100 (MET)
+Received: from localhost (riemann@localhost)
+	by phoenix.ifh.de (8.8.5/8.8.5) with ESMTP id RAA27772;
+	Mon, 8 Feb 1999 17:56:38 +0100 (MET)
+X-Authentication-Warning: phoenix.ifh.de: riemann owned process doing -bs
+Message-ID: <Pine.HPP.4.05.9902081715370.24352-100000@phoenix.ifh.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+From: Tord Riemann <riemann@ifh.de>
+To: "Jadach; Stashek CERN" <Stanislaw.Jadach@cern.ch>
+cc: "Riemann; Tord" <riemann@ifh.de>
+Subject: Re: some numbers for acol cuts (fwd)
+Date: Mon, 8 Feb 1999 17:56:38 +0100 (MET)
+
+
+Hi Stashek,
+
+in zfitter 5.20, 
+at the level of few per mil, the ini-fin-interf. with acol cut, but
+without acceptance cut, is wrong at LEP-1 at the wings: M_Z \pm 3 GeV e.g.
+
+Maybe it is helpful to you to know this. 
+Numbers are from 5.14, but equal in this respect. 
+
+-------------------------------
+Dr. Tord Riemann
+Theory Group
+DESY 
+Platanenallee 6
+D-15738 Zeuthen
+Germany
+-------------------------------
+e-mail:    Tord.Riemann@ifh.de      
+http  :    //www.ifh.de/~riemann/
+phone :    +49-33762-77-270 
+secretary:              246
+fax   :                 330
+-------------------------------
+
+---------- Forwarded message ----------
+Date: Thu, 4 Feb 1999 14:06:53 +0100 (MET)
+From: Tord Riemann <riemann@ifh.de>
+To: Martin Gruenewald <Martin.Grunewald@cern.ch>
+Cc: "Riemann; Sabine" <riemanns@ifh.de>, "Jack; Mark" <jack@ifh.de>,
+     "Clare; Bob" <Robert.Clare@cern.ch>, "Riemann; Tord" <riemann@ifh.de>,
+     Penka Christova <penka@ifh.de>
+Subject: Re: some numbers for acol cuts
+
+
+Hi there,
+
+here are some relative cross-section errors 
+we follow the information Dima sent us with a table with 
+acolcut = 10 degrees, emin = 1 gev, no acceptance cut, 
+and use zfitter 5.14.
+
+shown are sig(w/o ini-fin-int)/sig(with ini-fin-int) -1 in per mil 
+
+             mz-3      mz-1.8    mz     mz+1.8    mz+3
+
+Topaz0       7.16      4.43      0.07   -2.49     -3.17    
+\zf Zeuthen  7.17      4.40      0.03   -2.60     -3.28
+
+\zf v. 5.14  3.49      2.14     -0.01   -1.36     -1.72
+(default)
+
+We stress: our values are very preliminary, and they are definitely 
+without an acceptance cut.
+The formulae with acceptance cut are lengthier and not so easy to handle.
+We used a trick to produce our numbers from new analytical formulae
+they are completely unchecked but seem to show something....
+
+Anyhow, I guess all this is is of no importance for LEP1 physics...
+
+A similar comparison for F-B is, in principle, also possible.
+
+All best, 
+
+for the Zeuthen team:
+
+P. Christova
+M. Jack
+T. Riemann
+
+-------------------------------
+Dr. Tord Riemann
+Theory Group
+DESY 
+Platanenallee 6
+D-15738 Zeuthen
+Germany
+-------------------------------
+e-mail:    Tord.Riemann@ifh.de      
+http  :    //www.ifh.de/~riemann/
+phone :    +49-33762-77-270 
+secretary:              246
+fax   :                 330
+-------------------------------
+
+
+

@@ -1,0 +1,318 @@
+##############################################################################
+#  WARNING: this makefile has complicated libraries
+#           linking depends on the order of the librarries in a strange way
+#           it works only for Dizet tables, which is recomended anyway.
+#
+#	gmake chi-mcan-ps
+#	make makflag
+##############################################################################
+.SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
+#----------------------------------------------------------------------
+XDVI   = xdvi      -bg white -fg black  -s 4 
+# Viewer for .ps
+XPSm    = gv -geometry 640x570+0+0   -magstep -1 -bg white -fg black 
+XPS3    = gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black 
+XPS1    = gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black
+XPSp    = gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black
+XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
+XPS     = $(XPSm)
+#----------------------------------------------------------------------
+FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
+LDFLAGS =
+F77 = g77
+LD = $(F77)
+##############################################################################
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+############# postscript translation (one page)
+.txp.dvi:
+	(latex $< )
+############# option E is for tight bounding on one
+.dvi.eps:
+	(dvips -E $< -o $@;	$(XPS) $@ )
+###	(dvips -E $< -o $@;	$(XPS4) $@ )
+###	(dvips -E $< -o )
+##############################################################################
+SRCLIST= "../../glibk"
+#----------------------
+EXT_LIB0  = ../../KKsem/KKsem.a
+EXT_SRC0  = ../../KKsem/*.f  ../../KKsem/*.h
+$(EXT_LIB0): $(EXT_SRC0)
+	(cd ../../KKsem; make)
+#---------------------- Obsolete Obsolete Obsolete
+EXT_LIB31  = ../libfig/libfig.a
+EXT_SRC31  = ../libfig/*.f  ../libfig/*.h
+$(EXT_LIB31): $(EXT_SRC31)
+	(cd ../libfig; make)
+###########
+EXT_LIB1  = ../../KK2f/KK2f.a
+EXT_SRC1  = ../../KK2f/*.f		../../KK2f/*.h
+EXT_LIB2  = ../../glibk/glibk.a
+EXT_SRC2  = ../../glibk/*.f	../../glibk/*.h
+EXT_LIB3  = ../../jetset/jetset.a
+EXT_SRC3  = ../../jetset/*.f
+EXT_LIB4a = ../../bornv/bornv-tabs.a
+EXT_LIB4d = ../../bornv/bornv-dizet.a
+EXT_SRC4  = ../../bornv/*.f	../../bornv/*.h
+EXT_LIB5  = ../../tauola/glib.a
+EXT_SRC5  = ../../tauola/*.f
+EXT_LIB6  = ../../photos/glib.a
+EXT_SRC6  = ../../photos/photos.f	
+###########
+$(EXT_LIB1): $(EXT_SRC1)
+	cd ../../KK2f; make
+$(EXT_LIB2): $(EXT_SRC2)
+	cd ../../glibk; make
+$(EXT_LIB3): $(EXT_SRC3)
+	cd ../../jetset; make
+$(EXT_LIB4a): $(EXT_SRC4)
+	cd ../../bornv; make
+$(EXT_LIB4d): $(EXT_SRC4)
+	cd ../../bornv; make
+$(EXT_LIB5): $(EXT_SRC5)
+	cd ../../tauola; make
+$(EXT_LIB6): $(EXT_SRC6)
+	cd ../../photos; make
+###########
+SRCLIST= "../../KK2f ../../bornv ../../glibk"
+#-----------------------------------------------------------------------------
+##############################################################################
+##############################################################################
+##############################################################################
+##############################################################################
+chi_prepare.o:	chi.h
+#-----------------------------------------------------------------------------
+COMMAND0 = chi_prepare.exe
+OBJECTS0 = chi_prepare.o
+$(COMMAND0): $(OBJECTS0)                   $(EXT_LIB31) $(EXT_LIB2)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS0) $(EXT_LIB31) $(EXT_LIB2)
+#-----------------------------------------------------------------------------
+# 	gmake chi.hst
+chi.hst:	$(COMMAND0)
+	(time ./$(COMMAND0) )
+#-----------------------------------------------------------------------------
+# 	gmake chi-mcan-ps
+BN0 = chi-mcan
+# Link procedure
+$(BN0).o:	chi.h
+$(BN0).exe: $(BN0).o                      $(EXT_LIB31) $(EXT_LIB2)
+	$(LD) -o $@ $(LDFLAGS) $(BN0).o   $(EXT_LIB31) $(EXT_LIB2)
+$(BN0): $(BN0).exe chi.hst
+	(time ./$(BN0).exe; touch $(BN0))
+$(BN0)-debug: $(BN0).exe
+	(xldb -I  ${SRCLIST} $(BN0).exe; touch $(BN0))
+$(BN0)-txp-list = $(BN0)-O2mca.txp  $(BN0)-O2dif.txp $(BN0)-O3dan.txp $(BN0)-O0dif.txp \
+		  $(BN0)-O0tech.txp $(BN0)-O2mO1.txp $(BN0)-O3dO2.txp
+$(BN0)-eps-list = $(BN0)-O2mca.eps  $(BN0)-O2dif.eps $(BN0)-O3dan.eps $(BN0)-O0dif.eps \
+		  $(BN0)-O0tech.eps $(BN0)-O2mO1.eps $(BN0)-O3dO2.eps
+$($(BN0)-txp-list): 	$(COMMAND0) $(BN0)
+#
+$(BN0)-O2mca.eps:	$(BN0)-O2mca.txp
+	(./txp_to_eps  $(BN0)-O2mca)
+$(BN0)-O2dif.eps:	$(BN0)-O2dif.txp
+	(./txp_to_eps  $(BN0)-O2dif)
+$(BN0)-O3dan.eps:	$(BN0)-O3dan.txp
+	(./txp_to_eps  $(BN0)-O3dan)
+$(BN0)-O0dif.eps:	$(BN0)-O0dif.txp
+	(./txp_to_eps  $(BN0)-O0dif)
+$(BN0)-O0tech.eps:	$(BN0)-O0tech.txp
+	(./txp_to_eps  $(BN0)-O0tech)
+$(BN0)-O2mO1.eps:	$(BN0)-O2mO1.txp
+	(./txp_to_eps  $(BN0)-O2mO1)
+$(BN0)-O3dO2.eps:	$(BN0)-O3dO2.txp
+	(./txp_to_eps  $(BN0)-O3dO2)
+#
+$(BN0).dvi:		$(BN0).tex $($(BN0)-eps-list)
+	(latex   $(BN0).tex )
+$(BN0)-dvi: 		$(BN0).dvi
+	($(XDVI) $(BN0).dvi)
+$(BN0).ps: 		$(BN0).dvi
+	(dvips $(BN0).dvi -o )
+$(BN0)-ps: 		$(BN0).ps
+	($(XPS) $(BN0).ps)
+##############################################################################
+##############################################################################
+##############################################################################
+##############################################################################
+afb_prepare.o:	afb.h
+#-----------------------------------------------------------------------------
+COMMAND4 = afb_prepare.exe
+OBJECTS4 = afb_prepare.o
+$(COMMAND4): $(OBJECTS4)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS4) $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+#-----------------------------------------------------------------------------
+# 	gmake afb.hst
+afb.hst:	$(COMMAND4)
+	(time ./$(COMMAND4) )
+afb.hst-debug:	$(COMMAND4)
+	(xldb -I  ${SRCLIST}   ./$(COMMAND4) )
+#-----------------------------------------------------------------------------
+# 	gmake afb-int-ps
+BN4 = afb-int
+# Link procedure
+$(BN4).o:	chi.h
+$(BN4).exe: $(BN4).o                     $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
+	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
+$(BN4): $(BN4).exe afb.hst
+	(time ./$(BN4).exe; touch $(BN4))
+$(BN4)-debug: $(BN4).exe afb.hst
+	(xldb -I  ${SRCLIST}  $(BN4).exe; touch $(BN4))
+#-----------------------------------------------------------------------------
+#          sigma and AFB
+$(BN4)-tab1.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-tab1)
+$(BN4)-tab2.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-tab2)
+$(BN4)-tab3.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-tab3)
+$(BN4)-G1.eps:			$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-G1)
+$(BN4)-G1x.eps:			$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-G1x)
+$(BN4)-G1xxx.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-G1xxx)
+$(BN4)-afb1.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-afb1)
+$(BN4)-afb2.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-afb2)
+$(BN4)-sig1.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-sig1)
+$(BN4)-Gsig.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-Gsig)
+$(BN4)-GsigZF.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-GsigZF)
+$(BN4)-Gafb.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-Gafb)
+$(BN4)-GafbZF.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-GafbZF)
+##       experimental cuts
+$(BN4)-afb1S.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-afb1S)
+$(BN4)-sig1S.eps:		$(COMMAND4) $(BN4)
+##       higher orders
+$(BN4)-afbHO.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-afbHO)
+$(BN4)-sigHO.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-sigHO)
+## angular distribs
+$(BN4)-com1.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-com1)
+$(BN4)-com1x.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-com1x)
+$(BN4)-com1xxx.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-com1xxx)
+$(BN4)-AngMx.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-AngMx)
+$(BN4)-comMx.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-comMx)
+## EWG tables
+$(BN4)-tabEWG1.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-tabEWG1)
+$(BN4)-tabEWG2.eps:		$(COMMAND4) $(BN4)
+	(./txp_to_eps  $(BN4)-tabEWG2)
+#-----------------------------------------------------------------------------
+# 	gmake afb-int-ps
+$(BN4).dvi:		$(BN4).tex $(BN4)-sig1.eps $(BN4)-afb1.eps  $(BN4)-afb2.eps
+	(latex   $(BN4).tex )
+$(BN4).ps: 			$(BN4).dvi
+	(dvips $(BN4).dvi -o )
+$(BN4)-ps: 			$(BN4).ps
+	($(XPS) $(BN4).ps&)
+#-----------------------------------------------------------------------------
+# 	gmake afb-sig-ps
+BN42 = afb-sig
+$(BN42).dvi:		$(BN42).tex  $(BN4)-tab1.eps $(BN4)-Gsig.eps $(BN4)-Gafb.eps \
+			$(BN4)-GsigZF.eps $(BN4)-GafbZF.eps $(BN4)-sigHO.eps $(BN4)-afbHO.eps 
+	(latex   $(BN42).tex )
+$(BN42).ps: 		$(BN42).dvi
+	(dvips $(BN42).dvi -o )
+$(BN42)-ps: 		$(BN42).ps
+	($(XPS) $(BN42).ps&)
+#-----------------------------------------------------------------------------
+# 	gmake afb-ang-ps
+BN43 = afb-ang
+$(BN43).dvi:		$(BN43).tex  $(BN4)-G1.eps   $(BN4)-G1x.eps   $(BN4)-G1xxx.eps \
+				$(BN4)-com1.eps	 $(BN4)-com1x.eps $(BN4)-com1xxx.eps \
+				$(BN4)-comMx.eps $(BN4)-AngMx.eps \
+				$(BN4)-sig1S.eps $(BN4)-afb1S.eps 
+	(latex   $(BN43).tex )
+$(BN43).ps: 		$(BN43).dvi
+	(dvips $(BN43).dvi -o )
+$(BN43)-ps: 		$(BN43).ps
+	($(XPS) $(BN43).ps&)
+#-----------------------------------------------------------------------------
+# 	gmake afb-LepEWG-ps
+BN45 = afb-LepEWG
+$(BN45).dvi:		$(BN45).tex  $(BN4)-tabEWG1.eps  $(BN4)-tabEWG2.eps
+	(latex   $(BN45).tex )
+$(BN45).ps: 		$(BN45).dvi
+	(dvips $(BN45).dvi -o )
+$(BN45)-ps: 		$(BN45).ps
+	($(XPS) $(BN45).ps&)
+##############################################################################
+COMMAND5 = delmu.exe
+OBJECTS5 = delmu.o
+$(COMMAND5): $(OBJECTS5)   $(EXT_LIB31) $(EXT_LIB2)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS5) $(EXT_LIB31) $(EXT_LIB2)
+#-----------------------------------------------------------------------------
+delmu.data:	$(COMMAND5)
+	(time ./$(COMMAND5) )
+delmu-data:	delmu.data
+	(more  delmu.data)
+##############################################################################
+COMMAND6 = delhad.exe
+OBJECTS6 = delhad.o
+$(COMMAND6): $(OBJECTS6)   $(EXT_LIB31) $(EXT_LIB2)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS6) $(EXT_LIB31) $(EXT_LIB2)
+#-----------------------------------------------------------------------------
+delhad.data:	$(COMMAND6)
+	(time ./$(COMMAND6) )
+delhad-data:	delhad.data
+	(more  delhad.data)
+##############################################################################
+COMMAND7 = delmu-plot.exe
+OBJECTS7 = delmu-plot.o
+$(COMMAND7): $(OBJECTS7)   $(EXT_LIB31) $(EXT_LIB2)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS7) $(EXT_LIB31) $(EXT_LIB2)
+#-----------------------------------------------------------------------------
+delmu-sigma1.txp delmu-sigma2.txp:	delmu.data delhad.data $(COMMAND7)
+	(time ./$(COMMAND7) )
+#-----------------------------------------------------------------------------
+delmu-sigma1.eps:		delmu-sigma1.txp
+	(./txp_to_eps  delmu-sigma1)
+delmu-sigma2.eps:		delmu-sigma2.txp
+	(./txp_to_eps  delmu-sigma2)
+#-------
+delta.dvi:		delta.tex delmu-sigma1.eps delmu-sigma2.eps
+	(latex   delta.tex )
+delta.ps: 		delta.dvi
+	(dvips delta.dvi -o )
+delta-ps: 		delta.ps
+	($(XPS) delta.ps&)
+##############################################################################
+##############################################################################
+# 	gmake bornex
+COMMAND9 = bornex.exe
+OBJECTS9 = bornex.o
+$(COMMAND9): $(OBJECTS9)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS9) $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+bornex:	$(COMMAND9)
+	(time ./$(COMMAND9) )
+##############################################################################
+##############################################################################
+##############################################################################
+makflag:
+	(cd ../; make makflag)
+##############################################################################
+default:
+	(cd ../../dizet/; make default)
+YR:
+	(cd ../../dizet/; make YR)
+##############################################################################
+clean:
+	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap)
+	(rm -f *.txp chi afb output-* *.hst)
+Clean:	clean
+	(rm -f *.ps)
+	(cd ../../glibk;  make clean)
+##############################################################################

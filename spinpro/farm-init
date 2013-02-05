@@ -1,0 +1,45 @@
+#!/bin/csh
+set echo
+#|-----------------------------------------------------------------
+#| by S. Jadach. Jan. 95
+#| This script CREATES series of subdirectories for calculation
+#| on the computer farm (SP-2, CSF, BASTA, SHIFT)
+#| It is invoked like that:
+#|    farm-init "1 2 3 4 5 6" bhlpro prod2 SP long
+#|-----------------------------------------------------------------
+set   farmdir=$PWD/farm
+set   farmlist="$1"
+set   main=$2
+set   dset=$3
+set   system=$4
+set   class=$5
+#|-----------------------------------------------------------------
+#| create work directory
+mkdir $farmdir
+#| copy common exe files into it
+cp   ../$main.exe    $farmdir/$dset.exe
+#|-----------------------------------------------------------------
+#| create several subdirectories with own random-number-seed
+#| and its own execution-script (using template file and sed utility)
+foreach i ( $farmlist )
+    set subdir=$farmdir/$i
+    mkdir $subdir
+    cp  ./$dset.input           $subdir/
+    cp  ../semaphore.start      $subdir/semaphore
+    cp  ../semaphore.stop       $subdir/
+    cp  ../semaphore.cont       $subdir/
+    cp  ../iniseed/iniseed.$i   $subdir/iniseed
+#| Some strings are replaced in the template file
+    sed   -e      's#<dset>#'$dset'#'g \
+          -e     's#<class>#'$class'#'g \
+          -e   's#<pthfarm>#'$farmdir'#'g \
+          -e 's#<farmindex>#'$i'#'g \
+          ../farm$system.cmd.template  > $subdir/$dset.cmd.$i
+end
+#| show results
+set echo
+ls -altr $farmdir/
+ls -altr $farmdir/*/
+#|-----------------------------------------------------------------
+exit 0
+ 

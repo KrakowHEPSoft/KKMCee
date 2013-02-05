@@ -1,0 +1,23 @@
+
+*** readat.f ***
+
+(ld): halt 4
+(ld): setopt noexecut 
+(ld): savename readat.o
+(ld): setopt keepall
+(ld): filelist 2 0
+(ld): i /tmp/F8StoJya0
+(ld): i /tmp/F8StoJya1
+FILELIST: Number of previously inserted files processed: 2
+(ld): resolve
+RESOLVE: 21 of 26 symbols were kept.
+(ld): mismatch
+MISMATCH: No type mismatches exist.
+(ld): comprld
+COMPRLD: Kept 82 of 82 relocation entries.
+(ld): origin 0x0 0x0
+(ld): save 1L .
+SAVE: Section sizes = 2867+56+8296 (0xB33+0x38+0x2068 hex)
+SAVE: Size of TOC: 32 (0x20 hex)
+(ld): rc
+RC: Highest return code was 0.

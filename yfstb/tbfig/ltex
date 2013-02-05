@@ -1,0 +1,2 @@
+latex $1
+xdvi  -nogrey $1

@@ -1,0 +1,457 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%BoundingBox:  0 0 567 345
+%%Title: cFig3a2.epsFig3a2 photonic
+%%Creator: ROOT Version 3.05/02
+%%CreationDate: Sun Jun  1 20:34:20 2003
+%%EndComments
+%%BeginProlog
+80 dict begin
+/s {stroke} def /l {lineto} def /m {moveto} def /t {translate} def
+/sw {stringwidth} def /r {rotate} def /rl {roll}  def /R {repeat} def
+/d {rlineto} def /rm {rmoveto} def /gr {grestore} def /f {eofill} def
+/c {setrgbcolor} def /lw {setlinewidth} def /sd {setdash} def
+/cl {closepath} def /sf {scalefont setfont} def /black {0 setgray} def
+/box {m dup 0 exch d exch 0 d 0 exch neg d cl} def
+/NC{systemdict begin initclip end}def/C{NC box clip newpath}def
+/bl {box s} def /bf {box f} def /Y { 0 exch d} def /X { 0 d} def 
+/mp {newpath /y exch def /x exch def} def
+/side {[w .77 mul w .23 mul] .385 w mul sd w 0 l currentpoint t -144 r} def
+/mr {mp x y w2 0 360 arc} def /m24 {mr s} def /m20 {mr f} def
+/mb {mp x y w2 add m w2 neg 0 d 0 w neg d w 0 d 0 w d cl} def
+/mt {mp x y w2 add m w2 neg w neg d w 0 d cl} def
+/m21 {mb f} def /m25 {mb s} def /m22 {mt f} def /m26{mt s} def
+/m23 {mp x y w2 sub m w2 w d w neg 0 d cl f} def
+/m27 {mp x y w2 add m w3 neg w2 neg d w3 w2 neg d w3 w2 d cl s} def
+/m28 {mp x w2 sub y w2 sub w3 add m w3 0 d  0 w3 neg d w3 0 d 0 w3 d w3 0 d  0 w3 d w3 neg 0 d 0 w3 d w3 neg 0 d
+ 0 w3 neg d w3 neg 0 d cl s } def
+/m29 {mp gsave x w2 sub y w2 add w3 sub m currentpoint t
+ 4 {side} repeat cl fill gr} def
+/m30 {mp gsave x w2 sub y w2 add w3 sub m currentpoint t
+ 4 {side} repeat cl s gr} def
+/m31 {mp x y w2 sub m 0 w d x w2 sub y m w 0 d x w2 sub y w2 add m w w neg d x w2 sub y w2
+ sub m w w d s} def
+/m2 {mp x y w2 sub m 0 w d x w2 sub y m w 0 d s} def
+/m5 {mp x w2 sub y w2 sub m w w d x w2 sub y w2 add m w w neg d s} def
+/reencdict 24 dict def /ReEncode {reencdict begin /nco&na exch def
+/nfnam exch def /basefontname exch def /basefontdict basefontname findfont def
+/newfont basefontdict maxlength dict def basefontdict {exch dup /FID ne
+{dup /Encoding eq {exch dup length array copy newfont 3 1 roll put} {exch 
+newfont 3 1 roll put} ifelse} {pop pop} ifelse } forall newfont
+/FontName nfnam put nco&na aload pop nco&na length 2 idiv {newfont
+/Encoding get 3 1 roll put} repeat nfnam newfont definefont pop end } def
+/accvec [ 176 /agrave 181 /Agrave 190 /acircumflex 192 /Acircumflex
+201 /adieresis 204 /Adieresis 209 /ccedilla 210 /Ccedilla 211 /eacute
+212 /Eacute 213 /egrave 214 /Egrave 215 /ecircumflex 216 /Ecircumflex
+217 /edieresis 218 /Edieresis 219 /icircumflex 220 /Icircumflex
+221 /idieresis 222 /Idieresis 223 /ntilde 224 /Ntilde 226 /ocircumflex
+228 /Ocircumflex 229 /odieresis 230 /Odieresis 231 /ucircumflex 236 /Ucircumflex
+237 /udieresis 238 /Udieresis 239 /aring 242 /Aring 243 /ydieresis
+244 /Ydieresis 246 /aacute 247 /Aacute 252 /ugrave 253 /Ugrave] def
+/Times-Roman /Times-Roman accvec ReEncode
+/Times-Italic /Times-Italic accvec ReEncode
+/Times-Bold /Times-Bold accvec ReEncode
+/Times-BoldItalic /Times-BoldItalic accvec ReEncode
+/Helvetica /Helvetica accvec ReEncode
+/Helvetica-Oblique /Helvetica-Oblique accvec ReEncode
+/Helvetica-Bold /Helvetica-Bold accvec ReEncode
+/Helvetica-BoldOblique /Helvetica-BoldOblique  accvec ReEncode
+/Courier /Courier accvec ReEncode
+/Courier-Oblique /Courier-Oblique accvec ReEncode
+/Courier-Bold /Courier-Bold accvec ReEncode
+/Courier-BoldOblique /Courier-BoldOblique accvec ReEncode
+/oshow {gsave [] 0 sd true charpath stroke gr} def
+/stwn { /fs exch def /fn exch def /text exch def fn findfont fs sf
+ text sw pop xs add /xs exch def} def
+/stwb { /fs exch def /fn exch def /nbas exch def /textf exch deftextf length /tlen exch def nbas tlen gt {/nbas tlendef} iffn findfont fs sf textf dup length nbas sub nbas getinterval sw
+pop neg xs add /xs exch def} def
+/accspe [ 65 /plusminus  66 /bar  67 /existential  68 /universal 
+69 /exclam  70 /numbersign 71 /greater  72 /question  73 /integral 
+74 /colon  75 /semicolon  76 /less  77 /bracketleft  78 /bracketright
+79 /greaterequal 80 /braceleft 81 /braceright 82 /radical
+83 /spade 84 /heart 85 /diamond 86 /club 87 /lessequal
+88 /multiply 89 /percent 90 /infinity 48 /circlemultiply 49 /circleplus
+50 /emptyset  51 /lozenge 52 /bullet 53 /arrowright 54 /arrowup
+55 /arrowleft 56 /arrowdown 57 /arrowboth 48 /degree 44 /comma 43 /plus 45 /angle 42 /angleleft 47 /divide 61 /notequal 40 /equivalence 41 /second 97 /approxequal 98 /congruent 99 /perpendicular 100 /partialdiff 101 /florin 102 /intersection
+ 103 /union 104 /propersuperset 105 /reflexsuperset 106 /notsubset 107 /propersubset 108 /reflexsubset 109 /element 110 /notelement 111 /gradient 112 /logicaland 113 /logicalor 114 /arrowdblboth 115 /arrowdblleft 116 /arrowdblup 117 /arrowdblright
+ 118 /arrowdbldown 119 /ampersand 120 /omega1 121 /similar 122 /aleph ] def
+/Symbol /Special accspe ReEncode
+%%EndProlog
+newpath  gsave  .25 .25 scale  gsave  0 0 t black [] 0 sd 3 lw 0.999 0.999 0.999 c 2268 1380 0 0 bf 1 1 1 c 0 0 m 2 2 d 1376 Y 2264 X 2 2 d -2268 X -1380 Y f 0.999 0.999 0.999 c 0 0 m 2 2 d 2264 X 1376 Y 2 2 d -1380 Y -2268 X f black [] 0 sd 3 lw
+ 0.999 0.999 0.999 c 1134 1380 0 0 bf 1 1 1 c 0 0 m 2 2 d 1376 Y 1130 X 2 2 d -1134 X -1380 Y f 0.999 0.999 0.999 c 0 0 m 2 2 d 1130 X 1376 Y 2 2 d -1380 Y -1134 X f black [] 0 sd 3 lw 0.999 0.999 0.999 c 907 1104 113 138 bf 1 1 1 c 113 138 m 1 1 d
+ 1102 Y 905 X 1 1 d -907 X -1104 Y f 0.999 0.999 0.999 c 113 138 m 1 1 d 905 X 1102 Y 1 1 d -1104 Y -907 X f [] 0 sd 3 lw black 113 138 m 907 X s [] 0 sd 3 lw 1020 138 m 1104 Y s [] 0 sd 3 lw 1020 1242 m -907 X s [] 0 sd 3 lw 113 1242 m -1104 Y s
+ [] 0 sd 3 lw 0.999 0.999 0.999 c 907 1104 113 138 bf 1 1 1 c 113 138 m 1 1 d 1102 Y 905 X 1 1 d -907 X -1104 Y f 0.999 0.999 0.999 c 113 138 m 1 1 d 905 X 1102 Y 1 1 d -1104 Y -907 X f [] 0 sd 3 lw black 113 138 m 907 X s [] 0 sd 3 lw 1020 138 m
+ 1104 Y s [] 0 sd 3 lw 1020 1242 m -907 X s [] 0 sd 3 lw 113 1242 m -1104 Y s [] 0 sd 3 lw [] 0 sd 3 lw 113 138 m 907 X s [] 0 sd 3 lw [] 0 sd 3 lw 113 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 132 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 150 155 m -17
+ Y s [] 0 sd 3 lw [] 0 sd 3 lw 168 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 186 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 204 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 222 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 240 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw
+ 259 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 277 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 295 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 313 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 331 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 349 155 m -17 Y s [] 0 sd 3
+ lw [] 0 sd 3 lw 367 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 386 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 404 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 422 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 440 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 458 155 m -17
+ Y s [] 0 sd 3 lw [] 0 sd 3 lw 476 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 494 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 513 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 531 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 549 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw
+ 567 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 585 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 603 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 621 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 639 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 658 171 m -33 Y s [] 0 sd 3
+ lw [] 0 sd 3 lw 676 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 694 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 712 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 730 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 748 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 766 155 m -17
+ Y s [] 0 sd 3 lw [] 0 sd 3 lw 785 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 803 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 821 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 839 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 857 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw
+ 875 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 893 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 912 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 930 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 948 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 966 155 m -17 Y s [] 0 sd 3
+ lw [] 0 sd 3 lw 984 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1002 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1020 171 m -33 Y s
+ /xs 0 def (0) /Helvetica-Bold 40 stwn  gsave  113 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0) show  gr 
+ /xs 0 def (0.1) /Helvetica-Bold 40 stwn  gsave  204 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.1) show  gr 
+ /xs 0 def (0.2) /Helvetica-Bold 40 stwn  gsave  295 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.2) show  gr 
+ /xs 0 def (0.3) /Helvetica-Bold 40 stwn  gsave  386 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.3) show  gr 
+ /xs 0 def (0.4) /Helvetica-Bold 40 stwn  gsave  476 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.4) show  gr 
+ /xs 0 def (0.5) /Helvetica-Bold 40 stwn  gsave  567 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.5) show  gr 
+ /xs 0 def (0.6) /Helvetica-Bold 40 stwn  gsave  658 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.6) show  gr 
+ /xs 0 def (0.7) /Helvetica-Bold 40 stwn  gsave  748 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.7) show  gr 
+ /xs 0 def (0.8) /Helvetica-Bold 40 stwn  gsave  839 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.8) show  gr 
+ /xs 0 def (0.9) /Helvetica-Bold 40 stwn  gsave  930 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.9) show  gr 
+ /xs 0 def (1) /Helvetica-Bold 40 stwn  gsave  1020 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1) show  gr  [] 0 sd 3 lw [] 0 sd 3 lw 113 138 m 1104 Y s [] 0 sd 3 lw [] 0 sd 3 lw 127 174 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 230 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 274 m
+ -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 309 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 340 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 366 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 389 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 141 409 m -28 X s
+ /xs 0 def (1) /Helvetica-Bold 40 stwn  gsave  93 394
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1) show  gr  [] 0 sd 3 lw [] 0 sd 3 lw 127 545 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 624 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 681 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 724 m -14 X
+ s [] 0 sd 3 lw [] 0 sd 3 lw 127 760 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 790 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 817 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 840 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 141 860 m -28 X s
+ /xs 0 def (10) /Helvetica-Bold 40 stwn  gsave  93 844
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (10) show  gr  [] 0 sd 3 lw [] 0 sd 3 lw 127 996 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 1075 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 1132 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 1175 m
+ -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 1211 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 127 1241 m -14 X s [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw /w 2 def /w2 {w 2 div} def /w3 {w 3 div} def 190 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 200 138 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 209 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 218 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 227 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 236 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 245 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 254 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 263 138
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 272 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 281 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 290 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 299 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 308 175 m 3 Y s [] 0 sd 3 lw 308 178 m 2 Y s [] 0 sd 3 lw 308 178
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 317 251 m 2 Y s [] 0 sd 3 lw 317 253 m 2 Y s [] 0 sd 3 lw 317 253 m20 [] 0 sd 3 lw [] 0 sd 3 lw 327 306 m 1 Y s [] 0 sd 3 lw 327 307 m 2 Y s [] 0 sd 3 lw 327 307 m20 [] 0 sd 3 lw [] 0 sd 3 lw 336 347 m 2 Y s [] 0 sd 3
+ lw 336 349 m 2 Y s [] 0 sd 3 lw 336 349 m20 [] 0 sd 3 lw [] 0 sd 3 lw 345 387 m 2 Y s [] 0 sd 3 lw 345 389 m 1 Y s [] 0 sd 3 lw 345 389 m20 [] 0 sd 3 lw [] 0 sd 3 lw 354 420 m 1 Y s [] 0 sd 3 lw 354 421 m 2 Y s [] 0 sd 3 lw 354 421 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 363 451 m 1 Y s [] 0 sd 3 lw 363 452 m 1 Y s [] 0 sd 3 lw 363 452 m20 [] 0 sd 3 lw [] 0 sd 3 lw 372 477 m 1 Y s [] 0 sd 3 lw 372 478 m 2 Y s [] 0 sd 3 lw 372 478 m20 [] 0 sd 3 lw [] 0 sd 3 lw 381 506 m 1 Y s [] 0 sd 3 lw 381 507 m 1 Y s
+ [] 0 sd 3 lw 381 507 m20 [] 0 sd 3 lw [] 0 sd 3 lw 390 530 m 1 Y s [] 0 sd 3 lw 390 531 m 1 Y s [] 0 sd 3 lw 390 531 m20 [] 0 sd 3 lw [] 0 sd 3 lw 399 554 m 1 Y s [] 0 sd 3 lw 399 555 m 1 Y s [] 0 sd 3 lw 399 555 m20 [] 0 sd 3 lw [] 0 sd 3 lw 408
+ 576 m 1 Y s [] 0 sd 3 lw 408 577 m 1 Y s [] 0 sd 3 lw 408 577 m20 [] 0 sd 3 lw [] 0 sd 3 lw 417 599 m 1 Y s [] 0 sd 3 lw 417 600 m 1 Y s [] 0 sd 3 lw 417 600 m20 [] 0 sd 3 lw [] 0 sd 3 lw 426 621 m 1 Y s [] 0 sd 3 lw 426 622 m 1 Y s [] 0 sd 3 lw 426
+ 622 m20 [] 0 sd 3 lw [] 0 sd 3 lw 435 645 m 1 Y s [] 0 sd 3 lw 435 646 m s [] 0 sd 3 lw 435 646 m20 [] 0 sd 3 lw [] 0 sd 3 lw 444 667 m s [] 0 sd 3 lw 444 667 m 1 Y s [] 0 sd 3 lw 444 667 m20 [] 0 sd 3 lw [] 0 sd 3 lw 454 687 m s [] 0 sd 3 lw 454
+ 687 m 1 Y s [] 0 sd 3 lw 454 687 m20 [] 0 sd 3 lw [] 0 sd 3 lw 463 710 m s [] 0 sd 3 lw 463 710 m 1 Y s [] 0 sd 3 lw 463 710 m20 [] 0 sd 3 lw [] 0 sd 3 lw 472 732 m 1 Y s [] 0 sd 3 lw 472 733 m s [] 0 sd 3 lw 472 733 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 481 756 m s [] 0 sd 3 lw 481 756 m 1 Y s [] 0 sd 3 lw 481 756 m20 [] 0 sd 3 lw [] 0 sd 3 lw 490 778 m 1 Y s [] 0 sd 3 lw 490 779 m s [] 0 sd 3 lw 490 779 m20 [] 0 sd 3 lw [] 0 sd 3 lw 499 801 m 1 Y s [] 0 sd 3 lw 499 802 m s [] 0 sd 3 lw 499 802 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 508 825 m 1 Y s [] 0 sd 3 lw 508 826 m s [] 0 sd 3 lw 508 826 m20 [] 0 sd 3 lw [] 0 sd 3 lw 517 848 m s [] 0 sd 3 lw 517 848 m 1 Y s [] 0 sd 3 lw 517 848 m20 [] 0 sd 3 lw [] 0 sd 3 lw 526 872 m s [] 0 sd 3 lw 526 872 m 1 Y
+ s [] 0 sd 3 lw 526 872 m20 [] 0 sd 3 lw [] 0 sd 3 lw 535 897 m 1 Y s [] 0 sd 3 lw 535 898 m s [] 0 sd 3 lw 535 898 m20 [] 0 sd 3 lw [] 0 sd 3 lw 544 920 m 1 Y s [] 0 sd 3 lw 544 921 m s [] 0 sd 3 lw 544 921 m20 [] 0 sd 3 lw [] 0 sd 3 lw 553 944 m s
+ [] 0 sd 3 lw 553 944 m 1 Y s [] 0 sd 3 lw 553 944 m20 [] 0 sd 3 lw [] 0 sd 3 lw 562 967 m s [] 0 sd 3 lw 562 967 m 1 Y s [] 0 sd 3 lw 562 967 m20 [] 0 sd 3 lw [] 0 sd 3 lw 571 989 m 1 Y s [] 0 sd 3 lw 571 990 m s [] 0 sd 3 lw 571 990 m20 [] 0 sd 3
+ lw [] 0 sd 3 lw 581 1012 m 1 Y s [] 0 sd 3 lw 581 1013 m s [] 0 sd 3 lw 581 1013 m20 [] 0 sd 3 lw [] 0 sd 3 lw 590 1033 m s [] 0 sd 3 lw 590 1033 m 1 Y s [] 0 sd 3 lw 590 1033 m20 [] 0 sd 3 lw [] 0 sd 3 lw 599 1051 m s [] 0 sd 3 lw 599 1051 m 1 Y s
+ [] 0 sd 3 lw 599 1051 m20 [] 0 sd 3 lw [] 0 sd 3 lw 608 1067 m s [] 0 sd 3 lw 608 1067 m 1 Y s [] 0 sd 3 lw 608 1067 m20 [] 0 sd 3 lw [] 0 sd 3 lw 617 1081 m 1 Y s [] 0 sd 3 lw 617 1082 m s [] 0 sd 3 lw 617 1082 m20 [] 0 sd 3 lw [] 0 sd 3 lw 626
+ 1092 m s [] 0 sd 3 lw 626 1092 m 1 Y s [] 0 sd 3 lw 626 1092 m20 [] 0 sd 3 lw [] 0 sd 3 lw 635 1101 m s [] 0 sd 3 lw 635 1101 m s [] 0 sd 3 lw 635 1101 m20 [] 0 sd 3 lw [] 0 sd 3 lw 644 1107 m s [] 0 sd 3 lw 644 1107 m s [] 0 sd 3 lw 644 1107 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 653 1112 m s [] 0 sd 3 lw 653 1112 m s [] 0 sd 3 lw 653 1112 m20 [] 0 sd 3 lw [] 0 sd 3 lw 662 1117 m s [] 0 sd 3 lw 662 1117 m s [] 0 sd 3 lw 662 1117 m20 [] 0 sd 3 lw [] 0 sd 3 lw 671 1079 m s [] 0 sd 3 lw 671 1079 m s
+ [] 0 sd 3 lw 671 1079 m20 [] 0 sd 3 lw [] 0 sd 3 lw 680 1056 m s [] 0 sd 3 lw 680 1056 m 1 Y s [] 0 sd 3 lw 680 1056 m20 [] 0 sd 3 lw [] 0 sd 3 lw 689 1053 m s [] 0 sd 3 lw 689 1053 m 1 Y s [] 0 sd 3 lw 689 1053 m20 [] 0 sd 3 lw [] 0 sd 3 lw 698
+ 1047 m s [] 0 sd 3 lw 698 1047 m s [] 0 sd 3 lw 698 1047 m20 [] 0 sd 3 lw [] 0 sd 3 lw 708 1038 m s [] 0 sd 3 lw 708 1038 m s [] 0 sd 3 lw 708 1038 m20 [] 0 sd 3 lw [] 0 sd 3 lw 717 1027 m 1 Y s [] 0 sd 3 lw 717 1028 m s [] 0 sd 3 lw 717 1028 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 726 1017 m s [] 0 sd 3 lw 726 1017 m 1 Y s [] 0 sd 3 lw 726 1017 m20 [] 0 sd 3 lw [] 0 sd 3 lw 735 1006 m s [] 0 sd 3 lw 735 1006 m 1 Y s [] 0 sd 3 lw 735 1006 m20 [] 0 sd 3 lw [] 0 sd 3 lw 744 994 m 1 Y s [] 0 sd 3 lw 744
+ 995 m s [] 0 sd 3 lw 744 995 m20 [] 0 sd 3 lw [] 0 sd 3 lw 753 983 m 1 Y s [] 0 sd 3 lw 753 984 m s [] 0 sd 3 lw 753 984 m20 [] 0 sd 3 lw [] 0 sd 3 lw 762 973 m 1 Y s [] 0 sd 3 lw 762 974 m s [] 0 sd 3 lw 762 974 m20 [] 0 sd 3 lw [] 0 sd 3 lw 771
+ 962 m 1 Y s [] 0 sd 3 lw 771 963 m s [] 0 sd 3 lw 771 963 m20 [] 0 sd 3 lw [] 0 sd 3 lw 780 954 m s [] 0 sd 3 lw 780 954 m 1 Y s [] 0 sd 3 lw 780 954 m20 [] 0 sd 3 lw [] 0 sd 3 lw 789 945 m 1 Y s [] 0 sd 3 lw 789 946 m s [] 0 sd 3 lw 789 946 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 798 937 m 1 Y s [] 0 sd 3 lw 798 938 m s [] 0 sd 3 lw 798 938 m20 [] 0 sd 3 lw [] 0 sd 3 lw 807 930 m 1 Y s [] 0 sd 3 lw 807 931 m s [] 0 sd 3 lw 807 931 m20 [] 0 sd 3 lw [] 0 sd 3 lw 816 922 m 1 Y s [] 0 sd 3 lw 816 923 m
+ s [] 0 sd 3 lw 816 923 m20 [] 0 sd 3 lw [] 0 sd 3 lw 825 917 m s [] 0 sd 3 lw 825 917 m 1 Y s [] 0 sd 3 lw 825 917 m20 [] 0 sd 3 lw [] 0 sd 3 lw 835 911 m 1 Y s [] 0 sd 3 lw 835 912 m s [] 0 sd 3 lw 835 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 844 907 m 1
+ Y s [] 0 sd 3 lw 844 908 m s [] 0 sd 3 lw 844 908 m20 [] 0 sd 3 lw [] 0 sd 3 lw 853 903 m s [] 0 sd 3 lw 853 903 m 1 Y s [] 0 sd 3 lw 853 903 m20 [] 0 sd 3 lw [] 0 sd 3 lw 862 899 m s [] 0 sd 3 lw 862 899 m 1 Y s [] 0 sd 3 lw 862 899 m20 [] 0 sd 3
+ lw [] 0 sd 3 lw 871 898 m 1 Y s [] 0 sd 3 lw 871 899 m s [] 0 sd 3 lw 871 899 m20 [] 0 sd 3 lw [] 0 sd 3 lw 880 896 m 1 Y s [] 0 sd 3 lw 880 897 m 1 Y s [] 0 sd 3 lw 880 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 889 895 m 1 Y s [] 0 sd 3 lw 889 896 m 1 Y s
+ [] 0 sd 3 lw 889 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 898 895 m 1 Y s [] 0 sd 3 lw 898 896 m 1 Y s [] 0 sd 3 lw 898 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 907 896 m 1 Y s [] 0 sd 3 lw 907 897 m 1 Y s [] 0 sd 3 lw 907 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 916
+ 898 m 1 Y s [] 0 sd 3 lw 916 899 m s [] 0 sd 3 lw 916 899 m20 [] 0 sd 3 lw [] 0 sd 3 lw 925 901 m s [] 0 sd 3 lw 925 901 m 1 Y s [] 0 sd 3 lw 925 901 m20 [] 0 sd 3 lw [] 0 sd 3 lw 934 906 m s [] 0 sd 3 lw 934 906 m 1 Y s [] 0 sd 3 lw 934 906 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 943 912 m s [] 0 sd 3 lw 943 912 m 1 Y s [] 0 sd 3 lw 943 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 952 920 m 1 Y s [] 0 sd 3 lw 952 921 m s [] 0 sd 3 lw 952 921 m20 [] 0 sd 3 lw [] 0 sd 3 lw 962 927 m s [] 0 sd 3 lw 962 927 m 1 Y
+ s [] 0 sd 3 lw 962 927 m20 [] 0 sd 3 lw [] 0 sd 3 lw 971 938 m 1 Y s [] 0 sd 3 lw 971 939 m s [] 0 sd 3 lw 971 939 m20 [] 0 sd 3 lw [] 0 sd 3 lw 980 951 m 1 Y s [] 0 sd 3 lw 980 952 m s [] 0 sd 3 lw 980 952 m20 [] 0 sd 3 lw [] 0 sd 3 lw 989 967 m s
+ [] 0 sd 3 lw 989 967 m 1 Y s [] 0 sd 3 lw 989 967 m20 [] 0 sd 3 lw [] 0 sd 3 lw 998 988 m s [] 0 sd 3 lw 998 988 m 1 Y s [] 0 sd 3 lw 998 988 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1007 1011 m 1 Y s [] 0 sd 3 lw 1007 1012 m s [] 0 sd 3 lw 1007 1012 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 1016 1043 m 1 Y s [] 0 sd 3 lw 1016 1044 m s [] 0 sd 3 lw 1016 1044 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 113 138 m 191 X 40 Y 9 X 75 Y 9 X 54 Y 9 X 42 Y 9 X 40 Y 9 X 32 Y 9 X 31 Y 9 X 26 Y 9 X 29 Y 10 X
+ 24 Y 9 X 24 Y 9 X 22 Y 9 X 23 Y 9 X 22 Y 9 X 24 Y 9 X 21 Y 9 X 20 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 24 Y 10 X 22 Y 9 X 24 Y 9 X 26 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 23 Y 9 X 20 Y 9 X 18 Y 9 X 16 Y 9 X 15 Y 9 X 10 Y 9 X 9 Y 9
+ X 6 Y 10 X 5 Y 9 X 5 Y 9 X -38 Y 9 X -23 Y 9 X -3 Y 9 X -6 Y 9 X -9 Y 9 X -10 Y 9 X -11 Y 9 X -11 Y 9 X -11 Y 9 X -11 Y 9 X -10 Y 9 X -11 Y 10 X -9 Y 9 X -8 Y 9 X -8 Y 9 X -7 Y 9 X -8 Y 9 X -6 Y 9 X -5 Y 9 X -4 Y 9 X -5 Y 9 X -4 Y 18 X -2 Y 9 X -1 Y
+ 19 X 1 Y 9 X 2 Y 9 X 2 Y 9 X 5 Y 9 X 6 Y 9 X 9 Y 9 X 6 Y 9 X 12 Y 9 X 13 Y 9 X 15 Y 9 X 21 Y 9 X 24 Y 9 X 32 Y 9 X s [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 113 138 m 5 X s [] 0 sd 3 lw 118 138 m 4 X s [] 0 sd 3 lw 122 138 m 5 X s [] 0 sd 3 lw 127
+ 138 m 5 X s [] 0 sd 3 lw 132 138 m 4 X s [] 0 sd 3 lw 136 138 m 5 X s [] 0 sd 3 lw 141 138 m 4 X s [] 0 sd 3 lw 145 138 m 5 X s [] 0 sd 3 lw 150 138 m 4 X s [] 0 sd 3 lw 154 138 m 5 X s [] 0 sd 3 lw 159 138 m 4 X s [] 0 sd 3 lw 163 138 m 5 X s
+ [] 0 sd 3 lw 168 138 m 4 X s [] 0 sd 3 lw 172 138 m 5 X s [] 0 sd 3 lw 177 138 m 4 X s [] 0 sd 3 lw 181 138 m 5 X s [] 0 sd 3 lw 186 138 m 4 X s [] 0 sd 3 lw 190 138 m 5 X s [] 0 sd 3 lw 190 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 195 138 m 5 X s [] 0 sd
+ 3 lw 200 138 m 4 X s [] 0 sd 3 lw 200 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 204 138 m 5 X s [] 0 sd 3 lw 209 138 m 4 X s [] 0 sd 3 lw 209 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 213 138 m 5 X s [] 0 sd 3 lw 218 138 m 4 X s [] 0 sd 3 lw 218 138 m20 [] 0 sd 3
+ lw [] 0 sd 3 lw 222 138 m 5 X s [] 0 sd 3 lw 227 138 m 4 X s [] 0 sd 3 lw 227 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 231 138 m 5 X s [] 0 sd 3 lw 236 138 m 4 X s [] 0 sd 3 lw 236 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 240 138 m 5 X s [] 0 sd 3 lw 245 138 m 4
+ X s [] 0 sd 3 lw 245 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 249 138 m 5 X s [] 0 sd 3 lw 254 138 m 5 X s [] 0 sd 3 lw 254 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 259 138 m 4 X s [] 0 sd 3 lw 263 138 m 5 X s [] 0 sd 3 lw 263 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 268 138 m 4 X s [] 0 sd 3 lw 272 138 m 5 X s [] 0 sd 3 lw 272 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 277 138 m 4 X s [] 0 sd 3 lw 281 138 m 5 X s [] 0 sd 3 lw 281 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 286 138 m 4 X s [] 0 sd 3 lw 290 138 m 5 X s [] 0 sd 3 lw
+ 290 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 295 138 m 4 X s [] 0 sd 3 lw 299 138 m 5 X s [] 0 sd 3 lw 299 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 308 175 m 3 Y s [] 0 sd 3 lw 308 178 m 2 Y s [] 0 sd 3 lw 304 178 m 4 X s [] 0 sd 3 lw 308 178 m 5 X s [] 0 sd 3 lw
+ 308 178 m20 [] 0 sd 3 lw [] 0 sd 3 lw 317 251 m 2 Y s [] 0 sd 3 lw 317 253 m 2 Y s [] 0 sd 3 lw 313 253 m 4 X s [] 0 sd 3 lw 317 253 m 5 X s [] 0 sd 3 lw 317 253 m20 [] 0 sd 3 lw [] 0 sd 3 lw 327 306 m 1 Y s [] 0 sd 3 lw 327 307 m 2 Y s [] 0 sd 3 lw
+ 322 307 m 5 X s [] 0 sd 3 lw 327 307 m 4 X s [] 0 sd 3 lw 327 307 m20 [] 0 sd 3 lw [] 0 sd 3 lw 336 347 m 2 Y s [] 0 sd 3 lw 336 349 m 2 Y s [] 0 sd 3 lw 331 349 m 5 X s [] 0 sd 3 lw 336 349 m 4 X s [] 0 sd 3 lw 336 349 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 345 387 m 2 Y s [] 0 sd 3 lw 345 389 m 1 Y s [] 0 sd 3 lw 340 389 m 5 X s [] 0 sd 3 lw 345 389 m 4 X s [] 0 sd 3 lw 345 389 m20 [] 0 sd 3 lw [] 0 sd 3 lw 354 420 m 1 Y s [] 0 sd 3 lw 354 421 m 2 Y s [] 0 sd 3 lw 349 421 m 5 X s [] 0 sd 3 lw 354 421
+ m 4 X s [] 0 sd 3 lw 354 421 m20 [] 0 sd 3 lw [] 0 sd 3 lw 363 451 m 1 Y s [] 0 sd 3 lw 363 452 m 1 Y s [] 0 sd 3 lw 358 452 m 5 X s [] 0 sd 3 lw 363 452 m 4 X s [] 0 sd 3 lw 363 452 m20 [] 0 sd 3 lw [] 0 sd 3 lw 372 477 m 1 Y s [] 0 sd 3 lw 372 478
+ m 2 Y s [] 0 sd 3 lw 367 478 m 5 X s [] 0 sd 3 lw 372 478 m 4 X s [] 0 sd 3 lw 372 478 m20 [] 0 sd 3 lw [] 0 sd 3 lw 381 506 m 1 Y s [] 0 sd 3 lw 381 507 m 1 Y s [] 0 sd 3 lw 376 507 m 5 X s [] 0 sd 3 lw 381 507 m 5 X s [] 0 sd 3 lw 381 507 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 390 530 m 1 Y s [] 0 sd 3 lw 390 531 m 1 Y s [] 0 sd 3 lw 386 531 m 4 X s [] 0 sd 3 lw 390 531 m 5 X s [] 0 sd 3 lw 390 531 m20 [] 0 sd 3 lw [] 0 sd 3 lw 399 554 m 1 Y s [] 0 sd 3 lw 399 555 m 1 Y s [] 0 sd 3 lw 395 555 m 4
+ X s [] 0 sd 3 lw 399 555 m 5 X s [] 0 sd 3 lw 399 555 m20 [] 0 sd 3 lw [] 0 sd 3 lw 408 576 m 1 Y s [] 0 sd 3 lw 408 577 m 1 Y s [] 0 sd 3 lw 404 577 m 4 X s [] 0 sd 3 lw 408 577 m 5 X s [] 0 sd 3 lw 408 577 m20 [] 0 sd 3 lw [] 0 sd 3 lw 417 599 m 1
+ Y s [] 0 sd 3 lw 417 600 m 1 Y s [] 0 sd 3 lw 413 600 m 4 X s [] 0 sd 3 lw 417 600 m 5 X s [] 0 sd 3 lw 417 600 m20 [] 0 sd 3 lw [] 0 sd 3 lw 426 621 m 1 Y s [] 0 sd 3 lw 426 622 m 1 Y s [] 0 sd 3 lw 422 622 m 4 X s [] 0 sd 3 lw 426 622 m 5 X s
+ [] 0 sd 3 lw 426 622 m20 [] 0 sd 3 lw [] 0 sd 3 lw 435 645 m 1 Y s [] 0 sd 3 lw 435 646 m s [] 0 sd 3 lw 431 646 m 4 X s [] 0 sd 3 lw 435 646 m 5 X s [] 0 sd 3 lw 435 646 m20 [] 0 sd 3 lw [] 0 sd 3 lw 444 667 m s [] 0 sd 3 lw 444 667 m 1 Y s [] 0 sd
+ 3 lw 440 667 m 4 X s [] 0 sd 3 lw 444 667 m 5 X s [] 0 sd 3 lw 444 667 m20 [] 0 sd 3 lw [] 0 sd 3 lw 454 687 m s [] 0 sd 3 lw 454 687 m 1 Y s [] 0 sd 3 lw 449 687 m 5 X s [] 0 sd 3 lw 454 687 m 4 X s [] 0 sd 3 lw 454 687 m20 [] 0 sd 3 lw [] 0 sd 3
+ lw 463 710 m s [] 0 sd 3 lw 463 710 m 1 Y s [] 0 sd 3 lw 458 710 m 5 X s [] 0 sd 3 lw 463 710 m 4 X s [] 0 sd 3 lw 463 710 m20 [] 0 sd 3 lw [] 0 sd 3 lw 472 732 m 1 Y s [] 0 sd 3 lw 472 733 m s [] 0 sd 3 lw 467 733 m 5 X s [] 0 sd 3 lw 472 733 m 4 X
+ s [] 0 sd 3 lw 472 733 m20 [] 0 sd 3 lw [] 0 sd 3 lw 481 756 m s [] 0 sd 3 lw 481 756 m 1 Y s [] 0 sd 3 lw 476 756 m 5 X s [] 0 sd 3 lw 481 756 m 4 X s [] 0 sd 3 lw 481 756 m20 [] 0 sd 3 lw [] 0 sd 3 lw 490 778 m 1 Y s [] 0 sd 3 lw 490 779 m s
+ [] 0 sd 3 lw 485 779 m 5 X s [] 0 sd 3 lw 490 779 m 4 X s [] 0 sd 3 lw 490 779 m20 [] 0 sd 3 lw [] 0 sd 3 lw 499 801 m 1 Y s [] 0 sd 3 lw 499 802 m s [] 0 sd 3 lw 494 802 m 5 X s [] 0 sd 3 lw 499 802 m 4 X s [] 0 sd 3 lw 499 802 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 508 825 m 1 Y s [] 0 sd 3 lw 508 826 m s [] 0 sd 3 lw 503 826 m 5 X s [] 0 sd 3 lw 508 826 m 5 X s [] 0 sd 3 lw 508 826 m20 [] 0 sd 3 lw [] 0 sd 3 lw 517 848 m s [] 0 sd 3 lw 517 848 m 1 Y s [] 0 sd 3 lw 513 848 m 4 X s [] 0 sd 3 lw 517
+ 848 m 5 X s [] 0 sd 3 lw 517 848 m20 [] 0 sd 3 lw [] 0 sd 3 lw 526 872 m s [] 0 sd 3 lw 526 872 m 1 Y s [] 0 sd 3 lw 522 872 m 4 X s [] 0 sd 3 lw 526 872 m 5 X s [] 0 sd 3 lw 526 872 m20 [] 0 sd 3 lw [] 0 sd 3 lw 535 897 m 1 Y s [] 0 sd 3 lw 535 898
+ m s [] 0 sd 3 lw 531 898 m 4 X s [] 0 sd 3 lw 535 898 m 5 X s [] 0 sd 3 lw 535 898 m20 [] 0 sd 3 lw [] 0 sd 3 lw 544 920 m 1 Y s [] 0 sd 3 lw 544 921 m s [] 0 sd 3 lw 540 921 m 4 X s [] 0 sd 3 lw 544 921 m 5 X s [] 0 sd 3 lw 544 921 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 553 944 m s [] 0 sd 3 lw 553 944 m 1 Y s [] 0 sd 3 lw 549 944 m 4 X s [] 0 sd 3 lw 553 944 m 5 X s [] 0 sd 3 lw 553 944 m20 [] 0 sd 3 lw [] 0 sd 3 lw 562 967 m s [] 0 sd 3 lw 562 967 m 1 Y s [] 0 sd 3 lw 558 967 m 4 X s [] 0 sd 3 lw 562
+ 967 m 5 X s [] 0 sd 3 lw 562 967 m20 [] 0 sd 3 lw [] 0 sd 3 lw 571 989 m 1 Y s [] 0 sd 3 lw 571 990 m s [] 0 sd 3 lw 567 990 m 4 X s [] 0 sd 3 lw 571 990 m 5 X s [] 0 sd 3 lw 571 990 m20 [] 0 sd 3 lw [] 0 sd 3 lw 581 1012 m 1 Y s [] 0 sd 3 lw 581
+ 1013 m s [] 0 sd 3 lw 576 1013 m 5 X s [] 0 sd 3 lw 581 1013 m 4 X s [] 0 sd 3 lw 581 1013 m20 [] 0 sd 3 lw [] 0 sd 3 lw 590 1033 m s [] 0 sd 3 lw 590 1033 m 1 Y s [] 0 sd 3 lw 585 1033 m 5 X s [] 0 sd 3 lw 590 1033 m 4 X s [] 0 sd 3 lw 590 1033 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 599 1051 m s [] 0 sd 3 lw 599 1051 m 1 Y s [] 0 sd 3 lw 594 1051 m 5 X s [] 0 sd 3 lw 599 1051 m 4 X s [] 0 sd 3 lw 599 1051 m20 [] 0 sd 3 lw [] 0 sd 3 lw 608 1067 m s [] 0 sd 3 lw 608 1067 m 1 Y s [] 0 sd 3 lw 603 1067 m 5
+ X s [] 0 sd 3 lw 608 1067 m 4 X s [] 0 sd 3 lw 608 1067 m20 [] 0 sd 3 lw [] 0 sd 3 lw 617 1081 m 1 Y s [] 0 sd 3 lw 617 1082 m s [] 0 sd 3 lw 612 1082 m 5 X s [] 0 sd 3 lw 617 1082 m 4 X s [] 0 sd 3 lw 617 1082 m20 [] 0 sd 3 lw [] 0 sd 3 lw 626 1092
+ m s [] 0 sd 3 lw 626 1092 m 1 Y s [] 0 sd 3 lw 621 1092 m 5 X s [] 0 sd 3 lw 626 1092 m 4 X s [] 0 sd 3 lw 626 1092 m20 [] 0 sd 3 lw [] 0 sd 3 lw 635 1101 m s [] 0 sd 3 lw 635 1101 m s [] 0 sd 3 lw 630 1101 m 5 X s [] 0 sd 3 lw 635 1101 m 4 X s
+ [] 0 sd 3 lw 635 1101 m20 [] 0 sd 3 lw [] 0 sd 3 lw 644 1107 m s [] 0 sd 3 lw 644 1107 m s [] 0 sd 3 lw 639 1107 m 5 X s [] 0 sd 3 lw 644 1107 m 5 X s [] 0 sd 3 lw 644 1107 m20 [] 0 sd 3 lw [] 0 sd 3 lw 653 1112 m s [] 0 sd 3 lw 653 1112 m s [] 0 sd
+ 3 lw 649 1112 m 4 X s [] 0 sd 3 lw 653 1112 m 5 X s [] 0 sd 3 lw 653 1112 m20 [] 0 sd 3 lw [] 0 sd 3 lw 662 1117 m s [] 0 sd 3 lw 662 1117 m s [] 0 sd 3 lw 658 1117 m 4 X s [] 0 sd 3 lw 662 1117 m 5 X s [] 0 sd 3 lw 662 1117 m20 [] 0 sd 3 lw [] 0 sd
+ 3 lw 671 1079 m s [] 0 sd 3 lw 671 1079 m s [] 0 sd 3 lw 667 1079 m 4 X s [] 0 sd 3 lw 671 1079 m 5 X s [] 0 sd 3 lw 671 1079 m20 [] 0 sd 3 lw [] 0 sd 3 lw 680 1056 m s [] 0 sd 3 lw 680 1056 m 1 Y s [] 0 sd 3 lw 676 1056 m 4 X s [] 0 sd 3 lw 680
+ 1056 m 5 X s [] 0 sd 3 lw 680 1056 m20 [] 0 sd 3 lw [] 0 sd 3 lw 689 1053 m s [] 0 sd 3 lw 689 1053 m 1 Y s [] 0 sd 3 lw 685 1053 m 4 X s [] 0 sd 3 lw 689 1053 m 5 X s [] 0 sd 3 lw 689 1053 m20 [] 0 sd 3 lw [] 0 sd 3 lw 698 1047 m s [] 0 sd 3 lw 698
+ 1047 m s [] 0 sd 3 lw 694 1047 m 4 X s [] 0 sd 3 lw 698 1047 m 5 X s [] 0 sd 3 lw 698 1047 m20 [] 0 sd 3 lw [] 0 sd 3 lw 708 1038 m s [] 0 sd 3 lw 708 1038 m s [] 0 sd 3 lw 703 1038 m 5 X s [] 0 sd 3 lw 708 1038 m 4 X s [] 0 sd 3 lw 708 1038 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 717 1027 m 1 Y s [] 0 sd 3 lw 717 1028 m s [] 0 sd 3 lw 712 1028 m 5 X s [] 0 sd 3 lw 717 1028 m 4 X s [] 0 sd 3 lw 717 1028 m20 [] 0 sd 3 lw [] 0 sd 3 lw 726 1017 m s [] 0 sd 3 lw 726 1017 m 1 Y s [] 0 sd 3 lw 721 1017 m 5
+ X s [] 0 sd 3 lw 726 1017 m 4 X s [] 0 sd 3 lw 726 1017 m20 [] 0 sd 3 lw [] 0 sd 3 lw 735 1006 m s [] 0 sd 3 lw 735 1006 m 1 Y s [] 0 sd 3 lw 730 1006 m 5 X s [] 0 sd 3 lw 735 1006 m 4 X s [] 0 sd 3 lw 735 1006 m20 [] 0 sd 3 lw [] 0 sd 3 lw 744 994
+ m 1 Y s [] 0 sd 3 lw 744 995 m s [] 0 sd 3 lw 739 995 m 5 X s [] 0 sd 3 lw 744 995 m 4 X s [] 0 sd 3 lw 744 995 m20 [] 0 sd 3 lw [] 0 sd 3 lw 753 983 m 1 Y s [] 0 sd 3 lw 753 984 m s [] 0 sd 3 lw 748 984 m 5 X s [] 0 sd 3 lw 753 984 m 4 X s [] 0 sd
+ 3 lw 753 984 m20 [] 0 sd 3 lw [] 0 sd 3 lw 762 973 m 1 Y s [] 0 sd 3 lw 762 974 m s [] 0 sd 3 lw 757 974 m 5 X s [] 0 sd 3 lw 762 974 m 4 X s [] 0 sd 3 lw 762 974 m20 [] 0 sd 3 lw [] 0 sd 3 lw 771 962 m 1 Y s [] 0 sd 3 lw 771 963 m s [] 0 sd 3 lw
+ 766 963 m 5 X s [] 0 sd 3 lw 771 963 m 5 X s [] 0 sd 3 lw 771 963 m20 [] 0 sd 3 lw [] 0 sd 3 lw 780 954 m s [] 0 sd 3 lw 780 954 m 1 Y s [] 0 sd 3 lw 776 954 m 4 X s [] 0 sd 3 lw 780 954 m 5 X s [] 0 sd 3 lw 780 954 m20 [] 0 sd 3 lw [] 0 sd 3 lw 789
+ 945 m 1 Y s [] 0 sd 3 lw 789 946 m s [] 0 sd 3 lw 785 946 m 4 X s [] 0 sd 3 lw 789 946 m 5 X s [] 0 sd 3 lw 789 946 m20 [] 0 sd 3 lw [] 0 sd 3 lw 798 937 m 1 Y s [] 0 sd 3 lw 798 938 m s [] 0 sd 3 lw 794 938 m 4 X s [] 0 sd 3 lw 798 938 m 5 X s
+ [] 0 sd 3 lw 798 938 m20 [] 0 sd 3 lw [] 0 sd 3 lw 807 930 m 1 Y s [] 0 sd 3 lw 807 931 m s [] 0 sd 3 lw 803 931 m 4 X s [] 0 sd 3 lw 807 931 m 5 X s [] 0 sd 3 lw 807 931 m20 [] 0 sd 3 lw [] 0 sd 3 lw 816 922 m 1 Y s [] 0 sd 3 lw 816 923 m s [] 0 sd
+ 3 lw 812 923 m 4 X s [] 0 sd 3 lw 816 923 m 5 X s [] 0 sd 3 lw 816 923 m20 [] 0 sd 3 lw [] 0 sd 3 lw 825 917 m s [] 0 sd 3 lw 825 917 m 1 Y s [] 0 sd 3 lw 821 917 m 4 X s [] 0 sd 3 lw 825 917 m 5 X s [] 0 sd 3 lw 825 917 m20 [] 0 sd 3 lw [] 0 sd 3
+ lw 835 911 m 1 Y s [] 0 sd 3 lw 835 912 m s [] 0 sd 3 lw 830 912 m 5 X s [] 0 sd 3 lw 835 912 m 4 X s [] 0 sd 3 lw 835 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 844 907 m 1 Y s [] 0 sd 3 lw 844 908 m s [] 0 sd 3 lw 839 908 m 5 X s [] 0 sd 3 lw 844 908 m 4 X
+ s [] 0 sd 3 lw 844 908 m20 [] 0 sd 3 lw [] 0 sd 3 lw 853 903 m s [] 0 sd 3 lw 853 903 m 1 Y s [] 0 sd 3 lw 848 903 m 5 X s [] 0 sd 3 lw 853 903 m 4 X s [] 0 sd 3 lw 853 903 m20 [] 0 sd 3 lw [] 0 sd 3 lw 862 899 m s [] 0 sd 3 lw 862 899 m 1 Y s
+ [] 0 sd 3 lw 857 899 m 5 X s [] 0 sd 3 lw 862 899 m 4 X s [] 0 sd 3 lw 862 899 m20 [] 0 sd 3 lw [] 0 sd 3 lw 871 898 m 1 Y s [] 0 sd 3 lw 871 899 m s [] 0 sd 3 lw 866 899 m 5 X s [] 0 sd 3 lw 871 899 m 4 X s [] 0 sd 3 lw 871 899 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 880 896 m 1 Y s [] 0 sd 3 lw 880 897 m 1 Y s [] 0 sd 3 lw 875 897 m 5 X s [] 0 sd 3 lw 880 897 m 4 X s [] 0 sd 3 lw 880 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 889 895 m 1 Y s [] 0 sd 3 lw 889 896 m 1 Y s [] 0 sd 3 lw 884 896 m 5 X s [] 0 sd
+ 3 lw 889 896 m 4 X s [] 0 sd 3 lw 889 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 898 895 m 1 Y s [] 0 sd 3 lw 898 896 m 1 Y s [] 0 sd 3 lw 893 896 m 5 X s [] 0 sd 3 lw 898 896 m 5 X s [] 0 sd 3 lw 898 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 907 896 m 1 Y s [] 0 sd
+ 3 lw 907 897 m 1 Y s [] 0 sd 3 lw 903 897 m 4 X s [] 0 sd 3 lw 907 897 m 5 X s [] 0 sd 3 lw 907 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 916 898 m 1 Y s [] 0 sd 3 lw 916 899 m s [] 0 sd 3 lw 912 899 m 4 X s [] 0 sd 3 lw 916 899 m 5 X s [] 0 sd 3 lw 916 899
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 925 901 m s [] 0 sd 3 lw 925 901 m 1 Y s [] 0 sd 3 lw 921 901 m 4 X s [] 0 sd 3 lw 925 901 m 5 X s [] 0 sd 3 lw 925 901 m20 [] 0 sd 3 lw [] 0 sd 3 lw 934 906 m s [] 0 sd 3 lw 934 906 m 1 Y s [] 0 sd 3 lw 930 906 m 4 X s
+ [] 0 sd 3 lw 934 906 m 5 X s [] 0 sd 3 lw 934 906 m20 [] 0 sd 3 lw [] 0 sd 3 lw 943 912 m s [] 0 sd 3 lw 943 912 m 1 Y s [] 0 sd 3 lw 939 912 m 4 X s [] 0 sd 3 lw 943 912 m 5 X s [] 0 sd 3 lw 943 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 952 920 m 1 Y s
+ [] 0 sd 3 lw 952 921 m s [] 0 sd 3 lw 948 921 m 4 X s [] 0 sd 3 lw 952 921 m 5 X s [] 0 sd 3 lw 952 921 m20 [] 0 sd 3 lw [] 0 sd 3 lw 962 927 m s [] 0 sd 3 lw 962 927 m 1 Y s [] 0 sd 3 lw 957 927 m 5 X s [] 0 sd 3 lw 962 927 m 4 X s [] 0 sd 3 lw 962
+ 927 m20 [] 0 sd 3 lw [] 0 sd 3 lw 971 938 m 1 Y s [] 0 sd 3 lw 971 939 m s [] 0 sd 3 lw 966 939 m 5 X s [] 0 sd 3 lw 971 939 m 4 X s [] 0 sd 3 lw 971 939 m20 [] 0 sd 3 lw [] 0 sd 3 lw 980 951 m 1 Y s [] 0 sd 3 lw 980 952 m s [] 0 sd 3 lw 975 952 m 5
+ X s [] 0 sd 3 lw 980 952 m 4 X s [] 0 sd 3 lw 980 952 m20 [] 0 sd 3 lw [] 0 sd 3 lw 989 967 m s [] 0 sd 3 lw 989 967 m 1 Y s [] 0 sd 3 lw 984 967 m 5 X s [] 0 sd 3 lw 989 967 m 4 X s [] 0 sd 3 lw 989 967 m20 [] 0 sd 3 lw [] 0 sd 3 lw 998 988 m s
+ [] 0 sd 3 lw 998 988 m 1 Y s [] 0 sd 3 lw 993 988 m 5 X s [] 0 sd 3 lw 998 988 m 4 X s [] 0 sd 3 lw 998 988 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1007 1011 m 1 Y s [] 0 sd 3 lw 1007 1012 m s [] 0 sd 3 lw 1002 1012 m 5 X s [] 0 sd 3 lw 1007 1012 m 4 X s
+ [] 0 sd 3 lw 1007 1012 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1016 1043 m 1 Y s [] 0 sd 3 lw 1016 1044 m s [] 0 sd 3 lw 1011 1044 m 5 X s [] 0 sd 3 lw 1016 1044 m 4 X s [] 0 sd 3 lw 1016 1044 m20 [] 0 sd 3 lw 1 0 1 c [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw
+ 290 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 299 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 308 138 m 4 Y s [] 0 sd 3 lw black 308 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 317 223 m 4 Y s [] 0 sd 3 lw 317 227 m 4 Y s [] 0 sd 3 lw black 317 227 m20 [] 0 sd
+ 3 lw [] 0 sd 3 lw 1 0 1 c 327 282 m 3 Y s [] 0 sd 3 lw 327 285 m 3 Y s [] 0 sd 3 lw black 327 285 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 336 332 m 3 Y s [] 0 sd 3 lw 336 335 m 3 Y s [] 0 sd 3 lw black 336 335 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 345
+ 372 m 3 Y s [] 0 sd 3 lw 345 375 m 2 Y s [] 0 sd 3 lw black 345 375 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 354 408 m 3 Y s [] 0 sd 3 lw 354 411 m 2 Y s [] 0 sd 3 lw black 354 411 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 363 442 m 2 Y s [] 0 sd 3 lw 363
+ 444 m 3 Y s [] 0 sd 3 lw black 363 444 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 372 469 m 2 Y s [] 0 sd 3 lw 372 471 m 2 Y s [] 0 sd 3 lw black 372 471 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 381 497 m 2 Y s [] 0 sd 3 lw 381 499 m 2 Y s [] 0 sd 3 lw
+ black 381 499 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 390 525 m 2 Y s [] 0 sd 3 lw 390 527 m 2 Y s [] 0 sd 3 lw black 390 527 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 399 548 m 1 Y s [] 0 sd 3 lw 399 549 m 2 Y s [] 0 sd 3 lw black 399 549 m20 [] 0 sd 3
+ lw [] 0 sd 3 lw 1 0 1 c 408 572 m 2 Y s [] 0 sd 3 lw 408 574 m 1 Y s [] 0 sd 3 lw black 408 574 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 417 595 m 1 Y s [] 0 sd 3 lw 417 596 m 2 Y s [] 0 sd 3 lw black 417 596 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 426
+ 618 m 1 Y s [] 0 sd 3 lw 426 619 m 2 Y s [] 0 sd 3 lw black 426 619 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 435 642 m 1 Y s [] 0 sd 3 lw 435 643 m 1 Y s [] 0 sd 3 lw black 435 643 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 444 663 m 1 Y s [] 0 sd 3 lw 444
+ 664 m 1 Y s [] 0 sd 3 lw black 444 664 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 454 685 m 2 Y s [] 0 sd 3 lw 454 687 m 1 Y s [] 0 sd 3 lw black 454 687 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 463 708 m 1 Y s [] 0 sd 3 lw 463 709 m 1 Y s [] 0 sd 3 lw
+ black 463 709 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 472 730 m 1 Y s [] 0 sd 3 lw 472 731 m 1 Y s [] 0 sd 3 lw black 472 731 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 481 752 m 1 Y s [] 0 sd 3 lw 481 753 m 1 Y s [] 0 sd 3 lw black 481 753 m20 [] 0 sd 3
+ lw [] 0 sd 3 lw 1 0 1 c 490 775 m 1 Y s [] 0 sd 3 lw 490 776 m 1 Y s [] 0 sd 3 lw black 490 776 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 499 801 m 1 Y s [] 0 sd 3 lw 499 802 m 1 Y s [] 0 sd 3 lw black 499 802 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 508
+ 823 m 1 Y s [] 0 sd 3 lw 508 824 m 1 Y s [] 0 sd 3 lw black 508 824 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 517 848 m 1 Y s [] 0 sd 3 lw 517 849 m s [] 0 sd 3 lw black 517 849 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 526 872 m s [] 0 sd 3 lw 526 872 m 1
+ Y s [] 0 sd 3 lw black 526 872 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 535 897 m 1 Y s [] 0 sd 3 lw 535 898 m s [] 0 sd 3 lw black 535 898 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 544 921 m 1 Y s [] 0 sd 3 lw 544 922 m 1 Y s [] 0 sd 3 lw black 544 922
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 553 944 m s [] 0 sd 3 lw 553 944 m 1 Y s [] 0 sd 3 lw black 553 944 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 562 969 m s [] 0 sd 3 lw 562 969 m 1 Y s [] 0 sd 3 lw black 562 969 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c
+ 571 991 m s [] 0 sd 3 lw 571 991 m 1 Y s [] 0 sd 3 lw black 571 991 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 581 1013 m 1 Y s [] 0 sd 3 lw 581 1014 m s [] 0 sd 3 lw black 581 1014 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 590 1035 m s [] 0 sd 3 lw 590 1035
+ m 1 Y s [] 0 sd 3 lw black 590 1035 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 599 1053 m s [] 0 sd 3 lw 599 1053 m 1 Y s [] 0 sd 3 lw black 599 1053 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 608 1069 m 1 Y s [] 0 sd 3 lw 608 1070 m s [] 0 sd 3 lw black 608
+ 1070 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 617 1083 m 1 Y s [] 0 sd 3 lw 617 1084 m s [] 0 sd 3 lw black 617 1084 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 626 1095 m 1 Y s [] 0 sd 3 lw 626 1096 m s [] 0 sd 3 lw black 626 1096 m20 [] 0 sd 3 lw [] 0 sd 3
+ lw 1 0 1 c 635 1104 m s [] 0 sd 3 lw 635 1104 m 1 Y s [] 0 sd 3 lw black 635 1104 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 644 1110 m s [] 0 sd 3 lw 644 1110 m s [] 0 sd 3 lw black 644 1110 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 653 1116 m 1 Y s [] 0 sd
+ 3 lw 653 1117 m s [] 0 sd 3 lw black 653 1117 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 662 1120 m s [] 0 sd 3 lw 662 1120 m 1 Y s [] 0 sd 3 lw black 662 1120 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 671 1083 m s [] 0 sd 3 lw 671 1083 m 1 Y s [] 0 sd 3 lw
+ black 671 1083 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 680 1060 m 1 Y s [] 0 sd 3 lw 680 1061 m s [] 0 sd 3 lw black 680 1061 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 689 1058 m 1 Y s [] 0 sd 3 lw 689 1059 m s [] 0 sd 3 lw black 689 1059 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 1 c 698 1051 m 1 Y s [] 0 sd 3 lw 698 1052 m s [] 0 sd 3 lw black 698 1052 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 708 1041 m 1 Y s [] 0 sd 3 lw 708 1042 m s [] 0 sd 3 lw black 708 1042 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 717 1033 m
+ 1 Y s [] 0 sd 3 lw 717 1034 m s [] 0 sd 3 lw black 717 1034 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 726 1022 m 1 Y s [] 0 sd 3 lw 726 1023 m s [] 0 sd 3 lw black 726 1023 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 735 1011 m 1 Y s [] 0 sd 3 lw 735 1012 m s
+ [] 0 sd 3 lw black 735 1012 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 744 1002 m s [] 0 sd 3 lw 744 1002 m 1 Y s [] 0 sd 3 lw black 744 1002 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 753 991 m 1 Y s [] 0 sd 3 lw 753 992 m s [] 0 sd 3 lw black 753 992 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 762 981 m s [] 0 sd 3 lw 762 981 m 1 Y s [] 0 sd 3 lw black 762 981 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 771 970 m 1 Y s [] 0 sd 3 lw 771 971 m 1 Y s [] 0 sd 3 lw black 771 971 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c
+ 780 963 m 1 Y s [] 0 sd 3 lw 780 964 m 1 Y s [] 0 sd 3 lw black 780 964 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 789 954 m 1 Y s [] 0 sd 3 lw 789 955 m 1 Y s [] 0 sd 3 lw black 789 955 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 798 946 m s [] 0 sd 3 lw 798
+ 946 m 1 Y s [] 0 sd 3 lw black 798 946 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 807 940 m s [] 0 sd 3 lw 807 940 m 1 Y s [] 0 sd 3 lw black 807 940 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 816 934 m 1 Y s [] 0 sd 3 lw 816 935 m s [] 0 sd 3 lw black 816
+ 935 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 825 927 m s [] 0 sd 3 lw 825 927 m 1 Y s [] 0 sd 3 lw black 825 927 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 835 922 m 1 Y s [] 0 sd 3 lw 835 923 m s [] 0 sd 3 lw black 835 923 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0
+ 1 c 844 918 m s [] 0 sd 3 lw 844 918 m 1 Y s [] 0 sd 3 lw black 844 918 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 853 915 m s [] 0 sd 3 lw 853 915 m 1 Y s [] 0 sd 3 lw black 853 915 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 862 913 m 1 Y s [] 0 sd 3 lw 862
+ 914 m s [] 0 sd 3 lw black 862 914 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 871 911 m 1 Y s [] 0 sd 3 lw 871 912 m 1 Y s [] 0 sd 3 lw black 871 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 880 910 m 1 Y s [] 0 sd 3 lw 880 911 m 1 Y s [] 0 sd 3 lw black
+ 880 911 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 889 909 m 1 Y s [] 0 sd 3 lw 889 910 m 1 Y s [] 0 sd 3 lw black 889 910 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 898 911 m 1 Y s [] 0 sd 3 lw 898 912 m 1 Y s [] 0 sd 3 lw black 898 912 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 1 c 907 912 m 1 Y s [] 0 sd 3 lw 907 913 m 1 Y s [] 0 sd 3 lw black 907 913 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 916 916 m 1 Y s [] 0 sd 3 lw 916 917 m s [] 0 sd 3 lw black 916 917 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 925 921 m s
+ [] 0 sd 3 lw 925 921 m 1 Y s [] 0 sd 3 lw black 925 921 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 934 926 m s [] 0 sd 3 lw 934 926 m 1 Y s [] 0 sd 3 lw black 934 926 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 943 932 m 1 Y s [] 0 sd 3 lw 943 933 m s [] 0 sd
+ 3 lw black 943 933 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 952 940 m s [] 0 sd 3 lw 952 940 m 1 Y s [] 0 sd 3 lw black 952 940 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 962 952 m 1 Y s [] 0 sd 3 lw 962 953 m s [] 0 sd 3 lw black 962 953 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 1 c 971 962 m 1 Y s [] 0 sd 3 lw 971 963 m 1 Y s [] 0 sd 3 lw black 971 963 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 980 978 m s [] 0 sd 3 lw 980 978 m 1 Y s [] 0 sd 3 lw black 980 978 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 989 995 m 1
+ Y s [] 0 sd 3 lw 989 996 m s [] 0 sd 3 lw black 989 996 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 998 1016 m 1 Y s [] 0 sd 3 lw 998 1017 m s [] 0 sd 3 lw black 998 1017 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 1007 1042 m s [] 0 sd 3 lw 1007 1042 m 1 Y s
+ [] 0 sd 3 lw black 1007 1042 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 1 c 1016 1076 m s [] 0 sd 3 lw 1016 1076 m 1 Y s [] 0 sd 3 lw black 1016 1076 m20 [] 0 sd 3 lw 1 0 1 c [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 1 0 1 c 113 138 m 200 X 89 Y 9 X 58 Y 9 X
+ 50 Y 9 X 40 Y 9 X 36 Y 9 X 33 Y 9 X 27 Y 9 X 28 Y 10 X 28 Y 9 X 22 Y 9 X 25 Y 9 X 22 Y 9 X 23 Y 9 X 24 Y 9 X 21 Y 9 X 23 Y 9 X 22 Y 9 X 22 Y 9 X 22 Y 9 X 23 Y 9 X 26 Y 9 X 22 Y 10 X 25 Y 9 X 23 Y 9 X 26 Y 9 X 24 Y 9 X 22 Y 9 X 25 Y 9 X 22 Y 9 X 23 Y
+ 9 X 21 Y 9 X 18 Y 9 X 17 Y 9 X 14 Y 9 X 12 Y 9 X 8 Y 9 X 6 Y 10 X 7 Y 9 X 3 Y 9 X -37 Y 9 X -22 Y 9 X -2 Y 9 X -7 Y 9 X -10 Y 9 X -8 Y 9 X -11 Y 9 X -11 Y 9 X -10 Y 9 X -10 Y 9 X -11 Y 9 X -10 Y 10 X -7 Y 9 X -9 Y 9 X -9 Y 9 X -6 Y 9 X -5 Y 9 X -8 Y
+ 9 X -4 Y 9 X -5 Y 9 X -3 Y 9 X -1 Y 9 X -2 Y 9 X -1 Y 9 X -1 Y 9 X 2 Y 10 X 1 Y 9 X 4 Y 9 X 4 Y 9 X 5 Y 9 X 7 Y 9 X 7 Y 9 X 13 Y 9 X 10 Y 9 X 15 Y 9 X 18 Y 9 X 21 Y 9 X 25 Y 9 X 34 Y 9 X s 1 0 0 c [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 190 138 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 200 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 209 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 218 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 227 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 236 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 245 138 m20 [] 0 sd 3 lw [] 0 sd
+ 3 lw 254 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 263 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 272 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 281 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 290 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 299 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 308 180
+ m 5 Y s [] 0 sd 3 lw 308 185 m 4 Y s [] 0 sd 3 lw black 308 185 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 317 257 m 4 Y s [] 0 sd 3 lw 317 261 m 3 Y s [] 0 sd 3 lw black 317 261 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 327 310 m 3 Y s [] 0 sd 3 lw 327 313
+ m 3 Y s [] 0 sd 3 lw black 327 313 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 336 357 m 3 Y s [] 0 sd 3 lw 336 360 m 2 Y s [] 0 sd 3 lw black 336 360 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 345 394 m 3 Y s [] 0 sd 3 lw 345 397 m 2 Y s [] 0 sd 3 lw black
+ 345 397 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 354 426 m 2 Y s [] 0 sd 3 lw 354 428 m 2 Y s [] 0 sd 3 lw black 354 428 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 363 455 m 2 Y s [] 0 sd 3 lw 363 457 m 2 Y s [] 0 sd 3 lw black 363 457 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 0 c 372 484 m 2 Y s [] 0 sd 3 lw 372 486 m 1 Y s [] 0 sd 3 lw black 372 486 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 381 511 m 1 Y s [] 0 sd 3 lw 381 512 m 2 Y s [] 0 sd 3 lw black 381 512 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 390 531
+ m 2 Y s [] 0 sd 3 lw 390 533 m 2 Y s [] 0 sd 3 lw black 390 533 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 399 557 m 1 Y s [] 0 sd 3 lw 399 558 m 2 Y s [] 0 sd 3 lw black 399 558 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 408 579 m 2 Y s [] 0 sd 3 lw 408 581
+ m 1 Y s [] 0 sd 3 lw black 408 581 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 417 601 m 2 Y s [] 0 sd 3 lw 417 603 m 1 Y s [] 0 sd 3 lw black 417 603 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 426 625 m 1 Y s [] 0 sd 3 lw 426 626 m 1 Y s [] 0 sd 3 lw black
+ 426 626 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 435 649 m 1 Y s [] 0 sd 3 lw 435 650 m 1 Y s [] 0 sd 3 lw black 435 650 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 444 672 m 1 Y s [] 0 sd 3 lw 444 673 m 1 Y s [] 0 sd 3 lw black 444 673 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 0 c 454 694 m 1 Y s [] 0 sd 3 lw 454 695 m 1 Y s [] 0 sd 3 lw black 454 695 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 463 715 m 1 Y s [] 0 sd 3 lw 463 716 m 1 Y s [] 0 sd 3 lw black 463 716 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 472 737
+ m 1 Y s [] 0 sd 3 lw 472 738 m 1 Y s [] 0 sd 3 lw black 472 738 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 481 759 m 1 Y s [] 0 sd 3 lw 481 760 m s [] 0 sd 3 lw black 481 760 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 490 783 m 1 Y s [] 0 sd 3 lw 490 784 m 1
+ Y s [] 0 sd 3 lw black 490 784 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 499 804 m 1 Y s [] 0 sd 3 lw 499 805 m 1 Y s [] 0 sd 3 lw black 499 805 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 508 829 m 1 Y s [] 0 sd 3 lw 508 830 m 1 Y s [] 0 sd 3 lw black 508
+ 830 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 517 853 m s [] 0 sd 3 lw 517 853 m 1 Y s [] 0 sd 3 lw black 517 853 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 526 874 m 1 Y s [] 0 sd 3 lw 526 875 m 1 Y s [] 0 sd 3 lw black 526 875 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 1 0 0 c 535 900 m 1 Y s [] 0 sd 3 lw 535 901 m s [] 0 sd 3 lw black 535 901 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 544 922 m 1 Y s [] 0 sd 3 lw 544 923 m 1 Y s [] 0 sd 3 lw black 544 923 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 553 946 m 1 Y s [] 0 sd 3
+ lw 553 947 m s [] 0 sd 3 lw black 553 947 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 562 970 m 1 Y s [] 0 sd 3 lw 562 971 m s [] 0 sd 3 lw black 562 971 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 571 993 m 1 Y s [] 0 sd 3 lw 571 994 m s [] 0 sd 3 lw black 571
+ 994 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 581 1014 m 1 Y s [] 0 sd 3 lw 581 1015 m s [] 0 sd 3 lw black 581 1015 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 590 1036 m 1 Y s [] 0 sd 3 lw 590 1037 m s [] 0 sd 3 lw black 590 1037 m20 [] 0 sd 3 lw [] 0 sd 3
+ lw 1 0 0 c 599 1054 m 1 Y s [] 0 sd 3 lw 599 1055 m s [] 0 sd 3 lw black 599 1055 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 608 1070 m s [] 0 sd 3 lw 608 1070 m 1 Y s [] 0 sd 3 lw black 608 1070 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 617 1084 m s [] 0 sd
+ 3 lw 617 1084 m 1 Y s [] 0 sd 3 lw black 617 1084 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 626 1096 m s [] 0 sd 3 lw 626 1096 m s [] 0 sd 3 lw black 626 1096 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 635 1103 m s [] 0 sd 3 lw 635 1103 m 1 Y s [] 0 sd 3 lw
+ black 635 1103 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 644 1109 m 1 Y s [] 0 sd 3 lw 644 1110 m s [] 0 sd 3 lw black 644 1110 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 653 1115 m s [] 0 sd 3 lw 653 1115 m 1 Y s [] 0 sd 3 lw black 653 1115 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 0 c 662 1118 m 1 Y s [] 0 sd 3 lw 662 1119 m s [] 0 sd 3 lw black 662 1119 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 671 1081 m 1 Y s [] 0 sd 3 lw 671 1082 m s [] 0 sd 3 lw black 671 1082 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 680 1057 m
+ s [] 0 sd 3 lw 680 1057 m 1 Y s [] 0 sd 3 lw black 680 1057 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 689 1055 m s [] 0 sd 3 lw 689 1055 m 1 Y s [] 0 sd 3 lw black 689 1055 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 698 1049 m 1 Y s [] 0 sd 3 lw 698 1050 m s
+ [] 0 sd 3 lw black 698 1050 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 708 1039 m 1 Y s [] 0 sd 3 lw 708 1040 m s [] 0 sd 3 lw black 708 1040 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 717 1030 m s [] 0 sd 3 lw 717 1030 m 1 Y s [] 0 sd 3 lw black 717 1030 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 726 1018 m s [] 0 sd 3 lw 726 1018 m 1 Y s [] 0 sd 3 lw black 726 1018 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 735 1006 m s [] 0 sd 3 lw 735 1006 m 1 Y s [] 0 sd 3 lw black 735 1006 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0
+ c 744 996 m s [] 0 sd 3 lw 744 996 m 1 Y s [] 0 sd 3 lw black 744 996 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 753 986 m s [] 0 sd 3 lw 753 986 m 1 Y s [] 0 sd 3 lw black 753 986 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 762 975 m 1 Y s [] 0 sd 3 lw 762
+ 976 m s [] 0 sd 3 lw black 762 976 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 771 965 m s [] 0 sd 3 lw 771 965 m 1 Y s [] 0 sd 3 lw black 771 965 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 780 955 m s [] 0 sd 3 lw 780 955 m 1 Y s [] 0 sd 3 lw black 780 955
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 789 946 m s [] 0 sd 3 lw 789 946 m 1 Y s [] 0 sd 3 lw black 789 946 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 798 938 m 1 Y s [] 0 sd 3 lw 798 939 m 1 Y s [] 0 sd 3 lw black 798 939 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0
+ 0 c 807 931 m s [] 0 sd 3 lw 807 931 m 1 Y s [] 0 sd 3 lw black 807 931 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 816 925 m s [] 0 sd 3 lw 816 925 m 1 Y s [] 0 sd 3 lw black 816 925 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 825 917 m 1 Y s [] 0 sd 3 lw 825
+ 918 m s [] 0 sd 3 lw black 825 918 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 835 912 m 1 Y s [] 0 sd 3 lw 835 913 m s [] 0 sd 3 lw black 835 913 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 844 907 m 1 Y s [] 0 sd 3 lw 844 908 m s [] 0 sd 3 lw black 844 908
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 853 904 m 1 Y s [] 0 sd 3 lw 853 905 m s [] 0 sd 3 lw black 853 905 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 862 900 m 1 Y s [] 0 sd 3 lw 862 901 m 1 Y s [] 0 sd 3 lw black 862 901 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0
+ 0 c 871 898 m 1 Y s [] 0 sd 3 lw 871 899 m s [] 0 sd 3 lw black 871 899 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 880 896 m 1 Y s [] 0 sd 3 lw 880 897 m 1 Y s [] 0 sd 3 lw black 880 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 889 895 m 1 Y s [] 0 sd 3 lw
+ 889 896 m s [] 0 sd 3 lw black 889 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 898 896 m 1 Y s [] 0 sd 3 lw 898 897 m s [] 0 sd 3 lw black 898 897 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 907 897 m 1 Y s [] 0 sd 3 lw 907 898 m 1 Y s [] 0 sd 3 lw black
+ 907 898 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 916 899 m 1 Y s [] 0 sd 3 lw 916 900 m s [] 0 sd 3 lw black 916 900 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 925 902 m 1 Y s [] 0 sd 3 lw 925 903 m 1 Y s [] 0 sd 3 lw black 925 903 m20 [] 0 sd 3 lw [] 0 sd
+ 3 lw 1 0 0 c 934 907 m s [] 0 sd 3 lw 934 907 m 1 Y s [] 0 sd 3 lw black 934 907 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 943 911 m 1 Y s [] 0 sd 3 lw 943 912 m 1 Y s [] 0 sd 3 lw black 943 912 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 952 917 m 1 Y s
+ [] 0 sd 3 lw 952 918 m 1 Y s [] 0 sd 3 lw black 952 918 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 962 928 m s [] 0 sd 3 lw 962 928 m 1 Y s [] 0 sd 3 lw black 962 928 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 971 938 m s [] 0 sd 3 lw 971 938 m 1 Y s [] 0 sd
+ 3 lw black 971 938 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 980 950 m 1 Y s [] 0 sd 3 lw 980 951 m s [] 0 sd 3 lw black 980 951 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 989 965 m 1 Y s [] 0 sd 3 lw 989 966 m s [] 0 sd 3 lw black 989 966 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1 0 0 c 998 985 m s [] 0 sd 3 lw 998 985 m 1 Y s [] 0 sd 3 lw black 998 985 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 1007 1010 m s [] 0 sd 3 lw 1007 1010 m 1 Y s [] 0 sd 3 lw black 1007 1010 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 0 0 c 1016 1040
+ m s [] 0 sd 3 lw 1016 1040 m s [] 0 sd 3 lw black 1016 1040 m20 [] 0 sd 3 lw 1 0 0 c [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 1 0 0 c 113 138 m 191 X 47 Y 9 X 76 Y 9 X 52 Y 9 X 47 Y 9 X 37 Y 9 X 31 Y 9 X 29 Y 9 X 29 Y 9 X 26 Y 10 X 21 Y 9 X 25 Y 9 X
+ 23 Y 9 X 22 Y 9 X 23 Y 9 X 24 Y 9 X 23 Y 9 X 22 Y 9 X 21 Y 9 X 22 Y 9 X 22 Y 9 X 24 Y 9 X 21 Y 9 X 25 Y 10 X 23 Y 9 X 22 Y 9 X 26 Y 9 X 22 Y 9 X 24 Y 9 X 24 Y 9 X 23 Y 9 X 21 Y 9 X 22 Y 9 X 18 Y 9 X 15 Y 9 X 14 Y 9 X 12 Y 9 X 7 Y 9 X 7 Y 10 X 5 Y 9
+ X 4 Y 9 X -37 Y 9 X -25 Y 9 X -2 Y 9 X -5 Y 9 X -10 Y 9 X -10 Y 9 X -12 Y 9 X -12 Y 9 X -10 Y 9 X -10 Y 9 X -10 Y 9 X -11 Y 10 X -10 Y 9 X -9 Y 9 X -7 Y 9 X -8 Y 9 X -6 Y 9 X -7 Y 9 X -5 Y 9 X -5 Y 9 X -3 Y 9 X -4 Y 9 X -2 Y 9 X -2 Y 9 X -1 Y 9 X 1
+ Y 10 X 1 Y 9 X 2 Y 9 X 3 Y 9 X 4 Y 9 X 5 Y 9 X 6 Y 9 X 10 Y 9 X 10 Y 9 X 13 Y 9 X 15 Y 9 X 19 Y 9 X 25 Y 9 X 30 Y 9 X s black
+ gsave  566 1160
+ t 0 r 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (\(c\)) show  gr 
+ gsave  164 1304
+ t 0 r 0 0 m /Helvetica-Bold findfont 52 sf 0 0 m ( KKMC&PHOKHARA, WITH CUTS) show  gr 
+ gsave  135 1304
+ t 0 r 0 0 m /Symbol findfont 52 sf 0 0 m (p) show  gr 
+ gsave  108 1304
+ t 0 r 0 0 m /Helvetica-Bold findfont 52 sf 0 0 m (2) show  gr 
+ gsave  655 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m (]) show  gr 
+ gsave  637 42
+ t 0 r 0 0 m /Helvetica-Bold findfont 32 sf 0 0 m (2) show  gr 
+ gsave  515 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m ( [GeV) show  gr 
+ gsave  498 39
+ t 0 r 0 0 m /Helvetica-Bold findfont 32 sf 0 0 m (2) show  gr 
+ gsave  461 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m (Q) show  gr  [] 0 sd 3 lw 0.999 0.999 0.999 c 1134 1380 1134 0 bf 1 1 1 c 1134 0 m 2 2 d 1376 Y 1130 X 2 2 d -1134 X -1380 Y f 0.999 0.999 0.999 c 1134 0 m 2 2 d 1130 X 1376 Y 2 2 d -1380 Y -1134 X f
+ black [] 0 sd 3 lw 0.999 0.999 0.999 c 907 1104 1247 138 bf 1 1 1 c 1247 138 m 1 1 d 1102 Y 905 X 1 1 d -907 X -1104 Y f 0.999 0.999 0.999 c 1247 138 m 1 1 d 905 X 1102 Y 1 1 d -1104 Y -907 X f [] 0 sd 3 lw black 1247 138 m 907 X s [] 0 sd 3 lw 2154
+ 138 m 1104 Y s [] 0 sd 3 lw 2154 1242 m -907 X s [] 0 sd 3 lw 1247 1242 m -1104 Y s [] 0 sd 3 lw 0.999 0.999 0.999 c 907 1104 1247 138 bf 1 1 1 c 1247 138 m 1 1 d 1102 Y 905 X 1 1 d -907 X -1104 Y f 0.999 0.999 0.999 c 1247 138 m 1 1 d 905 X 1102 Y
+ 1 1 d -1104 Y -907 X f [] 0 sd 3 lw black 1247 138 m 907 X s [] 0 sd 3 lw 2154 138 m 1104 Y s [] 0 sd 3 lw 2154 1242 m -907 X s [] 0 sd 3 lw 1247 1242 m -1104 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1247 138 m 907 X s [] 0 sd 3 lw [] 0 sd 3 lw 1247 171 m -33
+ Y s [] 0 sd 3 lw [] 0 sd 3 lw 1265 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1284 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1302 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1320 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1338 171 m -33 Y s [] 0 sd 3 lw [] 0 sd
+ 3 lw 1356 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1374 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1392 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1411 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1429 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1447 155 m -17 Y s
+ [] 0 sd 3 lw [] 0 sd 3 lw 1465 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1483 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1501 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1519 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1538 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3
+ lw 1556 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1574 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1592 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1610 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1628 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1646 155 m -17 Y s
+ [] 0 sd 3 lw [] 0 sd 3 lw 1665 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1683 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1701 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1719 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1737 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3
+ lw 1755 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1773 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1791 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1810 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1828 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1846 155 m -17 Y s
+ [] 0 sd 3 lw [] 0 sd 3 lw 1864 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1882 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1900 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1918 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1937 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3
+ lw 1955 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1973 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1991 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2009 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2027 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2045 155 m -17 Y s
+ [] 0 sd 3 lw [] 0 sd 3 lw 2064 171 m -33 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2082 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2100 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2118 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3 lw 2136 155 m -17 Y s [] 0 sd 3 lw [] 0 sd 3
+ lw 2154 171 m -33 Y s
+ /xs 0 def (0) /Helvetica-Bold 40 stwn  gsave  1247 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0) show  gr 
+ /xs 0 def (0.1) /Helvetica-Bold 40 stwn  gsave  1338 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.1) show  gr 
+ /xs 0 def (0.2) /Helvetica-Bold 40 stwn  gsave  1429 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.2) show  gr 
+ /xs 0 def (0.3) /Helvetica-Bold 40 stwn  gsave  1519 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.3) show  gr 
+ /xs 0 def (0.4) /Helvetica-Bold 40 stwn  gsave  1610 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.4) show  gr 
+ /xs 0 def (0.5) /Helvetica-Bold 40 stwn  gsave  1701 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.5) show  gr 
+ /xs 0 def (0.6) /Helvetica-Bold 40 stwn  gsave  1791 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.6) show  gr 
+ /xs 0 def (0.7) /Helvetica-Bold 40 stwn  gsave  1882 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.7) show  gr 
+ /xs 0 def (0.8) /Helvetica-Bold 40 stwn  gsave  1973 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.8) show  gr 
+ /xs 0 def (0.9) /Helvetica-Bold 40 stwn  gsave  2064 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.9) show  gr 
+ /xs 0 def (1) /Helvetica-Bold 40 stwn  gsave  2154 87
+ t 0 r xs 2 div neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1) show  gr  [] 0 sd 3 lw [] 0 sd 3 lw 1247 138 m 1104 Y s [] 0 sd 3 lw [] 0 sd 3 lw 1274 138 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 160 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261
+ 182 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 204 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 226 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 248 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 271 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 293 m -14 X s [] 0 sd 3
+ lw [] 0 sd 3 lw 1261 315 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 337 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 359 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 381 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 403 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 425
+ m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 447 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 469 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 491 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 513 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 536 m -14 X s [] 0 sd 3 lw
+ [] 0 sd 3 lw 1261 558 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 580 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 602 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 624 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 646 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 668 m
+ -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 690 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 712 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 734 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 756 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 778 m -14 X s [] 0 sd 3 lw
+ [] 0 sd 3 lw 1274 801 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 823 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 845 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 867 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 889 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 911 m
+ -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 933 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 955 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 977 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 999 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 1021 m -27 X s [] 0 sd 3 lw
+ [] 0 sd 3 lw 1261 1043 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1066 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1088 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1110 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 1132 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261
+ 1154 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1176 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1198 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1261 1220 m -14 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 1242 m -27 X s [] 0 sd 3 lw [] 0 sd 3 lw 1274 138 m -27 X s
+ /xs 0 def (0.95) /Helvetica-Bold 40 stwn  gsave  1242 122
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.95) show  gr 
+ /xs 0 def (0.96) /Helvetica-Bold 40 stwn  gsave  1242 233
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.96) show  gr 
+ /xs 0 def (0.97) /Helvetica-Bold 40 stwn  gsave  1242 343
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.97) show  gr 
+ /xs 0 def (0.98) /Helvetica-Bold 40 stwn  gsave  1242 454
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.98) show  gr 
+ /xs 0 def (0.99) /Helvetica-Bold 40 stwn  gsave  1242 564
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (0.99) show  gr 
+ /xs 0 def (1) /Helvetica-Bold 40 stwn  gsave  1242 674
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1) show  gr 
+ /xs 0 def (1.01) /Helvetica-Bold 40 stwn  gsave  1242 785
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1.01) show  gr 
+ /xs 0 def (1.02) /Helvetica-Bold 40 stwn  gsave  1242 895
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1.02) show  gr 
+ /xs 0 def (1.03) /Helvetica-Bold 40 stwn  gsave  1242 1006
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1.03) show  gr 
+ /xs 0 def (1.04) /Helvetica-Bold 40 stwn  gsave  1242 1116
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1.04) show  gr 
+ /xs 0 def (1.05) /Helvetica-Bold 40 stwn  gsave  1242 1227
+ t 0 r  xs neg 0 t 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (1.05) show  gr  [] 0 sd 3 lw 1 1 1 c black [] 0 sd 3 lw 1247 690 m 907 X s
+ gsave  1643 1160
+ t 0 r 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (\(d\) KKMC/PHOKHARA) show  gr  1 0 1 c [] 0 sd 3 lw 1 1 1 c 1 0 1 c [] 0 sd 3 lw 1497 962 m 140 Y s [] 0 sd 3 lw 1497 1122 m 120 Y s [] 0 sd 3 lw /w 26 def /w2 {w 2 div} def /w3 {w 3 div} def 1497
+ 1112 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1506 984 m 130 Y s [] 0 sd 3 lw 1506 1134 m 108 Y s [] 0 sd 3 lw 1506 1124 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1515 1004 m 121 Y s [] 0 sd 3 lw 1515 1144 m 98 Y s [] 0 sd 3 lw 1515 1135 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1524
+ 820 m 111 Y s [] 0 sd 3 lw 1524 951 m 110 Y s [] 0 sd 3 lw 1524 941 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1533 880 m 105 Y s [] 0 sd 3 lw 1533 1004 m 105 Y s [] 0 sd 3 lw 1533 994 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1542 777 m 97 Y s [] 0 sd 3 lw 1542 894 m 97 Y
+ s [] 0 sd 3 lw 1542 884 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1551 788 m 92 Y s [] 0 sd 3 lw 1551 899 m 91 Y s [] 0 sd 3 lw 1551 889 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1560 742 m 86 Y s [] 0 sd 3 lw 1560 847 m 86 Y s [] 0 sd 3 lw 1560 838 m22 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1569 733 m 80 Y s [] 0 sd 3 lw 1569 833 m 79 Y s [] 0 sd 3 lw 1569 823 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1578 798 m 76 Y s [] 0 sd 3 lw 1578 894 m 75 Y s [] 0 sd 3 lw 1578 884 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1587 656 m 70 Y s [] 0 sd 3 lw
+ 1587 745 m 70 Y s [] 0 sd 3 lw 1587 736 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1596 694 m 66 Y s [] 0 sd 3 lw 1596 780 m 66 Y s [] 0 sd 3 lw 1596 770 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1606 701 m 62 Y s [] 0 sd 3 lw 1606 782 m 62 Y s [] 0 sd 3 lw 1606 773 m22
+ [] 0 sd 3 lw [] 0 sd 3 lw 1615 781 m 58 Y s [] 0 sd 3 lw 1615 859 m 59 Y s [] 0 sd 3 lw 1615 849 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1624 770 m 55 Y s [] 0 sd 3 lw 1624 845 m 55 Y s [] 0 sd 3 lw 1624 835 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1633 621 m 50 Y s
+ [] 0 sd 3 lw 1633 691 m 50 Y s [] 0 sd 3 lw 1633 681 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1642 736 m 48 Y s [] 0 sd 3 lw 1642 803 m 48 Y s [] 0 sd 3 lw 1642 794 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1651 621 m 43 Y s [] 0 sd 3 lw 1651 684 m 44 Y s [] 0 sd 3 lw
+ 1651 674 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1660 628 m 41 Y s [] 0 sd 3 lw 1660 688 m 41 Y s [] 0 sd 3 lw 1660 678 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1669 660 m 38 Y s [] 0 sd 3 lw 1669 718 m 37 Y s [] 0 sd 3 lw 1669 708 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1678 561
+ m 35 Y s [] 0 sd 3 lw 1678 615 m 35 Y s [] 0 sd 3 lw 1678 606 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1687 645 m 32 Y s [] 0 sd 3 lw 1687 697 m 32 Y s [] 0 sd 3 lw 1687 687 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1696 547 m 30 Y s [] 0 sd 3 lw 1696 597 m 29 Y s [] 0 sd
+ 3 lw 1696 587 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1705 564 m 27 Y s [] 0 sd 3 lw 1705 611 m 27 Y s [] 0 sd 3 lw 1705 601 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1714 592 m 26 Y s [] 0 sd 3 lw 1714 637 m 26 Y s [] 0 sd 3 lw 1714 627 m22 [] 0 sd 3 lw [] 0 sd 3 lw
+ 1723 529 m 23 Y s [] 0 sd 3 lw 1723 572 m 23 Y s [] 0 sd 3 lw 1723 562 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1733 552 m 23 Y s [] 0 sd 3 lw 1733 594 m 22 Y s [] 0 sd 3 lw 1733 584 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1742 525 m 21 Y s [] 0 sd 3 lw 1742 566 m 20 Y
+ s [] 0 sd 3 lw 1742 556 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1751 538 m 19 Y s [] 0 sd 3 lw 1751 577 m 20 Y s [] 0 sd 3 lw 1751 567 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1760 465 m 19 Y s [] 0 sd 3 lw 1760 503 m 19 Y s [] 0 sd 3 lw 1760 493 m22 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1769 468 m 18 Y s [] 0 sd 3 lw 1769 506 m 18 Y s [] 0 sd 3 lw 1769 496 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1778 495 m 18 Y s [] 0 sd 3 lw 1778 533 m 18 Y s [] 0 sd 3 lw 1778 523 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1787 407 m 17 Y s [] 0 sd 3 lw
+ 1787 444 m 17 Y s [] 0 sd 3 lw 1787 434 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1796 460 m 18 Y s [] 0 sd 3 lw 1796 498 m 17 Y s [] 0 sd 3 lw 1796 488 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1805 442 m 20 Y s [] 0 sd 3 lw 1805 481 m 20 Y s [] 0 sd 3 lw 1805 472 m22
+ [] 0 sd 3 lw [] 0 sd 3 lw 1814 415 m 22 Y s [] 0 sd 3 lw 1814 457 m 21 Y s [] 0 sd 3 lw 1814 447 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1823 366 m 22 Y s [] 0 sd 3 lw 1823 407 m 22 Y s [] 0 sd 3 lw 1823 397 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1832 386 m 23 Y s
+ [] 0 sd 3 lw 1832 428 m 23 Y s [] 0 sd 3 lw 1832 419 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1841 440 m 24 Y s [] 0 sd 3 lw 1841 484 m 23 Y s [] 0 sd 3 lw 1841 474 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1850 336 m 24 Y s [] 0 sd 3 lw 1850 380 m 24 Y s [] 0 sd 3 lw
+ 1850 370 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1860 349 m 26 Y s [] 0 sd 3 lw 1860 394 m 26 Y s [] 0 sd 3 lw 1860 385 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1869 351 m 26 Y s [] 0 sd 3 lw 1869 397 m 26 Y s [] 0 sd 3 lw 1869 387 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1878 252
+ m 27 Y s [] 0 sd 3 lw 1878 299 m 27 Y s [] 0 sd 3 lw 1878 289 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1887 206 m 29 Y s [] 0 sd 3 lw 1887 254 m 28 Y s [] 0 sd 3 lw 1887 244 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1896 248 m 30 Y s [] 0 sd 3 lw 1896 297 m 30 Y s [] 0 sd
+ 3 lw 1896 287 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1905 201 m 31 Y s [] 0 sd 3 lw 1905 251 m 31 Y s [] 0 sd 3 lw 1905 242 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1914 138 m 8 Y s [] 0 sd 3 lw 1914 166 m 31 Y s [] 0 sd 3 lw 1914 156 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1923
+ 138 m 28 Y s [] 0 sd 3 lw 1923 186 m 32 Y s [] 0 sd 3 lw 1923 176 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1932 168 m 33 Y s [] 0 sd 3 lw 1932 220 m 34 Y s [] 0 sd 3 lw 1932 211 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1941 138 m 16 Y s [] 0 sd 3 lw 1941 174 m 34 Y s
+ [] 0 sd 3 lw 1941 164 m22 [] 0 sd 3 lw [] 0 sd 3 lw 1 1 1 c 1 0 1 c [] 0 sd 3 lw 1420 138 m 1104 Y s [] 0 sd 3 lw 1492 1242 m -130 Y s [] 0 sd 3 lw 1492 1112 m 9 X 12 Y 9 X 11 Y 9 X -194 Y 9 X 53 Y 10 X -110 Y 9 X 5 Y 9 X -51 Y 9 X -15 Y 9 X 61 Y 9
+ X -148 Y 9 X 34 Y 9 X 3 Y 9 X 76 Y 9 X -14 Y 9 X -154 Y 9 X 113 Y 9 X -120 Y 9 X 4 Y 10 X 30 Y 9 X -102 Y 9 X 81 Y 9 X -100 Y 9 X 14 Y 9 X 26 Y 9 X -65 Y 9 X 22 Y 9 X -28 Y 9 X 11 Y 9 X -74 Y 9 X 3 Y 9 X 27 Y 9 X -89 Y 9 X 54 Y 10 X -16 Y 9 X -25 Y
+ 9 X -50 Y 9 X 22 Y 9 X 55 Y 9 X -104 Y 9 X 15 Y 9 X 2 Y 9 X -98 Y 9 X -45 Y 9 X 43 Y 9 X -45 Y 9 X -86 Y 9 X 20 Y 10 X 35 Y 9 X -47 Y 9 X -26 Y s
+ gsave  1699 1096
+ t 0 r 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (EEX3/PHOKHARA1) show  gr  [] 0 sd 3 lw /w 31 def /w2 {w 2 div} def /w3 {w 3 div} def 1667 1104 m22 [] 0 sd 3 lw 0 0 1 c [] 0 sd 3 lw 1 1 1 c 0 0 1 c [] 0 sd 3 lw 1370 138 m 223 Y s [] 0 sd 3 lw 1370
+ 375 m 867 Y s [] 0 sd 3 lw /w 23 def /w2 {w 2 div} def /w3 {w 3 div} def 1370 368 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1379 138 m 36 Y s [] 0 sd 3 lw 1379 188 m 1054 Y s [] 0 sd 3 lw 1379 181 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1388 146 m 1002 Y s [] 0 sd 3 lw
+ 1388 138 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1406 138 m 544 Y s [] 0 sd 3 lw 1406 697 m 545 Y s [] 0 sd 3 lw 1406 690 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1415 138 m 38 Y s [] 0 sd 3 lw 1415 191 m 687 Y s [] 0 sd 3 lw 1415 184 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1424
+ 573 m 597 Y s [] 0 sd 3 lw 1424 1184 m 58 Y s [] 0 sd 3 lw 1424 1177 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1442 138 m 171 Y s [] 0 sd 3 lw 1442 323 m 250 Y s [] 0 sd 3 lw 1442 316 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1451 138 m 136 Y s [] 0 sd 3 lw 1451 289 m 204
+ Y s [] 0 sd 3 lw 1451 281 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1460 203 m 179 Y s [] 0 sd 3 lw 1460 397 m 180 Y s [] 0 sd 3 lw 1460 390 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1479 138 m 104 Y s [] 0 sd 3 lw 1479 256 m 143 Y s [] 0 sd 3 lw 1479 249 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1488 192 m 132 Y s [] 0 sd 3 lw 1488 339 m 133 Y s [] 0 sd 3 lw 1488 332 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1497 271 m 124 Y s [] 0 sd 3 lw 1497 409 m 124 Y s [] 0 sd 3 lw 1497 402 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1506 172 m 114 Y s [] 0 sd 3
+ lw 1506 300 m 114 Y s [] 0 sd 3 lw 1506 293 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1515 281 m 106 Y s [] 0 sd 3 lw 1515 402 m 107 Y s [] 0 sd 3 lw 1515 395 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1524 470 m 103 Y s [] 0 sd 3 lw 1524 588 m 103 Y s [] 0 sd 3 lw 1524 581
+ m20 [] 0 sd 3 lw [] 0 sd 3 lw 1533 393 m 96 Y s [] 0 sd 3 lw 1533 504 m 95 Y s [] 0 sd 3 lw 1533 496 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1542 388 m 90 Y s [] 0 sd 3 lw 1542 492 m 90 Y s [] 0 sd 3 lw 1542 485 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1551 433 m 85 Y s
+ [] 0 sd 3 lw 1551 532 m 85 Y s [] 0 sd 3 lw 1551 525 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1560 367 m 80 Y s [] 0 sd 3 lw 1560 462 m 79 Y s [] 0 sd 3 lw 1560 454 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1569 357 m 75 Y s [] 0 sd 3 lw 1569 446 m 75 Y s [] 0 sd 3 lw
+ 1569 439 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1578 304 m 70 Y s [] 0 sd 3 lw 1578 388 m 70 Y s [] 0 sd 3 lw 1578 381 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1587 179 m 65 Y s [] 0 sd 3 lw 1587 259 m 64 Y s [] 0 sd 3 lw 1587 251 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1596 319
+ m 62 Y s [] 0 sd 3 lw 1596 396 m 62 Y s [] 0 sd 3 lw 1596 389 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1606 331 m 58 Y s [] 0 sd 3 lw 1606 404 m 58 Y s [] 0 sd 3 lw 1606 397 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1615 441 m 56 Y s [] 0 sd 3 lw 1615 511 m 56 Y s [] 0 sd
+ 3 lw 1615 504 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1624 351 m 52 Y s [] 0 sd 3 lw 1624 417 m 52 Y s [] 0 sd 3 lw 1624 410 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1633 459 m 49 Y s [] 0 sd 3 lw 1633 522 m 49 Y s [] 0 sd 3 lw 1633 515 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 1642 402 m 45 Y s [] 0 sd 3 lw 1642 462 m 45 Y s [] 0 sd 3 lw 1642 455 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1651 363 m 42 Y s [] 0 sd 3 lw 1651 420 m 42 Y s [] 0 sd 3 lw 1651 412 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1660 480 m 40 Y s [] 0 sd 3 lw 1660 535 m 40 Y
+ s [] 0 sd 3 lw 1660 527 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1669 485 m 37 Y s [] 0 sd 3 lw 1669 537 m 37 Y s [] 0 sd 3 lw 1669 530 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1678 506 m 35 Y s [] 0 sd 3 lw 1678 556 m 34 Y s [] 0 sd 3 lw 1678 548 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1687 508 m 32 Y s [] 0 sd 3 lw 1687 555 m 32 Y s [] 0 sd 3 lw 1687 548 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1696 463 m 30 Y s [] 0 sd 3 lw 1696 508 m 30 Y s [] 0 sd 3 lw 1696 500 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1705 430 m 28 Y s [] 0 sd 3 lw
+ 1705 472 m 28 Y s [] 0 sd 3 lw 1705 465 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1714 532 m 26 Y s [] 0 sd 3 lw 1714 573 m 26 Y s [] 0 sd 3 lw 1714 566 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1723 459 m 24 Y s [] 0 sd 3 lw 1723 498 m 25 Y s [] 0 sd 3 lw 1723 491 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 1733 485 m 23 Y s [] 0 sd 3 lw 1733 522 m 24 Y s [] 0 sd 3 lw 1733 515 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1742 500 m 22 Y s [] 0 sd 3 lw 1742 537 m 22 Y s [] 0 sd 3 lw 1742 530 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1751 514 m 21 Y s
+ [] 0 sd 3 lw 1751 550 m 21 Y s [] 0 sd 3 lw 1751 542 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1760 449 m 20 Y s [] 0 sd 3 lw 1760 484 m 20 Y s [] 0 sd 3 lw 1760 476 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1769 521 m 20 Y s [] 0 sd 3 lw 1769 556 m 20 Y s [] 0 sd 3 lw
+ 1769 549 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1778 509 m 20 Y s [] 0 sd 3 lw 1778 543 m 20 Y s [] 0 sd 3 lw 1778 536 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1787 479 m 19 Y s [] 0 sd 3 lw 1787 513 m 19 Y s [] 0 sd 3 lw 1787 506 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1796 556
+ m 20 Y s [] 0 sd 3 lw 1796 590 m 19 Y s [] 0 sd 3 lw 1796 583 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1805 519 m 22 Y s [] 0 sd 3 lw 1805 555 m 22 Y s [] 0 sd 3 lw 1805 548 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1814 600 m 24 Y s [] 0 sd 3 lw 1814 638 m 24 Y s [] 0 sd
+ 3 lw 1814 631 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1823 536 m 24 Y s [] 0 sd 3 lw 1823 575 m 24 Y s [] 0 sd 3 lw 1823 568 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1832 507 m 25 Y s [] 0 sd 3 lw 1832 546 m 25 Y s [] 0 sd 3 lw 1832 539 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 1841 554 m 25 Y s [] 0 sd 3 lw 1841 594 m 26 Y s [] 0 sd 3 lw 1841 587 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1850 519 m 26 Y s [] 0 sd 3 lw 1850 560 m 26 Y s [] 0 sd 3 lw 1850 552 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1860 586 m 28 Y s [] 0 sd 3 lw 1860 628 m 28 Y
+ s [] 0 sd 3 lw 1860 621 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1869 638 m 29 Y s [] 0 sd 3 lw 1869 682 m 29 Y s [] 0 sd 3 lw 1869 675 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1878 584 m 29 Y s [] 0 sd 3 lw 1878 628 m 30 Y s [] 0 sd 3 lw 1878 621 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 1887 520 m 30 Y s [] 0 sd 3 lw 1887 565 m 31 Y s [] 0 sd 3 lw 1887 558 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1896 560 m 32 Y s [] 0 sd 3 lw 1896 607 m 32 Y s [] 0 sd 3 lw 1896 600 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1905 512 m 33 Y s [] 0 sd 3 lw
+ 1905 559 m 33 Y s [] 0 sd 3 lw 1905 552 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1914 587 m 34 Y s [] 0 sd 3 lw 1914 636 m 34 Y s [] 0 sd 3 lw 1914 628 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1923 616 m 35 Y s [] 0 sd 3 lw 1923 666 m 36 Y s [] 0 sd 3 lw 1923 659 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 1932 572 m 36 Y s [] 0 sd 3 lw 1932 623 m 36 Y s [] 0 sd 3 lw 1932 616 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1941 622 m 37 Y s [] 0 sd 3 lw 1941 674 m 38 Y s [] 0 sd 3 lw 1941 667 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1950 518 m 38 Y s
+ [] 0 sd 3 lw 1950 571 m 38 Y s [] 0 sd 3 lw 1950 564 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1959 606 m 39 Y s [] 0 sd 3 lw 1959 660 m 39 Y s [] 0 sd 3 lw 1959 652 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1968 590 m 40 Y s [] 0 sd 3 lw 1968 645 m 39 Y s [] 0 sd 3 lw
+ 1968 637 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1977 648 m 41 Y s [] 0 sd 3 lw 1977 704 m 41 Y s [] 0 sd 3 lw 1977 696 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1987 572 m 41 Y s [] 0 sd 3 lw 1987 628 m 41 Y s [] 0 sd 3 lw 1987 621 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1996 548
+ m 42 Y s [] 0 sd 3 lw 1996 604 m 42 Y s [] 0 sd 3 lw 1996 597 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2005 642 m 43 Y s [] 0 sd 3 lw 2005 700 m 42 Y s [] 0 sd 3 lw 2005 692 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2014 645 m 43 Y s [] 0 sd 3 lw 2014 703 m 43 Y s [] 0 sd
+ 3 lw 2014 695 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2023 658 m 44 Y s [] 0 sd 3 lw 2023 716 m 44 Y s [] 0 sd 3 lw 2023 709 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2032 610 m 43 Y s [] 0 sd 3 lw 2032 668 m 43 Y s [] 0 sd 3 lw 2032 661 m20 [] 0 sd 3 lw [] 0 sd 3 lw
+ 2041 580 m 43 Y s [] 0 sd 3 lw 2041 638 m 43 Y s [] 0 sd 3 lw 2041 631 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2050 586 m 43 Y s [] 0 sd 3 lw 2050 644 m 43 Y s [] 0 sd 3 lw 2050 637 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2059 554 m 43 Y s [] 0 sd 3 lw 2059 612 m 42 Y
+ s [] 0 sd 3 lw 2059 604 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2068 581 m 42 Y s [] 0 sd 3 lw 2068 638 m 42 Y s [] 0 sd 3 lw 2068 631 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2077 670 m 42 Y s [] 0 sd 3 lw 2077 726 m 43 Y s [] 0 sd 3 lw 2077 719 m20 [] 0 sd 3 lw
+ [] 0 sd 3 lw 2086 798 m 42 Y s [] 0 sd 3 lw 2086 854 m 42 Y s [] 0 sd 3 lw 2086 847 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2095 593 m 40 Y s [] 0 sd 3 lw 2095 648 m 40 Y s [] 0 sd 3 lw 2095 640 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2104 664 m 39 Y s [] 0 sd 3 lw
+ 2104 718 m 39 Y s [] 0 sd 3 lw 2104 711 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2114 713 m 38 Y s [] 0 sd 3 lw 2114 765 m 39 Y s [] 0 sd 3 lw 2114 758 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2123 733 m 37 Y s [] 0 sd 3 lw 2123 785 m 36 Y s [] 0 sd 3 lw 2123 777 m20
+ [] 0 sd 3 lw [] 0 sd 3 lw 2132 803 m 35 Y s [] 0 sd 3 lw 2132 853 m 34 Y s [] 0 sd 3 lw 2132 845 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2141 744 m 32 Y s [] 0 sd 3 lw 2141 791 m 32 Y s [] 0 sd 3 lw 2141 783 m20 [] 0 sd 3 lw [] 0 sd 3 lw 2150 859 m 30 Y s
+ [] 0 sd 3 lw 2150 904 m 29 Y s [] 0 sd 3 lw 2150 896 m20 [] 0 sd 3 lw [] 0 sd 3 lw 1 1 1 c 0 0 1 c [] 0 sd 3 lw 1329 138 m 1104 Y s [] 0 sd 3 lw 1338 1242 m -1104 Y s [] 0 sd 3 lw 1365 138 m 230 Y s [] 0 sd 3 lw 1365 368 m 9 X -187 Y 9 X -43 Y 9 X s
+ [] 0 sd 3 lw 1401 138 m 552 Y s [] 0 sd 3 lw 1401 690 m 10 X -506 Y 9 X 993 Y 9 X -1039 Y s [] 0 sd 3 lw 1438 138 m 178 Y s [] 0 sd 3 lw 1438 316 m 9 X -35 Y 9 X 109 Y 9 X -252 Y s [] 0 sd 3 lw 1474 138 m 111 Y s [] 0 sd 3 lw 1474 249 m 9 X 83 Y 9 X
+ 70 Y 9 X -109 Y 9 X 102 Y 9 X 186 Y 9 X -85 Y 10 X -11 Y 9 X 40 Y 9 X -71 Y 9 X -15 Y 9 X -58 Y 9 X -130 Y 9 X 138 Y 9 X 8 Y 9 X 107 Y 9 X -94 Y 9 X 105 Y 9 X -60 Y 9 X -43 Y 9 X 115 Y 10 X 3 Y 9 X 18 Y 18 X -48 Y 9 X -35 Y 9 X 101 Y 9 X -75 Y 9 X
+ 24 Y 9 X 15 Y 9 X 12 Y 9 X -66 Y 9 X 73 Y 9 X -13 Y 9 X -30 Y 9 X 77 Y 10 X -35 Y 9 X 83 Y 9 X -63 Y 9 X -29 Y 9 X 48 Y 9 X -35 Y 9 X 69 Y 9 X 54 Y 9 X -54 Y 9 X -63 Y 9 X 42 Y 9 X -48 Y 9 X 76 Y 9 X 31 Y 10 X -43 Y 9 X 51 Y 9 X -103 Y 9 X 88 Y 9 X
+ -15 Y 9 X 59 Y 9 X -75 Y 9 X -24 Y 9 X 95 Y 9 X 3 Y 9 X 14 Y 9 X -48 Y 9 X -30 Y 9 X 6 Y 10 X -33 Y 9 X 27 Y 9 X 88 Y 9 X 128 Y 9 X -207 Y 9 X 71 Y 9 X 47 Y 9 X 19 Y 9 X 68 Y 9 X -62 Y 9 X 113 Y 9 X s
+ gsave  1699 1027
+ t 0 r 0 0 m /Helvetica-Bold findfont 40 sf 0 0 m (EEX3/PHOKHARA2) show  gr  [] 0 sd 3 lw /w 29 def /w2 {w 2 div} def /w3 {w 3 div} def 1667 1035 m20 [] 0 sd 3 lw black
+ gsave  1549 1314
+ t 0 r 0 0 m /Helvetica-Bold findfont 52 sf 0 0 m (WITH CUTS) show  gr 
+ gsave  1787 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m (]) show  gr 
+ gsave  1770 42
+ t 0 r 0 0 m /Helvetica-Bold findfont 32 sf 0 0 m (2) show  gr 
+ gsave  1647 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m ( [GeV) show  gr 
+ gsave  1630 39
+ t 0 r 0 0 m /Helvetica-Bold findfont 32 sf 0 0 m (2) show  gr 
+ gsave  1594 15
+ t 0 r 0 0 m /Helvetica-Bold findfont 48 sf 0 0 m (Q) show  gr  1 0 0 c
+ gr  gr 
+showpage
+end
+%%EOF

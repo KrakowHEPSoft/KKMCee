@@ -1,0 +1,78 @@
+           
+            *************************************************************
+            *  ****   ****    ****  ****    ***       ***     ******    *
+            *  ****   ****    ****  ****    ****     ****   **********  *
+            *  ****   ****    ****  ****    *****   *****  *****   ***  *
+            *  **********     *********     *************  ****         *
+            *  *******        ******        *************  ****         *
+            *  **********     ********      **** *** ****  *****   ***  *
+            *  ****  *****    ****  ****    ****  *  ****   **********  *
+            *  ****   *****   ****   ****   ****     ****     *******   *
+            *************************************************************
+           
+
+
+ ***************************************************************************
+ *                         KK Monte Carlo                                  *
+ *            Version       4.19          25 Sept  2002                    *
+ *       3.05826000                 CMS energy average       CMSene     a1 *
+ *        .00000000                 Beam energy spread       DelEne     a2 *
+ *              300                 Max. photon mult.        npmax      a3 *
+ *                3                 wt-ed or wt=1 evts.      KeyWgt     a4 *
+ *                3                 ISR switch               KeyISR     a4 *
+ *                0                 FSR switch               KeyFSR     a5 *
+ *                6                 ISR/FSR interferenc      KeyINT     a6 *
+ *                0                 New exponentiation       KeyGPS     a7 *
+ *                3                 Hadroniz.  switch        KeyHad     a7 *
+ *        .60000000                 Hadroniz. min. mass      HadMin     a9 *
+ *       3.00000000                 Maximum weight           WTmax     a10 *
+ *              300                 Max. photon mult.        npmax     a11 *
+ *               33                 Beam ident               KFini     a12 *
+ *        .00000005                 Manimum phot. ener.      Ene       a13 *
+ *    .30000000E-59                 Phot.mass, IR regul      MasPho    a14 *
+ *    3.7500000                     Phot. mult. enhanc.      Xenph     a15 *
+ *    .30000000E-08                 Vcut1                    Vcut1     a16 *
+ *    .15000000                     Vcut2                    Vcut2     a16 *
+ *     .0000000                     Vcut3                    Vcut2     a16 *
+ *        .00000000                    PolBeam1(1)           Pol1x     a17 *
+ *        .00000000                    PolBeam1(2)           Pol1y     a18 *
+ *        .00000000                    PolBeam1(3)           Pol1z     a19 *
+ *        .00000000                    PolBeam2(1)           Pol2x     a20 *
+ *        .00000000                    PolBeam2(2)           Pol2y     a21 *
+ *        .00000000                    PolBeam2(3)           Pol2z     a22 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *     273.56100000                 Z mass     [GeV]         amz        a1 *
+ *     300.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     525.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       7.50216096                 Z width    [GeV]         gammz      a4 *
+ *        .66830319                 sin(theta_w)**2          sinw2      a5 *
+ *     411.10796850                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *        .60000000                 MassCut light qqbar      HadMin     a6 *
+ *               33                 KF code of beam          KFini      a7 *
+ *    2.8800000                     Input vvmax              vvmax      a8 *
+ *    .99522560                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                0                 Electroweak lib.         KeyElw     10 *
+ *                3                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ *                3                 R for gamma* on/off      KeyRes     12 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                         KarLud_Initialize START                         *
+ *       3.05826000                  CMS energy average      CMSene     == *
+ *        .00000000                  Beam energy spread      DelEne     == *
+ *                3                  ISR on/off switch       KeyISR     == *
+ *                0                  Type of ISR             KeyFix     == *
+ *                3                  Elect_weak switch       KeyZet     == *
+ *                0                  Fixed nphot mult.       MltISR     == *
+ *              150                  Max. photon mult.       nmax       == *
+ ***************************************************************************
+

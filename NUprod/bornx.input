@@ -1,0 +1,73 @@
+ 0 0 0 1 0 0 0 0         KAT1-KAT8        <- Input for the main program
+ 100000000      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1          200D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*     KeyWgt=0,1 to get constant,variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*       KeyELW=0,1 Type of Elewctroweak corrections, 
+*	KeyElw=0, for primitive Born, is only for tests
+   12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
+   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
+*     Maximum v, where v = 1-sprim/s, v=1 is alowed
+   16           1D-5      vvmin =xpar(16)  default is 1D-5
+   17         0.99d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions !!!!!!
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   50              0      KeyHad=xpar(50)  Default is  1    !!!!!!!!!
+********************************************************************************
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+** Mass and width of Z-boson [GeV]
+  502       91.187D0      MZ  =xpar(502)  PDG 1996
+**  503   0.22330593D0      SwSq  =xpar(503) sin_squared of EW angle, from Dizet
+**  504   2.49534270D0      GammZ =xpar(504) Z width, from Dizet
+**  505   80.3633297D0      MW    =xpar(505) W mass,  from Dizet
+  506   2.08825837D0      GammW =xpar(506) W width, from Dizet
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+* input for Dizet from Dima
+   32     1.16637D-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639d-5  [GeV^(-2)])
+  503.22330592993199      SwSq  =xpar(503) sin_squared of EW angle, from Dizet
+  5042.4953427050359      GammZ =xpar(504) Z width, from Dizet
+  50580.363329699738      MW    =xpar(505) W mass,  from Dizet
+********************************************************************************
+**                    CEEX is now activated for quarks
+**    Photon emission from final QUARKS
+   29              1      KeyQSR=xpar(26)  Default is  1
+**    Another switch overruling KeyGPS
+  518         0.99d0      auxiliary parameter vmaxGPS d-quark
+  528         0.99d0      auxiliary parameter vmaxGPS u-quark
+  538         0.99d0      auxiliary parameter vmaxGPS s-quark
+  548         0.99d0      auxiliary parameter vmaxGPS c-quark
+  558         0.99d0      auxiliary parameter vmaxGPS b-quark
+********************************************************************************
+*     Define process
+*  411              1      KFfin, electron
+*  412              1      KFfin, neutrino electron
+  413              1      KFfin, muon
+*  414              1      KFfin, neutrino muon
+*  415              1      KFfin, tau
+*  416              1      KFfin, neutrino tau
+*  401              1      KFfin, d
+*  402              1      KFfin, u
+*  403              1      KFfin, s
+*  404              1      KFfin, c
+*  405              1      KFfin, b
+********************************************************************************
+*                    LEP2 wshop adjusted input
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+  801              1     Ibox=0,1, EW boxes off,on,    input for Dizet
+  805          120D0      amh   =xpar(805) Higgs mass, input for Dizet, YR
+  806        173.8D0      amtop =xpar(806) Top mass,   input for Dizet, YR
+**  805          100D0      amh   =xpar(805) Higgs mass, DEFAULT
+**  806        175.0D0      amtop =xpar(806) Top mass,   DEFAULT
+  808    128.88524d0   alfinvMZ =xpar(808) alfQED(MZ), Jegerlehner RADCOR 98
+  809       0.1190d0   alfQCDMZ =xpar(809) alfQCD(MZ), PDG 1999
+*      DIZET flags NPAR(i)=NPAR(900+i)
+  918              0  Ihig2 ! =0,1   (Two-loop higgs  corrections off,on) 
+*********************************************************************************
+EndX

@@ -1,0 +1,43 @@
+ 0 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+ 100000000      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*===============================================================================
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+********************************************************************************
+*indx+++++++++++++++ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1        140.0D0      cmsene =xpar( 1)
+*     KeyWgt=0,1 to get constant,variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*     KeyElw=0, for primitive Born, is only for tests
+   12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
+*     Maximum v, where v = 1-sprim/s, v=1 is alowed
+   17            1D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+********************************************************************************
+*     EQD/EW bremsstrahlung flags/data
+*indx+++++++++++++++ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   20              0      KeyISR=xpar(20)  Default is  1
+   21              1      KeyFSR=xpar(21)  Default is  1
+*     KeyPia = 0,1 OFF/ON for removal of FSR photons below emin=Ene*delta
+*****   22              1      KeyPia=xpar(22)  Deafault is 1
+*     Interference ISR/FSR to be ON/OFF
+*****   27              0      KeyINT=xpar(27)  Default is  1
+*     New exponentiation is only on explicit request
+   28              0      KeyGPS=xpar(28)  Default is  0
+********************************************************************************
+**     Technical cuts and internal parameters
+**\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\
+   40         2.00d0\\\\\\Xenph =xpar(40)\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+********************************************************************************
+*     Define process
+  413             13      KFfin, muon
+********************************************************************************
+*     Input for matrix element
+  501             -2      KeyZet=xpar(24)  default is 1, -2 for flat x-section
+********************************************************************************
+EndX

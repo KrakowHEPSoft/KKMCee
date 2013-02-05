@@ -1,0 +1,13 @@
+#!/bin/csh
+# @ notify_user = stanislaw.jadach@cern.ch
+# @ class = <class>
+# @ preferences=(Feature=="lowio")
+#######################################
+#
+cd <pthfarm>/<farmindex>
+# ========= EXECUTION ========= 
+#
+time ../<dset>.exe < ./<dset>.input
+#
+#
+exit 0          

@@ -1,0 +1,18 @@
+#!/bin/csh
+set echo
+#|-----------------------------------------------------------------
+#| by S. Jadach. Jan. 95
+#| This script SUMITES series of jobs
+#| on the computer farm (SP-2)
+#| It is invoked like that:
+#|              farm-submit prod2 "1 2 3 4 5 6"
+#|-----------------------------------------------------------------
+set   dset=$1
+set   farmdir=$PWD/farm
+#|-----------------------------------------------------------------
+foreach i ( $2 )
+     cd $farmdir/$i
+     llsubmit  $dset.cmd.$i
+end
+exit 0
+ 

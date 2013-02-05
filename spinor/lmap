@@ -1,0 +1,47 @@
+(ld): halt 4
+(ld): savename Main.exe
+(ld): filelist 16 1
+(ld): i /lib/crt0.o
+(ld): i Main.o
+(ld): i ERW.o
+(ld): i STest.o
+(ld): i Weyl.o
+(ld): i brem.o
+(ld): i ../KK2f/KK2f.a
+(ld): i ../glibk/glibk.a
+(ld): i ../jetset/jetset.a
+(ld): i ../bornv/bornv.a
+(ld): i ../tauola/glib.a
+(ld): i ../photos/glib.a
+(ld): lib /usr/lib/libxlf90.a
+(ld): lib /usr/lib/libxlf.a
+(ld): lib /usr/lib/libm.a
+(ld): lib /usr/lib/libc.a
+LIBRARY: Shared object libxlf90.a[io.o]: 62 symbols imported.
+LIBRARY: Shared object libxlf90.a[math.o]: 316 symbols imported.
+LIBRARY: Shared object libxlf90.a[xlfsys.o]: 28 symbols imported.
+LIBRARY: Shared object libxlf.a[shr.o]: 135 symbols imported.
+LIBRARY: Shared object libc.a[shr.o]: 2138 symbols imported.
+LIBRARY: Shared object libc.a[meth.o]: 2 symbols imported.
+LIBRARY: Shared object libc.a[aio.o]: 10 symbols imported.
+LIBRARY: Shared object libc.a[pse.o]: 78 symbols imported.
+LIBRARY: Shared object libc.a[dl.o]: 4 symbols imported.
+FILELIST: Number of previously inserted files processed: 16
+(ld): resolve
+RESOLVE: 2787 of 10970 symbols were kept.
+(ld): addgl /usr/lib/glink.o
+ADDGL: Glink code added for 17 symbols.
+(ld): er full
+ER: There are no unresolved symbols.
+(ld): mismatch
+MISMATCH: No type mismatches exist.
+(ld): comprld
+COMPRLD: Kept 13164 of 13164 relocation entries.
+(ld): origin 0x200 0x0
+(ld): pad 512 512 512
+PAD: The object file pad values are .text: 512  .data: 512  .loader: 512
+(ld): save 1L .
+SAVE: Section sizes = 807426+174332+8751068 (0xC5202+0x2A8FC+0x8587DC hex)
+SAVE: Size of TOC: 4276 (0x10B4 hex)
+(ld): rc
+RC: Highest return code was 0.

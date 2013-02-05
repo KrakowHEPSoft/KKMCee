@@ -1,0 +1,539 @@
+  kat1  kat2  kat3  kat4
+     0     0     0     0
+ 1000  requested events 
+           
+            *************************************************************
+            *  ****   ****    ****  ****      *******      ***********  *
+            *  ****   ****    ****  ****    ***********    ***********  *
+            *  ****   ****    ****  ****    ****   ****    ****         *
+            *  **********     *********     ****   ****    *********    *
+            *  *******        ******            *****      *********    *
+            *  **********     ********        *****        ****         *
+            *  ****  *****    ****  ****    **********     ****         *
+            *  ****   *****   ****   ****   **********     ****         *
+            *************************************************************
+           
+
+
+ ***************************************************************************
+ *                         KK Monte Carlo                                  *
+ *            Version       4.00          November 1998                    *
+ *     200.00000000                 CMS energy average       CMSene     a1 *
+ *        .00000000                 Beam energy spread       DelEne     a2 *
+ *              100                 Max. photon mult.        npmax      a3 *
+ *                1                 ISR switch               KeyISR     a4 *
+ *                1                 FSR switch               KeyFSR     a5 *
+ *                2                 ISR/FSR interferenc      KeyINT     a6 *
+ *                1                 New exponentiation       KeyGPS     a7 *
+ *                0                 Hadroniz.  switch        KeyHad     a7 *
+ *        .20000000                 Hadroniz. min. mass      HadMin     a9 *
+ *       1.00000000                 Maximum weight           WTmax     a10 *
+ *              100                 Max. photon mult.        npmax     a11 *
+ *               11                 Beam ident               KFini     a12 *
+ *        .00100000                 Manimum phot. ener.      Ene       a13 *
+ *    .10000000E-59                 Phot.mass, IR regul      MasPho    a14 *
+ *    1.2500000                     Phot. mult. enhanc.      Xenph     a15 *
+ *    .00000000E+00                 Vcut1                    Vcut1     a16 *
+ *    .00000000E+00                 Vcut2                    Vcut2     a16 *
+ *    .00000000E+00                 Vcut3                    Vcut2     a16 *
+ *        .00000000                    PolBeam1(1)           Pol1x     a17 *
+ *        .00000000                    PolBeam1(2)           Pol1y     a18 *
+ *        .00000000                    PolBeam1(3)           Pol1z     a19 *
+ *        .00000000                    PolBeam2(1)           Pol2x     a20 *
+ *        .00000000                    PolBeam2(2)           Pol2y     a21 *
+ *        .00000000                    PolBeam2(3)           Pol2z     a22 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         amz        a1 *
+ *     100.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     175.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       2.50072032                 Z width    [GeV]         gammz      a4 *
+ *        .22276773                 sin(theta_w)**2          sinw2      a5 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *        .20000000                 MassCut light qqbar      HadMin     a6 *
+ *               11                 KF code of beam          KFini      a7 *
+ *    1.0000000                     Input vvmax              vvmax      a8 *
+ *    .99999888                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                1                 Electroweak lib.         KeyElw     10 *
+ *                1                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.120pt                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.120pt                                       *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.120pt                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.120pt                                       *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.botom.120pt                                    *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.mu.120pt                                       *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.tau.120pt                                      *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22276773                 sin**2(thetaW)           swsq       a3 *
+ *       2.50072032                 Z width                  gammz      a3 *
+ *      80.39116842                 W mass                   amw        a3 *
+ *       2.08932690                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                         KarLud_Initialize START                         *
+ *                1                  ISR on/off switch       KeyISR     a1 *
+ *                1                  Elect_weak switch       KeyZet     a2 *
+ *                0                  Fixed nphot mult.       MltISR     a3 *
+ *               50                  Max. photon mult.       nmax       a4 *
+ *     115.00817067                 xs_crude  vesko          xcvesk        *
+ *     114.45953489                 xs_crude  gauss          xcgaus        *
+ *        .00479327                 xcvesk/xcgaus-1                        *
+ *                          KarLud_Initialize END                          *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                        KarFin Initialize  START                         *
+ *                1                FSR radiation on/off      KeyFSR     a1 *
+ *                0                radiation from quark      KeyQSR     a2 *
+ *                1                removal    switch         KeyPia     a3 *
+ *    .10000000E-02                infrared cut FACTOR       delfac     a4 *
+ *    .10000000E-07                infrared cut itself       delta      a5 *
+ *    .10000000E-02                EminCMS for removal       [GeV]      a6 *
+ *               50                Max. photon mult.         nmax       a7 *
+ *                        KarFin Initialize  END                           *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *             GPS   Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         MZ         a1 *
+ *       2.50072032                 Z width    [GeV]         GammZ      a2 *
+ *        .22276773                 sin(theta_w)**2          Sw2        a3 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a4 *
+ *         Test switches:                                                  *
+ *                1                 Z on/off   switch        KeyZet     a5 *
+ *                1                 Electroweak lib.         KeyElw     a6 *
+ *                1                 CEEX level               KeyGPS     a7 *
+ *                1                 ISR emission             KeyISR     a8 *
+ *                1                 FSR emission             KeyFSR     a9 *
+ *                2                 ISR*FSR interferenc      KeyINT    a10 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *               Initialization of GPS class                               *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                           KK2f: Initialization                          *
+ *    .24972458                     x-crude [nb]             Xcrunb     ** *
+ *         List of final fermions:                                         *
+ *                5                 KF of final fermion      KFfin      ** *
+ *    4.5000000                     mass of final ferm.      amferm     ** *
+ *    1.3438331                     Xborn [R]                Xborn      ** *
+ *    3.5000000                     WtMax sampling par.      WtMax      ** *
+ *    .00000000E+00                 vmax for CEEX           vmaxGPS     ** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        KK interface of Tauola                                           *
+ *                2                Cloning procedure       KeyClone    t01 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        Parameters passed from KK  to Tauola:                            *
+ *                0                dec. type 1-st tau        Jak1      t01 *
+ *                0                dec. type 2-nd tau        Jak2      t02 *
+ *                1                current type a1 dec.      KeyA1     t03 *
+ *               15                PDG id 1-st tau           idff      t04 *
+ *                1                R.c. switch lept dec      itdkRC    t05 *
+ *    .10000000E-02                IR-cut for lept r.c.      xk0dec    t06 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                 !!!!! Tauola inhibited !!!!                             *
+ ***************************************************************************
+
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1  -23.663   13.502  -66.745   72.231    4.500
+    4  b~        V   1     -5    1   23.481  -13.160   16.284   31.780    4.500
+    5  gamma         1     22    1     .165    -.075   55.450   55.451     .000
+    6  gamma         1     22    1    -.014     .022  -22.743   22.743     .000
+    7  gamma         1     22    1     .004    -.005   16.725   16.725     .000
+    8  gamma         1     22    1     .027    -.285    1.030    1.069     .000
+    9  gamma         1     22    1     .000     .000    -.002     .002     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   87.852   43.944  -18.115   99.987    4.500
+    4  b~        V   1     -5    1  -87.852  -43.944   18.136   99.991    4.500
+    5  gamma         1     22    1     .000     .000    -.022     .022     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   52.817  -38.166   74.326   98.949    4.500
+    4  b~        V   1     -5    1  -52.817   38.161  -75.526   99.851    4.500
+    5  gamma         1     22    1     .000     .006    1.200    1.200     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   35.694     .424   44.354   57.112    4.500
+    4  b~        V   1     -5    1  -33.511     .451  -90.536   96.645    4.500
+    5  gamma         1     22    1   -2.106    -.862   42.562   42.623     .000
+    6  gamma         1     22    1    -.077    -.012    3.620    3.621     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   33.540   27.639  -21.670   48.772    4.500
+    4  b~        V   1     -5    1  -33.298  -27.632  -57.475   72.083    4.500
+    5  gamma         1     22    1    -.242    -.007   79.124   79.124     .000
+    6  gamma         1     22    1     .000     .000     .019     .019     .000
+    7  gamma         1     22    1     .000     .000     .002     .002     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   -1.690   27.008  -87.249   91.460    4.500
+    4  b~        V   1     -5    1    1.814  -26.770    6.737   28.028    4.500
+    5  gamma         1     22    1    -.124    -.239   80.482   80.483     .000
+    6  gamma         1     22    1     .000     .000     .030     .030     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1    7.482   -8.006  -28.875   31.211    4.500
+    4  b~        V   1     -5    1   72.084   -8.668   45.433   85.765    4.500
+    5  gamma         1     22    1  -79.566   16.674  -16.481   82.948     .000
+    6  gamma         1     22    1     .000     .000    -.053     .053     .000
+    7  gamma         1     22    1     .000     .000    -.023     .023     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1  -26.486   29.158   69.685   80.175    4.500
+    4  b~        V   1     -5    1   26.524  -29.455    9.129   40.923    4.500
+    5  gamma         1     22    1    -.064     .191  -43.203   43.203     .000
+    6  gamma         1     22    1     .035     .067  -35.445   35.445     .000
+    7  gamma         1     22    1     .000     .000    -.201     .201     .000
+    8  gamma         1     22    1    -.008     .039     .035     .053     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1   26.497   -8.352  -79.930   84.740    4.500
+    4  b~        V   1     -5    1  -26.527    8.079   10.361   29.943    4.500
+    5  gamma         1     22    1     .049     .276   77.443   77.443     .000
+    6  gamma         1     22    1    -.019    -.004   -7.819    7.819     .000
+    7  gamma         1     22    1     .000     .000    -.055     .055     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I  particle/jet KS     KF orig    p_x      p_y      p_z       E        m
+
+    1  !e-!         21     11    0     .000     .000  100.000  100.000     .001
+    2  !e+!         21    -11    0     .000     .000 -100.000  100.000     .001
+    3  b         A   2      5    1  -22.875  -74.976  -26.534   82.879    4.500
+    4  b~        V   1     -5    1   24.230   74.266  -11.465   79.083    4.500
+    5  gamma         1     22    1   -1.247     .620   33.783   33.812     .000
+    6  gamma         1     22    1    -.016    -.021    3.123    3.123     .000
+    7  gamma         1     22    1    -.092     .111    1.093    1.103     .000
+                   sum:   .00          .000     .000     .000  200.000  200.000
+
+
+ ***************************************************************************
+ *                      KarLud  final  report                              *
+ *                          window a                                       *
+ *        .99854239  +-  .00013751  Average WT of Vesk1      AVesk1     a0 *
+ *            14987                 total no of events       nevtot     a0 *
+ *                0                 wt<0        events       nevneg     a1 *
+ *     115.00817067                 xs_cru vesko  [R]        xcvesk     a2 *
+ *     114.84053413  +-  .01579117  xs_est vesko  [R]        xsve       a3 *
+ *     114.45953489  +-  .00114460  xs_est gauss  [R]        xcgaus     a4 *
+ *        .00332868  +-  .00013851  xcve/xcgs-1                         a5 *
+ *        .09940553  +-  .00388585      <wt>                 wt_ISR     a6 *
+ *      11.43244760  +-  .04442473  sigma_prim    [R]        xskarl     a7 *
+ ***************************************************************************
+
+1
+      -640          KK2f: Photon raw multiplicity                                                   
+           nent            sum           bmin           bmax
+           1000     .20280E+04     .00000E+00     .32300E+03
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .20280E+01
+   .0000    .550000D+02 0XXXXXXXXXXX                                                      I
+  1.0000    .309000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  2.0000    .323000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  3.0000    .209000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                       I
+  4.0000    .770000D+02 0XXXXXXXXXXXXXXX                                                  I
+  5.0000    .240000D+02 0XXXX                                                             I
+  6.0000    .300000D+01 0                                                                 I
+  7.0000    .000000D+00 0                                                                 I
+  8.0000    .000000D+00 0                                                                 I
+  9.0000    .000000D+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                       KK2f_Finalize  printouts                          *
+ *     200.00000000                 cms energy total         cmsene     a0 *
+ *             1000                 total no of events       nevgen     a1 *
+ *               ** principal info on x-section **                         *
+ *       7.52252352  +-  .06323146  xs_tot MC R-units        xsmc       a1 *
+ *      16.33413549                 xs_tot    picob.         xSecPb     a3 *
+ *        .13729851                 error     picob.         xErrPb     a4 *
+ *        .00840562                 relative error           erel       a5 *
+ *        .89587336                 WTsup, largest WT        WTsup     a10 *
+ *                       ** some auxiliary info **                         *
+ *       2.91795054                 xs_born   picobarns       xborn    a11 *
+ *       2.02800000                 Raw phot. multipl.                 === *
+ *       6.00000000                 Highest phot. mult.                === *
+ *                         End of KK2f  Finalize                           *
+ ***************************************************************************
+
+1
+      -700          MBR: KK2f main weight                                                           
+           nent            sum           bmin           bmax
+          14987     .98028E+03     .00000E+00     .42910E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .65409E-01
+   .0000    .160600D+04 0XXXXXXXXXXXXXXXXXXXXXXXX                                         I
+   .0200    .282000D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                      I
+   .0400    .429100D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   .0600    .311100D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                  I
+   .0800    .146400D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+   .1000    .730000D+03 0XXXXXXXXXXX                                                      I
+   .1200    .293000D+03 0XXXX                                                             I
+   .1400    .171000D+03 0XX                                                               I
+   .1600    .720000D+02 0X                                                                I
+   .1800    .430000D+02 0                                                                 I
+   .2000    .410000D+02 0                                                                 I
+   .2200    .280000D+02 0                                                                 I
+   .2400    .210000D+02 0                                                                 I
+   .2600    .230000D+02 0                                                                 I
+   .2800    .230000D+02 0                                                                 I
+   .3000    .220000D+02 0                                                                 I
+   .3200    .200000D+02 0                                                                 I
+   .3400    .270000D+02 0                                                                 I
+   .3600    .150000D+02 0                                                                 I
+   .3800    .100000D+02 0                                                                 I
+   .4000    .190000D+02 0                                                                 I
+   .4200    .140000D+02 0                                                                 I
+   .4400    .140000D+02 0                                                                 I
+   .4600    .120000D+02 0                                                                 I
+   .4800    .110000D+02 0                                                                 I
+   .5000    .900000D+01 0                                                                 I
+   .5200    .700000D+01 0                                                                 I
+   .5400    .500000D+01 0                                                                 I
+   .5600    .600000D+01 0                                                                 I
+   .5800    .300000D+01 0                                                                 I
+   .6000    .500000D+01 0                                                                 I
+   .6200    .900000D+01 0                                                                 I
+   .6400    .600000D+01 0                                                                 I
+   .6600    .500000D+01 0                                                                 I
+   .6800    .700000D+01 0                                                                 I
+   .7000    .400000D+01 0                                                                 I
+   .7200    .200000D+01 0                                                                 I
+   .7400    .400000D+01 0                                                                 I
+   .7600    .100000D+01 0                                                                 I
+   .7800    .300000D+01 0                                                                 I
+   .8000    .400000D+01 0                                                                 I
+   .8200    .100000D+01 0                                                                 I
+   .8400    .100000D+01 0                                                                 I
+   .8600    .300000D+01 0                                                                 I
+   .8800    .100000D+01 0                                                                 I
+   .9000    .000000D+00 0                                                                 I
+   .9200    .000000D+00 0                                                                 I
+   .9400    .000000D+00 0                                                                 I
+   .9600    .000000D+00 0                                                                 I
+   .9800    .000000D+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                 MBR: report on the main Weight                          *
+ *            14987                 no of raw events         Ntot       b1 *
+ *             1000                 accepted    events       Nacc       b2 *
+ *                0                 wt<0        events       Nneg       b3 *
+ *                0                 wt>WTmax    events       Nove       b4 *
+ *        .89587336                 WTsup, largest WT        WTsup      b5 *
+ *        .00000000                 <Wt-WtMax>  Overfl.      AvOve      b6 *
+ *        .00000000                 <Wt> for Wt<0            AvUnd      b7 *
+ *        .00000000                 AvOve/<Wt>,WT>WtMax      ROverf     b8 *
+ *        .00000000                 AvUnd/<Wt>,Wt<0          RUnder     b9 *
+ ***************************************************************************
+
+ 
+============================================
+    Detailed statistics for all branches    
+============================================
+  KF     AveWt     ERela     WtSup      Wt<0   Wt>Wmax       Ntot       Nacc   Nneg   Nove   Nzer
+   5   .065409   .008406 .8959       .000000   .000000      14987       1000      0      0    177
+All:   .065409   .008406 .8959       .000000   .000000      14987       1000      0      0    177

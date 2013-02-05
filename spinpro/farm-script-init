@@ -1,0 +1,32 @@
+#!/bin/csh
+set echo
+#|-----------------------------------------------------------------
+#| by S. Jadach. Jan. 95
+#| This updates scripts in production subdirectories
+#| on the computer farm (SP-2, CSF, BASTA, SHIFT)
+#| It is invoked like that:
+#|    farm-script-init "1 2 3 4 5 6" bhlpro prod2 SP long
+#|-----------------------------------------------------------------
+set   farmdir=$PWD/farm
+set   farmlist="$1"
+set   main=$2
+set   dset=$3
+set   system=$4
+set   class=$5
+#|-----------------------------------------------------------------
+foreach i ( $farmlist )
+    set subdir=$farmdir/$i
+#| Some strings are replaced in the template file
+    mv $subdir/$dset.cmd.$i $subdir/$dset.cmd.$i.bak
+    sed   -e      's#<dset>#'$dset'#'g \
+          -e     's#<class>#'$class'#'g \
+          -e   's#<pthfarm>#'$farmdir'#'g \
+          -e 's#<farmindex>#'$i'#'g \
+          ../farm$system.cmd.template  > $subdir/$dset.cmd.$i
+end
+#| show results
+set echo
+ls -altr $farmdir/?/$dset.cmd.?
+#|-----------------------------------------------------------------
+exit 0
+ 

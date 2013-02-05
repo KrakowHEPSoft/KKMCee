@@ -1,0 +1,128 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% macro-package FORTEX   (unix version)             Scott Yost %
+% Documentation file: see fortex.doc.                  4/27/92 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\message{ by S. Yost: TeX macro-package for printing FORTRAN programs.}
+\overfullrule=0pt
+%
+% Plain option, for verbatim printing:
+\def\plain{\let\commentfont=\tt \nomathtrue}
+%
+% The following may be redefined to change the comment or program fonts.
+\let\commentfont=\rm      % comment font 
+\let\programfont=\tt      % program font
+%
+% Define logical switches.      
+\newif\ifnewline\newlinefalse   %    tests for new line
+\newif\ifcomment\commenttrue    %    tests for comment environment
+\newif\ifnomath\nomathfalse     %    tests whether math mode is enabled
+\newif\ifmore\morefalse         %    tests for comment line continuation
+\newif\ifchmode\chmodefalse     %    tests for FORTRAN character string mode
+%
+% Obey lines, start lines flush left, keeping spaces. 
+% Blank lines are tagged to be good places for page breaks.
+\edef\nullmark{$\vcenter{\hrule width0pt}$}%          
+\def\par{\leavevmode\endgraf}\obeylines%
+\def^^M{\ifmore\relax\else\par\ifnewline\penalty-1000\fi\nullmark\program\fi}%
+\let\ret=^^M%
+%
+% Obey spacing, standardize space size to Teletype space width.
+\edef\ttspace{{\hbox{\tt\ }}}\def\space{\newlinefalse\ttspace}%
+\obeyspaces\frenchspacing\let =\space%
+%
+% Define comment, program and character mode environments.
+\def\comment#1{\ifmore\let =\space\morefalse\else{#1}\fi%
+\commenttrue\newlinefalse\commentfont}%
+\def\program{\ifmore\morefalse\message{\string\more must be % 
+followed by a nonempty FORTRAN comment line.}\let =\space\fi%
+\commentfalse\newlinetrue\chmodefalse\programfont}%
+\def\chtoggle{\ifchmode\chmodefalse\else\chmodetrue\fi}%
+%
+% Define user commands.
+\def\nomath{\nomathtrue}%             Cancels special symbols and math mode.
+\def\math{\nomathfalse}%              Reactivates special symbols, math mode.
+\def\more{\moretrue\let =\relax}%     Adjoins following comment line.
+\def\note#1{\relax}%                  Indicates non-printing text.
+\def\endpage{\vfil\break}%            Forces page break.
+\let\newpage\endpage
+%
+% A right quote ' enters or leaves FORTRAN character mode
+% in the program, but follows TeX conventions in comments.
+\catcode`\'\active%
+\def'{\ifcomment\ifmmode^\prime\else\rq\fi%
+\else\chtoggle\rq\fi}% 
+%
+% An exclamation point begins comment mode unless it is 
+% a FORTRAN character constant in the program.
+\let\exclam=!\catcode`!\active% 
+\def!{\ifchmode\exclam\else\comment{\exclam}\fi}%
+%
+% Write asterisks in-line since they represent products.           
+% Asterisks begin a comment if in column 1.
+\edef\ast{{\rlap{\hbox{$*$}}\ttspace}}\catcode`*\active%
+\def*{\ifnewline\comment{\ast}\else\ast\fi}%
+%
+% C begins a comment if in column 1.
+\let\capc=C\catcode`C\active%
+\defC{\ifnewline\comment{\capc}\else\capc\fi}%
+%
+% a | in the first column starts a new page (for output purposes)
+\let\vertbar=|\catcode`|\active%
+\def|{\ifnewline\newpage\else\vertbar\fi}%
+%
+% Treat hyphens as being in Teletype font unless in TeX math 
+% mode, where they are minus signs, or in program mode, where
+% they are in the specified \programfont.
+\let\hyphen=-\edef\tthyphen{{\hbox{\tt-}}}%
+\edef\minus{{\hbox{$-$}}}\catcode`-\active%
+\def-{\ifcomment\ifmmode\minus\else\tthyphen\fi\else\hyphen\fi}%
+%
+% Underlines are printed explicitly outside of TeX math mode, 
+% where they are subscript indicators.
+\catcode`\_\active% 
+\def_{\ifmmode\sb\else\_\fi}%
+%
+% Define `greater than' and `less than' symbols following
+% FORTRAN names, permitting simplified notation for
+% left and right angle brackets in math mode.
+\edef\gt{{\hbox{$>$}}} \edef\lt{{\hbox{$<$}}}%
+\catcode`<\active\catcode`>\active%
+\def<{\ifmmode\langle\else\lt\fi}%
+\def>{\ifmmode\rangle\else\gt\fi}%
+% 
+% Define the double backslash symbol, useful in unix IO routines
+\xdef\bsbs{$\backslash\backslash$}\let\\=\bsbs% 
+%
+% Dollar sign prints if in program; treated as math
+% mode shift in comments.
+\let\dollar=$\catcode`\$\active%
+\def${\ifcomment\ifnomath\$\else\dollar\fi\else\$\fi}%
+%
+% Ampersand prints if in program; treated as a TeX 
+% alignment tab in comments.
+\let\amp=&\catcode`\&\active%
+\def&{\ifcomment\ifnomath\&\else\amp\fi\else\&\fi}%
+%
+% The tilde is treated as an ordinary character in
+% program mode or a tie in comments.
+\let\tie=~\catcode`\~\active%
+\def~{\ifcomment\ifnomath\~\else\tie\fi\else\~\fi}%
+%
+% Widen \tilde and \hat for aesthetic improvement.
+\let\tilde=\widetilde%
+\let\hat=\widehat%
+%
+% Define a tab to be eight spaces.  ^^I is a tab.
+\catcode`\^^I\active%
+\def^^I{\newlinefalse\ \ \ \ \ \ \ \ }%
+\let\tab=^^I%
+%
+% Carats are printed explicitly except in math mode,
+% where they indicate superscripts.
+\let\carat=^\catcode`\^\active%
+\def^{\ifmmode\carat\else\^\fi}%
+%
+% #, @, and % are printed characters.
+\catcode`\#=11%
+\catcode`\@=11%
+\catcode`\%=11

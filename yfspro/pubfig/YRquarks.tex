@@ -1,0 +1,110 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
+                                                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ./tex_to_ps YRquarks
+% ./txp_to_eps tab1-189GeV
+% ./txp_to_eps tab2-189GeV
+% ./txp_to_eps tab1wt-189GeV
+% ./txp_to_eps tab2wwt-189GeV
+% pstops '1:0@0.925(10mm,-1mm)' KKquarks.ps  KKquarks-redu.ps
+%======================
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}                     %%%%%%%%%%%%%%%%%%
+
+
+\def\title{\Color{PineGreen} Quarks from \KK MC}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide*}                                                %%%%%%%%%%%%%%%
+\titbox{{\large\Color{Magenta} \KK MC versus \KK sem, WT-ed events}}
+{\bf\color{blue}
+\noindent
+Inclusive run of \KK MC, $q=d,u,s,c,b$. \\
+Energy: $\sqrt{s}$= 189GeV. QED FSR off.\\
+Simple cut $v=1-s'/s<v_{\max}$. Workshop input.
+}
+\vspace{-2mm}
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(70,60)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(0,0){\makebox(0,0)[lb]{\epsfig{file=tab1YR-189.eps,width=70mm,height=60mm}}}
+\end{picture}
+\end{center}
+\vspace{1mm}
+\noindent
+{\large\bf\color{red}
+  Very good agreement, 0.2\% or better!
+}
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                                         %%%%%%%%%%%%%%%%%%%%
+\begin{slide*}
+\titbox{{\large\Color{Magenta} \KK MC versus Zfitter 6.x and KKsem}}
+\noindent
+{\bf\color{blue}
+\KK MC: inclusive run $q=d,u,s,c,b$. \\
+WT-ed events. $\sqrt{s}$= 189GeV. QED FSR off.\\
+Simple cut $v=1-s'/s<v_{\max}$. Workshop input.
+}
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(80,65)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(0,0){\makebox(0,0)[lb]{\epsfig{file=tab3YR-189.eps,width=80mm,height=70mm}}}
+\end{picture}
+\end{center}
+\vspace{-2mm}
+\noindent
+{\bf\color{red}
+Not so bad. Worst discrepances 0.7\% for single quark (was 1.2\%), 
+0.3\% for all quarks (was 0.6\%).
+}
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                                         %%%%%%%%%%%%%%%%%%%%
+\begin{slide*}
+\titbox{{\large\Color{Magenta} \KK MC versus KORALZ 4.02 and 4.04}}
+\noindent
+{\bf\color{blue}
+\KK MC: inclusive run $q=d,u,s,c,b$. \\
+WT-ed events. $\sqrt{s}$= 189GeV. QED FSR is off.\\
+Simple cut $v=1-s'/s<v_{\max}$. Workshop input.
+}
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(80,65)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(0,0){\makebox(0,0)[lb]{\epsfig{file=tab2YR-189.eps,width=80mm,height=70mm}}}
+\end{picture}
+\end{center}
+\vspace{-2mm}
+\noindent
+{\bf\color{red}
+Worse... Worst discrepances 2\% for single quark, 0.7\% for all quarks.
+}
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

@@ -1,0 +1,25 @@
+LOCAL_LIB   =  KKsem.a 
+LIB_OBJECTS =  KKsem.o plotlib.o readat.o
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+###############
+FFLAGS = <FFLAGS>
+F77 = <F77>
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+#############
+KKsem.f:	KKsem.h
+#############
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ 
+Clean:	clean
+	rm -f *.o; rm -f *.a; rm -f *~ 
+#############################
+

@@ -1,0 +1,96 @@
+Notes for today: 18 Nov 1998.
+=============================
+All tests have output dumped onto benchmark disk-file.
+The actual output is automaticaly diff'ed with respect to benchark.
+For the moment there are 11 tests:
+*//   make Test_SfacISR
+*//   make Test_SfacFSR
+*//   make Test_Rmat        <--- output in TH preprint!!!
+*//   make Test_UV
+*//   make Test_BornXsec
+*//   make Test_IsrSingle
+*//   make Test_FsrSingle
+*//   make Test_NewSingle   <--- new!!!
+*//   make Test_MultiPhot
+*//   make Test_Virtual
+*//   make Test_Rules
+*//   make Test_DsigOverDtau
+
+The most recent is test of Zbyszek: Test_NewSingle
+I hope it still works properly.
+
+The most important is Test_Rmat, its output is in TH preprint!!!
+
+Note that the first new test on tau transverse correlations is
+in subdirectory ffbench.
+
+S.J.
+
+
+===================================
+Staus report for today, 4 may 1998.
+===================================
+
+Born
+====
+Born spina amplitudes are based on Chisholm identity, i.e. electron mass
+is set exacly to zero. Final fermion mass is kept finite.
+Unpolarized differential cross section is tested 2-fold.
+If Z is off then 12-digit agreement is found from threshold to infinity.
+For Z on, the rasonable agreement is found far from the threshold.
+Double spin correlation matrix element R of KORALB for final taus
+is reproduced in the case of Z swiched off, from threshold to infinity.
+This is highly nontrivial test because spin quantization axes for
+present KS/GPS method are different from KORALB choice.
+The appropriate nontrivial rotation in the rest frame of each tau is done 
+before agreement in R is obtained.
+Tralor routine for GPS scheme is constructed.
+To be done:
+- The test of R has to be done once again with original Tralor
+  and spin amplitudes of KORALB (I have done short-cuts)
+- For Z on, some test has to be done, spin correlations are trivial
+  but signs of polarization vectors has to be checked.
+
+1-photon ISR
+============
+For ISR single photon spin amplitudes using KS (Kleiss&Stirling)
+method are written in such a way that soft and non-infrared parts
+are clearly separated.
+The calculation exists in 2 versions (like in KS papers) with auxiliary
+axial gauge vector b defining photon polarization being identical
+to k0=xi and not identical. In the second case we have possibility
+of additional x-checks of gauge invariance 
+(KeyArb=0,1 switches between the two methods).
+The agreemen with 3 other subprograms is found:
+with (1) old clasical formula used in YFS3, (2) program of Ela based
+on MULTI subroutine, which is mathematicaly equivalent to KS and ours
+(modulo phase controll) (3) spinor formula of Kleiss programmed by Ela.
+The agreement was also found at angles comparable to m_e/Wbeam,
+i.e. so called mass corrections are also reproduced.
+The agreement holds for Z switched on.
+Note that in the above tests fermion mass (electron) was always small.
+To be done:
+- compare R correlation matrix derived
+  from new spin amplitudes and these of KORALB, down to tau threshold!
+- bug was found in YFS3ff matrix element, partly corrected...
+
+1-photon FSR
+============
+Here, single photon spin amplitudes using KS/GPS are also written
+and partly tested.
+The agreement of unpolarized differential differential distributions
+with old standard YFS3 formula is found for Z on and off.
+The agreement with KS and Kleiss, as programmed by Ela is found for
+Z being off, but some problem persists for Z on (under investigation).
+For Z-off at high energies there is perfect agreement with MULTI approach
+however close to tau threshold there is 20% difference which should
+not be there, as both calculations in principle treat tau mass rigorously.
+Most probably this is due to neglecting tau mass in some trivial
+normalization factors.
+To be done:
+- for unpolarised distributions, to debug mass terms close to tau threshold
+- find out the reason for disagreement in Z-on case.
+- compare R correlation matrix derived
+  from new spin amplitudes and these of KORALB, down to tau threshold!
+
+to by bylo na tyle... St.

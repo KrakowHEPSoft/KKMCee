@@ -1,0 +1,310 @@
+           
+            *************************************************************
+            *  ****   ****    ****  ****    ***       ***     ******    *
+            *  ****   ****    ****  ****    ****     ****   **********  *
+            *  ****   ****    ****  ****    *****   *****  *****   ***  *
+            *  **********     *********     *************  ****         *
+            *  *******        ******        *************  ****         *
+            *  **********     ********      **** *** ****  *****   ***  *
+            *  ****  *****    ****  ****    ****  *  ****   **********  *
+            *  ****   *****   ****   ****   ****     ****     *******   *
+            *************************************************************
+           
+
+
+ ***************************************************************************
+ *                         KK Monte Carlo                                  *
+ *            Version       4.19          25 Sept  2002                    *
+ *      10.58000000                 CMS energy average       CMSene     a1 *
+ *        .00000000                 Beam energy spread       DelEne     a2 *
+ *              100                 Max. photon mult.        npmax      a3 *
+ *                1                 wt-ed or wt=1 evts.      KeyWgt     a4 *
+ *                1                 ISR switch               KeyISR     a4 *
+ *                1                 FSR switch               KeyFSR     a5 *
+ *                2                 ISR/FSR interferenc      KeyINT     a6 *
+ *                1                 New exponentiation       KeyGPS     a7 *
+ *                1                 Hadroniz.  switch        KeyHad     a7 *
+ *        .20000000                 Hadroniz. min. mass      HadMin     a9 *
+ *       1.00000000                 Maximum weight           WTmax     a10 *
+ *              100                 Max. photon mult.        npmax     a11 *
+ *               11                 Beam ident               KFini     a12 *
+ *        .00005290                 Manimum phot. ener.      Ene       a13 *
+ *    .10000000E-59                 Phot.mass, IR regul      MasPho    a14 *
+ *    1.2500000                     Phot. mult. enhanc.      Xenph     a15 *
+ *    .10000000E-08                 Vcut1                    Vcut1     a16 *
+ *    .50000000E-01                 Vcut2                    Vcut2     a16 *
+ *     .0000000                     Vcut3                    Vcut2     a16 *
+ *        .00000000                    PolBeam1(1)           Pol1x     a17 *
+ *        .00000000                    PolBeam1(2)           Pol1y     a18 *
+ *        .00000000                    PolBeam1(3)           Pol1z     a19 *
+ *        .00000000                    PolBeam2(1)           Pol2x     a20 *
+ *        .00000000                    PolBeam2(2)           Pol2y     a21 *
+ *        .00000000                    PolBeam2(3)           Pol2z     a22 *
+ ***************************************************************************
+
+ +++WARNING: for WT=0 events NO hadronization!
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         amz        a1 *
+ *     100.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     175.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       2.50072032                 Z width    [GeV]         gammz      a4 *
+ *        .22276773                 sin(theta_w)**2          sinw2      a5 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *        .20000000                 MassCut light qqbar      HadMin     a6 *
+ *               11                 KF code of beam          KFini      a7 *
+ *    .90000000                     Input vvmax              vvmax      a8 *
+ *    .90000000                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                1                 Electroweak lib.         KeyElw     10 *
+ *                1                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ *                0                 R for gamma* on/off      KeyRes     12 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925439                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825839                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925439                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825839                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.botom.current                                  *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.mu.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.tau.current                                    *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.nue.current                                    *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.numu.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.nutau.current                                  *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *        .22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                         KarLud_Initialize START                         *
+ *      10.58000000                  CMS energy average      CMSene     == *
+ *        .00000000                  Beam energy spread      DelEne     == *
+ *                1                  ISR on/off switch       KeyISR     == *
+ *                0                  Type of ISR             KeyFix     == *
+ *                1                  Elect_weak switch       KeyZet     == *
+ *                0                  Fixed nphot mult.       MltISR     == *
+ *               50                  Max. photon mult.       nmax       == *
+ ***************************************************************************
+
+ *      15.33094241                 xs_crude  vesko          xcvesk        *
+ *      15.32729800                 xs_crude  gauss          xcgaus        *
+ *        .00023777                 xcvesk/xcgaus-1                        *
+
+
+ ***************************************************************************
+ *                          KarLud_Initialize END                          *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                        KarFin Initialize  START                         *
+ *                1                FSR radiation on/off      KeyFSR     a1 *
+ *                1                radiation from quark      KeyQSR     a2 *
+ *                1                removal    switch         KeyPia     a3 *
+ *    .10000000E-02                infrared cut FACTOR       delfac     a4 *
+ *    .10000000E-07                infrared cut itself       delta      a5 *
+ *    .52900000E-04                EminCMS for removal       [GeV]      a6 *
+ *               50                Max. photon mult.         nmax       a7 *
+ *                        KarFin Initialize  END                           *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *             GPS   Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         MZ         a1 *
+ *       2.49925438                 Z width    [GeV]         GammZ      a2 *
+ *        .22302485                 sin(theta_w)**2          Sw2        a3 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a4 *
+ *         Test switches:                                                  *
+ *                1                 Z on/off   switch        KeyZet     a5 *
+ *                1                 Electroweak lib.         KeyElw     a6 *
+ *                1                 CEEX level               KeyGPS     a7 *
+ *                1                 ISR emission             KeyISR     a8 *
+ *                1                 FSR emission             KeyFSR     a9 *
+ *                2                 ISR*FSR interferenc      KeyINT    a10 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *               Initialization of GPS class                               *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                           KK2f: Initialization                          *
+ *    11.895703                     x-crude [nb]             Xcrunb     ** *
+ *         List of final fermions:                                         *
+ *               13                 KF of final fermion      KFfin      ** *
+ *    .10565830                     mass of final ferm.      amferm     ** *
+ *    .99991019                     Xborn [R]                Xborn      ** *
+ *    8.0000000                     WtMax sampling par.      WtMax      ** *
+ *     .0000000                     Auxiliary Parameter      AuxPar     ** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        KK interface of Tauola                                           *
+ *                2                Cloning procedure       KeyClone    t01 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        Parameters passed from KK  to Tauola:                            *
+ *                0                dec. type 1-st tau        Jak1      t01 *
+ *                0                dec. type 2-nd tau        Jak2      t02 *
+ *                1                current type a1 dec.      KeyA1     t03 *
+ *               15                PDG id 1-st tau           idff      t04 *
+ *                1                R.c. switch lept dec      itdkRC    t05 *
+ *    .10000000E-02                IR-cut for lept r.c.      xk0dec    t06 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                 !!!!! Tauola inhibited !!!!                             *
+ ***************************************************************************
+
+  ===========================================================
+  ================ KKsem_Initialize =========================
+m_Xenph   = 1.25000    
+m_Nchanel =           1
+m_KFfin   =          13
+m_MfinMin =      .10566
+  ===========================================================

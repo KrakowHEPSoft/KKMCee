@@ -1,0 +1,12 @@
+*  !!!!! logbook of corrections starting nov. 91 !!!!!
+*  r1 and r2 in kinekr undefined
+*  bremkf, vvdist moved to yfs3MOD.f
+*  vvdist replaced with vvrho from yfsfig
+*  vesk8a replaced by vesk1w
+*  funsko replaced by rhosko (change of name)
+*  gauss replaced by gausjd
+*  cmsene shiftet to xpar !!! 3 first entries in xpar changed
+*  chbin2 replaced by chbin1
+*  xpar(10,12) in output are swapped (to bhlumi convention)
+*  initialization of glibk in the generator
+*  bug with PARAMETER(pi=...) corrected

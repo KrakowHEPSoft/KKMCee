@@ -1,0 +1,53 @@
+%Date: Wed, 10 May 2000 19:55:06 +0400 (MSD)
+%From: Dmitry Bardin <bardin@nusun.jinr.dubna.su>
+%To: Stanislaw Jadach <Stanislaw.Jadach@cern.ch>
+%Subject: Table back
+%In-Reply-To: <200005101437.QAA09623@lxplus014.cern.ch>
+%Message-ID: <Pine.SUN.3.91.1000510194724.28960R-100000@nusun2.jinr.dubna.su>
+%MIME-Version: 1.0
+%Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+\documentclass[12pt,dvips]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{epsfig}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{color}
+\begin{document}
+\pagestyle{empty}
+% ========================================
+% ============ begin table ===============
+\noindent
+\begin{tabular} {||c||r|r|r|r|r|r||}
+\hline
+ \multicolumn{ 7}{||c||}{
+{\color{red}
+$ E=189 GeV$, $\sigma(v_{\max})$, $[pb]$ }                            }
+\\
+\hline\hline
+{\color{blue} $v_{\max}$ } &
+{\color{blue}   u } &
+{\color{blue}   d } &
+{\color{blue}   c } &
+{\color{blue}   s } &
+{\color{blue}   b } &                                                 
+{\color{blue} all }                                                         \\
+\hline
+ BORN &  5.7443  &  3.6486 &  5.7441 &  3.6486  & 3.6692   &  22.4548
+ \\
+\hline
+BORN+QCD& 5.9367 &  3.7589 &  5.9366 &  3.7589  & 3.7811   &  23.1722     
+\\
+\hline
+0.01 &  3.7522  &  2.3974 &  3.7521  &  2.3974  &  2.4420 & 14.7411\\
+0.10 &  4.9442  &  3.1482 &  4.9441  &  3.1482  &  3.1804 & 19.3651\\
+0.20 &  5.3893  &  3.4371 &  5.3891  &  3.4371  &  3.4644 & 21.1170\\
+0.30 &  5.6874  &  3.6383 &  5.6873  &  3.6383  &  3.6621 & 22.3134\\
+0.90 & 18.6619  & 19.4675 & 18.6608  & 19.4675  & 19.1390 & 95.3968\\
+0.99 & 19.2312  & 19.6240 & 19.2301  & 19.6240  & 19.2952 & 97.0045\\
+\hline
+\end{tabular}
+
+\end{document}
+

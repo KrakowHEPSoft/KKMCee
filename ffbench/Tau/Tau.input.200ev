@@ -1,0 +1,27 @@
+ 1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+       200      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+********************************************************************************
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1          200D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+********************************************************************************
+   61       0.7071d0      spin1x  polarization vector beam 1
+   62            0d0      spin1y  polarization vector beam 1
+   63       0.7071d0      spin1z  polarization vector beam 1
+   64            0d0      spin1x  polarization vector beam 2
+   65      -0.7071d0      spin1y  polarization vector beam 2
+   66       0.7071d0      spin1z  polarization vector beam 2
+********************************************************************************
+*** 2001            3d0      Jak1 =xpar(71)  First  Tau decay mask (=3 for pion)
+*** 2002            3d0      Jak2 =xpar(72)  Second Tau decay mask (=3 for pion)
+********************************************************************************
+*     Define process
+  415              1      KFfin, Tau
+********************************************************************************
+EndX

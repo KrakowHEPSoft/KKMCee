@@ -1,0 +1,14 @@
+mix200 ==== data set ======
+ 0 0 0 1 0 0 0 0         KAT1-KAT8
+   5000000      NEVT number of events
+    100011      KEYRAD  originaly it was 100011
+   200.0D0      CMSENE  200GeV
+ 0.23146D0      SINW2
+  91.161D0      AMAZ
+  2.4534D0      GAMMZ
+   0.105D0      AMFIN   muon in final state
+      1D-6      VVMIN
+   0.999D0      VVMAX   originaly it was  0.999D0
+         0      KEYRED  originaly it was  1
+         1      KEYWGT  originaly it was  1
+         2      KEYZET  originaly it was -2

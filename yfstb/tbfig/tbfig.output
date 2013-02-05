@@ -1,0 +1,364 @@
+ ==============================================
+ =============S U S F I G======================
+ ==============================================
+tbwork2
+1
+   1000          2-nd phot. energy, wt                                                           
+           nent            sum           bmin           bmax
+         144650     .36459E+06     .21435E+00     .43657E+05
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .25205E+01
+  1.0000    .436567D+05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  2.5000    .163560D+05 XXXXXXXXXXXXXXXXXXXXXXXXX                                         I
+  4.0000    .889636D+04 XXXXXXXXXXXXXX                                                    I
+  5.5000    .549576D+04 XXXXXXXXX                                                         I
+  7.0000    .365070D+04 XXXXXX                                                            I
+  8.5000    .260936D+04 XXXX                                                              I
+ 10.0000    .186610D+04 XXX                                                               I
+ 11.5000    .131252D+04 XX                                                                I
+ 13.0000    .986120D+03 XX                                                                I
+ 14.5000    .788143D+03 XX                                                                I
+ 16.0000    .588546D+03 X                                                                 I
+ 17.5000    .457401D+03 X                                                                 I
+ 19.0000    .339644D+03 X                                                                 I
+ 20.5000    .257620D+03 X                                                                 I
+ 22.0000    .201173D+03 X                                                                 I
+ 23.5000    .149323D+03 X                                                                 I
+ 25.0000    .119858D+03 X                                                                 I
+ 26.5000    .934009D+02 X                                                                 I
+ 28.0000    .756109D+02 X                                                                 I
+ 29.5000    .568055D+02 X                                                                 I
+ 31.0000    .441678D+02 X                                                                 I
+ 32.5000    .339363D+02 X                                                                 I
+ 34.0000    .294693D+02 X                                                                 I
+ 35.5000    .215932D+02 X                                                                 I
+ 37.0000    .137527D+02 X                                                                 I
+ 38.5000    .114961D+02 X                                                                 I
+ 40.0000    .727134D+01 X                                                                 I
+ 41.5000    .468432D+01 X                                                                 I
+ 43.0000    .212503D+01 X                                                                 I
+ 44.5000    .214352D+00 X                                                                 I
+1
+   1070          2-nd phot. energy, wt                                                           
+           nent            sum           bmin           bmax
+              1     .00000E+00     .00000E+00     .15000E-02
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .00000E+00
+  1.0000    .760467D-05    .343284D-07 0                                                    I
+  2.5000    .284909D-05    .200480D-07 0                                                    I
+  4.0000    .154968D-05    .141757D-07 0                                                    I
+  5.5000    .957319D-06    .106690D-07 0                                                    I
+  7.0000    .635924D-06    .836861D-08 0                                                    I
+  8.5000    .454531D-06    .682975D-08 0                                                    I
+ 10.0000    .325060D-06    .553048D-08 0                                                    I
+ 11.5000    .228630D-06    .443160D-08 0                                                    I
+ 13.0000    .171775D-06    .370114D-08 0                                                    I
+ 14.5000    .137288D-06    .319244D-08 0                                                    I
+ 16.0000    .102520D-06    .266166D-08 0                                                    I
+ 17.5000    .796758D-07    .225375D-08 0                                                    I
+ 19.0000    .591633D-07    .187214D-08 0                                                    I
+ 20.5000    .448753D-07    .154908D-08 0                                                    I
+ 22.0000    .350427D-07    .131355D-08 0                                                    I
+ 23.5000    .260109D-07    .106850D-08 0                                                    I
+ 25.0000    .208784D-07    .902749D-09 0                                                    I
+ 26.5000    .162697D-07    .774480D-09 0                                                    I
+ 28.0000    .131708D-07    .653303D-09 0                                                    I
+ 29.5000    .989508D-08    .542726D-09 0                                                    I
+ 31.0000    .769368D-08    .455143D-09 0                                                    I
+ 32.5000    .591143D-08    .370222D-09 0                                                    I
+ 34.0000    .513333D-08    .327155D-09 0                                                    I
+ 35.5000    .376137D-08    .257213D-09 0                                                    I
+ 37.0000    .239561D-08    .190421D-09 0                                                    I
+ 38.5000    .200253D-08    .158341D-09 0                                                    I
+ 40.0000    .126661D-08    .107166D-09 0                                                    I
+ 41.5000    .815972D-09    .748109D-10 0                                                    I
+ 43.0000    .370163D-09    .371177D-10 0                                                    I
+ 44.5000    .373384D-10    .744977D-11 0                                                    I
+1
+   1002          2-phot. mass, cut, wt                                                           
+           nent            sum           bmin           bmax
+          43046     .40292E+06     .00000E+00     .75421E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .93603E+01
+  5.0000    .754206D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  8.0000    .518128D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 11.0000    .367345D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                 I
+ 14.0000    .258787D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+ 17.0000    .177920D+04 0XXXXXXXXXXXXXXX                                                  I
+ 20.0000    .131391D+04 0XXXXXXXXXXX                                                      I
+ 23.0000    .100112D+04 0XXXXXXXX                                                         I
+ 26.0000    .745300D+03 0XXXXXX                                                           I
+ 29.0000    .581811D+03 0XXXXX                                                            I
+ 32.0000    .427415D+03 0XXX                                                              I
+ 35.0000    .362225D+03 0XXX                                                              I
+ 38.0000    .278598D+03 0XX                                                               I
+ 41.0000    .223624D+03 0X                                                                I
+ 44.0000    .185469D+03 0X                                                                I
+ 47.0000    .154674D+03 0X                                                                I
+ 50.0000    .114793D+03 0X                                                                I
+ 53.0000    .953477D+02 0                                                                 I
+ 56.0000    .772591D+02 0                                                                 I
+ 59.0000    .622012D+02 0                                                                 I
+ 62.0000    .506518D+02 0                                                                 I
+ 65.0000    .379863D+02 0                                                                 I
+ 68.0000    .268334D+02 0                                                                 I
+ 71.0000    .274635D+02 0                                                                 I
+ 74.0000    .169344D+02 0                                                                 I
+ 77.0000    .149164D+02 0                                                                 I
+ 80.0000    .105302D+02 0                                                                 I
+ 83.0000    .626304D+01 0                                                                 I
+ 86.0000    .325544D+01 0                                                                 I
+ 89.0000    .312803D+00 0                                                                 I
+ 92.0000    .000000D+00 0                                                                 I
+1
+   1072          2-phot. mass, cut, wt                                                           
+           nent            sum           bmin           bmax
+              1     .00000E+00     .00000E+00     .30000E-03
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .00000E+00
+  5.0000    .656884D-06    .714898D-08 0                                                    I
+  8.0000    .451269D-06    .562115D-08 0                                                    I
+ 11.0000    .319943D-06    .451568D-08 0                                                    I
+ 14.0000    .225393D-06    .367539D-08 0                                                    I
+ 17.0000    .154961D-06    .294587D-08 0                                                    I
+ 20.0000    .114437D-06    .244114D-08 0                                                    I
+ 23.0000    .871938D-07    .206969D-08 0                                                    I
+ 26.0000    .649127D-07    .173904D-08 0                                                    I
+ 29.0000    .506735D-07    .149096D-08 0                                                    I
+ 32.0000    .372262D-07    .122437D-08 0                                                    I
+ 35.0000    .315484D-07    .109594D-08 0                                                    I
+ 38.0000    .242648D-07    .926595D-09 0                                                    I
+ 41.0000    .194768D-07    .804311D-09 0                                                    I
+ 44.0000    .161537D-07    .705024D-09 0                                                    I
+ 47.0000    .134715D-07    .610369D-09 0                                                    I
+ 50.0000    .999801D-08    .503554D-09 0                                                    I
+ 53.0000    .830442D-08    .439161D-09 0                                                    I
+ 56.0000    .672897D-08    .382541D-09 0                                                    I
+ 59.0000    .541748D-08    .323243D-09 0                                                    I
+ 62.0000    .441157D-08    .277500D-09 0                                                    I
+ 65.0000    .330846D-08    .219981D-09 0                                                    I
+ 68.0000    .233709D-08    .180816D-09 0                                                    I
+ 71.0000    .239196D-08    .167173D-09 0                                                    I
+ 74.0000    .147492D-08    .121004D-09 0                                                    I
+ 77.0000    .129916D-08    .103887D-09 0                                                    I
+ 80.0000    .917138D-09    .764651D-10 0                                                    I
+ 83.0000    .545486D-09    .480478D-10 0                                                    I
+ 86.0000    .283536D-09    .270470D-10 0                                                    I
+ 89.0000    .272439D-10    .518068D-11 0                                                    I
+ 92.0000    .000000D+00    .000000D+00 0                                                    I
+1
+   1002          2-phot. mass, cut, wt                                                           
+           nent            sum           bmin           bmax
+          43046     .40292E+06     .00000E+00     .75421E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .93603E+01
+  5.0000    .754206D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  8.0000    .518128D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 11.0000    .367345D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                 I
+ 14.0000    .258787D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+ 17.0000    .177920D+04 0XXXXXXXXXXXXXXX                                                  I
+ 20.0000    .131391D+04 0XXXXXXXXXXX                                                      I
+ 23.0000    .100112D+04 0XXXXXXXX                                                         I
+ 26.0000    .745300D+03 0XXXXXX                                                           I
+ 29.0000    .581811D+03 0XXXXX                                                            I
+ 32.0000    .427415D+03 0XXX                                                              I
+ 35.0000    .362225D+03 0XXX                                                              I
+ 38.0000    .278598D+03 0XX                                                               I
+ 41.0000    .223624D+03 0X                                                                I
+ 44.0000    .185469D+03 0X                                                                I
+ 47.0000    .154674D+03 0X                                                                I
+ 50.0000    .114793D+03 0X                                                                I
+ 53.0000    .953477D+02 0                                                                 I
+ 56.0000    .772591D+02 0                                                                 I
+ 59.0000    .622012D+02 0                                                                 I
+ 62.0000    .506518D+02 0                                                                 I
+ 65.0000    .379863D+02 0                                                                 I
+ 68.0000    .268334D+02 0                                                                 I
+ 71.0000    .274635D+02 0                                                                 I
+ 74.0000    .169344D+02 0                                                                 I
+ 77.0000    .149164D+02 0                                                                 I
+ 80.0000    .105302D+02 0                                                                 I
+ 83.0000    .626304D+01 0                                                                 I
+ 86.0000    .325544D+01 0                                                                 I
+ 89.0000    .312803D+00 0                                                                 I
+ 92.0000    .000000D+00 0                                                                 I
+1
+   1003          2-phot. mass, cut, wt*R                                                         
+           nent            sum           bmin           bmax
+          43046     .41633E+06     .00000E+00     .75909E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .96718E+01
+  5.0000    .759086D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  8.0000    .520230D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 11.0000    .366993D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                  I
+ 14.0000    .258059D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+ 17.0000    .177914D+04 0XXXXXXXXXXXXXXX                                                  I
+ 20.0000    .131682D+04 0XXXXXXXXXXX                                                      I
+ 23.0000    .992704D+03 0XXXXXXXX                                                         I
+ 26.0000    .735579D+03 0XXXXXX                                                           I
+ 29.0000    .578312D+03 0XXXXX                                                            I
+ 32.0000    .424425D+03 0XXX                                                              I
+ 35.0000    .740954D+03 0XXXXXX                                                           I
+ 38.0000    .273862D+03 0XX                                                               I
+ 41.0000    .216734D+03 0X                                                                I
+ 44.0000    .180320D+03 0X                                                                I
+ 47.0000    .153330D+03 0X                                                                I
+ 50.0000    .115190D+03 0X                                                                I
+ 53.0000    .966127D+02 0                                                                 I
+ 56.0000    .762255D+02 0                                                                 I
+ 59.0000    .637738D+02 0                                                                 I
+ 62.0000    .503794D+02 0                                                                 I
+ 65.0000    .403134D+02 0                                                                 I
+ 68.0000    .267923D+02 0                                                                 I
+ 71.0000    .285953D+02 0                                                                 I
+ 74.0000    .188542D+02 0                                                                 I
+ 77.0000    .156282D+02 0                                                                 I
+ 80.0000    .116408D+02 0                                                                 I
+ 83.0000    .713712D+01 0                                                                 I
+ 86.0000    .760766D+01 0                                                                 I
+ 89.0000    .591513D+00 0                                                                 I
+ 92.0000    .000000D+00 0                                                                 I
+1
+   1054          2-phot. mass, cut, wt*R                                                         
+           nent            sum           bmin           bmax
+              1     .00000E+00     .50000E+00     .13000E+01
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .00000E+00
+  5.0000    .100647D+01    .154753D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+  8.0000    .100406D+01    .176789D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 11.0000    .999043D+00    .199318D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 14.0000    .997187D+00    .229914D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 17.0000    .999969D+00    .268786D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 20.0000    .100221D+01    .302762D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 23.0000    .991592D+00    .333191D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 26.0000    .986958D+00    .374784D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 29.0000    .993987D+00    .416766D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 32.0000    .993004D+00    .462345D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 35.0000    .204556D+01    .105628D+01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 38.0000    .982999D+00    .532655D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+ 41.0000    .969187D+00    .567655D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+ 44.0000    .972233D+00    .603340D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+ 47.0000    .991307D+00    .641017D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 50.0000    .100346D+01    .727089D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 53.0000    .101327D+01    .788598D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                  I
+ 56.0000    .986622D+00    .808352D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 59.0000    .102528D+01    .882450D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                  I
+ 62.0000    .994624D+00    .886180D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 65.0000    .106126D+01    .107792D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               I
+ 68.0000    .998468D+00    .111141D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 71.0000    .104121D+01    .104349D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                 I
+ 74.0000    .111337D+01    .132205D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+ 77.0000    .104772D+01    .121160D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+ 80.0000    .110547D+01    .133756D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+ 83.0000    .113956D+01    .144243D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+ 86.0000    .233691D+01    .986330D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 89.0000    .189101D+01    .485085D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 92.0000    .000000D+00    .000000D+00 X                                                    I
+1
+   1002          2-phot. mass, cut, wt                                                           
+           nent            sum           bmin           bmax
+          43046     .40292E+06     .00000E+00     .75421E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .93603E+01
+  5.0000    .754206D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  8.0000    .518128D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 11.0000    .367345D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                 I
+ 14.0000    .258787D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+ 17.0000    .177920D+04 0XXXXXXXXXXXXXXX                                                  I
+ 20.0000    .131391D+04 0XXXXXXXXXXX                                                      I
+ 23.0000    .100112D+04 0XXXXXXXX                                                         I
+ 26.0000    .745300D+03 0XXXXXX                                                           I
+ 29.0000    .581811D+03 0XXXXX                                                            I
+ 32.0000    .427415D+03 0XXX                                                              I
+ 35.0000    .362225D+03 0XXX                                                              I
+ 38.0000    .278598D+03 0XX                                                               I
+ 41.0000    .223624D+03 0X                                                                I
+ 44.0000    .185469D+03 0X                                                                I
+ 47.0000    .154674D+03 0X                                                                I
+ 50.0000    .114793D+03 0X                                                                I
+ 53.0000    .953477D+02 0                                                                 I
+ 56.0000    .772591D+02 0                                                                 I
+ 59.0000    .622012D+02 0                                                                 I
+ 62.0000    .506518D+02 0                                                                 I
+ 65.0000    .379863D+02 0                                                                 I
+ 68.0000    .268334D+02 0                                                                 I
+ 71.0000    .274635D+02 0                                                                 I
+ 74.0000    .169344D+02 0                                                                 I
+ 77.0000    .149164D+02 0                                                                 I
+ 80.0000    .105302D+02 0                                                                 I
+ 83.0000    .626304D+01 0                                                                 I
+ 86.0000    .325544D+01 0                                                                 I
+ 89.0000    .312803D+00 0                                                                 I
+ 92.0000    .000000D+00 0                                                                 I
+1
+   1004          2-phot. mass, cut, wt*Y                                                         
+           nent            sum           bmin           bmax
+          43046     .41635E+06     .00000E+00     .75934E+04
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .96722E+01
+  5.0000    .759340D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  8.0000    .520426D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 11.0000    .367083D+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                  I
+ 14.0000    .258170D+04 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+ 17.0000    .178010D+04 0XXXXXXXXXXXXXXX                                                  I
+ 20.0000    .131718D+04 0XXXXXXXXXXX                                                      I
+ 23.0000    .993183D+03 0XXXXXXXX                                                         I
+ 26.0000    .735916D+03 0XXXXXX                                                           I
+ 29.0000    .578938D+03 0XXXXX                                                            I
+ 32.0000    .424638D+03 0XXX                                                              I
+ 35.0000    .736758D+03 0XXXXXX                                                           I
+ 38.0000    .274065D+03 0XX                                                               I
+ 41.0000    .216789D+03 0X                                                                I
+ 44.0000    .180287D+03 0X                                                                I
+ 47.0000    .153427D+03 0X                                                                I
+ 50.0000    .115301D+03 0X                                                                I
+ 53.0000    .966810D+02 0                                                                 I
+ 56.0000    .762482D+02 0                                                                 I
+ 59.0000    .637200D+02 0                                                                 I
+ 62.0000    .503919D+02 0                                                                 I
+ 65.0000    .403241D+02 0                                                                 I
+ 68.0000    .267555D+02 0                                                                 I
+ 71.0000    .285830D+02 0                                                                 I
+ 74.0000    .188632D+02 0                                                                 I
+ 77.0000    .156105D+02 0                                                                 I
+ 80.0000    .116468D+02 0                                                                 I
+ 83.0000    .714791D+01 0                                                                 I
+ 86.0000    .765299D+01 0                                                                 I
+ 89.0000    .660936D+00 0                                                                 I
+ 92.0000    .000000D+00 0                                                                 I
+1
+   1055          2-phot. mass, cut, wt*Y                                                         
+           nent            sum           bmin           bmax
+              1     .00000E+00     .50000E+00     .13000E+01
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .00000E+00
+  5.0000    .100681D+01    .154800D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+  8.0000    .100444D+01    .176842D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 11.0000    .999286D+00    .199367D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 14.0000    .997615D+00    .230001D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 17.0000    .100051D+01    .268899D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 20.0000    .100249D+01    .302792D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 23.0000    .992071D+00    .333342D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 26.0000    .987410D+00    .374979D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 29.0000    .995062D+00    .417601D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 32.0000    .993502D+00    .462595D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 35.0000    .203398D+01    .104434D+01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 38.0000    .983730D+00    .533097D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 41.0000    .969433D+00    .567825D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+ 44.0000    .972056D+00    .603148D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+ 47.0000    .991936D+00    .641449D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 50.0000    .100442D+01    .727712D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+ 53.0000    .101398D+01    .790584D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                  I
+ 56.0000    .986915D+00    .808879D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 59.0000    .102442D+01    .881954D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                  I
+ 62.0000    .994869D+00    .886539D-01 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 65.0000    .106154D+01    .107925D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               I
+ 68.0000    .997095D+00    .110970D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                    I
+ 71.0000    .104076D+01    .104316D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                 I
+ 74.0000    .111390D+01    .132270D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+ 77.0000    .104653D+01    .121034D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+ 80.0000    .110604D+01    .133844D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+ 83.0000    .114129D+01    .144498D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+ 86.0000    .235083D+01    .990339D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 89.0000    .211295D+01    .536061D+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 92.0000    .000000D+00    .000000D+00 X                                                    I

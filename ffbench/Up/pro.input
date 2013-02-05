@@ -1,0 +1,38 @@
+ 0 0 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+      1000      NEVT number of events   <- Input for the main program
+   5000000      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*===============================================================================
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+********************************************************************************
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1        200.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    2        0.000D0      DelEne =xpar( 2) Beam energy spread [GeV]
+*     KeyWgt=0,1 to get constant,variable weight events
+*   10              1      KeyWgt=xpar(10) Deafault is 0
+*     Maximum v, where v = 1-sprim/s, v=1 is alowed
+*   17         0.99D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+********************************************************************************
+**                    CEEX is now activated for quarks
+*     Define process
+  402              1      KFfin, up quark
+********************************************************************************
+*(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((
+**                    Switch off FSR and CEEX
+********************************************************************************
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+*   50              0      KeyHad=xpar(50)  Default is  1
+**    Photon emission from final QUARKS
+*   29              1      KeyQSR=xpar(26)  Default is  1  !!!
+**    Another switch overruling KeyGPS
+*  528         0.00d0      auxiliary parameter vmaxGPS u-quark
+*)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+********************************************************************************
+EndX

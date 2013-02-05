@@ -1,0 +1,4 @@
+latex $1.txp
+dvips -E $1.dvi -o $1.eps
+###ghostview -bg white -fg black  -magstep -4 $1.eps
+ghostview -bg white -fg black  $1.eps

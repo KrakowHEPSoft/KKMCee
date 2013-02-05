@@ -1,0 +1,16 @@
+  50000000      no of events
+tbwork3  ====================================
+ 0 0 1 0 0 0 0 0       KAT1 - KAT8
+   1000010      KEYRAD                                 
+    91.0D0      CMSENE
+0.228818D0      SINW2
+    91.0D0      AMAZ
+ 2.45346D0      GAMMZ
+  0.0005D0      AMFIN
+      1D-4      VVMIN
+  0.9999D0      VVMAX
+         1      KEYRED
+         1      KEYWGT
+         1      KEYGSW
+
+

@@ -1,0 +1,24 @@
+
+When you will actualy need to (re)make tables of Electroweak formfactors?
+     If they are absent or you want to modify EW parameters Z, Higgs and Top masses.
+ 
+How to make tables of Electroweak formfactors?
+     Very easy, change appropriately files ./input.down and other input files.
+     Run TabMain program with single command 
+             make table.all
+     or (re)make tables one by one
+             make table.down
+             make table.up
+             make table.botom
+             make table.mu
+             make table.tau
+     You will get output files like table.down, table.mu etc.
+     Change their names to the ones which are read in SUBROUTINE BornV_ReadAll.
+Note that tables for charm and strange do not need to be provided.
+The able.down and table.up will be substituted for them in BornV_ReadAll.
+
+Now you are ready to run MC generation.  You can use actual tables
+as long as you are happy with EW parameters Z, Higgs and Top masses used as an input.
+If you change them and try to use wrong tables, program will discover it and stop!
+Then you have to remake EW tables, see above.
+

@@ -1,0 +1,36 @@
+********************** THIS IS INPUT FILE FOR DEMO PROGRAM *********************
+      1000      NEVT number of events   <- Input for the main program
+----------cccccccccccccccccccccccccccccommenttttttttttttttttttttttttttttttttttt
+
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1        200.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+   50              1      KeyHad=xpar(50)  Default is  1
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+*     Define process
+*     LIST of Final state flavours to be generated randomly according
+*     to QED corrected x-sections, at least one line/item should be present.
+*     (Remember that electron has incomplete M.E. and top might be too heavy.)
+  401              1      KFfin, d
+  402              1      KFfin, u
+  403              1      KFfin, s
+  404              1      KFfin, c
+  405              1      KFfin, b
+  413              1      KFfin, muon
+  415              1      KFfin, tau
+  412              1      KFfin, neutrino electron
+  414              1      KFfin, neutrino muon
+  416              1      KFfin, neutrino tau
+*indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
+*     PrintOut from generator
+    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7             20      Ie2Pri =xpar( 7)  PrintOut End   point
+********************************************************************************
+EndX

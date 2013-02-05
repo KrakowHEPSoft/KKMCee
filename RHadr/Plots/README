@@ -1,0 +1,7 @@
+for pi-pair best plots, comparison with Phokhara
+	make Plot3a
+for mu-pair best plots ISR only
+	make Plot3m
+for mu-pair best plots ISR*FSR only
+	make Plot3f
+----------------------------

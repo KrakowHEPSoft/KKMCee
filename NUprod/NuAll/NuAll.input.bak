@@ -1,0 +1,47 @@
+ 1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+  10000000     NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+********************************************************************************
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1          140D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+********************************************************************************
+   61           0.d0       spin1x  polarization vector beam 1
+   62            0d0       spin1y  polarization vector beam 1
+   63           0.d0       spin1z  polarization vector beam 1
+   64            0d0       spin1x  polarization vector beam 2
+   65           0.d0       spin1y  polarization vector beam 2
+   66           0.d0       spin1z  polarization vector beam 2
+********************************************************************************
+*** 2001            3d0      Jak1 =xpar(71)  First  Tau decay mask (=3 for pion)
+*** 2002            3d0      Jak2 =xpar(72)  Second Tau decay mask (=3 for pion)
+********************************************************************************
+*     Define process
+  412              1      KFfin, el
+  414              1      KFfin, mu
+  416              1      KFfin, Tau
+   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermion
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1     KeyWgt=xpar(10) Deafault is 0
+    5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
+*-------------------------------------------------
+*        redefined values for YR workshop:
+*-------------------------------------------------
+  805          120D0      amh   =xpar(805) Higgs mass, input for Dizet, YR
+  806        173.8D0      amtop =xpar(806) Top mass,   input for Dizet, YR
+  808    128.88524d0   alfinvMZ =xpar(808) alfQED(MZ), Jegerlehner RADCOR 98
+  809       0.1190d0   alfQCDMZ =xpar(809) alfQCD(MZ), PDG 1999
+  918              0  Ihig2 ! =0,1   (Two-loop higgs  corrections off,on) 
+*********************************************************************************
+EndX
+
+
+
+
+
+

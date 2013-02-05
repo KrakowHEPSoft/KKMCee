@@ -1,0 +1,68 @@
+ 0 0 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+       5000000      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+BeginX
+********************************************************************************
+*===============================================================================
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+********************************************************************************
+*indx+++++++++++++++ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+*    1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1        200.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1         10.00D0      2*mtau=3.554
+*    1          4.00D0      2*mtau=3.554
+*    1          3.60D0      2*mtau=3.554
+*    1          3.56D0      2*mtau=3.554
+*    1       3.5542D0      2*mtau=3.554
+*     PrintOut from generator
+    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7              1      Ie2Pri =xpar( 7)  PrintOut End   point
+*     KeyWgt=0,1 to get constant,variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*     Minimum and maximum v, where v = 1-sprim/s, v=1 alowed
+   16           1D-5      vvmin =xpar(16)
+*     Maximum v, where v = 1-sprim/s, v=1 is alowed
+*   17           1.D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*   17        0.999D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17         0.99D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*   17         0.90D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*indx+++++++++++++++ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     EQD/EW bremsstrahlung flags/data
+   20              0      KeyISR=xpar(20)  Default is  1, for beams
+   21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
+*     KeyPia = 0,1 OFF/ON for removal of FSR photons below emin=Ene*delta
+   22              1      KeyPia=xpar(22)  Deafault is 1
+*     SPECIAL tests: fixed ISR multiplicity
+   23              0      mltISR=xpar(23)  Default is  0
+*     SPECIAL tests: fixed FSR multiplicity
+   24              0      mltFSR=xpar(24)  Default is  0
+*     SPECIAL tests: fixed v=vmin
+   25              0      KeyFix=xpar(25)  Default is  0
+*     SPECIAL tests: Interference ISR/FSR off/on
+   27              0      KeyINT=xpar(27)  Default is  1
+*     New exponentiation is only on explicit request
+   28              1      KeyGPS=xpar(28)  Default is  0
+*
+   40         1.00d0      Xenph =xpar(40)  enhancement factor for Crude photon multiplicity
+********************************************************************************
+* Inhibit tau decays
+ 2001           -1d0      Jak1   =xpar(71)  First  Tau decay mask
+ 2002           -1d0      Jak2   =xpar(72)  Second Tau decay mask
+********************************************************************************
+*     Define process
+*  411              1      KFfin, electron
+  415              5      KFfin, tau
+*  413              1      KFfin, muon
+********************************************************************************
+*     Input for matrix element
+  501              0      KeyZet=xpar(501) Default is 1, -2 for flat x-section
+   12              0      KeyELW=xpar(12)  Default is 1, for Dizet
+  510          1D-60      MasPhot=xpar(510) photon mass, IR regulator 
+********************************************************************************
+*     Input for ROBOL
+  901            4d0      iTest = xpar(4001)
+********************************************************************************
+EndX

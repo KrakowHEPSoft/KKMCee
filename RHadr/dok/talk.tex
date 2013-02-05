@@ -1,0 +1,115 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[dvips]{seminar}                      %%%%%%%%%%%%%%%%%%
+                                                    %%%%%%%%%%%%%%%%%%
+%  make tokyo-ps
+%  make tokyo.ps
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}                     %%%%%%%%%%%%%%%%%%
+
+
+% The upper title is defined in seminar.con One may redefine it like that
+%\def\title{{\large\bf\cgr Loops and Legs, Bastei, April 2000}}
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+
+\begin{center}
+{\LARGE\bf\crd   Exponentiation in QED:\\
+                 Combining Real and Virtual Corrections}\\
+\vspace{2mm}
+{\LARGE\bf\cbl   S. Jadach}\\
+\vspace{2mm}
+{\large\bf       Institute of Nuclear Physics, Krak\'ow, Poland}
+\end{center}
+%===================================================================
+
+\vspace{1mm}
+{\small\Cmar
+  The aim is to summarize briefly on:
+  \begin{itemize}
+  \item the past practical experience on combining
+  real and virtual corrections within the exponentiation schemes
+  based on YFS method and its extensions,
+  \item still unexploited freedom in these schemes,
+  concerning combining real and virtual contributions,
+  which may have interesting practical importance for future works.
+  \end{itemize}
+}
+
+\vspace{1mm}
+{\bf\small  Related papers by S. Jadach, B.F.L. Ward and Z. W\c{a}s:}\\
+{\Cmag
+{\scriptsize Phys. Rev. D {\bf 63}, 113009 (2001),}
+{\scriptsize Phys. Lett. B449 (1999) 97 and CERN-TH/98-235, EPJ in print.}
+}
+\\
+{\Cblu\small\bf These and related slides on http://home.cern.ch/jadach}
+\vfill
+\end{slide}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\Color{Red}  Textbook principle ``matrix element $\times$ full phase space'' ALWAYS ASSUMED}
+\vspace{-2mm}
+
+\begin{minipage}{52mm}
+{\epsfig{file=flow-mcgen2.eps,width=50mm}}
+\end{minipage}
+\begin{minipage}{52mm}
+\cbl\small
+In the Monte Carlo realization it means that:
+\begin{itemize}
+\item Universal Phase-space Monte Carlo simulator is a separate module
+      producing ``raw events'' (including importance sampling)
+\item Library of several types of SM/QED matrix elements provides
+      ``model weight'' is another independent module
+\item Tau decays and hadronization come after of course.
+\end{itemize}
+\end{minipage}
+\vfill
+\end{slide}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd Conclusions }
+
+{\bf\cbl
+  \begin{itemize}
+  \item Yennie-Frautschi-Suura inspired EEX and CEEX methods include built-in
+    mechanism of cancellation of the IR singularities between real and virtual corrections
+    which works well in practice, in many MC applications:
+    KORALZ, BHLUMI, YWSWW3, BHWIDE, KK MC.
+  \item These schemes have still capabilities which may simplify the
+    next generation of the precision exponentiated \Order{\alpha^2} calculations
+    (Bhabha for example) and the corresponding Monte Carlo programs.
+  \item Extension to full \Order{\alpha^\infty} summation of the collinear singularities
+    is a very desirable extension of CEEX.
+  \end{itemize}
+}
+
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+
+\end{document}                                           %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+

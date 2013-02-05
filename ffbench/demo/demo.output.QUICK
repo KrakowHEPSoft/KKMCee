@@ -1,0 +1,2701 @@
+    
+ ==============================================
+ ==============================================
+ ============ Demo for KK MC ==================
+ ==============================================
+ ==============================================
+    
+ 20 requested events 
+           
+            *************************************************************
+            *  ****   ****    ****  ****    ***       ***     ******    *
+            *  ****   ****    ****  ****    ****     ****   **********  *
+            *  ****   ****    ****  ****    *****   *****  *****   ***  *
+            *  **********     *********     *************  ****         *
+            *  *******        ******        *************  ****         *
+            *  **********     ********      **** *** ****  *****   ***  *
+            *  ****  *****    ****  ****    ****  *  ****   **********  *
+            *  ****   *****   ****   ****   ****     ****     *******   *
+            *************************************************************
+           
+
+
+ ***************************************************************************
+ *                         KK Monte Carlo                                  *
+ *            Version       4.19          25 Sept  2002                    *
+ *     200.00000000                 CMS energy average       CMSene     a1 *
+ *       0.00000000                 Beam energy spread       DelEne     a2 *
+ *              100                 Max. photon mult.        npmax      a3 *
+ *                0                 wt-ed or wt=1 evts.      KeyWgt     a4 *
+ *                1                 ISR switch               KeyISR     a4 *
+ *                1                 FSR switch               KeyFSR     a5 *
+ *                2                 ISR/FSR interferenc      KeyINT     a6 *
+ *                1                 New exponentiation       KeyGPS     a7 *
+ *                1                 Hadroniz.  switch        KeyHad     a7 *
+ *       0.20000000                 Hadroniz. min. mass      HadMin     a9 *
+ *       1.00000000                 Maximum weight           WTmax     a10 *
+ *              100                 Max. photon mult.        npmax     a11 *
+ *               11                 Beam ident               KFini     a12 *
+ *       0.00100000                 Manimum phot. ener.      Ene       a13 *
+ *   0.10000000E-59                 Phot.mass, IR regul      MasPho    a14 *
+ *    1.2500000                     Phot. mult. enhanc.      Xenph     a15 *
+ *   0.10000000E-08                 Vcut1                    Vcut1     a16 *
+ *   0.50000000E-01                 Vcut2                    Vcut2     a16 *
+ *    0.0000000                     Vcut3                    Vcut2     a16 *
+ *       0.00000000                    PolBeam1(1)           Pol1x     a17 *
+ *       0.00000000                    PolBeam1(2)           Pol1y     a18 *
+ *       0.00000000                    PolBeam1(3)           Pol1z     a19 *
+ *       0.00000000                    PolBeam2(1)           Pol2x     a20 *
+ *       0.00000000                    PolBeam2(2)           Pol2y     a21 *
+ *       0.00000000                    PolBeam2(3)           Pol2z     a22 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         amz        a1 *
+ *     100.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     175.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       2.50072032                 Z width    [GeV]         gammz      a4 *
+ *       0.22276773                 sin(theta_w)**2          sinw2      a5 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *       0.20000000                 MassCut light qqbar      HadMin     a6 *
+ *               11                 KF code of beam          KFini      a7 *
+ *    1.0000000                     Input vvmax              vvmax      a8 *
+ *   0.99999888                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                1                 Electroweak lib.         KeyElw     10 *
+ *                1                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ *                0                 R for gamma* on/off      KeyRes     12 *
+ ***************************************************************************
+
+ =========== BornV_StartDZ: DOWN quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                1                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403654
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641784
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206385
+    zpar(18)=  1.05007810
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344037
+    zpar(21)=  1.04207905
+    zpar(22)=  1.04992189
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344037
+    zpar(25)=  1.04206418
+    zpar(26)=  1.05007843
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: UP quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                2                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                3                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: STRAN quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                3                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: CHARM quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                4                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                3                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: BOTTOM quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                5                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: e   neutrino =========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               12                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                1                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: MU lepton ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               13                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                2                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: MU neutrino ==========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               14                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                1                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: TAU lepton ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               15                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                2                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: TAU lepton ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               16                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                1                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+
+
+ ***************************************************************************
+ *                         KarLud_Initialize START                         *
+ *     200.00000000                  CMS energy average      CMSene     == *
+ *       0.00000000                  Beam energy spread      DelEne     == *
+ *                1                  ISR on/off switch       KeyISR     == *
+ *                0                  Type of ISR             KeyFix     == *
+ *                1                  Elect_weak switch       KeyZet     == *
+ *                0                  Fixed nphot mult.       MltISR     == *
+ *               50                  Max. photon mult.       nmax       == *
+ ***************************************************************************
+
+ *    4850.09270652                 xs_crude  vesko          xcvesk        *
+ *    4843.66460386                 xs_crude  gauss          xcgaus        *
+ *       0.00132712                 xcvesk/xcgaus-1                        *
+
+
+ ***************************************************************************
+ *                          KarLud_Initialize END                          *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                        KarFin Initialize  START                         *
+ *                1                FSR radiation on/off      KeyFSR     a1 *
+ *                1                radiation from quark      KeyQSR     a2 *
+ *                1                removal    switch         KeyPia     a3 *
+ *   0.10000000E-02                infrared cut FACTOR       delfac     a4 *
+ *   0.10000000E-07                infrared cut itself       delta      a5 *
+ *   0.10000000E-02                EminCMS for removal       [GeV]      a6 *
+ *               50                Max. photon mult.         nmax       a7 *
+ *                        KarFin Initialize  END                           *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *             GPS   Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         MZ         a1 *
+ *       2.49925438                 Z width    [GeV]         GammZ      a2 *
+ *       0.22302485                 sin(theta_w)**2          Sw2        a3 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a4 *
+ *         Test switches:                                                  *
+ *                1                 Z on/off   switch        KeyZet     a5 *
+ *                1                 Electroweak lib.         KeyElw     a6 *
+ *                1                 CEEX level               KeyGPS     a7 *
+ *                1                 ISR emission             KeyISR     a8 *
+ *                1                 FSR emission             KeyFSR     a9 *
+ *                2                 ISR*FSR interferenc      KeyINT    a10 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *               Initialization of GPS class                               *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                           KK2f: Initialization                          *
+ *    10.531316                     x-crude [nb]             Xcrunb     ** *
+ *         List of final fermions:                                         *
+ *                1                 KF of final fermion      KFfin      ** *
+ *   0.10000000                     mass of final ferm.      amferm     ** *
+ *    1.3410294                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *    20.000000                     Auxiliary Parameter      AuxPar     ** *
+ *                2                 KF of final fermion      KFfin      ** *
+ *   0.10000000                     mass of final ferm.      amferm     ** *
+ *    2.1445691                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *    20.000000                     Auxiliary Parameter      AuxPar     ** *
+ *                3                 KF of final fermion      KFfin      ** *
+ *   0.20000000                     mass of final ferm.      amferm     ** *
+ *    1.3410294                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *    20.000000                     Auxiliary Parameter      AuxPar     ** *
+ *                4                 KF of final fermion      KFfin      ** *
+ *    1.3000000                     mass of final ferm.      amferm     ** *
+ *    2.1445691                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *    20.000000                     Auxiliary Parameter      AuxPar     ** *
+ *                5                 KF of final fermion      KFfin      ** *
+ *    4.5000000                     mass of final ferm.      amferm     ** *
+ *    1.3410294                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *    20.000000                     Auxiliary Parameter      AuxPar     ** *
+ *               12                 KF of final fermion      KFfin      ** *
+ *   0.10000000E-29                 mass of final ferm.      amferm     ** *
+ *    72.669134                     Xborn [R]                Xborn      ** *
+ *    3.5000000                     WtMax sampling par.      WtMax      ** *
+ *    0.0000000                     Auxiliary Parameter      AuxPar     ** *
+ *               13                 KF of final fermion      KFfin      ** *
+ *   0.10565830                     mass of final ferm.      amferm     ** *
+ *    1.2225177                     Xborn [R]                Xborn      ** *
+ *    8.0000000                     WtMax sampling par.      WtMax      ** *
+ *    1.0000000                     Auxiliary Parameter      AuxPar     ** *
+ *               14                 KF of final fermion      KFfin      ** *
+ *   0.10000000E-29                 mass of final ferm.      amferm     ** *
+ *   0.41897796                     Xborn [R]                Xborn      ** *
+ *    3.5000000                     WtMax sampling par.      WtMax      ** *
+ *    0.0000000                     Auxiliary Parameter      AuxPar     ** *
+ *               15                 KF of final fermion      KFfin      ** *
+ *    1.7770000                     mass of final ferm.      amferm     ** *
+ *    1.2225177                     Xborn [R]                Xborn      ** *
+ *    8.0000000                     WtMax sampling par.      WtMax      ** *
+ *    0.0000000                     Auxiliary Parameter      AuxPar     ** *
+ *               16                 KF of final fermion      KFfin      ** *
+ *   0.10000000E-29                 mass of final ferm.      amferm     ** *
+ *   0.41897796                     Xborn [R]                Xborn      ** *
+ *    3.5000000                     WtMax sampling par.      WtMax      ** *
+ *    0.0000000                     Auxiliary Parameter      AuxPar     ** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        KK interface of Tauola                                           *
+ *                2                Cloning procedure       KeyClone    t01 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        Parameters passed from KK  to Tauola:                            *
+ *                0                dec. type 1-st tau        Jak1      t01 *
+ *                0                dec. type 2-nd tau        Jak2      t02 *
+ *                1                current type a1 dec.      KeyA1     t03 *
+ *               15                PDG id 1-st tau           idff      t04 *
+ *                1                R.c. switch lept dec      itdkRC    t05 *
+ *   0.10000000E-02                IR-cut for lept r.c.      xk0dec    t06 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *    TAUOLA Initialization SUBROUTINE INIMAS:                             *
+ *    Adopted to read from KK                                              *
+ *    1.7770000                        AMTAU tau-mass             **** *** *
+ *   0.51099900E-03                    AMEL  electron-mass        **** *** *
+ *   0.10565830                        AMMU  muon-mass            **** *** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *    TAUOLA Initialization SUBROUTINE INITDK:                             *
+ *    Adopted to read from KK                                              *
+ *                                                                         *
+ *    Choice Probability      --     Decay Channel                         *
+ *   0.17974831                      TAU-  -->   E-               **** *** *
+ *   0.17530759                      TAU-  -->  MU-               **** *** *
+ *   0.11182544                      TAU-  -->  PI-               **** *** *
+ *   0.25554335                      TAU-  -->  PI-, PI0          **** *** *
+ *   0.18550105                      TAU-  -->  A1- (two subch)   **** *** *
+ *   0.71657100E-02                  TAU-  -->   K-               **** *** *
+ *   0.13624942E-01                  TAU-  -->  K*- (two subch)   **** *** *
+ *   0.43902587E-01                  TAU-  --> 2PI-,  PI0,  PI+   **** *** *
+ *   0.11202729E-01                  TAU-  --> 3PI0,        PI-   **** *** *
+ *   0.11101805E-03                  TAU-  --> 2PI-,  PI+, 2PI0   **** *** *
+ *   0.75694121E-03                  TAU-  --> 3PI-, 2PI+,        **** *** *
+ *   0.22203609E-03                  TAU-  --> 3PI-, 2PI+,  PI0   **** *** *
+ *   0.29268392E-03                  TAU-  --> 2PI-,  PI+, 3PI0   **** *** *
+ *   0.16249005E-02                  TAU-  -->  K-, PI-,  K+      **** *** *
+ *   0.12211985E-02                  TAU-  -->  K0, PI-, K0B      **** *** *
+ *   0.15239749E-02                  TAU-  -->  K-,  K0, PI0      **** *** *
+ *   0.80740394E-03                  TAU-  --> PI0  PI0   K-      **** *** *
+ *   0.18166589E-02                  TAU-  -->  K-  PI-  PI+      **** *** *
+ *   0.39360942E-02                  TAU-  --> PI-  K0B  PI0      **** *** *
+ *   0.17561036E-02                  TAU-  --> ETA  PI-  PI0      **** *** *
+ *   0.50462747E-03                  TAU-  --> PI-  PI0  GAM      **** *** *
+ *   0.16047154E-02                  TAU-  -->  K-  K0            **** *** *
+ *                                    In addition:                         *
+ *    1.0000000                        Vector W-tau-nu coupl.     **** *** *
+ *   -1.0000000                        Axial  W-tau-nu coupl.     **** *** *
+ *   0.11663900E-04                    Fermi Coupling             **** *** *
+ *   0.97500002                        cabibo angle               **** *** *
+ *   0.50000000                        a1 br ratio (massless)     **** *** *
+ *   0.66670001                        K* br ratio (massless)     **** *** *
+ ***************************************************************************
+
+
+
+
+ ***************************************************************************
+ *                         *****TAUOLA LIBRARY: VERSION 2.6 ******         *
+ *                         ***********August   1995***************         *
+ *                         **AUTHORS: S.JADACH, Z.WAS*************         *
+ *                         **R. DECKER, M. JEZABEK, J.H.KUEHN*****         *
+ *                         **AVAILABLE FROM: WASM AT CERNVM ******         *
+ *                         ***** PUBLISHED IN COMP. PHYS. COMM.***         *
+ *                         *******CERN-TH-5856 SEPTEMBER 1990*****         *
+ *                         *******CERN-TH-6195 SEPTEMBER 1991*****         *
+ *                         *******CERN TH-6793 NOVEMBER  1992*****         *
+ *                         **5 or more pi dec.: precision limited          *
+ *                         ****DEKAY ROUTINE: INITIALIZATION******         *
+ *                   0     JAK1   = DECAY MODE TAU+                        *
+ *                   0     JAK2   = DECAY MODE TAU-                        *
+ ***************************************************************************
+
+  RANMAR INITIALIZED:   54217137           0         0
+
+ *************************************************** 
+   YOU ARE USING THE 4 PION DECAY MODE FORM FACTORS    
+   WHICH HAVE BEEN DESCRIBED IN:
+   R. DECKER, M. FINKEMEIER, P. HEILIGER AND H.H. JONSSON
+   "TAU DECAYS INTO FOUR PIONS" 
+   UNIVERSITAET KARLSRUHE PREPRINT TTP 94-13 (1994);
+                    LNF-94/066(IR); HEP-PH/9410260  
+  
+ PLEASE NOTE THAT THIS ROUTINE IS USING PARAMETERS
+ RELATED TO THE 3 PION DECAY MODE (A1 MODE), SUCH AS
+ THE A1 MASS AND WIDTH (TAKEN FROM THE COMMON /PARMAS/)
+ AND THE 2 PION VECTOR RESONANCE FORM FACTOR (BY USING
+ THE ROUTINE FPIKM)
+ THUS IF YOU DECIDE TO CHANGE ANY OF THESE, YOU WILL
+ HAVE TO REFIT THE 4 PION PARAMETERS IN THE COMMON
+ BLOCK /TAU4PI/, OR YOU MIGHT GET A BAD DISCRIPTION
+ OF TAU -> 4 PIONS
+ for these formfactors set in routine CHOICE for
+ mnum.eq.102 -- AMRX=1.42 and GAMRX=.21
+ mnum.eq.101 -- AMRX=1.3 and GAMRX=.46 PROB1,PROB2=0.2
+ to optimize phase space parametrization
+ *************************************************** 
+ coded by M. Finkemeier and P. Heiliger, 29. sept. 1994
+ incorporated to TAUOLA by Z. Was      17. jan. 1995
+ changed by: Z. Was on 17.01.95
+ changes by: M. Finkemeier on 30.01.95
+
+ ***************************************************************************
+
+1
+ ********************************************************************************
+ *                                                                              *
+ *                          ==========================                          *
+ *                            PHOTOS, Version:  2. 3                            *
+ *                            Released at:  11/12/ 0                            *
+ *                          ==========================                          *
+ *                                                                              *
+ *                  PHOTOS QED Corrections in Particle Decays                   *
+ *                                                                              *
+ *         Monte Carlo Program - by E. Barberio, B. van Eijk and Z. Was         *
+ *         From version 2.0 on - by E.B. and Z.W.                               *
+ *                                                                              *
+ ********************************************************************************
+ *                                                                              *
+ *                  Internal input parameters:                                  *
+ *                                                                              *
+ *                  INTERF= T  ISEC= T  IFTOP= T                                *
+ *                  ALPHA_QED= 0.00730   XPHCUT= 0.01000                        *
+ *                                                                              *
+ *                  option with interference is active                          *
+ *                  option with double photons is active                        *
+ *                  emision in t tbar production is active                      *
+ *                                                                              *
+ *          WARNING (1): /HEPEVT/ is not anymore the standard common block      *
+ *                                                                              *
+ *          PHOTOS expects /HEPEVT/ to have REAL*8 variables. To change to      *
+ *          REAL*4 modify its declaration in subr. PHOTOS_GET PHOTOS_SET:       *
+ *               REAL*8  d_h_phep,  d_h_vhep                                    *
+ *          WARNING (2): check dims. of /hepevt/ /phoqed/ /ph_hepevt/.          *
+ *          HERE:                     d_h_nmxhep=4000  and  NMXHEP=10000        *
+ *                                                                              *
+ ********************************************************************************
+ Message from PHCORK(MODCOR):: initialization
+ MODOP=1 -- no corrections on event: DEFAULT
+ Message from PHOTOS: IPHQRK(MODCOR):: (re)initialization
+ MODOP=1 -- blocks emission from light quarks: DEFAULT
+ Message from PHOTOS: IPHEKL(MODCOR):: (re)initialization
+ MODOP=1 -- blocks emission in pi0 to gamma e+e-: DEFAULT
+ MODOP=1 -- blocks emission in Kl  to gamma e+e-: DEFAULT
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           6           7      0.02178      0.00180     80.41818    119.01426     87.73431
+    4  gamma              1        22    1           0           0     -0.00031     -0.00018    -80.70155     80.70155      0.00000
+    5  gamma              1        22    1           0           0     -0.02147     -0.00162      0.28337      0.28419      0.00000
+    6  (u)               14         2    3   3   7   9   0   0   9    -12.20961     40.52897     24.59503     48.95506      0.10000
+    7  (ubar)            14        -2    3   0   0  10   3   6  10     12.23139    -40.52717     55.82315     70.05920      0.10000
+    8  (CMshower)        11        94    6           9          10      0.02178      0.00180     80.41818    119.01426     87.73431
+    9  (u)               14         2    8   3   6  12   0   6  11    -10.53343     34.96896     25.50452     48.57853     19.38071
+   10  (ubar)            14        -2    8   0   7  13   3   7  14     10.55521    -34.96716     54.91366     70.43572     24.72988
+   11  (u)               14         2    9   3  12  16   0   9  15    -11.72060     34.60511     26.60267     45.24694      2.16732
+   12  (g)               14        21    9   3   9  18   3  11  17      1.18717      0.36385     -1.09814      3.33160      2.88996
+   13  (ubar)            14        -2   10   0  10  19   3  14  20      9.26140    -35.71083     54.96892     68.15695     16.20960
+   14  (g)               14        21   10   3  13  22   3  10  21      1.29381      0.74368     -0.05526      2.27877      1.72127
+   15  (u)               13         2   11   2  16   0   0  11   0     -1.92873      5.72425      3.73484      7.10254      0.10000
+   16  (g)               14        21   11   3  11  23   3  15  24     -9.79187     28.88086     22.86782     38.14440      1.43970
+   17  (g)               13        21   12   2  18   0   2  12   0     -0.17086      0.65719      0.14858      0.69510      0.00000
+   18  (g)               14        21   12   3  12  26   3  17  25      1.35803     -0.29334     -1.24672      2.63650      1.86186
+   19  (ubar)            14        -2   13   0  13  27   3  20  28     -0.53682     -6.07140      5.97020      8.95770      2.72894
+   20  (g)               14        21   13   3  19  30   3  13  29      9.79822    -29.63944     48.99872     59.19925     11.36555
+   21  (g)               13        21   14   2  22   0   2  14   0      0.98679      0.78111     -0.78701      1.48434      0.00000
+   22  (g)               13        21   14   2  14   0   2  21   0      0.30702     -0.03744      0.73175      0.79443      0.00000
+   23  (g)               13        21   16   2  16   0   2  24   0     -2.32344      7.40997      5.08286      9.28125      0.00000
+   24  (g)               13        21   16   2  23   0   2  16   0     -7.46843     21.47089     17.78496     28.86315      0.00000
+   25  (g)               13        21   18   2  26   0   2  18   0      0.20824     -0.71994      0.16405      0.76720      0.00000
+   26  (g)               13        21   18   2  18   0   2  25   0      1.14979      0.42660     -1.41077      1.86930      0.00000
+   27  (ubar)            13        -2   19   0  19   0   2  28   0     -1.18244     -5.55946      4.41524      7.19793      0.10000
+   28  (g)               13        21   19   2  27   0   2  19   0      0.64562     -0.51193      1.55496      1.75977      0.00000
+   29  (g)               14        21   20   3  30  31   3  20  32      1.83966    -19.76362     25.33670     32.27078      2.33872
+   30  (g)               14        21   20   3  20  34   3  29  33      7.95856     -9.87582     23.66201     26.92847      2.09319
+   31  (g)               13        21   29   2  29   0   2  32   0      0.77123     -1.87896      2.70892      3.38578      0.00000
+   32  (g)               14        21   29   3  31  36   3  29  35      1.06844    -17.88465     22.62779     28.88500      1.15057
+   33  (g)               13        21   30   2  34   0   2  30   0      0.26925     -0.88929      1.32028      1.61446      0.00000
+   34  (g)               14        21   30   3  30  38   3  33  37      7.68930     -8.98653     22.34173     25.31401      1.32790
+   35  (g)               13        21   32   2  36   0   2  32   0      0.18240     -4.41134      6.38623      7.76383      0.00000
+   36  (g)               13        21   32   2  32   0   2  35   0      0.88604    -13.47332     16.24155     21.12116      0.00000
+   37  (g)               13        21   34   2  38   0   2  34   0      0.99193     -1.93081      3.87373      4.44046      0.00000
+   38  (g)               13        21   34   2  34   0   2  37   0      6.69738     -7.05572     18.46800     20.87355      0.00000
+   39  (u)           A   12         2   15          55          55     -1.92873      5.72425      3.73484      7.10254      0.10000
+   40  (g)           I   12        21   24          55          55     -7.46843     21.47089     17.78496     28.86315      0.00000
+   41  (g)           I   12        21   23          55          55     -2.32344      7.40997      5.08286      9.28125      0.00000
+   42  (g)           I   12        21   17          55          55     -0.17086      0.65719      0.14858      0.69510      0.00000
+   43  (g)           I   12        21   25          55          55      0.20824     -0.71994      0.16405      0.76720      0.00000
+   44  (g)           I   12        21   26          55          55      1.14979      0.42660     -1.41077      1.86930      0.00000
+   45  (g)           I   12        21   21          55          55      0.98679      0.78111     -0.78701      1.48434      0.00000
+   46  (g)           I   12        21   22          55          55      0.30702     -0.03744      0.73175      0.79443      0.00000
+   47  (g)           I   12        21   35          55          55      0.18240     -4.41134      6.38623      7.76383      0.00000
+   48  (g)           I   12        21   36          55          55      0.88604    -13.47332     16.24155     21.12116      0.00000
+   49  (g)           I   12        21   31          55          55      0.77123     -1.87896      2.70892      3.38578      0.00000
+   50  (g)           I   12        21   33          55          55      0.26925     -0.88929      1.32028      1.61446      0.00000
+   51  (g)           I   12        21   37          55          55      0.99193     -1.93081      3.87373      4.44046      0.00000
+   52  (g)           I   12        21   38          55          55      6.69738     -7.05572     18.46800     20.87355      0.00000
+   53  (g)           I   12        21   28          55          55      0.64562     -0.51193      1.55496      1.75977      0.00000
+   54  (ubar)        V   11        -2   27          55          55     -1.18244     -5.55946      4.41524      7.19793      0.10000
+   55  (string)          11        92   39          56          82      0.02178      0.00180     80.41818    119.01426     87.73431
+   56  K+                 1       321   55           0           0     -0.83385      3.01958      2.44062      4.00168      0.49360
+   57  (K*bar0)          11      -313   55          83          84     -4.46575     12.39863      9.21571     16.10386      0.85797
+   58  pi-                1      -211   55           0           0     -1.57093      4.86001      3.94051      6.45249      0.13957
+   59  pi+                1       211   55           0           0     -0.54813      1.71221      1.07430      2.09898      0.13957
+   60  (Delta-)          11      1114   55          85          86     -1.49004      5.19196      4.13982      6.93517      1.33487
+   61  (rho+)            11       213   55          87          88     -2.80064      6.20918      4.67704      8.29231      0.70020
+   62  pbar-              1     -2212   55           0           0      0.20902      0.88026      0.99229      1.63815      0.93827
+   63  (rho+)            11       213   55          89          90     -0.17077      0.58999      0.40398      1.11464      0.83784
+   64  pi-                1      -211   55           0           0      0.34016      0.20938      0.13492      0.44411      0.13957
+   65  (pi0)             11       111   55          91          92      0.43829      0.10913     -0.05975      0.47518      0.13498
+   66  (rho0)            11       113   55          93          94     -0.15223     -0.14185     -0.13379      0.75854      0.71707
+   67  (rho+)            11       213   55          95          96      1.47662      0.41611     -1.08444      2.04838      0.81628
+   68  (pi0)             11       111   55          97          98      0.38859      0.22164     -0.12648      0.48409      0.13498
+   69  (eta)             11       221   55          99         100      0.04165     -1.33782      1.33082      1.96527      0.54745
+   70  (omega)           11       223   55         101         103      0.21970     -7.94621     10.22010     12.97146      0.78597
+   71  (rho0)            11       113   55         104         105      0.94191     -3.00528      4.34092      5.40668      0.68537
+   72  (K0)              11       311   55         106         106      0.21626     -4.14335      4.94770      6.47623      0.49767
+   73  (Kbar0)           11      -311   55         107         107      0.70346     -2.81884      4.96799      5.77662      0.49767
+   74  (eta)             11       221   55         108         109      0.54523     -1.00768      1.67301      2.10032      0.54745
+   75  pi-                1      -211   55           0           0      1.67081     -1.89685      3.56266      4.37055      0.13957
+   76  (rho0)            11       113   55         110         111      1.47524     -2.55149      6.07419      6.79731      0.78817
+   77  pi+                1       211   55           0           0      0.16874     -0.26354      0.92733      0.98861      0.13957
+   78  (rho0)            11       113   55         112         113      3.14361     -3.21435      6.81893      8.20206      0.74942
+   79  pi-                1      -211   55           0           0      0.08768     -1.32979      2.54943      2.88012      0.13957
+   80  p+                 1      2212   55           0           0      0.34570     -0.97845      2.17434      2.58553      0.93827
+   81  nbar0              1     -2112   55           0           0      0.06938     -1.91369      2.61100      3.37151      0.93957
+   82  (rho-)            11      -213   55         114         115     -0.42793     -3.26709      2.60503      4.27438      0.79194
+   83  (Kbar0)           11      -311   57         116         116     -3.99378     11.01522      7.97884     14.18432      0.49767
+   84  (pi0)             11       111   57         117         118     -0.47198      1.38341      1.23687      1.91955      0.13498
+   85  n0                 1      2112   60           0           0     -0.82516      2.61861      2.21268      3.64921      0.93957
+   86  pi-                1      -211   60           0           0     -0.66488      2.57335      1.92713      3.28596      0.13957
+   87  pi+                1       211   61           0           0     -1.04804      3.08672      2.14379      3.90405      0.13957
+   88  (pi0)             11       111   61         119         120     -1.75260      3.12245      2.53324      4.38826      0.13498
+   89  pi+                1       211   63           0           0     -0.37495      0.61042      0.46000      0.86272      0.13957
+   90  (pi0)             11       111   63         121         122      0.20419     -0.02043     -0.05602      0.25193      0.13498
+   91  gamma              1        22   65           0           0      0.35497      0.05073     -0.00281      0.35858      0.00000
+   92  gamma              1        22   65           0           0      0.08333      0.05840     -0.05693      0.11660      0.00000
+   93  pi+                1       211   66           0           0     -0.31263      0.01724     -0.29124      0.44982      0.13957
+   94  pi-                1      -211   66           0           0      0.16040     -0.15908      0.15745      0.30872      0.13957
+   95  pi+                1       211   67           0           0      0.32796      0.29869     -0.00961      0.46513      0.13957
+   96  (pi0)             11       111   67         123         124      1.14866      0.11742     -1.07483      1.58325      0.13498
+   97  gamma              1        22   68           0           0      0.02340     -0.00077      0.02133      0.03168      0.00000
+   98  gamma              1        22   68           0           0      0.36519      0.22241     -0.14782      0.45241      0.00000
+   99  gamma              1        22   69           0           0     -0.13002     -1.24330      1.15613      1.70274      0.00000
+  100  gamma              1        22   69           0           0      0.17167     -0.09453      0.17469      0.26253      0.00000
+  101  pi-                1      -211   70           0           0      0.31086     -2.41649      2.87113      3.76815      0.13957
+  102  pi+                1       211   70           0           0     -0.02449     -1.82645      2.54546      3.13614      0.13957
+  103  (pi0)             11       111   70         125         126     -0.06667     -3.70327      4.80351      6.06717      0.13498
+  104  pi+                1       211   71           0           0      0.45946     -0.80892      0.96216      1.34562      0.13957
+  105  pi-                1      -211   71           0           0      0.48245     -2.19636      3.37876      4.06106      0.13957
+  106  K_L0               1       130   72           0           0      0.21626     -4.14335      4.94770      6.47623      0.49767
+  107  (K_S0)            11       310   73         127         128      0.70346     -2.81884      4.96799      5.77662      0.49767
+  108  gamma              1        22   74           0           0      0.57224     -0.68263      0.92432      1.28367      0.00000
+  109  gamma              1        22   74           0           0     -0.02701     -0.32505      0.74868      0.81665      0.00000
+  110  pi+                1       211   76           0           0      0.82550     -0.84964      2.88505      3.12191      0.13957
+  111  pi-                1      -211   76           0           0      0.64974     -1.70186      3.18914      3.67540      0.13957
+  112  pi+                1       211   78           0           0      2.49009     -2.52635      5.81980      6.81708      0.13957
+  113  pi-                1      -211   78           0           0      0.65352     -0.68800      0.99913      1.38499      0.13957
+  114  pi-                1      -211   82           0           0     -0.31254     -0.64866      0.82149      1.10126      0.13957
+  115  (pi0)             11       111   82         129         130     -0.11538     -2.61843      1.78354      3.17313      0.13498
+  116  (K_S0)            11       310   83         131         132     -3.99378     11.01522      7.97884     14.18432      0.49767
+  117  gamma              1        22   84           0           0     -0.08840      0.28697      0.18657      0.35352      0.00000
+  118  gamma              1        22   84           0           0     -0.38358      1.09645      1.05030      1.56603      0.00000
+  119  gamma              1        22   88           0           0     -0.60742      0.96258      0.77688      1.37807      0.00000
+  120  gamma              1        22   88           0           0     -1.14518      2.15987      1.75637      3.01020      0.00000
+  121  gamma              1        22   90           0           0      0.00006     -0.01219      0.02838      0.03089      0.00000
+  122  gamma              1        22   90           0           0      0.20413     -0.00823     -0.08439      0.22104      0.00000
+  123  gamma              1        22   96           0           0      0.46908     -0.00031     -0.49793      0.68408      0.00000
+  124  gamma              1        22   96           0           0      0.67958      0.11773     -0.57690      0.89917      0.00000
+  125  gamma              1        22  103           0           0     -0.09095     -1.41604      1.84670      2.32889      0.00000
+  126  gamma              1        22  103           0           0      0.02427     -2.28723      2.95681      3.73828      0.00000
+  127  pi+                1       211  107           0           0      0.30334     -1.68426      3.23372      3.66131      0.13957
+  128  pi-                1      -211  107           0           0      0.40012     -1.13458      1.73427      2.11531      0.13957
+  129  gamma              1        22  115           0           0     -0.04672     -0.93488      0.71556      1.17822      0.00000
+  130  gamma              1        22  115           0           0     -0.06866     -1.68355      1.06799      1.99490      0.00000
+  131  pi+                1       211  116           0           0     -2.44848      6.55340      4.99016      8.59437      0.13957
+  132  pi-                1      -211  116           0           0     -1.54530      4.46182      2.98868      5.58994      0.13957
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           6      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           6      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           7           8      0.27004      0.12721    -78.04831    121.94973     93.70223
+    4  gamma              1        22    1           0           0     -0.27603     -0.11675     77.98127     77.98184      0.00000
+    5  gamma              1        22    1           0           0      0.00604     -0.01034      0.05127      0.05265      0.00000
+    6  gamma              1        22    1           0           0     -0.00004     -0.00011      0.01578      0.01578      0.00000
+    7  (b)               14         5    3   3   8  10   0   0  10     23.26475    -38.24279    -56.12525     71.93089      4.50000
+    8  (bbar)            14        -5    3   0   0  11   3   7  11    -22.99472     38.36999    -21.92307     50.01884      4.50000
+    9  (CMshower)        11        94    7          10          11      0.27004      0.12721    -78.04831    121.94973     93.70223
+   10  (b)               14         5    9   3   7  13   0   7  12     16.65901    -27.22890    -61.23711     84.44396     48.59900
+   11  (bbar)            14        -5    9   0   8  14   3   8  15    -16.38897     27.35611    -16.81120     37.50577     10.34944
+   12  (b)               14         5   10   3  13  17   0  10  16     21.91609    -28.74328    -28.89769     51.39723     22.36310
+   13  (g)               14        21   10   3  10  18   3  12  19     -5.25708      1.51437    -32.33943     33.04673      4.03952
+   14  (bbar)            14        -5   11   0  11  20   3  15  21    -15.73153     24.80164    -17.13731     34.49876      5.82018
+   15  (g)               14        21   11   3  14  22   3  11  23     -0.65744      2.55447      0.32611      3.00701      1.40649
+   16  (b)               14         5   12   3  17  25   0  12  24     19.38857    -17.69757     -8.86512     28.21871      5.34645
+   17  (g)               14        21   12   3  12  27   3  16  26      2.52752    -11.04571    -20.03257     23.17852      2.74669
+   18  (g)               13        21   13   2  13   0   2  19   0      0.13217      0.68128     -2.08237      2.19497      0.00000
+   19  (g)               14        21   13   3  18  29   3  13  28     -5.38925      0.83310    -30.25705     30.85176      2.56982
+   20  (bbar)            13        -5   14   0  14   0   2  21   0    -15.04056     24.66249    -16.77622     33.70680      4.50000
+   21  (g)               13        21   14   2  20   0   2  14   0     -0.69098      0.13915     -0.36109      0.79196      0.00000
+   22  (g)               13        21   15   2  15   0   2  23   0     -0.59398      0.95791     -0.47078      1.22149      0.00000
+   23  (g)               13        21   15   2  22   0   2  15   0     -0.06346      1.59656      0.79689      1.78552      0.00000
+   24  (b)               13         5   16   2  25   0   0  16   0     19.14498    -17.64364     -8.45934     27.74236      4.50000
+   25  (g)               13        21   16   2  16   0   2  24   0      0.24359     -0.05393     -0.40578      0.47634      0.00000
+   26  (g)               13        21   17   2  27   0   2  17   0      0.34186     -0.18029     -0.50660      0.63720      0.00000
+   27  (g)               14        21   17   3  17  31   3  26  30      2.18566    -10.86542    -19.52596     22.54133      2.00347
+   28  (g)               13        21   19   2  29   0   2  19   0     -1.68497      1.50006    -10.55060     10.78909      0.00000
+   29  (g)               13        21   19   2  19   0   2  28   0     -3.70428     -0.66697    -19.70646     20.06268      0.00000
+   30  (g)               13        21   27   2  31   0   2  27   0      0.64015     -7.48215    -13.85828     15.76212      0.00000
+   31  (g)               13        21   27   2  27   0   2  30   0      1.54551     -3.38327     -5.66768      6.77921      0.00000
+   32  (bbar)        A   12        -5   20          44          44    -15.04056     24.66249    -16.77622     33.70680      4.50000
+   33  (g)           I   12        21   21          44          44     -0.69098      0.13915     -0.36109      0.79196      0.00000
+   34  (g)           I   12        21   22          44          44     -0.59398      0.95791     -0.47078      1.22149      0.00000
+   35  (g)           I   12        21   23          44          44     -0.06346      1.59656      0.79689      1.78552      0.00000
+   36  (g)           I   12        21   18          44          44      0.13217      0.68128     -2.08237      2.19497      0.00000
+   37  (g)           I   12        21   29          44          44     -3.70428     -0.66697    -19.70646     20.06268      0.00000
+   38  (g)           I   12        21   28          44          44     -1.68497      1.50006    -10.55060     10.78909      0.00000
+   39  (g)           I   12        21   31          44          44      1.54551     -3.38327     -5.66768      6.77921      0.00000
+   40  (g)           I   12        21   30          44          44      0.64015     -7.48215    -13.85828     15.76212      0.00000
+   41  (g)           I   12        21   26          44          44      0.34186     -0.18029     -0.50660      0.63720      0.00000
+   42  (g)           I   12        21   25          44          44      0.24359     -0.05393     -0.40578      0.47634      0.00000
+   43  (b)           V   11         5   24          44          44     19.14498    -17.64364     -8.45934     27.74236      4.50000
+   44  (string)          11        92   32          45          64      0.27004      0.12721    -78.04831    121.94973     93.70223
+   45  (B0)              11       511   44          65          67    -11.02889     18.05700    -12.14652     24.96196      5.27920
+   46  (pi0)             11       111   44          68          69     -1.60161      2.09693     -0.81945      2.76623      0.13498
+   47  (rho0)            11       113   44          70          71     -2.14644      3.68612     -2.87712      5.19846      0.74263
+   48  pi+                1       211   44           0           0      0.02673      0.78545     -0.42120      0.90252      0.13957
+   49  (Deltabar--)      11     -2224   44          72          73     -1.02758      1.49235     -0.89907      2.37839      1.25116
+   50  (Delta++)         11      2224   44          74          75     -0.11232      0.60090     -1.04247      1.81874      1.35918
+   51  (eta)             11       221   44          76          77     -0.97331      0.99686     -0.61940      1.62001      0.54745
+   52  (K*-)             11      -323   44          78          79     -0.55446      0.44740     -8.20762      8.28728      0.89801
+   53  K+                 1       321   44           0           0     -2.38784      0.09554    -12.49878     12.73476      0.49360
+   54  (rho-)            11      -213   44          80          81     -0.14448     -1.56644     -3.39937      3.83372      0.81674
+   55  (omega)           11       223   44          82          84     -0.53200      0.70191     -4.42922      4.58181      0.77416
+   56  (eta)             11       221   44          85          87     -0.42599     -0.26289     -3.11819      3.20521      0.54745
+   57  (rho+)            11       213   44          88          89     -0.16481     -0.43226     -0.93525      1.28570      0.75121
+   58  (rho0)            11       113   44          90          91      0.61041     -2.84799     -7.80896      8.37255      0.79760
+   59  (omega)           11       223   44          92          94      0.66201     -2.41157     -2.56011      3.65831      0.75837
+   60  (pi0)             11       111   44          95          96      0.68423     -1.99376     -4.16425      4.66930      0.13498
+   61  (Deltabar-)       11     -2214   44          97          98      1.87177     -2.59145     -2.37574      4.17287      1.24483
+   62  pi-                1      -211   44           0           0     -0.27749     -0.07321     -0.32596      0.45617      0.13957
+   63  (Delta++)         11      2224   44          99         100      2.40399     -2.81175     -2.16562      4.48298      1.31228
+   64  (B*-)             11      -523   44         101         102     15.38812    -13.84195     -7.23403     22.56277      5.32480
+   65  K+                 1       321   45           0           0     -0.98690      2.37372     -0.79332      2.73523      0.49360
+   66  (D*0)             11       423   45         103         104     -5.48766      9.59622     -5.93966     12.70859      2.00670
+   67  (D-)              11      -411   45         105         106     -4.55433      6.08706     -5.41354      9.51814      1.86930
+   68  gamma              1        22   46           0           0     -0.84663      0.99791     -0.39841      1.36797      0.00000
+   69  gamma              1        22   46           0           0     -0.75498      1.09902     -0.42105      1.39826      0.00000
+   70  pi+                1       211   47           0           0     -1.92003      3.50336     -2.56565      4.74995      0.13957
+   71  pi-                1      -211   47           0           0     -0.22641      0.18276     -0.31148      0.44851      0.13957
+   72  pbar-              1     -2212   49           0           0     -1.07066      1.33067     -0.66602      2.05935      0.93827
+   73  pi-                1      -211   49           0           0      0.04308      0.16168     -0.23305      0.31905      0.13957
+   74  p+                 1      2212   50           0           0     -0.31640      0.32458     -0.48534      1.14951      0.93827
+   75  pi+                1       211   50           0           0      0.20408      0.27632     -0.55713      0.66923      0.13957
+   76  gamma              1        22   51           0           0     -0.50189      0.63793     -0.07462      0.81512      0.00000
+   77  gamma              1        22   51           0           0     -0.47141      0.35894     -0.54477      0.80489      0.00000
+   78  (Kbar0)           11      -311   52         107         107     -0.41607      0.10126     -3.37296      3.43626      0.49767
+   79  pi-                1      -211   52           0           0     -0.13839      0.34614     -4.83466      4.85102      0.13957
+   80  pi-                1      -211   54           0           0     -0.03782     -1.37089     -2.12468      2.53269      0.13957
+   81  (pi0)             11       111   54         108         109     -0.10666     -0.19555     -1.27469      1.30103      0.13498
+   82  pi+                1       211   55           0           0     -0.12683      0.57796     -2.55978      2.63098      0.13957
+   83  pi-                1      -211   55           0           0     -0.30352      0.16123     -1.05794      1.12109      0.13957
+   84  (pi0)             11       111   55         110         111     -0.10165     -0.03728     -0.81150      0.82974      0.13498
+   85  (pi0)             11       111   56         112         113     -0.11853      0.01450     -0.38849      0.42825      0.13498
+   86  (pi0)             11       111   56         114         115     -0.07747     -0.07573     -1.07121      1.08510      0.13498
+   87  (pi0)             11       111   56         116         117     -0.23000     -0.20165     -1.65849      1.69185      0.13498
+   88  pi+                1       211   57           0           0     -0.04943     -0.45305     -0.98997      1.09873      0.13957
+   89  (pi0)             11       111   57         118         119     -0.11538      0.02079      0.05471      0.18697      0.13498
+   90  pi-                1      -211   58           0           0     -0.07223     -0.87883     -1.76718      1.97989      0.13957
+   91  pi+                1       211   58           0           0      0.68263     -1.96916     -6.04178      6.39266      0.13957
+   92  pi+                1       211   59           0           0      0.10182     -0.97154     -0.94841      1.36866      0.13957
+   93  pi-                1      -211   59           0           0      0.10862     -0.30711     -0.61077      0.70614      0.13957
+   94  (pi0)             11       111   59         120         121      0.45157     -1.13293     -1.00093      1.58351      0.13498
+   95  gamma              1        22   60           0           0      0.51338     -1.54292     -3.08686      3.48897      0.00000
+   96  gamma              1        22   60           0           0      0.17085     -0.45084     -1.07739      1.18034      0.00000
+   97  pbar-              1     -2212   61           0           0      1.80189     -2.45337     -2.36491      3.96724      0.93827
+   98  (pi0)             11       111   61         122         123      0.06988     -0.13807     -0.01083      0.20563      0.13498
+   99  p+                 1      2212   63           0           0      1.34935     -1.84679     -1.56676      2.92685      0.93827
+  100  pi+                1       211   63           0           0      1.05465     -0.96496     -0.59886      1.55613      0.13957
+  101  (B-)              11      -521   64         124         126     15.31636    -13.81528     -7.23252     22.48619      5.27890
+  102  gamma              1        22   64           0           0      0.07176     -0.02667     -0.00151      0.07657      0.00000
+  103  (D0)              11       421   66         127         128     -5.08103      8.68372     -5.31502     11.53038      1.86450
+  104  gamma              1        22   66           0           0     -0.40663      0.91250     -0.62464      1.17821      0.00000
+  105  (K0)              11       311   67         129         129     -3.33055      4.29061     -3.37086      6.41188      0.49767
+  106  (rho-)            11      -213   67         130         131     -1.22378      1.79645     -2.04268      3.10625      0.86683
+  107  (K_S0)            11       310   78         132         133     -0.41607      0.10126     -3.37296      3.43626      0.49767
+  108  gamma              1        22   81           0           0     -0.13618     -0.18361     -1.12176      1.14481      0.00000
+  109  gamma              1        22   81           0           0      0.02952     -0.01193     -0.15293      0.15621      0.00000
+  110  gamma              1        22   84           0           0     -0.01006     -0.02496     -0.02175      0.03460      0.00000
+  111  gamma              1        22   84           0           0     -0.09159     -0.01232     -0.78975      0.79514      0.00000
+  112  gamma              1        22   85           0           0     -0.07292     -0.05829     -0.18013      0.20289      0.00000
+  113  gamma              1        22   85           0           0     -0.04561      0.07279     -0.20835      0.22536      0.00000
+  114  gamma              1        22   86           0           0     -0.10349     -0.02714     -0.50455      0.51577      0.00000
+  115  gamma              1        22   86           0           0      0.02602     -0.04859     -0.56666      0.56933      0.00000
+  116  gamma              1        22   87           0           0     -0.04980     -0.12000     -0.82769      0.83782      0.00000
+  117  gamma              1        22   87           0           0     -0.18019     -0.08165     -0.83080      0.85403      0.00000
+  118  gamma              1        22   89           0           0      0.01167      0.04710      0.02128      0.05298      0.00000
+  119  gamma              1        22   89           0           0     -0.12705     -0.02631      0.03343      0.13398      0.00000
+  120  gamma              1        22   94           0           0      0.41972     -0.96709     -0.90432      1.38897      0.00000
+  121  gamma              1        22   94           0           0      0.03185     -0.16583     -0.09661      0.19454      0.00000
+  122  gamma              1        22   98           0           0     -0.00145     -0.02952     -0.05989      0.06679      0.00000
+  123  gamma              1        22   98           0           0      0.07133     -0.10855      0.04906      0.13884      0.00000
+  124  (D*0)             11       423  101         134         135      8.78070     -6.34790     -3.20654     11.47629      2.00670
+  125  (pi0)             11       111  101         136         137      6.54852     -6.97951     -4.22772     10.46368      0.13498
+  126  pi-                1      -211  101           0           0     -0.01286     -0.48787      0.20174      0.54623      0.13957
+  127  K-                 1      -321  103           0           0     -2.56525      4.43685     -2.75835      5.84108      0.49360
+  128  (a_1+)            11     20213  103         138         139     -2.51578      4.24687     -2.55667      5.68930      1.21097
+  129  (K_S0)            11       310  105         140         141     -3.33055      4.29061     -3.37086      6.41188      0.49767
+  130  pi-                1      -211  106           0           0     -0.53455      0.57477     -1.26905      1.49869      0.13957
+  131  (pi0)             11       111  106         142         143     -0.68923      1.22168     -0.77363      1.60756      0.13498
+  132  (pi0)             11       111  107         144         145     -0.31955     -0.12667     -1.69309      1.73290      0.13498
+  133  (pi0)             11       111  107         146         147     -0.09651      0.22794     -1.67987      1.70336      0.13498
+  134  (D0)              11       421  124         148         151      7.57546     -5.52609     -2.79374      9.96025      1.86450
+  135  gamma              1        22  124           0           0      1.20523     -0.82181     -0.41280      1.51604      0.00000
+  136  gamma              1        22  125           0           0      3.39059     -3.52610     -2.19453      5.36148      0.00000
+  137  gamma              1        22  125           0           0      3.15793     -3.45341     -2.03319      5.10219      0.00000
+  138  (rho0)            11       113  128         152         153     -2.34063      3.43095     -2.31109      4.80828      0.72693
+  139  pi+                1       211  128           0           0     -0.17515      0.81592     -0.24559      0.88102      0.13957
+  140  pi+                1       211  129           0           0     -1.98137      2.25501     -1.74965      3.47731      0.13957
+  141  pi-                1      -211  129           0           0     -1.34918      2.03560     -1.62121      2.93458      0.13957
+  142  gamma              1        22  131           0           0     -0.45413      0.88035     -0.48840      1.10444      0.00000
+  143  gamma              1        22  131           0           0     -0.23510      0.34132     -0.28523      0.50312      0.00000
+  144  gamma              1        22  132           0           0     -0.25227     -0.06246     -0.98433      1.01806      0.00000
+  145  gamma              1        22  132           0           0     -0.06728     -0.06421     -0.70877      0.71484      0.00000
+  146  gamma              1        22  133           0           0     -0.02428      0.08395     -1.03486      1.03854      0.00000
+  147  gamma              1        22  133           0           0     -0.07223      0.14399     -0.64501      0.66482      0.00000
+  148  K-                 1      -321  134           0           0      4.48264     -3.79819     -1.85764      6.18181      0.49360
+  149  pi+                1       211  134           0           0      0.35034     -0.22276     -0.05443      0.44136      0.13957
+  150  pi+                1       211  134           0           0      2.33461     -1.34268     -0.50872      2.74436      0.13957
+  151  pi-                1      -211  134           0           0      0.40787     -0.16246     -0.37295      0.59273      0.13957
+  152  pi+                1       211  138           0           0     -2.18801      2.98824     -1.87601      4.15401      0.13957
+  153  pi-                1      -211  138           0           0     -0.15262      0.44272     -0.43507      0.65426      0.13957
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           3      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           3      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           4           5      0.00000      0.00000      0.00000    200.00000    200.00000
+    4  nu_e               1        12    3           0           0    -95.61506     21.53345    -19.85120    100.00000      0.00000
+    5  nu_ebar            1       -12    3           0           0     95.61506    -21.53345     19.85120    100.00000      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           6           7      7.00679     -8.50583    -97.67690     98.31037      1.64550
+    4  gamma              1        22    1           0           0     -7.00667      8.50594     99.37869     99.98784      0.00000
+    5  gamma              1        22    1           0           0     -0.00012     -0.00010     -1.70179      1.70179      0.00000
+    6  (u)               13         2    3   2   7   0   0   0   0     -0.05916     -0.23823     -2.54684      2.56060      0.10000
+    7  (ubar)            13        -2    3   0   0   0   2   6   0      7.06596     -8.26761    -95.13006     95.74977      0.10000
+    8  (u)           A   12         2    6          10          10     -0.05916     -0.23823     -2.54684      2.56060      0.10000
+    9  (ubar)        V   11        -2    7          10          10      7.06596     -8.26761    -95.13006     95.74977      0.10000
+   10  (cluster)         11        91    8          11          12      7.00679     -8.50583    -97.67690     98.31037      1.64550
+   11  pi+                1       211   10           0           0      4.75758     -5.09011    -59.35560     59.76329      0.13957
+   12  (rho-)            11      -213   10          13          14      2.24921     -3.41573    -38.32130     38.54708      0.79335
+   13  pi-                1      -211   12           0           0      1.51327     -2.26498    -28.52121     28.65133      0.13957
+   14  (pi0)             11       111   12          15          16      0.73594     -1.15075     -9.80009      9.89575      0.13498
+   15  gamma              1        22   14           0           0      0.62777     -0.96332     -7.86718      7.95076      0.00000
+   16  gamma              1        22   14           0           0      0.10817     -0.18743     -1.93291      1.94499      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           5           6      0.02210      0.42154    -78.52813    121.47073     92.67304
+    4  gamma              1        22    1           0           0     -0.02210     -0.42154     78.52813     78.52927      0.00000
+    5  (b)               14         5    3   3   6   8   0   0   8     17.99034     40.61898    -22.29442     49.90837      4.50000
+    6  (bbar)            14        -5    3   0   0   9   3   5   9    -17.96824    -40.19744    -56.23371     71.56236      4.50000
+    7  (CMshower)        11        94    5           8           9      0.02210      0.42154    -78.52813    121.47073     92.67304
+    8  (b)               14         5    7   3   5  11   0   5  10     14.78139     33.43977    -32.26389     62.57531     39.21738
+    9  (bbar)            13        -5    7   0   6   0   2   6   0    -14.75930    -33.01823    -46.26424     58.89542      4.50000
+   10  (b)               14         5    8   3  11  13   0   8  12     22.36585     36.35075    -31.28525     53.16119      5.07314
+   11  (g)               14        21    8   3   8  15   3  10  14     -7.58446     -2.91098     -0.97864      9.41412      4.65512
+   12  (b)               13         5   10   2  13   0   0  10   0     22.41892     36.25155    -31.24983     53.04324      4.50000
+   13  (g)               13        21   10   2  10   0   2  12   0     -0.05307      0.09920     -0.03541      0.11795      0.00000
+   14  (g)               14        21   11   3  15  16   3  11  17     -7.71398     -3.00305     -1.00803      9.25252      4.00865
+   15  (g)               13        21   11   2  11   0   2  14   0      0.12952      0.09207      0.02938      0.16160      0.00000
+   16  (g)               13        21   14   2  14   0   2  17   0     -1.70594      0.68008     -1.21555      2.20234      0.00000
+   17  (g)               13        21   14   2  16   0   2  14   0     -6.00804     -3.68313      0.20753      7.05018      0.00000
+   18  (bbar)        A   12        -5    9          24          24    -14.75930    -33.01823    -46.26424     58.89542      4.50000
+   19  (g)           I   12        21   15          24          24      0.12952      0.09207      0.02938      0.16160      0.00000
+   20  (g)           I   12        21   16          24          24     -1.70594      0.68008     -1.21555      2.20234      0.00000
+   21  (g)           I   12        21   17          24          24     -6.00804     -3.68313      0.20753      7.05018      0.00000
+   22  (g)           I   12        21   13          24          24     -0.05307      0.09920     -0.03541      0.11795      0.00000
+   23  (b)           V   11         5   12          24          24     22.41892     36.25155    -31.24983     53.04324      4.50000
+   24  (string)          11        92   18          25          37      0.02210      0.42154    -78.52813    121.47073     92.67304
+   25  (B0)              11       511   24          38          40    -12.67157    -28.39121    -39.85717     50.82415      5.27920
+   26  (rho+)            11       213   24          41          42     -0.74596     -2.30454     -2.97205      3.88903      0.65124
+   27  (rho-)            11      -213   24          43          44     -1.22510     -1.26659     -2.16210      2.86058      0.63491
+   28  (rho+)            11       213   24          45          46     -1.10969     -0.24617     -0.66010      1.74600      1.14925
+   29  (rho-)            11      -213   24          47          48     -1.35666     -0.59268     -0.87280      1.86332      0.71999
+   30  nbar0              1     -2112   24           0           0     -0.49345     -0.52546     -0.06765      1.18616      0.93957
+   31  p+                 1      2212   24           0           0     -1.33057     -0.83255     -0.43497      1.87966      0.93827
+   32  (omega)           11       223   24          49          51     -1.43127     -0.16109     -0.43248      1.69555      0.78317
+   33  pi-                1      -211   24           0           0     -1.09582     -0.66518      0.06015      1.29089      0.13957
+   34  (rho+)            11       213   24          52          53     -0.10880     -0.87645     -0.25807      1.39754      1.05191
+   35  (rho-)            11      -213   24          54          55      0.32677      1.66058     -1.51568      2.39661      0.76297
+   36  (pi0)             11       111   24          56          57      0.40497      0.77708     -0.41602      0.97935      0.13498
+   37  (B*bar0)          11      -513   24          58          59     20.85926     33.84583    -28.93920     49.46190      5.32480
+   38  nu_tau             1        16   25           0           0     -3.28919     -4.58271     -7.81848      9.64099      0.00000
+   39  (tau+)            11       -15   25          60          63     -5.84610    -14.05937    -18.46268     23.99732      1.77700
+   40  (D-)              11      -411   25          64          66     -3.53627     -9.74913    -13.57601     17.18584      1.86930
+   41  pi+                1       211   26           0           0     -0.65377     -1.10562     -1.39727      1.90307      0.13957
+   42  (pi0)             11       111   26          67          68     -0.09219     -1.19892     -1.57478      1.98597      0.13498
+   43  pi-                1      -211   27           0           0     -1.16277     -1.18266     -1.75296      2.41724      0.13957
+   44  (pi0)             11       111   27          69          70     -0.06233     -0.08393     -0.40914      0.44333      0.13498
+   45  pi+                1       211   28           0           0     -1.00524     -0.12609     -0.94527      1.39263      0.13957
+   46  (pi0)             11       111   28          71          72     -0.10445     -0.12008      0.28517      0.35337      0.13498
+   47  pi-                1      -211   29           0           0      0.02714     -0.07574     -0.11228      0.19637      0.13957
+   48  (pi0)             11       111   29          73          74     -1.38380     -0.51694     -0.76052      1.66695      0.13498
+   49  pi+                1       211   32           0           0     -0.21039     -0.02483     -0.29428      0.38854      0.13957
+   50  pi-                1      -211   32           0           0     -0.63637     -0.23200     -0.09382      0.69790      0.13957
+   51  (pi0)             11       111   32          75          76     -0.58451      0.09574     -0.04437      0.60910      0.13498
+   52  pi+                1       211   34           0           0     -0.31882     -0.18200     -0.48631      0.62509      0.13957
+   53  (pi0)             11       111   34          77          78      0.21002     -0.69445      0.22823      0.77245      0.13498
+   54  pi-                1      -211   35           0           0     -0.06042      1.30464     -1.06929      1.69369      0.13957
+   55  (pi0)             11       111   35          79          80      0.38718      0.35595     -0.44638      0.70291      0.13498
+   56  gamma              1        22   36           0           0      0.09429      0.09829     -0.03220      0.13996      0.00000
+   57  gamma              1        22   36           0           0      0.31068      0.67878     -0.38382      0.83939      0.00000
+   58  (Bbar0)           11      -511   37          81          83     20.61348     33.39762    -28.53341     48.80924      5.27920
+   59  gamma              1        22   37           0           0      0.24578      0.44821     -0.40580      0.65266      0.00000
+   60  nu_taubar          1       -16   39           0           0     -2.41043     -4.50677     -5.91971      7.82075      0.00000
+   61  (rho+)            11       213   39          84          85     -1.54339     -4.05434     -5.05938      6.68979      0.57984
+   62  pi-                1      -211   39           0           0     -0.78828     -2.41209     -3.01592      3.94396      0.13957
+   63  pi+                1       211   39           0           0     -1.10401     -3.08616     -4.46767      5.54282      0.13957
+   64  e-                 1        11   40           0           0     -1.34802     -3.10438     -4.71117      5.80082      0.00051
+   65  nu_ebar            1       -12   40           0           0     -0.61503     -3.11994     -3.97950      5.09399      0.00000
+   66  (K*0)             11       313   40          86          87     -1.57322     -3.52482     -4.88533      6.29104      0.90072
+   67  gamma              1        22   42           0           0     -0.09481     -0.52251     -0.75701      0.92470      0.00000
+   68  gamma              1        22   42           0           0      0.00261     -0.67642     -0.81777      1.06127      0.00000
+   69  gamma              1        22   44           0           0     -0.08039     -0.10597     -0.37984      0.40246      0.00000
+   70  gamma              1        22   44           0           0      0.01807      0.02204     -0.02930      0.04087      0.00000
+   71  gamma              1        22   46           0           0     -0.13390     -0.08848      0.25257      0.29925      0.00000
+   72  gamma              1        22   46           0           0      0.02945     -0.03160      0.03260      0.05412      0.00000
+   73  gamma              1        22   48           0           0     -0.68942     -0.18935     -0.34239      0.79271      0.00000
+   74  gamma              1        22   48           0           0     -0.69438     -0.32758     -0.41813      0.87424      0.00000
+   75  gamma              1        22   51           0           0     -0.04166      0.02728      0.02809      0.05718      0.00000
+   76  gamma              1        22   51           0           0     -0.54285      0.06845     -0.07247      0.55192      0.00000
+   77  gamma              1        22   53           0           0      0.03687     -0.15073     -0.00679      0.15532      0.00000
+   78  gamma              1        22   53           0           0      0.17315     -0.54372      0.23502      0.61713      0.00000
+   79  gamma              1        22   55           0           0      0.17214      0.18801     -0.29861      0.39262      0.00000
+   80  gamma              1        22   55           0           0      0.21504      0.16794     -0.14777      0.31030      0.00000
+   81  nu_ebar            1       -12   58           0           0      4.41167      5.93837     -5.29812      9.09929      0.00000
+   82  e-                 1        11   58           0           0      0.12900      0.63107      0.08041      0.64912      0.00051
+   83  (D*+)             11       413   58          88          89     16.07281     26.82818    -23.31569     39.06083      2.01000
+   84  pi+                1       211   61           0           0     -0.41706     -0.62825     -0.83703      1.13523      0.13957
+   85  (pi0)             11       111   61          90          91     -1.12633     -3.42609     -4.22235      5.55456      0.13498
+   86  K+                 1       321   66           0           0     -1.44594     -2.58339     -3.61225      4.69645      0.49360
+   87  pi-                1      -211   66           0           0     -0.12728     -0.94143     -1.27309      1.59459      0.13957
+   88  (D0)              11       421   83          92          96     15.23112     25.41104    -22.08302     36.99790      1.86450
+   89  pi+                1       211   83           0           0      0.84169      1.41714     -1.23267      2.06293      0.13957
+   90  gamma              1        22   85           0           0     -0.20263     -0.73968     -0.83754      1.13563      0.00000
+   91  gamma              1        22   85           0           0     -0.92370     -2.68641     -3.38481      4.41893      0.00000
+   92  (Kbar0)           11      -311   88          97          97      6.38109      9.99790     -8.65289     14.69002      0.49767
+   93  pi+                1       211   88           0           0      2.85645      5.15913     -4.88560      7.65928      0.13957
+   94  pi-                1      -211   88           0           0      2.37515      3.65860     -3.14516      5.37943      0.13957
+   95  (pi0)             11       111   88          98          99      2.65196      4.86842     -3.82503      6.73672      0.13498
+   96  (pi0)             11       111   88         100         101      0.96648      1.72698     -1.57434      2.53245      0.13498
+   97  K_L0               1       130   92           0           0      6.38109      9.99790     -8.65289     14.69002      0.49767
+   98  gamma              1        22   95           0           0      0.56353      0.98262     -0.72318      1.34391      0.00000
+   99  gamma              1        22   95           0           0      2.08843      3.88580     -3.10184      5.39281      0.00000
+  100  gamma              1        22   96           0           0      0.09315      0.12478     -0.16443      0.22646      0.00000
+  101  gamma              1        22   96           0           0      0.87333      1.60220     -1.40991      2.30599      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           6      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           6      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           7           8     49.48772    -26.90406     52.62929    119.22110     90.94485
+    4  gamma              1        22    1           0           0    -49.64556     27.12146    -53.54549     77.89335      0.00000
+    5  gamma              1        22    1           0           0      0.09891     -0.02050      1.88878      1.89148      0.00000
+    6  gamma              1        22    1           0           0      0.05893     -0.19690     -0.97259      0.99407      0.00000
+    7  (c)               14         4    3   3   8  10   0   0  10    -22.62236     11.32676     13.31167     28.61743      1.30000
+    8  (cbar)            14        -4    3   0   0  11   3   7  11     72.11008    -38.23082     39.31762     90.60367      1.30000
+    9  (CMshower)        11        94    7          10          11     49.48772    -26.90406     52.62929    119.22110     90.94485
+   10  (c)               14         4    9   3   7  13   0   7  12      5.18777     -3.41288     28.30038     63.17148     56.13523
+   11  (cbar)            14        -4    9   0   8  14   3   8  15     44.29996    -23.49118     24.32891     56.04962      5.94491
+   12  (c)               14         4   10   3  13  17   0  10  16      7.48316    -13.86320     39.32272     42.80155      6.12455
+   13  (g)               14        21   10   3  10  19   3  12  18     -2.29539     10.45032    -11.02234     20.36993     13.37775
+   14  (cbar)            14        -4   11   0  11  20   3  15  21     28.35639    -17.04874     17.32325     37.40239      2.02466
+   15  (g)               14        21   11   3  14  22   3  11  23     15.94356     -6.44245      7.00566     18.64723      1.71393
+   16  (c)               14         4   12   3  17  25   0  12  24      8.02054    -13.41504     38.74825     41.89621      3.09401
+   17  (g)               13        21   12   2  12   0   2  16   0     -0.53738     -0.44816      0.57447      0.90534      0.00000
+   18  (g)               14        21   13   3  19  26   3  13  27     -3.57865      4.50762    -11.99341     14.06169      4.55675
+   19  (g)               14        21   13   3  13  28   3  18  29      1.28326      5.94271      0.97107      6.30825      1.37421
+   20  (cbar)            13        -4   14   0  14   0   2  21   0     24.64186    -14.76956     14.47257     32.19482      1.30000
+   21  (g)               13        21   14   2  20   0   2  14   0      3.71453     -2.27918      2.85067      5.20756      0.00000
+   22  (g)               13        21   15   2  15   0   2  23   0      9.63136     -3.93660      3.32850     10.92423      0.00000
+   23  (g)               13        21   15   2  22   0   2  15   0      6.31220     -2.50585      3.67717      7.72300      0.00000
+   24  (c)               13         4   16   2  25   0   0  16   0      7.65742    -13.48508     37.76133     40.84227      1.30000
+   25  (g)               13        21   16   2  16   0   2  24   0      0.36312      0.07003      0.98692      1.05394      0.00000
+   26  (g)               13        21   18   2  18   0   2  27   0      0.33403      0.17679     -0.15518      0.40855      0.00000
+   27  (g)               14        21   18   3  26  31   3  18  30     -3.91268      4.33083    -11.83823     13.65314      3.49279
+   28  (g)               13        21   19   2  19   0   2  29   0      1.55388      4.60981      0.62356      4.90446      0.00000
+   29  (g)               13        21   19   2  28   0   2  19   0     -0.27062      1.33290      0.34750      1.40379      0.00000
+   30  (g)               14        21   27   3  31  33   3  27  32     -4.03798      4.09328    -11.78477     13.37931      2.65800
+   31  (g)               13        21   27   2  27   0   2  30   0      0.12530      0.23754     -0.05346      0.27383      0.00000
+   32  (g)               13        21   30   2  33   0   2  30   0     -0.19522      1.65430     -4.39826      4.70313      0.00000
+   33  (g)               13        21   30   2  30   0   2  32   0     -3.84277      2.43899     -7.38651      8.67618      0.00000
+   34  (cbar)        A   12        -4   20          47          47     24.64186    -14.76956     14.47257     32.19482      1.30000
+   35  (g)           I   12        21   21          47          47      3.71453     -2.27918      2.85067      5.20756      0.00000
+   36  (g)           I   12        21   22          47          47      9.63136     -3.93660      3.32850     10.92423      0.00000
+   37  (g)           I   12        21   23          47          47      6.31220     -2.50585      3.67717      7.72300      0.00000
+   38  (g)           I   12        21   28          47          47      1.55388      4.60981      0.62356      4.90446      0.00000
+   39  (g)           I   12        21   29          47          47     -0.27062      1.33290      0.34750      1.40379      0.00000
+   40  (g)           I   12        21   26          47          47      0.33403      0.17679     -0.15518      0.40855      0.00000
+   41  (g)           I   12        21   31          47          47      0.12530      0.23754     -0.05346      0.27383      0.00000
+   42  (g)           I   12        21   33          47          47     -3.84277      2.43899     -7.38651      8.67618      0.00000
+   43  (g)           I   12        21   32          47          47     -0.19522      1.65430     -4.39826      4.70313      0.00000
+   44  (g)           I   12        21   17          47          47     -0.53738     -0.44816      0.57447      0.90534      0.00000
+   45  (g)           I   12        21   25          47          47      0.36312      0.07003      0.98692      1.05394      0.00000
+   46  (c)           V   11         4   24          47          47      7.65742    -13.48508     37.76133     40.84227      1.30000
+   47  (string)          11        92   34          48          73     49.48772    -26.90406     52.62929    119.22110     90.94485
+   48  (D*-)             11      -413   47          74          75     16.57665     -9.20919      9.79024     21.43556      2.01000
+   49  (omega)           11       223   47          76          78      6.91946     -3.78654      3.56144      8.69070      0.79218
+   50  (eta)             11       221   47          79          81      3.98526     -2.34817      2.25215      5.17379      0.54745
+   51  pi+                1       211   47           0           0      6.68057     -3.74730      3.85678      8.57710      0.13957
+   52  (K*-)             11      -323   47          82          83      3.36596     -1.21906      2.42984      4.42567      0.93090
+   53  (phi)             11       333   47          84          85      5.29623     -2.26010      1.32523      5.99601      1.01868
+   54  (phi)             11       333   47          86          87      1.19940      0.05138      0.69576      1.72090      1.01794
+   55  K+                 1       321   47           0           0      0.95024      0.40746      1.00444      1.52365      0.49360
+   56  pi-                1      -211   47           0           0      0.35204      1.94825     -0.35617      2.01642      0.13957
+   57  (Deltabar-)       11     -2214   47          88          89      0.35636      1.30594     -0.05136      1.87997      1.30353
+   58  (Delta++)         11      2224   47          90          91     -0.44033      2.41281     -0.57286      2.81020      1.24640
+   59  (pi0)             11       111   47          92          93     -0.61662     -0.19981     -1.13566      1.31457      0.13498
+   60  pi-                1      -211   47           0           0     -0.70315      1.39014     -3.33151      3.68040      0.13957
+   61  (rho0)            11       113   47          94          95     -0.54620     -0.33726     -0.69423      1.22038      0.77155
+   62  (eta)             11       221   47          96          97     -0.74283      0.73164     -1.35002      1.79146      0.54745
+   63  (rho+)            11       213   47          98          99     -1.10663      1.17743     -1.71347      2.44284      0.64847
+   64  (eta)             11       221   47         100         101      0.48706     -0.00574     -0.54519      0.91334      0.54745
+   65  pi-                1      -211   47           0           0     -0.01216     -0.11341      0.05169      0.18752      0.13957
+   66  (rho0)            11       113   47         102         103     -0.14528      0.29680      0.04468      0.93320      0.87159
+   67  (eta)             11       221   47         104         106      0.52127     -0.60279      0.11157      0.97326      0.54745
+   68  (pi0)             11       111   47         107         108     -0.06080      0.74878      0.15754      0.77936      0.13498
+   69  (K*bar0)          11      -313   47         109         110      0.36849     -2.21898      4.01830      4.70778      0.97817
+   70  (K0)              11       311   47         111         111      0.68231     -0.33990      2.53822      2.69654      0.49767
+   71  (Deltabar0)       11     -2114   47         112         113      2.05610     -4.29944     10.19992     11.31899      1.16977
+   72  pi-                1      -211   47           0           0     -0.09990     -0.11695      0.87804      0.90227      0.13957
+   73  (Sigma*_c++)      11      4224   47         114         115      4.16422     -6.57006     19.46390     21.10923      2.50000
+   74  (D-)              11      -411   48         116         118     15.64711     -8.72072      9.23989     20.24236      1.86930
+   75  (pi0)             11       111   48         119         120      0.92954     -0.48847      0.55035      1.19321      0.13498
+   76  pi-                1      -211   49           0           0      1.27710     -0.61386      0.52833      1.51869      0.13957
+   77  pi+                1       211   49           0           0      1.59430     -0.83843      1.08545      2.10771      0.13957
+   78  (pi0)             11       111   49         121         122      4.04806     -2.33425      1.94766      5.06430      0.13498
+   79  pi-                1      -211   50           0           0      1.85080     -0.92744      1.05161      2.32615      0.13957
+   80  pi+                1       211   50           0           0      1.18501     -0.71404      0.67197      1.54438      0.13957
+   81  (pi0)             11       111   50         123         124      0.94945     -0.70669      0.52857      1.30326      0.13498
+   82  (Kbar0)           11      -311   52         125         125      1.40241     -0.68043      1.32140      2.10322      0.49767
+   83  pi-                1      -211   52           0           0      1.96355     -0.53863      1.10844      2.32245      0.13957
+   84  K_L0               1       130   53           0           0      2.28254     -0.90144      0.61090      2.57749      0.49767
+   85  (K_S0)            11       310   53         126         127      3.01369     -1.35866      0.71434      3.41852      0.49767
+   86  K+                 1       321   54           0           0      0.41926      0.03912      0.32901      0.72746      0.49360
+   87  K-                 1      -321   54           0           0      0.78014      0.01226      0.36676      0.99344      0.49360
+   88  pbar-              1     -2212   57           0           0     -0.03661      0.76839     -0.04181      1.21403      0.93827
+   89  gamma              1        22   57           0           0      0.39298      0.53755     -0.00955      0.66595      0.00000
+   90  p+                 1      2212   58           0           0     -0.34095      2.29303     -0.65553      2.58540      0.93827
+   91  pi+                1       211   58           0           0     -0.09937      0.11978      0.08266      0.22480      0.13957
+   92  gamma              1        22   59           0           0     -0.07739     -0.00705     -0.06905      0.10395      0.00000
+   93  gamma              1        22   59           0           0     -0.53924     -0.19276     -1.06661      1.21061      0.00000
+   94  pi-                1      -211   61           0           0      0.09518      0.00803      0.04313      0.17454      0.13957
+   95  pi+                1       211   61           0           0     -0.64138     -0.34529     -0.73736      1.04584      0.13957
+   96  gamma              1        22   62           0           0     -0.10793      0.27944     -0.09533      0.31436      0.00000
+   97  gamma              1        22   62           0           0     -0.63491      0.45220     -1.25469      1.47710      0.00000
+   98  pi+                1       211   63           0           0     -0.14223      0.26817     -0.67663      0.75462      0.13957
+   99  (pi0)             11       111   63         128         129     -0.96440      0.90926     -1.03684      1.68822      0.13498
+  100  gamma              1        22   64           0           0      0.23636     -0.27326     -0.32302      0.48464      0.00000
+  101  gamma              1        22   64           0           0      0.25071      0.26753     -0.22217      0.42870      0.00000
+  102  pi+                1       211   66           0           0      0.30326      0.04698      0.18281      0.38351      0.13957
+  103  pi-                1      -211   66           0           0     -0.44855      0.24982     -0.13813      0.54969      0.13957
+  104  pi+                1       211   67           0           0      0.20953     -0.23565      0.09678      0.35816      0.13957
+  105  pi-                1      -211   67           0           0      0.29608     -0.16963     -0.03469      0.37030      0.13957
+  106  (pi0)             11       111   67         130         131      0.01565     -0.19751      0.04948      0.24479      0.13498
+  107  gamma              1        22   68           0           0      0.01083      0.32130      0.01048      0.32165      0.00000
+  108  gamma              1        22   68           0           0     -0.07163      0.42748      0.14707      0.45771      0.00000
+  109  K-                 1      -321   69           0           0      0.52612     -2.07743      3.59618      4.21529      0.49360
+  110  pi+                1       211   69           0           0     -0.15763     -0.14155      0.42212      0.49249      0.13957
+  111  K_L0               1       130   70           0           0      0.68231     -0.33990      2.53822      2.69654      0.49767
+  112  nbar0              1     -2112   71           0           0      1.61032     -3.08121      7.35648      8.19070      0.93957
+  113  (pi0)             11       111   71         132         133      0.44578     -1.21824      2.84344      3.12829      0.13498
+  114  (Lambda_c+)       11      4122   73         134         136      3.78043     -6.21799     18.33402     19.85729      2.28490
+  115  pi+                1       211   73           0           0      0.38380     -0.35206      1.12989      1.25195      0.13957
+  116  (K0)              11       311   74         137         137      5.08028     -2.65354      2.58131      6.30566      0.49767
+  117  K-                 1      -321   74           0           0      6.29960     -3.78097      3.69524      8.23888      0.49360
+  118  (K0)              11       311   74         138         138      4.26723     -2.28621      2.96334      5.69781      0.49767
+  119  gamma              1        22   75           0           0      0.05367     -0.06042      0.01934      0.08310      0.00000
+  120  gamma              1        22   75           0           0      0.87587     -0.42804      0.53101      1.11011      0.00000
+  121  gamma              1        22   78           0           0      3.19790     -1.85402      1.48151      3.98232      0.00000
+  122  gamma              1        22   78           0           0      0.85016     -0.48022      0.46615      1.08198      0.00000
+  123  gamma              1        22   81           0           0      0.63936     -0.39578      0.32232      0.81812      0.00000
+  124  gamma              1        22   81           0           0      0.31009     -0.31091      0.20625      0.48514      0.00000
+  125  (K_S0)            11       310   82         139         140      1.40241     -0.68043      1.32140      2.10322      0.49767
+  126  (pi0)             11       111   85         141         142      1.53682     -0.87727      0.25418      1.79283      0.13498
+  127  (pi0)             11       111   85         143         144      1.47687     -0.48139      0.46015      1.62568      0.13498
+  128  gamma              1        22   99           0           0     -0.71444      0.70150     -0.71133      1.22822      0.00000
+  129  gamma              1        22   99           0           0     -0.24996      0.20776     -0.32551      0.46000      0.00000
+  130  gamma              1        22  106           0           0      0.05027     -0.19836      0.04769      0.21012      0.00000
+  131  gamma              1        22  106           0           0     -0.03462      0.00085      0.00179      0.03467      0.00000
+  132  gamma              1        22  113           0           0      0.39229     -1.07486      2.60158      2.84208      0.00000
+  133  gamma              1        22  113           0           0      0.05350     -0.14337      0.24186      0.28621      0.00000
+  134  pi+                1       211  114           0           0      0.76151     -0.75131      2.23384      2.48071      0.13957
+  135  (rho0)            11       113  114         145         146      1.04675     -1.86918      6.06298      6.47606      0.76818
+  136  (Lambda0)         11      3122  114         147         148      1.97216     -3.59750     10.03719     10.90052      1.11568
+  137  K_L0               1       130  116           0           0      5.08028     -2.65354      2.58131      6.30566      0.49767
+  138  (K_S0)            11       310  118         149         150      4.26723     -2.28621      2.96334      5.69781      0.49767
+  139  pi+                1       211  125           0           0      0.82576     -0.54902      1.00240      1.41690      0.13957
+  140  pi-                1      -211  125           0           0      0.57665     -0.13141      0.31900      0.68632      0.13957
+  141  gamma              1        22  126           0           0      1.14631     -0.72024      0.19011      1.36708      0.00000
+  142  gamma              1        22  126           0           0      0.39052     -0.15702      0.06407      0.42575      0.00000
+  143  gamma              1        22  127           0           0      1.35798     -0.47441      0.40468      1.49430      0.00000
+  144  gamma              1        22  127           0           0      0.11889     -0.00699      0.05548      0.13139      0.00000
+  145  pi+                1       211  135           0           0      0.72407     -1.18559      2.86648      3.18843      0.13957
+  146  pi-                1      -211  135           0           0      0.32268     -0.68359      3.19650      3.28763      0.13957
+  147  p+                 1      2212  136           0           0      1.53721     -2.88932      7.84519      8.55211      0.93827
+  148  pi-                1      -211  136           0           0      0.43496     -0.70818      2.19200      2.34842      0.13957
+  149  (pi0)             11       111  138         151         152      1.33069     -0.93073      0.98767      1.90544      0.13498
+  150  (pi0)             11       111  138         153         154      2.93653     -1.35548      1.97567      3.79237      0.13498
+  151  gamma              1        22  149           0           0      0.99711     -0.62465      0.72461      1.38183      0.00000
+  152  gamma              1        22  149           0           0      0.33359     -0.30608      0.26307      0.52361      0.00000
+  153  gamma              1        22  150           0           0      0.55044     -0.29881      0.42331      0.75595      0.00000
+  154  gamma              1        22  150           0           0      2.38609     -1.05667      1.55236      3.03641      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           5           6     18.64392      2.68558     77.79710    119.95503     89.34211
+    4  gamma              1        22    1           0           0    -18.64392     -2.68558    -77.79710     80.04497      0.00000
+    5  nu_tau             1        16    3           0           0    -33.64368     -9.04633     16.53663     38.56415      0.00000
+    6  nu_taubar          1       -16    3           0           0     52.28760     11.73192     61.26047     81.39089      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           5           6      0.00038      0.00039     -0.00443    199.99553    199.99553
+    4  gamma              1        22    1           0           0     -0.00038     -0.00039      0.00443      0.00447      0.00000
+    5  nu_e               1        12    3           0           0    -49.23772     44.37660     74.87045     99.99610      0.00000
+    6  nu_ebar            1       -12    3           0           0     49.23810    -44.37621    -74.87489     99.99943      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           7      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           7      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           8           9     15.43376     16.65760     27.17941     96.23252     89.47794
+    4  gamma              1        22    1           0           0     -5.07716     -6.14696    -63.43952     63.93853      0.00000
+    5  gamma              1        22    1           0           0    -10.35663    -10.51053     28.90770     32.45592      0.00000
+    6  gamma              1        22    1           0           0     -0.00002     -0.00004      7.36272      7.36272      0.00000
+    7  gamma              1        22    1           0           0      0.00006     -0.00006     -0.01031      0.01031      0.00000
+    8  (tau-)            11        15    3          10          11      8.01006     47.69246     39.00473     62.15511      1.77700
+    9  (tau+)            11       -15    3          14          15      7.42370    -31.03486    -11.82532     34.07741      1.77700
+   10  nu_tau             1        16    8           0           0      1.00361      3.47195      2.78491      4.56262      0.01000
+   11  (rho-)            11      -213    8          12          13      7.00645     44.22050     36.21981     57.59249      0.69034
+   12  pi-                1      -211   11           0           0      2.97674     20.79559     16.95160     26.99433      0.13957
+   13  pi0                1       111   11           0           0      4.02971     23.42492     19.26822     30.59817      0.13496
+   14  nu_taubar          1       -16    9           0           0      6.95566    -26.57505     -9.99888     29.23341      0.01000
+   15  pi+                1       211    9           0           0      0.46804     -4.45981     -1.82644      4.84400      0.13957
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000    100.00000    100.00000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000   -100.00000    100.00000      0.00051
+    3  (Z0)              11        23    1           5           6     22.73285      8.03851    -56.55948    138.51525    124.12131
+    4  gamma              1        22    1           0           0    -22.73285     -8.03851     56.55948     61.48475      0.00000
+    5  nu_mu              1        14    3           0           0    -10.34282    -32.41737     24.59966     41.98813      0.00000
+    6  nu_mubar           1       -14    3           0           0     33.07567     40.45588    -81.15914     96.52712      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000    200.00000    200.00000
+
+
+ ***************************************************************************
+ *                      KarLud  final  report                              *
+ *             1287                  total no of events     nevtot      == *
+ *    4850.09270652                  ISRcru  [R]            ISRcru      == *
+ *    4844.79392384  +- 0.52558903   ISRbest [R],ISRerr     ISRbest     == *
+ *    4850.0927                      XKarlud [R]            XKarlud     == *
+ *    0.0000000                      KError  [R]            KError      == *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                   Report on wt_ISR of KarLud                            *
+ *             1287                 total no of events      nevtot      == *
+ *                0                 wt<0        events      nevneg      == *
+ *       0.03001641  +- 0.05515341  <wt>                    wt_ISR      == *
+ *     145.58235856  +- 8.02936316  sigma of KarLud [R]     xskarl      == *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *       0.99890749  +- 0.00010849  Average WT of Vesk1      AVesk1     == *
+ *    4843.66460386  +- 0.04843665  xs_est gauss    [R]      xcgaus     == *
+ *       0.00023315  +- 0.00010949  xcve/xcgs-1                         == *
+ ***************************************************************************
+
+1
+      -658          KarLud, wtvesk                                                                  
+           nent            sum           bmin           bmax
+           1287    0.00000E+00    0.00000E+00    0.12030E+04
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.12856E+04    0.99892E+00
+  0.0000   0.000000E+00 0                                                                 I
+  0.0120   0.000000E+00 0                                                                 I
+  0.0240   0.000000E+00 0                                                                 I
+  0.0360   0.000000E+00 0                                                                 I
+  0.0480   0.000000E+00 0                                                                 I
+  0.0600   0.000000E+00 0                                                                 I
+  0.0720   0.000000E+00 0                                                                 I
+  0.0840   0.000000E+00 0                                                                 I
+  0.0960   0.000000E+00 0                                                                 I
+  0.1080   0.000000E+00 0                                                                 I
+  0.1200   0.000000E+00 0                                                                 I
+  0.1320   0.000000E+00 0                                                                 I
+  0.1440   0.000000E+00 0                                                                 I
+  0.1560   0.000000E+00 0                                                                 I
+  0.1680   0.000000E+00 0                                                                 I
+  0.1800   0.000000E+00 0                                                                 I
+  0.1920   0.000000E+00 0                                                                 I
+  0.2040   0.000000E+00 0                                                                 I
+  0.2160   0.000000E+00 0                                                                 I
+  0.2280   0.000000E+00 0                                                                 I
+  0.2400   0.000000E+00 0                                                                 I
+  0.2520   0.000000E+00 0                                                                 I
+  0.2640   0.000000E+00 0                                                                 I
+  0.2760   0.000000E+00 0                                                                 I
+  0.2880   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.3120   0.000000E+00 0                                                                 I
+  0.3240   0.000000E+00 0                                                                 I
+  0.3360   0.000000E+00 0                                                                 I
+  0.3480   0.000000E+00 0                                                                 I
+  0.3600   0.000000E+00 0                                                                 I
+  0.3720   0.000000E+00 0                                                                 I
+  0.3840   0.000000E+00 0                                                                 I
+  0.3960   0.000000E+00 0                                                                 I
+  0.4080   0.000000E+00 0                                                                 I
+  0.4200   0.000000E+00 0                                                                 I
+  0.4320   0.000000E+00 0                                                                 I
+  0.4440   0.000000E+00 0                                                                 I
+  0.4560   0.000000E+00 0                                                                 I
+  0.4680   0.000000E+00 0                                                                 I
+  0.4800   0.000000E+00 0                                                                 I
+  0.4920   0.000000E+00 0                                                                 I
+  0.5040   0.000000E+00 0                                                                 I
+  0.5160   0.000000E+00 0                                                                 I
+  0.5280   0.000000E+00 0                                                                 I
+  0.5400   0.000000E+00 0                                                                 I
+  0.5520   0.000000E+00 0                                                                 I
+  0.5640   0.000000E+00 0                                                                 I
+  0.5760   0.000000E+00 0                                                                 I
+  0.5880   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.6120   0.000000E+00 0                                                                 I
+  0.6240   0.000000E+00 0                                                                 I
+  0.6360   0.000000E+00 0                                                                 I
+  0.6480   0.000000E+00 0                                                                 I
+  0.6600   0.000000E+00 0                                                                 I
+  0.6720   0.000000E+00 0                                                                 I
+  0.6840   0.000000E+00 0                                                                 I
+  0.6960   0.000000E+00 0                                                                 I
+  0.7080   0.000000E+00 0                                                                 I
+  0.7200   0.000000E+00 0                                                                 I
+  0.7320   0.000000E+00 0                                                                 I
+  0.7440   0.000000E+00 0                                                                 I
+  0.7560   0.000000E+00 0                                                                 I
+  0.7680   0.000000E+00 0                                                                 I
+  0.7800   0.000000E+00 0                                                                 I
+  0.7920   0.000000E+00 0                                                                 I
+  0.8040   0.000000E+00 0                                                                 I
+  0.8160   0.000000E+00 0                                                                 I
+  0.8280   0.000000E+00 0                                                                 I
+  0.8400   0.000000E+00 0                                                                 I
+  0.8520   0.000000E+00 0                                                                 I
+  0.8640   0.000000E+00 0                                                                 I
+  0.8760   0.000000E+00 0                                                                 I
+  0.8880   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  0.9120   0.000000E+00 0                                                                 I
+  0.9240   0.000000E+00 0                                                                 I
+  0.9360   0.000000E+00 0                                                                 I
+  0.9480   0.300000E+01 0                                                                 I
+  0.9600   0.600000E+01 0                                                                 I
+  0.9720   0.100000E+02 0                                                                 I
+  0.9840   0.650000E+02 0XXX                                                              I
+  0.9960   0.120300E+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  1.0080   0.000000E+00 0                                                                 I
+  1.0200   0.000000E+00 0                                                                 I
+  1.0320   0.000000E+00 0                                                                 I
+  1.0440   0.000000E+00 0                                                                 I
+  1.0560   0.000000E+00 0                                                                 I
+  1.0680   0.000000E+00 0                                                                 I
+  1.0800   0.000000E+00 0                                                                 I
+  1.0920   0.000000E+00 0                                                                 I
+  1.1040   0.000000E+00 0                                                                 I
+  1.1160   0.000000E+00 0                                                                 I
+  1.1280   0.000000E+00 0                                                                 I
+  1.1400   0.000000E+00 0                                                                 I
+  1.1520   0.000000E+00 0                                                                 I
+  1.1640   0.000000E+00 0                                                                 I
+  1.1760   0.000000E+00 0                                                                 I
+  1.1880   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                   KarLud_Finalize END  <<<                              *
+ ***************************************************************************
+
+1
+      -664          YFSfin: photon raw multiplicity                                                 
+           nent            sum           bmin           bmax
+           1133    0.00000E+00    0.00000E+00    0.98101E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.17600E+03    0.13068E+01
+  0.0000   0.981000E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXI
+  1.0000   0.131000E+03 0XXXXXXXX                                                         I
+  2.0000   0.180000E+02 0X                                                                I
+  3.0000   0.300000E+01 0                                                                 I
+  4.0000   0.000000E+00 0                                                                 I
+  5.0000   0.000000E+00 0                                                                 I
+  6.0000   0.000000E+00 0                                                                 I
+  7.0000   0.000000E+00 0                                                                 I
+  8.0000   0.000000E+00 0                                                                 I
+  9.0000   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                        KarFin Finalize    START                         *
+ *             2272                  generated events        nevgen     a2 *
+ *       0.99735915  +- 0.00152671   kinematics, smin        wt1        a5 *
+ *       0.99972061  +- 0.00026693   jacobian                wt2        a6 *
+ *       0.99984927  +- 0.00561129   photon ang. dist.       wt3        a7 *
+ *                            ON MASS WEIGHTS                              *
+ *       0.95828244  +- 0.00450359  removal wgt wtrem                   b1 *
+ *             1133                 no. of raw events                   b2 *
+ *                0                 wt6=0      events                   b3 *
+ *       1.00488354  +- 0.00448952  control wgt wctrl                   b4 *
+ *                0                 marked photons           MarTot     a5 *
+ *   0.10000000E-02                 emin                                b6 *
+ *   0.10000000E-07                 delta                               b7 *
+ *       0.15533981                 raw ph. multipl.                    b8 *
+ *       3.00000000                 Highest phot. mult.                 b9 *
+ *                        YFSfin Finalize    END                           *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                            KarFin Finalize                              *
+ *             2272                  generated events        nevgen     a2 *
+ *       0.99751156  +- 0.00518476   general weight          wt         a1 *
+ *       0.13782302                  aver. ph. multi.        avmlt      a3 *
+ ***************************************************************************
+
+1
+      -640          KK2f: Photon raw multiplicity                                                   
+           nent            sum           bmin           bmax
+             20    0.00000E+00    0.00000E+00    0.60000E+01
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.41000E+02    0.29024E+01
+  0.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+  1.0000   0.600000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  2.0000   0.500000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+  3.0000   0.400000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+  4.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+  5.0000   0.100000E+01 0XXXXXXXXXXX                                                      I
+  6.0000   0.000000E+00 0                                                                 I
+  7.0000   0.000000E+00 0                                                                 I
+  8.0000   0.000000E+00 0                                                                 I
+  9.0000   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                       KK2f_Finalize  printouts                          *
+ *     200.00000000                 cms energy total         cmsene     a0 *
+ *               20                 total no of events       nevgen     a1 *
+ *               ** principal info on x-section **                         *
+ *      68.63683567  +- 5.75062229  xs_tot MC R-units        xsmc       a1 *
+ *     149.03554245                 xs_tot    picob.         xSecPb     a3 *
+ *      12.48669326                 error     picob.         xErrPb     a4 *
+ *       0.08378332                 relative error           erel       a5 *
+ *       0.46442596                 WTsup, largest WT        WTsup     a10 *
+ *                       ** some auxiliary info **                         *
+ *     182.96856468                 xs_born   picobarns       xborn    a11 *
+ *       2.05000000                 Raw phot. multipl.                 === *
+ *       5.00000000                 Highest phot. mult.                === *
+ *                         End of KK2f  Finalize                           *
+ ***************************************************************************
+
+1
+      -700          MBrA: KK2f main weight                                                          
+           nent            sum           bmin           bmax
+           1287    0.00000E+00    0.00000E+00    0.10730E+04
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.18213E+02    0.14200E+00
+  0.0000   0.107300E+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXI
+  0.0200   0.880000E+02 0XXXXX                                                            I
+  0.0400   0.430000E+02 0XX                                                               I
+  0.0600   0.210000E+02 0X                                                                I
+  0.0800   0.160000E+02 0                                                                 I
+  0.1000   0.140000E+02 0                                                                 I
+  0.1200   0.300000E+01 0                                                                 I
+  0.1400   0.100000E+02 0                                                                 I
+  0.1600   0.400000E+01 0                                                                 I
+  0.1800   0.300000E+01 0                                                                 I
+  0.2000   0.100000E+01 0                                                                 I
+  0.2200   0.000000E+00 0                                                                 I
+  0.2400   0.000000E+00 0                                                                 I
+  0.2600   0.300000E+01 0                                                                 I
+  0.2800   0.200000E+01 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.3200   0.000000E+00 0                                                                 I
+  0.3400   0.000000E+00 0                                                                 I
+  0.3600   0.100000E+01 0                                                                 I
+  0.3800   0.000000E+00 0                                                                 I
+  0.4000   0.300000E+01 0                                                                 I
+  0.4200   0.000000E+00 0                                                                 I
+  0.4400   0.000000E+00 0                                                                 I
+  0.4600   0.200000E+01 0                                                                 I
+  0.4800   0.000000E+00 0                                                                 I
+  0.5000   0.000000E+00 0                                                                 I
+  0.5200   0.000000E+00 0                                                                 I
+  0.5400   0.000000E+00 0                                                                 I
+  0.5600   0.000000E+00 0                                                                 I
+  0.5800   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.6200   0.000000E+00 0                                                                 I
+  0.6400   0.000000E+00 0                                                                 I
+  0.6600   0.000000E+00 0                                                                 I
+  0.6800   0.000000E+00 0                                                                 I
+  0.7000   0.000000E+00 0                                                                 I
+  0.7200   0.000000E+00 0                                                                 I
+  0.7400   0.000000E+00 0                                                                 I
+  0.7600   0.000000E+00 0                                                                 I
+  0.7800   0.000000E+00 0                                                                 I
+  0.8000   0.000000E+00 0                                                                 I
+  0.8200   0.000000E+00 0                                                                 I
+  0.8400   0.000000E+00 0                                                                 I
+  0.8600   0.000000E+00 0                                                                 I
+  0.8800   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  0.9200   0.000000E+00 0                                                                 I
+  0.9400   0.000000E+00 0                                                                 I
+  0.9600   0.000000E+00 0                                                                 I
+  0.9800   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                MBrA: report on the main Weight                          *
+ *             1287                 no of raw events         Ntot       b1 *
+ *               20                 accepted    events       Nacc       b2 *
+ *                0                 wt<0        events       Nneg       b3 *
+ *                0                 wt>WTmax    events       Nove       b4 *
+ *       0.46442596                 WTsup, largest WT        WTsup      b5 *
+ *       0.00000000                 <Wt-WtMax>  Overfl.      AvOve      b6 *
+ *       0.00000000                 <Wt> for Wt<0            AvUnd      b7 *
+ *       0.00000000                 AvOve/<Wt>,WT>WtMax      ROverf     b8 *
+ *       0.00000000                 AvUnd/<Wt>,Wt<0          RUnder     b9 *
+ ***************************************************************************
+
+ 
+=====================================================================================================
+            MBrA:    Detailed statistics for all branches    
+=====================================================================================================
+  KF     AveWt     ERela     WtSup      Wt<0   Wt>Wmax       Ntot       Nacc   Nneg   Nove   Nzer
+   1  0.017449  0.2386990.4008      0.000000  0.000000        117          2      0      0      0
+   2  0.003448  0.1773010.1045      0.000000  0.000000        368          4      0      0      6
+   3  0.017461  0.2388200.1799      0.000000  0.000000         71          1      0      0      1
+   4  0.031648  0.1428080.1898      0.000000  0.000000         65          2      0      0      0
+   5  0.040687  0.1333850.1592      0.000000  0.000000         43          2      0      0      0
+  12  0.058859  0.1686960.4644      0.000000  0.000000        108          3      0      0      0
+  13  0.001870  0.2337700.1529      0.000000  0.000000        441          0      0      0      6
+  14  0.058631  0.2013290.1724      0.000000  0.000000         15          1      0      0      0
+  15  0.010710  0.2068780.5335E-01  0.000000  0.000000         41          2      0      0      0
+  16  0.075338  0.2456550.2950      0.000000  0.000000         18          3      0      0      0
+All:  0.014152  0.0837830.4644      0.000000  0.000000       1287         20      0      0     13
+=====================================================================================================
+
+
+
+ ***************************************************************************
+ *                         ******** DADMPI FINAL REPORT  ********          *
+ *                   1     NEVTOT = NO. OF PI  DECAYS TOTAL                *
+ *         0.24728E-12     PARTIAL WTDTH ( PI DECAY) IN GEV UNITS          *
+ *         0.610688448     IN UNITS GFERMI**2*MASS**5/192/PI**3            *
+ *          0.00000000     RELATIVE ERROR OF PARTIAL WIDTH (STAT.)         *
+ ***************************************************************************
+
+
+
+
+ ***************************************************************************
+ *                         ******** DADMRO FINAL REPORT  ********          *
+ *                  12     NEVRAW = NO. OF RHO DECAYS TOTAL                *
+ *                   3     NEVACC = NO. OF RHO  DECS. ACCEPTED             *
+ *                   0     NEVOVR = NO. OF OVERWEIGHTED EVENTS             *
+ *         0.40834E-12     PARTIAL WTDTH (RHO DECAY) IN GEV UNITS          *
+ *         1.008435369     IN UNITS GFERMI**2*MASS**5/192/PI**3            *
+ *          0.14289728     RELATIVE ERROR OF PARTIAL WIDTH                 *
+ ***************************************************************************
+
+
+
+
+ ***************************************************************************
+ *                         *****TAUOLA LIBRARY: VERSION 2.6 ******         *
+ *                         ***********August   1995***************         *
+ *                         **AUTHORS: S.JADACH, Z.WAS*************         *
+ *                         **R. DECKER, M. JEZABEK, J.H.KUEHN*****         *
+ *                         **AVAILABLE FROM: WASM AT CERNVM ******         *
+ *                         ***** PUBLISHED IN COMP. PHYS. COMM.***         *
+ *                         *******CERN-TH-5856 SEPTEMBER 1990*****         *
+ *                         *******CERN-TH-6195 SEPTEMBER 1991*****         *
+ *                         *******CERN TH-6793 NOVEMBER  1992*****         *
+ *                         *****DEKAY ROUTINE: FINAL REPORT*******         *
+ *                   2     NEV1   = NO. OF TAU+ DECS. ACCEPTED             *
+ *                   2     NEV2   = NO. OF TAU- DECS. ACCEPTED             *
+ *                   4     NEVTOT = SUM                                    *
+ *    NOEVTS  PART.WIDTH     ERROR       ROUTINE    DECAY MODE             *
+ *         0   0.0000000   0.0000000     DADMEL     ELECTRON               *
+ *         0   0.0000000   0.0000000     DADMMU     MUON                   *
+ *         1   0.6106884   0.0000000     DADMPI     PION                   *
+ *         3   1.0084354   0.1428973     DADMRO     RHO (->2PI)            *
+ *         0   0.0000000   0.0000000     DADMAA     A1  (->3PI)            *
+ *         0   0.0000000   0.0000000     DADMKK     KAON                   *
+ *         0   0.0000000   0.0000000     DADMKS     K*                     *
+ *         0   0.0000000   0.0000000  TAU-  --> 2PI-,  PI0,  PI+           *
+ *         0   0.0000000   0.0000000  TAU-  --> 3PI0,        PI-           *
+ *         0   0.0000000   0.0000000  TAU-  --> 2PI-,  PI+, 2PI0           *
+ *         0   0.0000000   0.0000000  TAU-  --> 3PI-, 2PI+,                *
+ *         0   0.0000000   0.0000000  TAU-  --> 3PI-, 2PI+,  PI0           *
+ *         0   0.0000000   0.0000000  TAU-  --> 2PI-,  PI+, 3PI0           *
+ *         0   0.0000000   0.0000000  TAU-  -->  K-, PI-,  K+              *
+ *         0   0.0000000   0.0000000  TAU-  -->  K0, PI-, K0B              *
+ *         0   0.0000000   0.0000000  TAU-  -->  K-,  K0, PI0              *
+ *         0   0.0000000   0.0000000  TAU-  --> PI0  PI0   K-              *
+ *         0   0.0000000   0.0000000  TAU-  -->  K-  PI-  PI+              *
+ *         0   0.0000000   0.0000000  TAU-  --> PI-  K0B  PI0              *
+ *         0   0.0000000   0.0000000  TAU-  --> ETA  PI-  PI0              *
+ *         0   0.0000000   0.0000000  TAU-  --> PI-  PI0  GAM              *
+ *         0   0.0000000   0.0000000  TAU-  -->  K-  K0                    *
+ *                    THE ERROR IS RELATIVE AND  PART.WIDTH                *
+ *                    IN UNITS GFERMI**2*MASS**5/192/PI**3                 *
+ ***************************************************************************
+
+1
+      -630          Tau Pair: wt1, Spin Imprint weight                                              
+           nent            sum           bmin           bmax
+             21    0.00000E+00    0.00000E+00    0.50000E+01
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.22216E+02    0.14225E+01
+  0.0000   0.000000E+00 0                                                                 I
+  0.1000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  0.2000   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.4000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXX                                       I
+  0.5000   0.300000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                          I
+  0.6000   0.000000E+00 0                                                                 I
+  0.7000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  0.8000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXX                                       I
+  0.9000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  1.0000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  1.1000   0.500000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  1.2000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXX                                       I
+  1.3000   0.000000E+00 0                                                                 I
+  1.4000   0.000000E+00 0                                                                 I
+  1.5000   0.000000E+00 0                                                                 I
+  1.6000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  1.7000   0.000000E+00 0                                                                 I
+  1.8000   0.000000E+00 0                                                                 I
+  1.9000   0.000000E+00 0                                                                 I
+  2.0000   0.000000E+00 0                                                                 I
+  2.1000   0.000000E+00 0                                                                 I
+  2.2000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  2.3000   0.000000E+00 0                                                                 I
+  2.4000   0.000000E+00 0                                                                 I
+  2.5000   0.000000E+00 0                                                                 I
+  2.6000   0.000000E+00 0                                                                 I
+  2.7000   0.000000E+00 0                                                                 I
+  2.8000   0.000000E+00 0                                                                 I
+  2.9000   0.100000E+01 0XXXXXXXXXXXXX                                                    I
+  3.0000   0.000000E+00 0                                                                 I
+  3.1000   0.000000E+00 0                                                                 I
+  3.2000   0.000000E+00 0                                                                 I
+  3.3000   0.000000E+00 0                                                                 I
+  3.4000   0.000000E+00 0                                                                 I
+  3.5000   0.000000E+00 0                                                                 I
+  3.6000   0.000000E+00 0                                                                 I
+  3.7000   0.000000E+00 0                                                                 I
+  3.8000   0.000000E+00 0                                                                 I
+  3.9000   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                      Tau Pair Finalize                                  *
+ *       1.05791203  +- 0.12811160  Spin Imprint <wt1>       wt1ave     a1 *
+ *       2.96317522                 Maximum value wt1        wt1max     a2 *
+ ***************************************************************************
+
+1
+     50001          d_sigma/dv(v)                                                                   
+           nent            sum           bmin           bmax
+             20    0.00000E+00    0.00000E+00    0.70000E+01
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.20000E+02    0.61999E+00
+  0.0000   0.400000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.0200   0.000000E+00 0                                                                 I
+  0.0400   0.000000E+00 0                                                                 I
+  0.0600   0.000000E+00 0                                                                 I
+  0.0800   0.100000E+01 0XXXXXXXXX                                                        I
+  0.1000   0.000000E+00 0                                                                 I
+  0.1200   0.000000E+00 0                                                                 I
+  0.1400   0.000000E+00 0                                                                 I
+  0.1600   0.000000E+00 0                                                                 I
+  0.1800   0.000000E+00 0                                                                 I
+  0.2000   0.000000E+00 0                                                                 I
+  0.2200   0.000000E+00 0                                                                 I
+  0.2400   0.000000E+00 0                                                                 I
+  0.2600   0.000000E+00 0                                                                 I
+  0.2800   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.3200   0.000000E+00 0                                                                 I
+  0.3400   0.000000E+00 0                                                                 I
+  0.3600   0.000000E+00 0                                                                 I
+  0.3800   0.000000E+00 0                                                                 I
+  0.4000   0.000000E+00 0                                                                 I
+  0.4200   0.000000E+00 0                                                                 I
+  0.4400   0.000000E+00 0                                                                 I
+  0.4600   0.000000E+00 0                                                                 I
+  0.4800   0.000000E+00 0                                                                 I
+  0.5000   0.000000E+00 0                                                                 I
+  0.5200   0.000000E+00 0                                                                 I
+  0.5400   0.000000E+00 0                                                                 I
+  0.5600   0.000000E+00 0                                                                 I
+  0.5800   0.000000E+00 0                                                                 I
+  0.6000   0.100000E+01 0XXXXXXXXX                                                        I
+  0.6200   0.000000E+00 0                                                                 I
+  0.6400   0.000000E+00 0                                                                 I
+  0.6600   0.000000E+00 0                                                                 I
+  0.6800   0.000000E+00 0                                                                 I
+  0.7000   0.000000E+00 0                                                                 I
+  0.7200   0.000000E+00 0                                                                 I
+  0.7400   0.000000E+00 0                                                                 I
+  0.7600   0.100000E+01 0XXXXXXXXX                                                        I
+  0.7800   0.700000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  0.8000   0.200000E+01 0XXXXXXXXXXXXXXXXXX                                               I
+  0.8200   0.100000E+01 0XXXXXXXXX                                                        I
+  0.8400   0.000000E+00 0                                                                 I
+  0.8600   0.000000E+00 0                                                                 I
+  0.8800   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  0.9200   0.000000E+00 0                                                                 I
+  0.9400   0.000000E+00 0                                                                 I
+  0.9600   0.100000E+01 0XXXXXXXXX                                                        I
+  0.9800   0.200000E+01 0XXXXXXXXXXXXXXXXXX                                               I
+1
+     50009          KFcode                                                                          
+           nent            sum           bmin           bmax
+             20    0.00000E+00    0.00000E+00    0.40000E+01
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.20000E+02    0.79500E+01
+  1.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+  2.0000   0.400000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  3.0000   0.100000E+01 0XXXXXXXXXXXXXXXX                                                 I
+  4.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+  5.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+  6.0000   0.000000E+00 0                                                                 I
+  7.0000   0.000000E+00 0                                                                 I
+  8.0000   0.000000E+00 0                                                                 I
+  9.0000   0.000000E+00 0                                                                 I
+ 10.0000   0.000000E+00 0                                                                 I
+ 11.0000   0.000000E+00 0                                                                 I
+ 12.0000   0.300000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+ 13.0000   0.000000E+00 0                                                                 I
+ 14.0000   0.100000E+01 0XXXXXXXXXXXXXXXX                                                 I
+ 15.0000   0.200000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+ 16.0000   0.300000E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                I

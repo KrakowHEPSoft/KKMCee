@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
+                                                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% gmake delta-ps
+%======================
+\input Energy.tex
+\def\Energy{MZ-1.8GeV (had.)}
+\def\Angle{$\theta^{\bullet}$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}                     %%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                                         %%%%%%%%%%%%%%%%%%%%
+\begin{slide*}
+\titbox{{\small\Color{Magenta} 
+      ISR*FSR in $\sigma_{tot}$, CMS energy study}}
+
+{\small\Color{ForestGreen}
+  The ISR*FSR {\Color{Red} interference} correction
+  to $\sigma_{\rm tot}$.
+  No cut in $\cos$\Angle. 
+  Energy cut $s'>0.01s$, where $s'$ is dimuon(quark) mass squared.
+  Results from {\color{red} \KK\ M.C. with \Oceex{\alpha^1} }
+  exponentiation at the amplitude level and Zfitter 5.0.
+}
+
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(65,60)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(-2, 00){\makebox(0,0)[lb]{
+\epsfig{file=delmu-sigma1.eps,width=65mm,height=60mm}
+}}
+\end{picture}
+\end{center}
+%-----------------------------------------------------------
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                                         %%%%%%%%%%%%%%%%%%%%
+\begin{slide*}
+\titbox{{\small\Color{Magenta} 
+      ISR*FSR in $\sigma_{tot}$, CMS energy study}}
+
+{\small\Color{ForestGreen}
+  The ISR*FSR {\Color{Red} interference} correction
+  to $\sigma_{\rm tot}$.
+  No cut in $\cos$\Angle.
+  Energy cut $s'>0.01s$, where $s'$ is dimuon(quark) mass squared.
+  Results from {\color{red} \KK\ M.C. with \Oceex{\alpha^1} }
+  exponentiation at the amplitude level.
+  Divided by $\sigma_{tot}$ which is either muonic or hadronic (five quarks).
+}
+
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(65,60)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(-2, 00){\makebox(0,0)[lb]{
+\epsfig{file=delmu-sigma2.eps,width=65mm,height=60mm}
+}}
+\end{picture}
+\end{center}
+%-----------------------------------------------------------
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

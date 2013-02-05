@@ -1,0 +1,190 @@
+From teubert@afal01.cern.ch Fri Feb  5 13:36:04 EST 1999
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	[nil "Fri" "5" "February" "1999" "19:35:20" "+0100" "Frederic Teubert" "teubert@afal01.cern.ch" nil "164" "Re: comparison with Zfiter" "^From:" "Stanislaw.Jadach@cern.ch" "Stanislaw.Jadach@cern.ch" "2" nil nil nil nil nil]
+	nil)
+Received: from mail2.cern.ch (mail2.cern.ch [137.138.128.20]) by hpjmiady.ifj.edu.pl with ESMTP (8.7.1/8.7.1) id TAA08670 for <jadach@hpjmiady.ifj.edu.pl>; Fri, 5 Feb 1999 19:35:59 +0100 (MET)
+Received: from smtp1.cern.ch (smtp1.cern.ch [137.138.128.38])
+	by mail2.cern.ch (8.9.1a/8.9.1) with ESMTP id TAA13634
+	for <jadach@mail2.cern.ch>; Fri, 5 Feb 1999 19:35:21 +0100 (MET)
+Received: from afal43.cern.ch (afal43.cern.ch [137.138.209.177])
+	by smtp1.cern.ch (8.9.1a/8.9.1) with ESMTP id TAA07622
+	for <Stanislaw.Jadach@cern.ch>; Fri, 5 Feb 1999 19:35:21 +0100 (MET)
+Received: from localhost (teubert@localhost)
+	by afal43.cern.ch (8.8.5/8.8.5) with SMTP id TAA12078
+	for <Stanislaw.Jadach@cern.ch>; Fri, 5 Feb 1999 19:35:20 +0100 (MET)
+X-Authentication-Warning: afal43.cern.ch: teubert owned process doing -bs
+X-Sender: teubert@afal43.cern.ch
+In-Reply-To: <199902021354.OAA29800@hpjmiady.ifj.edu.pl>
+Message-ID: <Pine.OSF.3.95a.990205193318.13633A-100000@afal43.cern.ch>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+From: Frederic Teubert <teubert@afal01.cern.ch>
+To: Stanislaw.Jadach@cern.ch
+Subject: Re: comparison with Zfiter
+Date: Fri, 5 Feb 1999 19:35:20 +0100 (MET)
+
+
+Dear Staszek,
+
+Sorry for taking my time to answer, but this week was ALEPH week 
+and I haven't had time up to now to reply.
+
+This are the numbers you were asking for. Best wishes,
+
+	Frederic
+
+-----------------------------------------------------------------
+ Frederic Teubert                         Tel : 0041 22 767 3040
+ EP Division                              Fax : 0041 22 767 9425
+ CERN                           E-Mail: frederic.teubert@cern.ch
+ CH-1211 Geneva 23     
+-----------------------------------------------------------------
+
+
+On Tue, 2 Feb 1999, S. Jadach wrote:
+
+> Hi Frederick!
+> After some x-checks I am now more confident into my results from KK MC 
+> on ISF*FSR contributions to AFB and sigma at MZ.
+> In order to compare better with Zfitter I would need extra
+> results from Zfiter at MZ+1.8GeV, MZ-1.8GeV,  MZ+3GeV, MZ-3GeV,
+> as in table 29 of the DRAFT of Bardin, Grunewals and Passarino.
+> 
+> I would greatly appreciate if you have found time to produce these numbers
+> for me some time. It is not very urgent because I still dont have
+> all MC results.
+> 
+> I expect up to factor 2 difference between KK and Zfiter results
+> close to Z peak, similarly as in LEP2.
+> 
+> best regards, Staszek.
+> 
+
+****************** 88.187 GeV ********************
+
+0.01         148.757                    -0.2132
+0.10         197.776                    -0.2715
+0.20         208.191                    -0.2802
+0.30         213.374                    -0.2833
+0.40         216.696                    -0.2847
+0.50         219.090                    -0.2853
+0.60         220.949                    -0.2855
+0.70         222.488                    -0.2854
+0.80         223.856                    -0.2851
+0.90         225.217                    -0.2845
+0.99         227.497                    -0.2823
+
+****************** 89.387 GeV ********************
+
+0.01         327.667                    -0.1071
+0.10         421.793                    -0.1595
+0.20         441.004                    -0.1659
+0.30         450.687                    -0.1680
+0.40         456.904                    -0.1690
+0.50         461.355                    -0.1695
+0.60         464.764                    -0.1697
+0.70         467.521                    -0.1698
+0.80         469.874                    -0.1698
+0.90         472.042                    -0.1696
+0.99         474.877                    -0.1690
+
+****************** 92.987 GeV ********************
+
+0.01         360.185                     0.2112
+0.10         616.978                     0.1190
+0.20         649.588                     0.1149
+0.30         663.622                     0.1138
+0.40         672.313                     0.1132
+0.50         678.420                     0.1128
+0.60         683.036                     0.1125
+0.70         686.718                     0.1124
+0.80         689.805                     0.1122
+0.90         692.564                     0.1120
+0.99         695.736                     0.1116
+
+****************** 94.187 GeV ********************
+
+0.01         170.307                     0.3166
+0.10         347.289                     0.1742
+0.20         377.049                     0.1612
+0.30         386.620                     0.1584
+0.40         397.611                     0.1569
+0.50         396.079                     0.1564
+0.60         398.979                     0.1559
+0.70         401.301                     0.1555
+0.80         403.277                     0.1551
+0.90         405.113                     0.1548
+0.99         407.580                     0.1540
+
+
+The same numbers but WITHOUT ISR-FSR interference
+****************** 88.187 GeV ********************
+
+0.01         153.813                    -0.2647
+0.10         199.997                    -0.2784
+0.20         209.770                    -0.2830
+0.30         214.631                    -0.2849
+0.40         217.749                    -0.2857
+0.50         219.998                    -0.2861
+0.60         221.751                    -0.2862
+0.70         223.207                    -0.2860
+0.80         224.509                    -0.2856
+0.90         225.819                    -0.2850
+0.99         228.061                    -0.2828
+
+****************** 89.387 GeV ********************
+
+0.01         334.122                    -0.1535
+0.10         424.658                    -0.1650
+0.20         443.061                    -0.1682
+0.30         452.334                    -0.1694
+0.40         458.290                    -0.1700
+0.50         462.554                    -0.1703
+0.60         465.825                    -0.1704
+0.70         468.474                    -0.1704
+0.80         470.741                    -0.1704
+0.90         472.842                    -0.1702
+0.99         475.628                    -0.1696
+
+****************** 92.987 GeV ********************
+
+0.01         355.126                     0.1708
+0.10         614.877                     0.1226
+0.20         647.787                     0.1159
+0.30         662.085                     0.1141
+0.40         670.975                     0.1133
+0.50         677.235                     0.1128
+0.60         681.973                     0.1125
+0.70         685.752                     0.1122
+0.80         688.917                     0.1121
+0.90         691.740                     0.1119
+0.99         694.959                     0.1115
+
+****************** 94.187 GeV ********************
+
+0.01         165.801                     0.2661
+0.10         345.895                     0.1803
+0.20         375.728                     0.1627
+0.30         385.472                     0.1589
+0.40         391.211                     0.1573
+0.50         395.183                     0.1564
+0.60         398.173                     0.1558
+0.70         400.567                     0.1554
+0.80         402.602                     0.1550
+0.90         404.485                     0.1547
+0.99         406.989                     0.1540
+
+
+
+
+f-fbar(gamma) cross-sections from ZFITTER V5.0
+==============================================
+
+ Standard Model inputs 
+ Z0 mass      =  91.18670 GeV
+ t quark mass = 175.00000 GeV
+ Higgs mass   = 100.00000 GeV
+ 1/alpha_em   = 128.89600
+ alpha_s      =   0.12000
+
+

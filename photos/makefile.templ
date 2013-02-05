@@ -1,0 +1,19 @@
+###########################################################
+LOCAL_LIB   =  glib.a 
+LIB_OBJECTS =  photos.o 
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+FFLAGS = <FFLAGS>
+F77 = <F77>
+AR  = <AR>
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR)     $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ 
+###########################################################

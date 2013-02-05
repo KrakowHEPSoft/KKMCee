@@ -1,0 +1,584 @@
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     120.00000000                 Higgs mass               amh        a2 *
+ *     173.80000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                1                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.88524000                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.11900000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 0
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1190
+ Alfa strong (Mt)  =  0.1084
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0322473187
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0400531148
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03628683
+    zpar( 2)=  0.01166485
+    zpar( 3)=  0.22330593
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23130963
+    zpar( 6)=  0.23169086
+    zpar( 7)=  0.23169086
+    zpar( 8)=  0.23169086
+    zpar( 9)=  0.23158431
+    zpar(10)=  0.23145723
+    zpar(11)=  0.23158431
+    zpar(12)=  0.23145723
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23303644
+    zpar(15)=  0.11900000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04005280
+    zpar(18)=  1.04724864
+    zpar(19)=  1.03944317
+    zpar(20)=  1.03224732
+    zpar(21)=  1.04007561
+    zpar(22)=  1.04699996
+    zpar(23)=  1.03944317
+    zpar(24)=  1.03224732
+    zpar(25)=  1.04005311
+    zpar(26)=  1.04724896
+    zpar(27)=  1.04003358
+    zpar(28)=  1.02574996
+    zpar(29)= -0.00002246
+    zpar(30)=  0.20202067
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0218741946
+ a: i,ww=  20  0.0478480391
+ a: i,ww=  30  0.104663732
+ a: i,ww=  40  0.228943484
+ a: i,ww=  50  0.500795434
+ a: i,ww=  60  1.09544968
+ a: i,ww=  70  2.39620795
+ a: i,ww=  80  5.24151191
+ a: i,ww=  90  11.4653852
+ a: i,ww=  100  25.0796067
+ a: i,ww=  110  54.8596198
+ a: i,ww=  120  120.001
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.1963146
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.1776854
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  120.001
+ c: i,ww=  10  130.001
+ c: i,ww=  20  140.001
+ c: i,ww=  30  150.001
+ c: i,ww=  40  160.001
+ c: i,ww=  50  170.001
+ c: i,ww=  60  180.001
+ c: i,ww=  70  190.001
+ c: i,ww=  80  200.001
+ c: i,ww=  90  210.001
+ c: i,ww=  100  220.001
+ c: i,ww=  110  230.001
+ c: i,ww=  120  240.001
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ DZface_WriteFile: finished  now !!!
+ DZface_Clone: from KFfin= 1 to 3
+ ...DZface_Clone: cloning finished  now !
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     120.00000000                 Higgs mass               amh        a2 *
+ *     173.80000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                2                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                3                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.88524000                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.11900000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 0
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1190
+ Alfa strong (Mt)  =  0.1084
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0322473164
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0400531058
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03628683
+    zpar( 2)=  0.01166485
+    zpar( 3)=  0.22330593
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23130963
+    zpar( 6)=  0.23169086
+    zpar( 7)=  0.23169086
+    zpar( 8)=  0.23169086
+    zpar( 9)=  0.23158431
+    zpar(10)=  0.23145723
+    zpar(11)=  0.23158431
+    zpar(12)=  0.23145723
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23303644
+    zpar(15)=  0.11900000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04005279
+    zpar(18)=  1.04724864
+    zpar(19)=  1.03944316
+    zpar(20)=  1.03224732
+    zpar(21)=  1.04007560
+    zpar(22)=  1.04699995
+    zpar(23)=  1.03944316
+    zpar(24)=  1.03224732
+    zpar(25)=  1.04005311
+    zpar(26)=  1.04724895
+    zpar(27)=  1.04003357
+    zpar(28)=  1.02574995
+    zpar(29)= -0.00002246
+    zpar(30)=  0.20202067
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0218741946
+ a: i,ww=  20  0.0478480391
+ a: i,ww=  30  0.104663732
+ a: i,ww=  40  0.228943484
+ a: i,ww=  50  0.500795434
+ a: i,ww=  60  1.09544968
+ a: i,ww=  70  2.39620795
+ a: i,ww=  80  5.24151191
+ a: i,ww=  90  11.4653852
+ a: i,ww=  100  25.0796067
+ a: i,ww=  110  54.8596198
+ a: i,ww=  120  120.001
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.1963146
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.1776854
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  120.001
+ c: i,ww=  10  130.001
+ c: i,ww=  20  140.001
+ c: i,ww=  30  150.001
+ c: i,ww=  40  160.001
+ c: i,ww=  50  170.001
+ c: i,ww=  60  180.001
+ c: i,ww=  70  190.001
+ c: i,ww=  80  200.001
+ c: i,ww=  90  210.001
+ c: i,ww=  100  220.001
+ c: i,ww=  110  230.001
+ c: i,ww=  120  240.001
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ DZface_WriteFile: finished  now !!!
+ DZface_Clone: from KFfin= 2 to 4
+ ...DZface_Clone: cloning finished  now !
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     120.00000000                 Higgs mass               amh        a2 *
+ *     173.80000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                5                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.88524000                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.11900000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 0
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1190
+ Alfa strong (Mt)  =  0.1084
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0322473164
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0400531058
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03628683
+    zpar( 2)=  0.01166485
+    zpar( 3)=  0.22330593
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23130963
+    zpar( 6)=  0.23169086
+    zpar( 7)=  0.23169086
+    zpar( 8)=  0.23169086
+    zpar( 9)=  0.23158431
+    zpar(10)=  0.23145723
+    zpar(11)=  0.23158431
+    zpar(12)=  0.23145723
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23303644
+    zpar(15)=  0.11900000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04005279
+    zpar(18)=  1.04724864
+    zpar(19)=  1.03944316
+    zpar(20)=  1.03224732
+    zpar(21)=  1.04007560
+    zpar(22)=  1.04699995
+    zpar(23)=  1.03944316
+    zpar(24)=  1.03224732
+    zpar(25)=  1.04005311
+    zpar(26)=  1.04724895
+    zpar(27)=  1.04003357
+    zpar(28)=  1.02574995
+    zpar(29)= -0.00002246
+    zpar(30)=  0.20202067
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0218741946
+ a: i,ww=  20  0.0478480391
+ a: i,ww=  30  0.104663732
+ a: i,ww=  40  0.228943484
+ a: i,ww=  50  0.500795434
+ a: i,ww=  60  1.09544968
+ a: i,ww=  70  2.39620795
+ a: i,ww=  80  5.24151191
+ a: i,ww=  90  11.4653852
+ a: i,ww=  100  25.0796067
+ a: i,ww=  110  54.8596198
+ a: i,ww=  120  120.001
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.1963146
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.1776854
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  120.001
+ c: i,ww=  10  130.001
+ c: i,ww=  20  140.001
+ c: i,ww=  30  150.001
+ c: i,ww=  40  160.001
+ c: i,ww=  50  170.001
+ c: i,ww=  60  180.001
+ c: i,ww=  70  190.001
+ c: i,ww=  80  200.001
+ c: i,ww=  90  210.001
+ c: i,ww=  100  220.001
+ c: i,ww=  110  230.001
+ c: i,ww=  120  240.001
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ DZface_WriteFile: finished  now !!!
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     120.00000000                 Higgs mass               amh        a2 *
+ *     173.80000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               13                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                2                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.88524000                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.11900000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 0
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1190
+ Alfa strong (Mt)  =  0.1084
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0322473164
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0400531058
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03628683
+    zpar( 2)=  0.01166485
+    zpar( 3)=  0.22330593
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23130963
+    zpar( 6)=  0.23169086
+    zpar( 7)=  0.23169086
+    zpar( 8)=  0.23169086
+    zpar( 9)=  0.23158431
+    zpar(10)=  0.23145723
+    zpar(11)=  0.23158431
+    zpar(12)=  0.23145723
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23303644
+    zpar(15)=  0.11900000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04005279
+    zpar(18)=  1.04724864
+    zpar(19)=  1.03944316
+    zpar(20)=  1.03224732
+    zpar(21)=  1.04007560
+    zpar(22)=  1.04699995
+    zpar(23)=  1.03944316
+    zpar(24)=  1.03224732
+    zpar(25)=  1.04005311
+    zpar(26)=  1.04724895
+    zpar(27)=  1.04003357
+    zpar(28)=  1.02574995
+    zpar(29)= -0.00002246
+    zpar(30)=  0.20202067
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0218741946
+ a: i,ww=  20  0.0478480391
+ a: i,ww=  30  0.104663732
+ a: i,ww=  40  0.228943484
+ a: i,ww=  50  0.500795434
+ a: i,ww=  60  1.09544968
+ a: i,ww=  70  2.39620795
+ a: i,ww=  80  5.24151191
+ a: i,ww=  90  11.4653852
+ a: i,ww=  100  25.0796067
+ a: i,ww=  110  54.8596198
+ a: i,ww=  120  120.001
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.1963146
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.1776854
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  120.001
+ c: i,ww=  10  130.001
+ c: i,ww=  20  140.001
+ c: i,ww=  30  150.001
+ c: i,ww=  40  160.001
+ c: i,ww=  50  170.001
+ c: i,ww=  60  180.001
+ c: i,ww=  70  190.001
+ c: i,ww=  80  200.001
+ c: i,ww=  90  210.001
+ c: i,ww=  100  220.001
+ c: i,ww=  110  230.001
+ c: i,ww=  120  240.001
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ DZface_WriteFile: finished  now !!!
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     120.00000000                 Higgs mass               amh        a2 *
+ *     173.80000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *               15                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                2                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.88524000                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.11900000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 0
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1190
+ Alfa strong (Mt)  =  0.1084
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0322473164
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0400531058
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03628683
+    zpar( 2)=  0.01166485
+    zpar( 3)=  0.22330593
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23130963
+    zpar( 6)=  0.23169086
+    zpar( 7)=  0.23169086
+    zpar( 8)=  0.23169086
+    zpar( 9)=  0.23158431
+    zpar(10)=  0.23145723
+    zpar(11)=  0.23158431
+    zpar(12)=  0.23145723
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23303644
+    zpar(15)=  0.11900000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04005279
+    zpar(18)=  1.04724864
+    zpar(19)=  1.03944316
+    zpar(20)=  1.03224732
+    zpar(21)=  1.04007560
+    zpar(22)=  1.04699995
+    zpar(23)=  1.03944316
+    zpar(24)=  1.03224732
+    zpar(25)=  1.04005311
+    zpar(26)=  1.04724895
+    zpar(27)=  1.04003357
+    zpar(28)=  1.02574995
+    zpar(29)= -0.00002246
+    zpar(30)=  0.20202067
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0218741946
+ a: i,ww=  20  0.0478480391
+ a: i,ww=  30  0.104663732
+ a: i,ww=  40  0.228943484
+ a: i,ww=  50  0.500795434
+ a: i,ww=  60  1.09544968
+ a: i,ww=  70  2.39620795
+ a: i,ww=  80  5.24151191
+ a: i,ww=  90  11.4653852
+ a: i,ww=  100  25.0796067
+ a: i,ww=  110  54.8596198
+ a: i,ww=  120  120.001
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.1963146
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.1776854
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  120.001
+ c: i,ww=  10  130.001
+ c: i,ww=  20  140.001
+ c: i,ww=  30  150.001
+ c: i,ww=  40  160.001
+ c: i,ww=  50  170.001
+ c: i,ww=  60  180.001
+ c: i,ww=  70  190.001
+ c: i,ww=  80  200.001
+ c: i,ww=  90  210.001
+ c: i,ww=  100  220.001
+ c: i,ww=  110  230.001
+ c: i,ww=  120  240.001
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ DZface_WriteFile: finished  now !!!

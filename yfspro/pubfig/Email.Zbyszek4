@@ -1,0 +1,222 @@
+From - Tue May 25 22:54:37 1999
+Return-Path: <was@lal.in2p3.fr>
+Received: via tmail-4.1(10) for jadach; Tue, 25 May 1999 17:39:11 +0200 (MET DST)
+Return-Path: <was@lal.in2p3.fr>
+Received: from smtp1.cern.ch (smtp1.cern.ch [137.138.128.38])
+	by mail2.cern.ch (8.9.3/8.9.3) with ESMTP id RAA22143
+	for <jadach@mail2.cern.ch>; Tue, 25 May 1999 17:39:11 +0200 (MET DST)
+Received: from asa.lal.in2p3.fr (asa.lal.in2p3.fr [134.158.91.28])
+	by smtp1.cern.ch (8.9.3/8.9.3) with ESMTP id RAA06955
+	for <stanislaw.jadach@cern.ch>; Tue, 25 May 1999 17:39:10 +0200 (MET DST)
+Received: from aleph.lal.in2p3.fr (aleph.lal.in2p3.fr [134.158.91.39])
+	by asa.lal.in2p3.fr (8.9.3/8.9.1) with ESMTP id RAA32157
+	for <stanislaw.jadach@cern.ch>; Tue, 25 May 1999 17:39:08 +0200 (MET DST)
+From: Zbigniew Was <was@lal.in2p3.fr>
+Received: (from was@localhost)
+	by aleph.lal.in2p3.fr (8.9.1/8.9.1) id RAA15038
+	for stanislaw.jadach@cern.ch; Tue, 25 May 1999 17:39:08 +0200 (METDST)
+Date: Tue, 25 May 1999 17:39:08 +0200 (METDST)
+Message-Id: <199905251539.RAA15038@aleph.lal.in2p3.fr>
+Apparently-To: <stanislaw.jadach@cern.ch>
+
+cos_theta(mu+ vs e+)  xk<0.1
+
+120 GeV CMS:
+
+1
+   6001           ini+fin                                                                    
+           nent            sum           bmin           bmax
+              1     .12844E+07     .80112E-04     .11693E-01
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .12844E+07
+ -1.0000    .8011D-04    .2713D-05 X                                          I
+  -.9500    .9075D-04    .2843D-05 X                                          I
+  -.9000    .1199D-03    .3213D-05 X                                          I
+  -.8500    .1582D-03    .3718D-05 X                                          I
+  -.8000    .2235D-03    .4367D-05 X                                          I
+  -.7500    .2862D-03    .4973D-05 X                                          I
+  -.7000    .3811D-03    .5720D-05 XX                                         I
+  -.6500    .4715D-03    .6377D-05 XX                                         I
+  -.6000    .5961D-03    .7164D-05 XX                                         I
+  -.5500    .7282D-03    .7885D-05 XXX                                        I
+  -.5000    .8899D-03    .8729D-05 XXX                                        I
+  -.4500    .1039D-02    .9452D-05 XXXX                                       I
+  -.4000    .1206D-02    .1017D-04 XXXXX                                      I
+  -.3500    .1395D-02    .1096D-04 XXXXX                                      I
+  -.3000    .1617D-02    .1175D-04 XXXXXX                                     I
+  -.2500    .1823D-02    .1247D-04 XXXXXXX                                    I
+  -.2000    .2084D-02    .1328D-04 XXXXXXXX                                   I
+  -.1500    .2307D-02    .1406D-04 XXXXXXXXX                                  I
+  -.1000    .2569D-02    .1486D-04 XXXXXXXXXX                                 I
+  -.0500    .2884D-02    .1573D-04 XXXXXXXXXXX                                I
+   .0000    .3185D-02    .1647D-04 XXXXXXXXXXXX                               I
+   .0500    .3480D-02    .1727D-04 XXXXXXXXXXXXX                              I
+   .1000    .3815D-02    .1806D-04 XXXXXXXXXXXXXX                             I
+   .1500    .4151D-02    .1884D-04 XXXXXXXXXXXXXXXX                           I
+   .2000    .4513D-02    .1965D-04 XXXXXXXXXXXXXXXXX                          I
+   .2500    .4886D-02    .2045D-04 XXXXXXXXXXXXXXXXXX                         I
+   .3000    .5241D-02    .2122D-04 XXXXXXXXXXXXXXXXXXXX                       I
+   .3500    .5653D-02    .2199D-04 XXXXXXXXXXXXXXXXXXXXX                      I
+   .4000    .6073D-02    .2283D-04 XXXXXXXXXXXXXXXXXXXXXXX                    I
+   .4500    .6510D-02    .2359D-04 XXXXXXXXXXXXXXXXXXXXXXXX                   I
+   .5000    .6956D-02    .2444D-04 XXXXXXXXXXXXXXXXXXXXXXXXXX                 I
+   .5500    .7442D-02    .2523D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXX               I
+   .6000    .7922D-02    .2604D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX             I
+   .6500    .8423D-02    .2686D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+   .7000    .8927D-02    .2761D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+   .7500    .9408D-02    .2837D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        I
+   .8000    .9996D-02    .2921D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      I
+   .8500    .1051D-01    .2999D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+   .9000    .1111D-01    .3083D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+   .9500    .1169D-01    .3161D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+   6003           ini+fin+int                                                                    
+           nent            sum           bmin           bmax
+              1     .13817E+07     .23133E-04     .13316E-01
+           undf           ovef           avex
+     .00000E+00     .00000E+00     .13817E+07
+ -1.0000    .2313D-04    .7632D-05 X                                          I
+  -.9500    .5897D-04    .5539D-05 X                                          I
+  -.9000    .9796D-04    .5323D-05 X                                          I
+  -.8500    .1337D-03    .5648D-05 X                                          I
+  -.8000    .2009D-03    .6140D-05 X                                          I
+  -.7500    .2636D-03    .6731D-05 X                                          I
+  -.7000    .3592D-03    .7464D-05 XX                                         I
+  -.6500    .4458D-03    .8066D-05 XX                                         I
+  -.6000    .5712D-03    .8865D-05 XX                                         I
+  -.5500    .7022D-03    .9494D-05 XXX                                        I
+  -.5000    .8622D-03    .1031D-04 XXX                                        I
+  -.4500    .1009D-02    .1096D-04 XXXX                                       I
+  -.4000    .1180D-02    .1159D-04 XXXX                                       I
+  -.3500    .1365D-02    .1230D-04 XXXXX                                      I
+  -.3000    .1589D-02    .1296D-04 XXXXXX                                     I
+  -.2500    .1801D-02    .1356D-04 XXXXXX                                     I
+  -.2000    .2063D-02    .1423D-04 XXXXXXX                                    I
+  -.1500    .2295D-02    .1490D-04 XXXXXXXX                                   I
+  -.1000    .2558D-02    .1552D-04 XXXXXXXXX                                  I
+  -.0500    .2876D-02    .1621D-04 XXXXXXXXXX                                 I
+   .0000    .3192D-02    .1678D-04 XXXXXXXXXXX                                I
+   .0500    .3496D-02    .1738D-04 XXXXXXXXXXXX                               I
+   .1000    .3848D-02    .1796D-04 XXXXXXXXXXXXX                              I
+   .1500    .4187D-02    .1849D-04 XXXXXXXXXXXXXX                             I
+   .2000    .4586D-02    .1913D-04 XXXXXXXXXXXXXXX                            I
+   .2500    .4962D-02    .1962D-04 XXXXXXXXXXXXXXXX                           I
+   .3000    .5344D-02    .2013D-04 XXXXXXXXXXXXXXXXXX                         I
+   .3500    .5784D-02    .2066D-04 XXXXXXXXXXXXXXXXXXX                        I
+   .4000    .6248D-02    .2123D-04 XXXXXXXXXXXXXXXXXXXXX                      I
+   .4500    .6704D-02    .2168D-04 XXXXXXXXXXXXXXXXXXXXXX                     I
+   .5000    .7197D-02    .2221D-04 XXXXXXXXXXXXXXXXXXXXXXXX                   I
+   .5500    .7720D-02    .2270D-04 XXXXXXXXXXXXXXXXXXXXXXXXX                  I
+   .6000    .8271D-02    .2324D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+   .6500    .8829D-02    .2372D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX              I
+   .7000    .9377D-02    .2417D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+   .7500    .9981D-02    .2473D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+   .8000    .1066D-01    .2538D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        I
+   .8500    .1135D-01    .2616D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      I
+   .9000    .1218D-01    .2752D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+   .9500    .1332D-01    .3278D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+
+
+189 GeV CMS:
+
+
+1
+   6001           ini+fin                                                                       
+           nent            sum           bmin           bmax
+              1     .11166E+07     .33294E-03     .28289E-02
+           undf           ovef           avex
+     .00000E+00     .10000E+01     .11166E+07
+ -1.0000    .3695D-03    .3262D-05 X                                          I
+  -.9500    .3597D-03    .3199D-05 X                                          I
+  -.9000    .3452D-03    .3143D-05 X                                          I
+  -.8500    .3329D-03    .3126D-05 X                                          I
+  -.8000    .3375D-03    .3116D-05 X                                          I
+  -.7500    .3407D-03    .3099D-05 X                                          I
+  -.7000    .3410D-03    .3118D-05 X                                          I
+  -.6500    .3469D-03    .3203D-05 X                                          I
+  -.6000    .3628D-03    .3266D-05 X                                          I
+  -.5500    .3808D-03    .3333D-05 X                                          I
+  -.5000    .4061D-03    .3414D-05 XX                                         I
+  -.4500    .4286D-03    .3532D-05 XX                                         I
+  -.4000    .4580D-03    .3673D-05 XXX                                        I
+  -.3500    .4958D-03    .3784D-05 XXX                                        I
+  -.3000    .5383D-03    .3931D-05 XXXX                                       I
+  -.2500    .5767D-03    .4084D-05 XXXXX                                      I
+  -.2000    .6224D-03    .4249D-05 XXXXX                                      I
+  -.1500    .6763D-03    .4430D-05 XXXXXX                                     I
+  -.1000    .7350D-03    .4582D-05 XXXXXXX                                    I
+  -.0500    .7896D-03    .4783D-05 XXXXXXXX                                   I
+   .0000    .8543D-03    .4975D-05 XXXXXXXXX                                  I
+   .0500    .9183D-03    .5161D-05 XXXXXXXXXXX                                I
+   .1000    .9938D-03    .5364D-05 XXXXXXXXXXXX                               I
+   .1500    .1064D-02    .5535D-05 XXXXXXXXXXXXX                              I
+   .2000    .1150D-02    .5756D-05 XXXXXXXXXXXXXXX                            I
+   .2500    .1237D-02    .5960D-05 XXXXXXXXXXXXXXXX                           I
+   .3000    .1327D-02    .6182D-05 XXXXXXXXXXXXXXXXXX                         I
+   .3500    .1415D-02    .6359D-05 XXXXXXXXXXXXXXXXXXX                        I
+   .4000    .1505D-02    .6573D-05 XXXXXXXXXXXXXXXXXXXXX                      I
+   .4500    .1611D-02    .6804D-05 XXXXXXXXXXXXXXXXXXXXXXX                    I
+   .5000    .1716D-02    .7011D-05 XXXXXXXXXXXXXXXXXXXXXXXX                   I
+   .5500    .1826D-02    .7238D-05 XXXXXXXXXXXXXXXXXXXXXXXXXX                 I
+   .6000    .1955D-02    .7478D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXX               I
+   .6500    .2053D-02    .7683D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX             I
+   .7000    .2172D-02    .7905D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX           I
+   .7500    .2298D-02    .8129D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX         I
+   .8000    .2419D-02    .8347D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX       I
+   .8500    .2557D-02    .8575D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+   .9000    .2696D-02    .8815D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+   .9500    .2829D-02    .9027D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+   6003           ini+fin+int                                                                       
+           nent            sum           bmin           bmax
+              1     .12434E+07     .30293E-03     .33088E-02
+           undf           ovef           avex
+     .00000E+00     .25153E-03     .12434E+07
+ -1.0000    .3029D-03    .6635D-05 X                                          I
+  -.9500    .3224D-03    .5311D-05 X                                          I
+  -.9000    .3169D-03    .4844D-05 X                                          I
+  -.8500    .3043D-03    .4582D-05 X                                          I
+  -.8000    .3169D-03    .4380D-05 X                                          I
+  -.7500    .3239D-03    .4197D-05 X                                          I
+  -.7000    .3241D-03    .4108D-05 X                                          I
+  -.6500    .3280D-03    .4133D-05 X                                          I
+  -.6000    .3452D-03    .4111D-05 X                                          I
+  -.5500    .3664D-03    .4107D-05 X                                          I
+  -.5000    .3918D-03    .4105D-05 XX                                         I
+  -.4500    .4133D-03    .4171D-05 XX                                         I
+  -.4000    .4435D-03    .4264D-05 XXX                                        I
+  -.3500    .4833D-03    .4309D-05 XXX                                        I
+  -.3000    .5280D-03    .4402D-05 XXXX                                       I
+  -.2500    .5660D-03    .4494D-05 XXXX                                       I
+  -.2000    .6139D-03    .4600D-05 XXXXX                                      I
+  -.1500    .6691D-03    .4715D-05 XXXXXX                                     I
+  -.1000    .7297D-03    .4795D-05 XXXXXXX                                    I
+  -.0500    .7875D-03    .4927D-05 XXXXXXX                                    I
+   .0000    .8554D-03    .5043D-05 XXXXXXXX                                   I
+   .0500    .9208D-03    .5143D-05 XXXXXXXXX                                  I
+   .1000    .9988D-03    .5254D-05 XXXXXXXXXX                                 I
+   .1500    .1076D-02    .5342D-05 XXXXXXXXXXXX                               I
+   .2000    .1166D-02    .5462D-05 XXXXXXXXXXXXX                              I
+   .2500    .1260D-02    .5570D-05 XXXXXXXXXXXXXX                             I
+   .3000    .1356D-02    .5677D-05 XXXXXXXXXXXXXXXX                           I
+   .3500    .1448D-02    .5738D-05 XXXXXXXXXXXXXXXXX                          I
+   .4000    .1549D-02    .5827D-05 XXXXXXXXXXXXXXXXXX                         I
+   .4500    .1667D-02    .5928D-05 XXXXXXXXXXXXXXXXXXXX                       I
+   .5000    .1785D-02    .6007D-05 XXXXXXXXXXXXXXXXXXXXXX                     I
+   .5500    .1907D-02    .6084D-05 XXXXXXXXXXXXXXXXXXXXXXX                    I
+   .6000    .2049D-02    .6166D-05 XXXXXXXXXXXXXXXXXXXXXXXXX                  I
+   .6500    .2168D-02    .6208D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+   .7000    .2310D-02    .6264D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX              I
+   .7500    .2466D-02    .6328D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+   .8000    .2619D-02    .6378D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX         I
+   .8500    .2800D-02    .6481D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX       I
+   .9000    .3011D-02    .6716D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+   .9500    .3309D-02    .8197D-05 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+
+
+
+

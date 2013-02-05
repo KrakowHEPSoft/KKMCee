@@ -1,0 +1,2013 @@
+BeginX                                                            
+********************************************************************************
+********************************************************************************
+**                                                                            **
+**                   DEAFAULT INPUT DATA for KK Monte Carlo                   **
+**                  >>>>> Never edit this file directly <<<<<                 **
+**            Your actual input data should be in a separate file.            **
+**            The defaults will then be overwriten,  if necessary.            **
+**                                                                            **
+**                           !!!!IMPORTANT!!!!                                **
+** The data marked with  \\\\\\ are for special tests or dip-switches tuning  **
+** the Monte Carlo integrations, they SHOULD BE NEVER CHANGED by the user,    **
+** without consulting the author of the program.                              **
+** Changing them may lead to nonsense  results.                               **
+**                                                                            **
+********************************************************************************
+********************************************************************************
+*     Generalities of the Monte-Carlo (low level)                               
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]                                               
+    1    100.000          cmsene =xpar( 1)  Average Center of mass energy [GeV] 
+    2    0.00000          DelEne =xpar( 2)  Beam energy spread [GeV]            
+    3    5.00000          ninp   =xpar( 3)  Input  unit number (not used)       
+    4    16.0000          nout   =xpar( 4)  Output unit number                  
+*     PrintOut from generator                                                   
+    5    0.00000          LevPri =xpar( 5)  PrintOut Level 0,1,2                
+    6    1.00000          Ie1Pri =xpar( 6)  PrintOut Start point                
+    7    1.00000          Ie2Pri =xpar( 7)  PrintOut End   point                
+*     At present all internal monitoring fits into (idyfs+1,idyfs+100)          
+    8    600.000    \\\\\\IdYFS\\\\\\\\\\\\\pointer for internal histos\\\\\\\\\
+*indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+    9    1.00000          WtMax =xpar( 9)   Maximum weight for rejection        
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events          
+   10    0.00000          KeyWgt=xpar(10) Deafault is 0                         
+*     IdeWgt IDENT of the EEX principal weight, not for CEEX! NEVER TOUCH IT!   
+   11    74.0000    \\\\\\IdeWgt\\\\\\\\\\Deafault is 74, for O(alf3) M.E.\\\\\\
+*     KeyELW=0,1 Type of Elewctroweak corrections, KeyElw=0 only for tests      
+   12    1.00000          KeyELW=xpar(12) Deafault is 1, for Dizet              
+*     KeyRes=0,1 Experim. R used to model rate of decay of gamma* and decay     
+   13    0.00000          KeyRes=xpar(13) =0 no RRes, =1 RRes on, =2 RRes+Photos
+*     Minimum and maximum v, where v = 1-sprim/s, v=1 alowed                    
+   16   0.100000E-04      vvmin =xpar(16)  may  be put to  vvmin < 1e-5         
+** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the     
+** final state ffbar mass^2 but of the virtual object after ISR emission,       
+** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf
+   17    1.00000          vvmax =xpar(17)  if 1e0 then reduced inside program   
+   18   0.100000E-02\\\\\\delfac\\\\\\\\\\\FSR cut eps=vvmin*delfac\\\\\\\\\\\\\
+   19    100.000    \\\\\\hard-wired maximum photon multiplicity\\\\\\\\\\\\\\\\
+********************************************************************************
+**    EQD/EW bremsstrahlung flags/data                                          
+   20    1.00000          KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
+   21    1.00000          KeyFSR=xpar(21)  Default is  1, for all final fermions
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+**\\\\KeyPia = 0, NO   removal of FSR photons below emin=Ene*delta in CMS\\\\\\\
+**\\\\KeyPia = 1, WITH removal of FSR photons below emin=Ene*delta in CMS\\\\\\\
+   22    1.00000    \\\\\\KeyPia\\\\\\\\\\\Default is  1\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\SPECIAL tests: fixed ISR multiplicity\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+   23    0.00000    \\\\\\mltISR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\SPECIAL tests: fixed FSR multiplicity\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+   24    0.00000    \\\\\\mltFSR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\SPECIAL tests: fixed v=vmax\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+   25    0.00000          KeyFix Type of ISR, =0,1ormal, =2 beamsstrahlung      
+*(\\\\SPECIAL tests: mass terms in crude MC photon distrib.\\\\\\\\\\\\\\\\\\\\\
+   26    0.00000    \\\\\\KeyWtm\\\\\\\\\\ Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
+**    Interference ISR/FSR to be ON/OFF                                         
+   27    2.00000          KeyINT=xpar(27)  Default is  2                        
+**    New exponentiation CEEX is now default, at least for leptons, see vmaxGPS 
+**    which overrules KeyGPS for each type of final fermion                     
+   28    1.00000          KeyGPS=xpar(28)  Default is  1                        
+**    Photon emission from final QUARKS                                         
+   29    1.00000          KeyQSR=xpar(29)  Default is  1                        
+**    Coupling constants etc.                                                   
+   30    137.036          alfinv=xpar(30)  Inverse of alpha_QED at q^2=0        
+   31    389380.          gnanob=xpar(31)  GeV^(-2)  --> NanoBarn conversion    
+   32   0.116639E-04      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2
+********************************************************************************
+**     Technical cuts and internal parameters                                   
+**\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\
+   40    1.25000    \\\\\\Xenph =xpar(40)\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+   41   0.100000E-08      vcut1 =xpar(41)\\Techn.cut: \\\\\\\\\\\\\\\\\\\\\\\\\\
+   42   0.500000E-01      vcut2 =xpar(42)\\Techn.cut: \\\\\\\\\\\\\\\\\\\\\\\\\\
+   43    0.00000          vcut3 =xpar(43)\\Techn.cut: unused\\\\\\\\\\\\\\\\\\\\
+********************************************************************************
+**     QCD flags/data                                                           
+**     Hardonization/showering flag, KeyHad=0,1 => hadronization OFF,ON.        
+   50    1.00000          KeyHad=xpar(50)  Default is  1                        
+**     Minimum mass [GeV] for hadronization/showering                           
+   51   0.200000          HadMin=xpar(51)                                       
+**                                                                              
+   52   0.118000          alfQCD=xpar(52)  alpha_QCD                            
+**                                                                              
+   53    1.00000          KeyQCD=xpar(53)  Final state QCD factor ON/OFF, Defaul
+********************************************************************************
+** Note that for beam polariz. being active the CEEX has to be ON, see vmaxGPS a
+** Beam polarization may require adjustment of WtWax, check overweighted events 
+   61    0.00000          spin1x  polarization vector beam 1                    
+   62    0.00000          spin1y  polarization vector beam 1                    
+   63    0.00000          spin1z  polarization vector beam 1                    
+   64    0.00000          spin1x  polarization vector beam 2                    
+   65    0.00000          spin1y  polarization vector beam 2                    
+   66    0.00000          spin1z  polarization vector beam 2                    
+********************************************************************************
+* Beamstrahlung parameters for Thorsten Ohl's package CIRCE                     
+   71    350.000          IRCroots   sqrt(s) [GeV] discrete values 350,500,800Ge
+   72    3.00000          IRCacc                                                
+   73    5.00000          IRCver     version                                    
+   74   0.199805E+08      IRCdat     date                                       
+   75    1.00000          IRCxchat   printout level                             
+**\\\\\writing vegas grid on the disk, KeyGrid=-1 create and dump, =+1 read\\\\\
+   76    0.00000      KeyGrid=0 create, not read, default\\\\\\\\\\\\\\\\\\\\\\\
+********************************************************************************
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+**     Define process                                                           
+**     Beam flavour code                                                        
+  400    11.0000          KFini = xpar(400) dont change it                |<<<<|
+**     LIST of Final state flavours to be generated randomly according          
+**     to QED corrected x-sections, at least one line/item should be present.   
+**     (Remember that electron has incomplete M.E. and top might be too heavy.) 
+*  401              1      KFfin, d                                             
+*  402              1      KFfin, u                                             
+*  403              1      KFfin, s                                             
+*  404              1      KFfin, c                                             
+*  405              1      KFfin, b                                             
+***406              1      KFfin, t quark !!! do not use it!!!!                 
+*  411              1      KFfin, electron                                      
+*  412              1      KFfin, neutrino electron                             
+*  413              1      KFfin, muon                                          
+*  414              1      KFfin, neutrino muon                                 
+*  415              1      KFfin, tau                                           
+*  416              1      KFfin, neutrino tau                                  
+********************************************************************************
+**                   Input for matrix element                                   
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+**\\\\\KeyZet = 0, pure QED\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\\KeyZet = 1, Z-boson and gamma are ON\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\\KeyZet =-1, Z width Gamma is constant (only for CEEX)\\\\\\\\\\\\\\\\\\\\
+**\\\\\KeyZet = 9, pure Z exchange\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+**\\\\\KeyZet =-2, Artificial constant x-section for SPECIAL test runs\\\\\\\\\\
+  501    1.00000    \\\\\\KeyZet=xpar(501)  default is 1\\\\\\\\\\\\\\\\\\\\\\\\
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+** Mass and width of Z-boson [GeV]                                              
+  502    91.1870          MZ  =xpar(502)  PDG 1996                              
+**     sin(thetaW)**2 where thetaW is electroweak mixing angle                  
+  503   0.222768          SwSq  =xpar(503) sin_squared of EW angle, from Dizet  
+  504    2.50072          GammZ =xpar(504) Z width, from Dizet                  
+  505    80.3779          MW    =xpar(505) W mass,  from Dizet                  
+  506    2.08826          GammW =xpar(506) W width, from Dizet                  
+  510   0.100000E-59      MasPhot=xpar(510) photon mass, IR regulator           
+********************************************************************************
+**     PROPERTIES of Quarks and Leptons                                         
+**     i-th position  in xpar(i) according to i = 500+10*KFlavour +j            
+****** d-quark                                                                  
+  511    1.00000          KFlavour                                              
+  512    3.00000          NColor                                                
+  513   -1.00000          3*Q   =3*charge                                       
+  514   -1.00000          2*T3L =2*Isospin for Left component                   
+  515    0.00000          2*helicity, 0 for unpolarized                         
+  516   0.100000E-01      mass [GeV] (5-15MeV in PDG)                           
+  516   0.100000          Constituent mass, for comparison with KoralZ !!!!!!!  
+  517    5.00000          WtMax Maximum weight for rejection d-quark            
+**518         0.99e0      auxiliary parameter vmaxGPS d-quark                   
+  518    20.0000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** u-quark                                                                  
+  521    2.00000          KFlavour                                              
+  522    3.00000          NColor                                                
+  523    2.00000          3*Q   =3*charge                                       
+  524    1.00000          2*T3L =2*Isospin for Left component                   
+  525    0.00000          2*helicity, 0 for unpolarized                         
+  526   0.500000E-02      mass [GeV] (2-8MeV in PDG)                            
+  526   0.100000          Constituent mass, for comparison with KoralZ !!!!!!!  
+  527    5.00000          WtMax Maximum weight for rejection u-quark            
+**528         0.99e0      auxiliary parameter vmaxGPS u-quark                   
+  528    20.0000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+****** s-quark                                                                  
+  531    3.00000          KFlavour                                              
+  532    3.00000          NColor                                                
+  533   -1.00000          3*Q   =3*charge                                       
+  534   -1.00000          2*T3L =2*Isospin for Left component                   
+  535    0.00000          2*helicity, 0 for unpolarized                         
+  536   0.200000          mass [GeV] (100-300MeV in PDG)                        
+  537    5.00000          WtMax Maximum weight for rejection s-quark            
+**538         0.99e0      auxiliary parameter vmaxGPS s-quark                   
+  538    20.0000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** c-quark                                                                  
+  541    4.00000          KFlavour                                              
+  542    3.00000          NColor                                                
+  543    2.00000          3*Q   =3*charge                                       
+  544    1.00000          2*T3L =2*Isospin for Left component                   
+  545    0.00000          2*helicity, 0 for unpolarized                         
+  546    1.30000          mass [GeV] (1.0-1.6 GeV in PDG)                       
+  547    5.00000          WtMax Maximum weight for rejection c-quark            
+**548         0.99e0      auxiliary parameter vmaxGPS c-quark                   
+  548    20.0000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+****** b-quark                                                                  
+  551    5.00000          KFlavour                                              
+  552    3.00000          NColor                                                
+  553   -1.00000          3*Q   =3*charge                                       
+  554   -1.00000          2*T3L =2*Isospin for Left component                   
+  555    0.00000          2*helicity, 0 for unpolarized                         
+  556    4.20000          mass [GeV] (4.1-4.5 GeV in PDG)                       
+  556    4.50000          for comparison with KoarlZ                            
+  557    5.00000          WtMax Maximum weight for rejection b-quark            
+**558         0.99e0      auxiliary parameter vmaxGPS b-quark                   
+  558    20.0000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** t-quark                                                                  
+  561    6.00000          KFlavour                                              
+  562    3.00000          NColor                                                
+  563    2.00000          3*Q   =3*charge                                       
+  564    1.00000          2*T3L =2*Isospin for Left component                   
+  565    0.00000          2*helicity, 0 for unpolarized                         
+  566    175.000          mass [GeV] (170-190GeV in PDG)                        
+  567    5.00000          WtMax Maximum weight for rejection t-quark            
+**568         0.99e0      auxiliary parameter vmaxGPS t-quark                   
+  568    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+****** electron                                                                 
+  611    11.0000          KFlavour                                              
+  612    1.00000          NColor                                                
+  613   -3.00000          3*Q   =3*charge                                       
+  614   -1.00000          2*T3L =2*Isospin for Left component                   
+  615    0.00000          2*helicity                                            
+  616   0.510999E-03      mass [GeV]   (0.51099907 MeV)                         
+  617    8.00000          WtMax Maximum weight for rejection electron           
+**618         0.99e0      auxiliary parameter vmaxGPS                           
+  618    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** neutrino electron         ----- NOT ACTIVE ------                        
+  621    12.0000          KFlavour                                              
+  622    1.00000          NColor                                                
+  623    0.00000          3*Q   =3*charge                                       
+  624    1.00000          2*T3L =2*Isospin for Left component                   
+  625    0.00000          2*helicity                                            
+  626   0.100000E-29      mass [GeV]                                            
+  627    3.50000          WtMax Maximum weight for rejection neutrino electron  
+**628          1.0e0      auxiliary parameter vmaxGPS, CEEX always on           
+  628    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+****** muon                                                                     
+  631    13.0000          KFlavour                                              
+  632    1.00000          NColor                                                
+  633   -3.00000          3*Q   =3*charge                                       
+  634   -1.00000          2*T3L =2*Isospin for Left component                   
+  635    0.00000          2*helicity                                            
+  636   0.105658          mass [GeV]   (0.1056583 GeV)                          
+  637    8.00000          WtMax Maximum weight for rejection muon               
+**638        0.999e0      auxiliary parameter vmaxGPS, CEEX up to a point       
+**638    6.3245553e0      MinMassCEEX = min. mass for CEEX, <- 0.999 at 200GeV  
+  638    1.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** neutrino muon                                                            
+  641    14.0000          KFlavour                                              
+  642    1.00000          NColor                                                
+  643    0.00000          3*Q   =3*charge                                       
+  644    1.00000          2*T3L =2*Isospin for Left component                   
+  645    0.00000          2*helicity                                            
+  646   0.100000E-29      mass [GeV]                                            
+  647    3.50000          WtMax Maximum weight for rejection neutrino muon      
+**648          1.0e0      auxiliary parameter vmaxGPS, CEEX always on           
+  648    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+****** tau                                                                      
+  651    15.0000          KFlavour                                              
+  652    1.00000          NColor                                                
+  653   -3.00000          3*Q   =3*charge                                       
+  654   -1.00000          2*T3L =2*Isospin for Left component                   
+  655    0.00000          2*helicity                                            
+  656    1.77700          mass [GeV]   (1.777 GeV)                              
+  657    8.00000          WtMax Maximum weight for rejection tau                
+**658          1.0e0      auxiliary parameter vmaxGPS, CEEX always on           
+  658    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+****** neutrino tau                                                             
+  661    16.0000          KFlavour                                              
+  662    1.00000          NColor                                                
+  663    0.00000          3*Q   =3*charge                                       
+  664    1.00000          2*T3L =2*Isospin for Left component                   
+  665    0.00000          2*helicity                                            
+  666   0.100000E-29      mass [GeV]                                            
+  667    3.50000          WtMax Maximum weight for rejection neutrino tau       
+**668          1.0e0      auxiliary parameter vmaxGPS, CEEX always on           
+  668    0.00000          auxiliary parameter, MinMassCEEX = min. mass for CEEX 
+********************************************************************************
+*****                                                                       ****
+*****                Entries 800-999 reserved for Electroweak libraries     ****
+*****                                                                       ****
+********************************************************************************
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+  801    1.00000         Ibox=0,1, EW boxes off,on,    input for Dizet          
+  805    100.000          amh   =xpar(805) Higgs mass, input for Dizet          
+  806    175.000          amtop =xpar(806) Top mass,   input for Dizet          
+  808    128.867       alfinvMZ =xpar(808) alfQED(MZ), input for Dizet          
+  809   0.125000       alfQCDMZ =xpar(809) alfQCD(MZ), input for Dizet          
+*      DIZET flags NPAR(i)=NPAR(900+i)                                          
+  901    1.00000      Ihvp  ! =1,2,3  (Jegerlehner/Eidelman, Jegerlehner(1988), 
+  902    4.00000      Iamt4 ! =0,1,2,3,4 (=4 the best, Degrassi/Gambino)        
+  903    3.00000      Iqcd  ! =1,2,3  (approx/fast/lep1, exact/Slow!/Bardin/, ex
+  904    1.00000      Imoms ! =0,1    (=1 W mass recalculated)                  
+  905    0.00000      Imass ! =0,1    (=1 test only, effective quark masses)    
+  906    0.00000      Iscre ! =0,1,2  ( Remainder terms,                        
+  907    3.00000      Ialem ! =1,3 or 0,2, (for 1,3 DALH5 not input)            
+  908    0.00000      Imask ! =0,1 (=0: Quark masses everywhere; =1 Phys. thresh
+  909    0.00000      Iscal ! =0,1,2,3  ( Kniehl=1,2,3, Sirlin=4)               
+  910    2.00000      Ibarb ! =-1,0,1,2 ( Barbieri???)                          
+  911    1.00000      Iftjr ! =0,1      ( FTJR corrections)                     
+  912    0.00000      Ifacr ! =0,1,2,3  ( Expansion of delta_r; =0 none; =3 full
+  913    0.00000      Ifact ! =0,1,2,3,4,5 (Expansion of kappa; =0 none )       
+  914    0.00000      Ihigs ! =0,1      ( Leading Higgs contribution resummation
+  915    1.00000      Iafmt ! =0,1      (=0 for old ZF)                         
+*       Additional parameters of 6.x version                                    
+  916    1.00000      Iewlc ! =0,1   (???)                                      
+  917    1.00000      Iczak ! =0,1   (Czarnecki/Kuehn corrections)              
+  918    1.00000      Ihig2 ! =0,1   (Two-loop higgs  corrections off,on)       
+  919    3.00000      Iale2 ! =1,2,3 (Two-loop constant corrections in delta_alp
+  920    2.00000      Igfer ! =0,1,2 (QED corrections for fermi constant)       
+  921    1.00000      Iddzz ! =0,1   (??? DD-ZZ game, internal flag)            
+********************************************************************************
+*****                                                                       ****
+*****                Entries 2000-2999 reserved for Tauola                  ****
+*****                                                                       ****
+********************************************************************************
+**  Jak=-1       No decay                                                       
+**  Jak=0        Inclusive, 1.e. Jak=1,2,3,4,5,6,7,8...                         
+**  Jak=1,2,3    electron,mu,pi  decays                                         
+**  Jak=4,5,6,7  rho,a1,K,K*     decays                                         
+**  Jak=8...     see list of branchings below                                   
+ 2001    0.00000          Jak1   =xpar(71)  First  Tau decay mask               
+ 2002    0.00000          Jak2   =xpar(72)  Second Tau decay mask               
+ 2003    15.0000          idff   =xpar(72)  PDG ident of the first tau          
+ 2004    1.00000          itdkRC =xpar(74)  QED rad. switch in leptonic decays  
+ 2005   0.100000E-02      xk0dec =xpar(75)  IR-cut for QED rad. in leptonic deca
+ 2006    1.00000          KeyA1  =xpar(76)  Type of a1 current                  
+ 2007   0.975000    \\\\\\Cosine of  Cabibo angle, dont change it\\\\\\\\\\\\\\ 
+ 2008    1.00000          GV in tau decay                                       
+ 2009   -1.00000          GA in tau decay                                       
+**  Coefficients to fix ratio of:                                               
+**    BRA1  -- A1 3CHARGED/ A1 1CHARGED 2 NEUTRALS MATRIX ELEMENTS (MASLESS LIM.
+**    BRKS  -- PROBABILITY OF K0 TO BE KS                                       
+**    BRK0  -- PROBABILITY OF K0B TO BE KS                                      
+**    BRK0B -- RATIO OF COEFFICIENTS FOR K*--> K0 PI-                           
+**  All coefficents should be in the range (0.0,1.0)                            
+**  They meaning is probability of the first choice only if one                 
+**  neglects mass-phase space effects                                           
+ 2010   0.500000          BRA1   in 3 pion tau dec. BR of PI+PI-PI- (vs PI-PI0PI
+ 2011   0.666700          BRKS   in K* tau dec. BR of BR of K+PI0 (vs PI+K0     
+ 2012   0.500000          BRK0   Probability of K0 to be KS                     
+ 2013   0.500000          BRK0B  Probability of K0B to be KS                    
+**  Tau branching ratios for selection of decay chanel in MC series.            
+**  Data below are from PDG July 1998.                                          
+**  They do not need to summ up to unity. MC corrects for this.                 
+**  !!! WARNING!!!  They do not match the model actually used in the present ver
+**                  however, for many applications they might be sufficiently go
+**  !!! IMPORTANT HINT !!!!                                                     
+**           Entry 2101 set smaller than -1e0 will activate internal defaults of
+**           In such a case all input from 2008-2122 will be IGNORED            
+ 2101   0.178100          TAU-  -->   E-                                        
+ 2102   0.173700          TAU-  -->  MU-                                        
+ 2103   0.110800          TAU-  -->  PI-                                        
+ 2104   0.253200          TAU-  -->  PI-, PI0                                   
+ 2105   0.183800          TAU-  -->  A1-(two subch: 2PI-PI+= 9.23%, PI-2PI0=9.15
+ 2106   0.710000E-02      TAU-  -->   K-                                        
+ 2107   0.135000E-01      TAU-  -->  K*- (two subch:  K-PI0= 0.52%, K0PI- =0.83%
+ 2108   0.435000E-01      TAU-  --> 2PI-,  PI0,  PI+                            
+ 2109   0.111000E-01      TAU-  --> 3PI0,        PI-                            
+ 2110   0.110000E-03      TAU-  --> 2PI-,  PI+, 2PI0                            
+ 2111   0.750000E-03      TAU-  --> 3PI-, 2PI+,                                 
+ 2112   0.220000E-03      TAU-  --> 3PI-, 2PI+,  PI0                            
+ 2113   0.290000E-03      TAU-  --> 2PI-,  PI+, 3PI0                            
+ 2114   0.161000E-02      TAU-  -->  K-, PI-,  K+                               
+ 2115   0.121000E-02      TAU-  -->  K0, PI-, K0B                               
+ 2116   0.151000E-02      TAU-  -->  K-,  K0, PI0                               
+ 2117   0.800000E-03      TAU-  --> PI0, PI0,  K-                               
+ 2118   0.180000E-02      TAU-  -->  K-, PI-, PI+                               
+ 2119   0.390000E-02      TAU-  --> PI-, K0B, PI0                               
+ 2120   0.174000E-02      TAU-  --> ETA, PI-, PI0                               
+ 2121   0.500000E-03      TAU-  --> PI-, PI0, GAM      ???? from MC             
+ 2122   0.159000E-02      TAU-  -->  K-,  K0                                    
+** !!! Tau branching ratios all equal!!! for starting the true work on br. ratio
+*2101       1.0000e0      TAU-  -->   E-                                        
+*2102       1.0000e0      TAU-  -->  MU-                                        
+*2103       1.0000e0      TAU-  -->  PI-                                        
+*2104       1.0000e0      TAU-  -->  PI-, PI0                                   
+*2105       1.0000e0      TAU-  -->  A1- (two subch)                            
+*2106       1.0000e0      TAU-  -->   K-                                        
+*2107       1.0000e0      TAU-  -->  K*- (two subch)                            
+*2108       1.0000e0      TAU-  --> 2PI-,  PI0,  PI+                            
+*2109       1.0000e0      TAU-  --> 3PI0,        PI-                            
+*2110       1.0000e0      TAU-  --> 2PI-,  PI+, 2PI0                            
+*2111       1.0000e0      TAU-  --> 3PI-, 2PI+,                                 
+*2112       1.0000e0      TAU-  --> 3PI-, 2PI+,  PI0                            
+*2113       1.0000e0      TAU-  --> 2PI-,  PI+, 3PI0                            
+*2114       1.0000e0      TAU-  -->  K-, PI-,  K+                               
+*2115       1.0000e0      TAU-  -->  K0, PI-, K0B                               
+*2116       1.0000e0      TAU-  -->  K-,  K0, PI0                               
+*2117       1.0000e0      TAU-  --> PI0, PI0,  K-                               
+*2118       1.0000e0      TAU-  -->  K-, PI-, PI+                               
+*2119       1.0000e0      TAU-  --> PI-, K0B, PI0                               
+*2120       1.0000e0      TAU-  --> ETA, PI-, PI0                               
+*2121       1.0000e0      TAU-  --> PI-, PI0, GAM                               
+*2122       1.0000e0      TAU-  -->  K-,  K0                                    
+********************************************************************************
+*****                   End of data for Tauola                              ****
+********************************************************************************
+EndX                                                            
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         amz        a1 *
+ *     100.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     175.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       2.50072032                 Z width    [GeV]         gammz      a4 *
+ *       0.22276773                 sin(theta_w)**2          sinw2      a5 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *       0.20000000                 MassCut light qqbar      HadMin     a6 *
+ *               11                 KF code of beam          KFini      a7 *
+ *    1.0000000                     Input vvmax              vvmax      a8 *
+ *   0.99999888                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                1                 Electroweak lib.         KeyElw     10 *
+ *                1                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ *                0                 R for gamma* on/off      KeyRes     12 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925439                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825839                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.down.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925439                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825839                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.up.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.botom.current                                  *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.mu.current                                     *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.tau.current                                    *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.nue.current                                    *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.numu.current                                   *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *         BornV  Reading from disk file:                                  *
+ *        ../../dizet/table.nutau.current                                  *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *       0.22302485                 sin**2(thetaW)           swsq       a3 *
+ *       2.49925438                 Z width                  gammz      a3 *
+ *      80.37787000                 W mass                   amw        a3 *
+ *       2.08825837                 W width                  gammw      a3 *
+ ***************************************************************************
+
+ GLK_ReadFile: Reading histos from ../Inclusive/pro.hst                                        
+  =====================================
+  ==========    figchi   ==============
+  =====================================
+ Figchi:: Born [R]=     84.2643513061611     
+ Figchi:: Born [pb]=    182.968564675499     
+1
+     50001          d_sigma/dv(v)                                                                   
+           nent            sum           bmin           bmax
+           1000    0.00000E+00    0.00000E+00    0.18800E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.10000E+04    0.50372E+00
+  0.0000   0.188000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXI
+  0.0025   0.210000D+02 0XXXXXXX                                                          I
+  0.0050   0.180000D+02 0XXXXXX                                                           I
+  0.0075   0.110000D+02 0XXX                                                              I
+  0.0100   0.500000D+01 0X                                                                I
+  0.0125   0.500000D+01 0X                                                                I
+  0.0150   0.500000D+01 0X                                                                I
+  0.0175   0.600000D+01 0XX                                                               I
+  0.0200   0.400000D+01 0X                                                                I
+  0.0225   0.400000D+01 0X                                                                I
+  0.0250   0.100000D+01 0                                                                 I
+  0.0275   0.500000D+01 0X                                                                I
+  0.0300   0.200000D+01 0                                                                 I
+  0.0325   0.500000D+01 0X                                                                I
+  0.0350   0.300000D+01 0X                                                                I
+  0.0375   0.400000D+01 0X                                                                I
+  0.0400   0.300000D+01 0X                                                                I
+  0.0425   0.200000D+01 0                                                                 I
+  0.0450   0.200000D+01 0                                                                 I
+  0.0475   0.200000D+01 0                                                                 I
+  0.0500   0.100000D+01 0                                                                 I
+  0.0525   0.100000D+01 0                                                                 I
+  0.0550   0.100000D+01 0                                                                 I
+  0.0575   0.200000D+01 0                                                                 I
+  0.0600   0.500000D+01 0X                                                                I
+  0.0625   0.300000D+01 0X                                                                I
+  0.0650   0.100000D+01 0                                                                 I
+  0.0675   0.100000D+01 0                                                                 I
+  0.0700   0.100000D+01 0                                                                 I
+  0.0725   0.200000D+01 0                                                                 I
+  0.0750   0.000000D+00 0                                                                 I
+  0.0775   0.100000D+01 0                                                                 I
+  0.0800   0.400000D+01 0X                                                                I
+  0.0825   0.300000D+01 0X                                                                I
+  0.0850   0.100000D+01 0                                                                 I
+  0.0875   0.100000D+01 0                                                                 I
+  0.0900   0.100000D+01 0                                                                 I
+  0.0925   0.200000D+01 0                                                                 I
+  0.0950   0.000000D+00 0                                                                 I
+  0.0975   0.000000D+00 0                                                                 I
+  0.1000   0.100000D+01 0                                                                 I
+  0.1025   0.100000D+01 0                                                                 I
+  0.1050   0.200000D+01 0                                                                 I
+  0.1075   0.000000D+00 0                                                                 I
+  0.1100   0.300000D+01 0X                                                                I
+  0.1125   0.100000D+01 0                                                                 I
+  0.1150   0.000000D+00 0                                                                 I
+  0.1175   0.100000D+01 0                                                                 I
+  0.1200   0.100000D+01 0                                                                 I
+  0.1225   0.000000D+00 0                                                                 I
+  0.1250   0.000000D+00 0                                                                 I
+  0.1275   0.100000D+01 0                                                                 I
+  0.1300   0.000000D+00 0                                                                 I
+  0.1325   0.000000D+00 0                                                                 I
+  0.1350   0.000000D+00 0                                                                 I
+  0.1375   0.200000D+01 0                                                                 I
+  0.1400   0.100000D+01 0                                                                 I
+  0.1425   0.000000D+00 0                                                                 I
+  0.1450   0.200000D+01 0                                                                 I
+  0.1475   0.000000D+00 0                                                                 I
+  0.1500   0.100000D+01 0                                                                 I
+  0.1525   0.100000D+01 0                                                                 I
+  0.1550   0.000000D+00 0                                                                 I
+  0.1575   0.100000D+01 0                                                                 I
+  0.1600   0.100000D+01 0                                                                 I
+  0.1625   0.000000D+00 0                                                                 I
+  0.1650   0.000000D+00 0                                                                 I
+  0.1675   0.000000D+00 0                                                                 I
+  0.1700   0.000000D+00 0                                                                 I
+  0.1725   0.200000D+01 0                                                                 I
+  0.1750   0.100000D+01 0                                                                 I
+  0.1775   0.000000D+00 0                                                                 I
+  0.1800   0.100000D+01 0                                                                 I
+  0.1825   0.000000D+00 0                                                                 I
+  0.1850   0.200000D+01 0                                                                 I
+  0.1875   0.100000D+01 0                                                                 I
+  0.1900   0.000000D+00 0                                                                 I
+  0.1925   0.000000D+00 0                                                                 I
+  0.1950   0.100000D+01 0                                                                 I
+  0.1975   0.100000D+01 0                                                                 I
+  0.2000   0.300000D+01 0X                                                                I
+  0.2025   0.000000D+00 0                                                                 I
+  0.2050   0.000000D+00 0                                                                 I
+  0.2075   0.000000D+00 0                                                                 I
+  0.2100   0.200000D+01 0                                                                 I
+  0.2125   0.000000D+00 0                                                                 I
+  0.2150   0.000000D+00 0                                                                 I
+  0.2175   0.000000D+00 0                                                                 I
+  0.2200   0.000000D+00 0                                                                 I
+  0.2225   0.000000D+00 0                                                                 I
+  0.2250   0.100000D+01 0                                                                 I
+  0.2275   0.000000D+00 0                                                                 I
+  0.2300   0.000000D+00 0                                                                 I
+  0.2325   0.100000D+01 0                                                                 I
+  0.2350   0.100000D+01 0                                                                 I
+  0.2375   0.100000D+01 0                                                                 I
+  0.2400   0.300000D+01 0X                                                                I
+  0.2425   0.000000D+00 0                                                                 I
+  0.2450   0.100000D+01 0                                                                 I
+  0.2475   0.000000D+00 0                                                                 I
+  0.2500   0.000000D+00 0                                                                 I
+  0.2525   0.100000D+01 0                                                                 I
+  0.2550   0.100000D+01 0                                                                 I
+  0.2575   0.000000D+00 0                                                                 I
+  0.2600   0.100000D+01 0                                                                 I
+  0.2625   0.000000D+00 0                                                                 I
+  0.2650   0.000000D+00 0                                                                 I
+  0.2675   0.000000D+00 0                                                                 I
+  0.2700   0.000000D+00 0                                                                 I
+  0.2725   0.000000D+00 0                                                                 I
+  0.2750   0.000000D+00 0                                                                 I
+  0.2775   0.000000D+00 0                                                                 I
+  0.2800   0.000000D+00 0                                                                 I
+  0.2825   0.000000D+00 0                                                                 I
+  0.2850   0.000000D+00 0                                                                 I
+  0.2875   0.100000D+01 0                                                                 I
+  0.2900   0.000000D+00 0                                                                 I
+  0.2925   0.000000D+00 0                                                                 I
+  0.2950   0.000000D+00 0                                                                 I
+  0.2975   0.000000D+00 0                                                                 I
+  0.3000   0.100000D+01 0                                                                 I
+  0.3025   0.000000D+00 0                                                                 I
+  0.3050   0.000000D+00 0                                                                 I
+  0.3075   0.100000D+01 0                                                                 I
+  0.3100   0.000000D+00 0                                                                 I
+  0.3125   0.100000D+01 0                                                                 I
+  0.3150   0.000000D+00 0                                                                 I
+  0.3175   0.000000D+00 0                                                                 I
+  0.3200   0.000000D+00 0                                                                 I
+  0.3225   0.000000D+00 0                                                                 I
+  0.3250   0.100000D+01 0                                                                 I
+  0.3275   0.000000D+00 0                                                                 I
+  0.3300   0.000000D+00 0                                                                 I
+  0.3325   0.000000D+00 0                                                                 I
+  0.3350   0.000000D+00 0                                                                 I
+  0.3375   0.000000D+00 0                                                                 I
+  0.3400   0.000000D+00 0                                                                 I
+  0.3425   0.000000D+00 0                                                                 I
+  0.3450   0.000000D+00 0                                                                 I
+  0.3475   0.000000D+00 0                                                                 I
+  0.3500   0.000000D+00 0                                                                 I
+  0.3525   0.100000D+01 0                                                                 I
+  0.3550   0.100000D+01 0                                                                 I
+  0.3575   0.000000D+00 0                                                                 I
+  0.3600   0.100000D+01 0                                                                 I
+  0.3625   0.000000D+00 0                                                                 I
+  0.3650   0.100000D+01 0                                                                 I
+  0.3675   0.000000D+00 0                                                                 I
+  0.3700   0.000000D+00 0                                                                 I
+  0.3725   0.000000D+00 0                                                                 I
+  0.3750   0.000000D+00 0                                                                 I
+  0.3775   0.000000D+00 0                                                                 I
+  0.3800   0.100000D+01 0                                                                 I
+  0.3825   0.000000D+00 0                                                                 I
+  0.3850   0.000000D+00 0                                                                 I
+  0.3875   0.000000D+00 0                                                                 I
+  0.3900   0.100000D+01 0                                                                 I
+  0.3925   0.100000D+01 0                                                                 I
+  0.3950   0.100000D+01 0                                                                 I
+  0.3975   0.000000D+00 0                                                                 I
+  0.4000   0.000000D+00 0                                                                 I
+  0.4025   0.000000D+00 0                                                                 I
+  0.4050   0.000000D+00 0                                                                 I
+  0.4075   0.000000D+00 0                                                                 I
+  0.4100   0.000000D+00 0                                                                 I
+  0.4125   0.000000D+00 0                                                                 I
+  0.4150   0.100000D+01 0                                                                 I
+  0.4175   0.000000D+00 0                                                                 I
+  0.4200   0.000000D+00 0                                                                 I
+  0.4225   0.000000D+00 0                                                                 I
+  0.4250   0.100000D+01 0                                                                 I
+  0.4275   0.000000D+00 0                                                                 I
+  0.4300   0.000000D+00 0                                                                 I
+  0.4325   0.000000D+00 0                                                                 I
+  0.4350   0.100000D+01 0                                                                 I
+  0.4375   0.000000D+00 0                                                                 I
+  0.4400   0.000000D+00 0                                                                 I
+  0.4425   0.000000D+00 0                                                                 I
+  0.4450   0.000000D+00 0                                                                 I
+  0.4475   0.000000D+00 0                                                                 I
+  0.4500   0.100000D+01 0                                                                 I
+  0.4525   0.000000D+00 0                                                                 I
+  0.4550   0.000000D+00 0                                                                 I
+  0.4575   0.100000D+01 0                                                                 I
+  0.4600   0.100000D+01 0                                                                 I
+  0.4625   0.000000D+00 0                                                                 I
+  0.4650   0.000000D+00 0                                                                 I
+  0.4675   0.000000D+00 0                                                                 I
+  0.4700   0.100000D+01 0                                                                 I
+  0.4725   0.100000D+01 0                                                                 I
+  0.4750   0.000000D+00 0                                                                 I
+  0.4775   0.100000D+01 0                                                                 I
+  0.4800   0.000000D+00 0                                                                 I
+  0.4825   0.000000D+00 0                                                                 I
+  0.4850   0.100000D+01 0                                                                 I
+  0.4875   0.000000D+00 0                                                                 I
+  0.4900   0.000000D+00 0                                                                 I
+  0.4925   0.000000D+00 0                                                                 I
+  0.4950   0.000000D+00 0                                                                 I
+  0.4975   0.000000D+00 0                                                                 I
+  0.5000   0.200000D+01 0                                                                 I
+  0.5025   0.100000D+01 0                                                                 I
+  0.5050   0.000000D+00 0                                                                 I
+  0.5075   0.100000D+01 0                                                                 I
+  0.5100   0.000000D+00 0                                                                 I
+  0.5125   0.100000D+01 0                                                                 I
+  0.5150   0.000000D+00 0                                                                 I
+  0.5175   0.000000D+00 0                                                                 I
+  0.5200   0.200000D+01 0                                                                 I
+  0.5225   0.000000D+00 0                                                                 I
+  0.5250   0.000000D+00 0                                                                 I
+  0.5275   0.100000D+01 0                                                                 I
+  0.5300   0.000000D+00 0                                                                 I
+  0.5325   0.000000D+00 0                                                                 I
+  0.5350   0.100000D+01 0                                                                 I
+  0.5375   0.000000D+00 0                                                                 I
+  0.5400   0.000000D+00 0                                                                 I
+  0.5425   0.000000D+00 0                                                                 I
+  0.5450   0.000000D+00 0                                                                 I
+  0.5475   0.000000D+00 0                                                                 I
+  0.5500   0.000000D+00 0                                                                 I
+  0.5525   0.000000D+00 0                                                                 I
+  0.5550   0.100000D+01 0                                                                 I
+  0.5575   0.000000D+00 0                                                                 I
+  0.5600   0.000000D+00 0                                                                 I
+  0.5625   0.000000D+00 0                                                                 I
+  0.5650   0.000000D+00 0                                                                 I
+  0.5675   0.000000D+00 0                                                                 I
+  0.5700   0.000000D+00 0                                                                 I
+  0.5725   0.200000D+01 0                                                                 I
+  0.5750   0.000000D+00 0                                                                 I
+  0.5775   0.000000D+00 0                                                                 I
+  0.5800   0.100000D+01 0                                                                 I
+  0.5825   0.000000D+00 0                                                                 I
+  0.5850   0.200000D+01 0                                                                 I
+  0.5875   0.000000D+00 0                                                                 I
+  0.5900   0.000000D+00 0                                                                 I
+  0.5925   0.000000D+00 0                                                                 I
+  0.5950   0.100000D+01 0                                                                 I
+  0.5975   0.000000D+00 0                                                                 I
+  0.6000   0.000000D+00 0                                                                 I
+  0.6025   0.000000D+00 0                                                                 I
+  0.6050   0.200000D+01 0                                                                 I
+  0.6075   0.000000D+00 0                                                                 I
+  0.6100   0.000000D+00 0                                                                 I
+  0.6125   0.000000D+00 0                                                                 I
+  0.6150   0.000000D+00 0                                                                 I
+  0.6175   0.000000D+00 0                                                                 I
+  0.6200   0.100000D+01 0                                                                 I
+  0.6225   0.000000D+00 0                                                                 I
+  0.6250   0.100000D+01 0                                                                 I
+  0.6275   0.000000D+00 0                                                                 I
+  0.6300   0.000000D+00 0                                                                 I
+  0.6325   0.000000D+00 0                                                                 I
+  0.6350   0.000000D+00 0                                                                 I
+  0.6375   0.100000D+01 0                                                                 I
+  0.6400   0.000000D+00 0                                                                 I
+  0.6425   0.000000D+00 0                                                                 I
+  0.6450   0.100000D+01 0                                                                 I
+  0.6475   0.100000D+01 0                                                                 I
+  0.6500   0.000000D+00 0                                                                 I
+  0.6525   0.100000D+01 0                                                                 I
+  0.6550   0.000000D+00 0                                                                 I
+  0.6575   0.000000D+00 0                                                                 I
+  0.6600   0.000000D+00 0                                                                 I
+  0.6625   0.000000D+00 0                                                                 I
+  0.6650   0.000000D+00 0                                                                 I
+  0.6675   0.100000D+01 0                                                                 I
+  0.6700   0.100000D+01 0                                                                 I
+  0.6725   0.000000D+00 0                                                                 I
+  0.6750   0.000000D+00 0                                                                 I
+  0.6775   0.000000D+00 0                                                                 I
+  0.6800   0.100000D+01 0                                                                 I
+  0.6825   0.000000D+00 0                                                                 I
+  0.6850   0.100000D+01 0                                                                 I
+  0.6875   0.000000D+00 0                                                                 I
+  0.6900   0.200000D+01 0                                                                 I
+  0.6925   0.100000D+01 0                                                                 I
+  0.6950   0.000000D+00 0                                                                 I
+  0.6975   0.200000D+01 0                                                                 I
+  0.7000   0.000000D+00 0                                                                 I
+  0.7025   0.000000D+00 0                                                                 I
+  0.7050   0.100000D+01 0                                                                 I
+  0.7075   0.000000D+00 0                                                                 I
+  0.7100   0.000000D+00 0                                                                 I
+  0.7125   0.100000D+01 0                                                                 I
+  0.7150   0.000000D+00 0                                                                 I
+  0.7175   0.200000D+01 0                                                                 I
+  0.7200   0.000000D+00 0                                                                 I
+  0.7225   0.200000D+01 0                                                                 I
+  0.7250   0.000000D+00 0                                                                 I
+  0.7275   0.000000D+00 0                                                                 I
+  0.7300   0.100000D+01 0                                                                 I
+  0.7325   0.200000D+01 0                                                                 I
+  0.7350   0.400000D+01 0X                                                                I
+  0.7375   0.200000D+01 0                                                                 I
+  0.7400   0.200000D+01 0                                                                 I
+  0.7425   0.400000D+01 0X                                                                I
+  0.7450   0.200000D+01 0                                                                 I
+  0.7475   0.100000D+01 0                                                                 I
+  0.7500   0.300000D+01 0X                                                                I
+  0.7525   0.200000D+01 0                                                                 I
+  0.7550   0.300000D+01 0X                                                                I
+  0.7575   0.400000D+01 0X                                                                I
+  0.7600   0.400000D+01 0X                                                                I
+  0.7625   0.000000D+00 0                                                                 I
+  0.7650   0.400000D+01 0X                                                                I
+  0.7675   0.400000D+01 0X                                                                I
+  0.7700   0.500000D+01 0X                                                                I
+  0.7725   0.600000D+01 0XX                                                               I
+  0.7750   0.800000D+01 0XX                                                               I
+  0.7775   0.170000D+02 0XXXXX                                                            I
+  0.7800   0.150000D+02 0XXXXX                                                            I
+  0.7825   0.240000D+02 0XXXXXXXX                                                         I
+  0.7850   0.400000D+02 0XXXXXXXXXXXXXX                                                   I
+  0.7875   0.420000D+02 0XXXXXXXXXXXXXX                                                   I
+  0.7900   0.750000D+02 0XXXXXXXXXXXXXXXXXXXXXXXXXX                                       I
+  0.7925   0.680000D+02 0XXXXXXXXXXXXXXXXXXXXXXX                                          I
+  0.7950   0.500000D+02 0XXXXXXXXXXXXXXXXX                                                I
+  0.7975   0.270000D+02 0XXXXXXXXX                                                        I
+  0.8000   0.240000D+02 0XXXXXXXX                                                         I
+  0.8025   0.130000D+02 0XXXX                                                             I
+  0.8050   0.600000D+01 0XX                                                               I
+  0.8075   0.120000D+02 0XXXX                                                             I
+  0.8100   0.400000D+01 0X                                                                I
+  0.8125   0.300000D+01 0X                                                                I
+  0.8150   0.200000D+01 0                                                                 I
+  0.8175   0.400000D+01 0X                                                                I
+  0.8200   0.300000D+01 0X                                                                I
+  0.8225   0.200000D+01 0                                                                 I
+  0.8250   0.000000D+00 0                                                                 I
+  0.8275   0.100000D+01 0                                                                 I
+  0.8300   0.000000D+00 0                                                                 I
+  0.8325   0.200000D+01 0                                                                 I
+  0.8350   0.400000D+01 0X                                                                I
+  0.8375   0.300000D+01 0X                                                                I
+  0.8400   0.100000D+01 0                                                                 I
+  0.8425   0.200000D+01 0                                                                 I
+  0.8450   0.100000D+01 0                                                                 I
+  0.8475   0.100000D+01 0                                                                 I
+  0.8500   0.000000D+00 0                                                                 I
+  0.8525   0.100000D+01 0                                                                 I
+  0.8550   0.000000D+00 0                                                                 I
+  0.8575   0.000000D+00 0                                                                 I
+  0.8600   0.000000D+00 0                                                                 I
+  0.8625   0.000000D+00 0                                                                 I
+  0.8650   0.000000D+00 0                                                                 I
+  0.8675   0.000000D+00 0                                                                 I
+  0.8700   0.000000D+00 0                                                                 I
+  0.8725   0.000000D+00 0                                                                 I
+  0.8750   0.000000D+00 0                                                                 I
+  0.8775   0.000000D+00 0                                                                 I
+  0.8800   0.000000D+00 0                                                                 I
+  0.8825   0.000000D+00 0                                                                 I
+  0.8850   0.000000D+00 0                                                                 I
+  0.8875   0.000000D+00 0                                                                 I
+  0.8900   0.200000D+01 0                                                                 I
+  0.8925   0.100000D+01 0                                                                 I
+  0.8950   0.000000D+00 0                                                                 I
+  0.8975   0.000000D+00 0                                                                 I
+  0.9000   0.100000D+01 0                                                                 I
+  0.9025   0.100000D+01 0                                                                 I
+  0.9050   0.100000D+01 0                                                                 I
+  0.9075   0.000000D+00 0                                                                 I
+  0.9100   0.000000D+00 0                                                                 I
+  0.9125   0.100000D+01 0                                                                 I
+  0.9150   0.100000D+01 0                                                                 I
+  0.9175   0.000000D+00 0                                                                 I
+  0.9200   0.000000D+00 0                                                                 I
+  0.9225   0.100000D+01 0                                                                 I
+  0.9250   0.000000D+00 0                                                                 I
+  0.9275   0.000000D+00 0                                                                 I
+  0.9300   0.000000D+00 0                                                                 I
+  0.9325   0.100000D+01 0                                                                 I
+  0.9350   0.000000D+00 0                                                                 I
+  0.9375   0.000000D+00 0                                                                 I
+  0.9400   0.100000D+01 0                                                                 I
+  0.9425   0.000000D+00 0                                                                 I
+  0.9450   0.100000D+01 0                                                                 I
+  0.9475   0.000000D+00 0                                                                 I
+  0.9500   0.000000D+00 0                                                                 I
+  0.9525   0.000000D+00 0                                                                 I
+  0.9550   0.000000D+00 0                                                                 I
+  0.9575   0.000000D+00 0                                                                 I
+  0.9600   0.100000D+01 0                                                                 I
+  0.9625   0.100000D+01 0                                                                 I
+  0.9650   0.000000D+00 0                                                                 I
+  0.9675   0.000000D+00 0                                                                 I
+  0.9700   0.100000D+01 0                                                                 I
+  0.9725   0.100000D+01 0                                                                 I
+  0.9750   0.000000D+00 0                                                                 I
+  0.9775   0.100000D+01 0                                                                 I
+  0.9800   0.000000D+00 0                                                                 I
+  0.9825   0.200000D+01 0                                                                 I
+  0.9850   0.200000D+01 0                                                                 I
+  0.9875   0.000000D+00 0                                                                 I
+  0.9900   0.300000D+01 0X                                                                I
+  0.9925   0.000000D+00 0                                                                 I
+  0.9950   0.300000D+01 0X                                                                I
+  0.9975   0.310000D+02 0XXXXXXXXXX                                                       I
+1
+     50002          ln10(Ene/Ebeam) total ALL                                                       
+           nent            sum           bmin           bmax
+           1000    0.00000E+00    0.00000E+00    0.15600E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.76200E+03    0.10000E+04    0.52375E+02
+ -6.0000   0.000000D+00 0                                                                 I
+ -5.8833   0.000000D+00 0                                                                 I
+ -5.7667   0.000000D+00 0                                                                 I
+ -5.6500   0.000000D+00 0                                                                 I
+ -5.5333   0.000000D+00 0                                                                 I
+ -5.4167   0.000000D+00 0                                                                 I
+ -5.3000   0.000000D+00 0                                                                 I
+ -5.1833   0.000000D+00 0                                                                 I
+ -5.0667   0.000000D+00 0                                                                 I
+ -4.9500   0.000000D+00 0                                                                 I
+ -4.8333   0.000000D+00 0                                                                 I
+ -4.7167   0.000000D+00 0                                                                 I
+ -4.6000   0.000000D+00 0                                                                 I
+ -4.4833   0.000000D+00 0                                                                 I
+ -4.3667   0.000000D+00 0                                                                 I
+ -4.2500   0.000000D+00 0                                                                 I
+ -4.1333   0.000000D+00 0                                                                 I
+ -4.0167   0.000000D+00 0                                                                 I
+ -3.9000   0.000000D+00 0                                                                 I
+ -3.7833   0.000000D+00 0                                                                 I
+ -3.6667   0.000000D+00 0                                                                 I
+ -3.5500   0.000000D+00 0                                                                 I
+ -3.4333   0.000000D+00 0                                                                 I
+ -3.3167   0.000000D+00 0                                                                 I
+ -3.2000   0.000000D+00 0                                                                 I
+ -3.0833   0.000000D+00 0                                                                 I
+ -2.9667   0.000000D+00 0                                                                 I
+ -2.8500   0.000000D+00 0                                                                 I
+ -2.7333   0.000000D+00 0                                                                 I
+ -2.6167   0.000000D+00 0                                                                 I
+ -2.5000   0.000000D+00 0                                                                 I
+ -2.3833   0.000000D+00 0                                                                 I
+ -2.2667   0.000000D+00 0                                                                 I
+ -2.1500   0.000000D+00 0                                                                 I
+ -2.0333   0.000000D+00 0                                                                 I
+ -1.9167   0.000000D+00 0                                                                 I
+ -1.8000   0.000000D+00 0                                                                 I
+ -1.6833   0.000000D+00 0                                                                 I
+ -1.5667   0.000000D+00 0                                                                 I
+ -1.4500   0.000000D+00 0                                                                 I
+ -1.3333   0.000000D+00 0                                                                 I
+ -1.2167   0.000000D+00 0                                                                 I
+ -1.1000   0.000000D+00 0                                                                 I
+ -0.9833   0.000000D+00 0                                                                 I
+ -0.8667   0.000000D+00 0                                                                 I
+ -0.7500   0.000000D+00 0                                                                 I
+ -0.6333   0.000000D+00 0                                                                 I
+ -0.5167   0.000000D+00 0                                                                 I
+ -0.4000   0.000000D+00 0                                                                 I
+ -0.2833   0.000000D+00 0                                                                 I
+ -0.1667   0.000000D+00 0                                                                 I
+ -0.0500   0.156000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  0.0667   0.260000D+02 0XXXXXXXXXXX                                                      I
+  0.1833   0.110000D+02 0XXXX                                                             I
+  0.3000   0.100000D+02 0XXXX                                                             I
+  0.4167   0.900000D+01 0XXX                                                              I
+  0.5333   0.110000D+02 0XXXX                                                             I
+  0.6500   0.400000D+01 0X                                                                I
+  0.7667   0.700000D+01 0XX                                                               I
+  0.8833   0.400000D+01 0X                                                                I
+1
+     50003          ln10(Ene/Ebeam) total ISR                                                       
+           nent            sum           bmin           bmax
+           1000    0.00000E+00    0.00000E+00    0.47300E+03
+           undf           ovef           sumw           avex
+    0.88000E+02    0.00000E+00    0.10000E+04   -0.88707E+02
+ -6.0000   0.000000D+00 0                                                                 I
+ -5.8833   0.000000D+00 0                                                                 I
+ -5.7667   0.000000D+00 0                                                                 I
+ -5.6500   0.000000D+00 0                                                                 I
+ -5.5333   0.000000D+00 0                                                                 I
+ -5.4167   0.000000D+00 0                                                                 I
+ -5.3000   0.000000D+00 0                                                                 I
+ -5.1833   0.000000D+00 0                                                                 I
+ -5.0667   0.200000D+01 0                                                                 I
+ -4.9500   0.400000D+01 0                                                                 I
+ -4.8333   0.400000D+01 0                                                                 I
+ -4.7167   0.300000D+01 0                                                                 I
+ -4.6000   0.500000D+01 0                                                                 I
+ -4.4833   0.600000D+01 0                                                                 I
+ -4.3667   0.200000D+01 0                                                                 I
+ -4.2500   0.200000D+01 0                                                                 I
+ -4.1333   0.200000D+01 0                                                                 I
+ -4.0167   0.900000D+01 0X                                                                I
+ -3.9000   0.400000D+01 0                                                                 I
+ -3.7833   0.700000D+01 0                                                                 I
+ -3.6667   0.300000D+01 0                                                                 I
+ -3.5500   0.300000D+01 0                                                                 I
+ -3.4333   0.400000D+01 0                                                                 I
+ -3.3167   0.600000D+01 0                                                                 I
+ -3.2000   0.100000D+02 0X                                                                I
+ -3.0833   0.400000D+01 0                                                                 I
+ -2.9667   0.700000D+01 0                                                                 I
+ -2.8500   0.700000D+01 0                                                                 I
+ -2.7333   0.500000D+01 0                                                                 I
+ -2.6167   0.900000D+01 0X                                                                I
+ -2.5000   0.700000D+01 0                                                                 I
+ -2.3833   0.100000D+02 0X                                                                I
+ -2.2667   0.130000D+02 0X                                                                I
+ -2.1500   0.100000D+02 0X                                                                I
+ -2.0333   0.600000D+01 0                                                                 I
+ -1.9167   0.900000D+01 0X                                                                I
+ -1.8000   0.800000D+01 0X                                                                I
+ -1.6833   0.900000D+01 0X                                                                I
+ -1.5667   0.130000D+02 0X                                                                I
+ -1.4500   0.120000D+02 0X                                                                I
+ -1.3333   0.100000D+02 0X                                                                I
+ -1.2167   0.120000D+02 0X                                                                I
+ -1.1000   0.130000D+02 0X                                                                I
+ -0.9833   0.100000D+02 0X                                                                I
+ -0.8667   0.120000D+02 0X                                                                I
+ -0.7500   0.130000D+02 0X                                                                I
+ -0.6333   0.110000D+02 0X                                                                I
+ -0.5167   0.110000D+02 0X                                                                I
+ -0.4000   0.130000D+02 0X                                                                I
+ -0.2833   0.220000D+02 0XXX                                                              I
+ -0.1667   0.473000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ -0.0500   0.970000D+02 0XXXXXXXXXXXXX                                                    I
+  0.0667   0.600000D+01 0                                                                 I
+  0.1833   0.400000D+01 0                                                                 I
+  0.3000   0.000000D+00 0                                                                 I
+  0.4167   0.000000D+00 0                                                                 I
+  0.5333   0.000000D+00 0                                                                 I
+  0.6500   0.000000D+00 0                                                                 I
+  0.7667   0.000000D+00 0                                                                 I
+  0.8833   0.000000D+00 0                                                                 I
+1
+     50004          ln10(Ene/Ebeam) total FSR                                                       
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++    GLK_PRINT: bmin.eq.bmax, id=     50004 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1
+     50007          NphAll                                                                          
+           nent            sum           bmin           bmax
+           1000    0.00000E+00    0.00000E+00    0.31100E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.10000E+04    0.19590E+01
+  0.0000   0.880000D+02 0XXXXXXXXXXXXXXXXXX                                               I
+  1.0000   0.311000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  2.0000   0.299000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  3.0000   0.197000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                        I
+  4.0000   0.740000D+02 0XXXXXXXXXXXXXXX                                                  I
+  5.0000   0.230000D+02 0XXXX                                                             I
+  6.0000   0.800000D+01 0X                                                                I
+  7.0000   0.000000D+00 0                                                                 I
+  8.0000   0.000000D+00 0                                                                 I
+  9.0000   0.000000D+00 0                                                                 I
+ 10.0000   0.000000D+00 0                                                                 I
+ 11.0000   0.000000D+00 0                                                                 I
+ 12.0000   0.000000D+00 0                                                                 I
+ 13.0000   0.000000D+00 0                                                                 I
+ 14.0000   0.000000D+00 0                                                                 I
+ 15.0000   0.000000D+00 0                                                                 I
+1
+     50009          KFcode                                                                          
+           nent            sum           bmin           bmax
+           1000    0.00000E+00    0.00000E+00    0.28600E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.10000E+04    0.76301E+01
+  1.0000   0.101000D+03 0XXXXXXXXXXXXXXXXXXXXXXX                                          I
+  2.0000   0.106000D+03 0XXXXXXXXXXXXXXXXXXXXXXXX                                         I
+  3.0000   0.117000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXX                                      I
+  4.0000   0.117000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXX                                      I
+  5.0000   0.920000D+02 0XXXXXXXXXXXXXXXXXXXXX                                            I
+  6.0000   0.000000D+00 0                                                                 I
+  7.0000   0.000000D+00 0                                                                 I
+  8.0000   0.000000D+00 0                                                                 I
+  9.0000   0.000000D+00 0                                                                 I
+ 10.0000   0.000000D+00 0                                                                 I
+ 11.0000   0.000000D+00 0                                                                 I
+ 12.0000   0.286000D+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 13.0000   0.530000D+02 0XXXXXXXXXXXX                                                     I
+ 14.0000   0.380000D+02 0XXXXXXXX                                                         I
+ 15.0000   0.550000D+02 0XXXXXXXXXXXX                                                     I
+ 16.0000   0.350000D+02 0XXXXXXXX                                                         I
+1
+    150001          d_sigma/dv(v)                                                                   
+           nent            sum           bmin           bmax
+              1    0.00000E+00    0.00000E+00    0.13073E+02
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.00000E+00    0.00000E+00
+  0.0000   0.130730D+02   0.953450D+00 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXI
+  0.0025   0.146029D+01   0.318661D+00 0XXXXX                                               I
+  0.0050   0.125167D+01   0.295023D+00 0XXXXX                                               I
+  0.0075   0.764912D+00   0.230630D+00 0XXX                                                 I
+  0.0100   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0125   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0150   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0175   0.417225D+00   0.170331D+00 0X                                                   I
+  0.0200   0.278150D+00   0.139075D+00 0X                                                   I
+  0.0225   0.278150D+00   0.139075D+00 0X                                                   I
+  0.0250   0.695375D-01   0.695375D-01 0                                                    I
+  0.0275   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0300   0.139075D+00   0.983409D-01 0                                                    I
+  0.0325   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0350   0.208612D+00   0.120442D+00 0                                                    I
+  0.0375   0.278150D+00   0.139075D+00 0X                                                   I
+  0.0400   0.208612D+00   0.120442D+00 0                                                    I
+  0.0425   0.139075D+00   0.983409D-01 0                                                    I
+  0.0450   0.139075D+00   0.983409D-01 0                                                    I
+  0.0475   0.139075D+00   0.983409D-01 0                                                    I
+  0.0500   0.695375D-01   0.695375D-01 0                                                    I
+  0.0525   0.695375D-01   0.695375D-01 0                                                    I
+  0.0550   0.695375D-01   0.695375D-01 0                                                    I
+  0.0575   0.139075D+00   0.983409D-01 0                                                    I
+  0.0600   0.347687D+00   0.155491D+00 0X                                                   I
+  0.0625   0.208612D+00   0.120442D+00 0                                                    I
+  0.0650   0.695375D-01   0.695375D-01 0                                                    I
+  0.0675   0.695375D-01   0.695375D-01 0                                                    I
+  0.0700   0.695375D-01   0.695375D-01 0                                                    I
+  0.0725   0.139075D+00   0.983409D-01 0                                                    I
+  0.0750   0.000000D+00   0.000000D+00 0                                                    I
+  0.0775   0.695375D-01   0.695375D-01 0                                                    I
+  0.0800   0.278150D+00   0.139075D+00 0X                                                   I
+  0.0825   0.208612D+00   0.120442D+00 0                                                    I
+  0.0850   0.695375D-01   0.695375D-01 0                                                    I
+  0.0875   0.695375D-01   0.695375D-01 0                                                    I
+  0.0900   0.695375D-01   0.695375D-01 0                                                    I
+  0.0925   0.139075D+00   0.983409D-01 0                                                    I
+  0.0950   0.000000D+00   0.000000D+00 0                                                    I
+  0.0975   0.000000D+00   0.000000D+00 0                                                    I
+  0.1000   0.695375D-01   0.695375D-01 0                                                    I
+  0.1025   0.695375D-01   0.695375D-01 0                                                    I
+  0.1050   0.139075D+00   0.983409D-01 0                                                    I
+  0.1075   0.000000D+00   0.000000D+00 0                                                    I
+  0.1100   0.208612D+00   0.120442D+00 0                                                    I
+  0.1125   0.695375D-01   0.695375D-01 0                                                    I
+  0.1150   0.000000D+00   0.000000D+00 0                                                    I
+  0.1175   0.695375D-01   0.695375D-01 0                                                    I
+  0.1200   0.695375D-01   0.695375D-01 0                                                    I
+  0.1225   0.000000D+00   0.000000D+00 0                                                    I
+  0.1250   0.000000D+00   0.000000D+00 0                                                    I
+  0.1275   0.695375D-01   0.695375D-01 0                                                    I
+  0.1300   0.000000D+00   0.000000D+00 0                                                    I
+  0.1325   0.000000D+00   0.000000D+00 0                                                    I
+  0.1350   0.000000D+00   0.000000D+00 0                                                    I
+  0.1375   0.139075D+00   0.983409D-01 0                                                    I
+  0.1400   0.695375D-01   0.695375D-01 0                                                    I
+  0.1425   0.000000D+00   0.000000D+00 0                                                    I
+  0.1450   0.139075D+00   0.983409D-01 0                                                    I
+  0.1475   0.000000D+00   0.000000D+00 0                                                    I
+  0.1500   0.695375D-01   0.695375D-01 0                                                    I
+  0.1525   0.695375D-01   0.695375D-01 0                                                    I
+  0.1550   0.000000D+00   0.000000D+00 0                                                    I
+  0.1575   0.695375D-01   0.695375D-01 0                                                    I
+  0.1600   0.695375D-01   0.695375D-01 0                                                    I
+  0.1625   0.000000D+00   0.000000D+00 0                                                    I
+  0.1650   0.000000D+00   0.000000D+00 0                                                    I
+  0.1675   0.000000D+00   0.000000D+00 0                                                    I
+  0.1700   0.000000D+00   0.000000D+00 0                                                    I
+  0.1725   0.139075D+00   0.983409D-01 0                                                    I
+  0.1750   0.695375D-01   0.695375D-01 0                                                    I
+  0.1775   0.000000D+00   0.000000D+00 0                                                    I
+  0.1800   0.695375D-01   0.695375D-01 0                                                    I
+  0.1825   0.000000D+00   0.000000D+00 0                                                    I
+  0.1850   0.139075D+00   0.983409D-01 0                                                    I
+  0.1875   0.695375D-01   0.695375D-01 0                                                    I
+  0.1900   0.000000D+00   0.000000D+00 0                                                    I
+  0.1925   0.000000D+00   0.000000D+00 0                                                    I
+  0.1950   0.695375D-01   0.695375D-01 0                                                    I
+  0.1975   0.695375D-01   0.695375D-01 0                                                    I
+  0.2000   0.208612D+00   0.120442D+00 0                                                    I
+  0.2025   0.000000D+00   0.000000D+00 0                                                    I
+  0.2050   0.000000D+00   0.000000D+00 0                                                    I
+  0.2075   0.000000D+00   0.000000D+00 0                                                    I
+  0.2100   0.139075D+00   0.983409D-01 0                                                    I
+  0.2125   0.000000D+00   0.000000D+00 0                                                    I
+  0.2150   0.000000D+00   0.000000D+00 0                                                    I
+  0.2175   0.000000D+00   0.000000D+00 0                                                    I
+  0.2200   0.000000D+00   0.000000D+00 0                                                    I
+  0.2225   0.000000D+00   0.000000D+00 0                                                    I
+  0.2250   0.695375D-01   0.695375D-01 0                                                    I
+  0.2275   0.000000D+00   0.000000D+00 0                                                    I
+  0.2300   0.000000D+00   0.000000D+00 0                                                    I
+  0.2325   0.695375D-01   0.695375D-01 0                                                    I
+  0.2350   0.695375D-01   0.695375D-01 0                                                    I
+  0.2375   0.695375D-01   0.695375D-01 0                                                    I
+  0.2400   0.208612D+00   0.120442D+00 0                                                    I
+  0.2425   0.000000D+00   0.000000D+00 0                                                    I
+  0.2450   0.695375D-01   0.695375D-01 0                                                    I
+  0.2475   0.000000D+00   0.000000D+00 0                                                    I
+  0.2500   0.000000D+00   0.000000D+00 0                                                    I
+  0.2525   0.695375D-01   0.695375D-01 0                                                    I
+  0.2550   0.695375D-01   0.695375D-01 0                                                    I
+  0.2575   0.000000D+00   0.000000D+00 0                                                    I
+  0.2600   0.695375D-01   0.695375D-01 0                                                    I
+  0.2625   0.000000D+00   0.000000D+00 0                                                    I
+  0.2650   0.000000D+00   0.000000D+00 0                                                    I
+  0.2675   0.000000D+00   0.000000D+00 0                                                    I
+  0.2700   0.000000D+00   0.000000D+00 0                                                    I
+  0.2725   0.000000D+00   0.000000D+00 0                                                    I
+  0.2750   0.000000D+00   0.000000D+00 0                                                    I
+  0.2775   0.000000D+00   0.000000D+00 0                                                    I
+  0.2800   0.000000D+00   0.000000D+00 0                                                    I
+  0.2825   0.000000D+00   0.000000D+00 0                                                    I
+  0.2850   0.000000D+00   0.000000D+00 0                                                    I
+  0.2875   0.695375D-01   0.695375D-01 0                                                    I
+  0.2900   0.000000D+00   0.000000D+00 0                                                    I
+  0.2925   0.000000D+00   0.000000D+00 0                                                    I
+  0.2950   0.000000D+00   0.000000D+00 0                                                    I
+  0.2975   0.000000D+00   0.000000D+00 0                                                    I
+  0.3000   0.695375D-01   0.695375D-01 0                                                    I
+  0.3025   0.000000D+00   0.000000D+00 0                                                    I
+  0.3050   0.000000D+00   0.000000D+00 0                                                    I
+  0.3075   0.695375D-01   0.695375D-01 0                                                    I
+  0.3100   0.000000D+00   0.000000D+00 0                                                    I
+  0.3125   0.695375D-01   0.695375D-01 0                                                    I
+  0.3150   0.000000D+00   0.000000D+00 0                                                    I
+  0.3175   0.000000D+00   0.000000D+00 0                                                    I
+  0.3200   0.000000D+00   0.000000D+00 0                                                    I
+  0.3225   0.000000D+00   0.000000D+00 0                                                    I
+  0.3250   0.695375D-01   0.695375D-01 0                                                    I
+  0.3275   0.000000D+00   0.000000D+00 0                                                    I
+  0.3300   0.000000D+00   0.000000D+00 0                                                    I
+  0.3325   0.000000D+00   0.000000D+00 0                                                    I
+  0.3350   0.000000D+00   0.000000D+00 0                                                    I
+  0.3375   0.000000D+00   0.000000D+00 0                                                    I
+  0.3400   0.000000D+00   0.000000D+00 0                                                    I
+  0.3425   0.000000D+00   0.000000D+00 0                                                    I
+  0.3450   0.000000D+00   0.000000D+00 0                                                    I
+  0.3475   0.000000D+00   0.000000D+00 0                                                    I
+  0.3500   0.000000D+00   0.000000D+00 0                                                    I
+  0.3525   0.695375D-01   0.695375D-01 0                                                    I
+  0.3550   0.695375D-01   0.695375D-01 0                                                    I
+  0.3575   0.000000D+00   0.000000D+00 0                                                    I
+  0.3600   0.695375D-01   0.695375D-01 0                                                    I
+  0.3625   0.000000D+00   0.000000D+00 0                                                    I
+  0.3650   0.695375D-01   0.695375D-01 0                                                    I
+  0.3675   0.000000D+00   0.000000D+00 0                                                    I
+  0.3700   0.000000D+00   0.000000D+00 0                                                    I
+  0.3725   0.000000D+00   0.000000D+00 0                                                    I
+  0.3750   0.000000D+00   0.000000D+00 0                                                    I
+  0.3775   0.000000D+00   0.000000D+00 0                                                    I
+  0.3800   0.695375D-01   0.695375D-01 0                                                    I
+  0.3825   0.000000D+00   0.000000D+00 0                                                    I
+  0.3850   0.000000D+00   0.000000D+00 0                                                    I
+  0.3875   0.000000D+00   0.000000D+00 0                                                    I
+  0.3900   0.695375D-01   0.695375D-01 0                                                    I
+  0.3925   0.695375D-01   0.695375D-01 0                                                    I
+  0.3950   0.695375D-01   0.695375D-01 0                                                    I
+  0.3975   0.000000D+00   0.000000D+00 0                                                    I
+  0.4000   0.000000D+00   0.000000D+00 0                                                    I
+  0.4025   0.000000D+00   0.000000D+00 0                                                    I
+  0.4050   0.000000D+00   0.000000D+00 0                                                    I
+  0.4075   0.000000D+00   0.000000D+00 0                                                    I
+  0.4100   0.000000D+00   0.000000D+00 0                                                    I
+  0.4125   0.000000D+00   0.000000D+00 0                                                    I
+  0.4150   0.695375D-01   0.695375D-01 0                                                    I
+  0.4175   0.000000D+00   0.000000D+00 0                                                    I
+  0.4200   0.000000D+00   0.000000D+00 0                                                    I
+  0.4225   0.000000D+00   0.000000D+00 0                                                    I
+  0.4250   0.695375D-01   0.695375D-01 0                                                    I
+  0.4275   0.000000D+00   0.000000D+00 0                                                    I
+  0.4300   0.000000D+00   0.000000D+00 0                                                    I
+  0.4325   0.000000D+00   0.000000D+00 0                                                    I
+  0.4350   0.695375D-01   0.695375D-01 0                                                    I
+  0.4375   0.000000D+00   0.000000D+00 0                                                    I
+  0.4400   0.000000D+00   0.000000D+00 0                                                    I
+  0.4425   0.000000D+00   0.000000D+00 0                                                    I
+  0.4450   0.000000D+00   0.000000D+00 0                                                    I
+  0.4475   0.000000D+00   0.000000D+00 0                                                    I
+  0.4500   0.695375D-01   0.695375D-01 0                                                    I
+  0.4525   0.000000D+00   0.000000D+00 0                                                    I
+  0.4550   0.000000D+00   0.000000D+00 0                                                    I
+  0.4575   0.695375D-01   0.695375D-01 0                                                    I
+  0.4600   0.695375D-01   0.695375D-01 0                                                    I
+  0.4625   0.000000D+00   0.000000D+00 0                                                    I
+  0.4650   0.000000D+00   0.000000D+00 0                                                    I
+  0.4675   0.000000D+00   0.000000D+00 0                                                    I
+  0.4700   0.695375D-01   0.695375D-01 0                                                    I
+  0.4725   0.695375D-01   0.695375D-01 0                                                    I
+  0.4750   0.000000D+00   0.000000D+00 0                                                    I
+  0.4775   0.695375D-01   0.695375D-01 0                                                    I
+  0.4800   0.000000D+00   0.000000D+00 0                                                    I
+  0.4825   0.000000D+00   0.000000D+00 0                                                    I
+  0.4850   0.695375D-01   0.695375D-01 0                                                    I
+  0.4875   0.000000D+00   0.000000D+00 0                                                    I
+  0.4900   0.000000D+00   0.000000D+00 0                                                    I
+  0.4925   0.000000D+00   0.000000D+00 0                                                    I
+  0.4950   0.000000D+00   0.000000D+00 0                                                    I
+  0.4975   0.000000D+00   0.000000D+00 0                                                    I
+  0.5000   0.139075D+00   0.983409D-01 0                                                    I
+  0.5025   0.695375D-01   0.695375D-01 0                                                    I
+  0.5050   0.000000D+00   0.000000D+00 0                                                    I
+  0.5075   0.695375D-01   0.695375D-01 0                                                    I
+  0.5100   0.000000D+00   0.000000D+00 0                                                    I
+  0.5125   0.695375D-01   0.695375D-01 0                                                    I
+  0.5150   0.000000D+00   0.000000D+00 0                                                    I
+  0.5175   0.000000D+00   0.000000D+00 0                                                    I
+  0.5200   0.139075D+00   0.983409D-01 0                                                    I
+  0.5225   0.000000D+00   0.000000D+00 0                                                    I
+  0.5250   0.000000D+00   0.000000D+00 0                                                    I
+  0.5275   0.695375D-01   0.695375D-01 0                                                    I
+  0.5300   0.000000D+00   0.000000D+00 0                                                    I
+  0.5325   0.000000D+00   0.000000D+00 0                                                    I
+  0.5350   0.695375D-01   0.695375D-01 0                                                    I
+  0.5375   0.000000D+00   0.000000D+00 0                                                    I
+  0.5400   0.000000D+00   0.000000D+00 0                                                    I
+  0.5425   0.000000D+00   0.000000D+00 0                                                    I
+  0.5450   0.000000D+00   0.000000D+00 0                                                    I
+  0.5475   0.000000D+00   0.000000D+00 0                                                    I
+  0.5500   0.000000D+00   0.000000D+00 0                                                    I
+  0.5525   0.000000D+00   0.000000D+00 0                                                    I
+  0.5550   0.695375D-01   0.695375D-01 0                                                    I
+  0.5575   0.000000D+00   0.000000D+00 0                                                    I
+  0.5600   0.000000D+00   0.000000D+00 0                                                    I
+  0.5625   0.000000D+00   0.000000D+00 0                                                    I
+  0.5650   0.000000D+00   0.000000D+00 0                                                    I
+  0.5675   0.000000D+00   0.000000D+00 0                                                    I
+  0.5700   0.000000D+00   0.000000D+00 0                                                    I
+  0.5725   0.139075D+00   0.983409D-01 0                                                    I
+  0.5750   0.000000D+00   0.000000D+00 0                                                    I
+  0.5775   0.000000D+00   0.000000D+00 0                                                    I
+  0.5800   0.695375D-01   0.695375D-01 0                                                    I
+  0.5825   0.000000D+00   0.000000D+00 0                                                    I
+  0.5850   0.139075D+00   0.983409D-01 0                                                    I
+  0.5875   0.000000D+00   0.000000D+00 0                                                    I
+  0.5900   0.000000D+00   0.000000D+00 0                                                    I
+  0.5925   0.000000D+00   0.000000D+00 0                                                    I
+  0.5950   0.695375D-01   0.695375D-01 0                                                    I
+  0.5975   0.000000D+00   0.000000D+00 0                                                    I
+  0.6000   0.000000D+00   0.000000D+00 0                                                    I
+  0.6025   0.000000D+00   0.000000D+00 0                                                    I
+  0.6050   0.139075D+00   0.983409D-01 0                                                    I
+  0.6075   0.000000D+00   0.000000D+00 0                                                    I
+  0.6100   0.000000D+00   0.000000D+00 0                                                    I
+  0.6125   0.000000D+00   0.000000D+00 0                                                    I
+  0.6150   0.000000D+00   0.000000D+00 0                                                    I
+  0.6175   0.000000D+00   0.000000D+00 0                                                    I
+  0.6200   0.695375D-01   0.695375D-01 0                                                    I
+  0.6225   0.000000D+00   0.000000D+00 0                                                    I
+  0.6250   0.695375D-01   0.695375D-01 0                                                    I
+  0.6275   0.000000D+00   0.000000D+00 0                                                    I
+  0.6300   0.000000D+00   0.000000D+00 0                                                    I
+  0.6325   0.000000D+00   0.000000D+00 0                                                    I
+  0.6350   0.000000D+00   0.000000D+00 0                                                    I
+  0.6375   0.695375D-01   0.695375D-01 0                                                    I
+  0.6400   0.000000D+00   0.000000D+00 0                                                    I
+  0.6425   0.000000D+00   0.000000D+00 0                                                    I
+  0.6450   0.695375D-01   0.695375D-01 0                                                    I
+  0.6475   0.695375D-01   0.695375D-01 0                                                    I
+  0.6500   0.000000D+00   0.000000D+00 0                                                    I
+  0.6525   0.695375D-01   0.695375D-01 0                                                    I
+  0.6550   0.000000D+00   0.000000D+00 0                                                    I
+  0.6575   0.000000D+00   0.000000D+00 0                                                    I
+  0.6600   0.000000D+00   0.000000D+00 0                                                    I
+  0.6625   0.000000D+00   0.000000D+00 0                                                    I
+  0.6650   0.000000D+00   0.000000D+00 0                                                    I
+  0.6675   0.695375D-01   0.695375D-01 0                                                    I
+  0.6700   0.695375D-01   0.695375D-01 0                                                    I
+  0.6725   0.000000D+00   0.000000D+00 0                                                    I
+  0.6750   0.000000D+00   0.000000D+00 0                                                    I
+  0.6775   0.000000D+00   0.000000D+00 0                                                    I
+  0.6800   0.695375D-01   0.695375D-01 0                                                    I
+  0.6825   0.000000D+00   0.000000D+00 0                                                    I
+  0.6850   0.695375D-01   0.695375D-01 0                                                    I
+  0.6875   0.000000D+00   0.000000D+00 0                                                    I
+  0.6900   0.139075D+00   0.983409D-01 0                                                    I
+  0.6925   0.695375D-01   0.695375D-01 0                                                    I
+  0.6950   0.000000D+00   0.000000D+00 0                                                    I
+  0.6975   0.139075D+00   0.983409D-01 0                                                    I
+  0.7000   0.000000D+00   0.000000D+00 0                                                    I
+  0.7025   0.000000D+00   0.000000D+00 0                                                    I
+  0.7050   0.695375D-01   0.695375D-01 0                                                    I
+  0.7075   0.000000D+00   0.000000D+00 0                                                    I
+  0.7100   0.000000D+00   0.000000D+00 0                                                    I
+  0.7125   0.695375D-01   0.695375D-01 0                                                    I
+  0.7150   0.000000D+00   0.000000D+00 0                                                    I
+  0.7175   0.139075D+00   0.983409D-01 0                                                    I
+  0.7200   0.000000D+00   0.000000D+00 0                                                    I
+  0.7225   0.139075D+00   0.983409D-01 0                                                    I
+  0.7250   0.000000D+00   0.000000D+00 0                                                    I
+  0.7275   0.000000D+00   0.000000D+00 0                                                    I
+  0.7300   0.695375D-01   0.695375D-01 0                                                    I
+  0.7325   0.139075D+00   0.983409D-01 0                                                    I
+  0.7350   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7375   0.139075D+00   0.983409D-01 0                                                    I
+  0.7400   0.139075D+00   0.983409D-01 0                                                    I
+  0.7425   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7450   0.139075D+00   0.983409D-01 0                                                    I
+  0.7475   0.695375D-01   0.695375D-01 0                                                    I
+  0.7500   0.208612D+00   0.120442D+00 0                                                    I
+  0.7525   0.139075D+00   0.983409D-01 0                                                    I
+  0.7550   0.208612D+00   0.120442D+00 0                                                    I
+  0.7575   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7600   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7625   0.000000D+00   0.000000D+00 0                                                    I
+  0.7650   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7675   0.278150D+00   0.139075D+00 0X                                                   I
+  0.7700   0.347687D+00   0.155491D+00 0X                                                   I
+  0.7725   0.417225D+00   0.170331D+00 0X                                                   I
+  0.7750   0.556300D+00   0.196682D+00 0XX                                                  I
+  0.7775   0.118214D+01   0.286710D+00 0XXXX                                                I
+  0.7800   0.104306D+01   0.269318D+00 0XXXX                                                I
+  0.7825   0.166890D+01   0.340663D+00 0XXXXXX                                              I
+  0.7850   0.278150D+01   0.439794D+00 0XXXXXXXXXXX                                         I
+  0.7875   0.292057D+01   0.450654D+00 0XXXXXXXXXXX                                         I
+  0.7900   0.521531D+01   0.602212D+00 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.7925   0.472855D+01   0.573421D+00 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.7950   0.347687D+01   0.491704D+00 0XXXXXXXXXXXXXX                                      I
+  0.7975   0.187751D+01   0.361327D+00 0XXXXXXX                                             I
+  0.8000   0.166890D+01   0.340663D+00 0XXXXXX                                              I
+  0.8025   0.903987D+00   0.250721D+00 0XXX                                                 I
+  0.8050   0.417225D+00   0.170331D+00 0X                                                   I
+  0.8075   0.834450D+00   0.240885D+00 0XXX                                                 I
+  0.8100   0.278150D+00   0.139075D+00 0X                                                   I
+  0.8125   0.208612D+00   0.120442D+00 0                                                    I
+  0.8150   0.139075D+00   0.983409D-01 0                                                    I
+  0.8175   0.278150D+00   0.139075D+00 0X                                                   I
+  0.8200   0.208612D+00   0.120442D+00 0                                                    I
+  0.8225   0.139075D+00   0.983409D-01 0                                                    I
+  0.8250   0.000000D+00   0.000000D+00 0                                                    I
+  0.8275   0.695375D-01   0.695375D-01 0                                                    I
+  0.8300   0.000000D+00   0.000000D+00 0                                                    I
+  0.8325   0.139075D+00   0.983409D-01 0                                                    I
+  0.8350   0.278150D+00   0.139075D+00 0X                                                   I
+  0.8375   0.208612D+00   0.120442D+00 0                                                    I
+  0.8400   0.695375D-01   0.695375D-01 0                                                    I
+  0.8425   0.139075D+00   0.983409D-01 0                                                    I
+  0.8450   0.695375D-01   0.695375D-01 0                                                    I
+  0.8475   0.695375D-01   0.695375D-01 0                                                    I
+  0.8500   0.000000D+00   0.000000D+00 0                                                    I
+  0.8525   0.695375D-01   0.695375D-01 0                                                    I
+  0.8550   0.000000D+00   0.000000D+00 0                                                    I
+  0.8575   0.000000D+00   0.000000D+00 0                                                    I
+  0.8600   0.000000D+00   0.000000D+00 0                                                    I
+  0.8625   0.000000D+00   0.000000D+00 0                                                    I
+  0.8650   0.000000D+00   0.000000D+00 0                                                    I
+  0.8675   0.000000D+00   0.000000D+00 0                                                    I
+  0.8700   0.000000D+00   0.000000D+00 0                                                    I
+  0.8725   0.000000D+00   0.000000D+00 0                                                    I
+  0.8750   0.000000D+00   0.000000D+00 0                                                    I
+  0.8775   0.000000D+00   0.000000D+00 0                                                    I
+  0.8800   0.000000D+00   0.000000D+00 0                                                    I
+  0.8825   0.000000D+00   0.000000D+00 0                                                    I
+  0.8850   0.000000D+00   0.000000D+00 0                                                    I
+  0.8875   0.000000D+00   0.000000D+00 0                                                    I
+  0.8900   0.139075D+00   0.983409D-01 0                                                    I
+  0.8925   0.695375D-01   0.695375D-01 0                                                    I
+  0.8950   0.000000D+00   0.000000D+00 0                                                    I
+  0.8975   0.000000D+00   0.000000D+00 0                                                    I
+  0.9000   0.695375D-01   0.695375D-01 0                                                    I
+  0.9025   0.695375D-01   0.695375D-01 0                                                    I
+  0.9050   0.695375D-01   0.695375D-01 0                                                    I
+  0.9075   0.000000D+00   0.000000D+00 0                                                    I
+  0.9100   0.000000D+00   0.000000D+00 0                                                    I
+  0.9125   0.695375D-01   0.695375D-01 0                                                    I
+  0.9150   0.695375D-01   0.695375D-01 0                                                    I
+  0.9175   0.000000D+00   0.000000D+00 0                                                    I
+  0.9200   0.000000D+00   0.000000D+00 0                                                    I
+  0.9225   0.695375D-01   0.695375D-01 0                                                    I
+  0.9250   0.000000D+00   0.000000D+00 0                                                    I
+  0.9275   0.000000D+00   0.000000D+00 0                                                    I
+  0.9300   0.000000D+00   0.000000D+00 0                                                    I
+  0.9325   0.695375D-01   0.695375D-01 0                                                    I
+  0.9350   0.000000D+00   0.000000D+00 0                                                    I
+  0.9375   0.000000D+00   0.000000D+00 0                                                    I
+  0.9400   0.695375D-01   0.695375D-01 0                                                    I
+  0.9425   0.000000D+00   0.000000D+00 0                                                    I
+  0.9450   0.695375D-01   0.695375D-01 0                                                    I
+  0.9475   0.000000D+00   0.000000D+00 0                                                    I
+  0.9500   0.000000D+00   0.000000D+00 0                                                    I
+  0.9525   0.000000D+00   0.000000D+00 0                                                    I
+  0.9550   0.000000D+00   0.000000D+00 0                                                    I
+  0.9575   0.000000D+00   0.000000D+00 0                                                    I
+  0.9600   0.695375D-01   0.695375D-01 0                                                    I
+  0.9625   0.695375D-01   0.695375D-01 0                                                    I
+  0.9650   0.000000D+00   0.000000D+00 0                                                    I
+  0.9675   0.000000D+00   0.000000D+00 0                                                    I
+  0.9700   0.695375D-01   0.695375D-01 0                                                    I
+  0.9725   0.695375D-01   0.695375D-01 0                                                    I
+  0.9750   0.000000D+00   0.000000D+00 0                                                    I
+  0.9775   0.695375D-01   0.695375D-01 0                                                    I
+  0.9800   0.000000D+00   0.000000D+00 0                                                    I
+  0.9825   0.139075D+00   0.983409D-01 0                                                    I
+  0.9850   0.139075D+00   0.983409D-01 0                                                    I
+  0.9875   0.000000D+00   0.000000D+00 0                                                    I
+  0.9900   0.208612D+00   0.120442D+00 0                                                    I
+  0.9925   0.000000D+00   0.000000D+00 0                                                    I
+  0.9950   0.208612D+00   0.120442D+00 0                                                    I
+  0.9975   0.215566D+01   0.387168D+00 0XXXXXXXX                                            I
+1
+    150009          KFcode                                                                          
+           nent            sum           bmin           bmax
+              1    0.00000E+00    0.00000E+00    0.49719E-01
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.00000E+00    0.00000E+00
+  1.0000   0.175582D-01   0.174711D-02 0XXXXXXXXXXXXXXXXXX                                  I
+  2.0000   0.184274D-01   0.178983D-02 0XXXXXXXXXXXXXXXXXXX                                 I
+  3.0000   0.203397D-01   0.188041D-02 0XXXXXXXXXXXXXXXXXXXXX                               I
+  4.0000   0.203397D-01   0.188041D-02 0XXXXXXXXXXXXXXXXXXXXX                               I
+  5.0000   0.159936D-01   0.166745D-02 0XXXXXXXXXXXXXXXXX                                   I
+  6.0000   0.000000D+00   0.000000D+00 0                                                    I
+  7.0000   0.000000D+00   0.000000D+00 0                                                    I
+  8.0000   0.000000D+00   0.000000D+00 0                                                    I
+  9.0000   0.000000D+00   0.000000D+00 0                                                    I
+ 10.0000   0.000000D+00   0.000000D+00 0                                                    I
+ 11.0000   0.000000D+00   0.000000D+00 0                                                    I
+ 12.0000   0.497193D-01   0.293996D-02 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 13.0000   0.921372D-02   0.126560D-02 0XXXXXXXXX                                           I
+ 14.0000   0.660606D-02   0.107164D-02 0XXXXXXX                                             I
+ 15.0000   0.956141D-02   0.128926D-02 0XXXXXXXXXX                                          I
+ 16.0000   0.608453D-02   0.102847D-02 0XXXXXX                                              I
+1
+    250001          d_sigma/dv(v)                                                                   
+           nent            sum           bmin           bmax
+              1    0.00000E+00    0.00000E+00    0.95013E+00
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.00000E+00    0.00000E+00
+  0.0000   0.178624D+00   0.130072D-01 0XXXXXXXXX                                           I
+  0.0025   0.198577D+00   0.137121D-01 0XXXXXXXXXXX                                         I
+  0.0050   0.215679D+00   0.142882D-01 0XXXXXXXXXXXX                                        I
+  0.0075   0.226131D+00   0.146290D-01 0XXXXXXXXXXXX                                        I
+  0.0100   0.230881D+00   0.147812D-01 0XXXXXXXXXXXX                                        I
+  0.0125   0.235632D+00   0.149319D-01 0XXXXXXXXXXXXX                                       I
+  0.0150   0.240383D+00   0.150811D-01 0XXXXXXXXXXXXX                                       I
+  0.0175   0.246083D+00   0.152581D-01 0XXXXXXXXXXXXX                                       I
+  0.0200   0.249884D+00   0.153750D-01 0XXXXXXXXXXXXX                                       I
+  0.0225   0.253684D+00   0.154909D-01 0XXXXXXXXXXXXXX                                      I
+  0.0250   0.254635D+00   0.155198D-01 0XXXXXXXXXXXXXX                                      I
+  0.0275   0.259385D+00   0.156632D-01 0XXXXXXXXXXXXXX                                      I
+  0.0300   0.261285D+00   0.157202D-01 0XXXXXXXXXXXXXX                                      I
+  0.0325   0.266036D+00   0.158618D-01 0XXXXXXXXXXXXXX                                      I
+  0.0350   0.268887D+00   0.159462D-01 0XXXXXXXXXXXXXX                                      I
+  0.0375   0.272687D+00   0.160580D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0400   0.275537D+00   0.161413D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0425   0.277438D+00   0.161966D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0450   0.279338D+00   0.162517D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0475   0.281238D+00   0.163066D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0500   0.282188D+00   0.163340D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0525   0.283138D+00   0.163613D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0550   0.284089D+00   0.163886D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0575   0.285989D+00   0.164430D-01 0XXXXXXXXXXXXXXX                                     I
+  0.0600   0.290739D+00   0.165784D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0625   0.293590D+00   0.166590D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0650   0.294540D+00   0.166858D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0675   0.295490D+00   0.167126D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0700   0.296440D+00   0.167393D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0725   0.298341D+00   0.167925D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0750   0.298341D+00   0.167925D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0775   0.299291D+00   0.168191D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0800   0.303091D+00   0.169250D-01 0XXXXXXXXXXXXXXXX                                    I
+  0.0825   0.305942D+00   0.170040D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0850   0.306892D+00   0.170302D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0875   0.307842D+00   0.170564D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0900   0.308792D+00   0.170826D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0925   0.310692D+00   0.171348D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0950   0.310692D+00   0.171348D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.0975   0.310692D+00   0.171348D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1000   0.311642D+00   0.171608D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1025   0.312592D+00   0.171868D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1050   0.314493D+00   0.172387D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1075   0.314493D+00   0.172387D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1100   0.317343D+00   0.173162D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1125   0.318293D+00   0.173420D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1150   0.318293D+00   0.173420D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1175   0.319243D+00   0.173677D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1200   0.320193D+00   0.173934D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1225   0.320193D+00   0.173934D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1250   0.320193D+00   0.173934D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1275   0.321144D+00   0.174190D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1300   0.321144D+00   0.174190D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1325   0.321144D+00   0.174190D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1350   0.321144D+00   0.174190D-01 0XXXXXXXXXXXXXXXXX                                   I
+  0.1375   0.323044D+00   0.174702D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1400   0.323994D+00   0.174957D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1425   0.323994D+00   0.174957D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1450   0.325894D+00   0.175466D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1475   0.325894D+00   0.175466D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1500   0.326844D+00   0.175721D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1525   0.327795D+00   0.175974D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1550   0.327795D+00   0.175974D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1575   0.328745D+00   0.176228D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1600   0.329695D+00   0.176481D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1625   0.329695D+00   0.176481D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1650   0.329695D+00   0.176481D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1675   0.329695D+00   0.176481D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1700   0.329695D+00   0.176481D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1725   0.331595D+00   0.176986D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1750   0.332545D+00   0.177238D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1775   0.332545D+00   0.177238D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1800   0.333495D+00   0.177489D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1825   0.333495D+00   0.177489D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1850   0.335396D+00   0.177991D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1875   0.336346D+00   0.178242D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1900   0.336346D+00   0.178242D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1925   0.336346D+00   0.178242D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1950   0.337296D+00   0.178492D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.1975   0.338246D+00   0.178741D-01 0XXXXXXXXXXXXXXXXXX                                  I
+  0.2000   0.341096D+00   0.179488D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2025   0.341096D+00   0.179488D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2050   0.341096D+00   0.179488D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2075   0.341096D+00   0.179488D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2100   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2125   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2150   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2175   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2200   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2225   0.342997D+00   0.179985D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2250   0.343947D+00   0.180232D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2275   0.343947D+00   0.180232D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2300   0.343947D+00   0.180232D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2325   0.344897D+00   0.180480D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2350   0.345847D+00   0.180727D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2375   0.346797D+00   0.180973D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2400   0.349647D+00   0.181711D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2425   0.349647D+00   0.181711D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2450   0.350598D+00   0.181956D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2475   0.350598D+00   0.181956D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2500   0.350598D+00   0.181956D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2525   0.351548D+00   0.182201D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2550   0.352498D+00   0.182445D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2575   0.352498D+00   0.182445D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2600   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2625   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2650   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2675   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2700   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2725   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2750   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2775   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2800   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2825   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2850   0.353448D+00   0.182690D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2875   0.354398D+00   0.182933D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2900   0.354398D+00   0.182933D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2925   0.354398D+00   0.182933D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2950   0.354398D+00   0.182933D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.2975   0.354398D+00   0.182933D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3000   0.355348D+00   0.183177D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3025   0.355348D+00   0.183177D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3050   0.355348D+00   0.183177D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3075   0.356298D+00   0.183420D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3100   0.356298D+00   0.183420D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3125   0.357249D+00   0.183663D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3150   0.357249D+00   0.183663D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3175   0.357249D+00   0.183663D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3200   0.357249D+00   0.183663D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3225   0.357249D+00   0.183663D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3250   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3275   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3300   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3325   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3350   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3375   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3400   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3425   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3450   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3475   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3500   0.358199D+00   0.183906D-01 0XXXXXXXXXXXXXXXXXXX                                 I
+  0.3525   0.359149D+00   0.184148D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3550   0.360099D+00   0.184390D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3575   0.360099D+00   0.184390D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3600   0.361049D+00   0.184631D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3625   0.361049D+00   0.184631D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3650   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3675   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3700   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3725   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3750   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3775   0.361999D+00   0.184872D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3800   0.362949D+00   0.185113D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3825   0.362949D+00   0.185113D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3850   0.362949D+00   0.185113D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3875   0.362949D+00   0.185113D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3900   0.363899D+00   0.185354D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3925   0.364850D+00   0.185594D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3950   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.3975   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4000   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4025   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4050   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4075   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4100   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4125   0.365800D+00   0.185834D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4150   0.366750D+00   0.186074D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4175   0.366750D+00   0.186074D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4200   0.366750D+00   0.186074D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4225   0.366750D+00   0.186074D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4250   0.367700D+00   0.186313D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4275   0.367700D+00   0.186313D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4300   0.367700D+00   0.186313D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4325   0.367700D+00   0.186313D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4350   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4375   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4400   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4425   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4450   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4475   0.368650D+00   0.186552D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4500   0.369600D+00   0.186791D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4525   0.369600D+00   0.186791D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4550   0.369600D+00   0.186791D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4575   0.370550D+00   0.187029D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4600   0.371500D+00   0.187267D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4625   0.371500D+00   0.187267D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4650   0.371500D+00   0.187267D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4675   0.371500D+00   0.187267D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4700   0.372451D+00   0.187505D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4725   0.373401D+00   0.187743D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4750   0.373401D+00   0.187743D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4775   0.374351D+00   0.187980D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4800   0.374351D+00   0.187980D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4825   0.374351D+00   0.187980D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4850   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4875   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4900   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4925   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4950   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.4975   0.375301D+00   0.188216D-01 0XXXXXXXXXXXXXXXXXXXX                                I
+  0.5000   0.377201D+00   0.188689D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5025   0.378151D+00   0.188925D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5050   0.378151D+00   0.188925D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5075   0.379101D+00   0.189161D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5100   0.379101D+00   0.189161D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5125   0.380052D+00   0.189396D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5150   0.380052D+00   0.189396D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5175   0.380052D+00   0.189396D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5200   0.381952D+00   0.189866D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5225   0.381952D+00   0.189866D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5250   0.381952D+00   0.189866D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5275   0.382902D+00   0.190100D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5300   0.382902D+00   0.190100D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5325   0.382902D+00   0.190100D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5350   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5375   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5400   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5425   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5450   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5475   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5500   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5525   0.383852D+00   0.190334D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5550   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5575   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5600   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5625   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5650   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5675   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5700   0.384802D+00   0.190568D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5725   0.386703D+00   0.191035D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5750   0.386703D+00   0.191035D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5775   0.386703D+00   0.191035D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5800   0.387653D+00   0.191268D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5825   0.387653D+00   0.191268D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5850   0.389553D+00   0.191733D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5875   0.389553D+00   0.191733D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5900   0.389553D+00   0.191733D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5925   0.389553D+00   0.191733D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5950   0.390503D+00   0.191965D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.5975   0.390503D+00   0.191965D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6000   0.390503D+00   0.191965D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6025   0.390503D+00   0.191965D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6050   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6075   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6100   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6125   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6150   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6175   0.392403D+00   0.192428D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6200   0.393353D+00   0.192660D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6225   0.393353D+00   0.192660D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6250   0.394304D+00   0.192891D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6275   0.394304D+00   0.192891D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6300   0.394304D+00   0.192891D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6325   0.394304D+00   0.192891D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6350   0.394304D+00   0.192891D-01 0XXXXXXXXXXXXXXXXXXXXX                               I
+  0.6375   0.395254D+00   0.193121D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6400   0.395254D+00   0.193121D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6425   0.395254D+00   0.193121D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6450   0.396204D+00   0.193352D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6475   0.397154D+00   0.193582D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6500   0.397154D+00   0.193582D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6525   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6550   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6575   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6600   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6625   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6650   0.398104D+00   0.193811D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6675   0.399054D+00   0.194041D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6700   0.400004D+00   0.194270D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6725   0.400004D+00   0.194270D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6750   0.400004D+00   0.194270D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6775   0.400004D+00   0.194270D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6800   0.400954D+00   0.194499D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6825   0.400954D+00   0.194499D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6850   0.401905D+00   0.194728D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6875   0.401905D+00   0.194728D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6900   0.403805D+00   0.195184D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6925   0.404755D+00   0.195412D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6950   0.404755D+00   0.195412D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.6975   0.406655D+00   0.195867D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7000   0.406655D+00   0.195867D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7025   0.406655D+00   0.195867D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7050   0.407605D+00   0.196094D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7075   0.407605D+00   0.196094D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7100   0.407605D+00   0.196094D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7125   0.408555D+00   0.196321D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7150   0.408555D+00   0.196321D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7175   0.410456D+00   0.196774D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7200   0.410456D+00   0.196774D-01 0XXXXXXXXXXXXXXXXXXXXXX                              I
+  0.7225   0.412356D+00   0.197225D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7250   0.412356D+00   0.197225D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7275   0.412356D+00   0.197225D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7300   0.413306D+00   0.197451D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7325   0.415206D+00   0.197901D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7350   0.419007D+00   0.198798D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7375   0.420907D+00   0.199245D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7400   0.422807D+00   0.199691D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7425   0.426608D+00   0.200580D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7450   0.428508D+00   0.201023D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7475   0.429458D+00   0.201244D-01 0XXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7500   0.432309D+00   0.201905D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7525   0.434209D+00   0.202345D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7550   0.437059D+00   0.203003D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7575   0.440860D+00   0.203877D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7600   0.444660D+00   0.204747D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7625   0.444660D+00   0.204747D-01 0XXXXXXXXXXXXXXXXXXXXXXXX                            I
+  0.7650   0.448461D+00   0.205613D-01 0XXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  0.7675   0.452261D+00   0.206476D-01 0XXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  0.7700   0.457012D+00   0.207549D-01 0XXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  0.7725   0.462713D+00   0.208829D-01 0XXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  0.7750   0.470314D+00   0.210523D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXX                          I
+  0.7775   0.486466D+00   0.214077D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXX                         I
+  0.7800   0.500718D+00   0.217163D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXX                         I
+  0.7825   0.523521D+00   0.222009D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXX                       I
+  0.7850   0.561526D+00   0.229849D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+  0.7875   0.601432D+00   0.237793D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+  0.7900   0.672691D+00   0.251328D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               I
+  0.7925   0.737300D+00   0.262971D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX           I
+  0.7950   0.784807D+00   0.271197D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX         I
+  0.7975   0.810460D+00   0.275532D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX       I
+  0.8000   0.833263D+00   0.279325D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      I
+  0.8025   0.845615D+00   0.281357D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     I
+  0.8050   0.851316D+00   0.282289D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     I
+  0.8075   0.862717D+00   0.284145D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8100   0.866518D+00   0.284760D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8125   0.869368D+00   0.285221D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8150   0.871268D+00   0.285528D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8175   0.875069D+00   0.286140D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8200   0.877919D+00   0.286599D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    I
+  0.8225   0.879819D+00   0.286904D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8250   0.879819D+00   0.286904D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8275   0.880770D+00   0.287056D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8300   0.880770D+00   0.287056D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8325   0.882670D+00   0.287361D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8350   0.886470D+00   0.287969D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8375   0.889321D+00   0.288425D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8400   0.890271D+00   0.288576D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8425   0.892171D+00   0.288879D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8450   0.893121D+00   0.289030D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8475   0.894071D+00   0.289182D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8500   0.894071D+00   0.289182D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8525   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8550   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8575   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8600   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8625   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8650   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8675   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8700   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8725   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8750   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8775   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8800   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8825   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8850   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8875   0.895022D+00   0.289333D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+  0.8900   0.896922D+00   0.289635D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.8925   0.897872D+00   0.289786D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.8950   0.897872D+00   0.289786D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.8975   0.897872D+00   0.289786D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9000   0.898822D+00   0.289937D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9025   0.899772D+00   0.290088D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9050   0.900722D+00   0.290238D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9075   0.900722D+00   0.290238D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9100   0.900722D+00   0.290238D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9125   0.901672D+00   0.290389D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9150   0.902623D+00   0.290539D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9175   0.902623D+00   0.290539D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9200   0.902623D+00   0.290539D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9225   0.903573D+00   0.290690D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9250   0.903573D+00   0.290690D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9275   0.903573D+00   0.290690D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9300   0.903573D+00   0.290690D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9325   0.904523D+00   0.290840D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9350   0.904523D+00   0.290840D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9375   0.904523D+00   0.290840D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9400   0.905473D+00   0.290990D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9425   0.905473D+00   0.290990D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9450   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9475   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9500   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9525   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9550   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9575   0.906423D+00   0.291141D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9600   0.907373D+00   0.291291D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9625   0.908323D+00   0.291441D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9650   0.908323D+00   0.291441D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9675   0.908323D+00   0.291441D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9700   0.909273D+00   0.291591D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9725   0.910224D+00   0.291741D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9750   0.910224D+00   0.291741D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9775   0.911174D+00   0.291890D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9800   0.911174D+00   0.291890D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9825   0.913074D+00   0.292190D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+  0.9850   0.914974D+00   0.292489D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  0.9875   0.914974D+00   0.292489D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  0.9900   0.917825D+00   0.292936D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  0.9925   0.917825D+00   0.292936D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  0.9950   0.920675D+00   0.293384D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  0.9975   0.950129D+00   0.297962D-01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+    250009          KFcode                                                                          
+           nent            sum           bmin           bmax
+              1    0.00000E+00    0.17558E-01    0.17384E+00
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.00000E+00    0.00000E+00
+  1.0000   0.175582D-01   0.174565D-02 X                                                    I
+  2.0000   0.359857D-01   0.249689D-02 XXXXXXX                                              I
+  3.0000   0.563254D-01   0.312079D-02 XXXXXXXXXXXXXX                                       I
+  4.0000   0.766651D-01   0.363738D-02 XXXXXXXXXXXXXXXXXXXXX                                I
+  5.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  6.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  7.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  8.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  9.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+ 10.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+ 11.0000   0.926587D-01   0.399576D-02 XXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+ 12.0000   0.142378D+00   0.494128D-02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+ 13.0000   0.151592D+00   0.509639D-02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX       I
+ 14.0000   0.158198D+00   0.520459D-02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     I
+ 15.0000   0.167759D+00   0.535709D-02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  I
+ 16.0000   0.173844D+00   0.545177D-02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ GLK_WriteFile: Writing histos into ./dump.hst                                                  

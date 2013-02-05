@@ -1,0 +1,132 @@
+// make demoC-start
+///////////////////////////////////////////////////////////////////////////////
+// C++ headers
+#include <stdlib.h>
+#include <fstream.h>
+#include <iomanip.h>
+#include <iostream.h>
+#include <math.h>
+// ROOT headers
+#include "TROOT.h"
+#include "TFile.h"
+#include "TH1.h"
+// OUR headers
+#include "Semaph.h"
+#include "ROBOL.h"
+
+
+///////////////////////////////////////////////////////////////////////////////
+void ReaData(char DiskFile[], int imax, double xpar[]);
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+main()
+{
+  long NevTot = 1000000000; // total (limit) of events
+  long iEvent = 0;          // serial number of event in the MC generation
+  long NGroup = 500;        // number of events in the group
+  long iLoop;               // auxiliary event counter
+
+  cout <<endl;
+  cout << "   |--------------------| "<<endl;
+  cout << "   |   demo.C  Entering | "<<endl;
+  cout << "   |--------------------| "<<endl<<flush ;
+
+
+  //=============================================================
+  //   reading data from input file, using c++ parser
+  //const int jmax =10001;
+  //double ypar[jmax];
+  //ReaData("./pro.input", jmax, ypar);
+  //ReaData("../../.KK2f_defaults", jmax, ypar);
+  //ReaData("./pro.input",         -jmax, ypar); // jmax<0 means no-zeroing!
+
+  //KKMC Generator;
+
+  //Generator.Initialize(ypar);
+  //***********************//
+
+  ROBOL Robol; // define production maker
+  ////////////
+
+  //long NevTot; // provided by Robol (from disk)
+  Robol.Initialize(NevTot);
+  /////////////////////////
+
+  for(int iev=0;iev<10;iev++){
+    //Generator.Make();
+    //*************//
+    cout<<"iev= "<<iev<<endl;
+	  Robol.Production(iEvent);
+	  /////////////////////////
+    //Generator.Print1();
+    //Generator.PyList(2);
+  }
+
+  //Generator.Finalize();
+  //*****************//
+  Robol.Finalize();
+  /////////////////
+
+  cout <<endl;
+  cout << "   |--------------------| "<<endl;
+  cout << "   |   demo.C  exiting  | "<<endl;
+  cout << "   |--------------------| "<<endl<<flush ;
+}// Main
+
+
+void ReaData(char DiskFile[], int imax, double xpar[])
+//////////////////////////////////////////////////////////////
+//    subprogram reading input data file and packing        //
+//    entries into matrix xpar                              //
+//    WARNING: input file cannot include empty lines        //
+//    it cannot handle entries like 1d-30, has to be 1e-30! //
+//////////////////////////////////////////////////////////////
+{
+  char trail[200];
+  char ch1;
+  int  foundB=0, foundE=0, line, indx;
+  int  line_max =2000;
+  double value;
+  cout<<"============================ReaData=============================="<<endl;
+  cout<<"===                     "<< DiskFile <<"               =========="<<endl;
+  cout<<"================================================================="<<endl;
+  ifstream InputFile;
+  InputFile.open(DiskFile);
+  for(indx=0;indx<imax; indx++) xpar[indx]=0.0;
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'B') foundB=1;
+    InputFile.getline(trail,200);
+    if(foundB) break;
+  }
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'E'){
+      foundE=1;
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<"["<<line<<"]"<<endl;
+      break;
+    }
+    if( ch1 == '*'){
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<endl;
+    }else{
+      InputFile>>indx>>value;
+      if(indx<1 || indx>abs(imax) ){
+	cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
+	exit(0);
+      }
+      //xpar[indx] = value;
+      xpar[indx-1] = value; // correction for fortran indexing in input file!!!
+      InputFile.getline(trail,200);
+      cout<<ch1;
+      cout<<setw(4)<<indx<<setw(15)<<value<<" ";
+      cout<<trail<<endl;
+    }
+  }
+  cout<<"================================================================="<<endl;
+  InputFile.close();
+}

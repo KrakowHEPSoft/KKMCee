@@ -1,0 +1,1836 @@
+    
+ ==============================================
+ ==============================================
+ ============ Demo for KK MC ==================
+ ==============================================
+ ==============================================
+    
+ 1000000 requested events 
+           
+            *************************************************************
+            *  ****   ****    ****  ****    ***       ***     ******    *
+            *  ****   ****    ****  ****    ****     ****   **********  *
+            *  ****   ****    ****  ****    *****   *****  *****   ***  *
+            *  **********     *********     *************  ****         *
+            *  *******        ******        *************  ****         *
+            *  **********     ********      **** *** ****  *****   ***  *
+            *  ****  *****    ****  ****    ****  *  ****   **********  *
+            *  ****   *****   ****   ****   ****     ****     *******   *
+            *************************************************************
+           
+
+
+ ***************************************************************************
+ *                         KK Monte Carlo                                  *
+ *            Version       4.15          31 May  2001                     *
+ *      15.00000000                 CMS energy average       CMSene     a1 *
+ *       0.00000000                 Beam energy spread       DelEne     a2 *
+ *              100                 Max. photon mult.        npmax      a3 *
+ *                1                 ISR switch               KeyISR     a4 *
+ *                0                 FSR switch               KeyFSR     a5 *
+ *                2                 ISR/FSR interferenc      KeyINT     a6 *
+ *                1                 New exponentiation       KeyGPS     a7 *
+ *                1                 Hadroniz.  switch        KeyHad     a7 *
+ *       0.20000000                 Hadroniz. min. mass      HadMin     a9 *
+ *       1.00000000                 Maximum weight           WTmax     a10 *
+ *              100                 Max. photon mult.        npmax     a11 *
+ *               11                 Beam ident               KFini     a12 *
+ *       0.00007500                 Manimum phot. ener.      Ene       a13 *
+ *   0.10000000E-59                 Phot.mass, IR regul      MasPho    a14 *
+ *    1.2500000                     Phot. mult. enhanc.      Xenph     a15 *
+ *   0.10000000E-08                 Vcut1                    Vcut1     a16 *
+ *   0.50000000E-01                 Vcut2                    Vcut2     a16 *
+ *    0.0000000                     Vcut3                    Vcut2     a16 *
+ *       0.00000000                    PolBeam1(1)           Pol1x     a17 *
+ *       0.00000000                    PolBeam1(2)           Pol1y     a18 *
+ *       0.00000000                    PolBeam1(3)           Pol1z     a19 *
+ *       0.00000000                    PolBeam2(1)           Pol2x     a20 *
+ *       0.00000000                    PolBeam2(2)           Pol2y     a21 *
+ *       0.00000000                    PolBeam2(3)           Pol2z     a22 *
+ ***************************************************************************
+
+ +++WARNING: for WT=0 events NO hadronization!
+
+
+ ***************************************************************************
+ *            BornV  Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         amz        a1 *
+ *     100.00000000                 Higgs mass [GeV]         amh        a2 *
+ *     175.00000000                 Top mass   [GeV]         amtop      a3 *
+ *       2.50072032                 Z width    [GeV]         gammz      a4 *
+ *       0.22276773                 sin(theta_w)**2          sinw2      a5 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a6 *
+ *       0.20000000                 MassCut light qqbar      HadMin     a6 *
+ *               11                 KF code of beam          KFini      a7 *
+ *    1.0000000                     Input vvmax              vvmax      a8 *
+ *   0.99980153                     reduced vvmax in MC      vvmax      a9 *
+ *         Test switches:                                                  *
+ *                1                 Electroweak lib.         KeyElw     10 *
+ *                1                 Z on/off   switch        KeyZet     11 *
+ *                0                 mass terms on/off        KeyWtm     12 *
+ ***************************************************************************
+
+ =========== BornV_StartDZ: DOWN quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                1                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403654
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641784
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206385
+    zpar(18)=  1.05007810
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344037
+    zpar(21)=  1.04207905
+    zpar(22)=  1.04992189
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344037
+    zpar(25)=  1.04206418
+    zpar(26)=  1.05007843
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: UP quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                2                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                3                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: STRAN quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                3                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: CHARM quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                4                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                3                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+ =========== BornV_StartDZ: BOTTOM quark ===========
+
+
+ ***************************************************************************
+ *   DZface_Initialize, Interface to Dizet 6.xx                            *
+ *      91.18700000                 Z mass                   amz        a1 *
+ *     100.00000000                 Higgs mass               amh        a2 *
+ *     175.00000000                 Top mass                 amtop      a3 *
+ *               11                 KF code of beam          KFini      a5 *
+ *                5                 KF of final fermion      KFfin      a6 *
+ *                2                 IV code of beam          IVini      a7 *
+ *                4                 IV of final fermion      IVfin      a8 *
+ *                1                 EW box switch            ibox       a9 *
+ *     128.86674175                 QED alfa inv. at Z       alfinv     a1 *
+ *       0.12500000                 QCD alfa at Z mass       alfQCD     a2 *
+ ***************************************************************************
+
+ DIZET flags, see routine Dizet for explanation:
+  Ihvp = 1 Iamt4 = 4
+  Iqcd = 3 Imoms = 1
+ Imass = 0 Iscre = 0
+ Ialem = 3 Imask = 0
+ Iscal = 0 Ibarb = 2
+ IFtjr = 1 Ifacr = 0
+ IFact = 0 Ihigs = 0
+ Iafmt = 1 Iewlc = 1
+ Iczak = 1 Ihig2 = 1
+ Iale2 = 3 Igfer = 2
+ Iddzz = 1
+    
+ Alpha-QED   (MZ)  =0.007759
+ Alfa strong (MZ)  =  0.1250
+ Alfa strong (Mt)  =  0.1132
+zpard(20): QCD corr.fact. to Z-width (no b)  =   1.0334403631
+zpard(25): QCD corr.fact. to Z-width (into b)=   1.0420641692
+    
+ zpar-matrix: standard output of dizet:
+    zpar( 1)=  0.03542132
+    zpar( 2)=  0.01157806
+    zpar( 3)=  0.22302485
+    zpar( 4)=  1.16637000
+    zpar( 5)=  0.23120067
+    zpar( 6)=  0.23158158
+    zpar( 7)=  0.23158158
+    zpar( 8)=  0.23158158
+    zpar( 9)=  0.23147509
+    zpar(10)=  0.23134812
+    zpar(11)=  0.23147509
+    zpar(12)=  0.23134812
+    zpar(13)=  0.00000000
+    zpar(14)=  0.23294897
+    zpar(15)=  0.12500000
+    zpar(16)=  1.00000000
+    zpar(17)=  1.04206384
+    zpar(18)=  1.05007809
+    zpar(19)=  1.04145461
+    zpar(20)=  1.03344036
+    zpar(21)=  1.04207904
+    zpar(22)=  1.04992188
+    zpar(23)=  1.04145461
+    zpar(24)=  1.03344036
+    zpar(25)=  1.04206417
+    zpar(26)=  1.05007842
+    zpar(27)=  1.04201871
+    zpar(28)=  1.02759398
+    zpar(29)= -0.00002603
+    zpar(30)=  0.21220659
+
+
+ ***************************************************************************
+ *                     DZface_Initializion ended                           *
+ ***************************************************************************
+
+ DZface_Tabluj: pretabulation, basic LEP1 range
+ a: i,ww=  0  0.01
+ a: i,ww=  10  0.0249903513
+ a: i,ww=  20  0.0624517656
+ a: i,ww=  30  0.156069156
+ a: i,ww=  40  0.390022303
+ a: i,ww=  50  0.974679434
+ a: i,ww=  60  2.43575814
+ a: i,ww=  70  6.08704516
+ a: i,ww=  80  15.2117397
+ a: i,ww=  90  38.0146717
+ a: i,ww=  100  95.
+ DZface_Tabluj: pretabulation, near Z0:
+ b: i,ww=  0  86.187
+ b: i,ww=  10  91.187
+ b: i,ww=  20  96.187
+ DZface_Tabluj: LEP2 energy zone: pretabulation starts
+ c: i,ww=  0  95.
+ c: i,ww=  10  105.000069
+ c: i,ww=  20  115.000138
+ c: i,ww=  30  125.000207
+ c: i,ww=  40  135.000276
+ c: i,ww=  50  145.000345
+ c: i,ww=  60  155.000414
+ c: i,ww=  70  165.000483
+ c: i,ww=  80  175.000552
+ c: i,ww=  90  185.000621
+ c: i,ww=  100  195.00069
+ c: i,ww=  110  205.000759
+ c: i,ww=  120  215.000828
+ c: i,ww=  130  225.000897
+ c: i,ww=  140  235.000966
+ DZface_Tabluj: NLC energy range: pretabulation starts
+ d: i,ww=  0  240.001
+ d: i,ww=  10  340.001
+ d: i,ww=  20  440.001
+ d: i,ww=  30  540.001
+ d: i,ww=  40  640.001
+ d: i,ww=  50  740.001
+ d: i,ww=  60  840.001
+ d: i,ww=  70  940.001
+ d: i,ww=  80  1040.001
+ DZface_Tabluj: pretabulatin finished  now !
+
+
+ ***************************************************************************
+ *                         KarLud_Initialize START                         *
+ *      15.00000000                  CMS energy average      CMSene     == *
+ *       0.00000000                  Beam energy spread      DelEne     == *
+ *                1                  ISR on/off switch       KeyISR     == *
+ *                3                  Type of ISR             KeyFix     == *
+ *                1                  Elect_weak switch       KeyZet     == *
+ *                0                  Fixed nphot mult.       MltISR     == *
+ *               50                  Max. photon mult.       nmax       == *
+ ***************************************************************************
+
+ *     105.58453348                 xs_crude  vesko          xcvesk        *
+ *     136.99392701                 xs_crude  gauss          xcgaus        *
+ *      -0.22927581                 xcvesk/xcgaus-1                        *
+
+
+ ***************************************************************************
+ *                          KarLud_Initialize END                          *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *             GPS   Initializator                                         *
+ *      91.18700000                 Z mass     [GeV]         MZ         a1 *
+ *       2.49925438                 Z width    [GeV]         GammZ      a2 *
+ *       0.22302485                 sin(theta_w)**2          Sw2        a3 *
+ *     137.03598950                 1/alfa_QED  at  Q=0      AlfInv     a4 *
+ *         Test switches:                                                  *
+ *                1                 Z on/off   switch        KeyZet     a5 *
+ *                1                 Electroweak lib.         KeyElw     a6 *
+ *                1                 CEEX level               KeyGPS     a7 *
+ *                1                 ISR emission             KeyISR     a8 *
+ *                0                 FSR emission             KeyFSR     a9 *
+ *                2                 ISR*FSR interferenc      KeyINT    a10 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *               Initialization of GPS class                               *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                           KK2f: Initialization                          *
+ *    40.757767                     x-crude [nb]             Xcrunb     ** *
+ *         List of final fermions:                                         *
+ *                1                 KF of final fermion      KFfin      ** *
+ *   0.10000000                     mass of final ferm.      amferm     ** *
+ *   0.33226847                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *   0.99000000                     vmax for CEEX           vmaxGPS     ** *
+ *                2                 KF of final fermion      KFfin      ** *
+ *   0.10000000                     mass of final ferm.      amferm     ** *
+ *    1.3319343                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *   0.99000000                     vmax for CEEX           vmaxGPS     ** *
+ *                3                 KF of final fermion      KFfin      ** *
+ *   0.20000000                     mass of final ferm.      amferm     ** *
+ *   0.33226847                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *   0.99000000                     vmax for CEEX           vmaxGPS     ** *
+ *                4                 KF of final fermion      KFfin      ** *
+ *    1.3000000                     mass of final ferm.      amferm     ** *
+ *    1.3319343                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *   0.99000000                     vmax for CEEX           vmaxGPS     ** *
+ *                5                 KF of final fermion      KFfin      ** *
+ *    4.5000000                     mass of final ferm.      amferm     ** *
+ *   0.31366144                     Xborn [R]                Xborn      ** *
+ *    5.0000000                     WtMax sampling par.      WtMax      ** *
+ *   0.99000000                     vmax for CEEX           vmaxGPS     ** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        KK interface of Tauola                                           *
+ *                2                Cloning procedure       KeyClone    t01 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *        Parameters passed from KK  to Tauola:                            *
+ *                0                dec. type 1-st tau        Jak1      t01 *
+ *                0                dec. type 2-nd tau        Jak2      t02 *
+ *                1                current type a1 dec.      KeyA1     t03 *
+ *               15                PDG id 1-st tau           idff      t04 *
+ *                1                R.c. switch lept dec      itdkRC    t05 *
+ *   0.10000000E-02                IR-cut for lept r.c.      xk0dec    t06 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                 !!!!! Tauola inhibited !!!!                             *
+ ***************************************************************************
+
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           6      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           6      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           7           8      0.00030      0.00093     -0.01641     14.98351     14.98350
+    4  gamma              1        22    1           0           0      0.00009     -0.00004      0.00823      0.00823      0.00000
+    5  gamma              1        22    1           0           0     -0.00037     -0.00093      0.00602      0.00610      0.00000
+    6  gamma              1        22    1           0           0     -0.00002      0.00003      0.00215      0.00215      0.00000
+    7  (d)               14         1    3   0   8  10   0   0  10      0.93302     -4.50526     -5.91959      7.49797      0.10000
+    8  (dbar)            14        -1    3   0   0  11   0   7  11     -0.93272      4.50620      5.90319      7.48555      0.10000
+    9  (CMshower)        11        94    7          10          11      0.00030      0.00093     -0.01641     14.98351     14.98350
+   10  d                  3         1    9   0   7   0   0   7   0      0.92173     -4.45076     -5.84798      7.40728      0.10000
+   11  (dbar)            14        -1    9   0   8  12   0   8  13     -0.92144      4.45170      5.83157      7.57623      1.65088
+   12  dbar               3        -1   11   0  11   0   0  13   0     -0.48863      3.46348      5.35479      6.39674      0.10000
+   13  g                  3        21   11   0  12   0   0  11   0     -0.43281      0.98821      0.47678      1.17950      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7      0.00134      0.00301      0.08562     14.86029     14.86004
+    4  gamma              1        22    1           0           0     -0.00248     -0.00248     -0.11262      0.11268      0.00000
+    5  gamma              1        22    1           0           0      0.00114     -0.00053      0.02701      0.02704      0.00000
+    6  (u)               14         2    3   0   7   9   0   0   9     -7.24388      0.27116      1.66734      7.43891      0.10000
+    7  (ubar)            14        -2    3   0   0  10   0   6  10      7.24521     -0.26815     -1.58172      7.42138      0.10000
+    8  (CMshower)        11        94    6           9          10      0.00134      0.00301      0.08562     14.86029     14.86004
+    9  (u)               14         2    8   0   6  12   0   6  11     -6.03376      0.22637      1.40315      8.67821      6.07330
+   10  ubar               3        -2    8   0   7   0   0   7   0      6.03509     -0.22336     -1.31753      6.18208      0.10000
+   11  u                  3         2    9   0  12   0   0   9   0      0.25005      0.32110      1.27024      1.33759      0.10000
+   12  (g)               14        21    9   0   9  13   0  11  14     -6.28380     -0.09473      0.13291      7.34062      3.79102
+   13  (g)               14        21   12   0  12  15   0  14  16     -2.04629     -0.02454      1.09752      2.54556      1.04279
+   14  (g)               14        21   12   0  13  17   0  12  18     -4.23751     -0.07019     -0.96461      4.79505      2.02500
+   15  g                  3        21   13   0  13   0   0  16   0     -1.03588      0.40596      0.20717      1.13171      0.00000
+   16  g                  3        21   13   0  15   0   0  13   0     -1.01041     -0.43049      0.89035      1.41385      0.00000
+   17  (g)               14        21   14   0  14  20   0  18  19     -3.18360      0.10544     -1.40192      3.64058      1.06865
+   18  g                  3        21   14   0  17   0   0  14   0     -1.05391     -0.17563      0.43730      1.15448      0.00000
+   19  g                  3        21   17   0  20   0   0  17   0     -1.98062      0.19935     -1.40052      2.43394      0.00000
+   20  g                  3        21   17   0  17   0   0  19   0     -1.20297     -0.09391     -0.00140      1.20663      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           6      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           6      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           7           8      1.76440     -1.95726     -6.98465      7.53452      1.01962
+    4  gamma              1        22    1           0           0     -1.76438      1.95726      6.98044      7.46126      0.00000
+    5  gamma              1        22    1           0           0      0.00000      0.00000      0.00231      0.00231      0.00000
+    6  gamma              1        22    1           0           0     -0.00001      0.00000      0.00190      0.00190      0.00000
+    7  (s)           A   12         3    3           9           9      0.64129     -1.35719     -4.23864      4.50103      0.20000
+    8  (sbar)        V   11        -3    3           9           9      1.12311     -0.60008     -2.74601      3.03349      0.20000
+    9  (cluster)         11        91    7          10          10      1.76440     -1.95726     -6.98465      7.53452      1.01962
+   10  phi                1       333    9           0           0      1.76440     -1.95726     -6.98465      7.53452      1.01962
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7     -5.47280     -4.77687     -0.11027      7.73462      2.65371
+    4  gamma              1        22    1           0           0      5.47263      4.77685      0.11062      7.26500      0.00000
+    5  gamma              1        22    1           0           0      0.00016      0.00002     -0.00035      0.00038      0.00000
+    6  (u)               14         2    3   0   7   9   0   0   9     -3.98473     -1.83759     -0.49163      4.41662      0.10000
+    7  (ubar)            14        -2    3   0   0  10   0   6  10     -1.48806     -2.93927      0.38136      3.31799      0.10000
+    8  (CMshower)        11        94    6           9          10     -5.47280     -4.77687     -0.11027      7.73462      2.65371
+    9  (u)               14         2    8   0   6  12   0   6  11     -4.33582     -2.53581     -0.40047      5.20296      1.29645
+   10  ubar               3        -2    8   0   7   0   0   7   0     -1.13697     -2.24106      0.29020      2.53165      0.10000
+   11  u                  3         2    9   0  12   0   0   9   0     -2.83618     -1.53022      0.35905      3.24414      0.10000
+   12  g                  3        21    9   0   9   0   0  11   0     -1.49964     -1.00559     -0.75952      1.95883      0.00000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7     -0.03670      0.45898     -7.39530      7.43525      0.61686
+    4  gamma              1        22    1           0           0      0.03672     -0.45898      7.47294      7.48711      0.00000
+    5  gamma              1        22    1           0           0     -0.00002      0.00000     -0.07764      0.07764      0.00000
+    6  (u)           A   12         2    3           8           8     -0.26352      0.04507     -3.00331      3.01684      0.10000
+    7  (ubar)        V   11        -2    3           8           8      0.22682      0.41391     -4.39199      4.41841      0.10000
+    8  (cluster)         11        91    6           9           9     -0.03670      0.45898     -7.39530      7.43525      0.61686
+    9  rho0               1       113    8           0           0     -0.03670      0.45898     -7.39530      7.43525      0.61686
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           5           6      0.00041      0.00019      7.25314      7.74686      2.72133
+    4  gamma              1        22    1           0           0     -0.00041     -0.00019     -7.25314      7.25314      0.00000
+    5  u                  3         2    3   0   6   0   0   0   0     -0.36197      0.11828     -0.08114      0.40199      0.10000
+    6  ubar               3        -2    3   0   0   0   0   5   0      0.36239     -0.11808      7.33429      7.34486      0.10000
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7     -0.01929     -0.30532      7.44565      7.54806      1.20078
+    4  gamma              1        22    1           0           0      0.01928      0.30532     -7.43682      7.44311      0.00000
+    5  gamma              1        22    1           0           0      0.00000      0.00000     -0.00883      0.00883      0.00000
+    6  (u)           A   12         2    3           8           8     -0.57556      0.01354      3.16343      3.21695      0.10000
+    7  (ubar)        V   11        -2    3           8           8      0.55627     -0.31886      4.28222      4.33111      0.10000
+    8  (cluster)         11        91    6           9          12     -0.01929     -0.30532      7.44565      7.54806      1.20078
+    9  pi+                1       211    8           0           0     -0.15104      0.11928      1.67821      1.69497      0.13957
+   10  pi-                1      -211    8           0           0     -0.04433      0.01858      0.86104      0.87360      0.13957
+   11  pi+                1       211    8           0           0      0.38675     -0.16204      1.97667      2.02547      0.13957
+   12  pi-                1      -211    8           0           0     -0.21067     -0.28114      2.92973      2.95402      0.13957
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7      0.77916     -0.32240      7.43351      7.51833      0.74652
+    4  gamma              1        22    1           0           0     -0.77929      0.32223     -7.35870      7.40686      0.00000
+    5  gamma              1        22    1           0           0      0.00012      0.00017     -0.07480      0.07480      0.00000
+    6  (u)           A   12         2    3           8           8      0.87527     -0.27058      6.99634      7.05677      0.10000
+    7  (ubar)        V   11        -2    3           8           8     -0.09611     -0.05182      0.43717      0.46156      0.10000
+    8  (cluster)         11        91    6           9           9      0.77916     -0.32240      7.43351      7.51833      0.74652
+    9  rho0               1       113    8           0           0      0.77916     -0.32240      7.43351      7.51833      0.74652
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           4      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           4      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           5           6      5.51050      3.53261     -3.62340      7.51843      0.74355
+    4  gamma              1        22    1           0           0     -5.51050     -3.53261      3.62340      7.48157      0.00000
+    5  (d)           A   12         1    3           7           7      2.08061      1.07961     -0.99424      2.54814      0.10000
+    6  (dbar)        V   11        -1    3           7           7      3.42989      2.45300     -2.62916      4.97029      0.10000
+    7  (cluster)         11        91    5           8           8      5.51050      3.53261     -3.62340      7.51843      0.74355
+    8  rho0               1       113    7           0           0      5.51050      3.53261     -3.62340      7.51843      0.74355
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (standard)
+
+    I  particle/jet  K(I,1)   K(I,2) K(I,3)     K(I,4)      K(I,5)       P(I,1)       P(I,2)       P(I,3)       P(I,4)       P(I,5)
+
+    1  !e-!              21        11    0           3           5      0.00000      0.00000      7.50000      7.50000      0.00051
+    2  !e+!              21       -11    0           3           5      0.00000      0.00000     -7.50000      7.50000      0.00051
+    3  (Z0)              11        23    1           6           7     -0.24903      0.42156     -6.00006      6.05613      0.66044
+    4  gamma              1        22    1           0           0      0.24886     -0.42087      7.46397      7.47997      0.00000
+    5  gamma              1        22    1           0           0      0.00017     -0.00069     -1.46391      1.46391      0.00000
+    6  (u)           A   12         2    3           8           8      0.05702     -0.11620     -2.06407      2.07054      0.10000
+    7  (ubar)        V   11        -2    3           8           8     -0.30605      0.53777     -3.93599      3.98559      0.10000
+    8  (cluster)         11        91    6           9           9     -0.24903      0.42156     -6.00006      6.05613      0.66044
+    9  rho0               1       113    8           0           0     -0.24903      0.42156     -6.00006      6.05613      0.66044
+                   sum charge:  0.00   sum momentum and inv. mass:      0.00000      0.00000      0.00000     15.00000     15.00000
+
+
+ ***************************************************************************
+ *                      KarLud  final  report                              *
+ *          1000000                  total no of events     nevtot      == *
+ *     105.58453348                  ISRcru  [R]            ISRcru      == *
+ *     105.04149337  +- 0.00397264   ISRbest [R],ISRerr     ISRbest     == *
+ *    105.58453                      XKarlud [R]            XKarlud     == *
+ *    0.0000000                      KError  [R]            KError      == *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                   Report on wt_ISR of KarLud                            *
+ *          1000000                 total no of events      nevtot      == *
+ *                0                 wt<0        events      nevneg      == *
+ *       0.05269011  +- 0.00112512  <wt>                    wt_ISR      == *
+ *       5.56326104  +- 0.00625933  sigma of KarLud [R]     xskarl      == *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *                   KarLud_Finalize END  <<<                              *
+ ***************************************************************************
+
+1
+      -640          KK2f: Photon raw multiplicity                                                   
+           nent            sum           bmin           bmax
+        1000000    0.00000E+00    0.57000E+02    0.32355E+06
+           undf           ovef           sumw           avex
+    0.00000E+00    0.10000E+01    0.21103E+07    0.28308E+01
+  0.0000   0.618300E+05 XXXXXXXXXXXXX                                                     I
+  1.0000   0.279986E+06 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        I
+  2.0000   0.323548E+06 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  3.0000   0.206545E+06 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                       I
+  4.0000   0.891630E+05 XXXXXXXXXXXXXXXXXXX                                               I
+  5.0000   0.291410E+05 XXXXXX                                                            I
+  6.0000   0.772600E+04 XX                                                                I
+  7.0000   0.170600E+04 X                                                                 I
+  8.0000   0.297000E+03 X                                                                 I
+  9.0000   0.570000E+02 X                                                                 I
+
+
+ ***************************************************************************
+ *                       KK2f_Finalize  printouts                          *
+ *      15.00000000                 cms energy total         cmsene     a0 *
+ *          1000000                 total no of events       nevgen     a1 *
+ *               ** principal info on x-section **                         *
+ *       5.24938283  +- 0.00776884  xs_tot MC R-units        xsmc       a1 *
+ *    2026.36800313                 xs_tot    picob.         xSecPb     a3 *
+ *       2.99893094                 error     picob.         xErrPb     a4 *
+ *       0.00147995                 relative error           erel       a5 *
+ *       0.37888873                 WTsup, largest WT        WTsup     a10 *
+ *                       ** some auxiliary info **                         *
+ *    1405.91155132                 xs_born   picobarns       xborn    a11 *
+ *       2.11027800                 Raw phot. multipl.                 === *
+ *      11.00000000                 Highest phot. mult.                === *
+ *                         End of KK2f  Finalize                           *
+ ***************************************************************************
+
+1
+      -700          MBrA: KK2f main weight                                                          
+           nent            sum           bmin           bmax
+        1000000    0.00000E+00    0.00000E+00    0.60375E+06
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.49717E+05    0.15861E+00
+  0.0000   0.603747E+06 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXI
+  0.0200   0.103104E+06 0XXXXXXXXXXX                                                      I
+  0.0400   0.470250E+05 0XXXXX                                                            I
+  0.0600   0.289880E+05 0XXX                                                              I
+  0.0800   0.239170E+05 0XX                                                               I
+  0.1000   0.246150E+05 0XX                                                               I
+  0.1200   0.213310E+05 0XX                                                               I
+  0.1400   0.296280E+05 0XXX                                                              I
+  0.1600   0.223640E+05 0XX                                                               I
+  0.1800   0.287800E+05 0XXX                                                              I
+  0.2000   0.191070E+05 0XX                                                               I
+  0.2200   0.136420E+05 0X                                                                I
+  0.2400   0.103780E+05 0X                                                                I
+  0.2600   0.803400E+04 0                                                                 I
+  0.2800   0.567000E+04 0                                                                 I
+  0.3000   0.403000E+04 0                                                                 I
+  0.3200   0.323500E+04 0                                                                 I
+  0.3400   0.179900E+04 0                                                                 I
+  0.3600   0.606000E+03 0                                                                 I
+  0.3800   0.000000E+00 0                                                                 I
+  0.4000   0.000000E+00 0                                                                 I
+  0.4200   0.000000E+00 0                                                                 I
+  0.4400   0.000000E+00 0                                                                 I
+  0.4600   0.000000E+00 0                                                                 I
+  0.4800   0.000000E+00 0                                                                 I
+  0.5000   0.000000E+00 0                                                                 I
+  0.5200   0.000000E+00 0                                                                 I
+  0.5400   0.000000E+00 0                                                                 I
+  0.5600   0.000000E+00 0                                                                 I
+  0.5800   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.6200   0.000000E+00 0                                                                 I
+  0.6400   0.000000E+00 0                                                                 I
+  0.6600   0.000000E+00 0                                                                 I
+  0.6800   0.000000E+00 0                                                                 I
+  0.7000   0.000000E+00 0                                                                 I
+  0.7200   0.000000E+00 0                                                                 I
+  0.7400   0.000000E+00 0                                                                 I
+  0.7600   0.000000E+00 0                                                                 I
+  0.7800   0.000000E+00 0                                                                 I
+  0.8000   0.000000E+00 0                                                                 I
+  0.8200   0.000000E+00 0                                                                 I
+  0.8400   0.000000E+00 0                                                                 I
+  0.8600   0.000000E+00 0                                                                 I
+  0.8800   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  0.9200   0.000000E+00 0                                                                 I
+  0.9400   0.000000E+00 0                                                                 I
+  0.9600   0.000000E+00 0                                                                 I
+  0.9800   0.000000E+00 0                                                                 I
+
+
+ ***************************************************************************
+ *                MBrA: report on the main Weight                          *
+ *          1000000                 no of raw events         Ntot       b1 *
+ *          1000000                 accepted    events       Nacc       b2 *
+ *                0                 wt<0        events       Nneg       b3 *
+ *                0                 wt>WTmax    events       Nove       b4 *
+ *       0.37888873                 WTsup, largest WT        WTsup      b5 *
+ *       0.00000000                 <Wt-WtMax>  Overfl.      AvOve      b6 *
+ *       0.00000000                 <Wt> for Wt<0            AvUnd      b7 *
+ *       0.00000000                 AvOve/<Wt>,WT>WtMax      ROverf     b8 *
+ *       0.00000000                 AvUnd/<Wt>,Wt<0          RUnder     b9 *
+ ***************************************************************************
+
+ 
+=====================================================================================================
+            MBrA:    Detailed statistics for all branches    
+=====================================================================================================
+  KF     AveWt     ERela     WtSup      Wt<0   Wt>Wmax       Ntot       Nacc   Nneg   Nove   Nzer
+   1  0.034688  0.0047940.3788      0.000000  0.000000     142276     142276      0      0   1077
+   2  0.034423  0.0023930.3682      0.000000  0.000000     570736     570736      0      0   4268
+   3  0.046487  0.0046900.3789      0.000000  0.000000     102707     102707      0      0    743
+   4  0.104188  0.0020040.3625      0.000000  0.000000     160052     160052      0      0   1142
+   5  0.152125  0.0030930.3222      0.000000  0.000000      24229      24229      0      0    181
+All:  0.049717  0.0014800.3789      0.000000  0.000000    1000000    1000000      0      0   7411
+=====================================================================================================
+1
+      1003          sprime distribution                                                             
+           nent            sum           bmin           bmax
+        1000000    0.00000E+00    0.00000E+00    0.28789E+05
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.49717E+05    0.12368E+02
+  0.0000   0.000000E+00 0                                                                 I
+  0.1500   0.548184E+00 0                                                                 I
+  0.3000   0.570754E+02 0                                                                 I
+  0.4500   0.191141E+03 0                                                                 I
+  0.6000   0.868262E+03 0X                                                                I
+  0.7500   0.113249E+04 0XX                                                               I
+  0.9000   0.492395E+03 0X                                                                I
+  1.0500   0.151468E+03 0                                                                 I
+  1.2000   0.196051E+03 0                                                                 I
+  1.3500   0.205894E+03 0                                                                 I
+  1.5000   0.203510E+03 0                                                                 I
+  1.6500   0.191227E+03 0                                                                 I
+  1.8000   0.172470E+03 0                                                                 I
+  1.9500   0.155224E+03 0                                                                 I
+  2.1000   0.146971E+03 0                                                                 I
+  2.2500   0.139802E+03 0                                                                 I
+  2.4000   0.132531E+03 0                                                                 I
+  2.5500   0.121848E+03 0                                                                 I
+  2.7000   0.117566E+03 0                                                                 I
+  2.8500   0.112770E+03 0                                                                 I
+  3.0000   0.462887E+03 0X                                                                I
+  3.1500   0.102498E+03 0                                                                 I
+  3.3000   0.939984E+02 0                                                                 I
+  3.4500   0.925310E+02 0                                                                 I
+  3.6000   0.244104E+03 0                                                                 I
+  3.7500   0.102303E+03 0                                                                 I
+  3.9000   0.120908E+03 0                                                                 I
+  4.0500   0.182772E+03 0                                                                 I
+  4.2000   0.143563E+03 0                                                                 I
+  4.3500   0.153115E+03 0                                                                 I
+  4.5000   0.126385E+03 0                                                                 I
+  4.6500   0.120390E+03 0                                                                 I
+  4.8000   0.119648E+03 0                                                                 I
+  4.9500   0.112510E+03 0                                                                 I
+  5.1000   0.112587E+03 0                                                                 I
+  5.2500   0.111017E+03 0                                                                 I
+  5.4000   0.109430E+03 0                                                                 I
+  5.5500   0.106322E+03 0                                                                 I
+  5.7000   0.103324E+03 0                                                                 I
+  5.8500   0.104124E+03 0                                                                 I
+  6.0000   0.101480E+03 0                                                                 I
+  6.1500   0.100707E+03 0                                                                 I
+  6.3000   0.106339E+03 0                                                                 I
+  6.4500   0.100214E+03 0                                                                 I
+  6.6000   0.935318E+02 0                                                                 I
+  6.7500   0.993928E+02 0                                                                 I
+  6.9000   0.991807E+02 0                                                                 I
+  7.0500   0.950732E+02 0                                                                 I
+  7.2000   0.911640E+02 0                                                                 I
+  7.3500   0.969105E+02 0                                                                 I
+  7.5000   0.937706E+02 0                                                                 I
+  7.6500   0.977907E+02 0                                                                 I
+  7.8000   0.923163E+02 0                                                                 I
+  7.9500   0.927855E+02 0                                                                 I
+  8.1000   0.964163E+02 0                                                                 I
+  8.2500   0.911812E+02 0                                                                 I
+  8.4000   0.925667E+02 0                                                                 I
+  8.5500   0.985942E+02 0                                                                 I
+  8.7000   0.973576E+02 0                                                                 I
+  8.8500   0.967176E+02 0                                                                 I
+  9.0000   0.975119E+02 0                                                                 I
+  9.1500   0.962753E+02 0                                                                 I
+  9.3000   0.984881E+02 0                                                                 I
+  9.4500   0.131950E+03 0                                                                 I
+  9.6000   0.103487E+03 0                                                                 I
+  9.7500   0.103825E+03 0                                                                 I
+  9.9000   0.124603E+03 0                                                                 I
+ 10.0500   0.106440E+03 0                                                                 I
+ 10.2000   0.107017E+03 0                                                                 I
+ 10.3500   0.113732E+03 0                                                                 I
+ 10.5000   0.133034E+03 0                                                                 I
+ 10.6500   0.138688E+03 0                                                                 I
+ 10.8000   0.139621E+03 0                                                                 I
+ 10.9500   0.139302E+03 0                                                                 I
+ 11.1000   0.138766E+03 0                                                                 I
+ 11.2500   0.142032E+03 0                                                                 I
+ 11.4000   0.147468E+03 0                                                                 I
+ 11.5500   0.156658E+03 0                                                                 I
+ 11.7000   0.160683E+03 0                                                                 I
+ 11.8500   0.168382E+03 0                                                                 I
+ 12.0000   0.167781E+03 0                                                                 I
+ 12.1500   0.181559E+03 0                                                                 I
+ 12.3000   0.184461E+03 0                                                                 I
+ 12.4500   0.201880E+03 0                                                                 I
+ 12.6000   0.203790E+03 0                                                                 I
+ 12.7500   0.222249E+03 0                                                                 I
+ 12.9000   0.232192E+03 0                                                                 I
+ 13.0500   0.255381E+03 0                                                                 I
+ 13.2000   0.273231E+03 0                                                                 I
+ 13.3500   0.295293E+03 0                                                                 I
+ 13.5000   0.340300E+03 0                                                                 I
+ 13.6500   0.370026E+03 0                                                                 I
+ 13.8000   0.419777E+03 0                                                                 I
+ 13.9500   0.473229E+03 0X                                                                I
+ 14.1000   0.524007E+03 0X                                                                I
+ 14.2500   0.652297E+03 0X                                                                I
+ 14.4000   0.816253E+03 0X                                                                I
+ 14.5500   0.115727E+04 0XX                                                               I
+ 14.7000   0.186195E+04 0XXXX                                                             I
+ 14.8500   0.287893E+05 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+      1005          sprime gen wtmain u,d                                                           
+           nent            sum           bmin           bmax
+         713012    0.00000E+00    0.00000E+00    0.13065E+05
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.24581E+05    0.11464E+02
+  0.0000   0.000000E+00 0                                                                 I
+  0.1500   0.548184E+00 0                                                                 I
+  0.3000   0.570754E+02 0                                                                 I
+  0.4500   0.191141E+03 0                                                                 I
+  0.6000   0.868262E+03 0XXXX                                                             I
+  0.7500   0.113249E+04 0XXXXX                                                            I
+  0.9000   0.153480E+03 0                                                                 I
+  1.0500   0.128622E+03 0                                                                 I
+  1.2000   0.166673E+03 0                                                                 I
+  1.3500   0.173514E+03 0                                                                 I
+  1.5000   0.170481E+03 0                                                                 I
+  1.6500   0.158509E+03 0                                                                 I
+  1.8000   0.144475E+03 0                                                                 I
+  1.9500   0.130146E+03 0                                                                 I
+  2.1000   0.122562E+03 0                                                                 I
+  2.2500   0.116267E+03 0                                                                 I
+  2.4000   0.109350E+03 0                                                                 I
+  2.5500   0.102072E+03 0                                                                 I
+  2.7000   0.980138E+02 0                                                                 I
+  2.8500   0.947508E+02 0                                                                 I
+  3.0000   0.880018E+02 0                                                                 I
+  3.1500   0.848317E+02 0                                                                 I
+  3.3000   0.786387E+02 0                                                                 I
+  3.4500   0.764005E+02 0                                                                 I
+  3.6000   0.773479E+02 0                                                                 I
+  3.7500   0.727246E+02 0                                                                 I
+  3.9000   0.717962E+02 0                                                                 I
+  4.0500   0.647077E+02 0                                                                 I
+  4.2000   0.651102E+02 0                                                                 I
+  4.3500   0.618976E+02 0                                                                 I
+  4.5000   0.603706E+02 0                                                                 I
+  4.6500   0.587757E+02 0                                                                 I
+  4.8000   0.601207E+02 0                                                                 I
+  4.9500   0.577813E+02 0                                                                 I
+  5.1000   0.545706E+02 0                                                                 I
+  5.2500   0.544747E+02 0                                                                 I
+  5.4000   0.530197E+02 0                                                                 I
+  5.5500   0.542153E+02 0                                                                 I
+  5.7000   0.530438E+02 0                                                                 I
+  5.8500   0.511952E+02 0                                                                 I
+  6.0000   0.508098E+02 0                                                                 I
+  6.1500   0.514127E+02 0                                                                 I
+  6.3000   0.503331E+02 0                                                                 I
+  6.4500   0.511827E+02 0                                                                 I
+  6.6000   0.452124E+02 0                                                                 I
+  6.7500   0.491706E+02 0                                                                 I
+  6.9000   0.484454E+02 0                                                                 I
+  7.0500   0.481923E+02 0                                                                 I
+  7.2000   0.458344E+02 0                                                                 I
+  7.3500   0.459000E+02 0                                                                 I
+  7.5000   0.468197E+02 0                                                                 I
+  7.6500   0.494527E+02 0                                                                 I
+  7.8000   0.465007E+02 0                                                                 I
+  7.9500   0.455891E+02 0                                                                 I
+  8.1000   0.468976E+02 0                                                                 I
+  8.2500   0.453174E+02 0                                                                 I
+  8.4000   0.449204E+02 0                                                                 I
+  8.5500   0.494513E+02 0                                                                 I
+  8.7000   0.476620E+02 0                                                                 I
+  8.8500   0.487304E+02 0                                                                 I
+  9.0000   0.477509E+02 0                                                                 I
+  9.1500   0.489583E+02 0                                                                 I
+  9.3000   0.488171E+02 0                                                                 I
+  9.4500   0.499863E+02 0                                                                 I
+  9.6000   0.527602E+02 0                                                                 I
+  9.7500   0.512206E+02 0                                                                 I
+  9.9000   0.537742E+02 0                                                                 I
+ 10.0500   0.528022E+02 0                                                                 I
+ 10.2000   0.531507E+02 0                                                                 I
+ 10.3500   0.563377E+02 0                                                                 I
+ 10.5000   0.564509E+02 0                                                                 I
+ 10.6500   0.615930E+02 0                                                                 I
+ 10.8000   0.550123E+02 0                                                                 I
+ 10.9500   0.609599E+02 0                                                                 I
+ 11.1000   0.600427E+02 0                                                                 I
+ 11.2500   0.667843E+02 0                                                                 I
+ 11.4000   0.669904E+02 0                                                                 I
+ 11.5500   0.713193E+02 0                                                                 I
+ 11.7000   0.717791E+02 0                                                                 I
+ 11.8500   0.748209E+02 0                                                                 I
+ 12.0000   0.719964E+02 0                                                                 I
+ 12.1500   0.803401E+02 0                                                                 I
+ 12.3000   0.831892E+02 0                                                                 I
+ 12.4500   0.907086E+02 0                                                                 I
+ 12.6000   0.924102E+02 0                                                                 I
+ 12.7500   0.987347E+02 0                                                                 I
+ 12.9000   0.104650E+03 0                                                                 I
+ 13.0500   0.111579E+03 0                                                                 I
+ 13.2000   0.126088E+03 0                                                                 I
+ 13.3500   0.131959E+03 0                                                                 I
+ 13.5000   0.153889E+03 0                                                                 I
+ 13.6500   0.167086E+03 0                                                                 I
+ 13.8000   0.192631E+03 0                                                                 I
+ 13.9500   0.209425E+03 0X                                                                I
+ 14.1000   0.227901E+03 0X                                                                I
+ 14.2500   0.295070E+03 0X                                                                I
+ 14.4000   0.368248E+03 0X                                                                I
+ 14.5500   0.531331E+03 0XX                                                               I
+ 14.7000   0.842898E+03 0XXXX                                                             I
+ 14.8500   0.130647E+05 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+      1006          sprime gen wtmain s                                                             
+           nent            sum           bmin           bmax
+         102707    0.00000E+00    0.00000E+00    0.26203E+04
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.47745E+04    0.11826E+02
+  0.0000   0.000000E+00 0                                                                 I
+  0.1500   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.4500   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.7500   0.000000E+00 0                                                                 I
+  0.9000   0.338915E+03 0XXXXXXXX                                                         I
+  1.0500   0.228459E+02 0                                                                 I
+  1.2000   0.293783E+02 0                                                                 I
+  1.3500   0.323808E+02 0                                                                 I
+  1.5000   0.330292E+02 0                                                                 I
+  1.6500   0.327183E+02 0                                                                 I
+  1.8000   0.279952E+02 0                                                                 I
+  1.9500   0.250785E+02 0                                                                 I
+  2.1000   0.244086E+02 0                                                                 I
+  2.2500   0.235351E+02 0                                                                 I
+  2.4000   0.231803E+02 0                                                                 I
+  2.5500   0.197760E+02 0                                                                 I
+  2.7000   0.195525E+02 0                                                                 I
+  2.8500   0.180188E+02 0                                                                 I
+  3.0000   0.182629E+02 0                                                                 I
+  3.1500   0.175875E+02 0                                                                 I
+  3.3000   0.152138E+02 0                                                                 I
+  3.4500   0.156399E+02 0                                                                 I
+  3.6000   0.153037E+02 0                                                                 I
+  3.7500   0.127769E+02 0                                                                 I
+  3.9000   0.128902E+02 0                                                                 I
+  4.0500   0.135743E+02 0                                                                 I
+  4.2000   0.137744E+02 0                                                                 I
+  4.3500   0.111869E+02 0                                                                 I
+  4.5000   0.130057E+02 0                                                                 I
+  4.6500   0.129765E+02 0                                                                 I
+  4.8000   0.118879E+02 0                                                                 I
+  4.9500   0.111513E+02 0                                                                 I
+  5.1000   0.113168E+02 0                                                                 I
+  5.2500   0.112725E+02 0                                                                 I
+  5.4000   0.118571E+02 0                                                                 I
+  5.5500   0.104814E+02 0                                                                 I
+  5.7000   0.970949E+01 0                                                                 I
+  5.8500   0.972553E+01 0                                                                 I
+  6.0000   0.978039E+01 0                                                                 I
+  6.1500   0.100849E+02 0                                                                 I
+  6.3000   0.114401E+02 0                                                                 I
+  6.4500   0.903543E+01 0                                                                 I
+  6.6000   0.896969E+01 0                                                                 I
+  6.7500   0.966621E+01 0                                                                 I
+  6.9000   0.107301E+02 0                                                                 I
+  7.0500   0.931430E+01 0                                                                 I
+  7.2000   0.976897E+01 0                                                                 I
+  7.3500   0.124544E+02 0                                                                 I
+  7.5000   0.893627E+01 0                                                                 I
+  7.6500   0.100882E+02 0                                                                 I
+  7.8000   0.878535E+01 0                                                                 I
+  7.9500   0.900010E+01 0                                                                 I
+  8.1000   0.986098E+01 0                                                                 I
+  8.2500   0.971134E+01 0                                                                 I
+  8.4000   0.877080E+01 0                                                                 I
+  8.5500   0.921921E+01 0                                                                 I
+  8.7000   0.988187E+01 0                                                                 I
+  8.8500   0.906299E+01 0                                                                 I
+  9.0000   0.886354E+01 0                                                                 I
+  9.1500   0.983086E+01 0                                                                 I
+  9.3000   0.942722E+01 0                                                                 I
+  9.4500   0.962351E+01 0                                                                 I
+  9.6000   0.105420E+02 0                                                                 I
+  9.7500   0.908618E+01 0                                                                 I
+  9.9000   0.107760E+02 0                                                                 I
+ 10.0500   0.106991E+02 0                                                                 I
+ 10.2000   0.111899E+02 0                                                                 I
+ 10.3500   0.125357E+02 0                                                                 I
+ 10.5000   0.121600E+02 0                                                                 I
+ 10.6500   0.118709E+02 0                                                                 I
+ 10.8000   0.137759E+02 0                                                                 I
+ 10.9500   0.111624E+02 0                                                                 I
+ 11.1000   0.116327E+02 0                                                                 I
+ 11.2500   0.123008E+02 0                                                                 I
+ 11.4000   0.123284E+02 0                                                                 I
+ 11.5500   0.135945E+02 0                                                                 I
+ 11.7000   0.150977E+02 0                                                                 I
+ 11.8500   0.159926E+02 0                                                                 I
+ 12.0000   0.168440E+02 0                                                                 I
+ 12.1500   0.179784E+02 0                                                                 I
+ 12.3000   0.178538E+02 0                                                                 I
+ 12.4500   0.164604E+02 0                                                                 I
+ 12.6000   0.181021E+02 0                                                                 I
+ 12.7500   0.207795E+02 0                                                                 I
+ 12.9000   0.234779E+02 0                                                                 I
+ 13.0500   0.207195E+02 0                                                                 I
+ 13.2000   0.226807E+02 0                                                                 I
+ 13.3500   0.262764E+02 0                                                                 I
+ 13.5000   0.303047E+02 0                                                                 I
+ 13.6500   0.329327E+02 0                                                                 I
+ 13.8000   0.353942E+02 0                                                                 I
+ 13.9500   0.476263E+02 0X                                                                I
+ 14.1000   0.513725E+02 0X                                                                I
+ 14.2500   0.602456E+02 0X                                                                I
+ 14.4000   0.716624E+02 0X                                                                I
+ 14.5500   0.100656E+03 0XX                                                               I
+ 14.7000   0.165415E+03 0XXXX                                                             I
+ 14.8500   0.262026E+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+      1007          sprime gen wtmain c                                                             
+           nent            sum           bmin           bmax
+         160052    0.00000E+00    0.00000E+00    0.10458E+05
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.16676E+05    0.13379E+02
+  0.0000   0.000000E+00 0                                                                 I
+  0.1500   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.4500   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.7500   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  1.0500   0.000000E+00 0                                                                 I
+  1.2000   0.000000E+00 0                                                                 I
+  1.3500   0.000000E+00 0                                                                 I
+  1.5000   0.000000E+00 0                                                                 I
+  1.6500   0.000000E+00 0                                                                 I
+  1.8000   0.000000E+00 0                                                                 I
+  1.9500   0.000000E+00 0                                                                 I
+  2.1000   0.000000E+00 0                                                                 I
+  2.2500   0.000000E+00 0                                                                 I
+  2.4000   0.000000E+00 0                                                                 I
+  2.5500   0.000000E+00 0                                                                 I
+  2.7000   0.000000E+00 0                                                                 I
+  2.8500   0.000000E+00 0                                                                 I
+  3.0000   0.356622E+03 0XX                                                               I
+  3.1500   0.788915E-01 0                                                                 I
+  3.3000   0.146006E+00 0                                                                 I
+  3.4500   0.490600E+00 0                                                                 I
+  3.6000   0.151452E+03 0                                                                 I
+  3.7500   0.168019E+02 0                                                                 I
+  3.9000   0.362217E+02 0                                                                 I
+  4.0500   0.104490E+03 0                                                                 I
+  4.2000   0.646787E+02 0                                                                 I
+  4.3500   0.800303E+02 0                                                                 I
+  4.5000   0.530089E+02 0                                                                 I
+  4.6500   0.486376E+02 0                                                                 I
+  4.8000   0.476393E+02 0                                                                 I
+  4.9500   0.435775E+02 0                                                                 I
+  5.1000   0.466991E+02 0                                                                 I
+  5.2500   0.452695E+02 0                                                                 I
+  5.4000   0.445527E+02 0                                                                 I
+  5.5500   0.416249E+02 0                                                                 I
+  5.7000   0.405709E+02 0                                                                 I
+  5.8500   0.432031E+02 0                                                                 I
+  6.0000   0.408897E+02 0                                                                 I
+  6.1500   0.392092E+02 0                                                                 I
+  6.3000   0.445655E+02 0                                                                 I
+  6.4500   0.399962E+02 0                                                                 I
+  6.6000   0.393497E+02 0                                                                 I
+  6.7500   0.405560E+02 0                                                                 I
+  6.9000   0.400052E+02 0                                                                 I
+  7.0500   0.375665E+02 0                                                                 I
+  7.2000   0.355607E+02 0                                                                 I
+  7.3500   0.385561E+02 0                                                                 I
+  7.5000   0.380147E+02 0                                                                 I
+  7.6500   0.382498E+02 0                                                                 I
+  7.8000   0.370302E+02 0                                                                 I
+  7.9500   0.381963E+02 0                                                                 I
+  8.1000   0.396578E+02 0                                                                 I
+  8.2500   0.361525E+02 0                                                                 I
+  8.4000   0.388756E+02 0                                                                 I
+  8.5500   0.399236E+02 0                                                                 I
+  8.7000   0.398138E+02 0                                                                 I
+  8.8500   0.389242E+02 0                                                                 I
+  9.0000   0.408975E+02 0                                                                 I
+  9.1500   0.374861E+02 0                                                                 I
+  9.3000   0.402437E+02 0                                                                 I
+  9.4500   0.395244E+02 0                                                                 I
+  9.6000   0.401847E+02 0                                                                 I
+  9.7500   0.434256E+02 0                                                                 I
+  9.9000   0.418225E+02 0                                                                 I
+ 10.0500   0.428655E+02 0                                                                 I
+ 10.2000   0.425278E+02 0                                                                 I
+ 10.3500   0.447009E+02 0                                                                 I
+ 10.5000   0.450366E+02 0                                                                 I
+ 10.6500   0.495144E+02 0                                                                 I
+ 10.8000   0.467788E+02 0                                                                 I
+ 10.9500   0.477577E+02 0                                                                 I
+ 11.1000   0.520102E+02 0                                                                 I
+ 11.2500   0.492049E+02 0                                                                 I
+ 11.4000   0.552862E+02 0                                                                 I
+ 11.5500   0.578690E+02 0                                                                 I
+ 11.7000   0.582551E+02 0                                                                 I
+ 11.8500   0.620437E+02 0                                                                 I
+ 12.0000   0.639187E+02 0                                                                 I
+ 12.1500   0.647869E+02 0                                                                 I
+ 12.3000   0.659713E+02 0                                                                 I
+ 12.4500   0.752861E+02 0                                                                 I
+ 12.6000   0.753260E+02 0                                                                 I
+ 12.7500   0.818652E+02 0                                                                 I
+ 12.9000   0.843656E+02 0                                                                 I
+ 13.0500   0.977115E+02 0                                                                 I
+ 13.2000   0.100631E+03 0                                                                 I
+ 13.3500   0.108084E+03 0                                                                 I
+ 13.5000   0.122943E+03 0                                                                 I
+ 13.6500   0.135221E+03 0                                                                 I
+ 13.8000   0.154809E+03 0                                                                 I
+ 13.9500   0.170798E+03 0X                                                                I
+ 14.1000   0.193902E+03 0X                                                                I
+ 14.2500   0.239755E+03 0X                                                                I
+ 14.4000   0.301823E+03 0X                                                                I
+ 14.5500   0.418179E+03 0XX                                                               I
+ 14.7000   0.678201E+03 0XXXX                                                             I
+ 14.8500   0.104576E+05 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+      1008          sprime gen wtmain b                                                             
+           nent            sum           bmin           bmax
+          24229    0.00000E+00    0.00000E+00    0.26467E+04
+           undf           ovef           sumw           avex
+    0.00000E+00    0.00000E+00    0.36858E+04    0.14522E+02
+  0.0000   0.000000E+00 0                                                                 I
+  0.1500   0.000000E+00 0                                                                 I
+  0.3000   0.000000E+00 0                                                                 I
+  0.4500   0.000000E+00 0                                                                 I
+  0.6000   0.000000E+00 0                                                                 I
+  0.7500   0.000000E+00 0                                                                 I
+  0.9000   0.000000E+00 0                                                                 I
+  1.0500   0.000000E+00 0                                                                 I
+  1.2000   0.000000E+00 0                                                                 I
+  1.3500   0.000000E+00 0                                                                 I
+  1.5000   0.000000E+00 0                                                                 I
+  1.6500   0.000000E+00 0                                                                 I
+  1.8000   0.000000E+00 0                                                                 I
+  1.9500   0.000000E+00 0                                                                 I
+  2.1000   0.000000E+00 0                                                                 I
+  2.2500   0.000000E+00 0                                                                 I
+  2.4000   0.000000E+00 0                                                                 I
+  2.5500   0.000000E+00 0                                                                 I
+  2.7000   0.000000E+00 0                                                                 I
+  2.8500   0.000000E+00 0                                                                 I
+  3.0000   0.000000E+00 0                                                                 I
+  3.1500   0.000000E+00 0                                                                 I
+  3.3000   0.000000E+00 0                                                                 I
+  3.4500   0.000000E+00 0                                                                 I
+  3.6000   0.000000E+00 0                                                                 I
+  3.7500   0.000000E+00 0                                                                 I
+  3.9000   0.000000E+00 0                                                                 I
+  4.0500   0.000000E+00 0                                                                 I
+  4.2000   0.000000E+00 0                                                                 I
+  4.3500   0.000000E+00 0                                                                 I
+  4.5000   0.000000E+00 0                                                                 I
+  4.6500   0.000000E+00 0                                                                 I
+  4.8000   0.000000E+00 0                                                                 I
+  4.9500   0.000000E+00 0                                                                 I
+  5.1000   0.000000E+00 0                                                                 I
+  5.2500   0.000000E+00 0                                                                 I
+  5.4000   0.000000E+00 0                                                                 I
+  5.5500   0.000000E+00 0                                                                 I
+  5.7000   0.000000E+00 0                                                                 I
+  5.8500   0.000000E+00 0                                                                 I
+  6.0000   0.000000E+00 0                                                                 I
+  6.1500   0.000000E+00 0                                                                 I
+  6.3000   0.000000E+00 0                                                                 I
+  6.4500   0.000000E+00 0                                                                 I
+  6.6000   0.000000E+00 0                                                                 I
+  6.7500   0.000000E+00 0                                                                 I
+  6.9000   0.000000E+00 0                                                                 I
+  7.0500   0.000000E+00 0                                                                 I
+  7.2000   0.000000E+00 0                                                                 I
+  7.3500   0.000000E+00 0                                                                 I
+  7.5000   0.000000E+00 0                                                                 I
+  7.6500   0.000000E+00 0                                                                 I
+  7.8000   0.000000E+00 0                                                                 I
+  7.9500   0.000000E+00 0                                                                 I
+  8.1000   0.000000E+00 0                                                                 I
+  8.2500   0.000000E+00 0                                                                 I
+  8.4000   0.000000E+00 0                                                                 I
+  8.5500   0.000000E+00 0                                                                 I
+  8.7000   0.000000E+00 0                                                                 I
+  8.8500   0.000000E+00 0                                                                 I
+  9.0000   0.000000E+00 0                                                                 I
+  9.1500   0.000000E+00 0                                                                 I
+  9.3000   0.000000E+00 0                                                                 I
+  9.4500   0.328160E+02 0                                                                 I
+  9.6000   0.000000E+00 0                                                                 I
+  9.7500   0.929142E-01 0                                                                 I
+  9.9000   0.182303E+02 0                                                                 I
+ 10.0500   0.733773E-01 0                                                                 I
+ 10.2000   0.148782E+00 0                                                                 I
+ 10.3500   0.157656E+00 0                                                                 I
+ 10.5000   0.193865E+02 0                                                                 I
+ 10.6500   0.157097E+02 0                                                                 I
+ 10.8000   0.240541E+02 0                                                                 I
+ 10.9500   0.194221E+02 0                                                                 I
+ 11.1000   0.150803E+02 0                                                                 I
+ 11.2500   0.137422E+02 0                                                                 I
+ 11.4000   0.128633E+02 0                                                                 I
+ 11.5500   0.138754E+02 0                                                                 I
+ 11.7000   0.155514E+02 0                                                                 I
+ 11.8500   0.155247E+02 0                                                                 I
+ 12.0000   0.150214E+02 0                                                                 I
+ 12.1500   0.184540E+02 0                                                                 I
+ 12.3000   0.174467E+02 0                                                                 I
+ 12.4500   0.194250E+02 0                                                                 I
+ 12.6000   0.179515E+02 0                                                                 I
+ 12.7500   0.208695E+02 0                                                                 I
+ 12.9000   0.196986E+02 0                                                                 I
+ 13.0500   0.253709E+02 0                                                                 I
+ 13.2000   0.238315E+02 0                                                                 I
+ 13.3500   0.289734E+02 0                                                                 I
+ 13.5000   0.331634E+02 0                                                                 I
+ 13.6500   0.347868E+02 0                                                                 I
+ 13.8000   0.369432E+02 0                                                                 I
+ 13.9500   0.453803E+02 0X                                                                I
+ 14.1000   0.508313E+02 0X                                                                I
+ 14.2500   0.572256E+02 0X                                                                I
+ 14.4000   0.745191E+02 0X                                                                I
+ 14.5500   0.107099E+03 0XX                                                               I
+ 14.7000   0.175435E+03 0XXXX                                                             I
+ 14.8500   0.264669E+04 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1
+      1011          ZOOM rho, phi                                                                   
+           nent            sum           bmin           bmax
+         815719    0.00000E+00    0.00000E+00    0.18972E+03
+           undf           ovef           sumw           avex
+    0.00000E+00    0.26463E+05    0.29356E+05    0.11523E+02
+  0.2000   0.000000E+00 0                                                                 I
+  0.2100   0.000000E+00 0                                                                 I
+  0.2200   0.000000E+00 0                                                                 I
+  0.2300   0.000000E+00 0                                                                 I
+  0.2400   0.000000E+00 0                                                                 I
+  0.2500   0.000000E+00 0                                                                 I
+  0.2600   0.000000E+00 0                                                                 I
+  0.2700   0.000000E+00 0                                                                 I
+  0.2800   0.113184E+00 0                                                                 I
+  0.2900   0.435000E+00 0                                                                 I
+  0.3000   0.684541E+00 0                                                                 I
+  0.3100   0.131589E+01 0                                                                 I
+  0.3200   0.158635E+01 0                                                                 I
+  0.3300   0.195353E+01 0                                                                 I
+  0.3400   0.268625E+01 0                                                                 I
+  0.3500   0.310676E+01 0X                                                                I
+  0.3600   0.333826E+01 0X                                                                I
+  0.3700   0.369970E+01 0X                                                                I
+  0.3800   0.409705E+01 0X                                                                I
+  0.3900   0.441817E+01 0X                                                                I
+  0.4000   0.515088E+01 0X                                                                I
+  0.4100   0.553346E+01 0X                                                                I
+  0.4200   0.609374E+01 0XX                                                               I
+  0.4300   0.623248E+01 0XX                                                               I
+  0.4400   0.717831E+01 0XX                                                               I
+  0.4500   0.711231E+01 0XX                                                               I
+  0.4600   0.787696E+01 0XX                                                               I
+  0.4700   0.809001E+01 0XX                                                               I
+  0.4800   0.889612E+01 0XXX                                                              I
+  0.4900   0.957540E+01 0XXX                                                              I
+  0.5000   0.996747E+01 0XXX                                                              I
+  0.5100   0.110273E+02 0XXX                                                              I
+  0.5200   0.116693E+02 0XXXX                                                             I
+  0.5300   0.129957E+02 0XXXX                                                             I
+  0.5400   0.142716E+02 0XXXX                                                             I
+  0.5500   0.152819E+02 0XXXXX                                                            I
+  0.5600   0.163443E+02 0XXXXX                                                            I
+  0.5700   0.175549E+02 0XXXXXX                                                           I
+  0.5800   0.190554E+02 0XXXXXX                                                           I
+  0.5900   0.214219E+02 0XXXXXXX                                                          I
+  0.6000   0.232722E+02 0XXXXXXXX                                                         I
+  0.6100   0.252604E+02 0XXXXXXXX                                                         I
+  0.6200   0.290783E+02 0XXXXXXXXXX                                                       I
+  0.6300   0.314206E+02 0XXXXXXXXXX                                                       I
+  0.6400   0.347354E+02 0XXXXXXXXXXXX                                                     I
+  0.6500   0.396165E+02 0XXXXXXXXXXXXX                                                    I
+  0.6600   0.444964E+02 0XXXXXXXXXXXXXXX                                                  I
+  0.6700   0.488779E+02 0XXXXXXXXXXXXXXXXX                                                I
+  0.6800   0.572106E+02 0XXXXXXXXXXXXXXXXXXX                                              I
+  0.6900   0.653068E+02 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+  0.7000   0.738770E+02 0XXXXXXXXXXXXXXXXXXXXXXXXX                                        I
+  0.7100   0.833405E+02 0XXXXXXXXXXXXXXXXXXXXXXXXXXXX                                     I
+  0.7200   0.949051E+02 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+  0.7300   0.105299E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                             I
+  0.7400   0.111565E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                           I
+  0.7500   0.119564E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                        I
+  0.7600   0.127778E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                     I
+  0.7700   0.171959E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      I
+  0.7800   0.189717E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  0.7900   0.951079E+02 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                I
+  0.8000   0.768376E+02 0XXXXXXXXXXXXXXXXXXXXXXXXXX                                       I
+  0.8100   0.650655E+02 0XXXXXXXXXXXXXXXXXXXXXX                                           I
+  0.8200   0.573181E+02 0XXXXXXXXXXXXXXXXXXX                                              I
+  0.8300   0.495413E+02 0XXXXXXXXXXXXXXXXX                                                I
+  0.8400   0.420414E+02 0XXXXXXXXXXXXXX                                                   I
+  0.8500   0.353437E+02 0XXXXXXXXXXXX                                                     I
+  0.8600   0.314996E+02 0XXXXXXXXXX                                                       I
+  0.8700   0.267176E+02 0XXXXXXXXX                                                        I
+  0.8800   0.233707E+02 0XXXXXXXX                                                         I
+  0.8900   0.206306E+02 0XXXXXXX                                                          I
+  0.9000   0.186055E+02 0XXXXXX                                                           I
+  0.9100   0.160655E+02 0XXXXX                                                            I
+  0.9200   0.143833E+02 0XXXXX                                                            I
+  0.9300   0.130113E+02 0XXXX                                                             I
+  0.9400   0.112489E+02 0XXX                                                              I
+  0.9500   0.108988E+02 0XXX                                                              I
+  0.9600   0.101832E+02 0XXX                                                              I
+  0.9700   0.892575E+01 0XXX                                                              I
+  0.9800   0.916677E+01 0XXX                                                              I
+  0.9900   0.118458E+02 0XXXX                                                             I
+  1.0000   0.198863E+02 0XXXXXX                                                           I
+  1.0100   0.186749E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX I
+  1.0200   0.132241E+03 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                   I
+  1.0300   0.179008E+02 0XXXXXX                                                           I
+  1.0400   0.112830E+02 0XXX                                                              I
+  1.0500   0.959075E+01 0XXX                                                              I
+  1.0600   0.932434E+01 0XXX                                                              I
+  1.0700   0.912868E+01 0XXX                                                              I
+  1.0800   0.856921E+01 0XX                                                               I
+  1.0900   0.945967E+01 0XXX                                                              I
+  1.1000   0.969608E+01 0XXX                                                              I
+  1.1100   0.931124E+01 0XXX                                                              I
+  1.1200   0.100531E+02 0XXX                                                              I
+  1.1300   0.100280E+02 0XXX                                                              I
+  1.1400   0.975446E+01 0XXX                                                              I
+  1.1500   0.109589E+02 0XXX                                                              I
+  1.1600   0.109823E+02 0XXX                                                              I
+  1.1700   0.112751E+02 0XXX                                                              I
+  1.1800   0.117708E+02 0XXXX                                                             I
+  1.1900   0.115652E+02 0XXXX                                                             I
+1
+      1012          ZOOM J/Psi                                                                      
+           nent            sum           bmin           bmax
+         160052    0.00000E+00    0.25910E+00    0.51349E+02
+           undf           ovef           sumw           avex
+    0.10111E+02    0.16327E+05    0.16676E+05    0.13379E+02
+  3.0964   0.461657E+00 X                                                                 I
+  3.0964   0.385244E+00 X                                                                 I
+  3.0964   0.364008E+00 X                                                                 I
+  3.0965   0.631732E+00 X                                                                 I
+  3.0965   0.689840E+00 X                                                                 I
+  3.0965   0.528709E+00 X                                                                 I
+  3.0965   0.594433E+00 X                                                                 I
+  3.0965   0.101046E+01 X                                                                 I
+  3.0966   0.116585E+01 XX                                                                I
+  3.0966   0.148478E+01 XX                                                                I
+  3.0966   0.137929E+01 XX                                                                I
+  3.0966   0.178326E+01 XX                                                                I
+  3.0966   0.229874E+01 XXX                                                               I
+  3.0967   0.204051E+01 XXX                                                               I
+  3.0967   0.288618E+01 XXXX                                                              I
+  3.0967   0.311026E+01 XXXX                                                              I
+  3.0967   0.470113E+01 XXXXXX                                                            I
+  3.0967   0.608699E+01 XXXXXXXX                                                          I
+  3.0968   0.795811E+01 XXXXXXXXXX                                                        I
+  3.0968   0.118051E+02 XXXXXXXXXXXXXXX                                                   I
+  3.0968   0.176309E+02 XXXXXXXXXXXXXXXXXXXXXXX                                           I
+  3.0968   0.286632E+02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                             I
+  3.0968   0.436770E+02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX         I
+  3.0969   0.513488E+02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  3.0969   0.424321E+02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX           I
+  3.0969   0.294769E+02 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                            I
+  3.0969   0.195963E+02 XXXXXXXXXXXXXXXXXXXXXXXXX                                         I
+  3.0969   0.114325E+02 XXXXXXXXXXXXXXX                                                   I
+  3.0970   0.867629E+01 XXXXXXXXXXX                                                       I
+  3.0970   0.632364E+01 XXXXXXXX                                                          I
+  3.0970   0.465302E+01 XXXXXX                                                            I
+  3.0970   0.351559E+01 XXXXX                                                             I
+  3.0970   0.330269E+01 XXXX                                                              I
+  3.0971   0.218287E+01 XXX                                                               I
+  3.0971   0.211803E+01 XXX                                                               I
+  3.0971   0.150070E+01 XX                                                                I
+  3.0971   0.158178E+01 XX                                                                I
+  3.0971   0.105977E+01 XX                                                                I
+  3.0972   0.855758E+00 X                                                                 I
+  3.0972   0.103585E+01 XX                                                                I
+  3.0972   0.763370E+00 X                                                                 I
+  3.0972   0.938030E+00 X                                                                 I
+  3.0972   0.501899E+00 X                                                                 I
+  3.0973   0.753359E+00 X                                                                 I
+  3.0973   0.471191E+00 X                                                                 I
+  3.0973   0.691478E+00 X                                                                 I
+  3.0973   0.508759E+00 X                                                                 I
+  3.0973   0.259096E+00 X                                                                 I
+  3.0974   0.319141E+00 X                                                                 I
+  3.0974   0.406713E+00 X                                                                 I
+1
+      1013          ZOOM Upsilon                                                                    
+           nent            sum           bmin           bmax
+          24229    0.00000E+00    0.00000E+00    0.49234E+01
+           undf           ovef           sumw           avex
+    0.22951E+01    0.36537E+04    0.36858E+04    0.14522E+02
+  9.4602   0.212666E+00 0XX                                                               I
+  9.4602   0.356545E+00 0XXXX                                                             I
+  9.4602   0.405039E+00 0XXXXX                                                            I
+  9.4602   0.631740E+00 0XXXXXXXX                                                         I
+  9.4602   0.616931E+00 0XXXXXXXX                                                         I
+  9.4602   0.422576E+00 0XXXXX                                                            I
+  9.4603   0.146217E+01 0XXXXXXXXXXXXXXXXXXX                                              I
+  9.4603   0.228249E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                   I
+  9.4603   0.367016E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+  9.4603   0.492341E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  9.4603   0.319784E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                       I
+  9.4603   0.303790E+01 0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                         I
+  9.4603   0.190080E+01 0XXXXXXXXXXXXXXXXXXXXXXXXX                                        I
+  9.4603   0.130735E+01 0XXXXXXXXXXXXXXXXX                                                I
+  9.4603   0.115345E+01 0XXXXXXXXXXXXXXX                                                  I
+  9.4603   0.874048E+00 0XXXXXXXXXXX                                                      I
+  9.4604   0.410371E+00 0XXXXX                                                            I
+  9.4604   0.407958E+00 0XXXXX                                                            I
+  9.4604   0.369617E+00 0XXXX                                                             I
+  9.4604   0.208936E+00 0XX                                                               I
+  9.4604   0.286378E+00 0XXX                                                              I
+  9.4604   0.154166E+00 0XX                                                               I
+  9.4604   0.119733E+00 0X                                                                I
+  9.4604   0.639221E-01 0                                                                 I
+  9.4604   0.282645E+00 0XXX                                                              I
+  9.4604   0.759344E-01 0X                                                                I
+  9.4605   0.117528E+00 0X                                                                I
+  9.4605   0.212807E+00 0XX                                                               I
+  9.4605   0.756295E-01 0X                                                                I
+  9.4605   0.112478E+00 0X                                                                I
+  9.4605   0.704878E-01 0                                                                 I
+  9.4605   0.449880E-01 0                                                                 I
+  9.4605   0.337819E-01 0                                                                 I
+  9.4605   0.471312E-01 0                                                                 I
+  9.4605   0.816455E-01 0X                                                                I
+  9.4605   0.100444E+00 0X                                                                I
+  9.4606   0.000000E+00 0                                                                 I
+  9.4606   0.770579E-01 0X                                                                I
+  9.4606   0.590716E-01 0                                                                 I
+  9.4606   0.000000E+00 0                                                                 I

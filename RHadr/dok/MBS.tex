@@ -1,0 +1,259 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[dvips]{seminar}                      %%%%%%%%%%%%%%%%%%
+                                                    %%%%%%%%%%%%%%%%%%
+%  make tokyo-ps
+%  make tokyo.ps
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}                     %%%%%%%%%%%%%%%%%%
+
+
+% The upper title is defined in seminar.con One may redefine it like that
+%\def\title{{\large\bf\cgr Loops and Legs, Bastei, April 2000}}
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+
+\begin{center}
+{\Large\bf\crd   Machine Beam Spread (MBS) in KKMC}\\
+\vspace{2mm}
+{\Large\bf\cbl   S. Jadach}\\
+\vspace{2mm}
+{\large\bf       Institute of Nuclear Physics, Krak\'ow, Poland}
+\end{center}
+%===================================================================
+
+\vspace{1mm}
+{\small\Cmar
+  We discuss in this note:
+  \begin{itemize}
+  \item
+    How MBS is implemented in KKMC?
+  \item
+    Is implementation of MBS in KKMC incorrect or rather inefficient?
+  \item
+    Danger for $w=1$ events in KKMC
+  \item
+    One possible fix
+  \end{itemize}
+}
+
+\vfill
+\end{slide}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd MBS in KKMC was originally for LEP }
+
+\begin{itemize}
+\item
+  The machine beam energy spread (MBS) was introduce in KKMC for LEP.
+\item
+  At the time of its implementation resonances like psi or phi we not considered.
+  We had in mind Z resonance, for which the beam spread is
+  much smaller than the Z resonance width.
+\item
+  RRes package was never tested with the nonzero beam spread,
+  that is with nonzero input parameter DelEne =xpar( 2).
+\end{itemize}
+
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd How MBS is implemented in KKMC?}
+
+The Gaussian beam energy random variation is realized using\\
+{\tt SUBROUTINE KarLud\_SmearBeams}
+in the file KK2f/Karlud.f
+
+Unfortunately the comment in front of this routine
+{\footnotesize
+\begin{verbatim}
+*//   This is correct only for very small spread $<$ 2GeV //
+\end{verbatim}}
+is incorrect because:
+\begin{itemize}
+\item
+  The MBS should be small compared to the relevant resonance width.
+  The scale 2GeV is here meant to be the Z width. In reality
+  for low energies MBS should be small compared the width of the low energy resonances
+\item
+  If the above is not true, then the actual MC implementation is not "INCORRECT"
+  (although it can be in some cases, see discussion below)
+  but rather it is mathematically correct, however,
+  its implementation is "INEFFICIENT", from the point of view of the MC weight variation.
+\end{itemize}
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd Is implementation of MBS in KKMC incorrect or inefficient?}
+
+
+Let me elaborate a little bit more on the above:
+In the MC algorithm for ISR (see KK2f/Karlud.f, bornv/BornV.f) we memorize
+photon spectrum $f(v)=\rho_{ISR}(v)*Born(s(1-v))$.\\
+In the presence of the narrow resonances
+this function has peaks at $v_i=1-M_i^2/s$, where $M_i$ is mass of the resonance.\\
+This $f(v)$ is memorized once for ever in the MC initialization phase.\\
+In the presence of the machine beam spread (MBS) we cannot change $E=\sqrt{s}$
+event-per-event, because changing s redefines $f(v)$, in particular positions $v_i$
+of the peaks will move!
+
+What I said is only half true -- we can change $s$, but
+we have to compensate this change EXACTLY by the MC weight which involves
+the ration $w=f(v_X)/f(v)$, where $v_X = 1-s(1-v)/s_X$ is shifted due to MBS.\\
+This weight $w$ will contain in particular the ratio of two Breit-Wigners.\\
+Mathematically, this solution is CORRECT, but obviously
+if the beam spread is bigger than width of the resonance than the weight will go crazy.\\
+One may live with the crazy MC weight and still get correct results for weighted
+MC events.
+
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd Danger for $w=1$ events in KKMC}
+
+What may be really dangerous is to use KKMC for MBS and narrow resonances
+for  weight$=1$ events (the default)!\\
+In this case events which internally have $w=$m\_WtMain $>$ m\_WTmax 
+may lead to strongly distorted distributions.
+(In fact the resonances may get severely distorted).
+
+In principle one should always scrutinize and control very well statistics
+of such "overweighted events", and if there are too many of them,
+then one should increase parameter WTmax, see input data:
+{\footnotesize
+\begin{verbatim}
+   9          1.0e0   WtMax =xpar( 9)   Maximum weight for rejection
+ 517          5.0e0   WtMax Maximum weight for rejection d-quark
+\end{verbatim}}
+Unfortunately, setting WtMax=1000 or so can be very wasteful, in view of the
+fact that the overweighted events concentrate in a very small part of the phase space,
+while we will reject 999/1000 events everywhere.\\
+(Weight distribution will have  along tail -- all of the tail will 
+come from the narrow resonances, which form small fraction of the total cross section!).
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd One possible fix}
+
+However, in KKMC there is an interesting
+protection mechanism for the case of many "overweighted events",
+see part of code in KK2f/KK2f.f
+{\footnotesize
+\begin{verbatim}
+         WtScaled = m_WtMain/m_WTmax
+         IF( WtScaled .GT. 1d0) THEN
+            m_WtMain = WtScaled
+         ELSE
+            m_WtMain = 1.d0
+         ENDIF
+\end{verbatim}}
+The abnormal events with m\_WtMain $>$ m\_WTmax are still assigned the "scaled weight" 
+assigned to m\_WtMain.\\
+Most of events will have m\_WtMain=1, but there might be a small subset of "abnormal"
+events with weight$>$1.
+
+The possible fix is the following:
+It is perhaps not very convenient, but by using
+this weight WtMain event for so called ``unweighted events''
+allows us safely to avoid the worst pitfalls,
+leading to completely wrong result, like what you have seen.
+
+In a sense we use then a mixture of weighted and unweighted events.
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+
+\begin{minipage}{52mm}{
+\epsfig{file=../Plots/cFig0a.eps_500k_del0MeV_wt1,width=50mm}\\
+\epsfig{file=../Plots/cFig0a.eps_500k_del4MeV_wt1,width=50mm}\\
+\epsfig{file=../Plots/cFig0a.eps_500k_del4MeV_wted,width=50mm}
+}
+\end{minipage}
+\begin{minipage}{52mm}
+\cbl\small
+\yellowbox{\bf\Color{Red}  Numerical examples}
+The distribution of the effective mass $Q$ of the final state
+(excluding ISR photos). All results at $\sqrt{s}=10GeV$.
+All five quarks. No FSR.
+Plotted regions of two lightest charm resonances.
+\begin{itemize}
+\item
+  Upper plot for zero machine beam spread, 500k of wt=1 events.
+\item
+  Middle plot for machine beam spread 4MeV each beam, 500k of $wt=1$ events.
+  {\crd Resonance eroded due to large amount of $wt>1$ events}.
+\item
+  Lower plot for machine beam spread 4MeV each beam, 500k events, MC weight $wt=1$
+  for normal events and $wt>1$ weight is booked in the histogram.
+  {\crd Resonance of right size but large fluctuations of the weight, see error bars!}.  
+\end{itemize}
+\end{minipage}
+\vfill
+\end{slide}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+%//////////////////////////////////////////////////////////////////////////////////
+\begin{slide}
+\yellowbox{\bf\crd Final remarks }
+
+{\bf\cbl
+  \begin{itemize}
+  \item
+    The above numerical data with psi resonance reduced in size
+    seems to be consistent with what was found in BaBar test.
+  \item
+    Possible fix is to keep WtMain. This does not require any modification of KKMC.
+  \item
+    Radical solution is to introduce in KKMC the Gaussian beamstrahlung distribution
+    which mimics MBS.
+    This is relatively easy, but requires modification/extension of the KKMC code.
+  \end{itemize}
+}
+
+\vfill
+\end{slide}    %%%
+%%%%%%%%%%%%%%%%%%
+
+
+
+\end{document}                                           %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

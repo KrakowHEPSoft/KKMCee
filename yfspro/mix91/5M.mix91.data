@@ -1,0 +1,14 @@
+mix91 ====== data set =========
+ 0 0 0 1 0 0 0 0       KAT1 - KAT8
+   5000000      nevtot
+   1000011      KEYRAD   QED switch, initial+final
+  91.161D0      CMSENE   MZ + 0 GeV
+ 0.23146D0      SINW2    s0
+  91.161D0      AMAZ     exper. mass
+  2.2534D0      GAMMZ    exper. width
+   0.105D0      AMFIN    muon mass
+      1D-6      VVMIN    infrared cut
+   0.999D0      VVMAX    v_max for initial state
+         0      KEYRED   reduction switch
+         1      KEYWGT   weighted events
+         2      KEYZET   !!!!!!

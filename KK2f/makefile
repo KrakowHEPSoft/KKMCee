@@ -1,0 +1,38 @@
+COMMAND = 
+COMMAND_OBJECTS = 
+LOCAL_LIB   =  KK2f.a 
+LIB_OBJECTS =  \
+	KK2f.o     KarLud.o   YFSini2.o \
+	KarFin.o   QED3.o     CEEX.o     GPS.o      BVR.o \
+	PseuMar.o  HepEvt.o   KinLib.o   ReaData.o \
+	Taupair.o  Tauface.o  RRes.o
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+###############
+FFLAGS = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77 = gfortran
+AR  = ar cru
+RANLIB = ranlib
+LD = $(F77)
+#############
+KK2f.o:		KK2f.h
+KarLud.o:	KarLud.h
+YFSini2.o:	YFSini2.h
+KarFin.o:	KarFin.h
+PseuMar.o:	PseuMar.h
+HepEvt.o:	HepEvt.h
+QED3.o:		QED3.h
+CEEX.o:		GPS.h
+GPS.o:		GPS.h
+BVR.o:		BVR.h
+Taupair.o:	Taupair.h
+RRes.o:		RRes.h
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR)     $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ *.a
+

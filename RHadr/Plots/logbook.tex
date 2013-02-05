@@ -1,0 +1,90 @@
+============================ LOGBOOK ================================
+12.Oct.02\\
+I run KKMC version end of October, the same as on my web page,
+and the same Stefano is using,  with cuts of email (1).
+No Vacuum polarization, no FSR etc.
+For 25M events I get:
+     XsecY [nb] = 24.00670093 +- 0.01321713341
+Comparing with 23.85 +- 0.05 nb for KKMC from Stefano,
+I get more by 0.6\% +-0.2\%, which is big discrepancy (three sigma).
+It may well be that we differ in the codding of the cutoffs,
+but one should increase statistics before it is convincing.
+(Stefano seems to have statistics or order 15M.)
+
+When I switch on KeyELW=1 and Ihvp=3 (Burkhardt+Pietrzyk) then I get:
+     XsecY [nb] = 24.57605042 +- 0.04414542441
+that is more by +2.2\% +- 0.1\%, which is twice more as
+as VP of Phokhara +1.1+- 0.2\% from the email (1).
+
+REMARKS:
+(A) In order to be sure that the codding of cutofs/acceptance 
+is the same let me describe what I do in my code:
+ Define variable TrigNew =1
+ If pi+ found in /hepevt/ then
+   if abs(cos(theta+) > cos(Pi*40.0/180.0) then TrigNew =0
+ else TrigNew =0
+ If pi- found in /hepevt/ then
+   if abs(cos(theta-) > cos(Pi*40.0/180.0) then TrigNew =0
+ else TrigNew =0
+ If parent of pi+ or pi-       is not rho0 then  TrigNew =0
+ If grandparent of pi+ or pi-  is not phi  then  TrigNew =0
+ Calculate four vector VMissing = p_beam1 + p_beam2 - p_pi+ - p_pi-
+ If VMissing.energy < 0.010         then TrigNew =0
+ If abs(VMissing.CosTheta) < 0.010  then TrigNew =0
+In this way TrigNew =1 only for events with pi+pi- comming from rho0
+and passing all kinematics cuts.
+Note that if I dont check for grandparent being phi then
+xsection is bigger by about 1 percent
+    (24.12837414 +- 0.01609173394 for phi->3pi included)
+
+(B) Vaccum polarization I may switch on only for Ihvp=3
+(Burkhardt+Pietrzyk) because the other types of VP do not work 
+in the range 2m_pi<sqrt(s)<10GeV.
+Wnen I do it then I find +2\% shift, as said above.
+The important question: is it legal to switch VP on in KKMC?
+According to discussion with Axel it is incorrect to switch on VP
+near the rho, because VP is already included in the rho formfactor.
+The immediate next question is: what is the meaning of the xsections
+from Phokhara with and without VP?
+and with which one we could compare KKMC? 
+It is not clear to me, because it depends how VP is handled in the
+rho formfactor in their code.
+
+Altogether I conlude:
+====================
+1. We should make an effort to agree on coding cuts/acceptance in order to
+eliminate the 0.6\% difference between KKMC and KKMC,
+because it obscures our analysis.
+2. The treatment of VP in Phokhara has to be understood before we
+are sure that we are ``comparing apples with apples''.
+
+#########################################################################
+{\bf email (1)}
+\begin{verbatim}
+------------------------------------------------------------------------
+Date: Thu, 3 Oct 2002 13:16:23 +0200 (MET DST)
+From: Stefano Di Falco <Stefano.DiFalco@lnf.infn.it>
+To: s.jadach@cern.ch
+Subject: comparisons KKMC-Phokhara
+
+I performed the first comparisons of the MC quantities we need in our
+analysis. The results are quite good:
+
+Cross section:
+-------------
+We require:
+- missing energy: Emiss > 10 MeV
+- missing momentum angle: 'theta_gamma' <15 or 'theta_gamma'>165 degrees
+- pions angle : 40<theta_pi<140 degrees (for both pions)
+
+Sigma(KKMC,no vacuum polarization)     = 23.85 +- 0.05 nb
+Sigma(Phokhara,no vacuum polarization) = 24.06 +- 0.03 nb
+
+                        discrepancy  0.9 +- 0.2 %
+
+In fact we use Phokhara with vacuum polarization:
+Sigma(Phokhara, vacuum polarization)   = 24.34 +- 0.02 nb
+but I was not able to get a similar cross section with KKMC (switching on
+the flag KeyELW in the card the cross section came out exagerately low)
+------------------------------------------------------------------------
+\end{verbatim}

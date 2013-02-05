@@ -1,0 +1,33 @@
+ 1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+         200      NEVT number of events   <- Input for the main program
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+********************************************************************************
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1          200D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*     KeyELW=0,1 Type of Elewctroweak corrections, KeyElw=0 only for tests
+   12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
+   17         0.99D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+********************************************************************************
+   61       0.7071d0      spin1x  polarization vector beam 1
+   62            0d0      spin1y  polarization vector beam 1
+   63       0.7071d0      spin1z  polarization vector beam 1
+   64            0d0      spin1x  polarization vector beam 2
+   65      -0.7071d0      spin1y  polarization vector beam 2
+   66       0.7071d0      spin1z  polarization vector beam 2
+********************************************************************************
+ 2001            3d0      Jak1 =xpar(71)  First  Tau decay mask (=3 for pion)
+ 2002            3d0      Jak2 =xpar(72)  Second Tau decay mask (=3 for pion)
+********************************************************************************
+*     Define process
+**  415              1      KFfin, Tau
+  413              1      KFfin, mu
+********************************************************************************
+EndX

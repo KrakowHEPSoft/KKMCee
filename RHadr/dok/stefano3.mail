@@ -1,0 +1,132 @@
+From stefano.difalco@pi.infn.it Mon Oct 14 13:05:28 2002
+Return-Path: <stefano.difalco@pi.infn.it>
+Received: via tmail-4.1(10) for jadach; Mon, 14 Oct 2002 13:05:30 +0200 (MET DST)
+Return-Path: <stefano.difalco@pi.infn.it>
+Received: from smtp3.cern.ch (smtp3.cern.ch [137.138.131.164])
+	by mail6.cern.ch (8.12.1/8.12.1) with ESMTP id g9EB5U7W005484
+	for <jadach@mail6.cern.ch>; Mon, 14 Oct 2002 13:05:30 +0200 (MET DST)
+Received: from mailserver.pi.infn.it (root@mailserver.pi.infn.it [192.84.133.222])
+	by smtp3.cern.ch (8.12.1/8.12.1) with ESMTP id g9EB5TuK025510
+	for <Stanislaw.Jadach@cern.ch>; Mon, 14 Oct 2002 13:05:29 +0200 (MET DST)
+Received: from galileo.pi.infn.it (galileo.pi.infn.it [192.84.133.117])
+	by mailserver.pi.infn.it (8.8.8/8.8.8) with ESMTP id NAA05079
+	for <Stanislaw.Jadach@cern.ch>; Mon, 14 Oct 2002 13:04:05 +0200
+Received: from localhost (difalco@localhost)
+	by galileo.pi.infn.it (8.10.1/8.10.1) with SMTP id g9EB5Tk43702
+	for <Stanislaw.Jadach@cern.ch>; Mon, 14 Oct 2002 13:05:29 +0200
+Date: Mon, 14 Oct 2002 13:05:28 +0200 (METDST)
+From: Stefano DI FALCO <stefano.difalco@pi.infn.it>
+To: Stanislaw Jadach <Stanislaw.Jadach@cern.ch>
+Subject: second iteration
+In-Reply-To: <Pine.LNX.3.95a.1021013051655.24014F-100000@lxplus047.cern.ch>
+Message-ID: <Pine.A41.3.95a.1021014124700.51634A-100000@galileo.pi.infn.it>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN;
+  charset=US-ASCII
+X-UID: 4
+
+Dear Staszek,
+I also observed that the hadronic VP was missing and in fact it's not
+present in PHOKHARA in any other part of the program. Federico Nguyen has
+inserted it recently using a function from Fred Jegerlehner used in
+BABAYAGA but in the version of PHOKHARA we used to get the radiation
+function (and then the pion form factor) there was only the leptonic VP.
+The pion form factor Graziano gave you is very preliminary, just a
+qualitative (and nice) check with the CMD2 results, he considered the VP 
+a problem to be dealed with in a second iteration when also the
+experimental systematics will be better under control.
+If the vacuum  polarization must be included in the radiation function or
+in the pion form factor is still not so clear for me, I probably need to
+discuss more with Axel.
+
+Concerning the agreement KKMC vs KKMC I send you the plots from which I
+got the number: unweighted.ps comes from 30 million of e+e- at the Phi,
+what I call sigma_tot comes from 
+grep -i pb demo.output
+The error I quote is only the statistical fluctuation on the number of
+events.
+I also generated 120 million of weigthed events and the cross section is
+closer to the one you give me. But I don't know how to quote the error on
+sigma. What I call sigma_norm comes from 
+grep -i crude demo.output
+I remember you told me to look at the dispersion of the weight
+distribution but the distribution seems to strange for me..
+
+For what I read from your logbook (there's I thinksome misprinting on
+TrigNew=0  and on the costheta cut , should be cos(15 degrees)= 0.966)
+we are using the same kinematic cuts.
+
+Thank you for your nice counterchecks, best regards,
+
+							Stefano
+
+
+
+
+On Sun, 13 Oct 2002, Stanislaw Jadach wrote:
+
+> Hi Stefano, I am reading more carefully what you say on VP.
+> What you say below explains why I have in KKMC result for VP which is 2%
+> and you have from Phokhara 1%.
+> Simply because according to what you sho below, phokhara includes only
+> leptonic VP and I include in KKMC both
+> leptonic and hadronic VP. But why only leptonic?
+> Does not make much sense... strange...
+> Unless they have still another normalization
+> of the rho formfactor????
+> best regards, staszek
+> 
+> > About VACUUM POLARIZATION
+> > -------------------------
+> > I tried to check the vacuum polarization in PHOKHARA and it is very
+> > simple. The correction applied to the cross section is of the kind:
+> > 
+> > inte = inte/(1.d0-vacuumpolarization(qq))
+> > 
+> > where 
+> > 
+> > vacuumpolarization = deltalep(qq,me) + deltalep(qq,mmu)
+> >      &  + deltalep(qq,mtau)
+> > 
+> > and deltalep is the function:
+> >       double precision function deltalep(qq,ml)
+> >       include 'phokhara.inc'
+> >       double precision qq,ml,bet,ml2,rat
+> > 
+> >       ml2 = 4.d0*ml**2
+> >       rat = ml2/qq
+> > 
+> >       if(qq.gt.ml2)then
+> >          bet = sqrt(1.d0-rat)
+> >          deltalep = alpha/(3.d0*pi)*(1.d0/3.d0-(1.d0+ml2/2.d0)
+> >      &            *(2.d0+bet*log((1.d0-bet)/(1.d0+bet))))
+> >       elseif(qq.ge.0.d0)then
+> >          bet = sqrt(rat-1.d0)
+> >          deltalep = alpha/(3.d0*pi)*(1.d0/3.d0-(1.d0+ml2/2.d0)
+> >      &            *(2.d0-bet*atan(1.d0/bet)))
+> >       else
+> >          write(6,*)'deltalep:qq<0 not supported'
+> >          stop
+> >       endif
+> >       end
+> >       
+> > It was not so easy for me to understand the function XFOTF3 in dizet
+> > library but I guess it's much more complicate because it's designed for
+> > a more general use.
+> > 
+> > About RADIATION FUNCTION
+> > ------------------------
+> > Finally I would like to see what happens if I set the pion from factor to
+> > 1 (FPI=1 in RRes_formkuehn02(s,FPI) ). In the case of PHOKHARA we get the
+> > radiation function, is this true also for KKMC? 
+> > 
+> > Thanks for your attention. I wish you a nice time at SLAC, best regards,
+> > 
+> > 						Stefano
+> > 	
+> > 
+> > 
+> 
+> 
+
+

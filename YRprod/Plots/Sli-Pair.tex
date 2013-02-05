@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
+                                                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% gmake Sli-Pair-ps
+% pstops '1:0@0.925(10mm,-1mm)'  Sli-Pair.ps   Sli-Pair-redu.ps
+%======================
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}                     %%%%%%%%%%%%%%%%%%
+
+
+\def\title{\Color{PineGreen} Pairs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide*}                                                %%%%%%%%%%%%%%%
+\titbox{{\large\Color{Magenta} Virtual pairs from \KK MC }}
+{\color{blue}
+\noindent
+X-sections for $\mu^+\mu^-$ at 189GeV.\\
+Without and with virtual correction due to pair.\\
+Virt. pairs are all leptons and quarks, in IS and FS.\\
+70\% of correction is due to electron pair.\\
+QED ISR, FSR and IFI is on.\\
+Simple cut $v=1-M^2_{inv}/s<v_{\max}$. Workshop input.\\
+}
+
+\begin{center}
+\setlength{\unitlength}{1mm}
+\begin{picture}(70,50)
+%#####\put(0,0){\framebox( 65,60){ }}
+\put(0,0){\makebox(0,0)[lb]{\epsfig{file=TabPair-1.eps,width=70mm,height=50mm}}}
+\end{picture}
+\end{center}
+\vspace{1mm}
+\noindent
+{\color{red} Remarks: ??
+}
+\vfill
+\end{slide*}   %%%
+%%%%%%%%%%%%%%%%%%
+
+
+\end{document}
+

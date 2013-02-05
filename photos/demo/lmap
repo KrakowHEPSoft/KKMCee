@@ -1,0 +1,37 @@
+(ld): halt 4
+(ld): savename phodem.exe
+(ld): filelist 8 1
+(ld): i /lib/crt0.o
+(ld): i phodem.o
+(ld): i ../../jetset/jetset.a
+(ld): i ../glib.a
+(ld): lib /usr/lib/libxlf90.a
+(ld): lib /usr/lib/libxlf.a
+(ld): lib /usr/lib/libm.a
+(ld): lib /usr/lib/libc.a
+LIBRARY: Shared object libxlf90.a[io.o]: 62 symbols imported.
+LIBRARY: Shared object libxlf90.a[math.o]: 316 symbols imported.
+LIBRARY: Shared object libxlf90.a[xlfsys.o]: 28 symbols imported.
+LIBRARY: Shared object libxlf.a[shr.o]: 135 symbols imported.
+LIBRARY: Shared object libc.a[aio.o]: 5 symbols imported.
+LIBRARY: Shared object libc.a[shr.o]: 1479 symbols imported.
+LIBRARY: Shared object libc.a[meth.o]: 2 symbols imported.
+FILELIST: Number of previously inserted files processed: 8
+(ld): resolve
+RESOLVE: 491 of 4701 symbols were kept.
+(ld): addgl /usr/lib/glink.o
+ADDGL: Glink code added for 9 symbols.
+(ld): er full
+ER: There are no unresolved symbols.
+(ld): mismatch
+MISMATCH: No type mismatches exist.
+(ld): comprld
+COMPRLD: Kept 2769 of 2769 relocation entries.
+(ld): origin 0x200 0x0
+(ld): pad 512 512 512
+PAD: The object file pad values are .text: 512  .data: 512  .loader: 512
+(ld): save 1L .
+SAVE: Section sizes = 217052+135264+891332 (0x34FDC+0x21060+0xD99C4 hex)
+SAVE: Size of TOC: 744 (0x2E8 hex)
+(ld): rc
+RC: Highest return code was 0.

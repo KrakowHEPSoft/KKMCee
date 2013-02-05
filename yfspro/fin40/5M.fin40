@@ -1,0 +1,14 @@
+fin40 ===== fin40 data set ======
+ 0 1 0 0 0 0 0 0         KAT1-KAT8
+   5000000      no of events
+    100010      KEYRAD
+    40.0D0      CMSENE
+ 0.23146D0      SINW2
+  91.161D0      AMAZ
+  2.4534D0      GAMMZ
+  0.0005D0      AMFIN ( ELECTRON MASS in final state !!!!)
+      1D-6      VVMIN
+   0.999D0      VVMAX
+         0      KEYRED
+         1      KEYWGT
+         2      KEYZET

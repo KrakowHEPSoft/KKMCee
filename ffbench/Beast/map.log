@@ -1,0 +1,102 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2000.3.25)  1 APR 2001 15:08
+**map.tex
+(map.tex
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+! You can't use `\raise' in vertical mode.
+\put (#1,#2)#3->\@killglue \raise 
+                                  #2\unitlength \hb@xt@ \z@ {\kern #1\unitle...
+l.1004 \end{picture}}
+                     
+? 
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1004 \end{picture}}
+                     
+? 
+Missing character: There is no 0 in font nullfont!
+! Missing number, treated as zero.
+<to be read again> 
+                   \hbox 
+l.1004 \end{picture}}
+                     
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \hbox 
+l.1004 \end{picture}}
+                     
+? 
+! Undefined control sequence.
+<argument> \color 
+                  {black}\framebox ( 4, 150){ }
+l.1004 \end{picture}}
+                     
+? 
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+! Undefined control sequence.
+<argument> \color 
+                  {black}\framebox ( 1, 150){ }
+l.1004 \end{picture}}
+                     
+? 
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+! Undefined control sequence.
+<argument> \color 
+                  {black}\framebox ( 0, 150){ }
+l.1004 \end{picture}}
+                     
+? 
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+! Undefined control sequence.
+<argument> \color 
+                  {black}\framebox ( 0, 150){ }
+l.1004 \end{picture}}
+                     
+? 
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+! Undefined control sequence.
+<argument> \color 
+                  {black}\framebox ( 0, 150){ }
+l.1004 \end{picture}}
+                     
+? 
+! Emergency stop.
+<argument> \color 
+                  {black}\framebox ( 0, 150){ }
+l.1004 \end{picture}}
+                     
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 4 strings out of 25901
+ 22 string characters out of 197578
+ 78915 words of memory out of 384000
+ 3017 multiletter control sequences out of 10000+15000
+ 3640 words of font info for 14 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 7i,9n,14p,67b,77s stack positions out of 300i,100n,500p,50000b,4000s
+No pages of output.

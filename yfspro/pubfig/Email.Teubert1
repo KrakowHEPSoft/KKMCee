@@ -1,0 +1,91 @@
+From VM Fri Jan 15 18:14:00 1999
+Content-Length: 1909
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	[nil "Fri" "15" "January" "1999" "16:26:36" "+0100" "Frederic Teubert" "teubert@afal01.cern.ch" nil "60" "Re: additional point from Zfiter" "^From:" "Stanislaw.Jadach@cern.ch" "Stanislaw Jadach" "1" nil nil nil nil nil]
+	nil)
+Status: O
+X-Status: 
+Return-Path: <teubert@afal01.cern.ch>
+Received: via tmail-4.1(10) for jadach; Fri, 15 Jan 1999 16:26:39 +0100 (MET)
+Return-Path: <teubert@afal01.cern.ch>
+Received: from smtp1.cern.ch (smtp1.cern.ch [137.138.128.38])
+	by mail2.cern.ch (8.9.1a/8.9.1) with ESMTP id QAA25748
+	for <jadach@mail2.cern.ch>; Fri, 15 Jan 1999 16:26:38 +0100 (MET)
+Received: from afal43.cern.ch (afal43.cern.ch [137.138.209.177])
+	by smtp1.cern.ch (8.9.1a/8.9.1) with ESMTP id QAA09548
+	for <Stanislaw.Jadach@cern.ch>; Fri, 15 Jan 1999 16:26:38 +0100 (MET)
+Received: from localhost (teubert@localhost)
+	by afal43.cern.ch (8.8.5/8.8.5) with SMTP id QAA23386
+	for <Stanislaw.Jadach@cern.ch>; Fri, 15 Jan 1999 16:26:37 +0100 (MET)
+X-Authentication-Warning: afal43.cern.ch: teubert owned process doing -bs
+X-Sender: teubert@afal43.cern.ch
+Reply-To: Frederic Teubert <teubert@afal01.cern.ch>
+In-Reply-To: <199901151105.MAA72132@rsplus02.cern.ch>
+Message-ID: <Pine.OSF.3.95a.990115162430.23033A-100000@afal43.cern.ch>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+From: Frederic Teubert <teubert@afal01.cern.ch>
+To: Stanislaw Jadach <Stanislaw.Jadach@cern.ch>
+Subject: Re: additional point from Zfiter
+Date: Fri, 15 Jan 1999 16:26:36 +0100 (MET)
+
+
+Dear Staszeck,
+
+Find below the numbers you were asking for.
+
+Cheers,
+
+		Frederic
+
+****************** 120 GeV ********************
+
+0.01           6.737                     0.7784
+0.10           9.346                     0.7518
+0.20          10.530                     0.7454 
+0.30          11.622                     0.7358
+0.40          14.804                     0.6481
+0.50          27.008                     0.3517
+0.60          28.228                     0.3277
+0.70          28.826                     0.3181
+0.80          29.303                     0.3112
+0.90          29.780                     0.3059
+0.99          30.851                     0.2949
+
+The same numbers but WITHOUT ISR-FSR interference
+****************** 120 GeV ********************
+
+0.01           5.995                     0.7347
+0.10           8.977                     0.7351
+0.20          10.280                     0.7346
+0.30          11.453                     0.7282
+0.40          14.728                     0.6436
+0.50          26.917                     0.3484
+0.60          28.130                     0.3245
+0.70          28.730                     0.3151
+0.80          29.212                     0.3085
+0.90          29.693                     0.3035
+0.99          30.740                     0.2928
+
+
+
+f-fbar(gamma) cross-sections from ZFITTER V5.0
+==============================================
+
+ Standard Model inputs 
+ Z0 mass      =  91.18670 GeV
+ t quark mass = 175.00000 GeV
+ Higgs mass   = 100.00000 GeV
+ 1/alpha_em   = 128.89600
+ alpha_s      =   0.12000
+
+
+-----------------------------------------------------------------
+ Frederic Teubert                         Tel : 0041 22 767 3040
+ EP Division                              Fax : 0041 22 767 9425
+ CERN                           E-Mail: frederic.teubert@cern.ch
+ CH-1211 Geneva 23     
+-----------------------------------------------------------------
+
+
+

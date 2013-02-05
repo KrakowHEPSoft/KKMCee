@@ -1,0 +1,961 @@
+***********************************************************************
+*     Version 2-nd August 1997, by S. Jadach.
+*     Matrix element for fermion pair production, 
+*     ISR O(alf3) + FSR O(alf2).
+*     New features:
+*     1. Kinematical reduction procedure kicked out.
+*     2. Numerical stability for collinear photons improved up to BHLUMI level.
+*     3. O(alf3)LL for ISR
+*****
+*     To be done:
+*     All that should be organized as separate Class
+*     1. wtset should be accessible through getter
+*     2. ISR+FSR and ISR parts beter separated, if possible.
+***********************************************************************
+      SUBROUTINE model(wtcrud,xpar,ypar,
+     $     pf1,pf2,xx,qf1,qf2,
+     $     nphox,xphot,yini,zini,
+     $     nphoy,yphot,yfin,zfin,
+     $     wtbest,wtset)
+*     **********************************************
+***********************************************************************
+*     INPUT:  wtcrud,xpar,ypar,pf1,pf2,xx,qf1,qf2,nphoy,yphot,yfin,zfin,
+*     OUTPUT: wtbest,wtset
+***********************************************************************
+* The auxiliary weights for variable-weight runs are:
+*     wt=wtcru1*wtcru2*wtset(i) where
+*     wtset(i)  = ypar(500+i) are auxiliary weights
+*
+*     wtset(71) =   zero-th order initial+final
+*     wtset(72) =   first order   initial+final
+*     wtset(73) =   second order  initial+final
+*     wtset(74) =   third order   initial+final
+* and the following provide the corresponding components of x-section.
+*     wtset(80-84)   =   first order beta's
+*     wtset(90-97)   =   second order beta's
+*     wtset(100-111) =   third order beta's
+* furthermore, for the initial state alone we provide:
+*     wtset( 1) =   zero-th order initial
+*     wtset( 2) =   first order   initial
+*     wtset( 3) =   second order  initial
+*     wtset( 4) =   third order   initial
+* and the corresponding components
+*     wtset(10-11) =   first order beta's
+*     wtset(20-22) =   second order beta's
+*     wtset(30-33) =   third order beta's
+***********************************************************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      PARAMETER( pi=3.1415926535897932d0 )
+      PARAMETER(npmx=100)
+* Above vlim1/2 the contribution from beta1/2 is not calculated,
+* This saves time, for PRECISION 1d-4 use vlim1=1.d-4 and vlim2=0.04
+*              and for PRECISION 1d-3 use vlim1=1.d-3 and vlim2=0.12
+      PARAMETER(vlim1= 1.d-9, vlim2= 1.d-9)
+      DIMENSION xpar(*),ypar(*)
+      DIMENSION pf1(4),pf2(4),qq(4),pp(4),xx(4)
+      DIMENSION qf1(4),qf2(4)
+      DIMENSION xphot(100,4),yini(100),zini(100)
+      DIMENSION yphot(100,4),yfin(100),zfin(100)
+      DIMENSION wtset(200)
+
+      SAVE
+***********************************************************************
+* amplitude components
+      DIMENSION   sfacx(npmx),sfacy(npmx),
+     $  beta10(npmx),beta11(npmx),
+     $  betx10(npmx),betx11(npmx),bety10(npmx),bety11(npmx),
+     $  betxx20(npmx,npmx),betxy20(npmx,npmx),betyy20(npmx,npmx),
+     $  beti10(npmx),beti11(npmx),beti20(npmx,npmx),
+     $  betf10(npmx),betf11(npmx),betf20(npmx,npmx)
+***********************************************************************
+**                     Inline functions                              **
+***********************************************************************
+* Multiplicative mass-correction to truncated S-factor 
+      wm0(del,a,b)= 1d0 -2d0*del -del*(a/b+b/a)
+*
+*     O(alf1) amplitude, bremsstrahlung factor, del->0 limit
+      wm1(del,a,b)=
+     $  1d0 - del*(a/b+b/a)*(1d0-a)*(1d0-b)*2d0/((1d0-a)**2+(1d0-b)**2)
+*
+* wmd as in BHLUMI, (what about exact mass terms???)
+      wmd(del,a,b) =
+     $  1d0 + del*(a/b+b/a)*(a**2+b**2)/((1-a)**2+(1-b)**2)
+*
+* Factorized wm1, as in BHLUMI, to improve numerical stability.
+*     Identity wm1=wm7=wm0*wmd, is true up to delta**4 terms
+      wm7(del,a,b) = (1d0 +2d0*del -del*(a/b+b/a))
+     $ *(1d0 + del*(a**2+b**2)*(a**2+b**2)/((1-a)**2+(1-b)**2)/(a*b))
+*
+**                 End of inline functions                           **
+***********************************************************************
+      DATA icont /0/
+
+*     =================================================================
+      icont=icont+1
+      wtbest=1d0
+
+      DO i=1,100
+         wtset(i)=0d0
+      ENDDO
+
+* Return for events outside phase space
+      IF(wtcrud .EQ. 0d0) GOTO 770
+* Actual CMS energy (note there might be beam spread on!!!)
+      CALL BornV_GetCMSene(CMSene)
+*
+      KFbeam = 11                      ! KF=11 is electron
+      amel   = BornV_GetMass(KFbeam)
+* Actual KFcode of final fermion
+      CALL MBR_GetKF(KFfin)
+      amfin  = BornV_GetMass(KFfin)
+* Final state charge, -1 for electron
+      charge = BornV_GetCharge(KFfin)
+      charg2 = charge**2
+* QED coupling
+      alfinv = xpar(30)
+
+* Initial/final state bremsstrahlung switches
+      KeyISR = xpar(20)
+      CALL KarFin_GetIsFSR(IsFSR) ! check dynamicaly (quarks!!!)
+
+* ISR infrared cu-off
+      vvmin  = xpar(16)
+
+* Define 4-mometum xx of (virtual) Z
+      DO k=1,4
+         pp(k)= pf1(k)+ pf2(k)
+         qq(k)= qf1(k)+ qf2(k)
+      ENDDO
+
+      svar  = pp(4)**2-pp(3)**2-pp(2)**2-pp(1)**2
+      svar1 = xx(4)**2-xx(3)**2-xx(2)**2-xx(1)**2
+      svar2 = qq(4)**2-qq(3)**2-qq(2)**2-qq(1)**2
+      vv = 1d0 -svar1/svar
+      uu = 1d0 -svar2/svar1
+      gami =         2d0/alfinv/pi*(dlog(svar/amel**2)  -1d0)
+      gamf = charg2* 2d0/alfinv/pi*(dlog(svar2/amfin**2)-1d0)
+
+* Crude distribution
+      discru =  4d0/3d0*
+     $   BornV_Differential(0,KFfin,svar1,0d0,0d0,0d0,0d0,0d0)
+
+      delp= amel**2/svar
+      delq= amfin**2/svar2
+*
+      CALL thetar(xx,pf1,pf2,qf1,qf2,cth11,cth12,cth21,cth22)
+      andi11= BornV_Differential(1,KFfin,svar1,cth11,0d0,0d0,0d0,0d0)
+      andi12= BornV_Differential(1,KFfin,svar1,cth12,0d0,0d0,0d0,0d0)
+      andi21= BornV_Differential(1,KFfin,svar1,cth21,0d0,0d0,0d0,0d0)
+      andi22= BornV_Differential(1,KFfin,svar1,cth22,0d0,0d0,0d0,0d0)
+*-----------------------------------------------------------
+*                beta0 
+*-----------------------------------------------------------
+* Beta0 components
+      CALL bvirt0(alfinv,   1d0,svar , amel,deli1,deli2,deli3)
+      CALL bvirt0(alfinv,charg2,svar2,amfin,delf1,delf2,delf3)
+*
+      IF(KeyISR .EQ. 0)  deli1   = 0d0
+      IF(KeyISR .EQ. 0)  deli2   = 0d0
+      IF(IsFSR  .EQ. 0)  delf1   = 0d0
+      IF(IsFSR  .EQ. 0)  delf2   = 0d0
+
+* Beta0, initial+final, factorized form
+      andis = (andi11 +andi12 +andi21 +andi22)/4
+      beta03 = andis*(1d0+deli1+deli2+deli3)*(1d0+delf1+delf2) !O(alf3)
+      beta02 = andis*(1d0+deli1+deli2)      *(1d0+delf1+delf2) !O(alf2)
+      beta01 = andis*(1d0+deli1)            *(1d0+delf1)       !O(alf1)
+      beta00 = andis                                           !O(alf0)
+* Initial only
+      beti03 = andis*(1d0+deli1+deli2+deli3)
+      beti02 = andis*(1d0+deli1+deli2)
+      beti01 = andis*(1d0+deli1)
+      beti00 = andis
+* Auxiliary
+      betf01 = andis*(1d0+delf1)
+
+*-----------------------------------------------------------
+*                beta1 initial
+*-----------------------------------------------------------
+      xbet10 = 0d0
+      xbet11 = 0d0
+      xbet12 = 0d0
+      sbti10 = 0d0
+      sbti11 = 0d0
+      sbti12 = 0d0
+      IF(KeyISR .NE. 0  .AND.  vv .GT. vlim1) THEN
+         DO jph=1,nphox
+            y = yini(jph)
+            z = zini(jph)
+            sfacj  =  2d0/(y*z) *wm0(delp,y,z)
+            sfacx(jph) = sfacj
+            hfac = wmd(delp,y,z) *sfacj
+            gf1 = 0.5d0
+            gf2 = 0.5d0
+            CALL d_isr1(gami,yini,zini,jph,
+     $                  gi1,gi2,ggi1,ggi2,gggi1,gggi2)
+*---- O(alf1) ----,  tree_level --------
+*     The unconventional (1+delf1) in betx10 helps ISR*FSR factorization
+*     in the O(alf2) semi-analytical x-check
+            dist10= (  gi1*gf1*andi11   +gi1*gf2*andi12
+     $                +gi2*gf1*andi21   +gi2*gf2*andi22)*hfac
+            betx10(jph)=(dist10 -beta00*sfacj )*(1+delf1)
+            xbet10 = xbet10 +betx10(jph) /sfacj
+*---- O(alf2) ----,  one_loop_level --------
+            dist11= ( ggi1*gf1*andi11  +ggi1*gf2*andi12
+     $               +ggi2*gf1*andi21  +ggi2*gf2*andi22)*hfac
+            betx11(jph)= dist11*(1+delf1)       -beta01*sfacj
+            xbet11 = xbet11 +betx11(jph) /sfacj
+*---- O(alf3) ----,  two_loop_level -------- !!!NEW!!!
+            dist12= (gggi1*gf1*andi11 +gggi1*gf2*andi12
+     $              +gggi2*gf1*andi21 +gggi2*gf2*andi22)*hfac
+            betx12     = dist12*(1+delf1+delf2) -beta02*sfacj
+            xbet12 = xbet12 +betx12      /sfacj
+***** pure ISR
+            beti10(jph) =  dist10 -beti00*sfacj   !O(alf1)
+            sbti10 = sbti10 +beti10(jph) /sfacj
+            beti11(jph) =  dist11 -beti01*sfacj   !O(alf2)
+            sbti11 = sbti11 +beti11(jph) /sfacj
+            beti12      =  dist12 -beti02*sfacj   !O(alf3) !!!NEW
+            sbti12 = sbti12 +beti12      /sfacj
+         ENDDO
+      ELSE
+         DO jph=1,nphox
+            sfacx(jph)  = -1d0
+            betx10(jph) =  0d0
+            betx11(jph) =  0d0
+            beti10(jph) =  0d0
+            beti11(jph) =  0d0
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta1 final
+*-----------------------------------------------------------
+      ybet10=0d0
+      ybet11=0d0
+      ybet12=0d0
+      IF(IsFSR .NE. 0  .AND.  uu .GT. vlim1) THEN
+         DO jph=1,nphoy
+            yy = yfin(jph)
+            zz = zfin(jph)
+            y  = yy/(1 +yy+zz)
+            z  = zz/(1 +yy+zz)
+            sfacj  =  2d0/(yy*zz)*wm0(delq,yy,zz)
+            sfacy(jph) = sfacj
+            hfac = wmd(delq,y,z) *sfacj
+            gi1 = 0.5d0
+            gi2 = 0.5d0
+            CALL d_fsr1(gamf,yfin,zfin,jph,gf1,gf2,ggf1,ggf2)
+*---- O(alf1) ---,  tree level
+*     unconventional (1+deli1) in bety10 helps ISR*FSR factorization 
+*     in the O(alf2) semi-analytical x-check
+            dist10= (gi1*gf1*andi11   + gi1*gf2*andi12
+     $              +gi2*gf1*andi21   + gi2*gf2*andi22)*hfac
+            bety10(jph) = (dist10 -beta00*sfacj  )*(1d0+deli1) !!!
+            ybet10 = ybet10 +bety10(jph) /sfacj
+*---- O(alf2) ---, one loop level
+            dist11= (gi1*ggf1*andi11 + gi1*ggf2*andi12
+     $              +gi2*ggf1*andi21 + gi2*ggf2*andi22)*hfac
+            bety11(jph) =  dist11*(1+deli1) -beta01*sfacj
+            ybet11 = ybet11 +bety11(jph) /sfacj
+*---- O(alf3) ---, two loop level for ISR !!!NEW
+*     Additional O(alf2) ISR virtual correction deli2 only
+            bety12 = (1+deli1+deli2)*(dist11 -beta00*(1+delf1)*sfacj)
+            ybet12 = ybet12 +bety12 /sfacj
+*****  pure FSR *****, for construction of beta2, beta3
+            betf10(jph) =  dist10 -beta00*sfacj
+            betf11(jph) =  disi11 -betf01*sfacj
+         ENDDO
+      ELSE
+        DO jph=1,nphoy
+           sfacy(jph)  = -1d0
+           bety10(jph) =  0d0
+           bety11(jph) =  0d0
+        ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta2 initial-initial
+*-----------------------------------------------------------
+      xxbet20=0d0
+      xxbet21=0d0
+      sbti20=0d0
+      sbti21=0d0
+      IF(KeyISR .NE. 0  .AND.  vv .GT. vlim2) THEN
+         DO jph2=2,nphox
+            DO jph1=1,jph2-1
+               hfac1  =  sfacx(jph1)*wmd(delp,yini(jph1),zini(jph1))
+               hfac2  =  sfacx(jph2)*wmd(delp,yini(jph2),zini(jph2))
+*     Summation over two LL fragmentation trees for 2 ISR ohotons,
+*     photon jph1 is always harder because of low level M.C. generation
+               ntree = 2  ! for 2 ISR fragmentation trees
+               gi1  = 0d0
+               gi2  = 0d0
+               ggi1 = 0d0
+               ggi2 = 0d0
+               CALL d_isr2(ypar,gami,yini,zini,jph1, jph1,jph2,
+     $                                  gi1,gi2,ggi1,ggi2) ! 1-st tree
+               CALL d_isr2(ypar,gami,yini,zini,jph1, jph2,jph1,
+     $                                  gi1,gi2,ggi1,ggi2) ! 2-nd tree
+               gf1 = 0.5d0      ! 0.5d0 for averaging over 2 choices
+               gf2 = 0.5d0      ! of Born angles in final state
+*---  O(alf2) ---, tree level---------
+               dist20= (gi1*gf1*andi11 + gi1*gf2*andi12
+     $                 +gi2*gf1*andi21 + gi2*gf2*andi22)
+     $                 *hfac1*hfac2/ntree
+* In beta20 we use beti10 instead of betx10,
+* Reason: unusual definition of betx10, see relevant comment above
+               beta20 = dist20
+     $              -beta00*sfacx(jph1)*sfacx(jph2)
+     $              -beti10(jph1)*sfacx(jph2) -beti10(jph2)*sfacx(jph1)
+               betxx20(jph1,jph2)=beta20
+               xxbet20=xxbet20 +beta20 /sfacx(jph1)/sfacx(jph2)
+*---  O(alf3) ---, one loop level ---------!!!!NEW!!!!
+               dist21= (ggi1*gf1*andi11+ ggi1*gf2*andi12
+     $                 +ggi2*gf1*andi21+ ggi2*gf2*andi22)
+     $                 *hfac1*hfac2/ntree
+               beta21 = dist21*(1+delf1)
+     $              -beta01*sfacx(jph1)*sfacx(jph2)
+     $              -betx11(jph1)*sfacx(jph2) -betx11(jph2)*sfacx(jph1)
+               xxbet21=xxbet21 +beta21 /sfacx(jph1)/sfacx(jph2)
+***** Pure ISR *****
+               sbti20=sbti20 +beta20 /sfacx(jph1)/sfacx(jph2)
+               beti21 = dist21
+     $              -beti01*sfacx(jph1)*sfacx(jph2)
+     $              -beti11(jph1)*sfacx(jph2) -beti11(jph2)*sfacx(jph1)
+               sbti21=sbti21 +beti21 /sfacx(jph1)/sfacx(jph2)
+            ENDDO
+         ENDDO
+      ELSE
+         DO  jph2=2,nphox
+            DO  jph1=1,nphox
+               betxx20(jph1,jph2)= 0d0
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta2 final-final
+*-----------------------------------------------------------
+      yybet20=0d0
+      yybet21=0d0
+      IF(IsFSR .NE. 0  .AND.  uu .GT. vlim2) THEN
+         DO  jph2=2,nphoy
+            DO jph1=1,jph2-1
+               y1  = yfin(jph1) /(1 +yfin(jph1) +zfin(jph1) )
+               z1  = zfin(jph1) /(1 +yfin(jph1) +zfin(jph1) )
+               y2  = yfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+               z2  = zfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+*     Note y1,z1<1 (yfin,zfin cant be used directly in wmd(...))
+               hfac1  =  sfacy(jph1)*wmd(delq,y1,z1)
+               hfac2  =  sfacy(jph2)*wmd(delq,y2,z2)
+*              sum over two FSR fragmentation trees
+               ntree = 2  ! for 2 FSR fragmentation trees
+               gf1 = 0d0
+               gf2 = 0d0
+               CALL d_fsr2(yfin,zfin,jph1,jph1,jph2,gf1,gf2) ! 1-st tree
+               CALL d_fsr2(yfin,zfin,jph1,jph2,jph1,gf1,gf2) ! 2-nd tree
+               gi1 = 0.5d0        ! 0.5d0 for averaging over 2 choices
+               gi2 = 0.5d0        ! of Born angles in initial state
+*---- O(alf2) ----, tree level
+               dist20 =
+     $              (gi1*gf1*andi11+ gi1*gf2*andi12
+     $              +gi2*gf1*andi21+ gi2*gf2*andi22)
+     $              *hfac1*hfac2/ntree
+               beta20 = dist20 
+     $              -beta00*sfacy(jph1)*sfacy(jph2)
+     $              -betf10(jph1)*sfacy(jph2) -betf10(jph2)*sfacy(jph1)
+               betyy20(jph1,jph2)=beta20
+               yybet20=yybet20 +beta20 /sfacy(jph1)/sfacy(jph2)
+*---- O(alf3) ----, one loop level  !!!NEW
+* Primitive ISR virtual correction only
+               beta21 = (1d0+deli1)*beta20
+               yybet21=yybet21 +beta21 /sfacy(jph1)/sfacy(jph2)
+            ENDDO
+         ENDDO
+      ELSE
+         DO  jph2=2,nphoy
+            DO  jph1=1,nphoy
+               betyy20(jph1,jph2)= 0d0
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta2 initial-final
+*-----------------------------------------------------------
+* or in other terminology   beta1_init - beta1_final
+      xybet20=0d0
+      xybet21=0d0
+      IF(KeyISR*IsFSR .NE. 0 .AND. vv.GT.vlim1 .AND. uu.GT.vlim1) THEN
+         DO jph1=1,nphox
+            DO jph2=1,nphoy
+               y1  = yini(jph1)
+               z1  = zini(jph1)
+               y2  = yfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+               z2  = zfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+               hfac1 =    sfacx(jph1) *wmd(delp,y1,z1)
+               hfac2 =    sfacy(jph2) *wmd(delq,y2,z2)
+               CALL d_isr1(gami,yini,zini,jph1,
+     $                  gi1,gi2,ggi1,ggi2,gggi1,gggi2)
+               CALL d_fsr1(gamf,yfin,zfin,jph2,gf1,gf2,ggf1,ggf2)
+*---- O(alf2) -----, tree level
+               dist20 = 
+     $              (gi1*gf1*andi11+ gi1*gf2*andi12
+     $              +gi2*gf1*andi21+ gi2*gf2*andi22)*hfac1*hfac2
+               beta20 = dist20 
+     $              -beta00*sfacx(jph1)*sfacy(jph2)
+     $              -beti10(jph1)*sfacy(jph2) -betf10(jph2)*sfacx(jph1)
+               betxy20(jph1,jph2)=beta20
+               xybet20=xybet20 +beta20 /sfacx(jph1)/sfacy(jph2)
+*---- O(alf3) -----, one loop level  !!!!!!!NEW
+* Note that virtual correction is factorized ISR*FSR, as usual
+               dist21 = 
+     $              (ggi1*ggf1*andi11+ ggi1*ggf2*andi12
+     $              +ggi2*ggf1*andi21+ ggi2*ggf2*andi22)*hfac1*hfac2
+               beta21 = dist21 
+     $              -beta01*sfacx(jph1)*sfacy(jph2)
+     $              -betx11(jph1)*sfacy(jph2) -bety11(jph2)*sfacx(jph1)
+               xybet21=xybet21 +beta21 /sfacx(jph1)/sfacy(jph2)
+            ENDDO
+         ENDDO
+      ELSE
+         DO  jph1=1,nphox
+            DO  jph2=1,nphoy
+               betxy20(jph1,jph2)= 0d0
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta3 initial-initial-initial
+*-----------------------------------------------------------
+      xxxbet30=0d0
+      sbti30=0d0
+      IF(KeyISR .NE. 0  .AND.  vv .GT. vlim2) THEN
+         DO jph3 = 3,nphox
+            DO jph2 = 2,jph3-1
+               DO jph1 = 1,jph2-1
+                  hfac1  =  sfacx(jph1)*wmd(delp,yini(jph1),zini(jph1))
+                  hfac2  =  sfacx(jph2)*wmd(delp,yini(jph2),zini(jph2))
+                  hfac3  =  sfacx(jph3)*wmd(delp,yini(jph3),zini(jph3))
+*      Summation over 6 LL fragmentation trees for 3 ISR photons,
+*      photon jph1 is always harder because of low level M.C. generation
+                  ntree = 6     ! for 2 ISR fragmentation trees
+                  gi1 = 0d0
+                  gi2 = 0d0
+                  CALL d_isr3(yini,zini,jph1, jph1,jph2,jph3, gi1,gi2)
+                  CALL d_isr3(yini,zini,jph1, jph2,jph1,jph3, gi1,gi2)
+                  CALL d_isr3(yini,zini,jph1, jph1,jph3,jph2, gi1,gi2)
+                  CALL d_isr3(yini,zini,jph1, jph2,jph3,jph1, gi1,gi2)
+                  CALL d_isr3(yini,zini,jph1, jph3,jph1,jph2, gi1,gi2)
+                  CALL d_isr3(yini,zini,jph1, jph3,jph2,jph1, gi1,gi2)
+                  gf1 = 0.5d0   ! 0.5d0 for averaging over 2 choices
+                  gf2 = 0.5d0   ! of Born angles in final state
+*---- O(alf3) -----, tree level  !!!!!!!NEW
+                  dist3 = 
+     $                 (gi1*gf1*andi11+ gi1*gf2*andi12
+     $                 +gi2*gf1*andi21+ gi2*gf2*andi22)
+     $                 *hfac1*hfac2*hfac3/ntree
+                  beta30 = dist3 
+     $                 -beta00 *sfacx(jph1) *sfacx(jph2) *sfacx(jph3)
+     $                 -beti10(jph1) *sfacx(jph2) *sfacx(jph3)
+     $                 -beti10(jph2) *sfacx(jph1) *sfacx(jph3)
+     $                 -beti10(jph3) *sfacx(jph1) *sfacx(jph2)
+     $                 -betxx20(jph1,jph2) *sfacx(jph3)
+     $                 -betxx20(jph1,jph3) *sfacx(jph2)
+     $                 -betxx20(jph2,jph3) *sfacx(jph1)
+                  xxxbet30 = xxxbet30 
+     $                 +beta30/sfacx(jph1)/sfacx(jph2)/sfacx(jph3)
+* Pure ISR, simply the same
+                  sbti30 = sbti30 
+     $                 +beta30/sfacx(jph1)/sfacx(jph2)/sfacx(jph3)
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta3 initial-initial-final
+*-----------------------------------------------------------
+      xxybet30 = 0d0
+      IF(  KeyISR .NE. 0  .AND.  vv .GT. vlim2 .AND.
+     $     IsFSR .NE. 0  .AND.  uu .GT. vlim1) THEN
+         DO jph2=2,nphox
+            DO jph1=1,jph2-1
+               DO jph3=1,nphoy
+                  hfac1  =  sfacx(jph1)*wmd(delp,yini(jph1),zini(jph1))
+                  hfac2  =  sfacx(jph2)*wmd(delp,yini(jph2),zini(jph2))
+                  y3  = yfin(jph3) /(1 +yfin(jph3) +zfin(jph3) )
+                  z3  = zfin(jph3) /(1 +yfin(jph3) +zfin(jph3) )
+                  hfac3  =  sfacy(jph3)*wmd(delq,y3,z3)
+                  ntree = 2     ! for 2 ISR fragmentation trees
+                  gi1  = 0d0    ! initialization
+                  gi2  = 0d0    ! initialization
+                  CALL d_isr2(ypar,gami,yini,zini,jph1, jph1,jph2,
+     $                                    gi1,gi2,ggi1,ggi2) ! 1-st tree
+                  CALL d_isr2(ypar,gami,yini,zini,jph1, jph2,jph1,
+     $                                    gi1,gi2,ggi1,ggi2) ! 2-nd tree
+                  CALL d_fsr1(gamf,yfin,zfin,jph3,gf1,gf2,ggf1,ggf2)
+*---- O(alf3) -----, tree level  !!!!!!!NEW
+                  dist30= (gi1*gf1*andi11 + gi1*gf2*andi12
+     $                    +gi2*gf1*andi21 + gi2*gf2*andi22)
+     $                    *hfac1*hfac2*hfac3/ntree
+                  beta30 = dist30 
+     $                 -beta00 *sfacx(jph1) *sfacx(jph2) *sfacy(jph3)
+     $                 -beti10(jph1) *sfacx(jph2) *sfacy(jph3)
+     $                 -beti10(jph2) *sfacx(jph1) *sfacy(jph3)
+     $                 -betf10(jph3) *sfacx(jph1) *sfacx(jph2)
+     $                 -betxx20(jph1,jph2) *sfacy(jph3)
+     $                 -betxy20(jph1,jph3) *sfacx(jph2)
+     $                 -betxy20(jph2,jph3) *sfacx(jph1)
+                  xxybet30 = xxybet30 
+     $                 +beta30/sfacx(jph1)/sfacx(jph2)/sfacy(jph3)
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------
+*                beta3 initial-final-final
+*-----------------------------------------------------------
+      xyybet30 = 0d0
+      IF(  KeyISR .NE. 0  .AND.  vv .GT. vlim2 .AND.
+     $      IsFSR .NE. 0  .AND.  uu .GT. vlim1) THEN
+         DO  jph2=2,nphoy
+            DO jph1=1,jph2-1
+               DO jph3=1,nphox
+                  y1  = yfin(jph1) /(1 +yfin(jph1) +zfin(jph1) )
+                  z1  = zfin(jph1) /(1 +yfin(jph1) +zfin(jph1) )
+                  y2  = yfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+                  z2  = zfin(jph2) /(1 +yfin(jph2) +zfin(jph2) )
+                  hfac1  =  sfacy(jph1)*wmd(delq,y1,z1)
+                  hfac2  =  sfacy(jph2)*wmd(delq,y2,z2)
+                  hfac3  =  sfacx(jph3)*wmd(delp,yini(jph3),zini(jph3))
+*     sum over two FSR fragmentation trees
+                  ntree = 2    ! for 2 FSR fragmentation trees
+                  gf1 = 0d0    ! initialization
+                  gf2 = 0d0    ! initialization
+                  CALL d_fsr2(yfin,zfin,jph1, jph1,jph2, gf1,gf2)
+                  CALL d_fsr2(yfin,zfin,jph1, jph2,jph1, gf1,gf2)
+                  CALL d_isr1(gami,yini,zini,jph3,
+     $                  gi1,gi2,ggi1,ggi2,gggi1,gggi2)
+*---- O(alf3) -----, tree level  !!!!!!!NEW
+                  dist30= (gi1*gf1*andi11 + gi1*gf2*andi12
+     $                    +gi2*gf1*andi21 + gi2*gf2*andi22)
+     $                    *hfac1*hfac2*hfac3/ntree
+                  beta30 = dist30 
+     $                 -beta00 *sfacy(jph1) *sfacy(jph2) *sfacx(jph3)
+     $                 -betf10(jph1) *sfacy(jph2) *sfacx(jph3)
+     $                 -betf10(jph2) *sfacy(jph1) *sfacx(jph3)
+     $                 -beti10(jph3) *sfacy(jph1) *sfacy(jph2)
+     $                 -betyy20(jph1,jph2) *sfacx(jph3)
+     $                 -betxy20(jph3,jph1) *sfacy(jph2)
+     $                 -betxy20(jph3,jph2) *sfacy(jph1)
+                  xyybet30 = xyybet30 
+     $                 +beta30/sfacy(jph1)/sfacy(jph2)/sfacx(jph3)
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDIF
+*-----------------------------------------------------------------
+*     remnant of the YFS formfactor for the final/final state
+*-----------------------------------------------------------------
+      CALL gifyfs(alfinv,   1d0,svar , amel,forini)
+      CALL gifyfs(alfinv,charg2,svar2,amfin,forfin)
+      IF(KeyISR .EQ. 0) forini=1d0
+      IF( IsFSR .EQ. 0) forfin=1d0
+      fyfs = forini*forfin
+*-----------------------------------------------------------------
+*     and the rejection weights = (new.distr/crude.distr)
+*-----------------------------------------------------------------
+*     ============================================
+*     ========== INITIAL + FINAL =================
+*     ============================================
+*
+* Note that xybet20 (which is genuine O(alf2)) is added to O(alf1),
+* because our semianalytical programs are only able to deal 
+* with factorized ini/fin, see also O(alf1) definitions of beta1's.
+*
+* Total's, all beta's ---------------------------------
+      wtset(71) =   fyfs*beta00/discru
+      wtset(72) =   fyfs*(beta01+xbet10+ybet10+xybet20)/discru
+      wtset(73) =   fyfs*
+     $     (beta02+xbet11+ybet11+xxbet20+xybet20+yybet20 )/discru
+* !!!NEW!!!
+      wtset(74) =   fyfs*
+     $     (beta03+xbet12+ybet12+xxbet21+xybet21+yybet21
+     $     +xxxbet30+xxybet30+xyybet30 )/discru
+* First order, individual beta's -------------
+      wtset(80) =   fyfs*beta01/discru
+      wtset(81) =   fyfs*(xbet10+ybet10)/discru
+      wtset(82) =   fyfs*(xbet10)/discru
+      wtset(83) =   fyfs*(ybet10)/discru
+      wtset(84) =   fyfs*(xybet20)/discru
+* Second order, individual beta's ------------
+      wtset(90) =   fyfs*beta02/discru
+      wtset(91) =   fyfs*(xbet11+ybet11)/discru
+      wtset(92) =   fyfs*(xxbet20+xybet20+yybet20)/discru
+      wtset(93) =   fyfs*(xbet11)/discru
+      wtset(94) =   fyfs*(ybet11)/discru
+      wtset(95) =   fyfs*(xxbet20)/discru
+      wtset(96) =   fyfs*(xybet20)/discru
+      wtset(97) =   fyfs*(yybet20)/discru
+* Third order, individual beta's ------------!!!NEW!!!
+      wtset(100) =   fyfs*beta03/discru
+      wtset(101) =   fyfs*(xbet12+ybet12)/discru
+      wtset(102) =   fyfs*(xxbet21+xybet21+yybet21)/discru
+      wtset(103) =   fyfs*xbet12/discru
+      wtset(104) =   fyfs*ybet12/discru
+      wtset(105) =   fyfs*xxbet21/discru
+      wtset(106) =   fyfs*xybet21/discru
+      wtset(107) =   fyfs*yybet21/discru
+      wtset(108) =   fyfs*(xxxbet30+xxybet30+xyybet30)/discru
+      wtset(109) =   fyfs*xxxbet30/discru
+      wtset(110) =   fyfs*xxybet30/discru
+      wtset(111) =   fyfs*xyybet30/discru
+
+*     ============================================
+*     ========= INITIAL STATE ALONE ==============
+*     ============================================
+* Total's, all beta's ---------------------------------
+      wtset( 1) =   forini*beta00/discru
+      wtset( 2) =   forini*(beti01+sbti10)/discru
+      wtset( 3) =   forini*(beti02+sbti11+sbti20)/discru
+!!!NEW
+      wtset( 4) =   forini*(beti03+sbti12+sbti21+sbti30)/discru
+* First order, individual beta's -------------
+      wtset(10) =   forini*beti01/discru
+      wtset(11) =   forini*sbti10/discru
+* Second order, individual beta's ------------
+      wtset(20) =   forini*beti02/discru
+      wtset(21) =   forini*sbti11/discru
+      wtset(22) =   forini*sbti20/discru
+!!!NEW
+* Third order, individual beta's ------------
+      wtset(30) =   forini*beti03/discru
+      wtset(31) =   forini*sbti12/discru
+      wtset(32) =   forini*sbti21/discru
+      wtset(33) =   forini*sbti30/discru
+*
+*|=================================================================|
+*|            ISR   Non-exponentiated version                      |
+*|=================================================================|
+* Entire 0,1,2-photon distributions
+      fyfsu = exp( -gami*dlog(1/vvmin) )
+      dis0   =0
+      dis1   =0
+      dis2   =0
+      IF(nphox .EQ. 0) THEN
+         dis0 = 1
+         dis1 = 1+gami*dlog(vvmin)
+         dis2 = 1+gami*dlog(vvmin)+0.5*(gami*dlog(vvmin))**2
+      ELSEIF( nphox .EQ. 1) THEN
+cc         dis1 = wm0(delp,yini(1),zini(1))
+cc         dis2 = dis1*(1 +gami*dlog(vvmin))
+         dis1 = 1
+         dis2 = 1 +gami*dlog(vvmin)
+      ELSEIF( nphox .EQ. 2) THEN
+cc         dis2 = wm0(delp,yini(1),zini(1))
+cc     $         *wm0(delp,yini(2),zini(2))
+         dis2 = 1
+      ENDIF
+***
+* UNEXP Total O(alf0),O(alf1),O(alf2)
+      wtset(160) =    dis0 /fyfsu
+      wtset(161) =    dis1 /fyfsu
+      wtset(162) =    dis2 /fyfsu
+
+*|=================================================================|
+*|        Model weight (the best)                                  |
+*|=================================================================|
+      IdeWgt = xpar(11)
+      wtbest = wtset(IdeWgt)
+*********[[[[[[[[[[[[*********DEBUG*********
+      wtm2= wtset(73)*wtcrud
+      wtm1= wtset(72)*wtcrud
+      wtm0= wtset(71)*wtcrud
+**      IF(wtm1  .LT.  0d0 .OR. wtm1  .GT.  5d0) THEN
+      IF(wtm2  .LT.  0d0 .OR. wtm2  .GT.  5d0) THEN
+         WRITE(6,*) '++++++++++++++++++++++++++++++++++++++++++++++++++'
+         WRITE(6,*) 'icont,kffin= ',icont,kffin
+         WRITE(6,*) 'nphox,nphoy,vv,uu=',nphox,nphoy,vv,uu
+         WRITE(6,*) 'wtm2,wtm1,wtm0= ',wtm2,wtm1,wtm0
+         WRITE(6,*) 'wtset(71),wtcrud= ',wtset(71),wtcrud
+**         CALL dumps(6)
+**         CALL dumpi(6)
+**         CALL dumpf(6)
+      ENDIF
+*********]]]]]]]]]]]]*********DEBUG*********
+      RETURN
+
+ 770  CONTINUE
+      wtbest     =   0d0
+      END
+
+      SUBROUTINE gifyfs(alfinv,charg2,svar,am,fyfs)
+*     *********************************************
+*     ISR/FSR YFS formfactor
+*     *****************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      PARAMETER( pi=3.1415926535897932d0 )
+
+      alf1=1d0/alfinv/pi
+      bilg  =  dlog(svar/am**2)
+      beta  =  2*charg2*alf1*(bilg-1)
+      delb  =  beta/4 + charg2*alf1*( -.5d0  +pi**2/3d0)
+      fyfs  =  exp(delb)
+      END
+
+      SUBROUTINE bvirt0(alfinv,charg2,svar,am,dels1,dels2,dels3)
+*     **********************************************************
+* ISR/FSR virtual corrections to beta0
+* beta0 is equal born*(1+dels1+dels2+dels3)
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      PARAMETER(pi=3.1415926535897932d0)
+      PARAMETER(zet2= pi**2/6d0)
+      PARAMETER(zet3= 1.2020569031595942854d0)
+
+      alf1  =  1d0/alfinv/pi
+      bilg  =  dlog(svar/am**2)
+      beta  =  2*charg2*alf1*(bilg-1)
+      dels1 =  beta/2d0
+      dels2 =  1/2d0 *(beta/2d0)**2
+* ISR with subleading terms from Berends, Burgers, Van Neerveen
+*      dels2 =  charg2**2*alf1**2  *0.5d0*bilg**2
+*     $     +charg2**2*alf1**2*(
+*     $     -(13d0/16d0 +1.5d0*zet2 -3d0*zet3)*bilg
+*     $     -16d0/5d0*zet2*zet2 +51d0/8d0*zet2 +13d0/4d0
+*     $     -4.5d0*zet3 -6d0*zet2*log(2d0) )
+      dels3 = 1/6d0 *(beta/2d0)**3
+      END
+
+      SUBROUTINE d_isr1(gami,y,z,j1,g1,g2,gg1,gg2,ggg1,ggg2)
+*     *************************************************************
+* Ingredients for O(alf3)NLL ISR matrix element.
+* INPUT: 
+*     alfinv=  QED coupling
+*     charg2=  charge squared
+*     y,z=     Sudakov variables
+*     j1=      pointers to input-photon
+* OUTPUT:
+*     g's are set here: g=treelevel, gg=oneloop, ggg=twoloop
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION y(*),z(*)
+*
+      a1 = y(j1)
+      b1 = z(j1)
+c[[[      zz = 1d0-a1-b1  !old choice
+      zz = (1d0-a1)*(1d0-b1)
+      IF(zz  .le.0d0) WRITE(*,*) '!!!! zz=',zz
+      dels1 =  gami/2d0 -gami/4d0*dlog(zz)
+      dels2 =  gami**2/8d0
+     $        -gami**2/8d0  *dlog(zz)
+     $        +gami**2/24d0 *dlog(zz)**2
+* Exact O(alf1) matrix element for the hardest photon jhard
+      g1   = ((1-a1)**2            )/2d0
+      g2   = (            (1-b1)**2)/2d0
+      gg1  = ((1-a1)**2            )/2d0 *(1+dels1)
+      gg2  = (            (1-b1)**2)/2d0 *(1+dels1)
+      ggg1 = ((1-a1)**2            )/2d0 *(1+dels1+dels2)
+      ggg2 = (            (1-b1)**2)/2d0 *(1+dels1+dels2)
+      END
+
+c[[[      SUBROUTINE d_isr2(gami,y,z,jhard,j1,j2,g1,g2,gg1,gg2)
+      SUBROUTINE d_isr2(ypar,gami,y,z,jhard,j1,j2,g1,g2,gg1,gg2)
+*     *****************************************************
+* Ingredients for O(alf2)NLL ISR matrix element.
+* INPUT:
+*     gami  = 2*alfa/pi*(BigLog-1)
+*     y,z   = Sudakov variables
+*     jhard = pointer of hardes photon
+*     j1,j2 = pointers of two input-photons
+* OUTPUT:
+*     g's, gg's are updated (have to be initialized in calling program)
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION y(*),z(*),ypar(*)
+*
+      a1 = y(j1)
+      b1 = z(j1)
+      a2 = y(j2)/(1d0-y(j1))
+      b2 = z(j2)/(1d0-z(j1))
+* Exact O(alf1) matrix element for the hardest photon jhard
+      IF(jhard .EQ. j1) THEN
+         p1= ((1-a1)**2            ) *( (1-a2)**2 + (1-b2)**2 )/4d0
+         p2= (            (1-b1)**2) *( (1-a2)**2 + (1-b2)**2 )/4d0
+      ELSE
+         p1= ((1-a1)**2 +(1-b1)**2 ) *( (1-a2)**2             )/4d0
+         p2= ((1-a1)**2 +(1-b1)**2 ) *(             (1-b2)**2 )/4d0
+      ENDIF
+      g1 = g1 +p1
+      g2 = g2 +p2
+c[[[  z1 = 1-y(j1)-z(j1) !!! NO GOOD SOFT LIMIT compatible with d_isr1
+      z1 =  (1-y(j1))*(1-z(j1))
+      z1z2= (1-y(j1)-y(j2))*(1-z(j1)-z(j2))
+* soft limit to d_isr1 OK, for 2 trees we get 3 terms gami/6d0*dlog(zz)
+      delvir1 = gami/2d0 -gami/6d0*dlog(z1) -gami/6d0*dlog(z1z2)
+      gg1=gg1 +p1*(1+delvir1)
+      gg2=gg2 +p2*(1+delvir1)
+
+      IF(z1  .le.0d0) WRITE(*,*) '!!!! z1=',z1
+      IF(z1z2.le.0d0) WRITE(*,*) '!!!! z1z2=',z1z2
+c[[[
+      IF(z1z2.le.0d0) THEN
+         nevgen= ypar(9)
+         WRITE(*,*) 'nevgen=',nevgen
+         WRITE(*,*) 'vv=',   ypar(10)
+         WRITE(*,*) 'vv=',   ypar(255)
+         WRITE(*,*) 'wtcut=',ypar(254)
+         WRITE(*,*) 'j1,j2',j1,j2
+         WRITE(*,*) 'y(j1),y(j2)=',y(j1),y(j2)
+         WRITE(*,*) 'z(j1),z(j2)=',z(j1),z(j2)
+      ENDIF
+c]]]
+
+      END
+
+      SUBROUTINE d_fsr1(gamf,y,z,j1,g1,g2,gg1,gg2)
+*     ********************************************
+* Ingredients for O(alf2)NLL FSR matrix element.
+* INPUT: 
+*     y,z Sudakov variables
+*     j1 pointer of input-photons
+* OUTPUT:
+*     g's are set here
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION y(*),z(*)
+*
+* normal definition as in O(alf1) single-photon case
+      a1 = y(j1)/( 1d0 +y(j1) +z(j1) )
+      b1 = z(j1)/( 1d0 +y(j1) +z(j1) )
+c[[[      zz = (1d0-a1-b1)  ! old definition
+      zz = (1d0-a1)*(1d0-b1)
+      IF(zz  .LE. 0d0) WRITE(*,*) '!!!! zz=',zz
+      dels1 =  gamf/2d0 +gamf/4d0*dlog(zz)
+* Exact O(alf1) matrix element for the hardest photon jhard
+      g1 = ((1-a1)**2            ) /2d0
+      g2 = (            (1-b1)**2) /2d0
+      gg1= ((1-a1)**2            ) /2d0 *(1+dels1)
+      gg2= (            (1-b1)**2) /2d0 *(1+dels1)
+      END
+
+      SUBROUTINE d_fsr2(y,z,jhard,j1,j2,g1,g2)
+*     *****************************************
+* Ingredients for O(alf2)NLL FSR matrix element.
+* INPUT: 
+*     y,z Sudakov variables
+*     jhard pointer of hardes photon
+*     j1,j2 pointers of two input-photons
+* OUTPUT:
+*     g1,g2 are updated (have to be initialized in calling program)
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION y(*),z(*)
+*
+* normal definition as in O(alf1) single-photon case
+      a1 = y(j1)/( 1d0 +y(j1) +z(j1) )
+      b1 = z(j1)/( 1d0 +y(j1) +z(j1) )
+* take into account primary photon emission
+      yp2 = y(j2)/( 1d0 +y(j1) )
+      zp2 = z(j2)/( 1d0 +z(j1) )
+* as in O(alf1) single-photon case
+      a2 = yp2/(1d0 + yp2 +zp2)
+      b2 = zp2/(1d0 + yp2 +zp2)
+
+* Exact O(alf1) matrix element for the hardest photon jhard
+      IF(jhard .EQ. j1) THEN
+         p1= ((1-a1)**2            ) *( (1-a2)**2 + (1-b2)**2 )/4d0
+         p2= (            (1-b1)**2) *( (1-a2)**2 + (1-b2)**2 )/4d0
+      ELSE
+         p1= ((1-a1)**2 +(1-b1)**2 ) *( (1-a2)**2             )/4d0
+         p2= ((1-a1)**2 +(1-b1)**2 ) *(             (1-b2)**2 )/4d0
+      ENDIF
+      g1=g1 +p1
+      g2=g2 +p2
+      END
+
+      SUBROUTINE d_isr3(y,z,jhard,j1,j2,j3,g1,g2)
+*     ********************************************
+* Ingredients for O(alf3)LL ISR matrix element.
+* INPUT: 
+*     y,z Sudakov variables
+*     jhard pointer of hardes photon
+*     j1,j2,j3 pointers of 3 input-photons
+* OUTPUT:
+*     g1,g2 are updated (have to be initialized in calling program)
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION y(*),z(*)
+* inline functions
+      chi1(a  )=  0.5d0*    (1d0-a)**2
+      chi2(a,b)=  0.5d0*   ((1d0-a)**2+(1d0-b)**2)
+*
+      a1 = y(j1)
+      b1 = z(j1)
+      a2 = y(j2)/(1d0-y(j1))
+      b2 = z(j2)/(1d0-z(j1))
+      a3 = y(j3)/(1d0-y(j2)-y(j1))
+      b3 = z(j3)/(1d0-z(j2)-z(j1))
+* Exact O(alf1) matrix element for the hardest photon jhard
+      IF(jhard .EQ. j1) THEN
+         p1= chi1(a1) *chi2(a2,b2) *chi2(a3,b3)
+         p2= chi1(b1) *chi2(a2,b2) *chi2(a3,b3)
+      ELSEIF(jhard .EQ. j2) THEN
+         p1= chi2(a1,b1) *chi1(a2) *chi2(a3,b3)
+         p2= chi2(a1,b1) *chi1(b2) *chi2(a3,b3)
+      ELSE
+         p1= chi2(a1,b1) *chi2(a2,b2) *chi1(a3)
+         p2= chi2(a1,b1) *chi2(a2,b2) *chi1(b3)
+      ENDIF
+      g1=g1 +p1
+      g2=g2 +p2
+      END
+
+      SUBROUTINE thetar(qtot,pp1,pp2,qq1,qq2,cth11,cth12,cth21,cth22)
+*     ***************************************************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION qtot(*),pp1(*),pp2(*),qq1(*),qq2(*)
+      DIMENSION p1(4),p2(4),q1(4),q2(4)
+* Boost to Z/gamma frame
+      CALL KinLib_BostQ(1,qtot,pp1,p1)
+      CALL KinLib_BostQ(1,qtot,pp2,p2)
+      CALL KinLib_BostQ(1,qtot,qq1,q1)
+      CALL KinLib_BostQ(1,qtot,qq2,q2)
+* Calculate all four possible angles
+      q1d=        sqrt(q1(1)**2 +q1(2)**2 +q1(3)**2)
+      q2d=        sqrt(q2(1)**2 +q2(2)**2 +q2(3)**2)
+      p1d=        sqrt(p1(1)**2 +p1(2)**2 +p1(3)**2)
+      p2d=        sqrt(p2(1)**2 +p2(2)**2 +p2(3)**2)
+      cth11 = (q1(1)*p1(1) +q1(2)*p1(2) +q1(3)*p1(3))/q1d/p1d
+      cth12 =-(q1(1)*p2(1) +q1(2)*p2(2) +q1(3)*p2(3))/q1d/p2d
+      cth21 =-(q2(1)*p1(1) +q2(2)*p1(2) +q2(3)*p1(3))/q2d/p1d
+      cth22 = (q2(1)*p2(1) +q2(2)*p2(2) +q2(3)*p2(3))/q2d/p2d
+*
+      END
+
+
+      SUBROUTINE  wgtprt(txt,
+     $     nout,iev,ie1,ie2,wt_ISR,wt_FSR,wtbest,wtset)
+*     ***********************************************************
+* Prints out all weights
+* and the serial number of event iev on unit nout
+*     ***********************************
+      IMPLICIT DOUBLE PRECISION (a-h,o-z)
+      DIMENSION wtset(200)
+      CHARACTER*8 txt
+
+      IF( (iev .GE. ie1) .AND. (iev .LE. ie2) ) THEN
+         WRITE(nout,*) 
+     $        '=========== ',txt,' =======weights========>',iev
+         wtcrud = wt_ISR*wt_FSR
+         wtmain  = wtcrud*wtbest
+         WRITE(nout,3000) 'wtmain,wt_ISR,wt_FSR,wtbest= ',
+     $                     wtmain,wt_ISR,wt_FSR,wtbest
+         WRITE(nout,3100) (' (',i,')=',wtset(i)*wtcrud, i=1,150)
+         WRITE(nout,*) '   '
+      ENDIF
+ 3000 FORMAT(a,4f18.14)
+ 3100 FORMAT(4(a3,i3,a2,f18.14))
+      END
+
+*=======================================================================
+*=======================================================================
+*=======================================================================
+*=======================================================================

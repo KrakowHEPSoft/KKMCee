@@ -1,0 +1,38 @@
+ 0 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+  10000000           NEVT number of events
+----------cccccccccccccccccccccccccccccommentttttttttttttttttttttttttttttttttttt
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1        206.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+   17          .99D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions !!!!!!
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+   50              0      KeyHad=xpar(50)  Default is  1
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+*     Define process
+*     LIST of Final state flavours to be generated randomly according
+*     to QED corrected x-sections, at least one line/item should be present.
+*     (Remember that electron has incomplete M.E. and top might be too heavy.)
+  413              1      KFfin, muon
+  415              1      KFfin, Tau
+  401              1      KFfin, d
+  402              1      KFfin, u
+  403              1      KFfin, s
+  404              1      KFfin, c
+  405              1      KFfin, b
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+  801              1     Ibox=0,1, EW boxes off,on,    input for Dizet
+  805          120D0      amh   =xpar(805) Higgs mass, input for Dizet
+  806        173.8D0      amtop =xpar(806) Top mass,   input for Dizet
+  808    128.88524d0   alfinvMZ =xpar(808) alfQED(MZ), Jegerlehner RADCOR 98
+  809       0.1190d0   alfQCDMZ =xpar(809) alfQCD(MZ), PDG 1999
+*      DIZET flags NPAR(i)=NPAR(900+i)
+  918              0  Ihig2 ! =0,1   (Two-loop higgs  corrections off,on) 
+********************************************************************************
+EndX

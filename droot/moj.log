@@ -1,0 +1,94 @@
+[unknown:unknown] **USER_ERROR**
+
+
+  Wrong value of Action->sa_flags passed to sigaction: 0x30000000
+
+  Stack trace where the error occurred:
+                       sigaction()
+         TUnixSystem::UnixSignal()
+               TUnixSystem::Init()
+               TROOT::InitSystem()
+             __5TROOTPCcT1PPFv_v()
+   _GLOBAL_.I._5TROOT.fgDirLevel()
+           __do_global_ctors_aux()
+                           _init()
+
+
+[unknown:unknown] **USER_ERROR**
+
+
+  Wrong value of Action->sa_flags passed to sigaction: 0x20000000
+
+  Stack trace where the error occurred:
+                       sigaction()
+   TUnixSystem::UnixIgnoreSignal()
+       TUnixSystem::IgnoreSignal()
+        TSystem::IgnoreInterrupt()
+              TFile::WriteBuffer()
+              TFile::WriteHeader()
+                     TFile::Init()
+                    TFile::TFile()
+                 _GLOBAL_.I.main()  demoC.cxx, 31
+           __do_global_ctors_aux()
+                           _init()
+
+
+[unknown:unknown] **USER_ERROR**
+
+
+  Wrong value of Action->sa_flags passed to sigaction: 0x14000000
+
+  Stack trace where the error occurred:
+                       sigaction()
+   TUnixSystem::UnixIgnoreSignal()
+       TUnixSystem::IgnoreSignal()
+        TSystem::IgnoreInterrupt()
+              TFile::WriteBuffer()
+              TFile::WriteHeader()
+                     TFile::Init()
+                    TFile::TFile()
+                 _GLOBAL_.I.main()  demoC.cxx, 31
+           __do_global_ctors_aux()
+                           _init()
+
+
+[ROBOL.cxx:301] **LEAK_RETURN**
+
+>>   HST_Q2kloe->SetTitle("dsigma/dQ2 [nb/GeV^2] ");
+
+  Memory leaked by ignoring return value.
+
+  Lost block : 0x0b94cfc8 thru 0x0b94cff3 (44 bytes)
+               block allocated at:
+                          malloc()
+                   __builtin_new()
+               __builtin_vec_new()
+              TStringRef::GetRep()
+                TString::Replace()
+              TString::operator=()
+                TNamed::SetTitle()
+                 ROBOL::Finalize()  ROBOL.cxx, 301
+
+  Stack trace where the error occurred:
+                 ROBOL::Finalize()  ROBOL.cxx, 301
+
+
+[unknown:unknown] **USER_ERROR**
+
+
+  Wrong value of Action->sa_flags passed to sigaction: 0x14000000
+
+  Stack trace where the error occurred:
+                       sigaction()
+   TUnixSystem::UnixResetSignals()
+       TUnixSystem::~TUnixSystem()
+                   TROOT::~TROOT()
+   _GLOBAL_.D._5TROOT.fgDirLevel()
+           __do_global_dtors_aux()
+                      0x2ad84dac()
+                        _dl_fini()
+                            exit()
+                            exit()
+               __libc_start_main()
+
+

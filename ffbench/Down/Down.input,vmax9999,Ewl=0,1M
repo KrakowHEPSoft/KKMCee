@@ -1,0 +1,26 @@
+         Input for the main program
+   1000000      NEVT number of events
+----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+*     Center-of-mass energy [GeV]
+    1        200.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    2        0.000D0      DelEne =xpar( 2) Beam energy spread [GeV]
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*     Maximum v, where v = 1-sprim/s, v=1 is alowed
+   17        0.9999D0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*     KeyELW=0,1 Type of Elewctroweak corrections, KeyElw=0 only for tests
+   12              0      KeyELW=xpar(12) Default is 1, for Dizet
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+   50              0      KeyHad=xpar(50)  Default is  1
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+*     Define process
+  401              1      KFfin, down quark
+********************************************************************************
+EndX

@@ -1,0 +1,44 @@
+cos_theta(mu+ vs e+)  xk<0.1
+120 GeV CMS:
+   6003           ini+fin+int                                                                    
+ -1.0000    .2313D-04    .7632D-05 X                                          I
+  -.9500    .5897D-04    .5539D-05 X                                          I
+  -.9000    .9796D-04    .5323D-05 X                                          I
+  -.8500    .1337D-03    .5648D-05 X                                          I
+  -.8000    .2009D-03    .6140D-05 X                                          I
+  -.7500    .2636D-03    .6731D-05 X                                          I
+  -.7000    .3592D-03    .7464D-05 XX                                         I
+  -.6500    .4458D-03    .8066D-05 XX                                         I
+  -.6000    .5712D-03    .8865D-05 XX                                         I
+  -.5500    .7022D-03    .9494D-05 XXX                                        I
+  -.5000    .8622D-03    .1031D-04 XXX                                        I
+  -.4500    .1009D-02    .1096D-04 XXXX                                       I
+  -.4000    .1180D-02    .1159D-04 XXXX                                       I
+  -.3500    .1365D-02    .1230D-04 XXXXX                                      I
+  -.3000    .1589D-02    .1296D-04 XXXXXX                                     I
+  -.2500    .1801D-02    .1356D-04 XXXXXX                                     I
+  -.2000    .2063D-02    .1423D-04 XXXXXXX                                    I
+  -.1500    .2295D-02    .1490D-04 XXXXXXXX                                   I
+  -.1000    .2558D-02    .1552D-04 XXXXXXXXX                                  I
+  -.0500    .2876D-02    .1621D-04 XXXXXXXXXX                                 I
+   .0000    .3192D-02    .1678D-04 XXXXXXXXXXX                                I
+   .0500    .3496D-02    .1738D-04 XXXXXXXXXXXX                               I
+   .1000    .3848D-02    .1796D-04 XXXXXXXXXXXXX                              I
+   .1500    .4187D-02    .1849D-04 XXXXXXXXXXXXXX                             I
+   .2000    .4586D-02    .1913D-04 XXXXXXXXXXXXXXX                            I
+   .2500    .4962D-02    .1962D-04 XXXXXXXXXXXXXXXX                           I
+   .3000    .5344D-02    .2013D-04 XXXXXXXXXXXXXXXXXX                         I
+   .3500    .5784D-02    .2066D-04 XXXXXXXXXXXXXXXXXXX                        I
+   .4000    .6248D-02    .2123D-04 XXXXXXXXXXXXXXXXXXXXX                      I
+   .4500    .6704D-02    .2168D-04 XXXXXXXXXXXXXXXXXXXXXX                     I
+   .5000    .7197D-02    .2221D-04 XXXXXXXXXXXXXXXXXXXXXXXX                   I
+   .5500    .7720D-02    .2270D-04 XXXXXXXXXXXXXXXXXXXXXXXXX                  I
+   .6000    .8271D-02    .2324D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXX                I
+   .6500    .8829D-02    .2372D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX              I
+   .7000    .9377D-02    .2417D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX            I
+   .7500    .9981D-02    .2473D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX          I
+   .8000    .1066D-01    .2538D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        I
+   .8500    .1135D-01    .2616D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      I
+   .9000    .1218D-01    .2752D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   I
+   .9500    .1332D-01    .3278D-04 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+

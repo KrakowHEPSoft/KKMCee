@@ -1,0 +1,73 @@
+#####################################################################
+#	make tabcheck
+#	make tabtest		testing xsection, obsolete!!!
+#####################################################################
+#####################################################################
+all:	tabtest
+#####################################################################
+SRCLIST= "./ ../ ../../glibk/ ../../dizet/"
+#-----------------------------------------------------------------------------
+makflag:
+	( cd ../../ffbench ; make makflag )
+#####################################################################
+FFLAGS =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77 = gfortran
+AR  = ar cru
+RANLIB = ranlib
+LD = $(F77)
+LDFLAGS = $(FFLAGS)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+##########################################################################
+EXT_LIB2  = ../../dizet/dizet.a
+EXT_SRC2  = ../../dizet/*.f
+EXT_LIB3  = ../../glibk/glibk.a
+EXT_SRC3  = ../../glibk/*.f	../*.h
+EXT_LIB4  = ../bornv.a
+EXT_SRC4  = ../*.f	../*.h
+##########################################################################
+$(EXT_LIB2): $(EXT_SRC2)
+	(cd ../../dizet/; make dizet.a)
+$(EXT_LIB3): $(EXT_SRC3)
+	(cd ../../glibk/; make glibk.a)
+$(EXT_LIB4): $(EXT_SRC4)
+	(cd ../; make bornv.a)
+##########################################################################
+TabTabCheck.f:	TabTabCheck.h
+##########################################################################
+COMMAND1 = TabCheck.exe
+OBJECTS1 = TabCheck.o ReaData.o
+# Link procedure
+$(COMMAND1): $(OBJECTS1)                   $(EXT_LIB2)  $(EXT_LIB3)  $(EXT_LIB4)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIB2)  $(EXT_LIB3)  $(EXT_LIB4)
+##############################################################################
+##########################################################################
+COMMAND2 = TabTest.exe
+OBJECTS2 = TabTest.o ReaData.o
+# Link procedure
+$(COMMAND2): $(OBJECTS2)                   $(EXT_LIB4)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIB4)
+##############################################################################
+##############################################################################
+#-----------------------------------------------------------------------------
+tabcheck: $(COMMAND1)
+	(time ./TabCheck.exe & )
+tabcheck-debug:	$(COMMAND1)
+	(xldb -I  ${SRCLIST} ./TabCheck.exe )
+#-----------------------------------------------------------------------------
+tabtest: $(COMMAND2)
+####	(time ./TabTest.exe & )
+	(time ./TabTest.exe > output-TabTest  )
+####	(more output-TabTest)
+	(diff benchout-TabTest output-TabTest | more)
+tabtest-debug:	$(COMMAND2)
+	(xldb -I  ${SRCLIST} ./TabTest.exe )
+##############################################################################
+clean:
+	rm -f *.o *.a *~ *.exe
+##############################################################################
+Clean:	clean
+	rm -f *.o *.a *~ *.exe
+	(cd ../; make clean)
+##############################################################################

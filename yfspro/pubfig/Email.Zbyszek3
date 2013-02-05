@@ -1,0 +1,68 @@
+From VM Wed Feb 17 15:54:26 1999
+Content-Length: 4058
+X-VM-v5-Data: ([nil nil nil nil t nil nil nil nil]
+	[nil "Wed" "17" "February" "1999" "10:08:47" "+0100" "Zbigniew Was" "wasm@surya11.cern.ch" "<199902170908.KAA10666@surya11.cern.ch>" "40" "" "^From:" "Stanislaw.Jadach@cern.ch, z.was@cern.ch" "Stanislaw.Jadach@cern.ch, z.was@cern.ch" "2" nil nil nil nil nil]
+	nil)
+Status: O
+X-Status: 
+Return-Path: <wasm@surya11.cern.ch>
+Received: via tmail-4.1(10) for jadach; Wed, 17 Feb 1999 10:08:50 +0100 (MET)
+Return-Path: <wasm@surya11.cern.ch>
+Received: from smtp1.cern.ch (smtp1.cern.ch [137.138.128.38])
+	by mail2.cern.ch (8.9.1a/8.9.1) with ESMTP id KAA11720
+	for <jadach@mail2.cern.ch>; Wed, 17 Feb 1999 10:08:50 +0100 (MET)
+Received: from surya11.cern.ch (surya11.cern.ch [137.138.93.84])
+	by smtp1.cern.ch (8.9.1a/8.9.1) with ESMTP id KAA02160;
+	Wed, 17 Feb 1999 10:08:48 +0100 (MET)
+Received: (from wasm@localhost)
+	by surya11.cern.ch (8.8.5/8.8.5) id KAA10666;
+	Wed, 17 Feb 1999 10:08:47 +0100 (MET)
+Message-Id: <199902170908.KAA10666@surya11.cern.ch>
+In-reply-to: <199902161831.TAA86322@rsplus01.cern.ch> (message from Stanislaw
+	Jadach on Tue, 16 Feb 1999 19:31:04 +0100)
+Reply-to: z.was@cern.ch
+From: Zbigniew Was <wasm@surya11.cern.ch>
+To: Stanislaw.Jadach@cern.ch
+CC: z.was@cern.ch
+Date: Wed, 17 Feb 1999 10:08:47 +0100 (MET)
+
+Czesc,
+  Oto wyniki powtorzone. Sa zupelnie inne. Przesylam tez stare z 20 i 200 GeV,
+ale niestety zakradl mi sie niepokoj ze cos pomieszalem w archiwum wiec jesli
+wygladaja niepewnie to przepuszcze programy jeszcze raz. 
+     CMSENE= 94.1887 GeV  10 Mevt 
+     xk              sig [nb]        d_int [nb]      err [nb]        afb             d_int           err       
+    .990000E+00     .386922E+00     .520540E-03     .591526E-04     .139255E+00     .226758E-03     .216205E-03
+    .900000E+00     .385069E+00     .553566E-03     .591213E-04     .139661E+00     .295292E-03     .217131E-03
+    .800000E+00     .383822E+00     .602492E-03     .590987E-04     .139642E+00     .306250E-03     .217753E-03
+    .700000E+00     .382514E+00     .657055E-03     .590794E-04     .139581E+00     .304935E-03     .218426E-03
+    .600000E+00     .380984E+00     .722463E-03     .590597E-04     .139500E+00     .275073E-03     .219231E-03
+    .500000E+00     .379059E+00     .802921E-03     .590377E-04     .139352E+00     .217374E-03     .220262E-03
+    .400000E+00     .376520E+00     .903389E-03     .590113E-04     .139352E+00     .749348E-04     .221649E-03
+    .300000E+00     .372820E+00     .103358E-02     .589709E-04     .139571E+00    -.256686E-03     .223695E-03
+    .100000E+00     .343110E+00     .125906E-02     .584716E-04     .154317E+00    -.507805E-02     .241004E-03
+    .100000E-01     .108368E+00     .393662E-02     .538374E-04     .258000E+00     .663879E-01     .702240E-03
+     CMSENE=20GeV  10 Mevt
+     xk              sig [nb]        d_int [nb]      err [nb]        afb             d_int           err       
+    .990000E+00     .270726E+00    -.783850E-05     .680607E-04    -.216841E-01     .584282E-02     .355529E-03
+    .900000E+00     .246030E+00    -.192078E-04     .679874E-04    -.235882E-01     .932733E-02     .390789E-03
+    .800000E+00     .237128E+00    -.263605E-04     .679041E-04    -.242644E-01     .116516E-01     .404958E-03
+    .700000E+00     .230729E+00    -.342568E-04     .678132E-04    -.246587E-01     .138198E-01     .415627E-03
+    .600000E+00     .224952E+00    -.429123E-04     .677090E-04    -.249953E-01     .161542E-01     .425638E-03
+    .500000E+00     .219008E+00    -.538003E-04     .675817E-04    -.252642E-01     .189259E-01     .436359E-03
+    .400000E+00     .212326E+00    -.722488E-04     .674228E-04    -.255446E-01     .224716E-01     .449018E-03
+    .300000E+00     .204067E+00    -.853863E-04     .672109E-04    -.258057E-01     .273941E-01     .465700E-03
+    .100000E+00     .172599E+00    -.175055E-03     .663293E-04    -.265282E-01     .518014E-01     .543232E-03
+    .100000E-01     .104650E+00    -.430067E-03     .643077E-04    -.266891E-01     .157285E+00     .867626E-03
+     CMSENE=200GeV  10 Mevt ((( byl brak tej linii energia przez nazwe zbioru
+     xk              sig [nb]        d_int [nb]      err [nb]        afb             d_int           err       
+    .990000E+00     .268516E-01     .669023E-04     .424979E-05     .298123E+00     .129968E-02     .223827E-03
+    .900000E+00     .260288E-01     .693685E-04     .424555E-05     .308066E+00     .205203E-02     .230671E-03
+    .800000E+00     .257171E-01     .727185E-04     .424189E-05     .312797E+00     .246294E-02     .233266E-03
+    .700000E+00     .254728E-01     .759654E-04     .423888E-05     .317602E+00     .277477E-02     .235336E-03
+    .600000E+00     .252058E-01     .775205E-04     .423724E-05     .324867E+00     .301586E-02     .237736E-03
+    .500000E+00     .246688E-01     .715104E-04     .423587E-05     .342680E+00     .305621E-02     .242832E-03
+    .400000E+00     .136100E-01     .578337E-04     .422642E-05     .640355E+00     .418423E-02     .439163E-03
+    .300000E+00     .103268E-01     .142070E-03     .420041E-05     .732194E+00     .727655E-02     .575219E-03
+    .100000E+00     .777335E-02     .319613E-03     .411769E-05     .737681E+00     .166014E-01     .749097E-03
+    .100000E-01     .364816E-02     .646632E-03     .394747E-05     .735768E+00     .595653E-01     .152995E-02
