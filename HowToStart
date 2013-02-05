@@ -1,0 +1,48 @@
+HOW TO START:
+
+If you are under Linux then proceed as below immediately.
+On other instalation change f77 options according to InstalationNotes.
+Manual is published in Comp. Phys. Commun. 130 (2000) 260.
+
+BASIC DEMO:
+Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
+as for the detector simulation  (20min, Pentium III 500MHz)::
+	cd  ./ffbench
+	cp demo/demo.input.1k demo/demo.input
+	make demo-start
+	diff demo/demo.output.1k demo/demo.output | less
+
+OTHER DEMOS:
+Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events (19min)::
+	cp Inclusive/Inclusive.input.1k Inclusive/Inclusive.input
+	make Inclusive-start
+	diff Inclusive/pro.output.1k Inclusive/pro.output | less
+
+Tau's, decays on, beam polarization on (8min)::
+	cp Tau/Tau.input.200ev Tau/Tau.input
+	make Tau-start
+	diff Tau/pro.output.200ev Tau/pro.output | less
+
+Muons only, v<0.99, wt=1 events (5min)::
+	cp Mu/Mu.input,100ev,0.99vmax Mu/Mu.input
+	make Mu-start
+	diff Mu/pro.output,100ev,0.99vmax Mu/pro.output | less
+
+Beamstrahlung at 500GeV, (21min.)
+        cp Beast/Foam500,200ev.input Beast/Beast.input
+	make Beast-start
+	diff Beast/Foam500,200ev.output Beast/pro.output | less
+
+Low energy resonances for gamma*, with proper experimental R (4min)
+	cp demo_R/demo_R_15GeV_100k.input demo_R/demo_R.input
+	make demo_R-start
+	diff demo_R/demo_R_15GeV_100k.output demo_R/demo.output  | less
+
+etc. etc.........
+Read more in ./ffbench/Makefile
+
+N.B. for quick x-check:
+	cp demo/demo.input.QUICK demo/demo.input
+	make demo-start
+	diff demo/demo.output.QUICK demo/demo.output | less
+-------------------------------------------------------------------
