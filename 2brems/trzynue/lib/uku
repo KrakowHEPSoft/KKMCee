@@ -1,0 +1,219 @@
+f77 -static -O -c Z0_test2ph.f
+   z0dec2:
+Warning on line 382: local variable rn never used
+Warning on line 382: local variable test never used
+Warning on line 382: local variable xppr never used
+Warning on line 382: local variable phot3 never used
+Warning on line 382: local variable aphot never used
+Warning on line 382: local variable ulalps never used
+Warning on line 382: funski declared EXTERNAL but never used.
+   kine4c:
+   kine4f:
+   phan1e:
+   phan2e:
+   phro2e:
+   phro3e:
+   xmul:
+   cosik:
+   kine4iiz0:
+   kine4ifz0:
+f77 -static -O -c brelib.f
+   intefa:
+   singini:
+Warning on line 77: local variable pi never used
+   xmsini:
+   amplia:
+   amplib:
+   singfin:
+Warning on line 209: local variable pi never used
+   xmsfin:
+   fmplia:
+   fmplib:
+   sklini:
+Warning on line 388: local variable pi never used
+   sklfin:
+Warning on line 465: local variable pi never used
+   siniinf:
+Warning on line 502: local variable pi never used
+   ndist0:
+   siniapr:
+Warning on line 555: local variable pi never used
+   ndist1:
+   sfininf:
+Warning on line 615: local variable pi never used
+   sfinapr:
+Warning on line 643: local variable pi never used
+   fdist1:
+f77 -static -O -c dublib.f
+   intefb:
+   dublini:
+   dublfin:
+   xmdini:
+   xmdfin:
+   dublea:
+   dublec:
+   dubleb:
+   fublea:
+   fublec:
+   fubleb:
+   dublmix:
+Warning on line 566: local variable pi never used
+   xmsmix:
+   amixa:
+Warning on line 675: local variable s never used
+Warning on line 675: local variable c2 never used
+Warning on line 675: local variable ssft never used
+   amixc:
+Warning on line 736: local variable s never used
+Warning on line 736: local variable c1 never used
+   amixb:
+Warning on line 800: local variable s never used
+Warning on line 800: local variable c1 never used
+   amixd:
+Warning on line 865: local variable s never used
+Warning on line 865: local variable c1 never used
+   diniinf:
+Warning on line 902: local variable pi never used
+   dfininf:
+Warning on line 933: local variable pi never used
+   diniapr:
+Warning on line 956: local variable pi never used
+   ndist2:
+   gsofa2:
+   dfinapr:
+Warning on line 1050: local variable pi never used
+   fdist2:
+   gsfin2:
+   reduz2:
+   dmixinf:
+Warning on line 1258: local variable pi never used
+   dmixapr:
+Warning on line 1283: local variable pi never used
+   nfdist:
+   gthet3:
+f77 -static -O -c declib.f
+   funski:
+   beamas:
+   gsofa1:
+   gsfin1:
+   gbeta0:
+   sfach0:
+   gthet:
+   bornv:
+   tralqq:
+   bostdq:
+   gibea:
+   reduk0:
+   redum0:
+   reduz0:
+   gthet0:
+   gthet1:
+   reduz1:
+   ampli0:
+   xm:
+   propin:
+   propininfra:
+   propfin:
+   prop:
+   ep:
+   spm:
+   epp:
+   ilocz:
+   dodaj4:
+   dodaj3:
+   dodaj:
+   add5:
+   add4:
+   add3:
+   add1:
+   add:
+   multi:
+   delta:
+   coef:
+   momenta:
+   sspm:
+   splus:
+   smins:
+   vini:
+   vfin:
+   his:
+   dumph:
+   renhie:
+   licfac:
+   cumhi3:
+   spherd:
+   rotpod:
+   bostd1:
+   bostd3:
+   rotod1:
+   rotod2:
+   rotod3:
+   angfi:
+   marran:
+       entry    rmarin:
+       entry    rmarut:
+   rcarry:
+       entry    rcarin:
+       entry    rcarut:
+       entry    rcargo:
+   ranecu:
+       entry    recuin:
+       entry    recuut:
+   varran:
+   gausjd:
+   dpgamm:
+Warning on line 1852: local variable d3 never used
+Warning on line 1852: local variable x3 never used
+   vesk2w:
+   vinskw:
+   divskw:
+   wmonit:
+   wmoni2:
+   dilog:
+f77 -static -O -c trzylib.f
+   intefc:
+   trzyini:
+   xmtini:
+   trzylea:
+Warning on line 379: local variable x1 never used
+Warning on line 379: local variable x2 never used
+   trzylec:
+Warning on line 444: local variable x1 never used
+Warning on line 444: local variable x2 never used
+Warning on line 444: local variable sc never used
+   trzyled:
+Warning on line 508: local variable x1 never used
+Warning on line 508: local variable x2 never used
+   trzyleb:
+Warning on line 581: local variable x1 never used
+Warning on line 581: local variable x2 never used
+   trziiniinf:
+   xmtiniinf:
+   trziyfsinf:
+Warning on line 858: local variable pi never used
+   trzidbl:
+Warning on line 883: local variable pi never used
+   trziyfs:
+Warning on line 908: local variable pi never used
+f77 -static -O -c Z0_test3ph.f
+   z0dec3:
+Warning on line 403: local variable rn never used
+Warning on line 403: local variable xppr never used
+Warning on line 403: local variable aphot never used
+Warning on line 403: local variable ulalps never used
+Warning on line 403: funski declared EXTERNAL but never used.
+   intefd:
+   kine5iiz0:
+Warning on line 835: local variable pbb never used
+   kine5iiz0a:
+Warning on line 1197: local variable pbb never used
+   kine5iiz0okx:
+   kine5iiz0ok:
+ar rv  Z0_lib.a  Z0_test2ph.o brelib.o dublib.o declib.o trzylib.o Z0_test3ph.o
+a - Z0_test2ph.o
+a - brelib.o
+a - dublib.o
+a - declib.o
+a - trzylib.o
+a - Z0_test3ph.o
+ranlib Z0_lib.a 

@@ -1,0 +1,218 @@
+#-------------------------------------------------------------------------------
+#	make demo-start
+#	make Mu-start
+#	make Tau-start
+#	make Inclusive-start
+#	make figinc-dvi
+#	make figinc-ps
+#-------------------------------------------------------------------------------
+############
+all:	demo-start
+########### linux flags ###########
+#FFLAGS  =  -static -f +B
+#LDFLAGS =  
+########### collection of HP  flags ###########
+### HP options: +se for 100 or more columns, +B for backslash in strings
+###             +K  for global SAVE
+#FFLAGS  =  -K +se +B
+########### collection of IBM  flags ###########
+# IBM options: fixed=100 for 100 or more columns,
+#              qextname for C-style external names with underscore at the end
+#FFLAGS  =  -qfixed=100 -qextname -O -C -qextchk
+#FFLAGS  =  -qfixed=100 -qextname -g -C -qextchk -qinitauto=FF -qflttrap=overflow:underflow:zerodivide:invalid:enable
+###########
+FFLAGS  =  -qfixed=100 -qextname -O
+LDFLAGS =  -qextname -bloadmap:lmap
+##
+F77 = f77
+LD  = $(F77)
+#-----------------------------------------------------------------------
+SRCLIST= "../KK2f ../glibk ../jetset ../bornv ../amplib/lib ../amplib/trzynue/lib ../amplib/trzynue/analysis "
+#-----------------------------------------------------------------------
+###########
+EXT_LIB1  = ../KK2f/KK2f.a
+EXT_SRC1  = ../KK2f/*.f		../KK2f/*.h
+EXT_LIB2  = ../glibk/glibk.a
+EXT_SRC2  = ../glibk/*.f	../glibk/*.h
+EXT_LIB3  = ../jetset/jetset.a
+EXT_SRC3  = ../jetset/*.f
+EXT_LIB4  = ../bornv/bornv.a
+EXT_SRC4  = ../bornv/*.f	../bornv/*.h
+EXT_LIB5  = ../tauola/glib.a
+EXT_SRC5  = ../tauola/*.f
+EXT_LIB6  = ../photos/glib.a
+EXT_SRC6  = ../photos/photos.f	
+EXT_LIB7  = ../amplib/lib/mainlib.a
+EXT_SRC7  = ../amplib/lib/*.f
+EXT_LIB8  = ../amplib/trzynue/lib/Z0_lib.a
+EXT_SRC8  = ../amplib/trzynue/lib/*.f
+EXT_LIB9  = ../amplib/trzynue/analysis/analysis_lib.a
+EXT_SRC9  = ../amplib/trzynue/analysis/*.f
+###########
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(EXT_LIB1): $(EXT_SRC1)
+	cd ../KK2f; make
+$(EXT_LIB2): $(EXT_SRC2)
+	cd ../glibk; make
+$(EXT_LIB3): $(EXT_SRC3)
+	cd ../jetset; make
+$(EXT_LIB4): $(EXT_SRC4)
+	cd ../bornv; make
+$(EXT_LIB5): $(EXT_SRC5)
+	cd ../tauola; make
+$(EXT_LIB6): $(EXT_SRC6)
+	cd ../photos; make
+$(EXT_LIB7): $(EXT_SRC7)
+	cd ../amplib/lib; make
+$(EXT_LIB8): $(EXT_SRC8)
+	cd ../amplib/trzynue/analysis; make
+$(EXT_LIB9): $(EXT_SRC9)
+	cd ../amplib/trzynue/lib; make
+#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
+# Link procedure
+COMMAND2 = demo.exe
+OBJECTS2 = demo.o
+$(COMMAND2): $(OBJECTS2)  \
+	$(EXT_LIB1)  $(EXT_LIB2)  $(EXT_LIB3) $(EXT_LIB4) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7) $(EXT_LIB8) $(EXT_LIB9)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) \
+        $(EXT_LIB1)  $(EXT_LIB2)  $(EXT_LIB3) $(EXT_LIB4) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7) $(EXT_LIB8) $(EXT_LIB9)
+#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
+# Link procedure
+COMMAND1 = MainPro.exe
+OBJECTS1 = MainPro.o
+$(COMMAND1): $(OBJECTS1)  \
+	$(EXT_LIB1)  $(EXT_LIB2)  $(EXT_LIB3) $(EXT_LIB4) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7) $(EXT_LIB8) $(EXT_LIB9)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) \
+                 $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7) $(EXT_LIB8) $(EXT_LIB9)
+#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
+demo-start:	$(COMMAND2)
+	(cd ./demo;  make start )
+#-----------------------------------------------------------------------
+figinc-dvi:
+	(cd Plots; make figinc-dvi)
+figinc-ps:
+	(cd Plots; make figinc-ps)
+#-----------------------------------------------------------------------
+Test-start:	$(COMMAND1)
+	(cd ./Test;  make start )
+Test-stop:
+	(cd ./Test;  make stop )
+Test-cont:
+	(cd ./Test;  make cont )
+#-----------------------------------------------------------------------
+Mu-start:	$(COMMAND1)
+	(cd ./Mu;  make start )
+Mu-stop:
+	(cd ./Mu;  make stop )
+Mu-cont:
+	(cd ./Mu;  make cont )
+Mu-plot:
+	(cd ./Plots; make figmix)
+Mu-start-debug:	$(COMMAND1)
+	(cd ./Mu;  make start-debug )
+Mu-cont-debug:	$(COMMAND1)
+	(cp Mu/pro.hst.382 Mu/pro.hst )
+	(cp Mu/semaphore.382 Mu/semaphore )
+	(cd ./Mu;  make cont )
+###	(cd ./Mu;  make cont-debug )
+#-----------------------------------------------------------------------
+Tau-start:	$(COMMAND1)
+	(cd ./Tau;  make start )
+Tau-stop:
+	(cd ./Tau;  make stop )
+Tau-start-debug:	$(COMMAND1)
+	(cd ./Tau;  make start-debug )
+Tau-cont-debug:	$(COMMAND1)
+	(cp Tau/pro.hst.110 Tau/pro.hst )
+	(cp Tau/semaphore.110 Tau/semaphore )
+###	(cd ./Tau;  make cont )
+	(cd ./Tau;  make cont-debug )
+#-----------------------------------------------------------------------
+Down-start:	$(COMMAND1)
+	(cd ./Down;  make start )
+Down-start-debug:	$(COMMAND1)
+	(cd ./Down;  make start-debug )
+#-----------------------------------------------------------------------
+Up-start:	$(COMMAND1)
+	(cd ./Up;  make start )
+#-----------------------------------------------------------------------
+Botom-start:	$(COMMAND1)
+	(cd ./Botom;  make start )
+#-----------------------------------------------------------------------
+Inclusive-start:	$(COMMAND1)
+	(cd ./Inclusive;  make start )
+Inclusive-start-debug:	$(COMMAND1)
+	(cd ./Inclusive;  make start-debug )
+Inclusive-cont-debug:	$(COMMAND1)
+	(cp Inclusive/pro.hst.9643 Inclusive/pro.hst )
+	(cp Inclusive/semaphore.9643 Inclusive/semaphore )
+	(cd ./Inclusive;  make cont-debug )
+#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
+#                  update production makefiles
+#-----------------------------------------------------------------------
+makprod:
+#-----------------------------------
+	(sed -e 's#<main>#demo#' -e 's#<dset>#demo#' -e 's#<class>#long#'\
+		./makefile.production > ./demo/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Test#' -e 's#<class>#long#'\
+		./makefile.production > ./Test/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Mu#' -e 's#<class>#long#'\
+		./makefile.production > ./Mu/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Tau#' -e 's#<class>#long#'\
+		./makefile.production > ./Tau/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Down#' -e 's#<class>#long#'\
+		./makefile.production > ./Down/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Up#' -e 's#<class>#long#'\
+		./makefile.production > ./Up/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Botom#' -e 's#<class>#long#'\
+		./makefile.production > ./Botom/makefile)
+#-----------------------------------
+	(sed -e 's#<main>#MainPro#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#'\
+		./makefile.production > ./Inclusive/makefile)
+#-----------------------------------
+clean:                                                     
+	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+#=============================================================================
+# Update fortran compilation flags
+makflag:
+	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../photos; sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../glibk;  sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../dizet;  sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+	(cd ../bornv/tabtest;  \
+	    sed -e 's#<FFLAGS>#$(FFLAGS)#' makefile.templ > makefile)
+#-----------------------------------------------------------------------
+Clean:
+	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+	(cd ./Plots;	make clean)
+	(cd ../glibk;	make clean)
+	(cd ../yfslib;	make clean)
+	(cd ../KK2f;	make clean)
+	(cd ../jetset;	make clean)
+	(cd ../tauola;	make clean)
+	(cd ../photos;	make clean)
+	(cd ../bornv;	make clean)
+	(cd ../dizet;	make clean)
+	(cd ../bornv/tabtest; make clean)
+#-----------------------------------------------------------------------
+gtar: Clean
+	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
+	(cd ../../; chmod -w KK2f-all.tar.gz)
+#-----------------------------------------------------------------------
+
+

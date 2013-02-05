@@ -1,0 +1,44 @@
+COMMAND = 
+COMMAND_OBJECTS = 
+#LOCAL_LIB   =  mainlib_5707_pdf.a 
+#LIB_OBJECTS =  glibnew.o  jetset74.o photos_20.o pythia5707_pdf.o
+#LOCAL_LIB   =  mainlib_5707.a 
+#LIB_OBJECTS =  glibnew.o  jetset74.o photos_20.o pythia5707.o
+#LOCAL_LIB   =  mainlib_57.a 
+#LIB_OBJECTS =  glibnew.o  jetset74.o photos_20.o pythia57.o
+#LOCAL_LIB   =  mainlib_20.a 
+#LIB_OBJECTS =  glibnew.o  jetset73.o photos_20.o pythia56.o
+#LOCAL_LIB   =  mainlib.a 
+#LIB_OBJECTS =  glibnew.o  jetset73.o photnew.o pythia56.o
+#LOCAL_LIB   =  mainlib_new.a 
+#LIB_OBJECTS =  glibnew.o 
+LOCAL_LIB   =  mainlib.a 
+LIB_OBJECTS =  glibnew.o  photos_20.o 
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+FFLAGS = -qfixed=132 -qextname -O
+F77 = f77
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ 
+tar:
+	(cd ../;   tar cvf   lib.tar lib)
+	(cd ../;   compress  lib.tar)
+	(cd ../;   chmod -R 700 *)
+set-hp:
+	(cd 201k; cp makefile.hp makefile)
+	(cd 201z; cp makefile.hp makefile)
+set-apo:
+	(cd 201k; cp makefile.apo makefile)
+	(cd 201z; cp makefile.apo makefile)
+set-sun:
+	(cd 201k; cp makefile.sun makefile)
+	(cd 201z; cp makefile.sun makefile)

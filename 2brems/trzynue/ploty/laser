@@ -1,0 +1,2 @@
+dvips $1.dvi -o
+lpr -l $1.ps

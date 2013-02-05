@@ -1,0 +1,23 @@
+COMMAND = 
+COMMAND_OBJECTS =
+LOCAL_LIB   =  Z0_lib.a 
+#LIB_OBJECTS =  Z0_test0ph.o  Z0_test1ph.o Z0_test2ph.o Z0_testrad.o brelib.o dublib.o declib.o
+#LIB_OBJECTS =  Z0_0ph.o  Z0_1ph.o Z0_2ph.o Z0_rad.o brelib.o dublib.o declib.o
+#LIB_OBJECTS =  declib.o
+LIB_OBJECTS =   Z0_test2ph.o brelib.o dublib.o declib.o trzylib.o Z0_test3ph.o
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+FFLAGS =   <FFLAGS>
+F77 = f77
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ 
+
