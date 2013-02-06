@@ -5,10 +5,9 @@
 #	make Mu-start
 #	make Tau-start
 #	make Inclusive-start
+#	make figinc-pdf   <== simple graphics
 #	make demo_R-start	<== R imposed for the gamma* resonances
 #	make Beast-start	<-- Beamsstrahlung
-#	make figinc-dvi         ! obsolete
-#	make figinc-ps          ! obsolete
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -106,10 +105,8 @@ demo-start:	$(COMMAND2)
 demo_R-start:	$(COMMAND3)
 	(cd ./demo_R;  make start )
 #-----------------------------------------------------------------------
-figinc-dvi:
-	(cd Plots; make figinc-dvi)
-figinc-ps:
-	(cd Plots; make figinc-ps)
+figinc-pdf:
+	(cd Plots; make figinc-pdf)
 #-----------------------------------------------------------------------
 Test-start:	$(COMMAND1)
 	(cd ./Test;  make start )
