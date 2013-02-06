@@ -10,10 +10,10 @@ SRCLIST= "../ ../../yfslib ../../bornv ../../glibk ../../KK2f"
 # Interactive:  run start stop and continue
 #-----------------------------------------------------------------------
 prepare:
-	(ln -s ../../.KK2f_defaults ./.KK2f_defaults )
-	(ln -s ../../dizet          ./dizet )
+	(ln -s -f ../../.KK2f_defaults ./.KK2f_defaults )
+	(ln -s -f ../../dizet          ./dizet )
 #-----------------------------------------------------------------------
-start:
+start: prepare
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\

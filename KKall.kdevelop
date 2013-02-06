@@ -7,6 +7,9 @@
     <projectmanagement>KDevCustomProject</projectmanagement>
     <primarylanguage>Fortran77</primarylanguage>
     <ignoreparts/>
+    <projectdirectory>.</projectdirectory>
+    <absoluteprojectpath>false</absoluteprojectpath>
+    <description></description>
   </general>
   <kdevautoproject>
     <general>
@@ -67,8 +70,21 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell/>
+      <dbgshell></dbgshell>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
+      <breakonloadinglibs>true</breakonloadinglibs>
+      <separatetty>false</separatetty>
+      <floatingtoolbar>false</floatingtoolbar>
     </general>
+    <display>
+      <staticmembers>false</staticmembers>
+      <demanglenames>true</demanglenames>
+      <outputradix>10</outputradix>
+    </display>
   </kdevdebugger>
   <kdevfilecreate>
     <useglobaltypes>
@@ -77,8 +93,31 @@
   </kdevfilecreate>
   <kdevcustomproject>
     <run>
-      <directoryradio>executable</directoryradio>
+      <directoryradio>custom</directoryradio>
+      <customdirectory>/home/theory/jadach/private/SandBox/KK-all-2012/ffbench/demo/</customdirectory>
+      <mainprogram>/home/theory/jadach/private/SandBox/KK-all-2012/ffbench/demo.exe</mainprogram>
+      <programargs></programargs>
+      <terminal>false</terminal>
+      <autocompile>true</autocompile>
+      <envvars/>
     </run>
+    <build>
+      <buildtool>make</buildtool>
+      <builddir></builddir>
+    </build>
+    <make>
+      <abortonerror>false</abortonerror>
+      <numberofjobs>1</numberofjobs>
+      <prio>0</prio>
+      <dontact>false</dontact>
+      <makebin></makebin>
+      <defaulttarget></defaulttarget>
+      <makeoptions></makeoptions>
+      <selectedenvironment>default</selectedenvironment>
+      <environments>
+        <default/>
+      </environments>
+    </make>
   </kdevcustomproject>
   <kdevfileview>
     <groups>
@@ -90,4 +129,24 @@
       <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
+  <kdevfortransupport>
+    <ftnchek>
+      <division>false</division>
+      <extern>false</extern>
+      <declare>false</declare>
+      <pure>false</pure>
+      <argumentsall>false</argumentsall>
+      <commonall>false</commonall>
+      <truncationall>false</truncationall>
+      <usageall>false</usageall>
+      <f77all>false</f77all>
+      <portabilityall>false</portabilityall>
+      <argumentsonly></argumentsonly>
+      <commononly></commononly>
+      <truncationonly></truncationonly>
+      <usageonly></usageonly>
+      <f77only></f77only>
+      <portabilityonly></portabilityonly>
+    </ftnchek>
+  </kdevfortransupport>
 </kdevelop>
