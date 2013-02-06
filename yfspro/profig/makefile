@@ -9,8 +9,8 @@
 #-----------------------------------------------------------------------
 SRCLIST= "../libfig ../../glibk"
 #----------------------------------------------------------------------
-XDVI   = xdvi      -bg white -fg black  -s 4 
-XPS    = ghostview -bg white -fg black  -magstep -1 
+XDVI   = kdvi
+XPS    = ghostview
 #----------------------------------------------------------------------
 FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LDFLAGS =

@@ -1,9 +1,9 @@
 *////////////////////////////////////////////////////////////////////
 *//   Initial + Final state plots
 *//   Technical test of beta's MC versus SAnalytical
-*//   gmake figbet-dvi
-*//   gmake figbet-ps
-*//   gmake figbet-pubs
+*//   make figbet-dvi
+*//   make figbet-ps
+*//   make figbet-pubs <==== THIS IS MAIN RESULT
 *////////////////////////////////////////////////////////////////////
       PROGRAM MAIN
 *     ***********************************
@@ -59,7 +59,7 @@ c      Hname  = '../mixflat/5M.pro200.hst'   ! KeyZet=-2 new
 cccc      CALL figrho_log
 cccc      CALL figchi_log
 cccc      CALL figchi_lin  !  <==== THIS IS MAIN RESULT
-      CALL third_ord
+cccc      CALL third_ord
 *=========================================================================
 * end GLK_Plot, close LaTeX file
       CALL GLK_PlEnd
