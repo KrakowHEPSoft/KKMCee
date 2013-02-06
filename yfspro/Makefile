@@ -20,7 +20,8 @@ OBJECTS = yfspro.o
 all:	$(COMMAND)
 ########### linux flags ###########
 #FFLAGS  =  -fno-automatic -ffixed-line-length-132 -fbackslash -C -O
-FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
+#FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
+FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 ########### collection of HP  flags ###########
 ### HP options: +es for 100 or more columns, +B for backslash in strings
 ###             +K  for global SAVE
@@ -34,7 +35,7 @@ FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbacks
 #FFLAGS  =  -qfixed=132 -qextname  -C -qextchk -O
 #LDFLAGS =
 ################
-F77 = g77
+F77 = gfortran
 LD  = $(F77)
 LDFLAGS =
 #-----------------------------------------------------------------------

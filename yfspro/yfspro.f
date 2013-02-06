@@ -159,7 +159,7 @@
 !                 main MC loop                          !
 !-------------------------------------------------------!
       ngroup = 100000
-*      ngroup = 1000
+      ngroup = 10000
       iev=0
       DO loop=1,10000000
         DO igroup =1,ngroup
