@@ -1,0 +1,51 @@
+==================================================================
+Ponizej log roznych uwag na temat tego projektu KKMC
+ktory tutaj jest w calosci, razem z kartotekami nie-publicznymi:
+UWAGA!!! KK-all to absolutnie nie jest wersja CPC ani publiczna!!!
+
+Kartoteka z mojego dysku (S.J), ktora sie zywiolowo zmieniala gdzies
+do roku 2002go a potem jeszcze troche do 2005go.
+Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
+==================================================================
+
+------------------------------------------------------------------
+feb. 6th 2012
+
+Plots in PR D63 (2000) were done mainly by 
+yfspro/pubfig/chi-mcan.f using data from runs in E189, mix200... 
+see also pubfig/chi-prepare.f
+(only one plot in fig.14 there comes from profig)
+
+Directory YRprod aggregates programs and data, which were used
+to produce material (plots and tables) for CERN Yellow report 2000.
+
+------------------------------------------------------------------
+feb. 5th 2012
+
+W KK-all sa dodatkowe kartoteki ktore nigdy nie byly
+jednoznacznie publiczne, albo wogole publiczne:
+np: Rhadr, 2brems, MaMar, NuProd, YRprod, yfstb, yfspro
+
+Dokladniej, to prawdopodobnie niektore z tych podkartotek
+byly byc moze udostepniane zaufanym doswiadczalnikom,
+np NuProd Zbyszek udostepnial a ja Rhadr.
+Czyli stniala tez taka "szara strefa".
+NB. Bennie i Yost chyba nie mieli calego KK-all, ale nie
+jestem pewien, byc moze zostawilem im jakas wersje na
+lokalnym komputerze na UTK w roku 2000.
+
+Publiczna wersj (CPC etc) zawsze byla tworzona przy pomocy
+"make export" i zawiarala podzbior kartotek, z grubsza polowe.
+
+Bottom line: KK-all nie nadaje sie wprost do dystrybucji,
+nawet prywatnie, bez jakichs dodatkowych ustalen.
+
+Uruchomilem wszystkie testy z pliku "HowToStart"
+i zakomitowalem drobne poprawki w mekefile'ach.
+
+------------------------------------------------------------------
+feb. 5th 2012
+
+The entire KK-all is put into svn repository at IFJ-PAN
+==================================================================
+
