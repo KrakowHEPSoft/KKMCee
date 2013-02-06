@@ -1,13 +1,17 @@
 #===============================================================================
-#       make makflag		<==  in order to update f77 flags everywhere
+#  MASTER MAKEFILE in subdirectory ffbench
+#  This directory belongs to public distribution, CPC etc.
+#===============================================================================
+# make makflag      <==  updates makefile's everywhere, compilation flags etc.
+#  FFLAGS, F77, AR has to be the same as in ffbench/Makefile
 #-------------------------------------------------------------------------------
-#	make demo-start		<==  basic demonstration program
+#	make demo-start   <==  basic demonstration program
 #	make Mu-start
 #	make Tau-start
 #	make Inclusive-start
 #	make figinc-pdf   <== simple graphics
-#	make demo_R-start	<== R imposed for the gamma* resonances
-#	make Beast-start	<-- Beamsstrahlung
+#	make demo_R-start <== R imposed for the gamma* resonances
+#	make Beast-start  <-- Beamsstrahlung
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -30,12 +34,12 @@ all:	demo-start
 ########### linux flags ###########
 # forbid underscore completely       -fno-second-underscore
 # forbid double underscore only      -fno-underscoring
-FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 #FFLAGS  =  -fno-automatic -ffixed-line-length-132 -fbackslash -C -O
 # sometime under linux g77 has to be used
-F77 = gfortran
-LD  = $(F77)
-AR  = ar cru
+F77     = gfortran
+FFLAGS  = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+LD      = $(F77)
+AR      = ar cru
 LDFLAGS =
 #-----------------------------------------------------------------------
 SRCLIST= "../KK2f ../glibk ../jetset ../bornv "
@@ -173,12 +177,12 @@ Beast-start-debug:	$(COMMAND1)
 #                  update production makefiles
 #-----------------------------------------------------------------------
 makprod:
-	(sed -e 's#<main>#demo#'   -e 's#<dset>#demo#' -e 's#<class>#long#' ./makefile.production > ./demo/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#' -e 's#<class>#long#' ./makefile.production > ./Test/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'   -e 's#<class>#long#' ./makefile.production > ./Mu/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'  -e 's#<class>#long#' ./makefile.production > ./Tau/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#' -e 's#<class>#long#' ./makefile.production > ./Down/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'   -e 's#<class>#long#' ./makefile.production > ./Up/makefile)
+	(sed -e 's#<main>#demo#'   -e 's#<dset>#demo#'  -e 's#<class>#long#' ./makefile.production > ./demo/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/makefile)
 	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/makefile)
 	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/makefile)
 	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/makefile)
@@ -188,8 +192,8 @@ clean:
 	(cd ./Plots;	make clean)
 #=============================================================================
 # Update fortran compilation flags
-makflag:
-	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
+#--- external dirs
+makflag-ext:
 	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
 	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
 	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
@@ -199,6 +203,10 @@ makflag:
 	(cd ../KKsem;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
 	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
 	(cd ../bornv/tabtest; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
+#--- local dirs
+makflag: makflag-ext
+	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > makefile)
+#=============================================================================
 mbr:
 	(cd ../bornv;  make mbr)
 default:
