@@ -19,6 +19,12 @@ see also pubfig/chi-prepare.f
 Directory YRprod aggregates programs and data, which were used
 to produce material (plots and tables) for CERN Yellow report 2000.
 
+In yfspro/profig:
+README file helps. Pricipal "make figbet-pubs" activated,
+yfspro/profigflat_total.eps reproduced, Fig.14 in PRD63.
+Other *.eps obtained as well, using old ../mix200/pro.hst.flat.16M
+
+
 ------------------------------------------------------------------
 feb. 5th 2012
 
