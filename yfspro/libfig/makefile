@@ -3,8 +3,8 @@ LIB_OBJECTS =  semalib.o plotlib.o readat.o
 ##############   What has to be built
 all:	$(LOCAL_LIB) 
 ###############
-FFLAGS = -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
-F77 = g77
+FFLAGS = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77 = gfortran
 AR = ar
 RANLIB = ranlib
 LD = $(F77)

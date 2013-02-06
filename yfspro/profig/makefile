@@ -12,9 +12,9 @@ SRCLIST= "../libfig ../../glibk"
 XDVI   = xdvi      -bg white -fg black  -s 4 
 XPS    = ghostview -bg white -fg black  -magstep -1 
 #----------------------------------------------------------------------
-FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
+FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LDFLAGS =
-F77 = g77
+F77 = gfortran
 LD = $(F77)
 #----------------------------------------------------------------------
 .f.o:

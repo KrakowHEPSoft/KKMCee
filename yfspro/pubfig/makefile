@@ -17,9 +17,9 @@ XPSp    = gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black
 XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
 XPS     = $(XPSm)
 #----------------------------------------------------------------------
-FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
+FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LDFLAGS =
-F77 = g77
+F77 = gfortran
 LD = $(F77)
 ##############################################################################
 .f.o:

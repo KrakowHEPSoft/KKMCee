@@ -1,4 +1,14 @@
-#-----------------------------------------------------------------------
+#===============================================================================
+#  MASTER MAKEFILE in subdirectory yfspro
+#  This directory does NOT belong to public distribution
+#---------------
+#  Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
+#  using data from runs in E189, mix200... see also pubfig/chi-prepare.f
+#  (only one plot in fig.14 comes from profig)
+#===============================================================================
+# make makflag      <==  updates makefile's everywhere, compilation flags etc.
+# IMPORTANT! FFLAGS, F77, AR has to be here the same as in ffbench/Makefile!!!
+#-------------------------------------------------------------------------------
 #	make E189GeV-start
 #	make mix200-start
 #	make mix200-plot
@@ -18,15 +28,20 @@ COMMAND = yfspro.exe
 OBJECTS = yfspro.o
 ############
 all:	$(COMMAND)
+################ 
+F77     = gfortran
+LD      = $(F77)
+LDFLAGS =
+FFLAGS  = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 ########### linux flags ###########
+#FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 #FFLAGS  =  -fno-automatic -ffixed-line-length-132 -fbackslash -C -O
 #FFLAGS  =  -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -O
-FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
-########### collection of HP  flags ###########
+########### collection of old HP  flags ###########
 ### HP options: +es for 100 or more columns, +B for backslash in strings
 ###             +K  for global SAVE
 #FFLAGS  =  +es -K +B -O
-########### collection of IBM  flags ###########
+########### collection of old IBM  flags ###########
 # IBM options: fixed=100 for 100 or more columns,
 #              qextname for C-style external names with underscore at the end
 #FFLAGS  =  -qfixed=120 -qextname -O -C -qextchk
@@ -34,10 +49,6 @@ FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -
 #FFLAGS  =  +es -K +B -O
 #FFLAGS  =  -qfixed=132 -qextname  -C -qextchk -O
 #LDFLAGS =
-################
-F77 = gfortran
-LD  = $(F77)
-LDFLAGS =
 #-----------------------------------------------------------------------
 SRCLIST= "../glibk ../KK2f ../jetset"
 #-----------------------------------------------------------------------
@@ -216,7 +227,7 @@ makprod:
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E500GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E500GeV/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E189GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E189GeV/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E120GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E120GeV/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E91GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E91GeV/makefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E91GeV#'  -e 's#<class>#8nh#' ./makefile.production > ./E91GeV/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini200#'  -e 's#<class>#8nh#' ./makefile.production > ./ini200/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini140#'  -e 's#<class>#8nh#' ./makefile.production > ./ini140/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#fin140#'  -e 's#<class>#8nh#' ./makefile.production > ./fin140/makefile)
@@ -226,25 +237,17 @@ makprod:
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix10#'  -e 's#<class>#8nh#' ./makefile.production > ./mix10/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix91#'  -e 's#<class>#8nh#' ./makefile.production > ./mix91/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix200#' -e 's#<class>#8nh#' ./makefile.production > ./mix200/makefile)
-#-----------------------------------
+#----------------------------------- end oldies
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
 	(cd profig; make clean)
 #=============================================================================
-# Update fortran compilation flags
+# Update dependent makefiles
 makflag:
+	(cd ../ffbench; make makflag-ext;)
 	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../photos; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../glibk;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../bornv/tabtest;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../dizet;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ../KKsem;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 ##############################################################################
 tables-default:
 	(cd ../dizet/; make default)
