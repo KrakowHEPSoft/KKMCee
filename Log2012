@@ -8,6 +8,17 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
+
+------------------------------------------------------------------
+feb. 7th 2012
+Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
+using data from runs in E189, mix200... see also pubfig/chi-prepare.f
+Failed attempt to recreated Fig.14 from PRD63 (why???):
+       cp mix200/mix200_flat.input mix200/mix200.input
+       make mix200-start   make mix200-stop
+       make figbet-pubs
+It is possible to reproduce it from archive ../mix200/pro.hst.flat.16M
+
 ------------------------------------------------------------------
 feb. 6th 2012
 

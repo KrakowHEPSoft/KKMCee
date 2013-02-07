@@ -4,7 +4,11 @@
 #---------------
 #  Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
 #  using data from runs in E189, mix200... see also pubfig/chi-prepare.f
-#  (only one plot in fig.14 comes from profig)
+#  Failed attempt to recreated Fig.14 from PRD63 (why???):
+#       cp mix200/mix200_flat.input mix200/mix200.input
+#       make mix200-start   make mix200-stop
+#       make figbet-pubs
+#  It is possible to reproduce it from archive ../mix200/pro.hst.flat.16M
 #===============================================================================
 # make makflag      <==  updates makefile's everywhere, compilation flags etc.
 # IMPORTANT! FFLAGS, F77, AR has to be here the same as in ffbench/Makefile!!!
@@ -189,7 +193,6 @@ mix200-cont-debug:	$(COMMAND)
 	(cp mix200/pro.hst.382 mix200/pro.hst )
 	(cp mix200/semaphore.382 mix200/semaphore )
 	(cd ./mix200;  make cont )
-###	(cd ./mix200;  make cont-debug )
 #-----------------------------------------------------------------------
 mix1000-start:	$(COMMAND)
 	(cd ./mix1000;  make start )
@@ -216,6 +219,8 @@ figfin:
 	(cd ./profig; rm -f figfin.dvi; make figfin-ps)
 figbet:
 	(cd ./profig; rm -f figbet.dvi; make figbet-ps)
+figbet-pubs:
+	(cd ./profig; rm -f figbet.dvi; make figbet-pubs)
 figmix:
 	(cd ./profig; rm -f figmix.dvi; make figmix-ps)
 figmix-debug:

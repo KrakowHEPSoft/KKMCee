@@ -9,7 +9,7 @@
     <ignoreparts/>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
+    <description/>
   </general>
   <kdevautoproject>
     <general>
@@ -70,12 +70,12 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell></dbgshell>
-      <programargs></programargs>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <dbgshell/>
+      <programargs/>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -96,23 +96,23 @@
       <directoryradio>custom</directoryradio>
       <customdirectory>/home/theory/jadach/private/SandBox/KK-all-2012/ffbench/demo/</customdirectory>
       <mainprogram>/home/theory/jadach/private/SandBox/KK-all-2012/ffbench/demo.exe</mainprogram>
-      <programargs></programargs>
+      <programargs/>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
     </run>
     <build>
       <buildtool>make</buildtool>
-      <builddir></builddir>
+      <builddir/>
     </build>
     <make>
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <prio>0</prio>
       <dontact>false</dontact>
-      <makebin></makebin>
-      <defaulttarget></defaulttarget>
-      <makeoptions></makeoptions>
+      <makebin/>
+      <defaulttarget/>
+      <makeoptions/>
       <selectedenvironment>default</selectedenvironment>
       <environments>
         <default/>
@@ -141,12 +141,12 @@
       <usageall>false</usageall>
       <f77all>false</f77all>
       <portabilityall>false</portabilityall>
-      <argumentsonly></argumentsonly>
-      <commononly></commononly>
-      <truncationonly></truncationonly>
-      <usageonly></usageonly>
-      <f77only></f77only>
-      <portabilityonly></portabilityonly>
+      <argumentsonly/>
+      <commononly/>
+      <truncationonly/>
+      <usageonly/>
+      <f77only/>
+      <portabilityonly/>
     </ftnchek>
   </kdevfortransupport>
 </kdevelop>
