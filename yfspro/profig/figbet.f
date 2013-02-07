@@ -28,11 +28,11 @@
       CALL GLK_SetNout(nout)
 
 * Exercise with flat x-section
-cc      Dname  = '../mix200/mix200.input' ! actual
-cc      Hname  = '../mix200/pro.hst'      ! actual
+ccc      Dname  = '../mix200/mix200.input' ! actual
+ccc      Hname  = '../mix200/pro.hst'      ! actual
 
-      Dname  = '../mix200/mix200.input.flat.16M' ! KeyZet=-2
-      Hname  = '../mix200/pro.hst.flat.16M'      ! KeyZet=-2
+      Dname  = '../mix200/mix200_flat.input'     ! KeyZet=-2 ****
+      Hname  = '../mix200/pro.hst.flat.16M'      ! KeyZet=-2 ****
 
 *********************oldies******************************
 cc      Dname  = '../mix2000/mix2000.input' ! KeyZet=-2
