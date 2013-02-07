@@ -24,7 +24,7 @@ BeginX
    28              0      KeyGPS=xpar(28)  Default is  1 !!!!!
 ********************************************************************************
 *     Input for matrix element
-  501             -2      KeyZet=xpar(24)  default is 1, -2 for flat x-section
+  501             -2      KeyZet=xpar(501)  default is 1, -2 for flat x-section
 ********************************************************************************
 *     Define process
   413              1      KFfin, muon
