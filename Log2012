@@ -10,9 +10,14 @@ Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 
 ------------------------------------------------------------------
 feb. 8th 2012
+RHadr: Makefiles updated, generator and plots are running OK.
+
+------------------------------------------------------------------
+feb. 8th 2012
 MaMar: Updating Makefile's such that compilation and 'make test0-start' works, 
 ROOT paths has to be adjusted manually in MaMar/Makefile.
-Transfer from pythia event to PartLund in Robol does not work (yet).
+Transfer from pythia event to PartLund in Robol corrected (long -> int )
+Also (cd MaMar/Plots; make Plot1) produces all plots.
 
 ------------------------------------------------------------------
 feb. 7th 2012
