@@ -22,11 +22,16 @@
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a  .C
 #-----------------------------------------------------------------------------
 #  Root 
-RPATH = /home/jadach/root
+#RPATH = /home/jadach/root
 #  Root  libraries for linker
-RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint \
-	-lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
-FLIB=   -lg2c
+#RLIB= -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
+#FLIB=   -lg2c
+########################################################################
+ROOTINCDIR = /usr/include/root
+ROOTLIBDIR = /usr/lib64/root
+ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
+FLIB     = -lgfortran
 ##======================================================================
 #####  f77 compiler
 # forbid underscore completely       -fno-second-underscore
@@ -38,8 +43,9 @@ F77 = g77
 #####  c++ compiler
 #CXXFLAGS    = -g -ansi -pedantic
 #CXXFLAGS    = -O -Wall -fPIC -D_REENTRANT -I/home/jadach/root/include
-CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
+#CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
 #CXXFLAGS    =  -g
+CXXFLAGS    =  -g -O -I$(ROOTINCDIR)
 CXX         =  g++
 #CXX         =  insure
 #CXX         =  codewizard

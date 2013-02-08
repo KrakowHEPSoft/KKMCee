@@ -1,7 +1,8 @@
 #===============================================================================
-#       make makflag		<==  in order to update f77 flags everywhere
+# make makflag      <==  in order to update f77 flags everywhere
 #-------------------------------------------------------------------------------
 #	make demoC-start	<==  basic demonstration program
+#	make demoC-stop
 #	make demoC-view		<==  preview histograms 
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
@@ -15,12 +16,17 @@ line_count:
 #======================================================================
 #RPATH = /afs/cern.ch/na49/library.4/ROOT/new/i386_redhat60/root
 #RPATH = /afs/cern.ch/user/j/jadachsp/private/root
-RPATH = /home/jadach/root
+#RPATH = /home/jadach/root
 #  Root  libraries for linker
-RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint \
-	-lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
+#RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
 #  Fortran libraries for linker
-FLIB=   -lg2c
+#FLIB=   -lg2c
+########################################################################
+ROOTINCDIR = /usr/include/root
+ROOTLIBDIR = /usr/lib64/root
+ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
+FLIB     = -lgfortran
 #================================================================================
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static
@@ -40,14 +46,15 @@ FLIB=   -lg2c
 #####  f77 compiler
 # forbid underscore completely       -fno-second-underscore
 # forbid double underscore only      -fno-underscoring
-FFLAGS  =  -O -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 F77 = g77
 #======================================================================
 #####  g++ compiler
 # -shared -Wl,-soname
 #CXXFLAGS    = -g -ansi -pedantic
 #CXXFLAGS    = -O -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
-CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
+#CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
+CXXFLAGS    =  -g -O -I$(ROOTINCDIR)
 CXX         =  g++
 #CXX         =  insure
 #CXX         =  codewizard
@@ -110,17 +117,10 @@ EXT_LIBRARYd = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4d) $(EXT_LIB5) $(EX
 EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
 ####EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
 #-----------------------------------------------------------------------
-# Link procedure
-COMMAND1 = ProdMC.exe
-OBJECTS1 = ProdMC.o
-$(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY)
-#-----------------------------------------------------------------------
 COMMAND2 = MainP.exe
 OBJECTS2 = MainP.o Semaph.o ROBOL.o ROBOL2.o KKMC.o PartLund.o
 $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
 	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
-#	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
 #-----------------------------------------------------------------------
 demoC-start:	$(COMMAND2)
 	(cd ./demoC;  make start )

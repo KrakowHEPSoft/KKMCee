@@ -34,8 +34,8 @@ public:
 private:
   Semaph(const Semaph &org) { }
 public:
-void Semaph::Initialize(TString &Semaphore);
-void Semaph::ReadStatus(TString &Semaphore, long);
+void Initialize(TString &Semaphore);
+void ReadStatus(TString &Semaphore, long);
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(Semaph,1)
 };
