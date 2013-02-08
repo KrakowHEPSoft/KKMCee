@@ -33,7 +33,7 @@ main()
 {
   long NevTot = 1000000000; // total (limit) of events
   long iEvent = 0;          // serial number of event in the MC generation
-  long NGroup = 10000;      // number of events in the group
+  long NGroup = 100000;      // number of events in the group
   long iLoop;               // auxiliary event counter
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable

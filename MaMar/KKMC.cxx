@@ -14,9 +14,12 @@
 //   COMMON/PYJETS/N,NPAD,K(4000,5),P(4000,5),V(4000,5)
 //--------------------------------------------------------
 typedef struct {
-    long   n; 
-    long   npad;
-    long   k[5][4000];
+//    long   n; 
+//    long   npad;
+//    long   k[5][4000];
+    int    n; 
+    int    npad;
+    int    k[5][4000];
     double p[5][4000];
     double v[5][4000];
                 } CommonPYJETS;
@@ -31,9 +34,11 @@ extern CommonPYJETS pyjets_ ;
 //  COMMON/PYDAT1/MSTU(200),PARU(200),MSTJ(200),PARJ(200)
 //------------------------------------------------------------
 typedef struct {
-    long   mstu[200]; 
+//    long   mstu[200]; 
+    int    mstu[200]; 
     double paru[200];
-    long   mstj[200];
+//    long   mstj[200];
+    int    mstj[200];
     double parj[200];
                 } CommonPYDAT1;
 extern CommonPYDAT1 &pydat1 ;

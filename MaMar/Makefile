@@ -1,7 +1,9 @@
 #===============================================================================
-#       make makflag		<==  in order to update f77 flags everywhere
+#  make makflag     <==  in order to update makefile flags everywhere
 #-------------------------------------------------------------------------------
-#	make test0-start	<==  basic production progr.
+#	 make test0-start	<==  basic production progr.
+#	 make test0-stop
+#  make plot1
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -13,17 +15,17 @@ line_count:
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a
 #======================================================================
 #RPATH = /afs/cern.ch/na49/library.4/ROOT/new/i386_redhat60/root
-RPATH = /home/jadach/root
+#RPATH = /home/jadach/root
 #  Root  libraries for linker
-RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint \
-	-lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
+#RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
 #  Fortran libraries for linker
 #FLIB=   -lf2c
-FLIB= 
 ########################################################################
 ROOTINCDIR = /usr/include/root
 ROOTLIBDIR = /usr/lib64/root
 ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
+FLIB= -lgfortran
 #================================================================================
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static
@@ -113,55 +115,25 @@ EXT_LIBRARYd = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4d) $(EXT_LIB5) $(EX
 # Note that benchmark ouputs are for EXT_LIBRARYd
 EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
 ####EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
-#-----------------------------------------------------------------------
-# Link procedure
-COMMAND1 = ProdMC.exe
-OBJECTS1 = ProdMC.o
-$(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY)
 #------------------------------------------------------------------------
 COMMAND2 = Test.exe
 OBJECTS2 = Test.o Semaph.o ROBOL.o KKMC.o PartLund.o
 $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
-	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) -L$(ROOTLIBDIR)/ $(ROOTLIBS) -lgfortran
-#	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
+	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
 #-----------------------------------------------------------------------
 test0-start:	$(COMMAND2)
 	(cd ./test0;  make start )
 test0-stop:	$(COMMAND2)
 	(cd ./test0;  make stop )
-test0-debug:	$(COMMAND2)
-	(cd ./test0;  make debug )
-plot0:
-	(cd ./test0;  root plot1.C)
+plot1:
+	(cd ./Plots;  make Plot1)
 #-----------------------------------------------------------------------
-#                  update production makefiles
-#-----------------------------------------------------------------------
-makprod:
-	(sed -e 's#<main>#demo#'   -e 's#<dset>#demo#' -e 's#<class>#long#' ./makefile.production > ./demo/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#' -e 's#<class>#long#' ./makefile.production > ./Test/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'   -e 's#<class>#long#' ./makefile.production > ./Mu/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'  -e 's#<class>#long#' ./makefile.production > ./Tau/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#' -e 's#<class>#long#' ./makefile.production > ./Down/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'   -e 's#<class>#long#' ./makefile.production > ./Up/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/makefile)
-#-----------------------------------
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
 #=============================================================================
 # Update fortran compilation flags
 makflag:
-	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../photos; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../glibk;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv/tabtest; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../dizet;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../KKsem;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
+	(cd ../ffbench; make makflag-ext)
 mbr:
 	(cd ../bornv;  make mbr)
 default:

@@ -162,7 +162,7 @@ void FigScatA()
   cScatA->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
-  char OptSurf[7];
+  TString OptSurf;
   //OptSurf="      "; // 2D scatergram, points
   //OptSurf="col   "; // 2D histogram, color
   //OptSurf="colz  "; // 2D kolorowe paski, ze skala
@@ -647,10 +647,10 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();        //
   //========== PLOTTING ==========
-  //FigScatA();
-  //FigInfo();
-  //FigVtest();
-  //FigCtest();
+  FigScatA();
+  FigInfo();
+  FigVtest();
+  FigCtest();
   FigVprod();
   FigCprod();
   //++++++++++++++++++++++++++++++++++++++++
