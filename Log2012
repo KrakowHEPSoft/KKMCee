@@ -8,6 +8,11 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
+------------------------------------------------------------------
+feb. 8th 2012
+MaMar: Updating Makefile's such that compilation and 'make test0-start' works, 
+ROOT paths has to be adjusted manually in MaMar/Makefile.
+Transfer from pythia event to PartLund in Robol does not work (yet).
 
 ------------------------------------------------------------------
 feb. 7th 2012
