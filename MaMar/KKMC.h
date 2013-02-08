@@ -43,10 +43,12 @@ class KKMC{
   void GetBeams(    TLorentzVector&,  TLorentzVector&);
   void GetFermions( TLorentzVector&,  TLorentzVector&);
   void GetPhoton1(const long, TLorentzVector&);
+//  void GetPhoton1(long & , TLorentzVector&);
   void GetNphot(  long &);
   void GetXsecMC( double &,  double &);
   void GetPrimaNorma( double &,  long &);
   double GetWtAlter(const long );
+//  double GetWtAlter(long &);
 ///////////////////////////////////////////////////////////////////////////////
   void PyList(long);
   void PyGive(char *directive);

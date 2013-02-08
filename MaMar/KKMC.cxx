@@ -207,7 +207,8 @@ void KKMC::GetPhoton1(const long iphot, TLorentzVector &phot)
 {
 // get one photon 4-vector from KKMC
   double p1[4];
-  kk2f_getphoton1_(iphot, p1);
+  long iphot1=iphot;
+  kk2f_getphoton1_(iphot1, p1);
   phot.SetPxPyPzE(p1[0],p1[1],p1[2],p1[3]);
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -220,7 +221,8 @@ void KKMC::GetNphot(long &Nphot)
 double KKMC::GetWtAlter(const long id)
 {
   double WtAlter;
-  kk2f_getwtalter_( id, WtAlter);
+  long id1 =id;
+  kk2f_getwtalter_( id1, WtAlter);
   return WtAlter;
 }
 //////////////////////////////////////////////////////////////////////////////

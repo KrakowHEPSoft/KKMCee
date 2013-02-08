@@ -18,7 +18,12 @@ RPATH = /home/jadach/root
 RLIB=   -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint \
 	-lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
 #  Fortran libraries for linker
-FLIB=   -lf2c
+#FLIB=   -lf2c
+FLIB= 
+########################################################################
+ROOTINCDIR = /usr/include/root
+ROOTLIBDIR = /usr/lib64/root
+ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
 #================================================================================
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static
@@ -39,14 +44,15 @@ FLIB=   -lf2c
 # forbid underscore completely       -fno-second-underscore
 # forbid double underscore only      -fno-underscoring
 FFLAGS  =  -O -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
-F77 = g77
+F77 = gfortran
 #======================================================================
 #####  g++ compiler
 # -shared -Wl,-soname
 #CXXFLAGS    = -g -ansi -pedantic
 #CXXFLAGS    = -O -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
-CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
+#CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
 #CXXFLAGS    =  -g  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
+CXXFLAGS    =  -g  -I$(ROOTINCDIR)
 CXX         =  g++
 #CXX         =  insure
 #CXX         =  codewizard
@@ -113,11 +119,11 @@ COMMAND1 = ProdMC.exe
 OBJECTS1 = ProdMC.o
 $(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY)
-#-----------------------------------------------------------------------
+#------------------------------------------------------------------------
 COMMAND2 = Test.exe
 OBJECTS2 = Test.o Semaph.o ROBOL.o KKMC.o PartLund.o
 $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
-	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
+	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) -L$(ROOTLIBDIR)/ $(ROOTLIBS) -lgfortran
 #	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
 #-----------------------------------------------------------------------
 test0-start:	$(COMMAND2)

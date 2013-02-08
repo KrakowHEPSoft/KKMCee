@@ -118,7 +118,7 @@ void ROBOL::Production(long &iEvent)
   KKMC_generator->GetFermions(m_pfer1,m_pfer2);
   KKMC_generator->GetNphot(m_Nphot);                  // photon multiplicity
   TLorentzVector VSumPhot;    // By default all components are initialized by zero. 
-  long iphot;
+  long iphot,iphot1;
   for(iphot=0;iphot<m_Nphot;iphot++){
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
     VSumPhot+= m_phot[iphot];

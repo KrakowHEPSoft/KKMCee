@@ -48,9 +48,9 @@ public:
 //------ Destructor------
   ~PartLund() {;}
 //------ header printing -------
-  void PartLund::Print(int mode = 1);
+  void Print(int mode = 1);
 //------ header printing -------
-  void PartLund::ListPrint();
+  void ListPrint();
 //------
 //  ClassDef(PartLund,1)   // PartLund  class, <--for dictionary
 };

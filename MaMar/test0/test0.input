@@ -12,7 +12,8 @@ BeginX
 *    0          10000      10k NEVT = number of events (5min, FSR on, vmax=0.9)
 *    0           1000      1k   NEVT = number of events
 *    0        1000000      1M   NEVT = number of events
-    0      100000000      100M NEVT = number of events
+*    0      100000000      100M NEVT = number of events
+    0              1           NEVT = number of events
 * Center-of-mass energy [GeV]
 *    1        10.00e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1        10.58e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
