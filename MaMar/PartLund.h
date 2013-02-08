@@ -29,21 +29,21 @@ public:
 public:
   PartLund() {;}
   PartLund( int lserial,    int kstatus,      int kflavor, 
-	    int kparent,    int kFirstChild,  int kLastChild,
-	    double px,      double py,        double pz, 
-	    double en,      double pmass,
-	    double Vx,      double Vy,        double Vz, 
+            int kparent,    int kFirstChild,  int kLastChild,
+            double px,      double py,        double pz, 
+            double en,      double pmass,
+            double Vx,      double Vy,        double Vz, 
             double Vt,      double LifeTime):
-                  fSerial(lserial),
-	          fStatus(kstatus),
-		  fFlafor(kflavor),
-                  fParent(kparent),
-                  fFirstChild(kFirstChild),
-                  fLastChild(kLastChild),
-                  fMom(  px, py, pz, en),
-                  fMass(pmass),
-                  fVertex( Vx, Vy, Vz, Vt),
-                  fLifeTime(LifeTime)
+            fSerial(lserial),
+            fStatus(kstatus),
+            fFlafor(kflavor),
+            fParent(kparent),
+            fFirstChild(kFirstChild),
+            fLastChild(kLastChild),
+            fMom(  px, py, pz, en),
+            fMass(pmass),
+            fVertex( Vx, Vy, Vz, Vt),
+            fLifeTime(LifeTime)
 {};
 //------ Destructor------
   ~PartLund() {;}
