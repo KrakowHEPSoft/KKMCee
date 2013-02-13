@@ -159,7 +159,8 @@ void FigScatA()
   TCanvas *cScatA = new TCanvas("cScatA","2dim big picture", 70,  50,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
-  cScatA->Divide( 2,  0,     0.0,     0.0,   10);
+  cScatA->Divide( 2,  0);
+  //cScatA->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   TString OptSurf;
@@ -218,10 +219,12 @@ void FigInfo()
   TH1D *hst_CosPRCeex2 = (TH1D*)DiskFileA.Get("hst_CosPRCeex2");
 //------------------------------------------------------------------------  
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","general info ", 50, 80,    1000,  800);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 80,    1000,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigInfo->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigInfo->Divide( 2,  2);
+  //cFigInfo->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -292,10 +295,12 @@ void FigVtest()
   //****************************************************************************************
   //****************************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVtest = new TCanvas("cFigVtest","Fig2b photonic2", 50, 50,    1000, 800);
+  TCanvas *cFigVtest = new TCanvas("cFigVtest","FigVtest: photonic2", 50, 50,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigVtest->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigVtest->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigVtest->Divide( 2,  2);
+  //cFigVtest->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -380,10 +385,12 @@ void FigCtest()
   //****************************************************************************************
   //****************************************************************************************
    ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigCtest = new TCanvas("cFigCtest","cos(thet) dis.", 30, 70,    1000, 800);
+  TCanvas *cFigCtest = new TCanvas("cFigCtest","FigCtest: cos(thet) dis.", 30, 70,    1000, 800);
   //                                Name    Title            xoff,yoff, WidPix,HeiPix
+  cFigCtest->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigCtest->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigCtest->Divide( 2,  2);
+  //cFigCtest->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -454,10 +461,12 @@ void FigVprod()
   HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
   //
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVprod = new TCanvas("cFigVprod","Fig2b photonic2", 70, 20,    1000, 800);
+  TCanvas *cFigVprod = new TCanvas("cFigVprod","FigVprod: photonic2", 70, 20,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigVprod->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigVprod->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigVprod->Divide( 2,  2);
+  //cFigVprod->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -553,10 +562,12 @@ void FigCprod()
   //MakeAFB(cdis2_ISR2, cdis4_ISR2);
   //cdis4_ISR2->SetName("cdis4_ISR2");
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigCprod = new TCanvas("cFigCprod","cos theta production", 50, 50,    1000, 800);
+  TCanvas *cFigCprod = new TCanvas("cFigCprod","FigCprod: cos theta production", 50, 50,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigCprod->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigCprod->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigCprod->Divide( 2,  2);
+  //cFigCprod->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
