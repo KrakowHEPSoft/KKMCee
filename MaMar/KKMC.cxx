@@ -61,7 +61,7 @@ extern "C" void kk2f_getbeams_(   double [], double []);
 extern "C" void kk2f_getfermions_(double [], double []);
 extern "C" void kk2f_getnphot_(  long&);
 extern "C" void kk2f_getphoton1_( long&, double []);
-extern "C" void kk2f_getprimanorma_( double&, int&);
+extern "C" void kk2f_getprimanorma_( double&, const int&);
 extern "C" void kk2f_getxsnormpb_( double&, double&);
 extern "C" void kk2f_getwtalter_( long&, double&);
 ///////////////////////////////////////////////////////////////////////////////
