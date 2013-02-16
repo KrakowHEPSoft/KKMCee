@@ -23,9 +23,10 @@
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
+//TFile DiskFileA("../test0/rmain.root_CEEX.31M"); /// new
 //TFile DiskFileA("../test0/rmain.root.2.5M"); // KeyElw=0
-TFile DiskFileA("../test0/rmain.root.6M.EW"); // KeyElw=1
-//TFile DiskFileA("../test0/rmain.root");
+//TFile DiskFileA("../test0/rmain.root.6M.EW"); // KeyElw=1
+TFile DiskFileA("../test0/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
@@ -159,6 +160,7 @@ void FigScatA()
   TCanvas *cScatA = new TCanvas("cScatA","2dim big picture", 70,  50,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  cScatA->SetFillColor(10);
   cScatA->Divide( 2,  0);
   //cScatA->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
@@ -659,11 +661,11 @@ int main(int argc, char **argv)
   KKsemMakeHisto();        //
   //========== PLOTTING ==========
   FigScatA();
-  FigInfo();
-  FigVtest();
-  FigCtest();
+//  FigInfo();
+//  FigVtest();
+//  FigCtest();
   FigVprod();
-  FigCprod();
+//  FigCprod();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

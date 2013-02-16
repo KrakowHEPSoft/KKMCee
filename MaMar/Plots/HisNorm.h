@@ -2,16 +2,17 @@
 // This works for 1-dim histograms
 void HisNorm1(TH1D *NorHst, TH1 *Hst){
   // normalize histogram in nanobarns
+//  Long_t   Nevt = NorHst->GetEntries();
   Long_t   Nevt = NorHst->GetEntries();
   Double_t Xsav = NorHst->GetBinContent(0)/Nevt; // NANOBARNS
-  cout<<"Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
+  cout<<"HisNorm1: Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
   //
   int      nbX  = Hst->GetNbinsX();
   //cout<<"nbt = "<<nbt<<endl;
   Double_t Xmax = Hst->GetXaxis()->GetXmax();
   Double_t Xmin = Hst->GetXaxis()->GetXmin();
   Double_t Fact = nbX*Xsav/(Xmax-Xmin)/Nevt;
-  cout<<"Fact = "<<Fact<<endl;
+  cout<<"HisNorm1: Fact = "<<Fact<<endl;
   Hst->Scale(Fact);
 }
 
@@ -40,7 +41,7 @@ void HisNorm2(TH1D *NorHst, TH2 *Hst){
   // normalize histogram in nanobarns
   Long_t   Nevt = NorHst->GetEntries();
   Double_t Xsav = NorHst->GetBinContent(0)/Nevt; // NANOBARNS
-  cout<<"Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
+  cout<<"HisNorm2: Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
   //
   int      nbX  = Hst->GetNbinsX();
   int      nbY  = Hst->GetNbinsY();
@@ -52,7 +53,7 @@ void HisNorm2(TH1D *NorHst, TH2 *Hst){
   Double_t Fact = Xsav/Nevt;
   Fact *= nbX/(Xmax-Xmin);
   Fact *= nbY/(Ymax-Ymin);
-  cout<<"Fact = "<<Fact<<endl;
+  cout<<"HisNorm2: Fact = "<<Fact<<endl;
   Hst->Scale(Fact);
 }
 

@@ -17,8 +17,9 @@ void KKsem::Initialize(TFile &DiskFileA){
   for(int j=1; j<=jmax; j++)
     ypar[j-1]=HST_KKMC_NORMA->GetBinContent(j);    // xpar encoded
   //[[[[[
-  //for(int j=0;j<30;j++)
-  //  cout<<j<<"   "<<ypar[j]<<endl;
+  cout<<"***********************KKsem::initialize****************************"<<endl;
+  for(int j=0;j<30;j++)
+    cout<<j+1<<"   "<<ypar[j]<<endl;
   //]]]]]
   char *output_file = "./kksem.output";
   long stl2 = strlen(output_file);
