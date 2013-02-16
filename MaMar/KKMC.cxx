@@ -61,7 +61,7 @@ extern "C" void kk2f_getbeams_(   double [], double []);
 extern "C" void kk2f_getfermions_(double [], double []);
 extern "C" void kk2f_getnphot_(  long&);
 extern "C" void kk2f_getphoton1_( long&, double []);
-extern "C" void kk2f_getprimanorma_( double&, long&);
+extern "C" void kk2f_getprimanorma_( double&, int&);
 extern "C" void kk2f_getxsnormpb_( double&, double&);
 extern "C" void kk2f_getwtalter_( long&, double&);
 ///////////////////////////////////////////////////////////////////////////////
@@ -205,7 +205,9 @@ void KKMC::GetXsecMC( double &xSecPb,  double &xErrPb)
 void KKMC::GetPrimaNorma(double &XsPrim, long &NevPrim)
 {
 // get normalization elements NANOBARNS
-  kk2f_getprimanorma_( XsPrim, NevPrim);
+  int NevPrim1;
+  kk2f_getprimanorma_( XsPrim, NevPrim1);
+  NevPrim=NevPrim1;
 }
 ///////////////////////////////////////////////////////////////////////////////
 void KKMC::GetPhoton1(const long iphot, TLorentzVector &phot)
