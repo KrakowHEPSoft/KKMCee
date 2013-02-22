@@ -661,11 +661,11 @@ int main(int argc, char **argv)
   KKsemMakeHisto();        //
   //========== PLOTTING ==========
   FigScatA();
-//  FigInfo();
-//  FigVtest();
-//  FigCtest();
+  FigInfo();
+  FigVtest();
+  FigCtest();
   FigVprod();
-//  FigCprod();
+  FigCprod();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
