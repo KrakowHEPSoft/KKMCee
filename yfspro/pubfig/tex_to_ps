@@ -1,7 +1,8 @@
 latex $1.tex
 dvips $1.dvi -o $1.ps
+gv $1.ps
 ###ghostview -bg white -fg black  -magstep -4 $1.ps
-gv -geometry +100+10   -magstep -1 -bg white -fg black $1.ps
+###gv -geometry +100+10   -magstep -1 -bg white -fg black $1.ps
 ###gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black $1.ps
 ###gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black $1.ps
 ###gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black $1.ps
