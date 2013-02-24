@@ -8,14 +8,14 @@
 ##############################################################################
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
 #----------------------------------------------------------------------
-XDVI   = xdvi      -bg white -fg black  -s 4 
+XDVI   = kdvi      -bg white -fg black  -s 4 
 # Viewer for .ps
 XPSm    = gv -geometry 640x570+0+0   -magstep -1 -bg white -fg black 
 XPS3    = gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black 
 XPS1    = gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black
 XPSp    = gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black
 XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
-XPS     = $(XPSm)
+XPS     = gv
 #----------------------------------------------------------------------
 FFLAGS  =  <FFLAGS>
 LDFLAGS =
@@ -152,7 +152,7 @@ BN4 = afb-int
 # Link procedure
 $(BN4).o:	chi.h
 $(BN4).exe: $(BN4).o                     $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
-	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
+	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
 $(BN4): $(BN4).exe afb.hst
 	(time ./$(BN4).exe; touch $(BN4))
 $(BN4)-debug: $(BN4).exe afb.hst
