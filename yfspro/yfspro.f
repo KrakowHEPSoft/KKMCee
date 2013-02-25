@@ -98,26 +98,10 @@
 *     ****************
       IMPLICIT DOUBLE PRECISION (a-h,o-z)
 ************************************************************************
-* All photons and fermions
+* All photons and fermions, sphot and xphot not filled
       COMMON / momset /  pf1(4),pf2(4),qf1(4),qf2(4),sphum(4),sphot(100,4),nphot,KFfin
-* ISR photons, note that xf1,xf2 are not filled
       COMMON / momini / xf1(4),xf2(4),xphum(4),xphot(100,4),nphox
 ************************************************************************
-* ----------------------------------------------------------------------
-      INTEGER nmxhep         ! maximum number of particles
-      PARAMETER (nmxhep=2000)
-      REAL*8  phep, vhep
-      INTEGER nevhep, nhep, isthep, idhep, jmohep, jdahep
-      COMMON /d_hepevt/
-     $     nevhep,           ! serial number
-     $     nhep,             ! number of particles
-     $     isthep(nmxhep),   ! status code
-     $     idhep(nmxhep),    ! particle ident KF
-     $     jmohep(2,nmxhep), ! parent particles
-     $     jdahep(2,nmxhep), ! childreen particles
-     $     phep(5,nmxhep),   ! four-momentum, mass [GeV]
-     $     vhep(4,nmxhep)    ! vertex [mm]
-* ----------------------------------------------------------------------
       COMMON / inout  / ninp,nout
       SAVE
 
@@ -170,47 +154,18 @@
 !         ****************************
 *---------------------------------------------------------------
 * Fill-in /momset/ and /momini/ common blocks for the local use
-* fermions
-          DO k=1,4
-             pf1(k) =phep(k,1)
-             pf2(k) =phep(k,2)
-             qf1(k) =phep(k,3)
-             qf2(k) =phep(k,4)
-             sphum(k)=0d0
-             xphum(k)=0d0
-          ENDDO
-          KFfin  = idhep(3)
-*     and photons
-          nphot=0
-          nphox=0
-          DO j=1,100
-             ih = 4+j
-             kf = idhep(ih)
-*     stop if /hepevt/ ended or non-photon found
-             IF(ih .GT. nhep) GOTO 110
-             IF(kf .NE. 22)   GOTO 110
-*     All photons here
-             nphot=nphot+1
-             DO  k=1,4
-                sphot(nphot,k) =phep(k,ih)
-                sphum(k) =sphum(k)+sphot(nphot,k)
-             ENDDO
-*     ISR photons separately
-             IF(jmohep(1,ih) .EQ. 1) THEN
-                nphox=nphox+1
-                DO  k=1,4
-                   xphot(nphox,k) =phep(k,ih)
-                   xphum(k) =xphum(k)+xphot(nphox,k)
-                ENDDO
-             ENDIF
-          ENDDO
- 110      CONTINUE
+          CALL KarLud_GetKFfin(KFfin)
+          CALL KK2f_GetBeams(pf1,pf2)
+          CALL KK2f_GetFermions(qf1,qf2)
+          CALL KK2f_GetPhotAll(nphot,sphot)
+          CALL KarLud_GetFermions(xf1,xf2)
+          CALL KarLud_GetPhotons(nphox,xphot)
 *---------------------------------------------------------------
 *   Control printout
           CALL momprt(' YFSPRO ', 6,iev,1,20,pf1,pf2,qf1,qf2,nphot,sphot,KFfin)
-*         CALL momprt('*YFSPRO*',16,iev,1,20,pf1,pf2,qf1,qf2,nphot,sphot,KFfin)
-*         CALL dumpri('*momini*', 6,iev,1,10,xf1,xf2,nphox,xphot)
-*         CALL dumpri('*momini*',16,iev,1,10,xf1,xf2,nphox,xphot)
+          CALL momprt('*YFSPRO*',16,iev,1,20,pf1,pf2,qf1,qf2,nphot,sphot,KFfin)
+          CALL dumpri('*momini*', 6,iev,1,10,xf1,xf2,nphox,xphot)
+          CALL dumpri('*momini*',16,iev,1,10,xf1,xf2,nphox,xphot)
 
           IF(iev .LE. 10) THEN
              CALL pygive("MSTU(11)=16")
@@ -1045,6 +1000,12 @@ ccc         CALL GLK_Book1(idf,' table (KFcode,vmax)  $', 400, 1d0, 401d0)
 ***   CALL KK2f_GetKeyWgt(KeyWgt)
       CALL KK2f_GetWtAll( WtMain,WtCrud,WtSet)
       CALL KK2f_GetWtList(WtMain,WtList)
+c[[[[[
+c      WRITE(nout,*) '======================================================================'
+c      WRITE(nout,"(1x,10f12.5)") ( WtList(k),k=1,1000)
+c      WRITE(   6,*) '======================================================================'
+c      WRITE(   6,"(1x,10f12.5)") ( WtList(k),k=1,1000)
+c]]]
 *//////////////////////////////////////
 *//   Scattering angle    variables  //
 *//////////////////////////////////////
@@ -1152,6 +1113,7 @@ ccc         CALL GLK_Book1(idf,' table (KFcode,vmax)  $', 400, 1d0, 401d0)
       ENDDO
 *//////////////////////////////// s' study ////////////////////////////////////
       IF(vvB  .LT. vvBcut) THEN
+c         WRITE(*,*) ' iev, vvAll= ', iev, vvAL
          CALL GLK_Fil1(ids +90, vvAL,   WtList(203)-WtList(202)  ) !!!O(alf2-alf1)
          DO k=  202,203
             CALL GLK_Fil1(ids     +k, vvAL,   WtList(   k)  ) !!!Interference ON
