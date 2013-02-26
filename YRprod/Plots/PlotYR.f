@@ -37,8 +37,8 @@ c       Hname  = '../206GeV/MuIFIon206GeVreal.hst.11M'    !(N) vmax =0.999
 **      Hname  = '../206GeV/MuIFIon206GeV.hst.9M'       !(O) vmax =0.99
 *-------------------------------------------------------------------------------
 *     make YRtabQuark-ps
-      Dname  = '../189GeV/IncISRonly189GeV.input.140M'     !(N) Xcheck, Sept.2002
-      Hname  = '../189GeV/IncISRonly189GeV.hst.140M'       !(N) quarks+mu
+c      Dname  = '../189GeV/IncISRonly189GeV.input.140M'     !(N) Xcheck, Sept.2002
+c      Hname  = '../189GeV/IncISRonly189GeV.hst.140M'       !(N) quarks+mu
 c      Dname  = '../189GeV/IncISRonly189GeV.input.173M'     !(N) Xcheck, Oct.2001
 c      Hname  = '../189GeV/IncISRonly189GeV.hst.173M'       !(N) quarks+mu
 c      Dname  = '../189GeV/IncISRonly189GeV.input.157M'     !(N) Xcheck, May.2001
@@ -52,8 +52,8 @@ c      Hname  = '../189GeV/IncISRonly189GeV.hst.200M'       !(N) quarks+mu
 **      Dname  = '../206GeV/IncISRonly206GeV.input'     !    quarks+mu
 **      Hname  = '../206GeV/IncISRonly206GeV.hst.239M'  !(O) quarks+mu
 *-------------------------------------------------------------------------------
-c      Dname  = '../189GeV/MuIFIon189GeV.input'        !    Mu for YR
-c      Hname  = '../189GeV/MuIFIon189GeV.hst.17M'      !(O) Mu for YR
+      Dname  = '../189GeV/MuIFIon189GeV.input'        !    Mu for YR
+      Hname  = '../189GeV/MuIFIon189GeV.hst.17M'      !(O) Mu for YR
 c      Dname  = '../200GeV/MuIFIon200GeV.input'        !    Mu for YR
 c      Hname  = '../200GeV/MuIFIon200GeV.hst.12M'      !(O) Mu for YR
 c      Dname  = '../206GeV/MuIFIon206GeV.input'        !    Mu for YR
