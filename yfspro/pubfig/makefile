@@ -229,6 +229,15 @@ $(BN42).ps: 		$(BN42).dvi
 $(BN42)-ps: 		$(BN42).ps
 	($(XPS) $(BN42).ps&)
 #-----------------------------------------------------------------------------
+# 	make afb-sig2-ps
+BN47 = afb-sig2
+$(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps
+	(latex   $(BN47).tex )
+$(BN47).ps: 		$(BN47).dvi
+	(dvips $(BN47).dvi -o )
+$(BN47)-ps: 		$(BN47).ps
+	($(XPS) $(BN47).ps&)
+#-----------------------------------------------------------------------------
 # 	gmake afb-ang-ps
 BN43 = afb-ang
 $(BN43).dvi:		$(BN43).tex  $(BN4)-G1.eps   $(BN4)-G1x.eps   $(BN4)-G1xxx.eps \
