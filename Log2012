@@ -11,6 +11,22 @@ Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 
 
 -------------------------------------------------------------------
+feb. 26, 2013
+PRD63 table reproduced with 8M events (factor 2 missing from PRD)
+A few plots (sig, AFB) reproduced as well.
+See yfspro/pubfig/afb_prepare.f for instruction.
+Also run at 10.52GeV was done.
+For this to be done:
+  cd yfspro
+  cp E189GeV/E10GeV.input E189GeV/E189GeV.input
+  make E189GeV-start
+  (cd yfspro/pubfig; make afb-sig2-ps)
+two columns in afb-int-tab1.txp (for KORALZ) are eliminated by uncommenting
+c      nColumn=4   ! KORALZ eliminated
+in yfspro/afb-int.f
+
+
+-------------------------------------------------------------------
 feb. 25, 2013
 yfspro.f corrected such that production works.
 event in /momset/ filled in using KK2f getters (instead of hepevt common)
