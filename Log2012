@@ -15,8 +15,8 @@ feb. 26, 2013
 PRD63 table reproduced with 8M events (factor 2 missing from PRD)
 A few plots (sig, AFB) reproduced as well.
 See yfspro/pubfig/afb_prepare.f for instruction.
-Also run at 10.52GeV was done.
-For this to be done:
+
+Also run at 10.52GeV was done:
   cd yfspro
   cp E189GeV/E10GeV.input E189GeV/E189GeV.input
   make E189GeV-start
