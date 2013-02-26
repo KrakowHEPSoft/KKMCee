@@ -891,6 +891,23 @@ C end (M.B.)
       ENDDO
       END
 
+      SUBROUTINE KarLud_GetFermions(q1,q2)
+*///////////////////////////////////////////////////////////////////////////////
+*//                                                                           //
+*//   Get final fermios after ISR, replaced after FSR                         //
+*//                                                                           //
+*///////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KarLud.h'
+      DOUBLE PRECISION   q1(4),q2(4)
+      INTEGER k
+*
+      DO k=1,4
+         q1(k) = m_q1(k)
+         q2(k) = m_q2(k)
+      ENDDO
+      END
+
       SUBROUTINE KarLud_GetBeasts(p1,p2)
 *///////////////////////////////////////////////////////////////////////////////
 *//                                                                           //
