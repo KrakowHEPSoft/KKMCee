@@ -7,6 +7,7 @@
 *     make clean   !!!! <-- do it when data changed !!!!
 *     make afb.hst
 *     make afb-sig-ps
+*     make afb-sig2-ps  clone for 10GeV
 *     make afb-int-ps
 *     make afb-ang-ps
 *     make afb-int-tab1.eps
@@ -27,12 +28,15 @@
       OPEN( nout, file='output-'//Tesnam)
       CALL GLK_SetNout(nout)
 
-* <<<<<<<<<<<<<<<<<<<<<<< 189 GeV >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+************************** 189 GeV **************************
       Hname  = '../E189GeV/pro.hst'            ! current
       Dname  = '../E189GeV/pro.input'          ! current
 c
-c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63
-c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63
+      Dname  = '../E189GeV/E189GeV_8M.input' ! 2013
+      Hname  = '../E189GeV/E189GeV_8M.hst'   ! 2013
+c
+c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63, 2000
+c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63, 2000
 c
 c      Dname  = '../E189GeV/E189GeV.input.ori'      ! latest PRD63
 c      Hname  = '../E189GeV/E189GeV.hst'            ! latest PRD63
