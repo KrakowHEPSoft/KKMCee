@@ -118,7 +118,7 @@ c      Hname  = '../E91GeV/pro.hst'        !!! Actual
 ****  CALL KK2f_GetCMSene( m_CMSene)                   ! get CMS energy
       CALL KKsem_GetCMSene(m_CMSene)
       OPEN( 23, file='Energy.tex')
-      IF(ABS(m_CMSene-91.187d0).LT.10d0) THEN
+      IF(m_CMSene.LT.91.187d0+10d0) THEN
          WRITE(23,'(a,f8.3,a)') '\\def\\Energy{',m_CMSene,'GeV} '
       ELSE
          WRITE(23,'(a,i4,a)')   '\\def\\Energy{',NINT(m_CMSene),'GeV} '
@@ -402,7 +402,10 @@ c]]]
       DataFile4 = 'Mustra189GeV'
       DataFile5 = 'MusAng189GeV'
       DataFile6 = 'MusAng189GeVnoint'
-!!!!!! ficticious data for 500GeV !!!!!!
+      DataFile7 = 'Kor402-189GeV' !! ficticious default ??
+      DataFile8 = 'Kor404-189GeV' !! ficticious default ??
+      DataFile9 = 'Zft620-189GeV' !! ficticious default ??
+ !!!!!! ficticious data for 500GeV !!!!!!
       IF( ABS(m_CMSene-500d0) .LT. 1d-5 ) THEN
          DataFile1 = 'Zfitter189GeV'
          DataFile2 = 'Zfitter189GeVnoint'
