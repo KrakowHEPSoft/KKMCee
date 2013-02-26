@@ -1,16 +1,16 @@
 * With older *.hst you may need to comment out *[[[[[ ....c]]]] also in afb-int.f
 */////////////////////////////////////////////////////////////////////////////////
-*//   make all first part;       gmake afb-sig-ps
-*//   make all second part;      gmake afb-int-ps
-*//   make all second part;      gmake afb-ang-ps
+*//   make all first part;       make afb-sig-ps
+*//   make all second part;      make afb-int-ps
+*//   make all second part;      make afb-ang-ps
 *****************************************************************
-*     gmake clean   !!!! <-- do it when data changed !!!!
-*     gmake afb.hst
-*     gmake afb-sig-ps
-*     gmake afb-int-ps
-*     gmake afb-ang-ps
-*     gmake afb-int-tab1.eps
-*     gmake afb-int-Gsig.eps
+*     make clean   !!!! <-- do it when data changed !!!!
+*     make afb.hst
+*     make afb-sig-ps
+*     make afb-int-ps
+*     make afb-ang-ps
+*     make afb-int-tab1.eps
+*     make afb-int-Gsig.eps
 *----------------------------------------------------------------
       PROGRAM MAIN
 *     ************
@@ -28,10 +28,15 @@
       CALL GLK_SetNout(nout)
 
 * <<<<<<<<<<<<<<<<<<<<<<< 189 GeV >>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      Dname  = '../E189GeV/E189GeV.input.ori'      ! latest 
-      Hname  = '../E189GeV/E189GeV.hst'            ! latest
+      Hname  = '../E189GeV/pro.hst'            ! current
+      Dname  = '../E189GeV/pro.input'          ! current
+c
+c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63
+c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63
+c
+c      Dname  = '../E189GeV/E189GeV.input.ori'      ! latest PRD63
+c      Hname  = '../E189GeV/E189GeV.hst'            ! latest PRD63
 c      Hname  = '../E189GeV/E189GeV,theta1.hst' ! another theta!!!
-c      Hname  = '../E189GeV/pro.hst'            ! current
 c((((((
 c      Dname  = '../E189GeV/QuarksFSRoffYR.input'
 c      Hname  = '../E189GeV/QuarksFSRoffYR.hst.440M'
@@ -303,7 +308,7 @@ c]]]
       CALL GLK_Delet(idb+281)
       CALL GLK_Delet(idb+282)
       CALL GLK_Delet(idb+283)
-      CALL GLK_Delet(ids+281)
+c      CALL GLK_Delet(ids+281)
       CALL GLK_Delet(ids+282)
       CALL GLK_Delet(ids+283)
       CALL GLK_Operat(isigG0int,'/',isigG0,  isigG0int, 1d0, 1d0)
@@ -331,6 +336,7 @@ c]]]
       CALL GLK_Operat(isigG2int, '*', iafbG2,   idWork   , 1d0, 1d0) ! Correction
       CALL GLK_Operat(iafbG2int, '-', idWork,   iafbG2int, 1d0, 1d0) ! CEEX O(alf1)
 
+      CALL GLK_Delet(idWork)
       CALL GLK_CumHis(     IdGenYFS3, ids+2283, iafbS2int)           ! cumulate
       CALL GLK_Operat(iafbS2int, '/', isigS2,   iafbS2int, 1d0, 1d0) ! CEEX O(alf1)approx.
       CALL GLK_Operat(isigS2int, '*', iafbS2,   idWork   , 1d0, 1d0) ! Correction
@@ -354,6 +360,7 @@ c]]]
 *//     CEEX   O(alf2-alf1)                    //
 *////////////////////////////////////////////////
 * tricky way
+      CALL GLK_Delet(idWork)
       CALL GLK_Operat(iafbG2mG1, '/', isigG1,   iafbG2mG1, 1d0, 1d0) ! CEEX O(alf0)
       CALL GLK_Operat(isigG2mG1, '*', iafbG1,   idWork   , 1d0, 1d0) ! Correction
       CALL GLK_Operat(iafbG2mG1, '-', idWork,   iafbG2mG1, 1d0, 1d0) ! CEEX O(alf1)
