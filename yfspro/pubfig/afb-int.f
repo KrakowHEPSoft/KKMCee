@@ -25,6 +25,7 @@
 */////////////////////////////////////////////////////////////////////////////////
 
 * UNCOMMENT marked {{{{{ }}}}} for 91GeV
+* Uncomment c\\\\\\ for less columns in table1 (no comparison with KORALZ)
 *----------------------------------------------------------------
       PROGRAM MAIN
 *     ***********************************
@@ -147,7 +148,10 @@ c]]]]]
       idl(5)= iMustSig
       idl(6)= iMustSigInt
       nColumn=6
+c\\\\\\\\\\\
+c      nColumn=4   ! KORALZ eliminated
 cc      nColumn=3 !!!!!!!!!!!!!
+c\\\\\\\\\\\
 *            $_________|_________|_________|_________|_________|_________|_________|_________|
       Mcapt ='{\\color{red}$\\sigma(v_{\\max})$ [pb], ${\\cal KK}$ M.C. and KORALZ 1-st order}'!
       Mcapt ='{\\color{red}$\\sigma(v_{\\max})$ [pb]}'!
