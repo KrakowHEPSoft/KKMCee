@@ -8,19 +8,35 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
+
+
+-------------------------------------------------------------------
+feb. 25, 2013
+yfspro.f corrected such that production works.
+event in /momset/ filled in using KK2f getters (instead of hepevt common)
+
+
+-------------------------------------------------------------------
+feb. 24, 2013
+Most important benchmark, table III in Phys.Rev. D63 is reproduced
+from archive file ../E189GeV/E189GeV_PRD63.hst:
+   cd yfspro/pubfig; make afb-sig-ps
+Two source files are involved: afb_prepare.f and afb-int.f
+See afb_prepare.f for more comments
+
 ------------------------------------------------------------------
-feb. 8th 2012
+feb. 8th 2013
 RHadr: Makefiles updated, generator and plots are running OK.
 
 ------------------------------------------------------------------
-feb. 8th 2012
+feb. 8th 2013
 MaMar: Updating Makefile's such that compilation and 'make test0-start' works, 
 ROOT paths has to be adjusted manually in MaMar/Makefile.
 Transfer from pythia event to PartLund in Robol corrected (long -> int )
 Also (cd MaMar/Plots; make Plot1) produces all plots.
 
 ------------------------------------------------------------------
-feb. 7th 2012
+feb. 7th 2013
 Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
 using data from runs in E189, mix200... see also pubfig/chi-prepare.f
 Failed attempt to recreated Fig.14 from PRD63 (why???):
@@ -28,9 +44,10 @@ Failed attempt to recreated Fig.14 from PRD63 (why???):
        make mix200-start   make mix200-stop
        make figbet-pubs
 It is possible to reproduce it from archive ../mix200/pro.hst.flat.16M
+Not reproducible??? Febr. 24
 
 ------------------------------------------------------------------
-feb. 6th 2012
+feb. 6th 2013
 
 Plots in PR D63 (2000) were done mainly by 
 yfspro/pubfig/chi-mcan.f using data from runs in E189, mix200... 
@@ -47,7 +64,7 @@ Other *.eps obtained as well, using old ../mix200/pro.hst.flat.16M
 
 
 ------------------------------------------------------------------
-feb. 5th 2012
+feb. 5th 2013
 
 W KK-all sa dodatkowe kartoteki ktore nigdy nie byly
 jednoznacznie publiczne, albo wogole publiczne:
@@ -71,7 +88,7 @@ Uruchomilem wszystkie testy z pliku "HowToStart"
 i zakomitowalem drobne poprawki w mekefile'ach.
 
 ------------------------------------------------------------------
-feb. 5th 2012
+feb. 5th 2013
 
 The entire KK-all is put into svn repository at IFJ-PAN
 ==================================================================
