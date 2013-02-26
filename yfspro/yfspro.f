@@ -1000,12 +1000,6 @@ ccc         CALL GLK_Book1(idf,' table (KFcode,vmax)  $', 400, 1d0, 401d0)
 ***   CALL KK2f_GetKeyWgt(KeyWgt)
       CALL KK2f_GetWtAll( WtMain,WtCrud,WtSet)
       CALL KK2f_GetWtList(WtMain,WtList)
-c[[[[[
-c      WRITE(nout,*) '======================================================================'
-c      WRITE(nout,"(1x,10f12.5)") ( WtList(k),k=1,1000)
-c      WRITE(   6,*) '======================================================================'
-c      WRITE(   6,"(1x,10f12.5)") ( WtList(k),k=1,1000)
-c]]]
 *//////////////////////////////////////
 *//   Scattering angle    variables  //
 *//////////////////////////////////////
@@ -1113,7 +1107,6 @@ c]]]
       ENDDO
 *//////////////////////////////// s' study ////////////////////////////////////
       IF(vvB  .LT. vvBcut) THEN
-c         WRITE(*,*) ' iev, vvAll= ', iev, vvAL
          CALL GLK_Fil1(ids +90, vvAL,   WtList(203)-WtList(202)  ) !!!O(alf2-alf1)
          DO k=  202,203
             CALL GLK_Fil1(ids     +k, vvAL,   WtList(   k)  ) !!!Interference ON
