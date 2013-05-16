@@ -1,0 +1,11 @@
+default: all
+
+all:
+	autoreconf -i --force
+
+all-old:
+	aclocal -I m4
+	autoheader
+	automake
+	autoconf
+

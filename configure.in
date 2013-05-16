@@ -1,0 +1,42 @@
+AC_INIT(configure.in)
+AM_INIT_AUTOMAKE(KKMC, 1.0)
+AC_PREFIX_DEFAULT(${PWD}/)
+###AC_PROG_LIBTOOL
+AC_PROG_CXX
+AC_PROG_CC
+
+
+AM_CONFIG_HEADER(config.h)
+
+AC_LANG_FORTRAN77
+AC_PROG_F77
+AC_F77_LIBRARY_LDFLAGS
+AC_PROG_RANLIB
+
+
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Uncomment only for making distro to be used without automake
+###AM_MAINTAINER_MODE
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ROOT_PATH(3.02/00, , AC_MSG_ERROR( ROOT has not been found.))
+#HAS_CERNLIB( , AC_MSG_ERROR( CERNLIB has not been found))
+AC_LANG(C)
+AC_LINK_IFELSE(
+	[AC_LANG_PROGRAM([[#include<stdio.h> ]],
+			[[const char hw[] = "Hello, World\n";]],
+                       [[fputs (hw, stdout);]])],
+	[AC_MSG_RESULT(TESTPROG OK)], [AC_MSG_RESULT(TestProg Failed)]
+	);
+
+##### macros defining different queue and class 
+##### for NQS batch scripts
+QUEUE_CMD
+CLASS_CMD 
+
+AC_OUTPUT(Makefile 2brems/Makefile glibk/Makefile bornv/Makefile dizet/Makefile KK2f/Makefile jetset/Makefile tauola/Makefile photos/Makefile  \
+ffbdoan/Makefile  \
+ffbench/Makefile ffbench/Demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile ffbench/Plots/Makefile \
+KKsem/Makefile \
+yfspro/Makefile yfspro/pubfig/Makefile \
+MaMar/Makefile MaMar/test0/Makefile MaMar/Plots/Makefile)
