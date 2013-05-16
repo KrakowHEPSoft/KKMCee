@@ -107,5 +107,85 @@ i zakomitowalem drobne poprawki w mekefile'ach.
 feb. 5th 2013
 
 The entire KK-all is put into svn repository at IFJ-PAN
+
+******************************************************************
+******************************************************************
+                         APPEDIX
 ==================================================================
+                Email to Scott June 5th 2012
+                ============================
+
+-----Original Message-----
+From: Stanislaw Jadach [mailto:stanislaw.jadach@cern.ch] 
+Sent: Tuesday, June 05, 2012 5:54 PM
+To: Scott A. Yost
+Cc: Ward, B.F.L.; Zbigniew Andrzej Was; Z.Was@cern.ch
+Subject: ISR*Beamstr. generation in KKMC
+
+Dear Scott,
+I have looked into KKMC and below is what I see.
+Best regards, staszek
+
+***************
+The Initialization of ISR is managed by
+KarLud_Initialize (in KK2f/Karlud.f)
+In case of beamstrahlung KarLud_Initialize calls BStra_Initialize (of
+bornv/CStra.f)
+
+Inside BStra_Initialize 3 instances of Foam are initilized, they
+generate distribution of dimensionality 1,2,3 provided by
+BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC located in bornv/BornF.f.
+
+In the end of the initialization each of 3 Foam's provides an estimate
+of the (crude) cross section, which is fed into special tool MBrB
+managing 3 branches (Foams) in the MC.
+
+The 3-fold split of the ISR*Beamstrahlung distribution is due to
+complidated parametrization of the beamstrahlung distribution and
+probably not needed for QCD PDFs.
+
+Lets examine FoamC with BornV_RhoFoamC distribution:
+Inside BornV_RhoFoamC the 3-dim. distribution is defined in
+      Rho = Rho *SF12
+      BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv) in lines
+429-432 of BornV.f
+SF12(z1,z2) is 2dimensional beanstr. distrib. defined above, while Rho
+insludes also jacobian due to simple mapping done below line ELSEIF(
+Option .EQ. 2 ),  while Born crude xsection BornV_Crude(vv) collects
+distributions from various final state flavours, QCD overall corrections
+etc.
+(The contributions from various flavours KF are recorded in MBrA object
+for the purpose of KF generation) NB. BornV_Crude uses
+BornV_Differential, which exploits BornV_Simple, lowest order Born used
+at this stage.
+
+***************
+The Generation of ISR is done by KarLud_Make (in KK2f/Karlud.f) which
+invokes BStra_Make (of bornv/CStra.f), which calls:
+CALL FoamC_MakeEvent(BornV_RhoFoamC).
+Again BornV_RhoFoamC calculates/generates 3-dim. distribution in z1, z2
+of beamstrahlung and z=1-v of QED ISR.
+
+The choice between FoamA,B,C is done randonmy by
+      CALL MBrB_GenKF(Itype, Wt_KF)
+in BStra_Make according to probabilites predefind in the initialization
+(see above).
+NB. MBrB module also manages maximum weight<1 for the final rejection in
+case we want WT=1 events.
+The above 3-fold branching is prbably not necessary for QCD PDFs, only
+one branch (FoamcC ???) should be preserved.
+
+***************
+The final MC weight is calculated after FSR is generated
+         CALL KarFin_Make(xxf,amfi1,amfi2,charg2,wt_FSR)
+in KK2f.f, for example in the following call
+         CALL GPS_Make                   !<-- CEEX    interfer. ON
+
+
+
+========================================================================
+Phone: +48.12.6628.155
+Address:  IFJ-PAN, ul. Radzikowskiego 152,  31-342 Krakow, Poland
+http://jadach.web.cern.ch/jadach/
+========================================================================
 
