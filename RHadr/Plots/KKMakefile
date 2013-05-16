@@ -1,24 +1,25 @@
 #=============================================================================
-#	The example of ploting in batch program
-#	this one will plot R(s), but more complicated can be costructed
-#		make SkyLine
-#		make Plot2b		Many distribs...
-#		make Plot2c		Many distribs...
-#		make Plot3a		Many distribs...
-#		make Plot3b		Many distribs...
+# The example of ploting in batch program
+#   this one will plot R(s), but more complicated can be costructed
+#   make SkyLine
+#   make Plot2b      Many distribs...
+#   make Plot2c      Many distribs...
+#   make Plot3a      Many distribs...
+#   make Plot3b      Many distribs...
 #-----------------------------------------------------------------------------
-#	The other ploting ROOT scripts are activated as follows:
-#		root Fig0.C		xcheck of normalization procedure
-#		root Fig1.C		xsection(nphot), dsig/d(theta_gamma)
-#		root Fig1b.C		Pions, pT and CoTheta 
-#		root Fig2.C		Q2(pions) with various cuts
-#		root Fig2b.C		Q2 distr. 2pi versus muons
-#		root Fig2c.C		Q2 distr. NEW
-#		root Fig3.C		Higer order effects		
+# The other ploting ROOT scripts are activated as follows:
+#   root Fig0.C      xcheck of normalization procedure
+#   root Fig1.C      xsection(nphot), dsig/d(theta_gamma)
+#   root Fig1b.C     Pions, pT and CoTheta 
+#   root Fig2.C      Q2(pions) with various cuts
+#   root Fig2b.C     Q2 distr. 2pi versus muons
+#   root Fig2c.C     Q2 distr. NEW
+#   root Fig3.C      Higer order effects		
 #-----------------------------------------------------------------------------
-#	The input root files with histograms are in ../demoC/
-#	Note that variable RPATH for Root has to be readjusted
+# The input root files with histograms are in ../demoC/
+# Note that variable RPATH for Root has to be readjusted
 #=============================================================================
+MAKE    = make -f KKMakefile
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a  .C
 #-----------------------------------------------------------------------------
 #  Root 
@@ -27,11 +28,20 @@
 #RLIB= -L$(RPATH)/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
 #FLIB=   -lg2c
 ########################################################################
-ROOTINCDIR = /usr/include/root
-ROOTLIBDIR = /usr/lib64/root
+########################################################################
+###=== SLC5 on thep07
+ROOTINCDIR = /usr/local/root/include
+ROOTLIBDIR = /usr/local/root/lib
 ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
-RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
-FLIB     = -lgfortran
+ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
+FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
+###=== SLC5 laptop
+#ROOTINCDIR = /usr/include/root
+#ROOTLIBDIR = /usr/lib64/root
+#ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+#FLIB     = -lgfortran
+###===
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS) $(ROOTAUXLIBS)
 ##======================================================================
 #####  f77 compiler
 # forbid underscore completely       -fno-second-underscore
