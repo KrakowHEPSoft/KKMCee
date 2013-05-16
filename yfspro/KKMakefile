@@ -1,6 +1,11 @@
 #===============================================================================
 #  MASTER MAKEFILE in subdirectory yfspro
 #  This directory does NOT belong to public distribution
+#===============================================================================
+#  MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
+#       make -f KKMakefile makflag
+#       make -f KKMakefile makprod
+#  FFLAGS, F77, AR has to be the same as in ffbench/Makefile
 #---------------
 #  Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
 #  using data from runs in E189, mix200... see also pubfig/chi-prepare.f
@@ -13,7 +18,7 @@
 # make makflag      <==  updates makefile's everywhere, compilation flags etc.
 # IMPORTANT! FFLAGS, F77, AR has to be here the same as in ffbench/Makefile!!!
 #-------------------------------------------------------------------------------
-#	make E189GeV-start
+#	make -f KKMakefile E189GeV-start
 #	make mix200-start
 #	make mix200-plot
 #	make mix200-debug
@@ -33,6 +38,7 @@ OBJECTS = yfspro.o
 ############
 all:	$(COMMAND)
 ################ 
+MAKE    = make -f KKMakefile
 F77     = gfortran
 LD      = $(F77)
 LDFLAGS =
@@ -76,21 +82,21 @@ EXT_SRC7  = ../dizet/*.f
 .f.o:
 	$(F77) $(FFLAGS) -c $<
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../KK2f; make
+	cd ../KK2f;   $(MAKE) 
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../glibk; make
+	cd ../glibk;  $(MAKE) 
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../jetset; make
+	cd ../jetset; $(MAKE) 
 $(EXT_LIB4a): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv;  $(MAKE) 
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv;  $(MAKE) 
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../tauola; make
+	cd ../tauola; $(MAKE) 
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../photos; make
+	cd ../photos; $(MAKE) 
 $(EXT_LIB7): $(EXT_SRC7)
-	cd ../dizet; make
+	cd ../dizet;  $(MAKE) 
 #===================================================================================================
 #### Make your own choice of the two choices below, see comments on two EW modes above
 EXT_LIBRARYa = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
@@ -108,19 +114,18 @@ E500GeV-stop:
 	(cd ./E500GeV;  make stop )
 #-----------------------------------------------------------------------
 E189GeV-start:	$(COMMAND)
-	(cd ./E189GeV;  make start )
+	(cd ./E189GeV;   $(MAKE) start )
 E189GeV-batch:	$(COMMAND)
-	(cd ./E189GeV;  make batch )
+	(cd ./E189GeV;   $(MAKE) batch )
 E189GeV-stop:
-	(cd ./E189GeV;  make stop )
+	(cd ./E189GeV;   $(MAKE) stop )
 E189GeV-cont:
-	(cd ./E189GeV;  make cont )
+	(cd ./E189GeV;   $(MAKE) cont )
 E189GeV-cont-debug:	$(COMMAND)
 	(cp E189GeV/pro.hst.core       E189GeV/pro.hst )
 	(cp E189GeV/semaphore.core     E189GeV/semaphore )
 	(cp E189GeV/pro.input.core     E189GeV/pro.input )
-###	(cd ./E189GeV;  make cont )
-	(cd ./E189GeV;  make cont-debug )
+	(cd ./E189GeV;  $(MAKE) cont-debug )
 #-----------------------------------------------------------------------
 E120GeV-start:	$(COMMAND)
 	(cd ./E120GeV;  make start )
@@ -230,7 +235,7 @@ figmix-debug:
 #-----------------------------------------------------------------------
 makprod:
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E500GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E500GeV/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E189GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E189GeV/makefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E189GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E189GeV/KKMakefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E120GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E120GeV/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E91GeV#'  -e 's#<class>#8nh#' ./makefile.production > ./E91GeV/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini200#'  -e 's#<class>#8nh#' ./makefile.production > ./ini200/makefile)
@@ -249,24 +254,24 @@ clean:
 #=============================================================================
 # Update dependent makefiles
 makflag:
-	(cd ../ffbench; make makflag-ext;)
+	(cd ../ffbench; $(MAKE)  makflag-ext;)
 	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
 ##############################################################################
 tables-default:
-	(cd ../dizet/; make default)
+	(cd ../dizet/; $(MAKE)  default)
 tables-YR:
-	(cd ../dizet/; make YR)
+	(cd ../dizet/; $(MAKE)  YR)
 #-----------------------------------------------------------------------
 Clean:
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ../glibk;	  make clean)
-	(cd ../KK2f;	  make clean)
-	(cd ../bornv;	  make clean)
-	(cd ../dizet;	  make clean)
-	(cd ../jetset;	make clean)
-	(cd ../tauola;	make clean)
+	(cd ../glibk;	  $(MAKE) clean)
+	(cd ../KK2f;	  $(MAKE) clean)
+	(cd ../bornv;	  $(MAKE) clean)
+	(cd ../dizet;	  $(MAKE) clean)
+	(cd ../jetset;	$(MAKE) clean)
+	(cd ../tauola;	$(MAKE) clean)
 	(cd libfig;	 make Clean)
 	(cd pubfig;	 make Clean)
 	(cd profig;	 make Clean)
