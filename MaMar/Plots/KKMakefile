@@ -9,6 +9,7 @@
 #	Note that variable RPATH for Root has to be readjusted
 #=============================================================================
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a  .C
+MAKE    = make -f KKMakefile
 #-----------------------------------------------------------------------------
 #  Root 
 #RPATH = /home/jadach/root
@@ -17,11 +18,20 @@
 	-lPostscript -lMatrix -lPhysics -lm -ldl -lpthread -rdynamic
 #FLIB=   -lf2c
 ########################################################################
-ROOTINCDIR = /usr/include/root
-ROOTLIBDIR = /usr/lib64/root
+###=== SLC5 on thep07
+ROOTINCDIR = /usr/local/root/include
+ROOTLIBDIR = /usr/local/root/lib
 ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
-RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
-FLIB= -lgfortran
+ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
+FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
+########################################################################
+###=== SLC on laptop
+#ROOTINCDIR = /usr/include/root
+#ROOTLIBDIR = /usr/lib64/root
+#ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+#ROOTAUXLIBS = 
+#FLIB= -lgfortran
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)  $(ROOTAUXLIBS)
 ###======================================================================
 #####  f77 compiler
 # forbid underscore completely       -fno-second-underscore
@@ -55,7 +65,7 @@ SRCLIST= "../KK2f ../glibk ../jetset ../bornv "
 EXT_LIB0  = ../../KKsem/KKsem.a
 EXT_SRC0  = ../../KKsem/*.f  ../../KKsem/*.h
 $(EXT_LIB0): $(EXT_SRC0)
-	(cd ../../KKsem; make)
+	(cd ../../KKsem; $(MAKE))
 #############################################################
 EXT_LIB1  = ../../KK2f/KK2f.a
 EXT_SRC1  = ../../KK2f/*.f		../../KK2f/*.h
@@ -74,21 +84,21 @@ EXT_LIB7  = ../../dizet/dizet.a
 EXT_SRC7  = ../../dizet/*.f
 ###########
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../../KK2f; make
+	cd ../../KK2f;   $(MAKE)
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../../glibk; make
+	cd ../../glibk;  $(MAKE)
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../../jetset; make
+	cd ../../jetset; $(MAKE)
 $(EXT_LIB4t): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv;  $(MAKE)
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv;  $(MAKE)
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../../tauola; make
+	cd ../../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../../photos; make
+	cd ../../photos; $(MAKE)
 $(EXT_LIB7): $(EXT_SRC7)
-	cd ../../dizet; make
+	cd ../../dizet;  $(MAKE)
 #===================================================================================================
 #### Make your own choice of the two choices below, see comments on two EW modes above
 EXT_LIBRARYt = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4t) $(EXT_LIB5) $(EXT_LIB6)
