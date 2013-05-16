@@ -8,12 +8,14 @@
 #  FFLAGS, F77, AR has to be the same as in ffbench/Makefile
 #-------------------------------------------------------------------------------
 #	make -f KKMakefile demo-start   <==  basic demonstration program
-#	make Mu-start
-#	make Tau-start
-#	make Inclusive-start
+#	make -f KKMakefile Mu-start
+#	make -f KKMakefile Tau-start
+#	make -f KKMakefile Inclusive-start
+#	make -f KKMakefile Test-start
 #	make -f KKMakefile figinc-pdf   <== simple graphics
 #	make demo_R-start <== R imposed for the gamma* resonances
-#	make Beast-start  <-- Beamsstrahlung
+#	make -f KKMakefile Beast-start  <-- Beamsstrahlung
+#	make -f KKMakefile demo_R-start  <-- needs CERNLIB+PAWLIB!!!
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -110,89 +112,88 @@ demo-start:	$(COMMAND2)
 	(cd ./demo;  $(MAKE) start )
 #-----------------------------------------------------------------------
 demo_R-start:	$(COMMAND3)
-	(cd ./demo_R;  make start )
+	(cd ./demo_R;  $(MAKE) start )
 #-----------------------------------------------------------------------
 figinc-pdf:
 	(cd Plots; $(MAKE) figinc-pdf)
 #-----------------------------------------------------------------------
 Test-start:	$(COMMAND1)
-	(cd ./Test;  make start )
+	(cd ./Test;  $(MAKE) start )
 Test-stop:
-	(cd ./Test;  make stop )
+	(cd ./Test;  $(MAKE) stop )
 Test-cont:
-	(cd ./Test;  make cont )
+	(cd ./Test;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 Mu-start:	$(COMMAND1)
-	(cd ./Mu;  make start )
+	(cd ./Mu;  $(MAKE) start )
 Mu-backg:	$(COMMAND1)
-	(cd ./Mu;  make backg )
+	(cd ./Mu;  $(MAKE) backg )
 Mu-stop:
-	(cd ./Mu;  make stop )
+	(cd ./Mu;  $(MAKE) stop )
 Mu-cont:
-	(cd ./Mu;  make cont )
+	(cd ./Mu;  $(MAKE) cont )
 Mu-plot:
-	(cd ./Plots; make figmix)
+	(cd ./Plots; $(MAKE) figmix)
 Mu-start-debug:	$(COMMAND1)
-	(cd ./Mu;  make start-debug )
+	(cd ./Mu;  $(MAKE) start-debug )
 Mu-cont-debug:	$(COMMAND1)
 	(cp Mu/pro.hst.382 Mu/pro.hst )
 	(cp Mu/semaphore.382 Mu/semaphore )
-	(cd ./Mu;  make cont )
-###	(cd ./Mu;  make cont-debug )
+	(cd ./Mu;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 Tau-start:	$(COMMAND1)
-	(cd ./Tau;  make start )
+	(cd ./Tau;  $(MAKE) start )
 Tau-stop:
-	(cd ./Tau;  make stop )
+	(cd ./Tau;  $(MAKE) stop )
 Tau-start-debug:	$(COMMAND1)
-	(cd ./Tau;  make start-debug )
+	(cd ./Tau;  $(MAKE) start-debug )
 Tau-cont-debug:	$(COMMAND1)
 	(cp Tau/pro.hst.110 Tau/pro.hst )
 	(cp Tau/semaphore.110 Tau/semaphore )
-###	(cd ./Tau;  make cont )
-	(cd ./Tau;  make cont-debug )
+	(cd ./Tau;  $(MAKE) cont-debug )
 #-----------------------------------------------------------------------
 Down-start:	$(COMMAND1)
-	(cd ./Down;  make start )
+	(cd ./Down;  $(MAKE) start )
 Down-start-debug:	$(COMMAND1)
-	(cd ./Down;  make start-debug )
+	(cd ./Down;  $(MAKE) start-debug )
 #-----------------------------------------------------------------------
 Up-start:	$(COMMAND1)
-	(cd ./Up;  make start )
+	(cd ./Up;  $(MAKE) start )
 #-----------------------------------------------------------------------
 Botom-start:	$(COMMAND1)
-	(cd ./Botom;  make start )
+	(cd ./Botom;  $(MAKE) start )
 #-----------------------------------------------------------------------
 Inclusive-start:	$(COMMAND1)
-	(cd ./Inclusive;  make start )
+	(cd ./Inclusive;  $(MAKE) start )
 Inclusive-start-debug:	$(COMMAND1)
-	(cd ./Inclusive;  make start-debug )
+	(cd ./Inclusive;  $(MAKE) start-debug )
 Inclusive-cont-debug:	$(COMMAND1)
 	(cp Inclusive/pro.hst.9643 Inclusive/pro.hst )
 	(cp Inclusive/semaphore.9643 Inclusive/semaphore )
-	(cd ./Inclusive;  make cont-debug )
+	(cd ./Inclusive; $(MAKE) cont-debug )
 #-----------------------------------------------------------------------
 Beast-start:	$(COMMAND1)
-	(cd ./Beast;  make start )
+	(cd ./Beast;  $(MAKE) start )
 Beast-start-debug:	$(COMMAND1)
-	(cd ./Beast;  make start-debug )
+	(cd ./Beast;  $(MAKE) start-debug )
 #-----------------------------------------------------------------------
 #                  update production makefiles
 #-----------------------------------------------------------------------
 makprod:
 	(sed -e 's#<main>#demo#'   -e 's#<dset>#demo#'  -e 's#<class>#long#' ./makefile.production > ./demo/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/makefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/KKMakefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/KKMakefile)
 #-----------------------------------
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	make clean)
+	(cd ./Plots;	$(MAKE) clean)
 #=============================================================================
 # Update fortran compilation flags
 #--- external dirs
@@ -211,20 +212,20 @@ makflag: makflag-ext
 	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > KKMakefile)
 #=============================================================================
 mbr:
-	(cd ../bornv;  make mbr)
+	(cd ../bornv;  $(MAKE) mbr)
 default:
-	(cd ../dizet;  make default)
+	(cd ../dizet;  $(MAKE) default)
 #-----------------------------------------------------------------------
 Clean:
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	$(MAKE) clean)
-	(cd ../glibk;	$(MAKE) clean)
-	(cd ../KK2f;	$(MAKE) clean)
+	(cd ./Plots;	  $(MAKE) clean)
+	(cd ../glibk;	  $(MAKE) clean)
+	(cd ../KK2f;	  $(MAKE) clean)
 	(cd ../jetset;	$(MAKE) clean)
 	(cd ../tauola;	$(MAKE) clean)
 	(cd ../photos;	$(MAKE) clean)
-	(cd ../bornv;	$(MAKE) clean)
-	(cd ../dizet;	$(MAKE) clean)
+	(cd ../bornv;	  $(MAKE) clean)
+	(cd ../dizet;	  $(MAKE) clean)
 	(cd ../bornv/tabtest; make clean)
 #-----------------------------------------------------------------------
 gtar: Clean
