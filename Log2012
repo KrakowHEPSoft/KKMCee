@@ -8,7 +8,11 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
-
+-------------------------------------------------------------------
+may. 16th, 2013
+system of custom makefiles is renamed makefile->KKMmakefile
+hence do from comandline "make -f KKMakefile"
+or define and use alias: alias kmake='make -f KKMakefile'
 
 -------------------------------------------------------------------
 feb. 26, 2013
