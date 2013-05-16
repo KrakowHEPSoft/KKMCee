@@ -234,19 +234,19 @@ figmix-debug:
 #                  update production makefiles
 #-----------------------------------------------------------------------
 makprod:
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E500GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E500GeV/makefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E500GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E500GeV/KKMakefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E189GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E189GeV/KKMakefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E120GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E120GeV/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E91GeV#'  -e 's#<class>#8nh#' ./makefile.production > ./E91GeV/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini200#'  -e 's#<class>#8nh#' ./makefile.production > ./ini200/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini140#'  -e 's#<class>#8nh#' ./makefile.production > ./ini140/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#fin140#'  -e 's#<class>#8nh#' ./makefile.production > ./fin140/makefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E120GeV#' -e 's#<class>#8nh#' ./makefile.production > ./E120GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#E91GeV#'  -e 's#<class>#8nh#' ./makefile.production > ./E91GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini200#'  -e 's#<class>#8nh#' ./makefile.production > ./ini200/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini140#'  -e 's#<class>#8nh#' ./makefile.production > ./ini140/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#fin140#'  -e 's#<class>#8nh#' ./makefile.production > ./fin140/KKMakefile)
 #----------------------------------- oldies
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini40#'  -e 's#<class>#8nh#' ./makefile.production > ./ini40/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#fin40#'  -e 's#<class>#8nh#' ./makefile.production > ./fin40/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix10#'  -e 's#<class>#8nh#' ./makefile.production > ./mix10/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix91#'  -e 's#<class>#8nh#' ./makefile.production > ./mix91/makefile)
-	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix200#' -e 's#<class>#8nh#' ./makefile.production > ./mix200/makefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#ini40#'  -e 's#<class>#8nh#' ./makefile.production > ./ini40/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#fin40#'  -e 's#<class>#8nh#' ./makefile.production > ./fin40/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix10#'  -e 's#<class>#8nh#' ./makefile.production > ./mix10/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix91#'  -e 's#<class>#8nh#' ./makefile.production > ./mix91/KKMakefile)
+	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix200#' -e 's#<class>#8nh#' ./makefile.production > ./mix200/KKMakefile)
 #----------------------------------- end oldies
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
