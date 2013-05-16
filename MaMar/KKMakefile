@@ -1,7 +1,7 @@
 #===============================================================================
 #  make -f KKMakefile test0-start	<==  basic production progr.
 #  make -f KKMakefile test0-stop
-#  make -f KKMakefileplot1
+#  make -f KKMakefile plot1
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
