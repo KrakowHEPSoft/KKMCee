@@ -6,6 +6,7 @@
 #	make -f KKMakefile chi-mcan-ps
 #	make -f KKMakefile makflag
 ##############################################################################
+MAKE    = make -f KKMakefile
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
 #----------------------------------------------------------------------
 XDVI   = kdvi      -bg white -fg black  -s 4 
@@ -15,7 +16,7 @@ XPS3    = gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black
 XPS1    = gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black
 XPSp    = gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black
 XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
-XPS     = gv
+XPS     = kghostview
 #----------------------------------------------------------------------
 FFLAGS  =  <FFLAGS>
 LDFLAGS =
