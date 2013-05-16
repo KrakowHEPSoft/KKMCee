@@ -1,12 +1,13 @@
 #----------------------------------------------------------------------
-#       gmake figbet-pubs
-#	make figini-dvi
-#	make figmix-dvi
-#	make figfin-dvi
-#	make figbet-dvi
-#	make fin40	!???
-#	make mix40	!???
+#       make -f KKMakefile figbet-pubs
+#	make -f KKMakefile figini-dvi
+#	make -f KKMakefile figmix-dvi
+#	make -f KKMakefile figfin-dvi
+#	make -f KKMakefile figbet-dvi
+#	make -f KKMakefile fin40	!???
+#	make -f KKMakefile mix40	!???
 #-----------------------------------------------------------------------
+MAKE    = make -f KKMakefile
 SRCLIST= "../libfig ../../glibk"
 #----------------------------------------------------------------------
 XDVI   = kdvi
@@ -23,12 +24,12 @@ LD = $(F77)
 EXT_LIB1  = ../libfig/libfig.a
 EXT_SRC1  = ../libfig/*.f ../libfig/*.h
 $(EXT_LIB1): $(EXT_SRC1)
-	(cd ../libfig; make)
+	(cd ../libfig; $(MAKE))
 #----------------------------------------------------------------------
 EXT_LIB2  = ../../glibk/glibk.a
 EXT_SRC2  = ../../glibk/*.f	../../glibk/*.h
 $(EXT_LIB2): $(EXT_SRC2)
-	(cd ../../glibk; make)
+	(cd ../../glibk; $(MAKE))
 #----------------------------------------------------------------------
 #----------------------------------------------------------------------
 COMMAND1 = figini.exe
@@ -129,11 +130,11 @@ karfin:	$(COMMAND11)
 	(latex karfin; $(XDVI)  karfin)
 #----------------------------------------------------------------------
 makflag:
-	(cd ../; make makflag)
+	(cd ../; $(MAKE) makflag)
 #----------------------------------------------------------------------
 clean:
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux *.ps dump.hst core output-*)
 Clean:	clean
-	(cd ../../glibk;  make clean)
-	(cd ../libfig; make clean)
+	(cd ../../glibk;  $(MAKE) clean)
+	(cd ../libfig; $(MAKE) clean)
 #----------------------------------------------------------------------
