@@ -2492,7 +2492,7 @@ c if you do not use guts of yfs subr. karlud comment out 1 line.
      &JMOHEP(2,NMXHEP),JDAHEP(2,NMXHEP),PHEP(5,NMXHEP),VHEP(4,NMXHEP)
       real*8 phep,vhep
       real*8 pol,sig,err
-      SAVE  /HEPEVT/
+      SAVE  /d_HEPEVT/
       REAL*8 PP(4),PS(4)
       save ps
       DIMENSION qp(4),qm(4),psum(4),pm(4),ph(4)
