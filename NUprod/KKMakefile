@@ -1,16 +1,18 @@
 #===============================================================================
-#       make makflag		<==  in order to update f77 flags everywhere
+#       make -f KKMakefile makflag
+#       make -f KKMakefile makprod
 #-------------------------------------------------------------------------------
-#	make NuAll-start
-#	make ew-mu2
-#	make ew-numu
-#	make ew-nuel
+#	make -f KKMakefile NuAll-start
+#	make -f KKMakefile ew-mu2
+#	make -f KKMakefile ew-numu
+#	make -f KKMakefile ew-nuel
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
 #  activate below   EXT_LIBRARY = EXT_LIBRARYa
 #-------------------------------------------------------------------------------
 ############
+MAKE    = make -f KKMakefile
 all:	demo-start
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static
@@ -28,7 +30,7 @@ FFLAGS  =  -fno-automatic -ffixed-line-length-132 -fbackslash -C -O
 #FFLAGS  =  -qfixed=132 -qextname  -C -qextchk -O
 ###########
 # under linux g77 is often used
-F77 = g77
+F77 = gfortran
 #F77 = f77 
 LD  = $(F77)
 LDFLAGS =
@@ -55,26 +57,26 @@ EXT_SRC7  = ../dizet/*.f
 .f.o:
 	$(F77) $(FFLAGS) -c $<
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../KK2f; make
+	cd ../KK2f; $(MAKE)
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../glibk; make
+	cd ../glibk; $(MAKE)
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../jetset; make
+	cd ../jetset; $(MAKE)
 $(EXT_LIB4a): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv; $(MAKE)
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv; $(MAKE)
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../tauola; make
+	cd ../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../photos; make
+	cd ../photos; $(MAKE)
 $(EXT_LIB7): $(EXT_SRC7)
-	cd ../dizet; make
+	cd ../dizet; $(MAKE)
 #----------------------
 EXT_LIB0  = ../KKsem/KKsem.a
 EXT_SRC0  = ../KKsem/*.f  ../KKsem/*.h
 $(EXT_LIB0): $(EXT_SRC0)
-	(cd ../KKsem; make)
+	(cd ../KKsem; $(MAKE))
 #===================================================================================================
 #### Make your own choice of the two choices below, see comments on two EW modes above
 EXT_LIBRARYa = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
@@ -98,19 +100,19 @@ $(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 demo-start:	$(COMMAND2)
-	(cd ./demo;  make start )
+	(cd ./demo;  $(MAKE) start )
 #-----------------------------------------------------------------------
 NuAll-start:	$(COMMAND1)
-	(cd ./NuAll;  make start )
+	(cd ./NuAll;  $(MAKE) start )
 NuAll-stop:
-	(cd ./NuAll;  make stop )
+	(cd ./NuAll;  $(MAKE) stop )
 NuAll-start-debug:	$(COMMAND1)
-	(cd ./NuAll;  make start-debug )
+	(cd ./NuAll;  $(MAKE) start-debug )
 NuAll-cont-debug:	$(COMMAND1)
 	(cp NuAll/pro.hst.110 NuAll/pro.hst )
 	(cp NuAll/semaphore.110 NuAll/semaphore )
-###	(cd ./NuAll;  make cont )
-	(cd ./NuAll;  make cont-debug )
+###	(cd ./NuAll;  $(MAKE) cont )
+	(cd ./NuAll;  $(MAKE) cont-debug )
 ##############################################################################
 # 	gmake bornx
 COMMAND9 = bornx.exe
@@ -135,39 +137,27 @@ ew-nuel:	$(COMMAND9)
 	(cd Semi; time ../$(COMMAND9) )
 #-----------------------------------------------------------------------
 #                  update production makefiles
-#-----------------------------------------------------------------------
 makprod:
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuAll#' -e 's#<class>#long#' ./makefile.production > ./NuAll/makefile)
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuEl#'  -e 's#<class>#long#' ./makefile.production > ./NuEl/makefile)
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuMu#'  -e 's#<class>#long#' ./makefile.production > ./NuMu/makefile)
-#-----------------------------------
-clean:                                                     
-	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuAll#' -e 's#<class>#long#' ./makefile.production > ./NuAll/KKMakefile)
+	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuEl#'  -e 's#<class>#long#' ./makefile.production > ./NuEl/KKMakefile)
+	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuMu#'  -e 's#<class>#long#' ./makefile.production > ./NuMu/KKMakefile)
 #=============================================================================
 # Update fortran compilation flags
 makflag:
-	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../photos; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../glibk;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv/tabtest; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../dizet;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../KKsem;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
+	(cd ../ffbench; $(MAKE)  makflag-ext;)
 #-----------------------------------------------------------------------
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
 Clean:
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	make clean)
-	(cd ../glibk;	make clean)
-	(cd ../KK2f;	make clean)
-	(cd ../jetset;	make clean)
-	(cd ../tauola;	make clean)
-	(cd ../photos;	make clean)
-	(cd ../bornv;	make clean)
-	(cd ../dizet;	make clean)
-	(cd ../bornv/tabtest; make clean)
+	(cd ../glibk;	$(MAKE) clean)
+	(cd ../KK2f;	$(MAKE) clean)
+	(cd ../jetset;	$(MAKE) clean)
+	(cd ../tauola;	$(MAKE) clean)
+	(cd ../photos;	$(MAKE) clean)
+	(cd ../bornv;	$(MAKE) clean)
+	(cd ../dizet;	$(MAKE) clean)
+	(cd ../bornv/tabtest; $(MAKE) clean)
 #-----------------------------------------------------------------------
 gtar: Clean
 	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
