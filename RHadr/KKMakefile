@@ -1,5 +1,9 @@
 #===============================================================================
-# make makflag      <==  in order to update f77 flags everywhere
+#  MASTER MAKEFILE in subdirectory yfspro
+#  This directory does NOT belong to public distribution
+#===============================================================================
+#       make -f KKMakefile makflag
+#       make -f KKMakefile makprod
 #-------------------------------------------------------------------------------
 #	make demoC-start	<==  basic demonstration program
 #	make demoC-stop
@@ -9,11 +13,13 @@
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
 #  activate below   EXT_LIBRARY = EXT_LIBRARYa
 #----------------------------------------------------------------------
+MAKE    = make -f KKMakefile
 line_count:
 	(cat *.cxx *.h | wc -l )
 #----------------------------------------------------------------------
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a
 #======================================================================
+### oldies
 #RPATH = /afs/cern.ch/na49/library.4/ROOT/new/i386_redhat60/root
 #RPATH = /afs/cern.ch/user/j/jadachsp/private/root
 #RPATH = /home/jadach/root
@@ -22,11 +28,18 @@ line_count:
 #  Fortran libraries for linker
 #FLIB=   -lg2c
 ########################################################################
-ROOTINCDIR = /usr/include/root
-ROOTLIBDIR = /usr/lib64/root
+###=== SLC5 on thep07
+ROOTINCDIR = /usr/local/root/include
+ROOTLIBDIR = /usr/local/root/lib
 ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
-RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS)
-FLIB     = -lgfortran
+ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
+FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
+###=== SLC5 laptop
+#ROOTINCDIR = /usr/include/root
+#ROOTLIBDIR = /usr/lib64/root
+#ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+#FLIB     = -lgfortran
+RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS) $(ROOTAUXLIBS)
 #================================================================================
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static
@@ -87,21 +100,21 @@ EXT_LIB7  = ../dizet/dizet.a
 EXT_SRC7  = ../dizet/*.f	../dizet/*.h	../bornv/*.h
 ###########
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../KK2f; make
+	cd ../KK2f; $(MAKE)
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../glibk; make
+	cd ../glibk; $(MAKE)
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../jetset; make
+	cd ../jetset; $(MAKE)
 $(EXT_LIB4a): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv; $(MAKE)
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../bornv; make
+	cd ../bornv; $(MAKE)
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../tauola; make
+	cd ../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../photos; make
+	cd ../photos; $(MAKE)
 $(EXT_LIB7): $(EXT_SRC7)
-	cd ../dizet; make
+	cd ../dizet; $(MAKE)
 #===================================================================================================
 MainP.o:  ROBOL.o ROBOL2.o KKMC.o 
 KKMC.o:		KKMC.h PartLund.h
@@ -123,56 +136,41 @@ $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
 	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
 #-----------------------------------------------------------------------
 demoC-start:	$(COMMAND2)
-	(cd ./demoC;  make start )
+	(cd ./demoC;  $(MAKE) start )
 demoC-cont:	$(COMMAND2)
-	(cd ./demoC;  make cont )
+	(cd ./demoC;  $(MAKE) cont )
 demoC-stop:	$(COMMAND2)
-	(cd ./demoC;  make stop )
+	(cd ./demoC;  $(MAKE) stop )
 demoC-debug:	$(COMMAND2)
-	(cd ./demoC;  make debug )
+	(cd ./demoC;  $(MAKE) debug )
 demoC-view:
 	(cd ./demoC;  root canvas.C)
-#-----------------------------------------------------------------------
-#                  update production makefiles
-#-----------------------------------------------------------------------
-makprod:
-	(sed -e 's#<main>#MainP#'   -e 's#<dset>#demoC#' -e 's#<class>#8nh#' ./makefile.production > ./demoC/makefile)
-#-----------------------------------
-clean:                                                     
-	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	make clean)
-	(cd ./dok;	make clean)
-	(cd ./demoC;	make CLEAN)
 #=============================================================================
-# Update fortran compilation flags
+#       update production $(MAKE)files
+makprod:
+	(sed -e 's#<main>#MainP#'   -e 's#<dset>#demoC#' -e 's#<class>#8nh#' ./makefile.production > ./demoC/KKMakefile)
+#=============================================================================
+# Update dependent makefiles
 makflag:
-	(cd ../KK2f;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../jetset; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../tauola; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../photos; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../glibk;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../bornv/tabtest; sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../dizet;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' makefile.templ > makefile)
-	(cd ../KKsem;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
+	(cd ../ffbench; $(MAKE)  makflag-ext;)
 mbr:
-	(cd ../bornv;  make mbr)
+	(cd ../bornv;  $(MAKE) mbr)
 default:
-	(cd ../dizet;  make default)
-#-----------------------------------------------------------------------
+	(cd ../dizet;  $(MAKE) default)
+#=============================================================================
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+	(cd ./Plots;	$(MAKE) clean)
+	(cd ./demoC;	$(MAKE) CLEAN)
+	(cd ./dok;	make clean)
 Clean:	clean
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	make clean)
-	(cd ../glibk;	make clean)
-	(cd ../KK2f;	make clean)
-	(cd ../jetset;	make clean)
-	(cd ../tauola;	make clean)
-	(cd ../photos;	make clean)
-	(cd ../bornv;	make clean)
-	(cd ../dizet;	make clean)
-	(cd ../bornv/tabtest; make clean)
-#-----------------------------------------------------------------------
-gtar: Clean
-	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
-	(cd ../../; chmod -w KK2f-all.tar.gz)
+	(cd ../glibk;	$(MAKE) clean)
+	(cd ../KK2f;	$(MAKE) clean)
+	(cd ../jetset;	$(MAKE) clean)
+	(cd ../tauola;	$(MAKE) clean)
+	(cd ../photos;	$(MAKE) clean)
+	(cd ../bornv;	$(MAKE) clean)
+	(cd ../dizet;	$(MAKE) clean)
+	(cd ../bornv/tabtest; $(MAKE) clean)
 #-----------------------------------------------------------------------
