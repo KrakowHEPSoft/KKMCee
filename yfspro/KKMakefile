@@ -11,23 +11,21 @@
 #  using data from runs in E189, mix200... see also pubfig/chi-prepare.f
 #  Failed attempt to recreated Fig.14 from PRD63 (why???):
 #       cp mix200/mix200_flat.input mix200/mix200.input
-#       make mix200-start   make mix200-stop
-#       make figbet-pubs
+#       make -f KKMakefile mix200-start
+#       make -f KKMakefile mix200-stop
+#       make -f KKMakefile figbet-pubs
 #  It is possible to reproduce it from archive ../mix200/pro.hst.flat.16M
 #===============================================================================
-# make makflag      <==  updates makefile's everywhere, compilation flags etc.
-# IMPORTANT! FFLAGS, F77, AR has to be here the same as in ffbench/Makefile!!!
-#-------------------------------------------------------------------------------
 #	make -f KKMakefile E189GeV-start
-#	make mix200-start
-#	make mix200-plot
-#	make mix200-debug
+#	make -f KKMakefile mix200-start
+#	make -f KKMakefile mix200-plot
+#	make -f KKMakefile mix200-debug
 #
-#	make fin140-start
-#	make figfin
+#	make -f KKMakefile fin140-start
+#	make -f KKMakefile figfin
 #
-#	make ini200-start
-#	make figini
+#	make -f KKMakefile ini200-start
+#	make -f KKMakefile figini
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -128,108 +126,108 @@ E189GeV-cont-debug:	$(COMMAND)
 	(cd ./E189GeV;  $(MAKE) cont-debug )
 #-----------------------------------------------------------------------
 E120GeV-start:	$(COMMAND)
-	(cd ./E120GeV;  make start )
+	(cd ./E120GeV;  $(MAKE) start )
 E120GeV-stop:
-	(cd ./E120GeV;  make stop )
+	(cd ./E120GeV;  $(MAKE) stop )
 E120GeV-cont:
-	(cd ./E120GeV;  make cont )
+	(cd ./E120GeV;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 E91GeV-start:	$(COMMAND)
-	(cd ./E91GeV;  make start )
+	(cd ./E91GeV;  $(MAKE) start )
 E91GeV-stop:
-	(cd ./E91GeV;  make stop )
+	(cd ./E91GeV;  $(MAKE) stop )
 E91GeV-cont:
-	(cd ./E91GeV;  make cont )
+	(cd ./E91GeV;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 ini140-start:	$(COMMAND)
-	(cd ./ini140;  make start )
+	(cd ./ini140;  $(MAKE) start )
 ini140-stop:
-	(cd ./ini140;  make stop )
+	(cd ./ini140;  $(MAKE) stop )
 ini140-plot:
-	(cd ./profig; make figini-dvi)
+	(cd ./profig; $(MAKE) figini-dvi)
 ini140-cont-debug:	$(COMMAND)
 	(cp ini140/pro.hst.75396 ini140/pro.hst )
 	(cp ini140/semaphore.75396 ini140/semaphore )
-	(cd ./ini140;  make cont )
+	(cd ./ini140;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 ini200-start:	$(COMMAND)
-	(cd ./ini200;  make start )
+	(cd ./ini200;  $(MAKE) start )
 ini200-stop:
-	(cd ./ini200;  make stop )
+	(cd ./ini200;  $(MAKE) stop )
 ini200-cont:
-	(cd ./ini200;  make cont )
+	(cd ./ini200;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 fin140-start:	$(COMMAND)
-	(cd ./fin140;  make start )
+	(cd ./fin140;  $(MAKE) start )
 fin140-stop:
-	(cd ./fin140;  make stop )
+	(cd ./fin140;  $(MAKE) stop )
 #-----------------------------------------------------------------------
 mix10-start:	$(COMMAND)
-	(cd ./mix10;  make start )
+	(cd ./mix10;  $(MAKE) start )
 mix10-stop:
-	(cd ./mix10;  make stop )
+	(cd ./mix10;  $(MAKE) stop )
 #-----------------------------------------------------------------------
 mix89-start:	$(COMMAND)
-	(cd ./mix89;  make start )
+	(cd ./mix89;  $(MAKE) start )
 mix89-stop:
-	(cd ./mix89;  make stop )
+	(cd ./mix89;  $(MAKE) stop )
 #-----------------------------------------------------------------------
 mix91-start:	$(COMMAND)
-	(cd ./mix91;  make start )
+	(cd ./mix91;  $(MAKE) start )
 mix91-stop:
-	(cd ./mix91;  make stop )
+	(cd ./mix91;  $(MAKE) stop )
 #-----------------------------------------------------------------------
 mix93-start:	$(COMMAND)
-	(cd ./mix93;  make start )
+	(cd ./mix93;  $(MAKE) start )
 mix93-stop:
-	(cd ./mix93;  make stop )
+	(cd ./mix93;  $(MAKE) stop )
 #-----------------------------------------------------------------------
 mix200-start:	$(COMMAND)
-	(cd ./mix200;  make start )
+	(cd ./mix200;  $(MAKE) start )
 mix200-stop:
-	(cd ./mix200;  make stop )
+	(cd ./mix200;  $(MAKE) stop )
 mix200-cont:
-	(cd ./mix200;  make cont )
+	(cd ./mix200;  $(MAKE) cont )
 mix200-plot:
-	(cd ./profig; rm -f figmix.dvi; make figmix-ps)
+	(cd ./profig; rm -f figmix.dvi; $(MAKE) figmix-ps)
 mix200-start-debug:	$(COMMAND)
-	(cd ./mix200;  make start-debug )
+	(cd ./mix200;  $(MAKE) start-debug )
 mix200-cont-debug:	$(COMMAND)
 	(cp mix200/pro.hst.382 mix200/pro.hst )
 	(cp mix200/semaphore.382 mix200/semaphore )
-	(cd ./mix200;  make cont )
+	(cd ./mix200;  $(MAKE) cont )
 #-----------------------------------------------------------------------
 mix1000-start:	$(COMMAND)
-	(cd ./mix1000;  make start )
+	(cd ./mix1000;  $(MAKE) start )
 mix1000-stop:
-	(cd ./mix1000;  make stop )
+	(cd ./mix1000;  $(MAKE) stop )
 #=======================================================================
 # Old historical
 ini40-start:	$(COMMAND)
-	(cd ./ini40;  make start )
+	(cd ./ini40;  $(MAKE) start )
 ini40-stop:
-	(cd ./ini40;  make stop )
+	(cd ./ini40;  $(MAKE) stop )
 ini40-plot:
-	(cd ./profig; make ini40)
+	(cd ./profig; $(MAKE) ini40)
 #----------------
 # Old historical
 fin40-start:	$(COMMAND)
-	(cd ./fin40;  make start )
+	(cd ./fin40;  $(MAKE) start )
 fin40-stop:
-	(cd ./fin40;  make stop )
+	(cd ./fin40;  $(MAKE) stop )
 #=======================================================================
 figini:
-	(cd ./profig; rm -f figini.dvi; make figini-ps)
+	(cd ./profig; rm -f figini.dvi; $(MAKE) figini-ps)
 figfin:
-	(cd ./profig; rm -f figfin.dvi; make figfin-ps)
+	(cd ./profig; rm -f figfin.dvi; $(MAKE) figfin-ps)
 figbet:
-	(cd ./profig; rm -f figbet.dvi; make figbet-ps)
+	(cd ./profig; rm -f figbet.dvi; $(MAKE) figbet-ps)
 figbet-pubs:
-	(cd ./profig; rm -f figbet.dvi; make figbet-pubs)
+	(cd ./profig; rm -f figbet.dvi; $(MAKE) figbet-pubs)
 figmix:
-	(cd ./profig; rm -f figmix.dvi; make figmix-ps)
+	(cd ./profig; rm -f figmix.dvi; $(MAKE) figmix-ps)
 figmix-debug:
-	(cd ./profig; rm -f figmix.dvi; make figmix-debug)
+	(cd ./profig; rm -f figmix.dvi; $(MAKE) figmix-debug)
 #-----------------------------------------------------------------------
 #                  update production makefiles
 #-----------------------------------------------------------------------
@@ -255,9 +253,9 @@ clean:
 # Update dependent makefiles
 makflag:
 	(cd ../ffbench; $(MAKE)  makflag-ext;)
-	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
-	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > makefile)
+	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
+	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
+	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
 ##############################################################################
 tables-default:
 	(cd ../dizet/; $(MAKE)  default)
@@ -272,8 +270,8 @@ Clean:
 	(cd ../dizet;	  $(MAKE) clean)
 	(cd ../jetset;	$(MAKE) clean)
 	(cd ../tauola;	$(MAKE) clean)
-	(cd libfig;	 make Clean)
-	(cd pubfig;	 make Clean)
-	(cd profig;	 make Clean)
+	(cd libfig;	 $(MAKE) Clean)
+	(cd pubfig;	 $(MAKE) Clean)
+	(cd profig;	 $(MAKE) Clean)
 #-----------------------------------------------------------------------
 
