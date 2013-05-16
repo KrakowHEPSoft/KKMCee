@@ -1,5 +1,4 @@
 #===============================================================================
-#-------------------------------------------------------------------------------
 #  make -f KKMakefile test0-start	<==  basic production progr.
 #  make -f KKMakefile test0-stop
 #  make -f KKMakefileplot1
@@ -11,9 +10,8 @@
 MAKE    = make -f KKMakefile
 line_count:
 	(cat *.cxx *.h | wc -l )
-#----------------------------------------------------------------------
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a
-########################################################################
+################################################################################
 ###=== SLC5 laptop
 #ROOTINCDIR = /usr/include/root
 #ROOTLIBDIR = /usr/lib64/root
@@ -111,7 +109,7 @@ EXT_LIBRARYd = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4d) $(EXT_LIB5) $(EX
 # Note that benchmark ouputs are for EXT_LIBRARYd
 EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
 ####EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
-#------------------------------------------------------------------------
+#===================================================================================================
 COMMAND2 = Test.exe
 OBJECTS2 = Test.o Semaph.o ROBOL.o KKMC.o PartLund.o
 $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
@@ -123,9 +121,6 @@ test0-stop:	$(COMMAND2)
 	(cd ./test0;  $(MAKE) stop )
 plot1:
 	(cd ./Plots;  $(MAKE) Plot1)
-#-----------------------------------------------------------------------
-clean:                                                     
-	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
 #=============================================================================
 # Update fortran compilation flags
 makflag:
@@ -134,9 +129,10 @@ mbr:
 	(cd ../bornv;  $(MAKE) mbr)
 default:
 	(cd ../dizet;  $(MAKE) default)
-#-----------------------------------------------------------------------
-Clean:
+#=============================================================================
+clean:
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+Clean:  clean
 	(cd ./Plots;	$(MAKE) clean)
 	(cd ../glibk;	$(MAKE) clean)
 	(cd ../KK2f;	$(MAKE) clean)
