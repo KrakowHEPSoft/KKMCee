@@ -5,7 +5,7 @@
 #  MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
 #       make -f KKMakefile makflag
 #       make -f KKMakefile makprod
-#  FFLAGS, F77, AR has to be the same as in ffbench/Makefile
+#  FFLAGS, F77, AR has to be the same as in ffbench/KKMakefile
 #---------------
 #  Plots in PRD63 (2000) were done mainly by pubfig/chi-mcan.f
 #  using data from runs in E189, mix200... see also pubfig/chi-prepare.f
