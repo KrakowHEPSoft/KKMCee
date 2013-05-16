@@ -3,8 +3,8 @@
 #           linking depends on the order of the librarries in a strange way
 #           it works only for Dizet tables, which is recomended anyway.
 #
-#	gmake chi-mcan-ps
-#	make makflag
+#	make -f KKMakefile chi-mcan-ps
+#	make -f KKMakefile makflag
 ##############################################################################
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
 #----------------------------------------------------------------------
@@ -38,12 +38,12 @@ SRCLIST= "../../glibk"
 EXT_LIB0  = ../../KKsem/KKsem.a
 EXT_SRC0  = ../../KKsem/*.f  ../../KKsem/*.h
 $(EXT_LIB0): $(EXT_SRC0)
-	(cd ../../KKsem; make)
+	(cd ../../KKsem; $(MAKE))
 #---------------------- Obsolete Obsolete Obsolete
 EXT_LIB31  = ../libfig/libfig.a
 EXT_SRC31  = ../libfig/*.f  ../libfig/*.h
 $(EXT_LIB31): $(EXT_SRC31)
-	(cd ../libfig; make)
+	(cd ../libfig; $(MAKE))
 ###########
 EXT_LIB1  = ../../KK2f/KK2f.a
 EXT_SRC1  = ../../KK2f/*.f		../../KK2f/*.h
@@ -60,19 +60,19 @@ EXT_LIB6  = ../../photos/glib.a
 EXT_SRC6  = ../../photos/photos.f	
 ###########
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../../KK2f; make
+	cd ../../KK2f; $(MAKE)
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../../glibk; make
+	cd ../../glibk; $(MAKE)
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../../jetset; make
+	cd ../../jetset; $(MAKE)
 $(EXT_LIB4a): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv; $(MAKE)
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv; $(MAKE)
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../../tauola; make
+	cd ../../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../../photos; make
+	cd ../../photos; $(MAKE)
 ###########
 SRCLIST= "../../KK2f ../../bornv ../../glibk"
 #-----------------------------------------------------------------------------
@@ -87,11 +87,11 @@ OBJECTS0 = chi_prepare.o
 $(COMMAND0): $(OBJECTS0)                   $(EXT_LIB31) $(EXT_LIB2)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS0) $(EXT_LIB31) $(EXT_LIB2)
 #-----------------------------------------------------------------------------
-# 	gmake chi.hst
+# 	make -f KKMakefile chi.hst
 chi.hst:	$(COMMAND0)
 	(time ./$(COMMAND0) )
 #-----------------------------------------------------------------------------
-# 	gmake chi-mcan-ps
+# 	make -f KKMakefile chi-mcan-ps
 BN0 = chi-mcan
 # Link procedure
 $(BN0).o:	chi.h
@@ -311,17 +311,17 @@ bornex:	$(COMMAND9)
 ##############################################################################
 ##############################################################################
 makflag:
-	(cd ../; make makflag)
+	(cd ../; $(MAKE) makflag)
 ##############################################################################
 default:
-	(cd ../../dizet/; make default)
+	(cd ../../dizet/; $(MAKE) default)
 YR:
-	(cd ../../dizet/; make YR)
+	(cd ../../dizet/; $(MAKE) YR)
 ##############################################################################
 clean:
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap)
 	(rm -f *.txp chi afb output-* *.hst)
 Clean:	clean
 	(rm -f *.ps)
-	(cd ../../glibk;  make clean)
+	(cd ../../glibk;  $(MAKE) clean)
 ##############################################################################
