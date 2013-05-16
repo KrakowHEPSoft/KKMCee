@@ -34,9 +34,16 @@ AC_LINK_IFELSE(
 QUEUE_CMD
 CLASS_CMD 
 
-AC_OUTPUT(Makefile 2brems/Makefile glibk/Makefile bornv/Makefile dizet/Makefile KK2f/Makefile jetset/Makefile tauola/Makefile photos/Makefile  \
-ffbdoan/Makefile  \
-ffbench/Makefile ffbench/Demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile ffbench/Plots/Makefile \
+AC_OUTPUT(Makefile \
+glibk/Makefile \
+bornv/Makefile \
+dizet/Makefile \
+KK2f/Makefile \
+jetset/Makefile \
+tauola/Makefile \
+photos/Makefile  \
 KKsem/Makefile \
+ffbench/Makefile ffbench/Demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile ffbench/Plots/Makefile \
 yfspro/Makefile yfspro/pubfig/Makefile \
-MaMar/Makefile MaMar/test0/Makefile MaMar/Plots/Makefile)
+MaMar/Makefile MaMar/test0/Makefile MaMar/Plots/Makefile \
+)
