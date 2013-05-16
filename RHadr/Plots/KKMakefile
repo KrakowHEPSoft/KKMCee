@@ -75,7 +75,7 @@ SRCLIST= "../KK2f ../glibk ../jetset ../bornv "
 EXT_LIB0  = ../../KKsem/KKsem.a
 EXT_SRC0  = ../../KKsem/*.f  ../../KKsem/*.h
 $(EXT_LIB0): $(EXT_SRC0)
-	(cd ../../KKsem; make)
+	(cd ../../KKsem; $(MAKE))
 #############################################################
 EXT_LIB1  = ../../KK2f/KK2f.a
 EXT_SRC1  = ../../KK2f/*.f		../../KK2f/*.h
@@ -94,21 +94,21 @@ EXT_LIB7  = ../../dizet/dizet.a
 EXT_SRC7  = ../../dizet/*.f
 ###########
 $(EXT_LIB1): $(EXT_SRC1)
-	cd ../../KK2f; make
+	cd ../../KK2f;   $(MAKE)
 $(EXT_LIB2): $(EXT_SRC2)
-	cd ../../glibk; make
+	cd ../../glibk;  $(MAKE)
 $(EXT_LIB3): $(EXT_SRC3)
-	cd ../../jetset; make
+	cd ../../jetset; $(MAKE)
 $(EXT_LIB4t): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv;  $(MAKE)
 $(EXT_LIB4d): $(EXT_SRC4)
-	cd ../../bornv; make
+	cd ../../bornv;  $(MAKE)
 $(EXT_LIB5): $(EXT_SRC5)
-	cd ../../tauola; make
+	cd ../../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
-	cd ../../photos; make
+	cd ../../photos; $(MAKE)
 $(EXT_LIB7): $(EXT_SRC7)
-	cd ../../dizet; make
+	cd ../../dizet;  $(MAKE)
 #======================================================================================
 #### Make your own choice of the two choices below, see comments on two EW modes above
 EXT_LIBRARYt = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4t) $(EXT_LIB5) $(EXT_LIB6)
