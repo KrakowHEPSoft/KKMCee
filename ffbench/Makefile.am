@@ -17,7 +17,8 @@ SUBDIRS = demo Beast Inclusive Mu Plots
 ########################################################################
 ###                   USER PART
 ###  make Demo-start
-###  make Inclusive-start    make figinc-pdf
+###  make Inclusive-start
+###  make figinc-pdf
 ###  make Mu-start
 # Note on linking EW library:
 #  (a) EW formfactors read from tables 
