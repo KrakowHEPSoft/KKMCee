@@ -36,7 +36,7 @@ POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/configure install-sh missing
+	$(top_srcdir)/configure depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/queue.m4 \
 	$(top_srcdir)/m4/root.m4 $(top_srcdir)/configure.in
@@ -78,12 +78,12 @@ AUTOHEADER = ${SHELL} /home/jadach/SandBox/KKMC-all-2012/missing --run autoheade
 AUTOMAKE = ${SHELL} /home/jadach/SandBox/KKMC-all-2012/missing --run automake-1.9
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=none
+CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CLASS = qunlimitted
 CPPFLAGS = 
 CXX = g++
-CXXDEPMODE = depmode=none
+CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
@@ -133,10 +133,10 @@ ac_ct_CXX = g++
 ac_ct_F77 = 
 ac_ct_RANLIB = ranlib
 ac_ct_STRIP = 
-am__fastdepCC_FALSE = 
-am__fastdepCC_TRUE = #
-am__fastdepCXX_FALSE = 
-am__fastdepCXX_TRUE = #
+am__fastdepCC_FALSE = #
+am__fastdepCC_TRUE = 
+am__fastdepCXX_FALSE = #
+am__fastdepCXX_TRUE = 
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -164,7 +164,7 @@ subCMD = qsub
 sysconfdir = ${prefix}/etc
 target_alias = 
 AUTOMAKE_OPTIONS = foreign 1.6
-SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench
+SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar yfspro
 ###SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem yfspro MaMar ffbench
 
 # Automake 1.9.1 manual suggtests putting all local-macrros in m4 subdir

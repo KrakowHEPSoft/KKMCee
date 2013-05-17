@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign 1.6
-SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar
+SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar yfspro
 ###SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem yfspro MaMar ffbench
 
 # Automake 1.9.1 manual suggtests putting all local-macrros in m4 subdir
