@@ -16,7 +16,7 @@ SUBDIRS = demo Beast Inclusive Mu Plots
 
 ########################################################################
 ###                   USER PART
-###  make Demo-start
+###  make demo-start
 ###  make Inclusive-start
 ###  make figinc-pdf
 ###  make Mu-start
