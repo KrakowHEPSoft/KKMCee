@@ -1,10 +1,10 @@
 INCLUDES = 
 METASOURCES = AUTO
-bin_PROGRAMS = demo ProdMC
+bin_PROGRAMS = DEMO ProdMC
 
-demo_SOURCES = demo.f
+DEMO_SOURCES = demo.f
 ProdMC_SOURCES = ProdMC.f
-demo_LDADD = $(top_builddir)/KK2f/libKK2f.a \
+DEMO_LDADD = $(top_builddir)/KK2f/libKK2f.a \
 	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/dizet/libDizet.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/glibk/libGlibk.a
 
@@ -34,11 +34,11 @@ check_all:
 	(cd ../photos; make install)
 	(cd ../jetset; make install)
 	(make install)
-Demo-start: check_all
-	(cd ./Demo;  make start )
+demo-start: check_all
+	(cd ./demo;  make start )
 #-----------------------------------------------------------------------
-Demo_R-start:  check_all
-	(cd ./Demo_R;  make start )
+demo_R-start:  check_all
+	(cd ./demo_R;  make start )
 #-----------------------------------------------------------------------
 Inclusive-start:   check_all
 	(cd ./Inclusive;  make start )
