@@ -12,10 +12,12 @@ ProdMC_LDADD = $(top_builddir)/KK2f/libKK2f.a \
 	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/dizet/libDizet.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/glibk/libGlibk.a
 
-SUBDIRS = demo Beast Inclusive Mu Plots
+SUBDIRS = Plots
 
 ########################################################################
 ###                   USER PART
+###  make makprod       <=== mandatory
+###------------------------------------
 ###  make demo-start
 ###  make Inclusive-start
 ###  make figinc-pdf
@@ -81,4 +83,18 @@ Botom-start: check_all
 #-----------------------------------------------------------------------
 Beast-start:
 	(cd ./Beast;  make start )
+#-----------------------------------------------------------------------
+#                  update production makefiles
+#-----------------------------------------------------------------------
+makprod:
+	(sed -e 's#<main>#DEMO#'   -e 's#<dset>#demo#'  -e 's#<class>#long#' ./makefile.production > ./demo/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/makefile)
+	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/makefile)
 #######################################################################

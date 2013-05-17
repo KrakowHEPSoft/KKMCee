@@ -179,16 +179,16 @@ Beast-start-debug:	$(COMMAND1)
 #                  update production makefiles
 #-----------------------------------------------------------------------
 makprod:
-	(sed -e 's#<main>#demo#'   -e 's#<dset>#demo#'  -e 's#<class>#long#' ./makefile.production > ./demo/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/KKMakefile)
-	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/KKMakefile)
+	(sed -e 's#<main>#demo.exe#'   -e 's#<dset>#demo#'  -e 's#<class>#long#' ./makefile.production > ./demo/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Test#'  -e 's#<class>#long#' ./makefile.production > ./Test/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Mu#'    -e 's#<class>#long#' ./makefile.production > ./Mu/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Tau#'   -e 's#<class>#long#' ./makefile.production > ./Tau/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Down#'  -e 's#<class>#long#' ./makefile.production > ./Down/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Up#'    -e 's#<class>#long#' ./makefile.production > ./Up/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Botom#' -e 's#<class>#long#' ./makefile.production > ./Botom/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/KKMakefile)
+	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/KKMakefile)
 #-----------------------------------
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
