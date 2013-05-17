@@ -44,7 +44,6 @@ tauola/Makefile \
 photos/Makefile  \
 KKsem/Makefile \
 ffbench/Makefile ffbench/Plots/Makefile \
-    ffbench/demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile \
 MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile \
 yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
 )

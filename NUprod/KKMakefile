@@ -138,9 +138,9 @@ ew-nuel:	$(COMMAND9)
 #-----------------------------------------------------------------------
 #                  update production makefiles
 makprod:
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuAll#' -e 's#<class>#long#' ./makefile.production > ./NuAll/KKMakefile)
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuEl#'  -e 's#<class>#long#' ./makefile.production > ./NuEl/KKMakefile)
-	(sed -e 's#<main>#ProdNU#' -e 's#<dset>#NuMu#'  -e 's#<class>#long#' ./makefile.production > ./NuMu/KKMakefile)
+	(sed -e 's#<main>#ProdNU.exe#' -e 's#<dset>#NuAll#' -e 's#<class>#long#' ./makefile.production > ./NuAll/KKMakefile)
+	(sed -e 's#<main>#ProdNU.exe#' -e 's#<dset>#NuEl#'  -e 's#<class>#long#' ./makefile.production > ./NuEl/KKMakefile)
+	(sed -e 's#<main>#ProdNU.exe#' -e 's#<dset>#NuMu#'  -e 's#<class>#long#' ./makefile.production > ./NuMu/KKMakefile)
 #=============================================================================
 # Update fortran compilation flags
 makflag:

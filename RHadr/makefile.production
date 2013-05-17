@@ -3,7 +3,7 @@
 #       Combine to be implemented!!!
 #       bjobs, bqueues
 #-----------------------------------------------------------------------
-MAIN=<main>
+MCMD=<main>
 DSET=<dset>
 CLASS=<class>
 #-----------------------------------------------------------------------
@@ -22,7 +22,7 @@ start:
 	 cp ./$(DSET).input ./pro.input		;\
 	 mv -f ./pro.output ./pro.output.bak	;\
 	 mv -f ./rmain.root ./rmain.root.bak	;\
-	 time ../${MAIN}.exe			)&
+	 time ../${MCMD}			)&
 #-----------------------------------------------------------------------
 batch:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
@@ -30,7 +30,7 @@ batch:
 	 cp ./$(DSET).input ./pro.input		;\
 	 mv -f ./pro.output ./pro.output.bak	;\
 	 mv -f ./rmain.root ./rmain.root.bak	;\
-	 ../${MAIN}.exe > ./stdout &	)
+	 ../${MCMD} > ./stdout &	)
 #-----------------------------------------------------------------------
 stop:
 	(cp ../semaphore.stop ./semaphore )&
@@ -39,7 +39,7 @@ cont:
 	(cp semaphore  semaphore.bak		;\
 	 cp -f rmain.root   rmain.root.bak	;\
 	 mv -f pro.output pro.output.bak	;\
-	 time ../${MAIN}.exe			)&
+	 time ../${MCMD}			)&
 #-----------------------------------------------------------------------
 start-debug:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
@@ -47,13 +47,13 @@ start-debug:
 	 cp ./$(DSET).input ./pro.input		;\
 	 mv -f ./pro.output ./pro.output.bak	;\
 	 mv -f ./rmain.root ./rmain.root.bak	;\
-	 xldb -I  ${SRCLIST} ../${MAIN}.exe	)&
+	 xldb -I  ${SRCLIST} ../${MCMD}	)&
 #-----------------------------------------------------------------------
 cont-debug:
 	(cp semaphore  semaphore.bak		;\
 	 cp -f rmain.root   rmain.root.bak	;\
 	 mv -f pro.output pro.output.bak	;\
-         ddd --directory="../" ../${MAIN}.exe	)
+         ddd --directory="../" ../${MCMD}	)
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #   Batch on farm:  initialize, submit and stop

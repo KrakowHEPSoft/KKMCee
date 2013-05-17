@@ -1,13 +1,13 @@
 #===============================================================================
-#  MASTER MAKEFILE in subdirectory yfspro
+#  MASTER MAKEFILE in subdirectory RHadr
 #  This directory does NOT belong to public distribution
 #===============================================================================
 #       make -f KKMakefile makflag
 #       make -f KKMakefile makprod
 #-------------------------------------------------------------------------------
-#	make demoC-start	<==  basic demonstration program
-#	make demoC-stop
-#	make demoC-view		<==  preview histograms 
+#	make -f KKMakefile demoC-start	<==  basic demonstration program
+#	make -f KKMakefile demoC-stop
+#	make -f KKMakefile demoC-view		<==  preview histograms 
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
 #  If you want to READ EW formfactor from the disk (Dizet NOT linked) then
@@ -148,7 +148,7 @@ demoC-view:
 #=============================================================================
 #       update production $(MAKE)files
 makprod:
-	(sed -e 's#<main>#MainP#'   -e 's#<dset>#demoC#' -e 's#<class>#8nh#' ./makefile.production > ./demoC/KKMakefile)
+	(sed -e 's#<main>#MainP.exe#'   -e 's#<dset>#demoC#' -e 's#<class>#8nh#' ./makefile.production > ./demoC/KKMakefile)
 #=============================================================================
 # Update dependent makefiles
 makflag:

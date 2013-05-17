@@ -139,10 +139,10 @@ $(COMMAND2):                   $(OBJECTS2) $(EXT_LIBRARY)
 #                  update production makefiles
 #-----------------------------------------------------------------------
 makprod:
-	(sed -e 's#<main>#ProdMain#' -e 's#<dset>#189GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./189GeV/KKMakefile)
-	(sed -e 's#<main>#ProdMain#' -e 's#<dset>#200GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./200GeV/KKMakefile)
-	(sed -e 's#<main>#ProdMain#' -e 's#<dset>#206GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./206GeV/KKMakefile)
-	(sed -e 's#<main>#RealMain#' -e 's#<dset>#189Rea#'   -e 's#<class>#8nh#' ./makefile.production > ./189Rea/KKMakefile)
+	(sed -e 's#<main>#ProdMain.exe#' -e 's#<dset>#189GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./189GeV/KKMakefile)
+	(sed -e 's#<main>#ProdMain.exe#' -e 's#<dset>#200GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./200GeV/KKMakefile)
+	(sed -e 's#<main>#ProdMain.exe#' -e 's#<dset>#206GeV#'   -e 's#<class>#8nh#' ./makefile.production > ./206GeV/KKMakefile)
+	(sed -e 's#<main>#RealMain.exe#' -e 's#<dset>#189Rea#'   -e 's#<class>#8nh#' ./makefile.production > ./189Rea/KKMakefile)
 input-mu:
 	(cp ./189GeV/Mu.input  ./189GeV/189GeV.input )
 	(cp ./200GeV/Mu.input  ./200GeV/200GeV.input )

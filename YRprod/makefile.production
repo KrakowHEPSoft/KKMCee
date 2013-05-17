@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------
 #       Template for makefile in production directory <dset>
 #-----------------------------------------------------------------------
-MAIN=<main>
+MCMD=<main>
 DSET=<dset>
 CLASS=<class>
 #-----------------------------------------------------------------------
@@ -17,13 +17,13 @@ start:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 time ../${MAIN}.exe			)&
+	 time ../${MCMD}			)&
 #-----------------------------------------------------------------------
 batch:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 ../${MAIN}.exe > ./stdout &	)
+	 ../${MCMD} > ./stdout &	)
 #-----------------------------------------------------------------------
 stop:
 	(cp ../semaphore.stop ./semaphore )&
@@ -32,19 +32,19 @@ cont:
 	(cp semaphore  semaphore.bak		;\
 	 cp pro.hst    pro.hst.bak		;\
 	 cp pro.output pro.output.bak		;\
-         time ../${MAIN}.exe	> ./stdout &	)
+         time ../${MCMD}	> ./stdout &	)
 #-----------------------------------------------------------------------
 start-debug:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 xldb -I  ${SRCLIST} ../${MAIN}.exe	)&
+	 xldb -I  ${SRCLIST} ../${MCMD}	)&
 #-----------------------------------------------------------------------
 cont-debug:
 	(cp semaphore  semaphore.bak		;\
 	 cp pro.hst    pro.hst.bak		;\
 	 cp pro.output pro.output.bak		;\
-         xldb -I  ${SRCLIST} ../${MAIN}.exe	)&
+         xldb -I  ${SRCLIST} ../${MCMD}	)&
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #   Batch on farm:  initialize, submit and stop
