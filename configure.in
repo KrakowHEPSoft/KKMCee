@@ -43,7 +43,7 @@ jetset/Makefile \
 tauola/Makefile \
 photos/Makefile  \
 KKsem/Makefile \
-ffbench/Makefile ffbench/demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile ffbench/Plots/Makefile )
+ffbench/Makefile ffbench/demo/Makefile ffbench/Beast/Makefile ffbench/Inclusive/Makefile ffbench/Mu/Makefile ffbench/Plots/Makefile \
+##MaMar/Makefile MaMar/test0/Makefile MaMar/Plots/Makefile )
 ##yfspro/Makefile yfspro/pubfig/Makefile \
-##MaMar/Makefile MaMar/test0/Makefile MaMar/Plots/Makefile \
 ##)
