@@ -11,9 +11,25 @@ Test_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
 Test_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 SUBDIRS = test0 Plots
 
+########################################################################
+###                   USER PART
+###  make test0-start
+###  make Plot1
+########################################################################
+check_all:
+	(cd ../KK2f;   make install)
+	(cd ../bornv;  make install)
+	(cd ../glibk;  make install)
+	(cd ../dizet;  make install)
+	(cd ../tauola; make install)
+	(cd ../photos; make install)
+	(cd ../jetset; make install)
+	(make install)
 #-----------------------------------------------------------------------
-test0-start:	Test
+test0-start:	check_all
 	(cd ./test0;  make start )
 test0-stop:
 	(cd ./test0;  make stop )
+Plot1:		check_all
+	(cd Plots; make Plot1; ./Plot1)
 #-----------------------------------------------------------------------
