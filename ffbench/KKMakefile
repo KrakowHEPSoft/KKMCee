@@ -12,9 +12,8 @@
 #   make -f KKMakefile Tau-start
 #   make -f KKMakefile Inclusive-start
 #   make -f KKMakefile Test-start
-#   make -f KKMakefile figinc-pdf   <== simple graphics
-#   make demo_R-start <== R imposed for the gamma* resonances
-#   make -f KKMakefile Beast-start  <-- Beamsstrahlung
+#   make -f KKMakefile figinc-pdf    <== simple graphics
+#   make -f KKMakefile Beast-start   <-- Beamsstrahlung
 #   make -f KKMakefile demo_R-start  <-- needs CERNLIB+PAWLIB!!!
 #===============================================================================
 #  TWO WAYS OF ORGANIZING ELECTROWEAK LIBRARY INITIALIZATION.
