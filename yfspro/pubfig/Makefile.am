@@ -5,19 +5,19 @@ bin_PROGRAMS = chi_prepare chi_mcan afb_prepare afb_int delmu delmu_plot delhad 
 
 chi_prepare_SOURCES = chi_prepare.f chi.h
 
-chi_mcan_SOURCES = chi_mcan.f chi.h
+chi_mcan_SOURCES    = chi_mcan.f chi.h
 
 afb_prepare_SOURCES = afb_prepare.f afb.h
 
-afb_int_SOURCES = afb_int.f chi.h
+afb_int_SOURCES     = afb_int.f chi.h
 
-delmu_SOURCES = delmu.f
+delmu_SOURCES       = delmu.f
 
-delmu_plot_SOURCES = delmu_plot.f
+delmu_plot_SOURCES  = delmu_plot.f
 
-delhad_SOURCES = delhad.f
+delhad_SOURCES      = delhad.f
 
-bornex_SOURCES = bornex.f
+bornex_SOURCES      = bornex.f
 
 bornex_LDADD = $(top_builddir)/KKsem/libKKsem.a $(top_builddir)/KK2f/libKK2f.a\
 	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a\
