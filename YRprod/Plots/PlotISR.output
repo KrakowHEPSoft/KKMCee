@@ -1,21 +1,21 @@
- GLK_ReadFile: Reading histos from 
- ../189GeV/MuIFIon189GeVreal.hst.39M                         
+ GLK_ReadFile: Reading histos from ../189GeV/IncISRonly189GeV.hst.140M                         
  ============================================================================================
       ID                 TITLE                                                nb, xmin, xmax
       -6  KK2f signature                                                                         1   0.00000       1.00000    
     -640  KK2f: Photon raw multiplicity                                                         10   0.00000       10.0000    
     -700  MBrA: KK2f main weight                                                                50   0.00000       1.00000    
     -701  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -702  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -703  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -704  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -705  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -706  MBrA: next branch                                                                      5   0.00000       1.00000    
+    -707  MBrA: next branch                                                                      5   0.00000       1.00000    
     -658  KarLud, wtvesk                                                                       100   0.00000       1.20000    
     -659  KarLud, wt_ISR                                                                         1   0.00000       2.00000    
     -660  KarLud: phot. mult. raw                                                                1   0.00000       50.0000    
     -669  KarLud: totat weight                                                                   1   0.00000       2.00000    
-    -664  YFSfin: photon raw multiplicity                                                       10   0.00000       10.0000    
-    -661  YFSfin: wt1, kinematics                                                                1   0.00000       2.00000    
-    -662  YFSfin: wt2, jacobian                                                                  1   0.00000       2.00000    
-    -663  YFSfin: wt3, mass                                                                      1   0.00000       2.00000    
-    -665  YFSfin: piatek, wtctrl                                                                 1   0.00000       2.00000    
-    -666  YFSfin: piatek, wtrem                                                                  1   0.00000       2.00000    
+    -630  Tau Pair: wt1, Spin Imprint weight                                                    40   0.00000       4.00000    
   100000  Sigma and AFB grand storage                                                        16000   0.00000       16000.0    
   200000  dSigma/dTheta grand storage                                                        10000   0.00000       10000.0    
            
@@ -40,7 +40,7 @@
  *              100                 Max. photon mult.        npmax      a3 *
  *                1                 wt-ed or wt=1 evts.      KeyWgt     a4 *
  *                1                 ISR switch               KeyISR     a4 *
- *                1                 FSR switch               KeyFSR     a5 *
+ *                0                 FSR switch               KeyFSR     a5 *
  *                2                 ISR/FSR interferenc      KeyINT     a6 *
  *                1                 New exponentiation       KeyGPS     a7 *
  *                0                 Hadroniz.  switch        KeyHad     a7 *
@@ -73,6 +73,24 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ++  WARNING GLK_Mbook: already exists id=       -701 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -702 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -703 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -704 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -705 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -706 ++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++  WARNING GLK_Mbook: already exists id=       -707 ++
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

@@ -9,10 +9,28 @@ Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
 -------------------------------------------------------------------
-may. 16th, 2013
-system of custom makefiles is renamed makefile->KKMmakefile
-hence do from comandline "make -f KKMakefile"
-or define and use alias: alias kmake='make -f KKMakefile'
+May. 16th, 2013
+System of Autotools is setup, see configure.in and Makefile.am files.
+This is done in all directiories except YRprod.
+The above allows to use kdevelop (under KDE 3.x).
+Open in kdevelop from main menu Projects->New project,
+and choose project type "fortran automake based".
+Next in the Project Options -> Configure Options for fortran,
+set compiler= gfortran,
+and compiler options (FFLAGS) set as usual:
+-O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+kdevelop will remember the above settings in ProjectName.kdevelop file.
+
+From now on KKMC project in svn repository is obsolete,
+except ffdoan subdirectory there.
+
+
+-------------------------------------------------------------------
+May. 16th, 2013
+System of custom makefiles is renamed, makefile->KKMmakefile,
+hence "make -f KKMakefile" should be used in the commad line,
+or define and use the following alias:
+    alias kmake='make -f KKMakefile'
 
 -------------------------------------------------------------------
 feb. 26, 2013
@@ -111,6 +129,7 @@ i zakomitowalem drobne poprawki w mekefile'ach.
 feb. 5th 2013
 
 The entire KK-all is put into svn repository at IFJ-PAN
+
 
 ******************************************************************
 ******************************************************************
