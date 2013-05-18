@@ -4,14 +4,15 @@
 *//   make all second part;      make afb-int-ps
 *//   make all second part;      make afb-ang-ps
 *****************************************************************
-*     make clean   !!!! <-- do it when data changed !!!!
-*     make afb.hst
-*     make afb-sig-ps
-*     make afb-sig2-ps  clone for 10GeV
-*     make afb-int-ps
-*     make afb-ang-ps
-*     make afb-int-tab1.eps
-*     make afb-int-Gsig.eps
+*  kmake='make -f KKMakefile'
+*     kmake clean   !!!! <-- do it when data changed !!!!
+*     kmake afb.hst
+*     kmake afb_sig-ps
+*     kmake afb_sig2-ps  clone for 10GeV
+*     kmake afb_int-ps
+*     kmake afb_ang-ps
+*     kmake afb_int-tab1.eps
+*     kmake afb_int-Gsig.eps
 *----------------------------------------------------------------
       PROGRAM MAIN
 *     ************

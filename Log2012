@@ -42,7 +42,7 @@ or define and use the following alias:
 
 -------------------------------------------------------------------
 feb. 26, 2013
-PRD63 table reproduced with 8M events (factor 2 missing from PRD)
+PRD63 table III reproduced with 8M events (factor 2 missing from PRD)
 A few plots (sig, AFB) reproduced as well.
 See yfspro/pubfig/afb_prepare.f for instruction.
 
