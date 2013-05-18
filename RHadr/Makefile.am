@@ -1,12 +1,14 @@
-INCLUDES = 
+INCLUDES = -I$(top_srcdir)/Rhadr $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 bin_PROGRAMS = MainP
+MainP_SOURCES = MainP.cxx Semaph.cxx ROBOL.cxx ROBOL2.cxx KKMC.cxx PartLund.cxx
 
-MainP_SOURCES = MainP.f
+MainP_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
+	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a $(top_builddir)/dizet/libDizet.a \
+	$(ROOTAUXLIBS) $(ROOTGLIBS)
 
-MainP_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/dizet/libDizet.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/tauola/libTauola.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/glibk/libGlibk.a
+MainP_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 SUBDIRS = Plots
 
