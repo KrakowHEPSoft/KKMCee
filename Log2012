@@ -8,6 +8,16 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
+
+
+-------------------------------------------------------------------
+May. 16th, 2013
+From now on this KKMC-all is the MAIN branch of the KKMC project!!!
+*******************************************************************
+the other kkmc project in svn repository is obsolete,
+except of ffdoan subdirectory there.
+
+
 -------------------------------------------------------------------
 May. 16th, 2013
 System of Autotools is setup, see configure.in and Makefile.am files.
@@ -21,8 +31,6 @@ and compiler options (FFLAGS) set as usual:
 -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 kdevelop will remember the above settings in ProjectName.kdevelop file.
 
-From now on KKMC project in svn repository is obsolete,
-except ffdoan subdirectory there.
 
 
 -------------------------------------------------------------------
