@@ -30,16 +30,16 @@ MAKE    = make -f KKMakefile
 ########################################################################
 ########################################################################
 ###=== SLC5 on thep07
-ROOTINCDIR = /usr/local/root/include
-ROOTLIBDIR = /usr/local/root/lib
-ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
-ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
-FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
-###=== SLC5 laptop
-#ROOTINCDIR = /usr/include/root
-#ROOTLIBDIR = /usr/lib64/root
+#ROOTINCDIR = /usr/local/root/include
+#ROOTLIBDIR = /usr/local/root/lib
 #ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
-#FLIB     = -lgfortran
+#ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
+#FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
+###=== SLC5 laptop
+ROOTINCDIR = /usr/include/root
+ROOTLIBDIR = /usr/lib64/root
+ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
+FLIB     = -lgfortran
 ###===
 RLIB     = -L$(ROOTLIBDIR)/ $(ROOTLIBS) $(ROOTAUXLIBS)
 ##======================================================================
