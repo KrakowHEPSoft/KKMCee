@@ -1,10 +1,10 @@
-* With older *.hst you may need to comment out *[[[[[ ....c]]]] also in afb-int.f
 */////////////////////////////////////////////////////////////////////////////////
-*//   make all first part;       make afb-sig-ps
-*//   make all second part;      make afb-int-ps
-*//   make all second part;      make afb-ang-ps
+*//   alias kmake='make -f KKMakefile'
+*//      make all first part;       kmake afb_sig-ps
+*//      make all second part;      kmake afb_int-ps
+*//      make all second part;      kmake afb_ang-ps
 *****************************************************************
-*  kmake='make -f KKMakefile'
+*  alias kmake='make -f KKMakefile'
 *     kmake clean   !!!! <-- do it when data changed !!!!
 *     kmake afb.hst
 *     kmake afb_sig-ps
@@ -13,7 +13,8 @@
 *     kmake afb_ang-ps
 *     kmake afb_int-tab1.eps
 *     kmake afb_int-Gsig.eps
-*----------------------------------------------------------------
+* With older *.hst you may need to comment out *[[[[[ ....c]]]] also in afb-int.f
+*----------------------------------------------------------------------------------
       PROGRAM MAIN
 *     ************
       IMPLICIT NONE
