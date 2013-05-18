@@ -1,4 +1,7 @@
 #===============================================================================
+#  It is recommended to use autotools for this directory, see Makefile.am
+# The advantage: automatic adjustments of ROOT params - the same functionality.
+#-------------------------------------------------------
 #  MASTER MAKEFILE in subdirectory RHadr
 #  This directory does NOT belong to public distribution
 #===============================================================================
