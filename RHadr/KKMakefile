@@ -154,9 +154,9 @@ makprod:
 makflag:
 	(cd ../ffbench; $(MAKE)  makflag-ext;)
 mbr:
-	(cd ../bornv;  $(MAKE) mbr)
+	(cd ../bornv;   $(MAKE) mbr)
 default:
-	(cd ../dizet;  $(MAKE) default)
+	(cd ../dizet;   $(MAKE) default)
 #=============================================================================
 clean:
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
@@ -165,12 +165,12 @@ clean:
 	(cd ./dok;	make clean)
 Clean:	clean
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ../glibk;	$(MAKE) clean)
-	(cd ../KK2f;	$(MAKE) clean)
+	(cd ../glibk;	  $(MAKE) clean)
+	(cd ../KK2f;	  $(MAKE) clean)
 	(cd ../jetset;	$(MAKE) clean)
 	(cd ../tauola;	$(MAKE) clean)
 	(cd ../photos;	$(MAKE) clean)
-	(cd ../bornv;	$(MAKE) clean)
-	(cd ../dizet;	$(MAKE) clean)
+	(cd ../bornv;	  $(MAKE) clean)
+	(cd ../dizet;	  $(MAKE) clean)
 	(cd ../bornv/tabtest; $(MAKE) clean)
 #-----------------------------------------------------------------------

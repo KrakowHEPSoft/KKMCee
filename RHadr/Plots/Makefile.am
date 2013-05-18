@@ -1,22 +1,21 @@
 INCLUDES = 
 METASOURCES = AUTO
-bin_PROGRAMS = figinc figbeast
+bin_PROGRAMS = SkyLine Plot2b
 
-figinc_SOURCES = figinc.f readat.f
-figbeast_SOURCES = figbeast.f readat.f
+SkyLine_SOURCES = SkyLine.f
+Plot2b_SOURCES  = Plot2b.f
 
-figbeast_LDADD = $(top_builddir)/KK2f/libKK2f.a\
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/glibk/libGlibk.a\
-	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a\
-	$(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a
+SkyLine_LDADD = $(top_builddir)/KK2f/libKK2f.a \
+	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a
 
-figinc_LDADD = $(top_builddir)/KK2f/libKK2f.a \
+Plot2b_LDADD = $(top_builddir)/KK2f/libKK2f.a \
 	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a
 
 #----------------------------------------------------------------------
-figinc-run: figinc
-	./figinc
-figinc-pdf: figinc-run
-	(pdflatex figinc.tex; kpdf figinc.pdf&)
+Plot2b-run: Plot2b
+	./Plot2b
+Plot2b-pdf: Plot2b-run
+	(pdflatex Plot2b.tex; kpdf Plot2b.pdf&)
 #----------------------------------------------------------------------
