@@ -1,10 +1,10 @@
 ##############################################################################
+#   alias kmake='make -f KKMakefile'
+#   dont forget about (cd ../;  kmake makflag;)
 #  WARNING: this makefile has complicated libraries
 #           linking depends on the order of the librarries in a strange way
 #           it works only for Dizet tables, which is recomended anyway.
 #
-#   alias kmake='make -f KKMakefile'
-#   dont forget about (cd ../; kmake makflag;)
 #	  kmake chi_mcan-ps
 ##############################################################################
 MAKE    = make -f KKMakefile
@@ -89,12 +89,12 @@ OBJECTS0 = chi_prepare.o
 $(COMMAND0): $(OBJECTS0)                   $(EXT_LIB31) $(EXT_LIB2)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS0) $(EXT_LIB31) $(EXT_LIB2)
 #-----------------------------------------------------------------------------
-# 	make -f KKMakefile chi.hst
+# 	kmake chi.hst
 chi.hst:	$(COMMAND0)
 	(time ./$(COMMAND0) )
 #-----------------------------------------------------------------------------
-# 	make -f KKMakefile chi-mcan-ps
-BN0 = chi-mcan
+# 	kmake chi_mcan-ps
+BN0 = chi_mcan
 # Link procedure
 $(BN0).o:	chi.h
 $(BN0).exe: $(BN0).o                      $(EXT_LIB31) $(EXT_LIB2)
