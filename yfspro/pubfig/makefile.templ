@@ -143,14 +143,14 @@ OBJECTS4 = afb_prepare.o
 $(COMMAND4): $(OBJECTS4)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS4) $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
 #-----------------------------------------------------------------------------
-# 	gmake afb.hst
+# 	kmake afb.hst
 afb.hst:	$(COMMAND4)
 	(time ./$(COMMAND4) )
 afb.hst-debug:	$(COMMAND4)
 	(xldb -I  ${SRCLIST}   ./$(COMMAND4) )
 #-----------------------------------------------------------------------------
-# 	gmake afb-int-ps
-BN4 = afb-int
+# 	kmake afb_int-ps ???
+BN4 = afb_int
 # Link procedure
 $(BN4).o:	chi.h
 $(BN4).exe: $(BN4).o                     $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
@@ -213,7 +213,7 @@ $(BN4)-tabEWG1.eps:		$(COMMAND4) $(BN4)
 $(BN4)-tabEWG2.eps:		$(COMMAND4) $(BN4)
 	(./txp_to_eps  $(BN4)-tabEWG2)
 #-----------------------------------------------------------------------------
-# 	gmake afb-int-ps
+# 	kmake afb_int-ps
 $(BN4).dvi:		$(BN4).tex $(BN4)-sig1.eps $(BN4)-afb1.eps  $(BN4)-afb2.eps
 	(latex   $(BN4).tex )
 $(BN4).ps: 			$(BN4).dvi
@@ -221,8 +221,8 @@ $(BN4).ps: 			$(BN4).dvi
 $(BN4)-ps: 			$(BN4).ps
 	($(XPS) $(BN4).ps&)
 #-----------------------------------------------------------------------------
-# 	gmake afb-sig-ps
-BN42 = afb-sig
+# 	kmake afb_sig-ps ???
+BN42 = afb_sig
 $(BN42).dvi:		$(BN42).tex  $(BN4)-tab1.eps $(BN4)-Gsig.eps $(BN4)-Gafb.eps \
 			$(BN4)-GsigZF.eps $(BN4)-GafbZF.eps $(BN4)-sigHO.eps $(BN4)-afbHO.eps 
 	(latex   $(BN42).tex )
@@ -231,8 +231,8 @@ $(BN42).ps: 		$(BN42).dvi
 $(BN42)-ps: 		$(BN42).ps
 	($(XPS) $(BN42).ps&)
 #-----------------------------------------------------------------------------
-# 	make afb-sig2-ps
-BN47 = afb-sig2
+# 	kmake afb_sig2-ps ???
+BN47 = afb_sig2
 $(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps
 	(latex   $(BN47).tex )
 $(BN47).ps: 		$(BN47).dvi
@@ -240,8 +240,8 @@ $(BN47).ps: 		$(BN47).dvi
 $(BN47)-ps: 		$(BN47).ps
 	($(XPS) $(BN47).ps&)
 #-----------------------------------------------------------------------------
-# 	gmake afb-ang-ps
-BN43 = afb-ang
+# 	kmake afb_ang-ps ???
+BN43 = afb_ang
 $(BN43).dvi:		$(BN43).tex  $(BN4)-G1.eps   $(BN4)-G1x.eps   $(BN4)-G1xxx.eps \
 				$(BN4)-com1.eps	 $(BN4)-com1x.eps $(BN4)-com1xxx.eps \
 				$(BN4)-comMx.eps $(BN4)-AngMx.eps \
@@ -252,8 +252,8 @@ $(BN43).ps: 		$(BN43).dvi
 $(BN43)-ps: 		$(BN43).ps
 	($(XPS) $(BN43).ps&)
 #-----------------------------------------------------------------------------
-# 	gmake afb-LepEWG-ps
-BN45 = afb-LepEWG
+# 	kmake afb_LepEWG-ps ???
+BN45 = afb_LepEWG
 $(BN45).dvi:		$(BN45).tex  $(BN4)-tabEWG1.eps  $(BN4)-tabEWG2.eps
 	(latex   $(BN45).tex )
 $(BN45).ps: 		$(BN45).dvi
@@ -281,8 +281,9 @@ delhad.data:	$(COMMAND6)
 delhad-data:	delhad.data
 	(more  delhad.data)
 ##############################################################################
-COMMAND7 = delmu-plot.exe
-OBJECTS7 = delmu-plot.o
+#  kmake delta-ps
+COMMAND7 = delmu_plot.exe
+OBJECTS7 = delmu_plot.o
 $(COMMAND7): $(OBJECTS7)   $(EXT_LIB31) $(EXT_LIB2)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS7) $(EXT_LIB31) $(EXT_LIB2)
 #-----------------------------------------------------------------------------
@@ -302,7 +303,7 @@ delta-ps: 		delta.ps
 	($(XPS) delta.ps&)
 ##############################################################################
 ##############################################################################
-# 	gmake bornex
+# 	kmake bornex
 COMMAND9 = bornex.exe
 OBJECTS9 = bornex.o
 $(COMMAND9): $(OBJECTS9)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
