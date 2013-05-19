@@ -6,7 +6,18 @@
 *//   first part;       kmake afb_sig-ps
 *//   second part;      kmake afb_int-ps
 *//   second part;      kmake afb_ang-ps
+*//   Moreover
+*//                     kmake afb_LepEWG-ps
+*//                     kmake afb_sig2-ps  clone for 10GeV
+*//                     kmake delta-ps
+*//                     kmake bornex
 *****************************************************************
+*   kmake afb_int-ps
+*   kmake afb_sig-ps
+*   kmake afb_sig2-ps
+*   kmake afb_ang-ps
+*   kmake afb_LepEWG-ps
+*   kmake bornex
 * One by one, for example:
 *     kmake afb.hst
 *     kmake afb_sig-ps
