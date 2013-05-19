@@ -1,8 +1,9 @@
       PROGRAM MAIN
 *****************************
-*     gmake delta-ps
-*     gmake delmu-sigma1.eps
-*     gmake delmu-sigma2.eps
+*//   alias kmake='make -f KKMakefile'
+*     kmake delta-ps
+*     kmake delmu-sigma1.eps
+*     kmake delmu-sigma2.eps
 *****************************
      IMPLICIT NONE
 *---------------------------------------------------------------------------
