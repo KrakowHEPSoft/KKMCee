@@ -50,6 +50,16 @@ delmu_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a\
 
 #######################################################################################################
 ###                    Private part of makefile
+#######################################################################################################
+#  Plots of Sigma and AFB
+#     make afb_sig-ps  (sometimes twice!)
+#     make afb_int-ps  (sometimes twice!)
+#     make afb_sig-ps  afb_sig-ps with smaller table
+#     make afb_ang-ps
+#  other plots
+#     make delta-ps
+#  comparisons with semianalyticals
+#     make chi_mcan-ps  (sometimes twice!)
 ############# postscript translation (one page) #################
 XPS     = kghostview
 SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
@@ -58,12 +68,25 @@ SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
 #----------------------------------------------
 .txp.eps:
 	(latex $*.txp;    dvips -E  $*.dvi -o $*.eps)
-#--------------------------------------------------------------------------------------------------------
-#    Plots of Sigma and AFB
-#    make afb_int-ps  (sometimes twice!)
-#    make afb_sig-ps  (sometimes twice!)
-#    make afb_sig-ps  afb_sig-ps with smaller table
-#    make afb_ang-ps
+#======================================================================================================
+chi.hst:	chi_prepare
+	(time ./chi_prepare )
+BN0 = chi_mcan
+CHI_EPS_LIST = $(BN0)-O2mca.eps  $(BN0)-O2dif.eps $(BN0)-O3dan.eps $(BN0)-O0dif.eps $(BN0)-O0tech.eps $(BN0)-O2mO1.eps $(BN0)-O3dO2.eps
+chi_mcan-run: chi_mcan chi.hst
+	(time ./chi_mcan; touch chi_mcan-run)
+chi_mcan-eps:  $(CHI_EPS_LIST)
+	touch chi_mcan-eps;
+#--------------------------
+$(BN0).dvi: chi.hst chi_mcan-run chi_mcan-eps	$(BN0).tex
+	(latex   $(BN0).tex )
+$(BN0)-dvi: 		$(BN0).dvi
+	($(XDVI) $(BN0).dvi)
+$(BN0).ps: 		$(BN0).dvi
+	(dvips $(BN0).dvi -o )
+$(BN0)-ps: 		$(BN0).ps
+	($(XPS) $(BN0).ps)
+#======================================================================================================
 afb.hst:	afb_prepare
 	(time ./afb_prepare )
 #-----------------------------------------------------------------------------
@@ -127,7 +150,7 @@ delta-ps: 		delta.ps
 	($(XPS) delta.ps&)
 #-----------------------------------------------------------------------------
 myclean: clean
-	(rm -f $(AFB_EPS_LIST) )
+	(rm -f $(AFB_EPS_LIST) $(CHI_EPS_LIST) )
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap)
 	(rm -f *.txp chi afb output-* *.hst *.data)
 #-----------------------------------------------------------------------------

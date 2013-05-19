@@ -2,6 +2,7 @@
 #  MASTER MAKEFILE in subdirectory yfspro
 #  This directory does NOT belong to public distribution
 #===============================================================================
+#  alias kmake='make -f KKMakefile'
 #  MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
 #       make -f KKMakefile makflag
 #       make -f KKMakefile makprod
