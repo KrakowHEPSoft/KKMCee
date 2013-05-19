@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[dvips,portrait]{cernsem}             %%%%%%%%%%%%%%%%%%
+\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
                                                     %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gmake afb_LepEWG-ps
@@ -9,7 +9,8 @@
 
 
 % The epsfig.sty is necessary to manage figures in postscript!
-\usepackage{epsfig}
+%\usepackage{epsfig}
+\input Energy.tex
 
 %%%=================local=macros=========================
 \def\Order#1{${\cal O}(#1)$}
@@ -28,33 +29,31 @@
 \begin{document}                     %%%%%%%%%%%%%%%%%%
 
 %\pagecolor{Yellow}
-\pagecolor{Goldenrod}
-\SlideColours{black}{white}
-\renewcommand{\slidestretch}{0.8}
+%\pagecolor{Goldenrod}
+%\SlideColours{black}{white}
+%\renewcommand{\slidestretch}{0.8}
 
-\title{ISR*FSR in $\sigma_{tot}$ and $A_{FB}$}
-\author{S. Jadach}
-
-
+%\title{ISR*FSR in $\sigma_{tot}$ and $A_{FB}$}
+%\author{S. Jadach}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{PSlide}{{\small\color{Magenta} 
+\begin{slide*}
+\titbox{{\small\Color{Magenta} 
       ISR*FSR and cut-off dependence at 189GeV }}
 
-{\small\color{black}
-%%%  All results for muon pairs at 189GeV.
+{\small
   All results for quark pairs at 189GeV.
-  First table contains differences 
-  {\bf\color{blue} (i-j)/j} for $\sigma_{\rm tot}$ and
-  {\bf\color{blue} (i-j)} for $A_{FB}$ as a function of {\em\color{Red} the same} angular cut.
-  Second table illustrates for each acceptance {\bf\color{blue} (i)}
+  First table contains differences
+  {\bf\Color{Blue} (i-j)/j} for $\sigma_{\rm tot}$ and
+  {\bf\Color{Blue} (i-j)} for $A_{FB}$ as a function of {\em\Color{Red} the same} angular cut.
+  Second table illustrates for each acceptance {\Color{Blue} (i)}
   separately the effect of the angular cut.
   Again relative change for $\sigma_{\rm tot}$ and absolute for $A_{FB}$.
-  Acceptances {\bf\color{blue} (i)} as on: \\
-  {\tiny\color{magenta} http://www.cern.ch/LEPEWWG/protected/lep2/theory/theory.compare}
+  Acceptances {\bf\Color{Blue} (i)} as on: \\
+  {\tiny\Color{Magenta} http://www.cern.ch/LEPEWWG/protected/lep2/theory/theory.compare}
 }
 
 \vspace{-10mm}
@@ -78,8 +77,8 @@
 }}
 \end{picture}
 \end{center}
-
-\end{PSlide}
+\vfill
+\end{slide*}
                                                          %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
