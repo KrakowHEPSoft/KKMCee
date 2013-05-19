@@ -1,11 +1,11 @@
 ##############################################################################
 #   alias kmake='make -f KKMakefile'
 #   dont forget about (cd ../;  kmake makflag;)
-#  WARNING: this makefile has complicated libraries
-#           linking depends on the order of the librarries in a strange way
-#           it works only for Dizet tables, which is recomended anyway.
-#
-#	  kmake chi_mcan-ps
+#   the order of executing is essential!
+#                kmake clean       !!!! <-- do it when data changed !!!!
+#   first;       kmake afb_sig-ps
+#   second;      kmake afb_int-ps
+#   second;      kmake afb_ang-ps
 ##############################################################################
 MAKE    = make -f KKMakefile
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
