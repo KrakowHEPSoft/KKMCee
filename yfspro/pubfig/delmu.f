@@ -1,8 +1,8 @@
       PROGRAM MAIN
 *****************************
 * This prepared file delmu.data for Delmu-plot
-*     gmake delmu-data
-*     gmake delta-ps
+*     kmake delmu-data
+*     kmake delta-ps
 *****************************
 
       IMPLICIT NONE
