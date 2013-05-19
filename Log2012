@@ -143,6 +143,79 @@ The entire KK-all is put into svn repository at IFJ-PAN
 ******************************************************************
                          APPEDIX
 ==================================================================
+
+
+                Email to coauhors May 14th 2012
+                ===============================
+
+Hi Bennie and Scott,
+Below are remarks on the beam type change in KKMC.
+-----------------------------------------------------------------------------------
+Beam particle fermion type is set in .KK2f_defaults in main directory of KKMC
+ 400             11      KFini = xpar(400) dont change it                |<<<<|
+with the indication "dont change it".
+
+Then in the matrix element, for instance in BornV_Dizet,
+beam ID is used like that:
+        amin  = m_amferm(ABS(KFi))
+        IVini = IV(KFi)
+        CALL BornV_givizo( IVini, 1,aizor,qe,kdumm)
+in order to define beam mass and couplings.
+Beam type is preset before in BornV_Initialize(xpar_input), of course
+     m_KFini = xpar_input( 400)        ! KFcode of beam, POSITIVE!!!
+It looks that Born xsection in BornV_Dizet includes properly
+beam charge and isospin.
+So it should work for initial quarks at least at Born level!
+EW corrections are implemented through formfactors,
+so they may work for initial quarks beams, at least approximately.
+This should be checked, some EXTERNAL benchmarks to compare with, are needed!
+
+Beam charge for ISR is used in KarLud_YFSini, which gets data from BornV:
+        CALL BornV_GetAvMult(AvMult)
+This AvMult and other ISR variables in BornV depend centrally on m_alfpi
+     m_AlfInv = xpar_input(30)         ! Alpha_QED at Thomson limit
+     m_alfpi  = 1d0/m_pi/m_AlfInv
+It looks that alfpi should not include beam charge,
+and the only place where beam charge is missing for the purpose of ISR
+is in BornV_MakeGami:
+     KFbeam = 11           ! KF=11 is electron
+     amel   = m_amferm(KFbeam)
+     ...
+     gami    = 2d0*m_alfpi *( DLOG((1+beta)**2/am2) -1d0)
+     gamiCR  = 2d0*m_alfpi *  DLOG((1+beta)**2/am2)
+Note that electron ID=11 is also exceptionally hardwired here!
+It looks that it is the only place in ISR, where beam charge is missing
+and electron identity is hardwired!
+
+Concerning beam mass,
+it seems that it is implemented properly everywhere,
+like for instance in BornV:
+        amin  = m_amferm(ABS(KFi))
+It would be relatively simple to test whether non-electron beam mass is handled properly:
+one should take tau's as initial beam and check one of many internal semi-analytical
+cross-checks in KKMC. No external benchamrk is needed!
+My guess from looking into code is that this will work without any corrections.
+
+Below are things for which I need another round of code axamination:
+--------------------------------------------------------------------
+The real problem is not with beam mass definition,
+but in the fact that it comes as a ratio amel/Ene,
+if Ene is changing due to ADDITIONAL energy
+loss like beamsstrahlung of initial PDFs,
+BEYOND what is handled by KarLud_YFSini!
+For the ISR alone reweighting may work?
+I have to look into that...
+
+Another related problem with EXTRA variation of Ene is the change
+of the position of Z peak in MZ/Ene.
+(Due to memorization of the photon spectrum by Vesko/Foam)
+If this change is less then Z wodth the reweighting may work,
+otherwise I have to look more closely into my beamstrahlung
+implementation, into what is there done or missing.
+-------------------------------------------------------------------------
+=========================================================================
+
+
                 Email to Scott June 5th 2012
                 ============================
 
