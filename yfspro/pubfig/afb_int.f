@@ -4,7 +4,7 @@
 *//   make all second part;      gmake afb_int-ps
 *//   make all second part;      gmake afb-ang-ps
 */////////////////////////////////////////////////////////////////////////////////
-*//
+*// 
 *//   make all first part;       gmake afb-sig-ps
 *//   Table of everything;                               gmake afb_int-tab1.eps
 *//   Plot of SigTot(vMax) versus reference EEX3(vMax);  gmake afb_int-Gsig.eps
@@ -70,8 +70,8 @@ c      CALL KK2f_Initialize( xpar)                    ! Initialize generator wit
 *=====================================================
       CALL Plot_tab1
 c[[[[[
-c      CALL Plot_tab2
-c      CALL Plot_tab3
+      CALL Plot_tab2
+      CALL Plot_tab3
 c]]]]]
       CALL Plot_G1
       CALL Plot_G1x
