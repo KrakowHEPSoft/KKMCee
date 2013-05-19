@@ -1,14 +1,15 @@
 *****************************************************************
-*     gmake chi-mcan-dvi
-*     gmake chi-mcan-ps
+* alias kmake='make -f KKMakefile'
+*     kmake chi_mcan-dvi
+*     kmake chi_mcan-ps
 *****************************************************************
-*     gmake chi-mcan-O2mca.eps
-*     gmake chi-mcan-O2dif.eps
-*     gmake chi-mcan-O2mO1.eps
-*     gmake chi-mcan-O3dO2.eps
-*     gmake chi-mcan-O0dif.eps
-*     gmake chi-mcan-O3dan.eps
-*     gmake chi-mcan-O0tech.eps
+*     kmake chi_mcan-O2mca.eps
+*     kmake chi_mcan-O2dif.eps
+*     kmake chi_mcan-O2mO1.eps
+*     kmake chi_mcan-O3dO2.eps
+*     kmake chi_mcan-O0dif.eps
+*     kmake chi_mcan-O3dan.eps
+*     kmake chi_mcan-O0tech.eps
 *----------------------------------------------------------------
       PROGRAM MAIN
 *     ***********************************
@@ -22,7 +23,7 @@
       ninp=  5
       nout= 16
 
-      Tesnam    = 'chi-mcan'
+      Tesnam    = 'chi_mcan'
       OPEN( nout, file='output-'//Tesnam)
       CALL GLK_SetNout(nout)
 
@@ -63,7 +64,7 @@ ccc      CALL Plot_O3dan ! not ploted
 
       SUBROUTINE Plot_O2mca
 *------------------------------------
-*     gmake chi-mcan-O2mca.eps
+*     kmake chi_mcan-O2mca.eps
 *------------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -89,7 +90,7 @@ ccc      CALL Plot_O3dan ! not ploted
       fmty='f10.2'
 *===================================================================
 *  First plot: O(alf2) MC
-      TeXfile   = 'chi-mcan-O2mca.txp'
+      TeXfile   = 'chi_mcan-O2mca.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{green}$')
       CALL GLK_plot2( mO2tot,' ',' ',dot    ,fmtx,fmty) ! MC
@@ -103,7 +104,7 @@ ccc      CALL Plot_O3dan ! not ploted
 
       SUBROUTINE Plot_O2dif
 *-----------------------------------
-*     gmake chi-mcan-O2dif.eps
+*     kmake chi_mcan-O2dif.eps
 *-----------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -132,7 +133,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.2'
 *===================================================================
 *  Second plot: O(alf2) MC-SAN
-      TeXfile   = 'chi-mcan-O2dif.txp'
+      TeXfile   = 'chi_mcan-O2dif.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.025d0
       ymax =  0.025d0
@@ -146,7 +147,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O1mca
 *--------------------------------
-*     gmake chi-mcan-O1mca.eps
+*     kmake chi_mcan-O1mca.eps
 *---------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -174,7 +175,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.2'
 *===================================================================
 *  Third plot: O(alf1) MC
-      TeXfile   = 'chi-mcan-O1mca.txp'
+      TeXfile   = 'chi_mcan-O1mca.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{red}$')
       CALL GLK_plot2( mO1tot,' ',' ',dot    ,fmtx,fmty) ! MC
@@ -188,7 +189,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O1dif
 *------------------------------
-*     gmake chi-mcan-O1dif.eps
+*     kmake chi_mcan-O1dif.eps
 *------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -208,7 +209,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.2'
 *===================================================================
 *  Forth plot: O(alf1) MC-SAN
-      TeXfile   = 'chi-mcan-O1dif.txp'
+      TeXfile   = 'chi_mcan-O1dif.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.070d0
       ymax =  0.060d0
@@ -222,7 +223,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O3dan
 *----------------------------
-*     gmake chi-mcan-O3dan.eps
+*     kmake chi_mcan-O3dan.eps
 *----------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -246,7 +247,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.3'
 *===================================================================
 *  eighth plot: O(alf3) MC-SAN
-      TeXfile   = 'chi-mcan-O3dan.txp'
+      TeXfile   = 'chi_mcan-O3dan.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.020d0
       ymax =  0.020d0
@@ -263,7 +264,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O2mO1
 *-----------------------------------
-*     gmake chi-mcan-O2mO1.eps
+*     kmake chi_mcan-O2mO1.eps
 *-----------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -291,7 +292,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.3'
 *===================================================================
 *  Fifth plot: O(alf2)-O(alf1) MC and SAN
-      TeXfile   = 'chi-mcan-O2mO1.txp'
+      TeXfile   = 'chi_mcan-O2mO1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_Ymimax( iO2mO1,-0.02d0, 0.07d0)
       CALL GLK_SetColor('\\color{red}$')
@@ -307,7 +308,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O2dO1
 *------------------------------
-*     gmake chi-mcan-O2dO1.eps
+*     kmake chi_mcan-O2dO1.eps
 *------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -326,7 +327,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.3'
 *-----------------------------------------
 *  Sixth plot: O(alf2)-O(alf1), MC-SAN
-      TeXfile   = 'chi-mcan-O2dO1.txp'
+      TeXfile   = 'chi_mcan-O2dO1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.060d0
       ymax =  0.060d0
@@ -340,7 +341,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O3dO2
 *-------------------------------
-*     gmake chi-mcan-O3dO2.eps
+*     kmake chi_mcan-O3dO2.eps
 *-------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -364,7 +365,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.4'
 *-----------------------------------------
 *  Seventh plot: O(alf3)-O(alf2), MC-SAN
-      TeXfile   = 'chi-mcan-O3dO2.txp'
+      TeXfile   = 'chi_mcan-O3dO2.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_Ymimax(mO3vO2,-0.0011d0,+0.0011d0)
       CALL GLK_SetColor('\\color{blue}$')
@@ -380,7 +381,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O0dif
 *------------------------------
-*     gmake chi-mcan-O0dif.eps
+*     kmake chi_mcan-O0dif.eps
 *------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -406,7 +407,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.2'
 *===================================================================
 *  O(alf1) MC-SAN
-      TeXfile   = 'chi-mcan-O0dif.txp'
+      TeXfile   = 'chi_mcan-O0dif.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.020d0
       ymax =  0.020d0
@@ -420,7 +421,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
 
       SUBROUTINE Plot_O0tech
 *--------------------------------
-*     gmake chi-mcan-O0tech.eps
+*     kmake chi_mcan-O0tech.eps
 *--------------------------------
       IMPLICIT NONE
       INCLUDE 'chi.h'
@@ -446,7 +447,7 @@ cc     $'\\PaveLr{300}{800}{\\color{blue}\\line(1,0){200}}',
       fmty='f10.3'
 *===================================================================
 *  O(alf0) MC-SAN BEST!!!
-      TeXfile   = 'chi-mcan-O0tech.txp'
+      TeXfile   = 'chi_mcan-O0tech.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       ymin = -0.005d0
       ymax =  0.005d0
