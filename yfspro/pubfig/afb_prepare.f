@@ -1,12 +1,13 @@
 */////////////////////////////////////////////////////////////////////////////////
 *//   alias kmake='make -f KKMakefile'
 *//   dont forget about (cd ../; kmake makflag;)
-*//      make all first part;       kmake afb_sig-ps
-*//      make all second part;      kmake afb_int-ps
-*//      make all second part;      kmake afb_ang-ps
+*//   the order of executing is essential!
+*//                     kmake clean   !!!! <-- do it when data changed !!!!
+*//   first part;       kmake afb_sig-ps
+*//   second part;      kmake afb_int-ps
+*//   second part;      kmake afb_ang-ps
 *****************************************************************
-*  alias kmake='make -f KKMakefile'
-*     kmake clean   !!!! <-- do it when data changed !!!!
+* One by one, for example:
 *     kmake afb.hst
 *     kmake afb_sig-ps
 *     kmake afb_sig2-ps  clone for 10GeV
