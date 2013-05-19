@@ -6,6 +6,11 @@
 #   first;       kmake afb_sig-ps
 #   second;      kmake afb_int-ps
 #   second;      kmake afb_ang-ps
+#   Moreover
+#                     kmake afb_LepEWG-ps
+#                     kmake afb_sig2-ps  clone for 10GeV
+#                     kmake delta-ps
+#                     kmake bornex
 ##############################################################################
 MAKE    = make -f KKMakefile
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
@@ -149,7 +154,7 @@ afb.hst:	$(COMMAND4)
 afb.hst-debug:	$(COMMAND4)
 	(xldb -I  ${SRCLIST}   ./$(COMMAND4) )
 #-----------------------------------------------------------------------------
-# 	kmake afb_int-ps ???
+# 	kmake afb_int-ps
 BN4 = afb_int
 # Link procedure
 $(BN4).o:	chi.h
@@ -221,7 +226,7 @@ $(BN4).ps: 			$(BN4).dvi
 $(BN4)-ps: 			$(BN4).ps
 	($(XPS) $(BN4).ps&)
 #-----------------------------------------------------------------------------
-# 	kmake afb_sig-ps ???
+# 	kmake afb_sig-ps
 BN42 = afb_sig
 $(BN42).dvi:		$(BN42).tex  $(BN4)-tab1.eps $(BN4)-Gsig.eps $(BN4)-Gafb.eps \
 			$(BN4)-GsigZF.eps $(BN4)-GafbZF.eps $(BN4)-sigHO.eps $(BN4)-afbHO.eps 
@@ -231,7 +236,7 @@ $(BN42).ps: 		$(BN42).dvi
 $(BN42)-ps: 		$(BN42).ps
 	($(XPS) $(BN42).ps&)
 #-----------------------------------------------------------------------------
-# 	kmake afb_sig2-ps ???
+# 	kmake afb_sig2-ps
 BN47 = afb_sig2
 $(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps
 	(latex   $(BN47).tex )
@@ -240,7 +245,7 @@ $(BN47).ps: 		$(BN47).dvi
 $(BN47)-ps: 		$(BN47).ps
 	($(XPS) $(BN47).ps&)
 #-----------------------------------------------------------------------------
-# 	kmake afb_ang-ps ???
+# 	kmake afb_ang-ps
 BN43 = afb_ang
 $(BN43).dvi:		$(BN43).tex  $(BN4)-G1.eps   $(BN4)-G1x.eps   $(BN4)-G1xxx.eps \
 				$(BN4)-com1.eps	 $(BN4)-com1x.eps $(BN4)-com1xxx.eps \
@@ -252,7 +257,7 @@ $(BN43).ps: 		$(BN43).dvi
 $(BN43)-ps: 		$(BN43).ps
 	($(XPS) $(BN43).ps&)
 #-----------------------------------------------------------------------------
-# 	kmake afb_LepEWG-ps ???
+# 	kmake afb_LepEWG-ps
 BN45 = afb_LepEWG
 $(BN45).dvi:		$(BN45).tex  $(BN4)-tabEWG1.eps  $(BN4)-tabEWG2.eps
 	(latex   $(BN45).tex )
@@ -261,6 +266,7 @@ $(BN45).ps: 		$(BN45).dvi
 $(BN45)-ps: 		$(BN45).ps
 	($(XPS) $(BN45).ps&)
 ##############################################################################
+#   kmake delmu-data
 COMMAND5 = delmu.exe
 OBJECTS5 = delmu.o
 $(COMMAND5): $(OBJECTS5)   $(EXT_LIB31) $(EXT_LIB2)
@@ -271,6 +277,7 @@ delmu.data:	$(COMMAND5)
 delmu-data:	delmu.data
 	(more  delmu.data)
 ##############################################################################
+#   kmake delhad-data
 COMMAND6 = delhad.exe
 OBJECTS6 = delhad.o
 $(COMMAND6): $(OBJECTS6)   $(EXT_LIB31) $(EXT_LIB2)
