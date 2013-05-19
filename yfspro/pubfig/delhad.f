@@ -1,6 +1,6 @@
       PROGRAM MAIN
 *****************************
-*     gmake delhad-data
+*     kmake delhad-data
 *****************************
 
       IMPLICIT NONE
