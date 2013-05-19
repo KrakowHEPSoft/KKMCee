@@ -1,27 +1,27 @@
 * With older *.hst you may need to comment out *[[[[[ ....c]]]]
 */////////////////////////////////////////////////////////////////////////////////
 *//   make all first part;       gmake afb-sig-ps
-*//   make all second part;      gmake afb-int-ps
+*//   make all second part;      gmake afb_int-ps
 *//   make all second part;      gmake afb-ang-ps
 */////////////////////////////////////////////////////////////////////////////////
 *//
 *//   make all first part;       gmake afb-sig-ps
-*//   Table of everything;                               gmake afb-int-tab1.eps
-*//   Plot of SigTot(vMax) versus reference EEX3(vMax);  gmake afb-int-Gsig.eps
-*//   Plot of Afb(vMax) versus reference AfbRef of EEX3; gmake afb-int-Gafb.eps
+*//   Table of everything;                               gmake afb_int-tab1.eps
+*//   Plot of SigTot(vMax) versus reference EEX3(vMax);  gmake afb_int-Gsig.eps
+*//   Plot of Afb(vMax) versus reference AfbRef of EEX3; gmake afb_int-Gafb.eps
 *//
-*//   make all second part;      gmake afb-int-ps
-*//   Plot of SigmaInt/SigmaTot(vMax);                   gmake afb-int-sig1.eps
-*//   Plot of AFB_Int(vmax);                             gmake afb-int-afb1.eps
-*//   Plot of AFB(v), bin per bin dependence on v;       gmake afb-int-afb2.eps
+*//   make all second part;      gmake afb_int-ps
+*//   Plot of SigmaInt/SigmaTot(vMax);                   gmake afb_int-sig1.eps
+*//   Plot of AFB_Int(vmax);                             gmake afb_int-afb1.eps
+*//   Plot of AFB(v), bin per bin dependence on v;       gmake afb_int-afb2.eps
 *//
 *//   make all second part;      gmake afb-ang-ps
-*//   Plot of dSigma/dCosTheta  for v<0.90;              gmake afb-int-G1.eps
-*//   Plot of dSigma/dCosTheta  for v<0.10;              gmake afb-int-G1x.eps
-*//   Plot of dSigma/dCosTheta  for vp<0.10;             gmake afb-int-G1xxx.eps
+*//   Plot of dSigma/dCosTheta  for v<0.90;              gmake afb_int-G1.eps
+*//   Plot of dSigma/dCosTheta  for v<0.10;              gmake afb_int-G1x.eps
+*//   Plot of dSigma/dCosTheta  for vp<0.10;             gmake afb_int-G1xxx.eps
 *//
-*//    gmake afb-int-sig1S.eps
-*//    gmake afb-int-afb1S.eps
+*//    gmake afb_int-sig1S.eps
+*//    gmake afb_int-afb1S.eps
 */////////////////////////////////////////////////////////////////////////////////
 
 * UNCOMMENT marked {{{{{ }}}}} for 91GeV
@@ -40,7 +40,7 @@
       ninp=  5
       nout= 16
 
-      Tesnam    = 'afb-int'
+      Tesnam    = 'afb_int'
       OPEN( nout, file='output-'//Tesnam)
       CALL GLK_SetNout(nout)
 
@@ -111,7 +111,7 @@ c]]]]]
 
       SUBROUTINE Plot_tab1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-tab1.eps
+*//   gmake afb_int-tab1.eps
 *//   Table of everything
 */////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
@@ -123,7 +123,7 @@ c]]]]]
       CHARACTER*80  mcapt
 *===================================================================
 *                Writing table in LaTex format
-      TeXfile   = 'afb-int-tab1.txp'
+      TeXfile   = 'afb_int-tab1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       capt(1)='{\\color{blue}$v_{\\max}$}'
       capt(2)='{\\color{blue} ${\\cal KK}$sem Refer.}'
@@ -190,7 +190,7 @@ cc      CALL GLK_SetTabRan(10,90,10) !!!!!!!!!!!!!
 
       SUBROUTINE Plot_tab2
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-tab2.eps
+*//   gmake afb_int-tab2.eps
 *//   Table of everything
 */////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
@@ -206,7 +206,7 @@ cc      CALL GLK_SetTabRan(10,90,10) !!!!!!!!!!!!!
       DATA TabLab2 / ' $all$' /
 *===================================================================
 *                Writing table in LaTex format
-      TeXfile   = 'afb-int-tab2.txp'
+      TeXfile   = 'afb_int-tab2.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       capt(1)='{\\color{blue} $f$}'
       capt(2)='{\\color{blue} (a) ${\\cal O}(\\alpha^2)_{\\rm CEEX}^{\\rm intOFF}$}'!
@@ -285,7 +285,7 @@ cc      CALL GLK_SetTabRan(10,90,10) !!!!!!!!!!!!!
 
       SUBROUTINE Plot_tab3
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-tab3.eps
+*//   gmake afb_int-tab3.eps
 *//   All flavours, Table of KKMC versus Dizet 
 */////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
@@ -302,7 +302,7 @@ cc      CALL GLK_SetTabRan(10,90,10) !!!!!!!!!!!!!
       DATA TabLab3 / ' $\\mu$' /
 *===================================================================
 *                Writing table in LaTex format
-      TeXfile   = 'afb-int-tab3.txp'
+      TeXfile   = 'afb_int-tab3.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       capt(1)='{\\color{blue} $f$}'
       capt(2)='{\\color{blue} (a) ${\\cal KK}$sem }'
@@ -465,7 +465,7 @@ cc         iSumKF =  6
 
       SUBROUTINE Plot_Gsig
 *//////////////////////////////////////////////////////////////////
-*//   gmake afb-int-Gsig.eps
+*//   gmake afb_int-Gsig.eps
 *//
 *//   Plot of SigTot(vMax) versus reference EEX3(vMax)
 *//   (SigTot-SigRef)/SigRef as function of vMax
@@ -555,7 +555,7 @@ ccc      iRef = isigO3
       CALL GLK_Operat(iKorzSig,   '/', iRef,     iKorzSig,      1d0, 1d0)
       CALL GLK_idopt( iKorzSig,'ERRO')
 *--------------------------------------------------------------------------
-      TeXfile   = 'afb-int-Gsig.txp'
+      TeXfile   = 'afb_int-Gsig.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{blue}\\thicklines$')
 ***      CALL GLK_plot2(  isigG1nin, ' ',' ',dot           ,fmtx,fmty)
@@ -586,7 +586,7 @@ c      CALL GLK_plot2(  iHyb2Sig,   'S','*',star        ,fmtx,fmty)
 
       SUBROUTINE Plot_GsigZF
 *//////////////////////////////////////////////////////////////////
-*//   gmake afb-int-GsigZF.eps
+*//   gmake afb_int-GsigZF.eps
 *//
 *//   Plot of SigTot(vMax) versus reference EEX3(vMax)
 *//   (SigTot-SigRef)/SigRef as function of vMax
@@ -634,7 +634,7 @@ ccc      iRef = isigO3
       iRef =iO3best
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-GsigZF.txp'
+      TeXfile   = 'afb_int-GsigZF.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 
       ymin= -0.025d0
@@ -680,7 +680,7 @@ ccc      iRef = isigO3
 
       SUBROUTINE Plot_Gafb
 *//////////////////////////////////////////////////////////////////
-*//   gmake afb-int-Gafb.eps
+*//   gmake afb_int-Gafb.eps
 *//
 *//   Plot of Afb(vMax) versus reference AfbRef of EEX3
 *//   (Afb-AfbRef)/AfbRef as function of vMax
@@ -754,7 +754,7 @@ c      ymax=  0.150d0
 * Plotting starts here
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-Gafb.txp'
+      TeXfile   = 'afb_int-Gafb.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetColor('\\color{blue}\\thicklines$')
@@ -787,7 +787,7 @@ c      CALL GLK_plot2(  iHyb2Afb,   'S','*',star         ,fmtx,fmty)
 
       SUBROUTINE Plot_GafbZF
 *//////////////////////////////////////////////////////////////////
-*//   gmake afb-int-GafbZF.eps
+*//   gmake afb_int-GafbZF.eps
 *//
 *//   Plot of Afb(vMax) versus reference AfbRef of EEX3
 *//   (Afb-AfbRef)/AfbRef as function of vMax
@@ -848,7 +848,7 @@ cc      ymax=  0.150d0
 * Plotting
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-GafbZF.txp'
+      TeXfile   = 'afb_int-GafbZF.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{blue}\\thicklines$')
 cc      CALL GLK_plot2(  iafbG1nin, ' ',' ',dot           ,fmtx,fmty)
@@ -873,7 +873,7 @@ cc      CALL GLK_plot2(  iafbG1,    'S','*',ring          ,fmtx,fmty)
 
       SUBROUTINE Plot_sig1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-sig1.eps
+*//   gmake afb_int-sig1.eps
 *//
 *//   Plot of  SigmaInt/SigmaTot(vMax)
 */////////////////////////////////////////////////////////////////////////////////
@@ -914,7 +914,7 @@ cc      CALL GLK_Operat(iMustSigInt,'/',isigO3     , idWork, 1d0, 1d0)
 
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-sig1.txp'
+      TeXfile   = 'afb_int-sig1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYminYmax(isigG1int,-0.02d0, 0.10d0)
@@ -957,7 +957,7 @@ c      CALL GLK_plot2(  isigG0int,' ',' ',circle    ,fmtx,fmty)
 
       SUBROUTINE Plot_afb1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-afb1.eps
+*//   gmake afb_int-afb1.eps
 *//
 *//   Plot of AFB_Int(vmax)
 */////////////////////////////////////////////////////////////////////////////////
@@ -992,7 +992,7 @@ ccc     $'\\PaveLr{-10}{1100}{\\Huge $A_{_{\\rm FB}}^{\\rm int}$ }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-afb1.txp'
+      TeXfile   = 'afb_int-afb1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYminYmax(iafbG0int,-0.02d0, 0.10d0)
@@ -1034,7 +1034,7 @@ c[[[      CALL GLK_plot2(   iafbS2int,' ',' ',dot       ,fmtx,fmty) ! O(alf1)
 
       SUBROUTINE Plot_afb2
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-afb2.eps
+*//   gmake afb_int-afb2.eps
 *//
 *//   Plot of AFB(v), bin per bin dependence on v
 */////////////////////////////////////////////////////////////////////////////////
@@ -1060,7 +1060,7 @@ c[[[      CALL GLK_plot2(   iafbS2int,' ',' ',dot       ,fmtx,fmty) ! O(alf1)
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-afb2.txp'
+      TeXfile   = 'afb_int-afb2.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYminYmax(kafbG2int,-0.10d0, 0.10d0)
@@ -1084,7 +1084,7 @@ c[[[      CALL GLK_plot2(   iafbS2int,' ',' ',dot       ,fmtx,fmty) ! O(alf1)
 
       SUBROUTINE Plot_G1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-G1.eps
+*//   gmake afb_int-G1.eps
 *//
 *//   plot of dSigma/dCosTheta  for v<0.90
 *//
@@ -1122,7 +1122,7 @@ c[[[      CALL GLK_plot2(   iafbS2int,' ',' ',dot       ,fmtx,fmty) ! O(alf1)
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-G1.txp'
+      TeXfile   = 'afb_int-G1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYmin(iangG2,0d0)
@@ -1145,7 +1145,7 @@ cc      CALL GLK_plot2(  iangO2,'S',' ',circle    ,fmtx,fmty)  !! EEX ofsolete
 
       SUBROUTINE Plot_G1x
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-G1x.eps
+*//   gmake afb_int-G1x.eps
 *//
 *//   plot of dSigma/dCosTheta  for v<0.10
 *//
@@ -1183,7 +1183,7 @@ cc      CALL GLK_plot2(  iangO2,'S',' ',circle    ,fmtx,fmty)  !! EEX ofsolete
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-G1x.txp'
+      TeXfile   = 'afb_int-G1x.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetYmin(iangG2x,0d0)
       CALL GLK_SetColor('\\color{green}\\thicklines$')
@@ -1205,7 +1205,7 @@ ccccc      CALL GLK_plot2(  iangO2x,'S',' ',circle    ,fmtx,fmty) !! EEX, obsole
 
       SUBROUTINE Plot_G1xxx
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-G1xxx.eps
+*//   gmake afb_int-G1xxx.eps
 *//
 *//   plot of dSigma/dCosTheta  for vp<0.2775
 *//
@@ -1243,7 +1243,7 @@ ccccc      CALL GLK_plot2(  iangO2x,'S',' ',circle    ,fmtx,fmty) !! EEX, obsole
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-G1xxx.txp'
+      TeXfile   = 'afb_int-G1xxx.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYmin(iangG2xxx,0d0)
@@ -1266,7 +1266,7 @@ ccccc      CALL GLK_plot2(  iangO2x,'S',' ',circle    ,fmtx,fmty) !! EEX, obsole
 
       SUBROUTINE Plot_sig1S
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-sig1S.eps
+*//   gmake afb_int-sig1S.eps
 *//
 *//   Plot of  SigmaInt/SigmaTot(vMax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1293,7 +1293,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-sig1S.txp'
+      TeXfile   = 'afb_int-sig1S.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetColor('\\color{green}\\thicklines$')
@@ -1313,7 +1313,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_afb1S
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-afb1S.eps
+*//   gmake afb_int-afb1S.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1340,7 +1340,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-afb1S.txp'
+      TeXfile   = 'afb_int-afb1S.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetColor('\\color{green}\\thicklines$')
@@ -1359,7 +1359,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_com1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-com1.eps
+*//   gmake afb_int-com1.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1384,7 +1384,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-com1.txp'
+      TeXfile   = 'afb_int-com1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{green}\\thicklines$')
       CALL GLK_SetYminYmax(igAfbG2,-0.02d0, 0.04d0)
@@ -1403,7 +1403,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_com1x
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-com1x.eps
+*//   gmake afb_int-com1x.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1428,7 +1428,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-com1x.txp'
+      TeXfile   = 'afb_int-com1x.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{green}\\thicklines$')
       CALL GLK_SetYminYmax(igAfbG2x,-0.02d0, 0.04d0)
@@ -1448,7 +1448,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_com1xxx
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-com1xxx.eps
+*//   gmake afb_int-com1xxx.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1473,7 +1473,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-com1xxx.txp'
+      TeXfile   = 'afb_int-com1xxx.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{green}\\thicklines$')
       CALL GLK_SetYminYmax(igAfbG2xxx,-0.02d0, 0.04d0)
@@ -1493,7 +1493,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_AngMx
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-AngMx.eps
+*//   gmake afb_int-AngMx.eps
 *//
 *//   plot of dSigma/dCosTheta  for v<0.1
 *//
@@ -1533,7 +1533,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-AngMx.txp'
+      TeXfile   = 'afb_int-AngMx.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetYmin(iMustAng,0d0)
@@ -1554,7 +1554,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_comMx
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-comMx.eps
+*//   gmake afb_int-comMx.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1580,7 +1580,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-comMx.txp'
+      TeXfile   = 'afb_int-comMx.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       CALL GLK_SetColor('\\color{green}\\thicklines$')
       CALL GLK_SetYminYmax(jMustAfb,-0.02d0, 0.05d0)
@@ -1598,7 +1598,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_tabEWG1
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-tabEWG1.eps
+*//   gmake afb_int-tabEWG1.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1615,7 +1615,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
       fmt(2)='F10.4'
       fmt(3)='F8.4'
 
-      TeXfile   = 'afb-int-tabEWG1.txp'
+      TeXfile   = 'afb_int-tabEWG1.txp'
       CALL GLK_PlInitialize(2,TeXfile)
       capt(1)='{\\color{blue}\\bf $\\cos\\vartheta_{\\max}$ }'
       capt(2)='{\\color{blue}\\bf (5-1) }'
@@ -1645,7 +1645,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
 
       SUBROUTINE Plot_tabEWG2
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-tabEWG2.eps
+*//   gmake afb_int-tabEWG2.eps
 *//
 *//   Plot of AFB_Int(vmax) where vMax is for ISR only
 */////////////////////////////////////////////////////////////////////////////////
@@ -1662,7 +1662,7 @@ cc     $'\\PaveL{ 700}{ 900}{\\color{red}\\large KORALZ 1-st ord. }',
       fmt(2)='F10.4'
       fmt(3)='F8.4'
 
-      TeXfile   = 'afb-int-tabEWG2.txp'
+      TeXfile   = 'afb_int-tabEWG2.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 
       CALL MakeAng(iangG2x,   igAfbG2x,   igSigG2x)  !(3) recycling
@@ -1807,7 +1807,7 @@ cc      CALL GLK_SetNout(16)
 cc      WRITE(6,*) ' ####################################################'
 *      
       RETURN
-      WRITE(*,*) '+++++++++ STOP in afb-int, nb1,nb2= ',nb1,nb2
+      WRITE(*,*) '+++++++++ STOP in afb_int, nb1,nb2= ',nb1,nb2
  900  STOP
       END
 
@@ -1815,7 +1815,7 @@ cc      WRITE(6,*) ' ####################################################'
 
       SUBROUTINE Plot_sigHO
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-sigHO.eps
+*//   gmake afb_int-sigHO.eps
 *//
 *//   Plot of  dSigma/dvMax, Difference O(alf2)-O(alf1)
 */////////////////////////////////////////////////////////////////////////////////
@@ -1840,7 +1840,7 @@ cc      WRITE(6,*) ' ####################################################'
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.3'
-      TeXfile   = 'afb-int-sigHO.txp'
+      TeXfile   = 'afb_int-sigHO.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetColor('\\color{green}\\thicklines$')
@@ -1863,7 +1863,7 @@ cc      WRITE(6,*) ' ####################################################'
 
       SUBROUTINE Plot_afbHO
 */////////////////////////////////////////////////////////////////////////////////
-*//   gmake afb-int-afbHO.eps
+*//   gmake afb_int-afbHO.eps
 *//
 *//   Plot of  AFB(vMax), Difference O(alf2)-O(alf1)
 */////////////////////////////////////////////////////////////////////////////////
@@ -1888,7 +1888,7 @@ cc      WRITE(6,*) ' ####################################################'
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
       fmtx='f10.2'
       fmty='f10.4'
-      TeXfile   = 'afb-int-afbHO.txp'
+      TeXfile   = 'afb_int-afbHO.txp'
       CALL GLK_PlInitialize(2,TeXfile)
 *
       CALL GLK_SetColor('\\color{green}\\thicklines$')
