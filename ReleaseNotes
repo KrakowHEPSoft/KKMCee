@@ -1,7 +1,13 @@
 --------------------------------------------------------------------------------
                 Release Notes in anti-chronological order
 ********************************************************************************
-Corrections for running under CERN linux SLC5 june 2012
+Changes in v. 4.20, DEVELOPEMENT VERSION, May 20-th 2013
+- System of custom makefiles renamed Malefile->KKmakefile, to be isolated from
+  the other makefile systems like automake.
+- System of autotools/automake installed and tested, kdevelop 3.x available.
+- Compatibility with present version of ROOT, gfortran, c++ and C assured.
+- benchmarks of Phys.Rev D63 (Table III) reproduced.
+Corrections for running under CERN linux SLC5, done in june 2012
 - fortran compiler "gfortran"
 - in tauola/formf.f tabulator beyond 72 line removed
 ********************************************************************************
