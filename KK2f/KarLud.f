@@ -80,7 +80,7 @@ C end (M.B.)
          STOP
       ENDIF
 *//////////////////////////////////////////////////////////////////////////////////////
-      KFbeam = 11           ! KF=11 is electron
+      KFbeam = xpar_input( 400)   ! KFcode of beam, POSITIVE!!!
       ke = 500+10*KFbeam
       m_amel   = xpar_input(ke+6)
 *

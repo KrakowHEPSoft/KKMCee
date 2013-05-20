@@ -484,7 +484,6 @@
 
 * Actual KFcode of final fermion
       CALL MBrA_GetKF(KFfin)
-      m_ypar(400) = KFfin  ! temporary debug
 
 *   Control printout
       IF(LevPri .GE. 2) CALL KarLud_Print(m_nevgen,Ie1Pri,Ie2Pri)

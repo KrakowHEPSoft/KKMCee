@@ -53,14 +53,13 @@
       DO j=1,4
          Psum(j)=qf1(j)+qf2(j)
       ENDDO
-*
-      KFbeam = 11    ! KF=11 denotes electron
-      amel   =BornV_GetMass(KFbeam)
+      CALL  KK2f_GetKFini(KFbeam)
+      amel =BornV_GetMass(KFbeam)
 * Beams
       ip=1                      !(&&&
-      CALL HepEvt_Fil1(ip,3, 11, 0,0,0,0, pf1,amel,.FALSE.)
+      CALL HepEvt_Fil1(ip,3, KFbeam, 0,0,0,0, pf1,amel,.FALSE.)
       ip=2
-      CALL HepEvt_Fil1(ip,3,-11, 0,0,0,0, pf2,amel,.FALSE.)
+      CALL HepEvt_Fil1(ip,3,-KFbeam, 0,0,0,0, pf2,amel,.FALSE.)
 * Now mother of ffbar and photons added in event record 
 *   1,2               - beams
 *   3                 - Z/gamma*
