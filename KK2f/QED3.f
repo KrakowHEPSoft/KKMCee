@@ -138,7 +138,7 @@ c}}}}
          m_WtSet(i)=0d0
       ENDDO
 *
-      KFbeam = 11                      ! KF=11 is electron
+      CALL  KK2f_GetKFini(KFbeam)
       amel   = BornV_GetMass(KFbeam)
 * Actual KFcode of final fermion
       CALL KarLud_GetKFfin(KFfin)
