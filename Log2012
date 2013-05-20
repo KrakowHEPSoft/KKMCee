@@ -29,6 +29,10 @@ identificator KF and proper setting of the neam mass:
       CALL HepEvt_Fil1(ip,3, KFbeam, 0,0,0,0, pf1,amel,.FALSE.)
       ip=2
       CALL HepEvt_Fil1(ip,3,-KFbeam, 0,0,0,0, pf2,amel,.FALSE.)
+      ...
+      SUBROUTINE QED3_Make
+      ...
+      CALL  KK2f_GetKFini(KFbeam)
 
 For the initial beam setting in the input data like that
 **     Beam flavour code
@@ -36,6 +40,7 @@ For the initial beam setting in the input data like that
 proper event record is obtained in the output file.
 Still to be checked that beam KF and mass properly propagates
 all over many types the matrix element, in the MC weight.
+(Charge and isospin of the beam fermion is further ahead.)
  
 *******************************************************************
 May. 19th, 2013
