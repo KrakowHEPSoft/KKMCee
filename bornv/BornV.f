@@ -639,7 +639,7 @@ C end
       DOUBLE PRECISION  amel, svar, am2, beta
       INTEGER           KFbeam
 *---------------------------------
-      KFbeam = 11           ! KF=11 is electron
+      KFbeam = m_KFini      ! from the input
       amel   = m_amferm(KFbeam)
       am2  = (2d0*amel/CMSene)**2
       IF( am2 .GT. 1d0 ) GOTO 800
