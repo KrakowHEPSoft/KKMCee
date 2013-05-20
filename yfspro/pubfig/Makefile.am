@@ -31,8 +31,8 @@ afb_prepare_LDADD = $(top_builddir)/KKsem/libKKsem.a \
 	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a \
 	$(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a
 
-chi_mcan_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a\
-	$(top_builddir)/glibk/libGlibk.a
+chi_mcan_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a \
+	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/KKsem/libKKsem.a
 
 afb_int_LDADD = $(top_builddir)/KKsem/libKKsem.a $(top_builddir)/KK2f/libKK2f.a\
 	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a\

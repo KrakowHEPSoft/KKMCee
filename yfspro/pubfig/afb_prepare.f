@@ -47,8 +47,11 @@
       Hname  = '../E189GeV/pro.hst'            ! current
       Dname  = '../E189GeV/pro.input'          ! current
 c
-      Dname  = '../E189GeV/E189GeV_8M.input' ! 2013
-      Hname  = '../E189GeV/E189GeV_8M.hst'   ! 2013
+      Dname  = '../E189GeV/E189GeV_17M.input' ! 2013
+      Hname  = '../E189GeV/E189GeV_17M.hst'   ! 2013
+c
+c      Dname  = '../E189GeV/E189GeV_8M.input' ! 2013
+c      Hname  = '../E189GeV/E189GeV_8M.hst'   ! 2013
 c
 c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63, 2000
 c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63, 2000
