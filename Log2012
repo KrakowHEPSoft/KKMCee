@@ -8,9 +8,21 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
+-------------------------------------------------------------------
+May. 21th, 2013
+More changes in QED3 in order to implement properly beam charge:
+      SUBROUTINE QED3_Make
+      ...
+      chaini = BornV_GetCharge(KFbeam)
+      chain2 = chaini**2
+      ...
+      gami = chain2* 2d0/m_alfinv/pi*(dlog(svar/amel**2)  -1d0)
+      CALL QED3_bvirt0(m_alfinv,chain2,svar , amel,deli1,deli2,deli3)
+etc.
+(in GPS it seems to be properly done)
 
 -------------------------------------------------------------------
-May. 19th, 2013
+May. 20th, 2013
 Coorections which take care of proper propagation of the beam
 identificator KF and proper setting of the neam mass:
       SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami)
