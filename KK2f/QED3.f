@@ -90,12 +90,12 @@
       DOUBLE PRECISION   ForFin,ForIni,fYFS,fYFSu
       DOUBLE PRECISION   Bor1
 c{{{{
-      DOUBLE PRECISION   ph(4),kq1,kq2,p1p2,q1q2,tt,tt1,uu1,borc,dig1,sofc
+c      DOUBLE PRECISION   ph(4),kq1,kq2,p1p2,q1q2,tt,tt1,uu1,borc,dig1,sofc
 c}}}}
 
       DOUBLE PRECISION   gami,gamf,delp,delq,deli3,deli2,delf2,delf1,deli1,delf3
       DOUBLE PRECISION   svar,svar1,svar2
-      DOUBLE PRECISION   amel,amfin,charge,charg2
+      DOUBLE PRECISION   amel,amfin,chafin,chafi2,chaini,chain2
 
       DOUBLE PRECISION   BornV_GetMass,BornV_GetCharge,BornV_Differential
 
@@ -138,14 +138,16 @@ c}}}}
          m_WtSet(i)=0d0
       ENDDO
 *
+* Actual KFcodes of initial/final fermion
       CALL  KK2f_GetKFini(KFbeam)
-      amel   = BornV_GetMass(KFbeam)
-* Actual KFcode of final fermion
       CALL KarLud_GetKFfin(KFfin)
+      amel   = BornV_GetMass(KFbeam)
       amfin  = BornV_GetMass(KFfin)
-* Final state charge, -1 for electron
-      charge = BornV_GetCharge(KFfin)
-      charg2 = charge**2
+* Initial/Final state charges, -1 for electron, muon
+      chaini = BornV_GetCharge(KFbeam)
+      chain2 = chaini**2
+      chafin = BornV_GetCharge(KFfin)
+      chafi2 = chafin**2
 
 * Check dynamicaly on FSR (quarks!!!)
       CALL KarFin_GetIsFSR(IsFSR)
@@ -176,8 +178,8 @@ c}}}}
       svar2 = qq(4)**2-qq(3)**2-qq(2)**2-qq(1)**2
       vv = 1d0 -svar1/svar
       uu = 1d0 -svar2/svar1
-      gami =         2d0/m_alfinv/pi*(dlog(svar/amel**2)  -1d0)
-      gamf = charg2* 2d0/m_alfinv/pi*(dlog(svar2/amfin**2)-1d0)
+      gami = chain2* 2d0/m_alfinv/pi*(dlog(svar/amel**2)  -1d0)
+      gamf = chafi2* 2d0/m_alfinv/pi*(dlog(svar2/amfin**2)-1d0)
 
 * Crude Born distribution
       CALL KK2f_GetBornCru(DisCru)
@@ -194,8 +196,8 @@ c}}}}
 *                beta0 
 *-----------------------------------------------------------
 * Beta0 components
-      CALL QED3_bvirt0(m_alfinv,   1d0,svar , amel,deli1,deli2,deli3)
-      CALL QED3_bvirt0(m_alfinv,charg2,svar2,amfin,delf1,delf2,delf3)
+      CALL QED3_bvirt0(m_alfinv,chain2,svar , amel,deli1,deli2,deli3)
+      CALL QED3_bvirt0(m_alfinv,chafi2,svar2,amfin,delf1,delf2,delf3)
 *
       IF(m_KeyISR .EQ. 0)  deli1   = 0d0
       IF(m_KeyISR .EQ. 0)  deli2   = 0d0
