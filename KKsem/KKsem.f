@@ -979,6 +979,7 @@
       keyd = KeyIni
       ite  = 0
       alf1   = 1d0/pi/m_alfinv
+      alf1 = alf1 *m_Chini**2      ! beam charge implementation
       bilg   = dlog(svar/amel**2)
       beti   = 2d0*alf1*(bilg-1d0)
       beti2  = 2d0*alf1*bilg
