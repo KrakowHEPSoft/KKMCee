@@ -24,7 +24,7 @@ BeginX
 ********************************************************************************
 **    EQD/EW bremsstrahlung flags/data
    20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
-   21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
+   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions
 *indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     SPECIAL tests: Interference ISR/FSR off/on
 **   27              1      KeyINT=xpar(27)  Default is  1
@@ -36,9 +36,9 @@ BeginX
 ********************************************************************************
 **     Beam flavour code
 **400             11      KFini = xpar(400) dont change it                |<<<<|
-**  400              2      KFini = xpar(400) UP-quark beam !!!
+  400              2      KFini = xpar(400) UP-quark beam !!!
 **  526        0.005e0      up quark mass [GeV] (2-8MeV in PDG)
-**  626    0.510999e-3      mass [GeV]   up=electron
+  626    0.510999e-3      mass [GeV]   up=electron
 *     Define process
   413              1      KFfin, muon
 ********************************************************************************
