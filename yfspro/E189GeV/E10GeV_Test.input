@@ -38,7 +38,7 @@ BeginX
 **400             11      KFini = xpar(400) dont change it                |<<<<|
   400              2      KFini = xpar(400) UP-quark beam !!!
 **  526        0.005e0      up quark mass [GeV] (2-8MeV in PDG)
-  626    0.510999e-3      mass [GeV]   up=electron
+**  526    0.510999e-3      mass [GeV]   up=electron
 *     Define process
   413              1      KFfin, muon
 ********************************************************************************
