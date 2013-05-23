@@ -208,7 +208,7 @@ C Declarations
 c ... KK2f common
       INCLUDE 'BornV.h'
 C Conversion
-      CALL BornV_MakeGami(m_CMSene,gamiCR,gami)
+      CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)
       DO I = 1, Npeaks
         xtemp = 1d0 - Xpeaks(I)**2
         beta = -0.5d0
@@ -350,7 +350,7 @@ C end
       DOUBLE PRECISION  R,r1,r2
       DOUBLE PRECISION  Power,Jacob,sf12
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee
-      DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, beta, GamBig, alpha, alpha2
+      DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
       DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr
       DOUBLE PRECISION  Par(0:3)
@@ -377,7 +377,7 @@ C end
       IF( Option .EQ. 1 ) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami)          ! make gamiCR at CMSene
+         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
          IF( gamiCR .LE. 0d0 ) GOTO 800
          GamBig = gami+2d0*alpha                            ! total singularity at XX=0
          CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX=1-ZZ
@@ -399,7 +399,7 @@ C end
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   simplified analytical importance sampling transformations
       ELSEIF( Option .EQ. 2 ) THEN
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami)           ! make gamiCR at CMSene
+         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
          IF( gamiCR .LE. 0d0 ) GOTO 800
          m_vv  = R**(1d0/gamiCR)*m_vvmax
          Rho   = Rho* m_vv/R/gamiCR*m_vvmax
@@ -455,7 +455,7 @@ C end
       DOUBLE PRECISION  xarg(10)
       DOUBLE PRECISION  R,r1
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee
-      DOUBLE PRECISION  gamiCR, gami, beta, RJac0, RJac1, RJacS
+      DOUBLE PRECISION  gamiCR, gami, alfi, beta, RJac0, RJac1, RJacS
       DOUBLE PRECISION  alpha,  alpha2,  eps,  eps2
       DOUBLE PRECISION  GamBig, RhoISR, SF1, XX, yisr, ybms, z1, aa
       DOUBLE PRECISION  anor, xnor
@@ -485,7 +485,7 @@ C end
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   (over)complicated analytical importance sampling transformations
 *//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami)          ! make gamiCR at CMSene
+         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
          IF( gamiCR .LE. 0d0 ) GOTO 800
          GamBig = gami+alpha                                ! total singularity at XX=0
          CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX
@@ -500,7 +500,7 @@ C end
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   simplified analytical importance sampling transformations
       ELSEIF( Option .EQ. 2 ) THEN
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami)           ! make gamiCR at CMSene
+         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
          IF( gamiCR .LE. 0d0 ) GOTO 800
          m_vv  = R**(1d0/gamiCR)*m_vvmax
          Rho   = Rho* m_vv/R/gamiCR*m_vvmax
@@ -559,7 +559,7 @@ C end
       DOUBLE PRECISION  xarg(10)
       DOUBLE PRECISION  R
       DOUBLE PRECISION  Rho,BornV_Crude
-      DOUBLE PRECISION  gamiCR, gami, beta, RJac
+      DOUBLE PRECISION  gamiCR, gami, alfi, beta, RJac
       DOUBLE PRECISION  IRC_circee
 *----------------------------------------
       R  = xarg(1)
@@ -567,7 +567,7 @@ C end
       m_x2 = 0d0
 *-----------------------------------------------
       m_XXXene =  m_CMSene        ! hidden input for BornV_Crude
-      CALL BornV_MakeGami(m_XXXene,gamiCR,gami)
+      CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
       IF( gamiCR .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
       m_vv  = R**(1d0/gamiCR)*m_vvmax
@@ -603,11 +603,11 @@ C end
       IMPLICIT NONE
       INCLUDE 'BornV.h'
       DOUBLE PRECISION   R,Rho, BornV_Crude
-      DOUBLE PRECISION   gamiCR, gami, beta, RJac
+      DOUBLE PRECISION   gamiCR, gami, alfi, beta, RJac
 *-----------------------------------------------
       m_XXXene =  m_CMSene                 ! hidden input for BornV_Crude
 *-----------------------------------------------
-      CALL BornV_MakeGami(m_XXXene,gamiCR,gami)
+      CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
       IF( gamiCR .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
       beta = -0.5d0
@@ -629,23 +629,25 @@ C end
       BornV_RhoVesko1 =0d0
       END
 
-      SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami)
+      SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami,alfi)
 *//////////////////////////////////////////////////////////////////////////////
 *//   Crude Gami as a function of CMSene                                     //
 *//////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'BornV.h'
-      DOUBLE PRECISION  CMSene, gamiCR, gami
-      DOUBLE PRECISION  amel, svar, am2, beta
+      DOUBLE PRECISION  CMSene, gamiCR, gami, alfi
+      DOUBLE PRECISION  amel, svar, am2, beta, chini2
       INTEGER           KFbeam
 *---------------------------------
       KFbeam = m_KFini      ! from the input
       amel   = m_amferm(KFbeam)
       am2  = (2d0*amel/CMSene)**2
+      chini2 = m_Qf(ABS(KFbeam))**2  ! electriccharge of beam fermion
+      alfi   = chini2 *m_alfpi
       IF( am2 .GT. 1d0 ) GOTO 800
       beta = SQRT(1d0-am2)
-      gami    = 2d0*m_alfpi *( DLOG((1+beta)**2/am2) -1d0)
-      gamiCR  = 2d0*m_alfpi *  DLOG((1+beta)**2/am2)
+      gami    = 2d0*chini2*m_alfpi *( DLOG((1+beta)**2/am2) -1d0)
+      gamiCR  = 2d0*chini2*m_alfpi *  DLOG((1+beta)**2/am2)
       gamiCR  = gamiCR *m_Xenph         !!! enhancement of crude photon multiplicity
       IF(m_KeyWtm .EQ. 1) gamiCR=gami   !!! new, for very special tests
 *-------------
@@ -668,10 +670,10 @@ C end
       IMPLICIT NONE
       INCLUDE 'BornV.h'
       DOUBLE PRECISION   Rho
-      DOUBLE PRECISION   gami,  gamiCR,  BornV_Crude
+      DOUBLE PRECISION   gami,  gamiCR,  alfi, BornV_Crude
       DOUBLE PRECISION   xBorn, DilJac0, beta, VoluMC
 *-----------------------------
-      CALL BornV_MakeGami(m_XXXene,gamiCR,gami)
+      CALL BornV_MakeGami(m_XXXene,gamiCR,gami, alfi)
       IF(m_vv .GT. m_vvmin) THEN
          DilJac0   = (1d0+1d0/SQRT(1d0-m_vv))/2d0
          m_AvMult  = gamiCR*DLOG(m_vv/m_vvmin)
@@ -689,7 +691,7 @@ C end
       Rho =  Rho * DilJac0
 * YFS formfactor, finite part, YFS_form_Factor = EXP(YFS_IR + YFSkon)
 * YFSkon is delegated/exported to QED3 and GPS (not used here).
-      m_YFSkon =  EXP(1/4d0 *gami + m_alfpi*( -.5d0  +m_pi**2/3d0) )
+      m_YFSkon =  EXP(1/4d0 *gami + alfi*( -.5d0  +m_pi**2/3d0) )
       m_YFS_IR =  EXP(m_YFS_IR)
       END
 
@@ -708,10 +710,10 @@ C end
       IMPLICIT NONE
       INCLUDE 'BornV.h'
       DOUBLE PRECISION   R,Rho
-      DOUBLE PRECISION   gami,  gamiCR,  BornV_Crude
+      DOUBLE PRECISION   gami,  gamiCR,  alfi, BornV_Crude
       DOUBLE PRECISION   xBorn, DilJac0, beta, RJac,  VoluMC
 *-----------------------------
-      CALL BornV_MakeGami(m_XXXene,gamiCR,gami)
+      CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
       IF( gamiCR .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
       beta = -0.5d0
@@ -733,7 +735,7 @@ C end
       Rho =  Rho * DilJac0*RJac
 * YFS formfactor, finite part, YFS_form_Factor = EXP(YFS_IR + YFSkon)
 * YFSkon is delegated/exported to QED3 and GPS (not used here).
-      m_YFSkon =  EXP(1/4d0 *gami + m_alfpi*( -.5d0  +m_pi**2/3d0) )
+      m_YFSkon =  EXP(1/4d0 *gami + alfi*( -.5d0  +m_pi**2/3d0) )
       m_YFS_IR =  EXP(m_YFS_IR)
       RETURN
  800  CONTINUE
