@@ -1504,7 +1504,7 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
 */////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'KKsem.h'
-      DOUBLE PRECISION    CosThe,svar,Born
+      DOUBLE PRECISION    CosThe,svar,Born, Born0
       DOUBLE PRECISION    BornV_Differential
       DOUBLE PRECISION    BornV_Dizet
       INTEGER             IsGenerated, KFfin, icont,KeyElw,Mode
@@ -1517,11 +1517,12 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
       DO KFfin=1,20
          CALL BornV_GetIsGenerated(KFfin,IsGenerated)
          IF(IsGenerated .NE. 0) THEN
-****  Born =   3d0/8d0* BornV_Differential( 1, KFfin, svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
+*           The valid alternative to Born_Dizet
+            Born0 = BornV_Differential( Mode, KFfin, svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
             CALL BornV_InterpoGSW(    ABS(KFfin),  svar, CosThe)
             IF( m_KeyQCD .EQ. 0) CALL BornV_SetQCDcor(0d0)
             Born= BornV_Dizet(Mode,m_KFini, KFfin,   svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
-            KKsem_DTheTab = KKsem_DTheTab  + 3d0/8d0 *Born
+            KKsem_DTheTab = KKsem_DTheTab  + 3d0/8d0 *Born0
          ENDIF
       ENDDO
       END
