@@ -65,6 +65,8 @@ EXT_LIB5  = ../../tauola/glib.a
 EXT_SRC5  = ../../tauola/*.f
 EXT_LIB6  = ../../photos/glib.a
 EXT_SRC6  = ../../photos/photos.f	
+EXT_LIB7  = ../../dizet/dizet.a
+EXT_SRC7  = ../../dizet/*.f
 ###########
 $(EXT_LIB1): $(EXT_SRC1)
 	cd ../../KK2f; $(MAKE)
@@ -80,9 +82,18 @@ $(EXT_LIB5): $(EXT_SRC5)
 	cd ../../tauola; $(MAKE)
 $(EXT_LIB6): $(EXT_SRC6)
 	cd ../../photos; $(MAKE)
+$(EXT_LIB7): $(EXT_SRC7)
+	cd ../../dizet;  $(MAKE)
 ###########
 SRCLIST= "../../KK2f ../../bornv ../../glibk"
 #-----------------------------------------------------------------------------
+#===================================================================================================
+#### Make your own choice of the two choices below, see comments on two EW modes above
+EXT_LIBRARYa = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+EXT_LIBRARYd = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4d) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7)
+###EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
+EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
+#===================================================================================================
 ##############################################################################
 ##############################################################################
 ##############################################################################
@@ -145,8 +156,8 @@ afb_prepare.o:	afb.h
 #-----------------------------------------------------------------------------
 COMMAND4 = afb_prepare.exe
 OBJECTS4 = afb_prepare.o
-$(COMMAND4): $(OBJECTS4)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS4) $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+$(COMMAND4): $(OBJECTS4)             $(EXT_LIB0) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS4) $(EXT_LIB0) $(EXT_LIBRARY)
 #-----------------------------------------------------------------------------
 # 	kmake afb.hst
 afb.hst:	$(COMMAND4)
@@ -158,8 +169,8 @@ afb.hst-debug:	$(COMMAND4)
 BN4 = afb_int
 # Link procedure
 $(BN4).o:	chi.h
-$(BN4).exe: $(BN4).o                     $(EXT_LIB0) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB1)
-	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+$(BN4).exe: $(BN4).o               $(EXT_LIB0) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIBRARY)
 $(BN4): $(BN4).exe afb.hst
 	(time ./$(BN4).exe; touch $(BN4))
 $(BN4)-debug: $(BN4).exe afb.hst
@@ -238,7 +249,7 @@ $(BN42)-ps: 		$(BN42).ps
 #-----------------------------------------------------------------------------
 # 	kmake afb_sig2-ps
 BN47 = afb_sig2
-$(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps
+$(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps $(BN4)-Gsig.eps
 	(latex   $(BN47).tex )
 $(BN47).ps: 		$(BN47).dvi
 	(dvips $(BN47).dvi -o )
@@ -313,8 +324,8 @@ delta-ps: 		delta.ps
 # 	kmake bornex
 COMMAND9 = bornex.exe
 OBJECTS9 = bornex.o
-$(COMMAND9): $(OBJECTS9)                   $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS9) $(EXT_LIB0) $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
+$(COMMAND9): $(OBJECTS9)             $(EXT_LIB0) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS9) $(EXT_LIB0) $(EXT_LIBRARY)
 bornex:	$(COMMAND9)
 	(time ./$(COMMAND9) )
 ##############################################################################
