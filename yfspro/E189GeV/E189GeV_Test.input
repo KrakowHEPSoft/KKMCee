@@ -10,8 +10,8 @@ BeginX
 ********************************************************************************
 *indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
-    1        10.52D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1          189D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1        10.52D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
 *     KeyWgt=0,1 to get constant,variable weight events
    10              1      KeyWgt=xpar(10) Deafault is 0
 *       KeyELW=0,1 Type of Elewctroweak corrections, 
