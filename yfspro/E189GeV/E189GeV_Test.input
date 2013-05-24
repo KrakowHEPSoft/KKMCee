@@ -1,6 +1,7 @@
  0 0 0 1 0 0 0 0         KAT1-KAT8        <- Input for the main program
+    100000      100k
  100000000      NEVT number of events   <- Input for the main program
-      1000    NEVT number of events   <- Input for the main program
+      1000      1k
 ----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 BeginX
 ********************************************************************************
@@ -20,6 +21,7 @@ BeginX
 *     Maximum v, where v = 1-sprim/s, v=1 is alowed
    16           1D-5      vvmin =xpar(16)
    17         0.99d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17         0.01d0      vvmax =xpar(17)  if 1d0 then reduced inside program
 *indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     SPECIAL tests: Interference ISR/FSR off/on
 ** 27              1      KeyINT=xpar(27)  Default is  1
@@ -29,6 +31,8 @@ BeginX
 **    EQD/EW bremsstrahlung flags/data
    20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
    21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions
+**\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\
+** 40         1.00e0\\\\\\Xenph =xpar(40)\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ********************************************************************************
 *     Input for matrix element
 * 501              1      KeyZet=xpar(24)  default is 1, -2 for flat x-section
@@ -45,6 +49,7 @@ BeginX
 * 526    0.510999e-3      mass [GeV]   up=electron
 * 516        0.005e0      DOWN quark mass [GeV] (2-8MeV in PDG)
 * 516    0.510999e-3      mass [GeV]   Down=electron
+  516          0.007      mass [GeV]   Down=electron
 ********************
 *      Define final fermion
   413              1      KFfin, muon
