@@ -1523,6 +1523,7 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
             IF( m_KeyQCD .EQ. 0) CALL BornV_SetQCDcor(0d0)
             Born= BornV_Dizet(Mode,m_KFini, KFfin,   svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
             KKsem_DTheTab = KKsem_DTheTab  + 3d0/8d0 *Born0
+            write(*,*) "FUNCTION KKsem_DTheTab Bor0/Born= ", Born0/Born
          ENDIF
       ENDDO
       END
