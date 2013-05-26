@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------
 #  Template for makefile in production directory <dset>
 #  alias kmake='make -f KKMakefile'
-#  kmake farm6-KRK    kmake submit6       myqstatall
+#  kmake farm6-KRK    kmake qsubmit6      myqstatall
 #  kmake q-nev        kmake q-semaphore   kmake combine
 #  kmake stop6        kmake combine       kmake CLEAN
 #-----------------------------------------------------------------------
