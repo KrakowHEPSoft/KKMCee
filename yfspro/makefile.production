@@ -72,15 +72,17 @@ farm6-CSF:
 farm12-CSF:
 	(csh ../farm-init "1 2 3 4 5 6 7 8 9 10 11 12" \
 	${MCMD} ${DSET} CSF ${CLASS} )
-farm6-BASTA:
+###-----------
+farm6-KRK:
 	(csh ../farm-init "1 2 3 4 5 6" \
-	${MCMD} ${DSET} BASTA ${CLASS} )
-farm12-BASTA:
+	${MCMD} ${DSET} KRK ${CLASS} )
+farm12-KRK:
 	(csh ../farm-init "1 2 3 4 5 6 7 8 9 10 11 12" \
-	${MCMD} ${DSET} BASTA ${CLASS} )
-farm18-BASTA:
-	(csh ../farm-init  "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18" \
-	${MCMD} ${DSET} BASTA ${CLASS} )
+	${MCMD} ${DSET} KRK ${CLASS} )
+farm24-KRK:
+	(csh ../farm-init  "1 2 3 4 5 6 7 8 9 10 11 12 \
+	      13 14 15 16 17 18 19 20 21 22 23 24 " \
+	${MCMD} ${DSET} KRK ${CLASS} )
 #-----------------------------------------------------------------------
 farm-gtar:
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
@@ -95,6 +97,7 @@ bsubmit18:
 bsubmit24:
 	(csh ../farm-bsubmit ${DSET} ${CLASS} "1 2 3 4 5 6 7 8 9 10 11 12 \
 	                13 14 15 16 17 18 19 20 21 22 23 24 ")
+#######---------
 submit6:
 	(csh ../farm-submit ${DSET} "1 2 3 4 5 6 ")
 submit12:
@@ -102,6 +105,9 @@ submit12:
 submit18:
 	(csh ../farm-submit ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
 	                13 14 15 16 17 18 ")
+submit24:
+	(csh ../farm-submit ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
+	                13 14 15 16 17 18 19 20 21 22 23 24 ")
 llsubmit6:
 	(csh ../farm-llsubmit ${DSET} "1 2 3 4 5 6")
 llsubmit12:
