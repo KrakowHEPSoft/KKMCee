@@ -17,7 +17,7 @@ set   class=$5
 #| create work directory
 mkdir $farmdir
 #| copy common exe files into it
-cp   ../$main.exe    $farmdir/$dset.exe
+cp   ../$main    $farmdir/$dset.exe
 #|-----------------------------------------------------------------
 #| create several subdirectories with own random-number-seed
 #| and its own execution-script (using template file and sed utility)
