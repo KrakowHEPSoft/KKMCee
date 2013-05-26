@@ -1,5 +1,6 @@
 #-----------------------------------------------------------------------
-#       Template for makefile in production directory <dset>
+#  Template for makefile in production directory <dset>
+#  alias kmake='make -f KKMakefile'
 #-----------------------------------------------------------------------
 MCMD=<main>
 DSET=<dset>
