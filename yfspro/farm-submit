@@ -1,17 +1,18 @@
 #!/bin/csh
 set echo
 #|-----------------------------------------------------------------
-#| by S. Jadach. Nov. 1998
-#| This script submites series of jobs on LSF
+#| by S. Jadach. Jan. 95
+#| This script SUMITES series of jobs
+#| on the computer farm (SP-2)
 #| It is invoked like that:
-#|              farm-bsubmit prod2 8nm "1 2 3 4 5 6"
+#|              farm-submit prod2 "1 2 3 4 5 6"
 #|-----------------------------------------------------------------
 set   dset=$1
 set   farmdir=$PWD/farm
 #|-----------------------------------------------------------------
-foreach i ( $3 )
+foreach i ( $2 )
      cd $farmdir/$i
-     qsub  -q $2 $dset.cmd.$i
+     qsubmit  $dset.cmd.$i
 end
 exit 0
  
