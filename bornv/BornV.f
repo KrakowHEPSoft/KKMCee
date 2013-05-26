@@ -610,8 +610,10 @@ C end
       CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
       IF( gamiCR .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
+*     IMPORTANT: alpha=gami MUST coincide with vv->0 limit in rho(vv)!!!
+*     If not, then problems with m_fleps for weak bremsstrahlung! 
       beta = -0.5d0
-      CALL BornV_ReBin1(R,gamiCR,beta,m_vvmax,m_vv,RJac)
+      CALL BornV_ReBin1(R,gami,beta,m_vvmax,m_vv,RJac)
       CALL BornV_MakeISR(Rho)              ! uses m_XXXene and m_vv
       Rho = Rho*RJac
 *-----------------------------------------------
@@ -717,7 +719,7 @@ C end
       IF( gamiCR .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
       beta = -0.5d0
-      CALL BornV_ReBin1(R,gamiCR,beta,m_vvmax,m_vv,RJac)
+      CALL BornV_ReBin1(R,gami,beta,m_vvmax,m_vv,RJac)
       IF(m_vv .GT. m_vvmin) THEN
          DilJac0   = (1d0+1d0/SQRT(1d0-m_vv))/2d0
          m_AvMult  = gamiCR*DLOG(m_vv/m_vvmin)
