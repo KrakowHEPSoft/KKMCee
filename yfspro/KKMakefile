@@ -254,9 +254,9 @@ clean:
 # Update dependent makefiles
 makflag:
 	(cd ../ffbench; $(MAKE)  makflag-ext;)
-	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
-	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
-	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  makefile.templ > KKMakefile)
+	(cd ./libfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  KKMakefile.templ > KKMakefile)
+	(cd ./pubfig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  KKMakefile.templ > KKMakefile)
+	(cd ./profig;  sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#'  KKMakefile.templ > KKMakefile)
 ##############################################################################
 tables-default:
 	(cd ../dizet/; $(MAKE)  default)
