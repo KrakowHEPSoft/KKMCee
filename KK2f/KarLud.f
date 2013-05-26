@@ -103,6 +103,7 @@ C end (M.B.)
                CALL BornV_BinPeaks(Npeaks,Xpeaks)
             ENDIF
             CALL Vesk1_Initialize(BornV_RhoVesko1,Npeaks,Xpeaks,m_XCrude)
+c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             XCrude    = m_XCrude
          ELSEIF(m_KeyFix .EQ. 2) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -138,6 +139,7 @@ C end (M.B.)
 ***         CALL Mathlib_GausJad(BornV_RhoVesko1,a,b, -prec, m_xcgaus) ! rather slow
             m_ErGaus   = m_xcgaus*prec
             xdel = m_XCrude/m_xcgaus-1
+            WRITE(m_out,bxl1f)    xborn,'Born!              ','xborn ','  '
             WRITE(m_out,bxl1f) m_XCrude,'xs_crude  vesko    ','xcvesk','  '
             WRITE(m_out,bxl1f) m_xcgaus,'xs_crude  gauss    ','xcgaus','  '
             WRITE(m_out,bxl1f) xdel  ,  'xcvesk/xcgaus-1    ','      ','  '
