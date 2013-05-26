@@ -12,7 +12,7 @@ set   farmdir=$PWD/farm
 #|-----------------------------------------------------------------
 foreach i ( $2 )
      cd $farmdir/$i
-     qsubmit  $dset.cmd.$i
+     qsub  $dset.cmd.$i
 end
 exit 0
  
