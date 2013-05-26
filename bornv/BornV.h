@@ -17,8 +17,9 @@
       DOUBLE PRECISION   m_fleps
 ****  PARAMETER (m_fleps = 1d-35)  ! original
 ****  PARAMETER (m_fleps = 1d-45)  ! enough???
-      PARAMETER (m_fleps = 1d-100)  ! enough!!!
-****      PARAMETER (m_fleps = 1d-200)  ! enough!!!
+****  PARAMETER (m_fleps = 1d-100)  ! enough!!!
+      PARAMETER (m_fleps = 1d-200)  ! enough!!!
+****  PARAMETER (m_fleps = 1d-300)  ! risky?
 *//////////////////////////////////////////////////////////////////////////////
 *//       Energy limits in the EW grid, w=sqrt(s) in GeV units.              //
 *//////////////////////////////////////////////////////////////////////////////
