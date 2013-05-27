@@ -35,6 +35,7 @@
 *
       CHARACTER*60      Tesnam, Dname
       CHARACTER*60      Hname, DumpFile
+      INTEGER           KFbeam
 *--------------------------------------------------------------------
       ninp=  5
       nout= 16
@@ -44,14 +45,14 @@
       CALL GLK_SetNout(nout)
 
 ************************** 189 GeV **************************
-      Hname  = '../E189GeV/pro.hst'            ! current
-      Dname  = '../E189GeV/pro.input'          ! current
+c      Hname  = '../E189GeV/pro.hst'            ! current
+c      Dname  = '../E189GeV/pro.input'          ! current
 c
-c      Dname  = '../E189GeV/E189GeV_17M.input' ! 2013
-c      Hname  = '../E189GeV/E189GeV_17M.hst'   ! 2013
+      Dname  = '../E189GeV/E189GeV_UpBeam_23M.input' ! 2013
+      Hname  = '../E189GeV/E189GeV_UpBeam_23M.hst'   ! 2013
 c
-c      Dname  = '../E189GeV/E189GeV_8M.input' ! 2013
-c      Hname  = '../E189GeV/E189GeV_8M.hst'   ! 2013
+c      Dname  = '../E189GeV/E189GeV_20M.input' ! 2013
+c      Hname  = '../E189GeV/E189GeV_20M.hst'   ! 2013
 c
 c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63, 2000
 c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63, 2000
@@ -136,6 +137,7 @@ c      Hname  = '../E91GeV/pro.hst'        !!! Actual
       CALL KK2f_ReaDataX(                 Dname, 0,imax,xpar)  ! Read user input
       CALL KK2f_Initialize( xpar)                    ! Initialize generator with the production data
       CALL KKsem_Initialize(xpar)                    ! Initialize semianalytical package
+*********************************************
 * Write energy to special input tex file
 ****  CALL KK2f_GetCMSene( m_CMSene)                   ! get CMS energy
       CALL KKsem_GetCMSene(m_CMSene)
@@ -146,6 +148,19 @@ c      Hname  = '../E91GeV/pro.hst'        !!! Actual
          WRITE(23,'(a,i4,a)')   '\\def\\Energy{',NINT(m_CMSene),'GeV} '
       ENDIF
       CLOSE(23)
+*********************************************
+* Write process type in Latex format into file
+      OPEN( 23, file='Process.tex')
+      CALL  KK2f_GetKFini(KFbeam)
+      IF(KFbeam .EQ. 11) THEN
+        WRITE(23,'(a)')   '\\def\\Process{$e^-e^+ \\to \\mu^-\\mu^+$} '
+      ELSE IF (KFbeam .EQ. 1) THEN
+        WRITE(23,'(a)')   '\\def\\Process{$d \\bar{d} \\to \\mu^-\\mu^+$} '
+      ELSE IF (KFbeam .EQ. 2) THEN
+        WRITE(23,'(a)')   '\\def\\Process{$u \\bar{u} \\to \\mu^-\\mu^+$} '
+      ENDIF
+      CLOSE(23)
+*********************************************
 * dump input file names for further use
       OPEN( 23, file='afb_prepare.files')
       WRITE(23,'(a)') Dname
