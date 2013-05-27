@@ -140,7 +140,7 @@ cphst24:
 #-----------------------------------------------------------------------
 #--------- cobmine (add) results from several subdirectories -----------
 combine:
-	(cd ../../glibk; make combine.exe)
+	(cd ../../glibk; make  -f KKMakefile combine.exe)
 combine6:  combine
 	(sed -e 's#?.hst#pro.hst#' -e 's#?#6#' ../combine.list \
 	| ../../glibk/combine.exe; more pro.hst)
