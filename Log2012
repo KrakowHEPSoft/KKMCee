@@ -9,6 +9,22 @@ Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ==================================================================
 
 -------------------------------------------------------------------
+May. 26th, 2013
+Testing quark beam option took some time.
+Main problem was inefficient mapping in Vesko1 for weak bremsstrahlung
+(small beam charge or small energy).
+Value of m_fleps protrcting from large exponent cannot be made smaller.
+One has to tune alpha parameter in BornV_ReBin1 to be exactly as
+in the the distribution BornV_MakeRho, that is gami and not gamiCR.
+The corrected papameters in BornV_ReBin1 are:
+      DOUBLE PRECISION  FUNCTION BornV_RhoVesko1(R)
+      ...
+      CALL BornV_ReBin1(R,gami,beta,m_vvmax,m_vv,RJac)
+The same correction is done for beamstrahlung.
+After that perfect agreement between KKMC and KKsem for quark
+beams is obtained (20M events test are done)
+
+-------------------------------------------------------------------
 May. 21th, 2013
 More changes in QED3 in order to implement properly beam charge:
       SUBROUTINE QED3_Make
