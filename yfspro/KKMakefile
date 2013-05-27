@@ -233,19 +233,19 @@ figmix-debug:
 #                  update production makefiles
 #-----------------------------------------------------------------------qunlimitted
 makprod:
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E500GeV#' -e 's#<class>#qunlimitted#' ./makefile.production > ./E500GeV/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E189GeV#' -e 's#<class>#qunlimitted#' ./makefile.production > ./E189GeV/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E120GeV#' -e 's#<class>#qunlimitted#' ./makefile.production > ./E120GeV/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E91GeV#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./E91GeV/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini200#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./ini200/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini140#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./ini140/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#fin140#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./fin140/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E500GeV#' -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./E500GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E189GeV#' -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./E189GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E120GeV#' -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./E120GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#E91GeV#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./E91GeV/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini200#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./ini200/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini140#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./ini140/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#fin140#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./fin140/KKMakefile)
 #----------------------------------- oldies
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini40#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./ini40/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#fin40#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./fin40/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix10#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./mix10/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix91#'  -e 's#<class>#qunlimitted#' ./makefile.production > ./mix91/KKMakefile)
-	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix200#' -e 's#<class>#qunlimitted#' ./makefile.production > ./mix200/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#ini40#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./ini40/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#fin40#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./fin40/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix10#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./mix10/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix91#'  -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./mix91/KKMakefile)
+	(sed -e 's#<main>#yfspro.exe#' -e 's#<dset>#mix200#' -e 's#<class>#qunlimitted#' ./KKMakefile.production > ./mix200/KKMakefile)
 #----------------------------------- end oldies
 clean:                                                     
 	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
