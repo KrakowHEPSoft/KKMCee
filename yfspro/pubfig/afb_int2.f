@@ -1,31 +1,6 @@
-* With older *.hst you may need to comment out *[[[[[ ....c]]]]
 */////////////////////////////////////////////////////////////////////////////////
-*//   make all first part;       gmake afb-sig-ps
-*//   make all second part;      gmake afb_int-ps
-*//   make all second part;      gmake afb-ang-ps
+*//   gmake afb-sig2-ps
 */////////////////////////////////////////////////////////////////////////////////
-*// 
-*//   make all first part;       gmake afb-sig-ps
-*//   Table of everything;                               gmake afb_int-tab1.eps
-*//   Plot of SigTot(vMax) versus reference EEX3(vMax);  gmake afb_int-Gsig.eps
-*//   Plot of Afb(vMax) versus reference AfbRef of EEX3; gmake afb_int-Gafb.eps
-*//
-*//   make all second part;      gmake afb_int-ps
-*//   Plot of SigmaInt/SigmaTot(vMax);                   gmake afb_int-sig1.eps
-*//   Plot of AFB_Int(vmax);                             gmake afb_int-afb1.eps
-*//   Plot of AFB(v), bin per bin dependence on v;       gmake afb_int-afb2.eps
-*//
-*//   make all second part;      gmake afb-ang-ps
-*//   Plot of dSigma/dCosTheta  for v<0.90;              gmake afb_int-G1.eps
-*//   Plot of dSigma/dCosTheta  for v<0.10;              gmake afb_int-G1x.eps
-*//   Plot of dSigma/dCosTheta  for vp<0.10;             gmake afb_int-G1xxx.eps
-*//
-*//    gmake afb_int-sig1S.eps
-*//    gmake afb_int-afb1S.eps
-*/////////////////////////////////////////////////////////////////////////////////
-
-* UNCOMMENT marked {{{{{ }}}}} for 91GeV
-* Uncomment c\\\\\\ for less columns in table1 (no comparison with KORALZ)
 *----------------------------------------------------------------
       PROGRAM MAIN
 *     ***********************************
@@ -201,9 +176,6 @@ c     $'     ${\\sigma-\\sigma_{_{\\rm ref}} \\over \\sigma_{_{\\rm ref}}}$ }',
      $'         $\\circle*{10}\\;\\circle*{10}\\;\\circle*{10}\\;\\circle*{10}$}',!
      $'\\PaveL{700}{ 940}{\\large\\color{black} EEX3, NO Int.}',
 *
-c     $'\\PaveL{550}{ 880}{\\large\\color{black} $\\times$ EEX2 of KORALZ 4.03}',!
-c     $'\\PaveL{550}{ 820}{\\large\\color{red} ',!
-c     $'         $\\star$\\; CEEX2 $+$ IFI at ${\\cal O}(\\alpha^1)$  }',!
      $'} % -- End Pave',
      $'% end-of-label'/
 *    $_________|_________|_________|_________|_________|_________|_________|_________|
@@ -242,10 +214,6 @@ ccc      iRef = isigO3
          CALL GLK_SetYminYmax(isigG1nin,-0.009d0, 0.009d0) !!!! {{{{ 91GeV hadrons
          CALL GLK_SetYminYmax(isigG2nin,-0.009d0, 0.009d0) !!!! {{{{ 91GeV hadrons
       ENDIF
-c[[[
-c      CALL GLK_SetYminYmax(isigG1nin,-0.020d0, 0.020d0) !!!! {{{{ 91GeV hadrons
-c      CALL GLK_SetYminYmax(isigG2nin,-0.020d0, 0.020d0) !!!! {{{{ 91GeV hadrons
-c]]]
 
       CALL GLK_Operat(isigG1,    '-',  iRef,     isigG1,       1d0, 1d0)
       CALL GLK_Operat(isigG1,    '/',  iRef,     isigG1,       1d0, 1d0)
@@ -270,14 +238,6 @@ c]]]
       CALL GLK_plot2(  isigO3,   'S','*',dot        ,fmtx,fmty)
 
       IF( m_CMSene .LE. 200d0) THEN
-* KORALZ
-c      CALL GLK_SetColor('\\color{black}$')
-c      CALL GLK_plot2(  iKorzSig,   'S','*',times        ,fmtx,fmty)
-* Combined
-c      CALL GLK_SetColor('\\color{red}$')
-c      CALL GLK_plot2(  isigComb,   'S','*',star        ,fmtx,fmty)
-c      CALL GLK_plot2(  iHyb1Sig,   'S','*',star        ,fmtx,fmty)
-c      CALL GLK_plot2(  iHyb2Sig,   'S','*',star        ,fmtx,fmty)
       ENDIF
       CALL GLK_PlLabel(LabelBasic)
       CALL GLK_PlLabel(Label)
@@ -320,9 +280,6 @@ c      CALL GLK_plot2(  iHyb2Sig,   'S','*',star        ,fmtx,fmty)
      $'         $\\circle*{10}\\;\\circle*{10}\\;\\circle*{10}\\;\\circle*{10}$}',!
      $'\\PaveL{700}{ 940}{\\large\\color{black} EEX3, NO Int.}',
 *
-c     $'\\PaveL{550}{ 880}{\\large\\color{black}    $\\times$  EEX2, KORALZ 4.03}',!
-c     $'\\PaveL{550}{ 820}{\\large\\color{red} ',!
-c     $'         $\\star$\\; CEEX2 $+$ IFI at ${\\cal O}(\\alpha^1)$  }',!
      $'} % -- End Pave',
      $'% end-of-label',
      $'              ',
@@ -377,14 +334,6 @@ cc      CALL GLK_plot2(  iafbG1,    'S','*',ring          ,fmtx,fmty)
       CALL GLK_plot2(  iafbO3,'S','*',dot               ,fmtx,fmty)
 
       IF( m_CMSene .LE. 200d0) THEN
-* KORALZ 
-c      CALL GLK_SetColor('\\color{black}$')
-c      CALL GLK_plot2(  iKorzAfb,   'S','*',times        ,fmtx,fmty)
-* Combined
-c      CALL GLK_SetColor('\\color{red}$')
-c      CALL GLK_plot2(  iafbComb,   'S','*',star         ,fmtx,fmty)
-c      CALL GLK_plot2(  iHyb1Afb,   'S','*',star         ,fmtx,fmty)
-c      CALL GLK_plot2(  iHyb2Afb,   'S','*',star         ,fmtx,fmty)
       ENDIF
 
       CALL GLK_PlLabel(LabelBasic)
