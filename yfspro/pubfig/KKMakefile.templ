@@ -7,10 +7,10 @@
 #   second;      kmake afb_int-ps
 #   second;      kmake afb_ang-ps
 #   Moreover
-#                     kmake afb_LepEWG-ps
-#                     kmake afb_sig2-ps  clone for 10GeV
-#                     kmake delta-ps
-#                     kmake bornex
+#                kmake afb_LepEWG-ps
+#                kmake afb_sig2-ps  clone for 10GeV
+#                kmake delta-ps
+#                kmake bornex
 ##############################################################################
 MAKE    = make -f KKMakefile
 .SUFFIXES:  .eps .dvi .tex .txi .html .bib .blg .bbl .aux .txp
@@ -22,7 +22,7 @@ XPS3    = gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black
 XPS1    = gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black
 XPSp    = gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black
 XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
-XPS     = kghostview
+XPS     = kghostview -orientation landscape
 #----------------------------------------------------------------------
 FFLAGS  =  <FFLAGS>
 LDFLAGS =
@@ -173,8 +173,6 @@ $(BN4).exe: $(BN4).o               $(EXT_LIB0) $(EXT_LIBRARY)
 	$(LD) -o $@ $(LDFLAGS) $(BN4).o  $(EXT_LIB0) $(EXT_LIBRARY)
 $(BN4): $(BN4).exe afb.hst
 	(time ./$(BN4).exe; touch $(BN4))
-$(BN4)-debug: $(BN4).exe afb.hst
-	(xldb -I  ${SRCLIST}  $(BN4).exe; touch $(BN4))
 #-----------------------------------------------------------------------------
 #          sigma and AFB
 $(BN4)-tab1.eps:		$(COMMAND4) $(BN4)
@@ -247,14 +245,36 @@ $(BN42).ps: 		$(BN42).dvi
 $(BN42)-ps: 		$(BN42).ps
 	($(XPS) $(BN42).ps&)
 #-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+# 	kmake afb_int2-ps
+BN5 = afb_int2
+# Link procedure
+$(BN5).o:	chi.h
+$(BN5).exe: $(BN5).o               $(EXT_LIB0) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(BN5).o  $(EXT_LIB0) $(EXT_LIBRARY)
+$(BN5): $(BN5).exe afb.hst
+	(time ./$(BN5).exe; touch $(BN5))
+#-----------------------------------------------------------------------------
+$(BN5)-tab1.eps:		$(COMMAND4) $(BN5)
+	(./txp_to_eps  $(BN5)-tab1)
+$(BN5)-Gsig.eps:		$(COMMAND4) $(BN5)
+	(./txp_to_eps  $(BN5)-Gsig)
+$(BN5)-Gafb.eps:		$(COMMAND4) $(BN5)
+	(./txp_to_eps  $(BN5)-Gafb)
+$(BN5)-afbHO.eps:		$(COMMAND4) $(BN5)
+	(./txp_to_eps  $(BN5)-afbHO)
+$(BN5)-sigHO.eps:		$(COMMAND4) $(BN5)
+	(./txp_to_eps  $(BN5)-sigHO)
 # 	kmake afb_sig2-ps
-BN47 = afb_sig2
-$(BN47).dvi:		$(BN47).tex  $(BN4)-tab1.eps $(BN4)-Gsig.eps
-	(latex   $(BN47).tex )
-$(BN47).ps: 		$(BN47).dvi
-	(dvips $(BN47).dvi -o )
-$(BN47)-ps: 		$(BN47).ps
-	($(XPS) $(BN47).ps&)
+BN57 = afb_sig2
+$(BN57).dvi:		$(BN57).tex  $(BN5)-tab1.eps $(BN5)-Gsig.eps $(BN5)-Gafb.eps \
+$(BN5)-sigHO.eps $(BN5)-afbHO.eps 
+	(latex   $(BN57).tex )
+$(BN57).ps: 		$(BN57).dvi
+	(dvips $(BN57).dvi -o )
+$(BN57)-ps: 		$(BN57).ps
+	($(XPS) $(BN57).ps&)
+#-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 # 	kmake afb_ang-ps
 BN43 = afb_ang
