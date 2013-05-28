@@ -1,4 +1,4 @@
-==================================================================
+====================================================================
 Ponizej log roznych uwag na temat tego projektu KKMC
 ktory tutaj jest w calosci, razem z kartotekami nie-publicznymi:
 UWAGA!!! KK-all to absolutnie nie jest wersja CPC ani publiczna!!!
@@ -6,7 +6,12 @@ UWAGA!!! KK-all to absolutnie nie jest wersja CPC ani publiczna!!!
 Kartoteka z mojego dysku (S.J), ktora sie zywiolowo zmieniala gdzies
 do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
-==================================================================
+====================================================================
+
+********************************************************************
+May. 27th, 2013 It is KKMC version 2.21
+Vers. 271 in svn repository /home/theory/svnroot/camtoph/KK-all-2012
+********************************************************************
 
 -------------------------------------------------------------------
 May. 26th, 2013
@@ -40,7 +45,7 @@ etc.
 -------------------------------------------------------------------
 May. 20th, 2013
 Coorections which take care of proper propagation of the beam
-identificator KF and proper setting of the neam mass:
+identificator KF and proper setting of the beam mass:
       SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami)
       ...
       KFbeam = m_KFini      ! from the input
@@ -69,15 +74,16 @@ proper event record is obtained in the output file.
 Still to be checked that beam KF and mass properly propagates
 all over many types the matrix element, in the MC weight.
 (Charge and isospin of the beam fermion is further ahead.)
- 
+
+
 *******************************************************************
 May. 19th, 2013
 From now on this KKMC-all is the MAIN branch of the KKMC project!!!
-It is version 239 in svn repository.
+It is KKMC version 2.20, in svn repository version 239
 *******************************************************************
-The other project KKMC in svn repository ( C++ exercises)
-is obsolete, except of ffdoan subdirectory there.
-
+The other project svn repository /home/theory/svnroot/camtoph/KKMC
+( C++ exercises) is from now on obsolete,
+except of ffdoan subdirectory there.
 
 -------------------------------------------------------------------
 May. 16th, 2013
@@ -92,14 +98,15 @@ and compiler options (FFLAGS) set as usual:
 -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 kdevelop will remember the above settings in ProjectName.kdevelop file.
 
-
-
 -------------------------------------------------------------------
 May. 16th, 2013
 System of custom makefiles is renamed, makefile->KKMmakefile,
 hence "make -f KKMakefile" should be used in the commad line,
 or define and use the following alias:
     alias kmake='make -f KKMakefile'
+This is done in order to isolate custom makefile system from
+automake. kdevelop etc. All aternative makefile system may
+be used now in parallel, no problem.
 
 -------------------------------------------------------------------
 feb. 26, 2013
