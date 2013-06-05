@@ -378,7 +378,7 @@ C end
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
          CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
-         IF( gamiCR .LE. 0d0 ) GOTO 800
+         IF( gami .LE. 0d0 ) GOTO 800
          GamBig = gami+2d0*alpha                            ! total singularity at XX=0
          CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX=1-ZZ
          Rho = Rho *RJac0
@@ -400,9 +400,9 @@ C end
 *//   simplified analytical importance sampling transformations
       ELSEIF( Option .EQ. 2 ) THEN
          CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
-         IF( gamiCR .LE. 0d0 ) GOTO 800
-         m_vv  = R**(1d0/gamiCR)*m_vvmax
-         Rho   = Rho* m_vv/R/gamiCR*m_vvmax
+         IF( gami .LE. 0d0 ) GOTO 800
+         m_vv  = R**(1d0/gami)*m_vvmax
+         Rho   = Rho* m_vv/R/gami*m_vvmax
          m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
          Rho   = Rho   *m_x1/r1/alpha
          m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
@@ -486,12 +486,12 @@ C end
 *//   (over)complicated analytical importance sampling transformations
 *//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
          CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
-         IF( gamiCR .LE. 0d0 ) GOTO 800
+         IF( gami .LE. 0d0 ) GOTO 800
          GamBig = gami+alpha                                ! total singularity at XX=0
          CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX
          Rho = Rho *RJac0
 *//   r1 --> m_vv
-         IF( gamiCR .LE. 0d0 ) GOTO 800
+         IF( gami .LE. 0d0 ) GOTO 800
          CALL BornV_ReBin2a(r1, gami, alpha, yisr, ybms, RJac1) ! Mapping  r1 => m_vv
          m_vv =  yisr* XX
          m_x1 =  ybms* XX/(1d0-yisr*XX)
@@ -501,9 +501,9 @@ C end
 *//   simplified analytical importance sampling transformations
       ELSEIF( Option .EQ. 2 ) THEN
          CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
-         IF( gamiCR .LE. 0d0 ) GOTO 800
-         m_vv  = R**(1d0/gamiCR)*m_vvmax
-         Rho   = Rho* m_vv/R/gamiCR*m_vvmax
+         IF( gami .LE. 0d0 ) GOTO 800
+         m_vv  = R**(1d0/gami)*m_vvmax
+         Rho   = Rho* m_vv/R/gami*m_vvmax
          m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
          Rho   = Rho *m_x1/r1/alpha
          IF( (1d0-m_vv)*(1d0-m_x1) .LT. (1d0-m_vvmax) ) GOTO 800
@@ -568,10 +568,10 @@ C end
 *-----------------------------------------------
       m_XXXene =  m_CMSene        ! hidden input for BornV_Crude
       CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
-      IF( gamiCR .LE. 0d0 ) GOTO 800
+      IF( gami .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
-      m_vv  = R**(1d0/gamiCR)*m_vvmax
-      RJac  = m_vv/R/gamiCR*m_vvmax
+      m_vv  = R**(1d0/gami)*m_vvmax
+      RJac  = m_vv/R/gami*m_vvmax
       CALL BornV_MakeISR(Rho)                  !<-- uses m_XXXene and m_vv
       Rho = Rho*RJac
 *----------------------------------------
@@ -608,7 +608,7 @@ C end
       m_XXXene =  m_CMSene                 ! hidden input for BornV_Crude
 *-----------------------------------------------
       CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
-      IF( gamiCR .LE. 0d0 ) GOTO 800
+      IF( gami .LE. 0d0 ) GOTO 800
 *     Mapping  r => vv change  to improve on efficiency
 *     IMPORTANT: alpha=gami MUST coincide with vv->0 limit in rho(vv)!!!
 *     If not, then problems with m_fleps for weak bremsstrahlung! 
