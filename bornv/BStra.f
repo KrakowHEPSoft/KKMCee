@@ -74,8 +74,8 @@
       WRITE(*,*) '****** BE PATIENT FoamB CREATING GRID FOR BEAMSTRAHLUNG *********'
       WRITE(*,*) '*****************************************************************'
       CALL FoamB_SetKdim(       2) ! No of dimensions<5
-      CALL FoamB_SetnBuf(    2000) ! Length of buffer<5000,  =Maximum No. of cells
-      CALL FoamB_SetnSampl(  2000) ! No. of MC sampling inside single cell, default=100
+      CALL FoamB_SetnBuf(    5000) ! Length of buffer<5000,  =Maximum No. of cells
+      CALL FoamB_SetnSampl(  5000) ! No. of MC sampling inside single cell, default=100
       CALL FoamB_SetnBin(       4) ! No of bins for edge explorations
       CALL FoamB_SetEvPerBin(  25) ! No. of equiv. MC events per bin
       CALL FoamB_SetOptEdge(    0) ! OptEdge excludes vertices
