@@ -1,9 +1,9 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+      5000           NEVT number of events
       1000           NEVT number of events
        200           NEVT number of events
-        10           NEVT number of events
-      5000           NEVT number of events
     100000           NEVT number of events
+        10           NEVT number of events
          1           NEVT number of events
 ----------cccccccccccccccccccccccccccccommentttttttttttttttttttttttttttttttttttt
 BeginX
@@ -12,20 +12,23 @@ BeginX
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
-    1       7000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-    1       1000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1       7000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
 *     KeyWgt=0,1 to get constant,variable weight events
    10              1      KeyWgt=xpar(10) Deafault is 0
+   10              0      KeyWgt=xpar(10) Deafault is 0
 *       KeyELW=0,1 Type of Elewctroweak corrections, 
 * KeyElw=0, for primitive Born, is only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
    12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
    17            1d0      vvmax =xpar(17)  if 1d0 then reduced inside program
-   17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+** 17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+********************************************************************************
+**    EQD/EW bremsstrahlung flags/data
+   20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
+   21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
    25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
 *     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
    50              0      KeyHad=xpar(50)  Default is  1
