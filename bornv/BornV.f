@@ -410,7 +410,8 @@ C end
          Rho   = Rho   *m_x1/r1/alpha
          m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
          Rho = Rho   *m_x2/r2/alpha
-         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800
+***         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800
+         IF( m_vv .GT. m_vvmax ) GOTO 800
       ENDIF
       z1 = 1d0-m_x1
       z2 = 1d0-m_x2
@@ -428,10 +429,10 @@ C end
          SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
 ***      SF12 = Par(1) *m_x1**Par(3)               *Par(1) *m_x2**Par(3)    ! Truncated
 *[[[
-* Valence 2*u:   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
-* Valence d:     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
-* Sea quarks:    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
-        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)
+* Valence 2*x*u(x):   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
+* Valence x*d(x):     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
+* Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
+        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
 *]]]
       ENDIF
       Rho = Rho *SF12
