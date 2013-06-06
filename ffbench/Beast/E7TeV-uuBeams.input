@@ -1,7 +1,7 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+      1000           NEVT number of events
        200           NEVT number of events
         10           NEVT number of events
-      1000           NEVT number of events
       5000           NEVT number of events
     100000           NEVT number of events
          1           NEVT number of events
@@ -25,7 +25,7 @@ BeginX
    12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
    17            1d0      vvmax =xpar(17)  if 1d0 then reduced inside program
-   17         0.10d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
    25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
 *     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
    50              0      KeyHad=xpar(50)  Default is  1
