@@ -367,6 +367,9 @@ C end
       alpha =  0.40d0           ! beamsstrahl: x1**(alpha-1), alpha manualy adjusted
       alpha =  Par(3)+1d0
       beta  = -0.50d0           ! ISR crude is as (1-vv)**(-1.5)=(1-vv)**(beta-1)
+*[[[
+      alpha = 3.0+1.0
+*]]]
 *//////////////////////////////////////////////////////////////////////////////////////
       R    = xarg(1)
       r1   = xarg(2)
@@ -424,6 +427,12 @@ C end
 ***      SF12 = IRC_circee( z1, z2 )
          SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
 ***      SF12 = Par(1) *m_x1**Par(3)               *Par(1) *m_x2**Par(3)    ! Truncated
+*[[[
+* Valence 2*u:   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
+* Valence d:     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
+* Sea quarks:    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
+        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)
+*]]]
       ENDIF
       Rho = Rho *SF12
 
@@ -530,6 +539,9 @@ C end
          SF1 = 2d0 *Par(0) *Par(1) *m_x1**Par(3) *z1**Par(2)   ! the same as circee
       ENDIF
       Rho = Rho *SF1
+*[[[
+      Rho = 1d-20
+*]]]
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Born Xsection at s' =m_XXXene**2 *(1-vv) =m_CMSene**2 *(1-XX)
       BornV_RhoFoamB = Rho* BornV_Crude(m_vv)/(1d0-m_vv)
@@ -576,6 +588,9 @@ C end
       Rho = Rho*RJac
 *----------------------------------------
       Rho = Rho *IRC_circee(1d0,1d0)           !<-- implicit factor from circee 
+*[[[
+      Rho = 1d-20
+*]]]
 *----------------------------------------
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
       IF(m_KeyZet .EQ. -2) THEN   ! Artificial constant x-section for test runs
