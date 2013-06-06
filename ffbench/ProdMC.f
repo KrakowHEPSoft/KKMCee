@@ -120,7 +120,7 @@
 *   Control printouts
 *          CALL momprt(' YFSPRO ', 6,iev,1,10,pf1,pf2,qf1,qf2,nphot,sphot,KFfin)
 *          CALL dumpri('*momini*', 6,iev,1,10,xf1,xf2,nphox,xphot)
-          IF(iev .LE. 10) THEN
+          IF(iev .LE. 25) THEN
              CALL PYgive('MSTU(11)=16')
              CALL PYlist(1)
              CALL PYgive('MSTU(11)=6')
