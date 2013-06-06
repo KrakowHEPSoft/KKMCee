@@ -410,8 +410,11 @@ C end
          Rho   = Rho   *m_x1/r1/alpha
          m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
          Rho = Rho   *m_x2/r2/alpha
-***         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800
-         IF( m_vv .GT. m_vvmax ) GOTO 800
+***         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800  ! WRONG
+         IF( m_vv .GT. m_vvmax ) GOTO 800  ! vmax from input, the best to keep vmax=1
+         IF( m_x1 .GT. 0.99999 ) GOTO 800  ! cutting off extremely perigheral
+         IF( m_x2 .GT. 0.99999 ) GOTO 800  ! cutting off extremely perigheral
+         IF( m_CMSene*SQRT((1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2)) .LT. 1d0 ) GOTO 800  ! mass(Z)>1GeV
       ENDIF
       z1 = 1d0-m_x1
       z2 = 1d0-m_x2
