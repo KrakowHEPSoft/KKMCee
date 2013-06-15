@@ -8,6 +8,20 @@ do roku 2002go a potem jeszcze troche do 2005go.
 Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ====================================================================
 
+-------------------------------------------------------------------
+June. 10th, 2013
+Beamsstrahlung repleced by the product toy-model PDFs of 
+initial the q-qbar beams, see
+*[[[
+* Valence 2*x*u(x):   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
+* Valence x*d(x):     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
+* Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
+        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
+*]]]
+and the likes in BornV.f
+These patches can be commented out easily at any moment.
+More realistic PDFs will be installed and steered from the input data.
+
 ********************************************************************
 May. 27th, 2013        It is KKMC version 2.21
 Vers. 314 in svn repository /home/theory/svnroot/camtoph/KK-all-2012
