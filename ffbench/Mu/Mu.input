@@ -1,5 +1,5 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
-       100      NEVT number of events
+      1000      NEVT number of events
 ----------cccccccccccccccccccccccccccccommentttttttttttttttttttttttttttttttttttt
 
 BeginX
@@ -9,7 +9,6 @@ BeginX
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
     1        200.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 ********************************************************************************
 *     Define process
   413              1      KFfin, muon
