@@ -127,6 +127,8 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
       ip=ip+1
       CALL HepEvt_Fil1(ip,KStat,-KFfin, 3,3,0,0, qf2,amfin,.FALSE.) ! &&& parent=3
       CALL HepEvt_SetFbar(ip)
+* Finaly fill also LUND common block
+      CALL pyhepc(2)
 
       Etot= SQRT(ABS(Psum(4)**2 -Psum(3)**2 -Psum(2)**2 -Psum(1)**2))
 * Check on total 4-momentum conservation
@@ -135,9 +137,11 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
       ENDIF
       IF( ABS(Psum(4)/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.1d-4) THEN
          WRITE(*,*) '++++ HepEvt_Fill: something wrong with Psum(4)=',Psum(4)
+         WRITE(*,*) '++++ HepEvt_Fill: pf1(4)+pf2(4)+aph(4)+bph(4) =',pf1(4)+pf2(4)+aph(4)+bph(4)
+         CALL KK2f_Print1(6)
+         CALL PYgive('MSTU(11)=6')
+         CALL PYlist(1)
       ENDIF
-* Finaly fill also LUND common block
-      CALL pyhepc(2)
       END
 
 
