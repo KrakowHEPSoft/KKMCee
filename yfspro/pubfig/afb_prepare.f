@@ -45,11 +45,13 @@
       CALL GLK_SetNout(nout)
 
 ************************** 189 GeV **************************
+      Hname  = '../E91GeV/pro.hst'            ! current
+      Dname  = '../E91GeV/pro.input'          ! current
 c      Hname  = '../E189GeV/pro.hst'            ! current
 c      Dname  = '../E189GeV/pro.input'          ! current
 c
-      Dname  = '../E189GeV/E189GeV_DownBeam_30M.input' ! 2013
-      Hname  = '../E189GeV/E189GeV_DownBeam_30M.hst'   ! 2013
+c      Dname  = '../E189GeV/E189GeV_DownBeam_30M.input' ! 2013
+c      Hname  = '../E189GeV/E189GeV_DownBeam_30M.hst'   ! 2013
 c
 c      Dname  = '../E189GeV/E189GeV_UpBeam_23M.input' ! 2013
 c      Hname  = '../E189GeV/E189GeV_UpBeam_23M.hst'   ! 2013
