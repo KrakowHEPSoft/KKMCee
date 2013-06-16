@@ -239,12 +239,12 @@ export: Clean
 	(rm -rf    ./KK2f_$(VERS);    mkdir  ./KK2f_$(VERS) )
 ### user directory
 	(mkdir     ./KK2f_$(VERS)/ffbench )
-	(cp -pt  ./KK2f_$(VERS)/ffbench/ ../ffbench/*.f ../ffbench/*-*  )
+	(cp -pt  ./KK2f_$(VERS)/ffbench/  *.* *-*  KKMakefile)
 	(cp -prt ./KK2f_$(VERS)/ffbench/ \
-	    ../ffbench/demo/ ../ffbench/Mu ../ffbench/Tau     ../ffbench/Inclusive  \
-	    ../ffbench/Down  ../ffbench/Up ../ffbench/Botom   ../ffbench/demo_R \
-	    ../ffbench/Beast ../ffbench/Test ../ffbench/iniseed  \
-	    ../ffbench/Plots )
+	    ./demo/ ./Mu ./Tau     ./Inclusive  \
+	    ./Down  ./Up ./Botom   ./demo_R \
+	    ./Beast ./Test ./iniseed  \
+	    ./Plots )
 ### MC generator
 	(mkdir  ./KK2f_$(VERS)/KK2f;   cp -pt  ./KK2f_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
 	(mkdir  ./KK2f_$(VERS)/bornv;  cp -pt  ./KK2f_$(VERS)/bornv/  ../bornv/*.* )
