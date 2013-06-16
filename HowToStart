@@ -23,28 +23,28 @@ as for the detector simulation  (20min, Pentium III 500MHz)::
 OTHER DEMOS:
 Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events (19min)::
 	cp Inclusive/Inclusive.input.1k Inclusive/Inclusive.input
-	make Inclusive-start
+	kmake Inclusive-start
 	diff -b Inclusive/pro.output.1k Inclusive/pro.output | less
 
 Tau's, decays on, beam polarization on (8min)::
 	cp Tau/Tau.input.200ev Tau/Tau.input
-	make Tau-start
+	kmake Tau-start
 	diff -b Tau/pro.output.200ev Tau/pro.output | less
 
 Muons only, v<0.99, wt=1 events (5min)::
 	cp Mu/Mu.input,100ev,0.99vmax Mu/Mu.input
-	make Mu-start
+	kmake Mu-start
 	diff -b Mu/pro.output,100ev,0.99vmax Mu/pro.output | less
 
 Beamstrahlung at 500GeV, (21min.)
   cp Beast/Foam500,200ev.input Beast/Beast.input
-	make Beast-start
+	kmake Beast-start
 	diff -b Beast/Foam500,200ev.output Beast/pro.output | less
 
 Low energy resonances for gamma*, with proper experimental R (4min)
 Reguires CERNLIB, PAWLIB!
 	cp demo_R/demo_R_15GeV_100k.input demo_R/demo_R.input
-	make demo_R-start
+	kmake demo_R-start
 	diff -b demo_R/demo_R_15GeV_100k.output demo_R/demo.output  | less
 
 etc. etc.........
