@@ -5,7 +5,7 @@
 #  MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
 #       make -f KKMakefile makflag
 #       make -f KKMakefile makprod
-#  FFLAGS, F77, AR has to be the same as in ffbench/Makefile
+#  FFLAGS, F77, AR has to be the same as in ffbench/KKMakefile
 #-------------------------------------------------------------------------------
 #   make -f KKMakefile demo-start   <==  basic demonstration program
 #   make -f KKMakefile Mu-start
@@ -232,14 +232,33 @@ gtar: Clean
 	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
 	(cd ../../; chmod -w KK2f-all.tar.gz)
 #-----------------------------------------------------------------------
+#       make -i -f KKMakefile export
+#-----------------------------------------------------------------------
 VERS=v4_22
 export: Clean
-	(rm -rf   ./KK2f_$(VERS);  mkdir  ./KK2f_$(VERS) )
-	(mkdir    ./KK2f_$(VERS)/ffbench )
-	(cp -p  -t ./KK2f_$(VERS)/ffbench/  ../ffbench/*.f ../ffbench/*-*  )
-	(cp -pr -t ./KK2f_$(VERS)/ffbench/  ../ffbench/demo/)
-#	(rm -fr ./KK2f_$(VERS)/ffbench//demo/.svn/  )
-###
-	(mkdir    ./KK2f_$(VERS)/KK2f)
-	(cp -p -t ./KK2f_$(VERS)/KK2f/  ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
+	(rm -rf    ./KK2f_$(VERS);    mkdir  ./KK2f_$(VERS) )
+### user directory
+	(mkdir     ./KK2f_$(VERS)/ffbench )
+	(cp -pt  ./KK2f_$(VERS)/ffbench/ ../ffbench/*.f ../ffbench/*-*  )
+	(cp -prt ./KK2f_$(VERS)/ffbench/ \
+	    ../ffbench/demo/ ../ffbench/Mu ../ffbench/Tau     ../ffbench/Inclusive  \
+	    ../ffbench/Down  ../ffbench/Up ../ffbench/Botom   ../ffbench/demo_R \
+	    ../ffbench/Beast ../ffbench/Test ../ffbench/iniseed  \
+	    ../ffbench/Plots )
+### MC generator
+	(mkdir  ./KK2f_$(VERS)/KK2f;   cp -pt  ./KK2f_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
+	(mkdir  ./KK2f_$(VERS)/bornv;  cp -pt  ./KK2f_$(VERS)/bornv/  ../bornv/*.* )
+	      (cp -prt  ./KK2f_$(VERS)/bornv/  ../bornv/tabtest)
+	(mkdir  ./KK2f_$(VERS)/dizet;  cp -prt ./KK2f_$(VERS)/ ../dizet/ )
+	(mkdir  ./KK2f_$(VERS)/glibk;  cp -pt  ./KK2f_$(VERS)/glibk/  ../glibk/*.* )
+	(mkdir  ./KK2f_$(VERS)/jetset; cp -pt  ./KK2f_$(VERS)/jetset/ ../jetset/*.* )
+	(mkdir  ./KK2f_$(VERS)/tauola; cp -pt  ./KK2f_$(VERS)/tauola/ ../tauola/*.* )
+	(mkdir  ./KK2f_$(VERS)/photos; cp -pt  ./KK2f_$(VERS)/photos/ ../photos/*.* )
+	(mkdir  ./KK2f_$(VERS)/KKsem;  cp -pt  ./KK2f_$(VERS)/KKsem/  ../KKsem/*.* )
+### Main and miscelaneous
+	(mkdir  ./KK2f_$(VERS)/m4;  cp -prt ./KK2f_$(VERS)/ ../m4/ )
+	(cp -pt ./KK2f_$(VERS)/ ../* )
+### cleaning
+	(rm -f ./KK2f_$(VERS)/KKall12.kdevses ./KK2f_$(VERS)/ToBeDone ./KK2f_$(VERS)/*~ )
+	(find ./KK2f_v4_22 -name .svn -exec rm -r -f {} \; )
 #-----------------------------------------------------------------------
