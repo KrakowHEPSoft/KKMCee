@@ -4,6 +4,14 @@ If you are under Linux then proceed as below immediately.
 On other instalation change f77 options according to InstalationNotes.
 Manual is published in Comp. Phys. Commun. 130 (2000) 260.
 
+
+MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
+to make FFLAGS, F77, AR evwrywhere the same as in ffbench/KKMakefile
+  cd ./ffbench
+  alias make='make -f KKMakefile'
+  make makflag
+  make makprod
+
 BASIC DEMO:
 Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
 as for the detector simulation  (20min, Pentium III 500MHz)::
@@ -40,10 +48,6 @@ Reguires CERNLIB, PAWLIB!
 	diff -b demo_R/demo_R_15GeV_100k.output demo_R/demo.output  | less
 
 etc. etc.........
-Read more in ./ffbench/Makefile
+Read more in ./ffbench/KKMakefile
 
-N.B. for quick x-check:
-	cp demo/demo.input.QUICK demo/demo.input
-	make demo-start
-	diff demo/demo.output.QUICK demo/demo.output | less
 -------------------------------------------------------------------
