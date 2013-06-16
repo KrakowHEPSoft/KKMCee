@@ -260,5 +260,6 @@ export: Clean
 	(cp -pt ./KK2f_$(VERS)/ ../* ../.KK2f_defaults )
 ### cleaning
 	(rm -f ./KK2f_$(VERS)/KKall12.kdevses ./KK2f_$(VERS)/ToBeDone ./KK2f_$(VERS)/*~ )
-	(find ./KK2f_v4_22 -name .svn -exec rm -r -f {} \; )
+	(find  ./KK2f_$(VERS)/ -name .svn -exec rm -r -f {} \; )
+	(tar -cvzf KK2f_$(VERS).tgz ./KK2f_$(VERS) )
 #-----------------------------------------------------------------------
