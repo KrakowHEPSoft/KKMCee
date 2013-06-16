@@ -236,30 +236,30 @@ gtar: Clean
 #-----------------------------------------------------------------------
 VERS=v4_22
 export: Clean
-	(rm -rf    ./KK2f_$(VERS);    mkdir  ./KK2f_$(VERS) )
+	(rm -rf    ./KKMC_$(VERS);    mkdir  ./KKMC_$(VERS) )
 ### user directory
-	(mkdir     ./KK2f_$(VERS)/ffbench )
-	(cp -pt  ./KK2f_$(VERS)/ffbench/  *.* *-*  KKMakefile)
-	(cp -prt ./KK2f_$(VERS)/ffbench/ \
+	(mkdir     ./KKMC_$(VERS)/ffbench )
+	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
+	(cp -prt ./KKMC_$(VERS)/ffbench/ \
 	    ./demo/ ./Mu ./Tau     ./Inclusive  \
 	    ./Down  ./Up ./Botom   ./demo_R \
 	    ./Beast ./Test ./iniseed  \
 	    ./Plots )
 ### MC generator
-	(mkdir  ./KK2f_$(VERS)/KK2f;   cp -pt  ./KK2f_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
-	(mkdir  ./KK2f_$(VERS)/bornv;  cp -pt  ./KK2f_$(VERS)/bornv/  ../bornv/*.* )
-	      (cp -prt  ./KK2f_$(VERS)/bornv/  ../bornv/tabtest)
-	(mkdir  ./KK2f_$(VERS)/dizet;  cp -prt ./KK2f_$(VERS)/ ../dizet/ )
-	(mkdir  ./KK2f_$(VERS)/glibk;  cp -pt  ./KK2f_$(VERS)/glibk/  ../glibk/*.* )
-	(mkdir  ./KK2f_$(VERS)/jetset; cp -pt  ./KK2f_$(VERS)/jetset/ ../jetset/*.* )
-	(mkdir  ./KK2f_$(VERS)/tauola; cp -pt  ./KK2f_$(VERS)/tauola/ ../tauola/*.* )
-	(mkdir  ./KK2f_$(VERS)/photos; cp -pt  ./KK2f_$(VERS)/photos/ ../photos/*.* )
-	(mkdir  ./KK2f_$(VERS)/KKsem;  cp -pt  ./KK2f_$(VERS)/KKsem/  ../KKsem/*.* )
+	(mkdir  ./KKMC_$(VERS)/KK2f;   cp -pt  ./KKMC_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
+	(mkdir  ./KKMC_$(VERS)/bornv;  cp -pt  ./KKMC_$(VERS)/bornv/  ../bornv/*.* )
+	      (cp -prt  ./KKMC_$(VERS)/bornv/  ../bornv/tabtest)
+	(mkdir  ./KKMC_$(VERS)/dizet;  cp -prt ./KKMC_$(VERS)/ ../dizet/ )
+	(mkdir  ./KKMC_$(VERS)/glibk;  cp -pt  ./KKMC_$(VERS)/glibk/  ../glibk/*.* )
+	(mkdir  ./KKMC_$(VERS)/jetset; cp -pt  ./KKMC_$(VERS)/jetset/ ../jetset/*.* )
+	(mkdir  ./KKMC_$(VERS)/tauola; cp -pt  ./KKMC_$(VERS)/tauola/ ../tauola/*.* )
+	(mkdir  ./KKMC_$(VERS)/photos; cp -pt  ./KKMC_$(VERS)/photos/ ../photos/*.* )
+	(mkdir  ./KKMC_$(VERS)/KKsem;  cp -pt  ./KKMC_$(VERS)/KKsem/  ../KKsem/*.* )
 ### Main and miscelaneous
-	(mkdir  ./KK2f_$(VERS)/m4;  cp -prt ./KK2f_$(VERS)/ ../m4/ )
-	(cp -pt ./KK2f_$(VERS)/ ../* ../.KK2f_defaults )
+	(mkdir  ./KKMC_$(VERS)/m4;  cp -prt ./KKMC_$(VERS)/ ../m4/ )
+	(cp -pt ./KKMC_$(VERS)/ ../* ../.KK2f_defaults )
 ### cleaning
-	(rm -f ./KK2f_$(VERS)/KKall12.kdevses ./KK2f_$(VERS)/ToBeDone ./KK2f_$(VERS)/*~ )
-	(find  ./KK2f_$(VERS)/ -name .svn -exec rm -r -f {} \; )
-	(tar -cvzf KK2f_$(VERS).tgz ./KK2f_$(VERS) )
+	(rm -f ./KKMC_$(VERS)/KKall12.kdevses ./KKMC_$(VERS)/ToBeDone ./KKMC_$(VERS)/*~ )
+	(find  ./KKMC_$(VERS)/ -name .svn -exec rm -r -f {} \; )
+	(tar -cvzf ./KKMC_$(VERS).tgz ./KKMC_$(VERS) )
 #-----------------------------------------------------------------------
