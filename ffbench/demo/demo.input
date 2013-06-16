@@ -1,5 +1,5 @@
 ********************** THIS IS INPUT FILE FOR DEMO PROGRAM *********************
-        20      NEVT number of events   <- Input for the main program
+      1000      NEVT number of events   <- Input for the main program
 ----------cccccccccccccccccccccccccccccommenttttttttttttttttttttttttttttttttttt
 
 BeginX

@@ -225,9 +225,21 @@ Clean:
 	(cd ../photos;	$(MAKE) clean)
 	(cd ../bornv;	  $(MAKE) clean)
 	(cd ../dizet;	  $(MAKE) clean)
-	(cd ../bornv/tabtest; make clean)
+	(cd ../bornv/tabtest; $(MAKE) clean)
+	(cd ../KKsem;	  $(MAKE) clean)
 #-----------------------------------------------------------------------
 gtar: Clean
 	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
 	(cd ../../; chmod -w KK2f-all.tar.gz)
+#-----------------------------------------------------------------------
+VERS=v4_22
+export: Clean
+	(rm -rf   ./KK2f_$(VERS);  mkdir  ./KK2f_$(VERS) )
+	(mkdir    ./KK2f_$(VERS)/ffbench )
+	(cp -p  -t ./KK2f_$(VERS)/ffbench/  ../ffbench/*.f ../ffbench/*-*  )
+	(cp -pr -t ./KK2f_$(VERS)/ffbench/  ../ffbench/demo/)
+#	(rm -fr ./KK2f_$(VERS)/ffbench//demo/.svn/  )
+###
+	(mkdir    ./KK2f_$(VERS)/KK2f)
+	(cp -p -t ./KK2f_$(VERS)/KK2f/  ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
 #-----------------------------------------------------------------------
