@@ -8,16 +8,16 @@ Manual is published in Comp. Phys. Commun. 130 (2000) 260.
 MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
 to make FFLAGS, F77, AR evwrywhere the same as in ffbench/KKMakefile
   cd ./ffbench
-  alias make='make -f KKMakefile'
-  make makflag
-  make makprod
+  alias kmake='make -f KKMakefile'
+  kmake makflag
+  kmake makprod
 
 BASIC DEMO:
 Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
 as for the detector simulation  (20min, Pentium III 500MHz)::
 	cd  ./ffbench
 	cp demo/demo.input.1k demo/demo.input
-	make demo-start
+	kmake demo-start
 	diff -b demo/demo.output.1k demo/demo.output | less
 
 OTHER DEMOS:
