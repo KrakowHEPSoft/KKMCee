@@ -257,7 +257,7 @@ export: Clean
 	(mkdir  ./KK2f_$(VERS)/KKsem;  cp -pt  ./KK2f_$(VERS)/KKsem/  ../KKsem/*.* )
 ### Main and miscelaneous
 	(mkdir  ./KK2f_$(VERS)/m4;  cp -prt ./KK2f_$(VERS)/ ../m4/ )
-	(cp -pt ./KK2f_$(VERS)/ ../* )
+	(cp -pt ./KK2f_$(VERS)/ ../* ../.KK2f_defaults )
 ### cleaning
 	(rm -f ./KK2f_$(VERS)/KKall12.kdevses ./KK2f_$(VERS)/ToBeDone ./KK2f_$(VERS)/*~ )
 	(find ./KK2f_v4_22 -name .svn -exec rm -r -f {} \; )
