@@ -45,10 +45,10 @@
       CALL GLK_SetNout(nout)
 
 ************************** 189 GeV **************************
-      Hname  = '../E91GeV/pro.hst'            ! current
-      Dname  = '../E91GeV/pro.input'          ! current
-c      Hname  = '../E189GeV/pro.hst'            ! current
-c      Dname  = '../E189GeV/pro.input'          ! current
+c      Hname  = '../E91GeV/pro.hst'            ! current
+c      Dname  = '../E91GeV/pro.input'          ! current
+      Hname  = '../E189GeV/pro.hst'            ! current
+      Dname  = '../E189GeV/pro.input'          ! current
 c
 c      Dname  = '../E189GeV/E189GeV_DownBeam_30M.input' ! 2013
 c      Hname  = '../E189GeV/E189GeV_DownBeam_30M.hst'   ! 2013
@@ -163,6 +163,8 @@ c      Hname  = '../E91GeV/pro.hst'        !!! Actual
         WRITE(23,'(a)')   '\\def\\Process{$d \\bar{d} \\to \\mu^-\\mu^+$} '
       ELSE IF (KFbeam .EQ. 2) THEN
         WRITE(23,'(a)')   '\\def\\Process{$u \\bar{u} \\to \\mu^-\\mu^+$} '
+      ELSE IF (KFbeam .EQ. 13) THEN
+        WRITE(23,'(a)')   '\\def\\Process{$ \\mu^- \\mu^+ \\to e^- e^+$} '
       ENDIF
       CLOSE(23)
 *********************************************
