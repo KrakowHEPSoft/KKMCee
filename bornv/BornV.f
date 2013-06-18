@@ -1383,8 +1383,15 @@ c]]]]]]]]]]]]]
             m_QCDcorR(kk)=m_slc( i,kk,KFf)*(1-h) +m_slc(i+1,kk,KFf)*h
          ENDDO
       ELSE
-         PRINT *,'STOP in BornV_InterpoGSW: s out of predefined range, ww=', ww
-         STOP
+***         PRINT *,'STOP in BornV_InterpoGSW: s out of predefined range, ww=', ww
+         PRINT *,'BornV_InterpoGSW WARNING: s out of predefined range, ww=', ww
+         DO kk=1,m_poinG
+            m_GSW(kk) = 0d0
+         ENDDO
+         DO kk=1,m_poinQ
+            m_QCDcorR(kk)= 0d0
+         ENDDO
+***         STOP
       ENDIF
       m_QCDcor = m_QCDcorR(1)-1d0 ! <--- obsolete!!!
       END                        !BornV_GetGSW
