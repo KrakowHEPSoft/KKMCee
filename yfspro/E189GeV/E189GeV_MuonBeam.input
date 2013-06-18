@@ -34,6 +34,7 @@ BeginX
 **400             11      KFini = xpar(400) dont change it                |<<<<|
   400             13      KFini = xpar(400) muon beam !!!
 *      Define final fermion
-  413              1      KFfin, muon
+* 413              1      KFfin, muon
+  411              1      KFfin, final electron!
 ********************************************************************************
 EndX
