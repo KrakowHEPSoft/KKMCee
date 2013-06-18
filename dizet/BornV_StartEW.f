@@ -66,6 +66,11 @@
                WRITE(m_out,*) '=========== BornV_StartDZ: e   neutrino ========='
                CALL DZface_Initialize( KFfin, xpar)
                CALL DZface_Tabluj
+            ELSEIF(KFfin .EQ. KFel)  THEN 
+               WRITE(    *,*) '=========== BornV_StartDZ: e- lepton ==========='
+               WRITE(m_out,*) '=========== BornV_StartDZ: e- lepton ==========='
+               CALL DZface_Initialize( KFfin, xpar)
+               CALL DZface_Tabluj
             ELSEIF(KFfin .EQ. KFmu)  THEN 
                WRITE(    *,*) '=========== BornV_StartDZ: MU lepton ==========='
                WRITE(m_out,*) '=========== BornV_StartDZ: MU lepton ==========='
