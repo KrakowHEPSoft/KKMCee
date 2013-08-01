@@ -1,4 +1,4 @@
-INCLUDES = 
+
 METASOURCES = AUTO
 bin_PROGRAMS = figinc figbeast
 
@@ -20,3 +20,4 @@ figinc-run: figinc
 figinc-pdf: figinc-run
 	(pdflatex figinc.tex; kpdf figinc.pdf&)
 #----------------------------------------------------------------------
+AM_FFLAGS = @MY_F77_FLAGS@

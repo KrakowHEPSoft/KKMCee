@@ -1,4 +1,4 @@
-INCLUDES = 
+
 METASOURCES = AUTO
 
 bin_PROGRAMS = chi_prepare chi_mcan afb_prepare afb_int delmu delmu_plot delhad bornex
@@ -154,3 +154,4 @@ myclean: clean
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap)
 	(rm -f *.txp chi afb output-* *.hst *.data)
 #-----------------------------------------------------------------------------
+AM_FFLAGS = @MY_F77_FLAGS@

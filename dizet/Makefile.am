@@ -1,4 +1,4 @@
-INCLUDES = 
+
 METASOURCES = AUTO
 lib_LIBRARIES = libDizet.a
 libDizet_a_SOURCES = bcqcdl5_14.f bkqcdl5_14.f BornV_StartEW.f dizet6_21.f\
@@ -144,3 +144,4 @@ Clean:	clean
 	(cd ../bornv; make clean)
 #####################################################################
 #####################################################################
+AM_FFLAGS = @MY_F77_FLAGS@

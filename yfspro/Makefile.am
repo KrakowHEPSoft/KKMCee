@@ -1,4 +1,4 @@
-INCLUDES = 
+
 METASOURCES = AUTO
 bin_PROGRAMS = yfspro
 yfspro_SOURCES = yfspro.f
@@ -157,3 +157,4 @@ makprod:
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix91#'  -e 's#<class>#8nh#' ./makefile.production > ./mix91/makefile)
 	(sed -e 's#<main>#yfspro#' -e 's#<dset>#mix200#' -e 's#<class>#8nh#' ./makefile.production > ./mix200/makefile)
 #----------------------------------- end oldies ----------------------
+AM_FFLAGS = @MY_F77_FLAGS@

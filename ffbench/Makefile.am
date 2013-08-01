@@ -1,4 +1,4 @@
-INCLUDES = 
+
 METASOURCES = AUTO
 bin_PROGRAMS = DEMO ProdMC
 
@@ -98,3 +98,4 @@ makprod:
 	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/makefile)
 	(sed -e 's#<main>#ProdMC#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/makefile)
 #######################################################################
+AM_FFLAGS = @MY_F77_FLAGS@
