@@ -11,6 +11,8 @@ Test_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
 Test_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 SUBDIRS = test0 Plots
 
+AM_FFLAGS = @MY_F77_FLAGS@
+
 ########################################################################
 ###                   USER PART
 ###  make test0-start
