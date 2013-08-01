@@ -6,9 +6,4 @@ libKK2f_a_SOURCES = KK2f.f KarLud.f   YFSini2.f \
   PseuMar.f  HepEvt.f   KinLib.f   ReaData.f \
   Taupair.f  Tauface.f  RRes.f
 
-
-
-
-
-
-
+AM_FFLAGS = @MY_F77_FLAGS@
