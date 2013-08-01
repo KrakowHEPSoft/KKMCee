@@ -47,3 +47,4 @@ demoC-cont:
 makprod:
 	(sed -e 's#<main>#MainP#'  -e 's#<dset>#demoC#' -e 's#<class>#8nh#' ./makefile.production > ./demoC/makefile)
 #######################################################################
+AM_FFLAGS = @MY_F77_FLAGS@
