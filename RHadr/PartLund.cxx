@@ -24,9 +24,11 @@
 # define sw2 setprecision(10) << setw(18)
 
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <iomanip.h>
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
 
 #include "PartLund.h"
 

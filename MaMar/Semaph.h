@@ -16,6 +16,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "TROOT.h"
 
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
 
 //class Semaph : public TNamed {
 class Semaph{

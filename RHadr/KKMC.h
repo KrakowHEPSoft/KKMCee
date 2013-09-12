@@ -8,9 +8,12 @@
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <iomanip.h>
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
 
 #include "TLorentzVector.h"
 #include "PartLund.h"

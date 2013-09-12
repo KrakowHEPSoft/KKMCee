@@ -11,9 +11,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 // C++ headers
 #include <stdlib.h>
-#include <fstream.h>
-#include <iomanip.h>
-#include <iostream.h>
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
 #include <math.h>
 // ROOT headers
 #include "TROOT.h"

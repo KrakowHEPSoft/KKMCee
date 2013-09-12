@@ -7,7 +7,14 @@
 //   Interface (wrapper)  to KKsem package for semi-analytical programs     //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-#include <iomanip.h>
+#include<stdlib.h>
+#include<stdio.h>
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
 #include "TROOT.h"
 #include "TFile.h"
 #include "TH1.h"

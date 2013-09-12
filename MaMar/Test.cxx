@@ -10,10 +10,12 @@
 // NGroup variable decides how often events are dumped on the disk.
 ///////////////////////////////////////////////////////////////////////////////
 // C++ headers
-#include <stdlib.h>
-#include <fstream.h>
-#include <iomanip.h>
-#include <iostream.h>
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+using namespace std;
+
 #include <math.h>
 // ROOT headers
 #include "TROOT.h"

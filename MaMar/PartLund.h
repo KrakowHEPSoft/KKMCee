@@ -7,6 +7,11 @@
 // It can be also string, jet, initial beam etc.                            //
 //////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
 #include "TObject.h"
 
 #include "TLorentzVector.h"

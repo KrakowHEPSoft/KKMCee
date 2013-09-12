@@ -23,11 +23,6 @@
 # define sw1 setw(7)
 # define sw2 setprecision(10) << setw(18)
 
-#include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <iomanip.h>
-
 #include "PartLund.h"
 
 //ClassImp(PartLund)

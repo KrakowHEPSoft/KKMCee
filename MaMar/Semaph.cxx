@@ -14,9 +14,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <stdlib.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <iomanip.h>
 
 #include "TROOT.h"
 
