@@ -138,12 +138,173 @@ tau lepton decays: hadronic currents from data of  Belle and BaBar and new physi
 \frametitle{Abstract (plan of the talk)}
 %\framesubtitle{Mission statement}
 
-I shall talk on....
+\footnotesize
+I shall talk on the present status of KKMC and
+new options in version 4.22 with respect to older vers. 4.19 and 4.16 (CPC),
+posted on  http://jadach.web.cern.ch/jadach/KKindex.html:
+
+  - possibility of simulating quark beams, q+qbar -> l+lbar +photons, l=e,mu,tau, tau->X
+  
+  - q and qbar may have longitudinal mometum spread according to arbitrary PDFs, but zero kT.
+  
+(i) I was pointing out that QED effects fo q+qbar -> l+lbar process are the best, 
+ and nobody can match its quality  without re-investing 10 man-years of work.
+ 
+(ii) Spin effects, correlations  (needed for taus) are implemented in a full form 
+
+  (including transverse correlations.)
+(iii) Photos and Tauola are interfaced, albeit old versions are in the above code.
+
+Next, I was trying to summarize for what KKMC can be useful in the LHC data analysis,
+without major developments beyond the existing code:
+
+- testing/calibrating Photos for FSR in leptonic decays of
+  is an obvious thing and Zbyszek Was is doing this all the time...
+  
+- studies/estimations of ISR-FSR interferences in q+qbar->Z/->l+lbar data
+
+- Electroweak+QCD corrections in the overall normalization for Z production.
+
+- Spin correlations in Z->tau+tau, already done by Zbyszek
+
+- what else???? Any new ideas????
 
 \end{frame}
 %----------------------------------------------------------------------
 
 
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+
+\small
+The discussion has concentrated mainly on the above points, however,
+I have also very briefly indicated in which directions one could improve
+QCD correction for the incoming beams.
+
+In this case the upper level of KKMC would be replaced by C++ code,
+which is already in place in some simple form.
+
+The extension to q+qbar->W->l+nu is thinkable, but would require
+update of the QED matrix element (EW corrs. seems to be ok)
+
+NB. W exchange for t-channel is already there and could be exploited.
+I have also mentioned work done by Bennie Ward and Scott Yost.
+
+The bottom line in the discussion was:\\
+Let us exploit the existing KKMC as much as we can for LHC
+and any new idea in this direction is welcome!!!
+\end{frame}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+\small
+I would suggest to use version number wherever possible, a
+nd more citations to related papers should be added.
+First citation [16] of the KKMC version published in CPC is OK,
+but quoting more precisely "KKMC version 4.13" would be better.
+Moreover, the cited paper [16] in CPC contains technical description of KKMC 4.13 only,
+and all physics content of KKMC v.4.13, more relevant for the discussion here,
+is described in Phys. Rev. D63 (2001) 113009, so it should also be cited.
+
+"(Although these corrections were implemented in a private version
+of the program used in [20].)"
+This is correct, but the description of the NNLO corrections to KKMC matrix element
+relevant for THIS paper is in fact the other paper published
+in parallel to ref. [20], hence:
+\end{frame}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+\small
+The paper S.A. Yost et.al. Acta Phys.Polon. B36 (2005) 2379-2386 should be cited along with [20]
+Moreover, NNLO corrections in [20] and inthis paper are shown in numerical form only,
+The complete "algebraic" description of the NNLO formulas has been
+published later on, in Phys.Rev. D73 (2006) 073001, so I recommend to cite it also.
+(an extension of the previous work in Phys.Rev. D65 (2002) 073030 --
+citation of this paper is my suggestion only, not recommendation.).
+Unfortunately KKMC with complete NNLO corrections is not yet public.
+Nevertheless the above related works would be helpful for the reader.
+\end{frame}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+\small
+"Furthermore, the present version of the program is restricted to leptonic final states
+and thus cannot serve for the analysis of the multitude of hadronic states mentioned above"
+is not very precise. It is better to say:
+"the above version 4.13 of the KKMC program...".
+However, even this statement is still not precise,
+because the restriction to leptonic states is only true for KKMC version 4.13
+More precisely, in the unpublished (but public) version 4.16 of KKMC, posted since 2002 on
+http://jadach.web.cern.ch/jadach/KKindex.html
+implements a multitude of the final multipion resonances and nonresonant background,
+albeit with not so very high quality of the decay simulation,
+and with the QED ISR matrix element limited to NLO.
+My suggestion is to mention this version 4.16 of KKMC at this point,
+for instance in the footnote or in the literature.
+\end{frame}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+\footnotesize
+KKMC Monte Carlo for fermion pair production at electron-positron collision. 
+Source code is below:
+
+Production Version 4.16, October 30-th, 2001,  
+KKMC-v.4.16d-export.tar.gz Improved nu-nu. RRes for gamma* --> narrow resonances, NEW!
+
+Developement Version 4.19, September  27-th, 2002,  
+KKMC-v.4.19.b-export.tar.gz Improved  RRes for low energy colliders, 
+C++ wrapper and corrected nu-nu matrix element. 
+ISR with complete NLL corrections, Phys.Rev. D65(2002)073030 by S.J., M.Mells, B.F.L.Ward and S.A. Yost
+
+Developement Version 4.22, June  15-th, 2013,  
+KKMC\_v4\_22.tgz Tested mu+mu- and q-qbar beams (instead of e+e-) at fixed energy. 
+Moreover, q-qbar collinear PDFs instead of beamstrahlung 
+as a patch in the source code (temporary solution)
+
+The precision Monte Carlo event generator KK for two-fermion final  states in e+ e- collisions,  
+Comput. Phys. Commun. 130 (2000) 260, hep-ph/9912214.
+
+Coherent exclusive exponentiation for precision Monte Carlo  calculations,  
+Phys. Rev. D63 (2001) 113009, hep-ph/0006359
+
+\end{frame}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+Summary of KK features in comparison with KORALZ   and KORALB
+Physical and technical precision for Born-like process and Z radiative return  EEX ,  200GeV
+Charge asymmetry , angular distributions, and  total cross section     at 189GeV,  CEEX versus KORALZ
+Charge asymmetry , angular distributions, and  total cross section     at 120GeV,  CEEX versus KORALZ
+Charge asymmetry , angular distributions, and  total cross section     at  Z mass,  CEEX versus KORALZ
+Charge asymmetry and  total cross section     at 500GeV,  CEEX only
+ISR*FSR  contribution to total cross section   close to Z mass (LEP1) for leptons and quarks,  CEEX
+
+\end{frame}
+%----------------------------------------------------------------------
 
 
 \end{document}
@@ -151,5 +312,14 @@ I shall talk on....
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Abstract (plan of the talk)}
+%\framesubtitle{Mission statement}
+...
+\end{frame}
+%----------------------------------------------------------------------
 
 
