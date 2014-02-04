@@ -1,0 +1,21 @@
+This directory was originally for studies of the
+mu-pair production process at BaBar experiment (2002).
+
+Similarly as in RHadr subrojest, main program level (histogrammin, plotting)
+written in C++, interface to fortran level through standar wrappers.
+
+Make system is organized using autotolls.
+
+This original setup includes main program ./Test.cxx,
+histogramming in ROBOL.cxx, wrappers in KKMC.cxx,
+work directory ./test0 and Plots/Plot1.cxx for plotting.
+
+-------------------------------------------------------------------------
+Presently (febr. 2014), production chain for nu+nu+gamma 
+channel is added with:
+- main program Main2.cxx
+- histogramming in ROBOL2.cxx
+- work directory ./test2 and 
+- Plots/Plot2.cxx for plotting
+
+-------------------------------------------------------------------------

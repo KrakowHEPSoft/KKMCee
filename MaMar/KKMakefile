@@ -1,3 +1,4 @@
+# Obsolete?!?! use instead ./Test executable produced by autotools
 #===============================================================================
 #  make -f KKMakefile test0-start	<==  basic production progr.
 #  make -f KKMakefile test0-stop
