@@ -1,0 +1,17 @@
+#!/bin/csh
+set echo
+#|-----------------------------------------------------------------
+#| by S. Jadach. Jan. 95
+#| This script STOPS series of jobs
+#| on the computer farm (SP-2)
+#| It is invoked like that:
+#|              farm-stop prod2 "1 2 3 4 5 6"
+#|-----------------------------------------------------------------
+set   farmdir=$PWD/farm
+#|-----------------------------------------------------------------
+foreach i ( $2 )
+     mv $farmdir/$i/semaphore $farmdir/$i/semaphore.bak
+     cp ../semaphore.stop $farmdir/$i/semaphore
+end
+exit 0
+ 
