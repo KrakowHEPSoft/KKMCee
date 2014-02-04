@@ -23,7 +23,7 @@ using namespace std;
 #include "TH1.h"
 // OUR headers
 #include "Semaph.h"
-#include "ROBOL.h"
+#include "ROBOL2.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
@@ -44,7 +44,7 @@ main()
   cout << "   |  DemoC    Entering | <<endl<<flush" ;
   cout << "   |--------------------| <<endl<<flush" ;
 
-  ROBOL Robol; // define main Maker (SuperFactory)
+  ROBOL2 Robol; // define main Maker (SuperFactory)
   ////////////
 
   ///////////////////////////////////////////////////////////////////////
