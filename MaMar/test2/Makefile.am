@@ -4,8 +4,8 @@ METASOURCES = AUTO
 #-----------------------------------------------------------------------
 #       Template for makefile in production directory demo
 #-----------------------------------------------------------------------
-MAIN=Test
-DSET=test0
+MAIN=Main2
+DSET=test2
 CLASS=long
 #-----------------------------------------------------------------------
 SRCLIST= "../ ../../yfslib ../../bornv ../../glibk ../../KK2f"
