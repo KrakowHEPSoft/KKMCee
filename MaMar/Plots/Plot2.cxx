@@ -27,11 +27,7 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
-//TFile DiskFileA("../test0/rmain.root_CEEX.31M"); /// new
-//TFile DiskFileA("../test0/rmain.root.2.5M"); // KeyElw=0
-//TFile DiskFileA("../test0/rmain.root.6M.EW"); // KeyElw=1
-TFile DiskFileA("../test0/rmain.root");
-TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
+TFile DiskFileA("../test2/rmain.root");
 //=============================================================================
 
 Double_t sqr( const Double_t x ){ return x*x;};
@@ -143,9 +139,6 @@ int main(int argc, char **argv)
   FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
-  DiskFileB.ls();
-  DiskFileB.Write();
-  DiskFileB.Close();
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
