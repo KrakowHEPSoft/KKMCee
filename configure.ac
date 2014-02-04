@@ -48,6 +48,6 @@ photos/Makefile  \
 KKsem/Makefile \
 ffbench/Makefile ffbench/Plots/Makefile \
 yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
-MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile \
+MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/test2/Makefile \
 RHadr/Makefile RHadr/Plots/Makefile \
 )
