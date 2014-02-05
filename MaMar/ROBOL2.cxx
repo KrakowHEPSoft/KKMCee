@@ -52,22 +52,26 @@ void ROBOL2::Initialize(long &NevTot)
   hst_nPhVis  = new TH1D("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
   hst_nPhAll->Sumw2();
   hst_nPhVis->Sumw2();
+  ///
   int nbv =50;
   hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
   hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vAlepCeex2= new TH1D("hst_vAlepCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
   hst_vXGenCeex2= new TH1D("hst_vXGenCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
   hst_vTrueMain->Sumw2();
   hst_vTrueCeex2->Sumw2();
-  hst_vAlepCeex2->Sumw2();
   hst_vXGenCeex2->Sumw2();
+
+  hst_vPhotMain= new TH1D("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vPhotMain->Sumw2();
+  ///
   int nbc =50;
-  hst_Cost1Ceex2= new TH1D("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
   hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
-  hst_CosPRCeex2= new TH1D("hst_CosPRCeex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_Cost1Ceex2->Sumw2();
   hst_CosPLCeex2->Sumw2();
-  hst_CosPRCeex2->Sumw2();
+  // ln10(sin(theta))
+  hst_LnThPhAll = new TH1D("hst_LnThPhAll", "ln10(sin(theta)) all phot.",  60, -6.0 ,0.0);
+  hst_LnThPhVis = new TH1D("hst_LnThPhVis", "ln10(sin(theta)) vis. phot.", 60, -6.0 ,0.0);
+  hst_LnThPhAll->Sumw2();
+  hst_LnThPhVis->Sumw2();
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
@@ -126,67 +130,52 @@ void ROBOL2::Production(long &iEvent)
   double s  =(m_pbea1+m_pbea2)*(m_pbea1+m_pbea2);
   double s1 =(m_pfer1+m_pfer2)*(m_pfer1+m_pfer2);
   double CMSene = sqrt(s);
+  double Ebeam  = CMSene/2;
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
   // ********************************************************************
   // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
   double Pi=4*atan(1.0);
-  double phEne,phTheta,phCosth;
-  double XEnePho  = 0.010;              // Emin for visible photom
+  double phEne,phTheta,phCosth,phPT,yy;
+  double XEneMin = 0.20;  /// Emin for visible photon
+  double XTraMin = 0.05;  /// kTmin for visible photon
+  double ThetaMin = 15;                   /// theta minimum  for visible photon
+  int nph_vis=0;  /// No. of visible (triggered) photons
+  double phEneVis = 0;  /// Energy of triggered photon
+  int TrigPho=1;  /// =1 for accepted, =0 for rejected
   //**************************************************
-  // Loop over photons, just in case
+  /// Loop over photons
   //**************************************************
-  int nph_ene=0;
   for(iphot=0;iphot<m_Nphot;iphot++){
     phEne   = m_phot[iphot].Energy();
     phCosth = m_phot[iphot].CosTheta();
     phTheta = m_phot[iphot].Theta()*180/Pi;
-    if(phEne>XEnePho){
-      nph_ene++;
-    }
+    phPT    = m_phot[iphot].Pt();
+    if( phEne < XEneMin*CMSene/2 ) TrigPho=0;
+    if( phPT  < XTraMin*CMSene/2 ) TrigPho=0;
+    if( phTheta < ThetaMin       ) TrigPho=0;
+    if( phTheta > (180-ThetaMin) ) TrigPho=0;
+    if( TrigPho)  nph_vis++;
+    if( TrigPho)  phEneVis=phEne;
+    /// histogramming, inclusive
+    hst_LnThPhAll->Fill( log10(phPT/phEne), WtMain);
+    if( TrigPho)  hst_LnThPhVis->Fill( log10(phPT/phEne), WtMain);
   }
-  //********************************************************************
-  // Muon trigger, it is not realy necessary if MC ir run for mu only
-  //********************************************************************
-  int TrigMu  = 0;
-  // find muons, excluding muons from phi decays!!!
-  long jMu1 =PartFindStable( 13);    // fortran numbering!!!
-  long jMu2 =PartFindStable(-13);    // fortran numbering!!!
-  m_pMu1  = m_Event[jMu1-1].fMom;    // fortran numbering!!!
-  m_pMu2  = m_Event[jMu2-1].fMom;    // fortran numbering!!!
-  long par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
-  long par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
-  if( (jMu1*jMu1)  && (par1 == par2) && (par1 == 3) ) TrigMu  = 1; // exclude backgr.
-  //**************************************************************
-  if( TrigMu && (m_count1<17) ){
-    m_count1++;
-    cout<<"**************************>>> two muons <<<****************************"<<endl;
-    KKMC_generator->PyList(2);      
-  }
-  // muons,  vv, Q^2 costheta, etc
-  double CosThe1 = m_pMu1.CosTheta();
-  double Theta1  = m_pMu1.Theta();
-  double E1      = m_pMu1.Energy();
-  double CosThe2 = m_pMu2.CosTheta();
-  double Theta2  = m_pMu2.Theta();
-  double E2      = m_pMu2.Energy();
-  double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph;
+  /// triggered photon, only single photon counts
+  if(  nph_vis > 0 )hst_nPhVis->Fill(  nph_vis,WtMain);
+  double vPhot = phEneVis/Ebeam;
+  if( nph_vis == 1 ) hst_vPhotMain->Fill( vPhot, WtMain);
+
+  /// final fermions,  vv, Q^2 costheta, etc
+  double CosThe1 = m_pfer1.CosTheta();
+  double Theta1  = m_pfer1.Theta();
+  double E1      = m_pfer1.Energy();
+  double CosThe2 = m_pfer2.CosTheta();
+  double Theta2  = m_pfer2.Theta();
+  double E2      = m_pfer2.Energy();
 //--------------------------------------------------------------------
-//* Various definitions of Theta and s-propagator
-//*--------------------------------------------------------------------
-//** definition of P.L. B219, 103 (1989)
-  CosThePL = ( E1*CosThe1 -E2*CosThe2)/(E1+E2);
-//* definition of P.R. D41, 1425 (1990)
-  SinThe1 = sqrt(fabs((1-CosThe1)*(1+CosThe1)));
-  SinThe2 = sqrt(fabs((1-CosThe2)*(1+CosThe2)));
-  yy1 = SinThe2/(SinThe1+SinThe2);
-  yy2 = SinThe1/(SinThe1+SinThe2);
-  CosPRD = yy1*CosThe1 - yy2*CosThe2;
-//*-------------------------------
-//* LL formula for s'/s from angles according to ALEPH note 1996
-  zAleph =  (sin(Theta1)+sin(Theta2) -fabs(sin(Theta1+Theta2)))
-            /(sin(Theta1)+sin(Theta2) +fabs(sin(Theta1+Theta2)));
-  s1Aleph  = s*zAleph;
+//** definition cos(theta) of P.L. B219, 103 (1989)
+  double CosThePL = ( E1*CosThe1 -E2*CosThe2)/(E1+E2);
   //
   double vvk,x1,x2;
   karlud_getvvxx_(vvk,x1,x2);
@@ -200,17 +189,11 @@ void ROBOL2::Production(long &iEvent)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
   //
   hst_nPhAll->Fill(  m_Nphot,WtMain);
-  hst_nPhVis->Fill(  nph_ene,WtMain);
   hst_vTrueMain->Fill(       vv, WtMain);
   hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
-  hst_vAlepCeex2->Fill(1-zAleph, WtCEEX2); // M^star guessed
   hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
   //
-  if(vv<0.9){
-    hst_Cost1Ceex2->Fill( CosThe1, WtCEEX2);
-    hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);
-    hst_CosPRCeex2->Fill(  CosPRD, WtCEEX2);
-  }
+  if(vv<0.9){ hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
@@ -220,9 +203,9 @@ void ROBOL2::Production(long &iEvent)
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
-    cout<< "vv, 1-zAleph    = "<<     vv<<"  "<<1-zAleph<<endl;
+    cout<< "vv, vvk         = "<<     vv<<"  "<<vvk<<endl;
     cout<< "CosThe1,CosThe2 = "<<CosThe1<<"  "<<CosThe2<<endl;
-    cout<< "CosThePL,CosPRD = "<<CosThePL<<"  "<<CosPRD<<endl;
+    cout<< "CosThePL= "<<CosThePL<<endl;
   }
 } //
 

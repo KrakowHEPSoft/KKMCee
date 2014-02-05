@@ -27,7 +27,6 @@ class ROBOL2{
   TLorentzVector m_phot[100];        // photon 4-momenta
   long           m_Npart;            // no of particles in Lund/Pythia common
   PartLund m_Event[4000];            // content of /PYJETS/
-  TLorentzVector m_pMu1, m_pMu2;     // muon 4-momenta
   // ============== Histograms follow =================================
   TH1D   *HST_KKMC_NORMA;    // special histo with KKMC normalization & xpar
   //
@@ -35,13 +34,17 @@ class ROBOL2{
   TH1D   *hst_Mff;
   TH1D   *hst_nPhAll;
   TH1D   *hst_nPhVis;
+  //
+  TH1D   *hst_LnThPhAll;
+  TH1D   *hst_LnThPhVis;
+  //
   TH1D   *hst_vTrueMain;
   TH1D   *hst_vTrueCeex2;
-  TH1D   *hst_vAlepCeex2;
+
+  TH1D   *hst_vPhotMain;
+  //
   TH1D   *hst_vXGenCeex2;
-  TH1D   *hst_Cost1Ceex2;
   TH1D   *hst_CosPLCeex2;
-  TH1D   *hst_CosPRCeex2;
   //
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2

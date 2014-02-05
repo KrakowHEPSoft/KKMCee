@@ -5,8 +5,8 @@ BeginX
 *               ACTUAL DATA FOR THIS PARTICULAR RUN
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
-    0           1000      1k   NEVT = number of events
-    0        1000000      1M   NEVT = number of events
+    0         100000      100k   NEVT = number of events
+    0        1000000      1M     NEVT = number of events
 ***    0      100000000      100M NEVT = number of events
 * Center-of-mass energy [GeV]
     1          161e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
@@ -34,7 +34,13 @@ BeginX
 *     LIST of Final state flavours to be generated randomly according
 *     to QED corrected x-sections, at least one line/item should be present.
 *     (Remember that electron has incomplete M.E. and top might be too heavy.)
-  413              1      KFfin, muon
+*  411              1      KFfin, electron
+  412              1      KFfin, neutrino electron
+*  413              1      KFfin, muon
+  414              1      KFfin, neutrino muon
+*  415              1      KFfin, tau
+  416              1      KFfin, neutrino tau
+*
   638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
 ********************************************************************************
 *****                Entries 800-999 reserved for Electroweak libraries     ****
