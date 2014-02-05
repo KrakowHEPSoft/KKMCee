@@ -45,11 +45,17 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_LnThPhAll") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_LnThPhVis") );
   //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotMain") );
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vXGenCeex2") );
+  //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotCeex1") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotCeex12") );
+  //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNuel") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNumu") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPLCeex2") );
   //
@@ -75,22 +81,22 @@ void FigInfo()
   TH1D *hst_LnThPhVis  = (TH1D*)DiskFileA.Get("hst_LnThPhVis");
 
   TH1D *hst_vTrueMain  = (TH1D*)DiskFileA.Get("hst_vTrueMain");
-  TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
+  TH1D *hst_vPhotCeex2 = (TH1D*)DiskFileA.Get("hst_vPhotCeex2");
   //
   TH1D *hst_vPhotMain  = (TH1D*)DiskFileA.Get("hst_vPhotMain");
 
   TH1D *hst_CosPLCeex2 = (TH1D*)DiskFileA.Get("hst_CosPLCeex2");
 //------------------------------------------------------------------------  
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 80,    1000,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigInfo->Divide( 2,  2);
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
   //==========plot1==============
   cFigInfo->cd(1);
   gPad->SetLogy(); // !!!!!!
@@ -128,13 +134,154 @@ void FigInfo()
   hst_LnThPhAll->SetTitle(0);
   hst_LnThPhAll->SetStats(0);
   hst_LnThPhAll->SetMinimum(0);
+  hst_LnThPhAll->SetLineColor(kBlue);
   hst_LnThPhAll->DrawCopy("h");
   hst_LnThPhVis->SetLineColor(kRed);
   hst_LnThPhVis->DrawCopy("hsame");
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/d ln_{10}(sin(#theta)),   all and visible photons");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/d ln_{10}(sin(#theta)),   all (blue) and visible (red) photons");
   //----------------------------
   cFigInfo->cd();
-}
+}//FigInfo
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCEEX21()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCEEX21 =========================== "<<endl;
+  // renormalize histograms in nanobarns
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  ///
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  ///
+  TH1D *hst_vPhotCeex1     = (TH1D*)DiskFileA.Get("hst_vPhotCeex1");
+  TH1D *hst_vPhotCeex2     = (TH1D*)DiskFileA.Get("hst_vPhotCeex2");
+  TH1D *hst_vPhotCeex12    = (TH1D*)DiskFileA.Get("hst_vPhotCeex12");
+  ///
+  TH1D *Hst1  = hst_vPhotCeex1;
+  TH1D *Hst2  = hst_vPhotCeex2;
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, 0.0, 1.0);
+  H_Vline0->SetBinContent(1,0);
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  int ndiv=2;
+  Float_t  WidPix, HeiPix;
+  WidPix = 800; HeiPix =  400*ndiv;
+  TCanvas *cCeex21 = new TCanvas("cCeex21","cCeex21",130,150, WidPix,HeiPix);
+  cCeex21->SetFillColor(10);
+  cCeex21->Draw();
+  cCeex21->SetFillColor(10);
+  cCeex21->Divide(0, ndiv);
+ //!-----------------------------
+  cCeex21->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  Hst1->SetLineColor(kBlue);
+  Hst1->DrawCopy("h");
+  ///
+  Hst2->SetLineColor(kRed);
+  Hst2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. CEEX1 (blue) and CEEX2 (red)");
+ //!-----------------------------
+  cCeex21->cd(2);
+  H_Vline0->SetStats(0);
+  //H_Vline0->SetTitle(0);
+  H_Vline0->GetYaxis()->SetTitleSize(0.06);
+  H_Vline0->GetYaxis()->SetTitleOffset(1.2);
+  H_Vline0->GetYaxis()->CenterTitle();
+  H_Vline0->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline0->GetXaxis()->SetTitleSize(0.07);
+  H_Vline0->GetXaxis()->SetTitle("v=Ephot/Ebeam");
+  H_Vline0->SetMaximum( +0.1);
+  H_Vline0->SetMinimum( -0.1);
+  H_Vline0->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline0->GetXaxis()->SetTitleSize(0.07);
+  H_Vline0->SetTitle("(CEEX1-CEEX2)/CEEX2");
+  H_Vline0->DrawCopy("h");
+  ///
+  TH1D *RAT_hvCeex12 = hst_vPhotCeex12 ;  ///  CEEX1-CEEX2
+  RAT_hvCeex12->Divide(Hst2);             /// divide over CEEX2
+  RAT_hvCeex12->SetLineColor(kBlue);
+  RAT_hvCeex12->DrawCopy("hsame");
+  //!-----------------------------
+  cCeex21->Update();
+  cCeex21->cd();
+  //!-----------------------------
+}//FigCEEX21
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigNuDiff()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCEEX21 =========================== "<<endl;
+  // renormalize histograms in nanobarns
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  ///
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  ///
+  TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
+  TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
+  ///
+  TH1D *Hst1  = hst_vPhotNuel;
+  TH1D *Hst2  = hst_vPhotNumu;
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, 0.0, 1.0);
+  H_Vline1->SetBinContent(1,1);
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  int ndiv=2;
+  Float_t  WidPix, HeiPix;
+  WidPix = 800; HeiPix =  400*ndiv;
+  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff",230,250, WidPix,HeiPix);
+  cNuDiff->SetFillColor(10);
+  cNuDiff->Draw();
+  cNuDiff->SetFillColor(10);
+  cNuDiff->Divide(0, ndiv);
+ //!-----------------------------
+  cNuDiff->cd(1);
+  Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  Hst1->SetLineColor(kBlue);
+  Hst1->DrawCopy("h");
+  ///
+  Hst2->SetLineColor(kRed);
+  Hst2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. NuElectron (blue) and NuMuon (red)");
+
+  cNuDiff->cd(2);
+  H_Vline1->SetStats(0);
+  //H_Vline1->SetTitle(0);
+  H_Vline1->GetYaxis()->SetTitleSize(0.06);
+  H_Vline1->GetYaxis()->SetTitleOffset(1.2);
+  H_Vline1->GetYaxis()->CenterTitle();
+  H_Vline1->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline1->GetXaxis()->SetTitleSize(0.07);
+  H_Vline1->GetXaxis()->SetTitle("v=Ephot/Ebeam");
+  H_Vline1->SetMaximum( 3);
+  H_Vline1->SetMinimum( 0);
+  H_Vline1->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline1->GetXaxis()->SetTitleSize(0.07);
+  H_Vline1->SetTitle("NuElectron/NuMuon");
+  H_Vline1->DrawCopy("h");
+  ///
+  TH1D *RAT_NuelNumu = (TH1D*)Hst1->Clone("RAT_NuelNumu");
+//  TH1D *RAT_NuelNumu = hst_vPhotCeex12 ;
+  RAT_NuelNumu->Divide(Hst2);             /// divide over Numu
+  RAT_NuelNumu->SetLineColor(kBlue);
+  RAT_NuelNumu->DrawCopy("hsame");
+ //!-----------------------------
+  cNuDiff->Update();
+  cNuDiff->cd();
+}//FigNuDiff
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -146,6 +293,8 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
   FigInfo();
+  FigCEEX21();
+  FigNuDiff();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   //++++++++++++++++++++++++++++++++++++++++

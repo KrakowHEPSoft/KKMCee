@@ -67,6 +67,7 @@ extern "C" void kk2f_getwtalter_( long&, double&);
 ///////////////////////////////////////////////////////////////////////////////
 extern "C" void pylist_(const long&);
 extern "C" void pygive_(char *directive, long s1);
+extern "C" void hepevt_getkffin_(  long&);
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -232,6 +233,13 @@ double KKMC::GetWtAlter(const long id)
   kk2f_getwtalter_( id1, WtAlter);
   return WtAlter;
 }
+///////////////////////////////////////////////////////////////////////////////
+void KKMC::GetKFfin(long &KF)
+{
+// get KF code of final fermion
+  hepevt_getkffin_( KF);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
 //              End of  Class   KKMC                                        //
