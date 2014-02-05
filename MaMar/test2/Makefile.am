@@ -22,19 +22,19 @@ start:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 time ../${MAIN}			)&
+	 time ../${MCMD}			)&
 #-----------------------------------------------------------------------
 debug:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 ddd ../${MAIN}			)&
+	 ddd ../${MCMD}			)&
 #-----------------------------------------------------------------------
 backg:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 time ../${MAIN} > /dev/null	)&
+	 time ../${MCMD} > /dev/null	)&
 #-----------------------------------------------------------------------
 stop:
 	(cp ../semaphore.stop ./semaphore )&
@@ -43,19 +43,19 @@ cont:
 	(cp semaphore  semaphore.bak		;\
 	 cp pro.hst    pro.hst.bak		;\
 	 cp pro.output pro.output.bak		;\
-         time ../${MAIN}			)&
+         time ../${MCMD}			)&
 #-----------------------------------------------------------------------
 start-debug:
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
-	 xldb -I  ${SRCLIST} ../${MAIN}	)&
+	 xldb -I  ${SRCLIST} ../${MCMD}	)&
 #-----------------------------------------------------------------------
 cont-debug:
 	(cp semaphore  semaphore.bak		;\
 	 cp pro.hst    pro.hst.bak		;\
 	 cp pro.output pro.output.bak		;\
-         xldb -I  ${SRCLIST} ../${MAIN}	)&
+         xldb -I  ${SRCLIST} ../${MCMD}	)&
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #   Batch on farm:  initialize, submit and stop
