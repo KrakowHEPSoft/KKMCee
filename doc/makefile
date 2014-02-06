@@ -28,6 +28,12 @@ $(TeX2).pdf: 	$(TeX2).tex $(GRAFLIST)
 	(pdflatex	$(TeX2) )
 $(TeX2)-pdf:	$(TeX2).pdf
 	($(XPdf) $(TeX2).pdf& )
+#==============================================================================
+TeX4 =  InvizTLEP14
+$(TeX4).pdf: 	$(TeX4).tex $(GRAFLIST)
+	(pdflatex	$(TeX4) )
+$(TeX4)-pdf:	$(TeX4).pdf
+	($(XPdf) $(TeX4).pdf& )
 #=============================================================================
 clean:
 	(rm -f *.dvi *~ *.log  *.aux *_region_* core *.bbl *.blg  *.phony)
