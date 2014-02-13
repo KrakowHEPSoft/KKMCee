@@ -34,6 +34,12 @@ $(TeX4).pdf: 	$(TeX4).tex $(GRAFLIST)
 	(pdflatex	$(TeX4) )
 $(TeX4)-pdf:	$(TeX4).pdf
 	($(XPdf) $(TeX4).pdf& )
+#==============================================================================
+TeX6 =  FCCee14
+$(TeX6).pdf: 	$(TeX6).tex $(GRAFLIST)
+	(pdflatex	$(TeX6) )
+$(TeX6)-pdf:	$(TeX6).pdf
+	($(XPdf) $(TeX6).pdf& )
 #=============================================================================
 clean:
 	(rm -f *.dvi *~ *.log  *.aux *_region_* core *.bbl *.blg  *.phony)
