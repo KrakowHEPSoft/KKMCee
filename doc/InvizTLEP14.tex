@@ -107,7 +107,8 @@
 }}
 
 \date[Short Occasion] % (optional)
-{\em To be presented somewhere sometime...
+{\em To be presented at FCCee Physics study meeting\\
+     CERN, March 10th, 2014
 }
 
 \subject{Talks}
@@ -183,21 +184,81 @@ MC results will come from KKMC version 4.22, see Appendix.
 \end{frame}
 %----------------------------------------------------------------------
 
+
 %----------------------------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{\bf Importance of higher order QED corrections}
+\frametitle{\bf H.O. QED corrections estimate, neutrino channel.}
 
 \vspace{-2mm}
-{\includegraphics[width=100mm,height=70mm]{mcCeex21.pdf}}
+{\includegraphics[width=100mm,height=65mm]{mcCeex21.pdf}}
 
 \small
 Defining $e^-e^+\to\nu+\bar\nu+\gamma$ as Born, 
 CEEX1 is Born with soft photon resummation 
-and CEEX2 is 1st order soft photon resummation.
-
+and CEEX2 is 1st order soft photon resummation.\\
+{\crd QED uncertainty $\sim 1-2\%$.}
 
 \end{frame}
 %----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{\bf Normalization from muon channel?}
+
+\begin{itemize}
+\item
+For calculating invisible width from
+$e^-e^+\to \nu \bar\nu \gamma$ process
+we need to get normalization from somewhere.
+\item
+One possibility is to use similar SM process
+$e^-e^+\to\mu^- \mu^+ \gamma$ with the muonic
+decay of Z.
+\item
+We require only angular cut on both muons:
+$\cos\theta_\mu <0.95$.
+\item
+Selection of single radiative photon exactly as for neutrinos.
+\item
+We examine QED corrections in the same way.
+\end{itemize}
+
+\end{frame}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{\bf H.O. QED corrections estimate, muon channel.}
+
+\vspace{-2mm}
+{\includegraphics[width=100mm,height=65mm]{mcCeex21mu.pdf}}
+
+\small
+Defining $e^-e^+\to  \mu^- \mu^+ \gamma$ as Born, 
+CEEX1 is Born with soft photon resummation 
+and CEEX2 is 1st order soft photon resummation.\\
+{\crd QED uncertainty again $\sim 1-2\%$.}
+
+\end{frame}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{\LARGE QED corr. estimate in
+   $\sigma(\nu\bar\nu\gamma)/\sigma(\mu^-\mu^+\gamma)$}
+%\framesubtitle{\LARGE $\sigma(\nu\bar\nu\gamma)/\sigma(\mu^-\mu^+\gamma)$}
+
+\vspace{-2mm}
+{\includegraphics[width=100mm,height=65mm]{mcCeex21rat.pdf}}
+
+QED corrections seems to cancell dramaticaly in the ratio
+$\sigma(\nu\bar\nu\gamma)/\sigma(\mu^-\mu^+\gamma)$.
+{\crd They drop to $\sim 0.03\%$ !!!}.\\
+This is PRELIMINARY result requiring further tests.
+
+\end{frame}
+%----------------------------------------------------------------------
+
 
 
 %----------------------------------------------------------------------
@@ -205,11 +266,13 @@ and CEEX2 is 1st order soft photon resummation.
 \frametitle{\bf Importance of $t$-channel exchange}
 
 \vspace{-2mm}
-{\includegraphics[width=100mm,height=70mm]{mcNuDiff.pdf}}
+{\includegraphics[width=100mm,height=65mm]{mcNuDiff.pdf}}
 
 \small
 The $t$-channel exchange is present in electron neutrino channel.\\
-It has to be minimized by cutoffs and subtracted.
+{\crd It is of order of $10\%$
+It cannot be easily minimized by cutoffs, 
+it has to be reliably calculated and subtracted!}
 
 \end{frame}
 %----------------------------------------------------------------------
@@ -221,9 +284,17 @@ It has to be minimized by cutoffs and subtracted.
 From this limited study using KKMC at 161GeV we conclude that:
 \begin{itemize}
 \item
-QED effects are sizeable $\sim 2\%$.
+QED corrections are sizeable,
+their uncertainty in $\sigma(\nu\bar\nu\gamma)$
+is estimated $\sim 2\%$ 
 \item
-$t$-channel contrubution is $\sim 10\%$ near Z peak in photon energy.
+QED uncertainty seems to drop dramaticaly in the ratio
+$\sigma(\nu\bar\nu\gamma)/\sigma(\mu^-\mu^+\gamma)$,
+down to $3\cdot 10^{-4}$!
+\item
+$t$-channel contrubution is $\sim 10\%$ near Z peak in photon energy.\\
+Possibly the bigest source of theoretical uncertainty in $N_\nu$ measurement
+from ratiative return.
 \end{itemize}
 
 To be studied further most urgently:
@@ -233,9 +304,7 @@ The dependence on $\sqrt{s}$
 \item
 The dependence on $\theta_{\min}$ and other cutoffs
 \item
-Where from the normalization?\\
-Bhabha? Or may be from $e^-e^+\to\mu^- +\mu^+ +\gamma$?\\
-And how uncertain?
+Dont give up on $N_\nu$ from Z-peak cross section!
 \end{itemize}
 
 \end{frame}

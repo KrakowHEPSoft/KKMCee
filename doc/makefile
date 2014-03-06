@@ -41,6 +41,12 @@ $(TeX6).pdf: 	$(TeX6).tex $(GRAFLIST)
 $(TeX6)-pdf:	$(TeX6).pdf
 	($(XPdf) $(TeX6).pdf& )
 #=============================================================================
+export:
+	(rm -rf InvizTLEP14; mkdir InvizTLEP14;)
+	cp InvizTLEP14.tex InvizTLEP14/;
+	cp mc*.pdf InvizTLEP14/;
+	gtar -cvf InvizTLEP14.tar.pz InvizTLEP14
+#=============================================================================
 clean:
 	(rm -f *.dvi *~ *.log  *.aux *_region_* core *.bbl *.blg  *.phony)
 	(rm -f *.toc *.nav *.out *.snm *.bak)
