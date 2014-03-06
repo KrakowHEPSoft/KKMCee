@@ -54,6 +54,10 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotCeex12") );
   //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_mPhotCeex1") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_mPhotCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_mPhotCeex12") );
+  //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNuel") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNumu") );
   //
@@ -92,7 +96,7 @@ void FigInfo()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 80,    1000,  800);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 50,    1000,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +174,7 @@ void FigCEEX21()
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cCeex21 = new TCanvas("cCeex21","cCeex21",130,150, WidPix,HeiPix);
+  TCanvas *cCeex21 = new TCanvas("cCeex21","cCeex21",100,100, WidPix,HeiPix);
   cCeex21->SetFillColor(10);
   cCeex21->Draw();
   cCeex21->SetFillColor(10);
@@ -185,7 +189,7 @@ void FigCEEX21()
   ///
   Hst2->SetLineColor(kRed);
   Hst2->DrawCopy("hsame");
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. CEEX1 (blue) and CEEX2 (red)");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. CEEX1 (blue) and CEEX2 (red), neutrinos");
  //!-----------------------------
   cCeex21->cd(2);
   H_Vline0->SetStats(0);
@@ -202,8 +206,8 @@ void FigCEEX21()
   H_Vline0->GetXaxis()->SetTitleSize(0.07);
   H_Vline0->SetTitle("(CEEX1-CEEX2)/CEEX2");
   H_Vline0->DrawCopy("h");
-  ///
-  TH1D *RAT_hvCeex12 = hst_vPhotCeex12 ;  ///  CEEX1-CEEX2
+  ///(TH1D*)hst_vPhotCeex1->Clone("RAT1");
+  TH1D *RAT_hvCeex12 = (TH1D*)hst_vPhotCeex12->Clone("RAT_hvCeex12") ;  ///  CEEX1-CEEX2
   RAT_hvCeex12->Divide(Hst2);             /// divide over CEEX2
   RAT_hvCeex12->SetLineColor(kBlue);
   RAT_hvCeex12->DrawCopy("hsame");
@@ -213,11 +217,84 @@ void FigCEEX21()
   //!-----------------------------
 }//FigCEEX21
 
+
+//!/////////////////////////////////////////////////////////////////////////////////
+void FigCEEX21mu()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCEEX21mu =========================== "<<endl;
+  // renormalize histograms in nanobarns
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  ///
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  ///
+  TH1D *hst_mPhotCeex1     = (TH1D*)DiskFileA.Get("hst_mPhotCeex1");
+  TH1D *hst_mPhotCeex2     = (TH1D*)DiskFileA.Get("hst_mPhotCeex2");
+  TH1D *hst_mPhotCeex12    = (TH1D*)DiskFileA.Get("hst_mPhotCeex12");
+  ///
+  TH1D *Hst1  = hst_mPhotCeex1;
+  TH1D *Hst2  = hst_mPhotCeex2;
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, 0.0, 1.0);
+  H_Vline10->SetBinContent(1,0);
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  int ndiv=2;
+  Float_t  WidPix, HeiPix;
+  WidPix = 800; HeiPix =  400*ndiv;
+  TCanvas *cCeex21mu = new TCanvas("cCeex21mu","cCeex21mu",150,150, WidPix,HeiPix);
+  cCeex21mu->SetFillColor(10);
+  cCeex21mu->Draw();
+  cCeex21mu->SetFillColor(10);
+  cCeex21mu->Divide(0, ndiv);
+ //!-----------------------------
+  cCeex21mu->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  Hst1->SetLineColor(kBlue);
+  Hst1->DrawCopy("h");
+  ///
+  Hst2->SetLineColor(kRed);
+  Hst2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. CEEX1 (blue) and CEEX2 (red), muon-pairs");
+ //!-----------------------------
+  cCeex21mu->cd(2);
+  H_Vline10->SetStats(0);
+  //H_Vline10->SetTitle(0);
+  H_Vline10->GetYaxis()->SetTitleSize(0.06);
+  H_Vline10->GetYaxis()->SetTitleOffset(1.2);
+  H_Vline10->GetYaxis()->CenterTitle();
+  H_Vline10->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline10->GetXaxis()->SetTitleSize(0.07);
+  H_Vline10->GetXaxis()->SetTitle("v=Ephot/Ebeam");
+  H_Vline10->SetMaximum( +0.1);
+  H_Vline10->SetMinimum( -0.1);
+  H_Vline10->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline10->GetXaxis()->SetTitleSize(0.07);
+  H_Vline10->SetTitle("(CEEX1-CEEX2)/CEEX2");
+  H_Vline10->DrawCopy("h");
+  ///
+  TH1D *RAT_hvCeex12 = (TH1D*)hst_mPhotCeex12->Clone("RAT_hvCeex12") ;  ///  CEEX1-CEEX2
+  RAT_hvCeex12->Divide(Hst2);             /// divide over CEEX2
+  RAT_hvCeex12->SetLineColor(kBlue);
+  RAT_hvCeex12->DrawCopy("hsame");
+  //!-----------------------------
+  cCeex21mu->Update();
+  cCeex21mu->cd();
+  //!-----------------------------
+}///FigCEEX21mu
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 void FigNuDiff()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigCEEX21 =========================== "<<endl;
+  cout<<" ========================= FigNuDiff =========================== "<<endl;
   // renormalize histograms in nanobarns
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -239,7 +316,7 @@ void FigNuDiff()
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff",230,250, WidPix,HeiPix);
+  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff",200,200, WidPix,HeiPix);
   cNuDiff->SetFillColor(10);
   cNuDiff->Draw();
   cNuDiff->SetFillColor(10);
@@ -272,7 +349,6 @@ void FigNuDiff()
   H_Vline1->DrawCopy("h");
   ///
   TH1D *RAT_NuelNumu = (TH1D*)Hst1->Clone("RAT_NuelNumu");
-//  TH1D *RAT_NuelNumu = hst_vPhotCeex12 ;
   RAT_NuelNumu->Divide(Hst2);             /// divide over Numu
   RAT_NuelNumu->SetLineColor(kBlue);
   RAT_NuelNumu->DrawCopy("hsame");
@@ -280,6 +356,98 @@ void FigNuDiff()
   cNuDiff->Update();
   cNuDiff->cd();
 }//FigNuDiff
+
+//!/////////////////////////////////////////////////////////////////////////////////
+void FigCEEX21rat()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCEEX21rat =========================== "<<endl;
+  // renormalize histograms in nanobarns
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  ///
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  ///
+  TH1D *hst_vPhotCeex1     = (TH1D*)DiskFileA.Get("hst_vPhotCeex1");  /// 3 neutrinos
+  TH1D *hst_vPhotCeex2     = (TH1D*)DiskFileA.Get("hst_vPhotCeex2");  /// 3 neutrinos
+  TH1D *hst_vPhotCeex12    = (TH1D*)DiskFileA.Get("hst_vPhotCeex12");
+  TH1D *hst_mPhotCeex1     = (TH1D*)DiskFileA.Get("hst_mPhotCeex1");  /// muon
+  TH1D *hst_mPhotCeex2     = (TH1D*)DiskFileA.Get("hst_mPhotCeex2");  /// muon
+  TH1D *hst_mPhotCeex12    = (TH1D*)DiskFileA.Get("hst_mPhotCeex12");
+  ///
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  TH1D *H_Vline12  = new TH1D("H_Vline12","one",  1, 0.0, 1.0);
+  //H_Vline12->SetBinContent(1,1);
+  H_Vline12->SetBinContent(1,0);
+  /// nu/mu ratios, CEEX1 and CEEX2
+  TH1D *RAT1 = (TH1D*)hst_vPhotCeex1->Clone("RAT1");
+  RAT1->Divide(hst_mPhotCeex1);
+  TH1D *RAT2 = (TH1D*)hst_vPhotCeex2->Clone("RAT2");
+  RAT2->Divide(hst_mPhotCeex2);
+  /// (CEEX1-CEEX2(/CEEX2 ratios for nu and mu
+  TH1D *DELnu = (TH1D*)hst_vPhotCeex12->Clone("DELnu");
+  DELnu->Divide(hst_vPhotCeex2);
+  TH1D *DELmu = (TH1D*)hst_mPhotCeex12->Clone("DELmu");
+  DELmu->Divide(hst_mPhotCeex2);
+  DELmu->Scale(-1e0);
+  DELnu->Add(DELmu);
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  int ndiv=2;
+  Float_t  WidPix, HeiPix;
+  WidPix = 800; HeiPix =  400*ndiv;
+  TCanvas *cCeex21rat = new TCanvas("cCeex21rat","cCeex21rat",250,250, WidPix,HeiPix);
+  cCeex21rat->SetFillColor(10);
+  cCeex21rat->Draw();
+  cCeex21rat->SetFillColor(10);
+  cCeex21rat->Divide(0, ndiv);
+ //!-----------------------------
+  cCeex21rat->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  
+  RAT1->SetStats(0);
+  RAT1->SetTitle(0);
+  RAT1->SetLineColor(kBlue);
+  RAT1->DrawCopy("h");
+  RAT2->SetLineColor(kRed);
+  RAT2->DrawCopy("hsame");
+  ///
+  CaptT->DrawLatex(0.10,0.95,"R_{i}=#sigma_{#nu#nu#gamma}/#sigma_{#mu#mu#gamma}, R_{2} for CEEX2 (red), R_{1} for CEEX1 (blue),");
+ //!-----------------------------
+  cCeex21rat->cd(2);
+  H_Vline12->SetStats(0);
+  //H_Vline12->SetTitle(0);
+  H_Vline12->GetYaxis()->SetTitleSize(0.06);
+  H_Vline12->GetYaxis()->SetTitleOffset(1.2);
+  H_Vline12->GetYaxis()->CenterTitle();
+  H_Vline12->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline12->GetXaxis()->SetTitleSize(0.07);
+  H_Vline12->GetXaxis()->SetTitle("v=Ephot/Ebeam");
+  //H_Vline12->SetMaximum( 1+0.02);
+  //H_Vline12->SetMinimum( 1-0.02);
+  H_Vline12->SetMaximum(  +0.004);
+  H_Vline12->SetMinimum(  -0.004);
+  H_Vline12->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline12->GetXaxis()->SetTitleSize(0.07);
+  H_Vline12->SetTitle(" R_{1}/R_{2}-1, (CEEX1-CEEX2)/CEEX2");
+  H_Vline12->DrawCopy("h");
+  ///
+  TH1D *RAT_21 = (TH1D*)RAT2->Clone("RAT2");
+  RAT_21->Divide(RAT1);             /// divide over CEEX2
+  RAT_21->SetLineColor(kBlue);
+  //RAT_21->DrawCopy("hsame");
+  
+  DELnu->SetLineColor(kBlue);
+  DELnu->DrawCopy("hsame");
+  
+  
+  //!-----------------------------
+  cCeex21rat->Update();
+  cCeex21rat->cd();
+  //!-----------------------------
+}///FigCEEX21mu
 
 
 
@@ -294,7 +462,9 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   FigInfo();
   FigCEEX21();
+  FigCEEX21mu();
   FigNuDiff();
+  FigCEEX21rat();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   //++++++++++++++++++++++++++++++++++++++++

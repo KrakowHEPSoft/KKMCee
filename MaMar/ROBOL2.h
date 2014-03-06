@@ -40,14 +40,18 @@ class ROBOL2{
   //
   TH1D   *hst_vTrueMain;
   TH1D   *hst_vTrueCeex2;
-
+  ///
   TH1D   *hst_vPhotMain;
   TH1D   *hst_vPhotCeex1;
   TH1D   *hst_vPhotCeex2;
   TH1D   *hst_vPhotCeex12;
-  //
+  ///
   TH1D   *hst_vPhotNuel;
   TH1D   *hst_vPhotNumu;
+  ///
+  TH1D   *hst_mPhotCeex1;
+  TH1D   *hst_mPhotCeex2;
+  TH1D   *hst_mPhotCeex12;
   //
   TH1D   *hst_CosPLCeex2;
   //

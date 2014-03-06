@@ -63,14 +63,20 @@ void ROBOL2::Initialize(long &NevTot)
   ///
   hst_vPhotCeex1 = new TH1D("hst_vPhotCeex1", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
   hst_vPhotCeex2 = new TH1D("hst_vPhotCeex2", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
-  hst_vPhotCeex12= new TH1D("hst_vPhotCeex12", "dSig/dv CEEX1-CEEX2", nbv, 0.000 ,1.000);
+  hst_vPhotCeex12= new TH1D("hst_vPhotCeex12","dSig/dv CEEX1-CEEX2", nbv, 0.000 ,1.000);
   hst_vPhotCeex1->Sumw2();
   hst_vPhotCeex2->Sumw2();
   hst_vPhotCeex12->Sumw2();
-  ///
+  /// electron neutrino
   hst_vPhotNuel = new TH1D("hst_vPhotNuel", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
   hst_vPhotNumu = new TH1D("hst_vPhotNumu", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
-  
+  /// Muon channel
+  hst_mPhotCeex1 = new TH1D("hst_mPhotCeex1", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
+  hst_mPhotCeex2 = new TH1D("hst_mPhotCeex2", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
+  hst_mPhotCeex12= new TH1D("hst_mPhotCeex12","dSig/dv CEEX1-CEEX2", nbv, 0.000 ,1.000);
+  hst_mPhotCeex1->Sumw2();
+  hst_mPhotCeex2->Sumw2();
+  hst_mPhotCeex12->Sumw2();
   ///
   int nbc =50;
   hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
@@ -151,9 +157,20 @@ void ROBOL2::Production(long &iEvent)
   int nph_vis=0;  /// No. of visible (triggered) photons
   double phEneVis = 0;  /// Energy of triggered photon
   int TrigPho=1;  /// =1 for accepted, =0 for rejected
-  //**************************************************
+  ///**************************************************
+  ///        **** fermion inentification ****
+  long KF=0, NuYes=0;
+//  KKMC_generator->GetKFfin(KF); /// does not work
+  if( PartFindStable( 12) ) KF=12;  /// electron neutrino found
+  if( PartFindStable( 14) ) KF=14;  /// mu neutrino found
+  if( PartFindStable( 16) ) KF=16;  /// tau neutrino found
+  if( PartFindStable( 13) ) KF=13;  /// muon found
+  if( KF==12 || KF==14 || KF==16 ) NuYes=1;
+  ///*********************************************************************
+  ///      ******** Histogramming starts here **********
+  ///*********************************************************************
   /// Loop over photons
-  //**************************************************
+  ///**************************************************
   for(iphot=0;iphot<m_Nphot;iphot++){
     phEne   = m_phot[iphot].Energy();
     phCosth = m_phot[iphot].CosTheta();
@@ -165,14 +182,17 @@ void ROBOL2::Production(long &iEvent)
     if( phTheta > (180-ThetaMin) ) TrigPho=0;
     if( TrigPho)  nph_vis++;
     if( TrigPho)  phEneVis=phEne;
-    /// histogramming photon angle, inclusive
-    hst_LnThPhAll->Fill(               log10(phPT/phEne), WtMain);
-    if( TrigPho)  hst_LnThPhVis->Fill( log10(phPT/phEne), WtMain);
+    /// histogramming photon angle, inclusive, neutrino channels only
+    if(NuYes){
+       hst_LnThPhAll->Fill(               log10(phPT/phEne), WtMain);
+       if( TrigPho)  hst_LnThPhVis->Fill( log10(phPT/phEne), WtMain);
+    }
   }
   /// photon multiplicity
-  hst_nPhAll->Fill(  m_Nphot,WtMain);
-  if(  nph_vis > 0 )hst_nPhVis->Fill(  nph_vis,WtMain);
-
+  if(NuYes){
+     hst_nPhAll->Fill(  m_Nphot,WtMain);
+     if(  nph_vis > 0 )hst_nPhVis->Fill(  nph_vis,WtMain);
+  }
   /// final fermions,  vv, Q^2 costheta, etc
   double CosThe1 = m_pfer1.CosTheta();
   double Theta1  = m_pfer1.Theta();
@@ -180,24 +200,24 @@ void ROBOL2::Production(long &iEvent)
   double CosThe2 = m_pfer2.CosTheta();
   double Theta2  = m_pfer2.Theta();
   double E2      = m_pfer2.Energy();
-//--------------------------------------------------------------------
+///--------------------------------------------------------------------
 //** definition cos(theta) of P.L. B219, 103 (1989)
   double CosThePL = ( E1*CosThe1 -E2*CosThe2)/(E1+E2);
   /// v-variable from fermion-pair mass
   double vvk,x1,x2;
-  karlud_getvvxx_(vvk,x1,x2);
+  karlud_getvvxx_(vvk,x1,x2);  /// not used anymore
   /// Energy distribution for triggered photon
   /// Warning: vPhot not necessarily for the hardest triggered photon!!!
   double vPhot = phEneVis/Ebeam;
-  // *********************************************************************
-  ///          Most of histogramming starts here
-  // *********************************************************************
+  /// *********************************************************************
+  ///         various QED models, three neutrino channels
+  /// *********************************************************************
   double WtEEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
-  ///
+  if( NuYes==1 ){
   hst_vTrueMain->Fill(       vv, WtMain);
   hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
   ///
@@ -205,24 +225,27 @@ void ROBOL2::Production(long &iEvent)
   if( nph_vis == 1 ) hst_vPhotCeex1->Fill(vPhot, WtCEEX1);
   if( nph_vis == 1 ) hst_vPhotCeex2->Fill(vPhot, WtCEEX2);
   if( nph_vis == 1 ) hst_vPhotCeex12->Fill(vPhot,WtCEEX1-WtCEEX2);
-//
-  if(vv<0.9){ hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
 //!///////////////////////////////////////////////////////////
 /// comparing Nuel with Numu
-  long KF;
-//  KKMC_generator->GetKFfin(KF); /// does not work
-  if( PartFindStable( 12) ) KF=12;  /// electron neutrino found
-  if( PartFindStable( 14) ) KF=14;  /// mu neutrino found
-  if( PartFindStable( 16) ) KF=16;  /// tau neutrino found
   if( (nph_vis == 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
   if( (nph_vis == 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtMain);
+}/// NuYes
+  /// *********************************************************************
+  ///         various QED models, muon channel
+  /// *********************************************************************
+  if( KF==13 && vv<0.9){ hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
+  if( KF==13 && CosThe1<0.95 &&  CosThe2<0.95 && nph_vis==1 && vPhot>0.10){
+    hst_mPhotCeex1->Fill(vPhot, WtCEEX1);
+    hst_mPhotCeex2->Fill(vPhot, WtCEEX2);
+    hst_mPhotCeex12->Fill(vPhot,WtCEEX1-WtCEEX2);
+  }/// KF=13
 
 //!///////////////////////////////////////////////////////////
   /// Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
-  hst_weight->Fill(WtMain);              // histogramming
-  hst_Mff->Fill(Mff,WtMain);             // histogramming
+  hst_weight->Fill(WtMain);     /// weight
+  hst_Mff->Fill(Mff,WtMain);    /// fermion pair mass
   // debug debug debug debug debug debug debug
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;
