@@ -180,7 +180,7 @@
             GOTO 500
          ENDIF
       ENDDO
-      CALL MBrB_Stoper('MBrA_GenKF: unable to define KF !!! ',-1)
+      CALL MBrB_Stoper('MBrB_GenKF: unable to define KF !!! ',-1)
 *-----------------------------------------------------------------------
  500  CONTINUE
       Wt_KF = 1d0/m_WMList(ID)  ! compensating weight

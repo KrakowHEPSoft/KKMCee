@@ -423,6 +423,7 @@ C end
       m_XXXene =  m_CMSene*SQRT(z1*z2)                   ! hidden input for BornV_Crude
       CALL BornV_MakeISR(RhoISR)                         !<-- uses m_XXXene and m_vv
       Rho = Rho *RhoISR
+      IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Beamsstrahlung structure function, singular as m_x1**(alpha-1)
       IF( (z1.EQ.1d0) .OR. (z2.EQ.1d0) ) THEN ! rounding errors may cause problems
