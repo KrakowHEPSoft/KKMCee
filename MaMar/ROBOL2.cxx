@@ -42,6 +42,10 @@ void ROBOL2::Initialize(long &NevTot)
   cout<<"ROBOL2::Initialize:  NevTot = "<<NevTot<<endl;
   //  ************* user histograms  *************
   double CMSene = m_xpar[1];
+  double MZ     = m_xpar[502];
+  double vvZ    = 1-(MZ*MZ)/(CMSene*CMSene);
+  double vv2    = vvZ+0.020;
+  double vv1    = vvZ-0.020;
   int nbin =NevTot/100;
   if(nbin>1000) nbin=1000;
   hst_weight  = new TH1D("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
@@ -53,27 +57,28 @@ void ROBOL2::Initialize(long &NevTot)
   hst_nPhAll->Sumw2();
   hst_nPhVis->Sumw2();
   ///
-  int nbv =50;
-  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  int nbv =150;   // too small
+  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue ",   nbv, 0.000 ,1.000);
+  hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ",   nbv, 0.000 ,1.000);
   hst_vTrueMain->Sumw2();
   hst_vTrueCeex2->Sumw2();
   hst_vPhotMain= new TH1D("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   hst_vPhotMain->Sumw2();
   ///
-  hst_vPhotCeex1 = new TH1D("hst_vPhotCeex1", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
-  hst_vPhotCeex2 = new TH1D("hst_vPhotCeex2", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
-  hst_vPhotCeex12= new TH1D("hst_vPhotCeex12","dSig/dv CEEX1-CEEX2", nbv, 0.000 ,1.000);
+  int nbv2 =40;   // small range
+  hst_vPhotCeex1 = new TH1D("hst_vPhotCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vPhotCeex2 = new TH1D("hst_vPhotCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_vPhotCeex12= new TH1D("hst_vPhotCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
   hst_vPhotCeex1->Sumw2();
   hst_vPhotCeex2->Sumw2();
   hst_vPhotCeex12->Sumw2();
   /// electron neutrino
-  hst_vPhotNuel = new TH1D("hst_vPhotNuel", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
-  hst_vPhotNumu = new TH1D("hst_vPhotNumu", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
+  hst_vPhotNuel = new TH1D("hst_vPhotNuel", "dSig/dv CEEX1",         nbv2, vv1 , vv2);
+  hst_vPhotNumu = new TH1D("hst_vPhotNumu", "dSig/dv CEEX2",         nbv2, vv1 , vv2);
   /// Muon channel
-  hst_mPhotCeex1 = new TH1D("hst_mPhotCeex1", "dSig/dv CEEX1", nbv, 0.000 ,1.000);
-  hst_mPhotCeex2 = new TH1D("hst_mPhotCeex2", "dSig/dv CEEX2", nbv, 0.000 ,1.000);
-  hst_mPhotCeex12= new TH1D("hst_mPhotCeex12","dSig/dv CEEX1-CEEX2", nbv, 0.000 ,1.000);
+  hst_mPhotCeex1 = new TH1D("hst_mPhotCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_mPhotCeex2 = new TH1D("hst_mPhotCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_mPhotCeex12= new TH1D("hst_mPhotCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
   hst_mPhotCeex1->Sumw2();
   hst_mPhotCeex2->Sumw2();
   hst_mPhotCeex12->Sumw2();
@@ -151,8 +156,8 @@ void ROBOL2::Production(long &iEvent)
   // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
   double Pi=4*atan(1.0);
   double phEne,phTheta,phCosth,phPT,yy;
-  double XEneMin = 0.30;  /// Emin for visible photon
-  double XTraMin = 0.05;  /// kTmin for visible photon
+  double XEneMin = 0.10;  /// Emin/Ebeam  for visible photon
+  double XTraMin = 0.02;  /// kTmin/Ebeam for visible photon
   double ThetaMin = 15;                   /// theta minimum  for visible photon
   int nph_vis=0;  /// No. of visible (triggered) photons
   double phEneVis = 0;  /// Energy of triggered photon
@@ -221,10 +226,10 @@ void ROBOL2::Production(long &iEvent)
   hst_vTrueMain->Fill(       vv, WtMain);
   hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
   ///
-  if( nph_vis == 1 ) hst_vPhotMain->Fill( vPhot, WtMain);
-  if( nph_vis == 1 ) hst_vPhotCeex1->Fill(vPhot, WtCEEX1);
-  if( nph_vis == 1 ) hst_vPhotCeex2->Fill(vPhot, WtCEEX2);
-  if( nph_vis == 1 ) hst_vPhotCeex12->Fill(vPhot,WtCEEX1-WtCEEX2);
+  if( nph_vis == 1 ) hst_vPhotMain->Fill(  vPhot, WtMain);
+  if( nph_vis == 1 ) hst_vPhotCeex1->Fill( vPhot, WtCEEX1);
+  if( nph_vis == 1 ) hst_vPhotCeex2->Fill( vPhot, WtCEEX2);
+  if( nph_vis == 1 ) hst_vPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
 //!///////////////////////////////////////////////////////////
 /// comparing Nuel with Numu
   if( (nph_vis == 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
@@ -233,10 +238,10 @@ void ROBOL2::Production(long &iEvent)
   /// *********************************************************************
   ///         various QED models, muon channel
   /// *********************************************************************
-  if( KF==13 && vv<0.9){ hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
-  if( KF==13 && CosThe1<0.95 &&  CosThe2<0.95 && nph_vis==1 && vPhot>0.10){
-    hst_mPhotCeex1->Fill(vPhot, WtCEEX1);
-    hst_mPhotCeex2->Fill(vPhot, WtCEEX2);
+  if( KF==13 && vv<0.9) { hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
+  if( KF==13 && CosThe1<0.95 &&  CosThe2<0.95 && nph_vis==1 && vPhot>XEneMin){
+    hst_mPhotCeex1->Fill( vPhot, WtCEEX1);
+    hst_mPhotCeex2->Fill( vPhot, WtCEEX2);
     hst_mPhotCeex12->Fill(vPhot,WtCEEX1-WtCEEX2);
   }/// KF=13
 
