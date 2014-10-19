@@ -168,7 +168,9 @@ void FigCEEX21()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, 0.0, 1.0);
+  double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
+  double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
+  TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, vmin, vmax);
   H_Vline0->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
@@ -200,8 +202,8 @@ void FigCEEX21()
   H_Vline0->GetXaxis()->SetTitleOffset(0.6);
   H_Vline0->GetXaxis()->SetTitleSize(0.07);
   H_Vline0->GetXaxis()->SetTitle("v=Ephot/Ebeam");
-  H_Vline0->SetMaximum( +0.1);
-  H_Vline0->SetMinimum( -0.1);
+  H_Vline0->SetMaximum( +0.04);
+  H_Vline0->SetMinimum( -0.04);
   H_Vline0->GetXaxis()->SetTitleOffset(0.6);
   H_Vline0->GetXaxis()->SetTitleSize(0.07);
   H_Vline0->SetTitle("(CEEX1-CEEX2)/CEEX2");
@@ -239,7 +241,9 @@ void FigCEEX21mu()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, 0.0, 1.0);
+  double vmin = hst_mPhotCeex12->GetXaxis()->GetXmin();
+  double vmax = hst_mPhotCeex12->GetXaxis()->GetXmax();
+  TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, vmin, vmax);
   H_Vline10->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
@@ -271,8 +275,8 @@ void FigCEEX21mu()
   H_Vline10->GetXaxis()->SetTitleOffset(0.6);
   H_Vline10->GetXaxis()->SetTitleSize(0.07);
   H_Vline10->GetXaxis()->SetTitle("v=Ephot/Ebeam");
-  H_Vline10->SetMaximum( +0.1);
-  H_Vline10->SetMinimum( -0.1);
+  H_Vline10->SetMaximum( +0.04);
+  H_Vline10->SetMinimum( -0.04);
   H_Vline10->GetXaxis()->SetTitleOffset(0.6);
   H_Vline10->GetXaxis()->SetTitleSize(0.07);
   H_Vline10->SetTitle("(CEEX1-CEEX2)/CEEX2");
@@ -310,7 +314,9 @@ void FigNuDiff()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, 0.0, 1.0);
+  double vmin = hst_vPhotNuel->GetXaxis()->GetXmin();
+  double vmax = hst_vPhotNuel->GetXaxis()->GetXmax();
+  TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, vmin, vmax);
   H_Vline1->SetBinContent(1,1);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
@@ -341,8 +347,8 @@ void FigNuDiff()
   H_Vline1->GetXaxis()->SetTitleOffset(0.6);
   H_Vline1->GetXaxis()->SetTitleSize(0.07);
   H_Vline1->GetXaxis()->SetTitle("v=Ephot/Ebeam");
-  H_Vline1->SetMaximum( 3);
-  H_Vline1->SetMinimum( 0);
+  H_Vline1->SetMaximum( 1.15);
+  H_Vline1->SetMinimum( 0.85);
   H_Vline1->GetXaxis()->SetTitleOffset(0.6);
   H_Vline1->GetXaxis()->SetTitleSize(0.07);
   H_Vline1->SetTitle("NuElectron/NuMuon");
@@ -379,7 +385,10 @@ void FigCEEX21rat()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  TH1D *H_Vline12  = new TH1D("H_Vline12","one",  1, 0.0, 1.0);
+  double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
+  double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
+  cout<<" //////// vmin,vmax = "<<vmin<<" "<<vmax<<endl;
+  TH1D *H_Vline12  = new TH1D("H_Vline12","one",  1, vmin, vmax);
   //H_Vline12->SetBinContent(1,1);
   H_Vline12->SetBinContent(1,0);
   /// nu/mu ratios, CEEX1 and CEEX2
@@ -427,8 +436,8 @@ void FigCEEX21rat()
   H_Vline12->GetXaxis()->SetTitle("v=Ephot/Ebeam");
   //H_Vline12->SetMaximum( 1+0.02);
   //H_Vline12->SetMinimum( 1-0.02);
-  H_Vline12->SetMaximum(  +0.004);
-  H_Vline12->SetMinimum(  -0.004);
+  H_Vline12->SetMaximum(  +0.001);
+  H_Vline12->SetMinimum(  -0.001);
   H_Vline12->GetXaxis()->SetTitleOffset(0.6);
   H_Vline12->GetXaxis()->SetTitleSize(0.07);
   H_Vline12->SetTitle(" R_{1}/R_{2}-1, (CEEX1-CEEX2)/CEEX2");
