@@ -278,7 +278,8 @@ void FigCEEX21mu()
   H_Vline10->SetMaximum( +0.04);
   H_Vline10->SetMinimum( -0.04);
   H_Vline10->GetXaxis()->SetTitleOffset(0.6);
-  H_Vline10->GetXaxis()->SetTitleSize(0.07);
+  H_Vline10->GetXaxis()->SetTitleSize(0.08);
+  H_Vline10->SetTitleSize(0.08);
   H_Vline10->SetTitle("(CEEX1-CEEX2)/CEEX2");
   H_Vline10->DrawCopy("h");
   ///
@@ -300,10 +301,11 @@ void FigNuDiff()
 //------------------------------------------------------------------------
   cout<<" ========================= FigNuDiff =========================== "<<endl;
   // renormalize histograms in nanobarns
-  Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  Double_t CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  char capt1[100];
+  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   ///
   TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
   TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
@@ -311,13 +313,17 @@ void FigNuDiff()
   TH1D *Hst1  = hst_vPhotNuel;
   TH1D *Hst2  = hst_vPhotNumu;
 //!////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+  CaptE->SetTextSize(0.070);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
+  CaptT->SetTextSize(0.06);
   double vmin = hst_vPhotNuel->GetXaxis()->GetXmin();
   double vmax = hst_vPhotNuel->GetXaxis()->GetXmax();
   TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, vmin, vmax);
-  H_Vline1->SetBinContent(1,1);
+  H_Vline1->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
   Float_t  WidPix, HeiPix;
@@ -332,32 +338,42 @@ void FigNuDiff()
   Hst1->SetStats(0);
   Hst1->SetTitle(0);
   Hst1->SetLineColor(kBlue);
+  Hst1->SetLabelSize(0.05);
   Hst1->DrawCopy("h");
   ///
   Hst2->SetLineColor(kRed);
   Hst2->DrawCopy("hsame");
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv, Photon energy. NuElectron (blue) and NuMuon (red)");
+  CaptT->DrawLatex(0.10,0.95,
+   "d#sigma/dv, v=E_{#gamma}/E_{beam}.      {el} (blue) and #nu_{#mu} (red)");
+  CaptE->DrawLatex(0.80,0.85, capt1);
 
   cNuDiff->cd(2);
   H_Vline1->SetStats(0);
-  //H_Vline1->SetTitle(0);
+  H_Vline1->SetTitle(0);
   H_Vline1->GetYaxis()->SetTitleSize(0.06);
   H_Vline1->GetYaxis()->SetTitleOffset(1.2);
   H_Vline1->GetYaxis()->CenterTitle();
   H_Vline1->GetXaxis()->SetTitleOffset(0.6);
   H_Vline1->GetXaxis()->SetTitleSize(0.07);
-  H_Vline1->GetXaxis()->SetTitle("v=Ephot/Ebeam");
+  H_Vline1->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  H_Vline1->SetLabelSize(0.05);
   H_Vline1->SetMaximum( 1.15);
   H_Vline1->SetMinimum( 0.85);
+  H_Vline1->SetMaximum( +0.10);
+  H_Vline1->SetMinimum( -0.10);
   H_Vline1->GetXaxis()->SetTitleOffset(0.6);
   H_Vline1->GetXaxis()->SetTitleSize(0.07);
-  H_Vline1->SetTitle("NuElectron/NuMuon");
   H_Vline1->DrawCopy("h");
   ///
-  TH1D *RAT_NuelNumu = (TH1D*)Hst1->Clone("RAT_NuelNumu");
-  RAT_NuelNumu->Divide(Hst2);             /// divide over Numu
+  TH1D *RAT_NuelNumu = (TH1D*)Hst2->Clone("RAT_NuelNumu"); // numu
+  RAT_NuelNumu->Scale(-1);    // -numu
+  RAT_NuelNumu->Add(Hst1);    //  nuel-numu
+  RAT_NuelNumu->Divide(Hst1); //  (nuel-numu)/numu
+  RAT_NuelNumu->Scale(0.333333); // (nuel-numu)/(3*numu)
   RAT_NuelNumu->SetLineColor(kBlue);
   RAT_NuelNumu->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.95,"t-channel W contrib.      (#nu_{el}-#nu_{#mu})/(3 #nu_{#mu})");
+  CaptE->DrawLatex(0.80,0.85, capt1);
  //!-----------------------------
   cNuDiff->Update();
   cNuDiff->cd();
@@ -369,10 +385,11 @@ void FigCEEX21rat()
 //------------------------------------------------------------------------
   cout<<" ========================= FigCEEX21rat =========================== "<<endl;
   // renormalize histograms in nanobarns
-  Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  Double_t CMSene = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  char capt1[100];
+  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   ///
   TH1D *hst_vPhotCeex1     = (TH1D*)DiskFileA.Get("hst_vPhotCeex1");  /// 3 neutrinos
   TH1D *hst_vPhotCeex2     = (TH1D*)DiskFileA.Get("hst_vPhotCeex2");  /// 3 neutrinos
@@ -382,9 +399,14 @@ void FigCEEX21rat()
   TH1D *hst_mPhotCeex12    = (TH1D*)DiskFileA.Get("hst_mPhotCeex12");
   ///
 //!////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+  CaptE->SetTextSize(0.070);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
+  CaptT->SetTextSize(0.060);
+//!////////////////////////////////////////////
   double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
   double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
   cout<<" //////// vmin,vmax = "<<vmin<<" "<<vmax<<endl;
@@ -418,40 +440,44 @@ void FigCEEX21rat()
   
   RAT1->SetStats(0);
   RAT1->SetTitle(0);
+  RAT1->SetLabelSize(0.05);
   RAT1->SetLineColor(kBlue);
   RAT1->DrawCopy("h");
   RAT2->SetLineColor(kRed);
   RAT2->DrawCopy("hsame");
   ///
-  CaptT->DrawLatex(0.10,0.95,"R_{i}=#sigma_{#nu#nu#gamma}/#sigma_{#mu#mu#gamma}, R_{2} for CEEX2 (red), R_{1} for CEEX1 (blue),");
+  CaptT->DrawLatex(0.10,0.95,
+   "R=#sigma_{#nu#nu#gamma}/#sigma_{#mu#mu#gamma} for CEEX2 (red) and CEEX1 (blue),");
+  CaptE->DrawLatex(0.80,0.85, capt1);
  //!-----------------------------
   cCeex21rat->cd(2);
   H_Vline12->SetStats(0);
-  //H_Vline12->SetTitle(0);
+  H_Vline12->SetTitle(0);
   H_Vline12->GetYaxis()->SetTitleSize(0.06);
   H_Vline12->GetYaxis()->SetTitleOffset(1.2);
   H_Vline12->GetYaxis()->CenterTitle();
-  H_Vline12->GetXaxis()->SetTitleOffset(0.6);
+  H_Vline12->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   H_Vline12->GetXaxis()->SetTitleSize(0.07);
-  H_Vline12->GetXaxis()->SetTitle("v=Ephot/Ebeam");
-  //H_Vline12->SetMaximum( 1+0.02);
-  //H_Vline12->SetMinimum( 1-0.02);
+  H_Vline12->GetXaxis()->SetTitleOffset(1.7); // does not work???
+  H_Vline12->GetXaxis()->SetLabelSize(0.05);
+  //H_Vline12->SetMaximum( 1+0.001);
+  //H_Vline12->SetMinimum( 1-0.001);
   H_Vline12->SetMaximum(  +0.001);
   H_Vline12->SetMinimum(  -0.001);
   H_Vline12->GetXaxis()->SetTitleOffset(0.6);
   H_Vline12->GetXaxis()->SetTitleSize(0.07);
-  H_Vline12->SetTitle(" R_{1}/R_{2}-1, (CEEX1-CEEX2)/CEEX2");
   H_Vline12->DrawCopy("h");
-  ///
+  /// OBSOLETE errors are huge
   TH1D *RAT_21 = (TH1D*)RAT2->Clone("RAT2");
   RAT_21->Divide(RAT1);             /// divide over CEEX2
-  RAT_21->SetLineColor(kBlue);
-  //RAT_21->DrawCopy("hsame");
-  
+  RAT_21->SetLineColor(kRed);
+  //RAT_21->DrawCopy("hsame");  /// errors are huge
+  /// errors ok
   DELnu->SetLineColor(kBlue);
   DELnu->DrawCopy("hsame");
-  
-  
+  //
+  CaptT->DrawLatex(0.10,0.95,"h.o. QED effect (#Delta R)/R,     (CEEX2-CEEX1)/CEEX2");
+  CaptE->DrawLatex(0.80,0.85, capt1);
   //!-----------------------------
   cCeex21rat->Update();
   cCeex21rat->cd();
