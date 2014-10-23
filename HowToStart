@@ -37,13 +37,13 @@ Muons only, v<0.99, wt=1 events:
 	kmake Mu-start
 	diff -b Mu/pro.output.1k Mu/pro.output | less
 
-User Manual published in Comp. Phys. Commun. 130 (2000) 260.
---------------------------------------------------------------------------------
-SPECIALS:
 Beamstrahlung at 500GeV:
   cp Beast/Foam500,1k.input Beast/Beast.input
-	kmake Beast-start
-	diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
+  kmake Beast-start
+  diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
+
+--------------------------------------------------------------------------------
+SPECIALS:
 
 Muon beams example:
   cp Inclusive/E189GeV_MuonBeam.input  Inclusive/Inclusive.input
@@ -56,4 +56,5 @@ Quark beams u-ubar example:
 Example with quark beams according to collinear PDFs:
   Use Beast/E7TeV-ddBeams.input and uncomment *[[[ ...*]]] in KK2f/BornV.f
 -------------------------------------------------------------------------------
+User Manual published in Comp. Phys. Commun. 130 (2000) 260.
 
