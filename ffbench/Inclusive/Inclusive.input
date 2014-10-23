@@ -1,40 +1,37 @@
- 0 0 0 1 0 0 0 0         KAT1-KAT8        <- Input for the main program
-      1000    NEVT number of events   <- Input for the main program
- 100000000      NEVT number of events   <- Input for the main program
-----------CCCCCCCCCCCCCCCCCCCCCCCCCCCCCOMMENTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+ 1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
+      1000           NEVT number of events
+    100000           NEVT number of events
+----------cccccccccccccccccccccccccccccommentttttttttttttttttttttttttttttttttttt
 BeginX
 ********************************************************************************
-*===============================================================================
 *               ACTUAL DATA FOR THIS PARTICULAR RUN
 *-------------------------------------------------------------------------------
-********************************************************************************
-*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
-    1        189.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-*     KeyWgt=0,1 to get constant,variable weight events
-   10              1      KeyWgt=xpar(10) Deafault is 0
-*       KeyELW=0,1 Type of Elewctroweak corrections, 
-*	KeyElw=0, for primitive Born, is only for tests
-   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
-*     Maximum v, where v = 1-sprim/s, v=1 is alowed
-   16           1D-5      vvmin =xpar(16)
-   17         0.99d0      vvmax =xpar(17)  if 1d0 then reduced inside program
-*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-*     SPECIAL tests: Interference ISR/FSR off/on
-**   27              1      KeyINT=xpar(27)  Default is  1
-*     New exponentiation is only on explicit request
-**   28              2      KeyGPS=xpar(28)  Default is  0
-********************************************************************************
-*     Input for matrix element
-*  501              1      KeyZet=xpar(24)  default is 1, -2 for flat x-section
-********************************************************************************
-*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-**     Define process
-**     Beam flavour code
-**400             11      KFini = xpar(400) dont change it                |<<<<|
-  400             13      KFini = xpar(400) muon beam !!!
-*      Define final fermion
-* 413              1      KFfin, muon
-  411              1      KFfin, final electron!
+    1        200.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+   50              0      KeyHad=xpar(50)  Default is  1
+ 2001           -1e0      Jak1   =xpar(71)  First  Tau decay mask, Default is  0
+ 2002           -1e0      Jak2   =xpar(72)  Second Tau decay mask, Default is  0
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+*     Define process
+*     LIST of Final state flavours to be generated randomly according
+*     to QED corrected x-sections, at least one line/item should be present.
+*     (Remember that electron has incomplete M.E. and top might be too heavy.)
+  401              1      KFfin, d
+  402              1      KFfin, u
+  403              1      KFfin, s
+  404              1      KFfin, c
+  405              1      KFfin, b
+  413              1      KFfin, muon
+  415              1      KFfin, tau
+  412              1      KFfin, neutrino electron
+  414              1      KFfin, neutrino muon
+  416              1      KFfin, neutrino tau
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+*     PrintOut from generator
+    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7             20      Ie2Pri =xpar( 7)  PrintOut End   point
 ********************************************************************************
 EndX
