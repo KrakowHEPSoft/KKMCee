@@ -1,19 +1,22 @@
 -------------------------------------------------------------------------------
                         Installation Notes
 -------------------------------------------------------------------------------
-The program is the best tested under Linux and AIX 4.x and all makefiles
-are configured presently for Linux.
+The program was originally tested under Linux and AIX 4.x 
+All makefiles are configured presently for Linux.
 
 In principle there should be no problem for other UNIX systems.
-Examples of f77 flags for aix, hpux, linux, alpha are in ./ffbench/Makefile.
+Examples of f77 flags for aix, hpux, linux, alpha 
+are still kept in ./ffbench/KKMakefile.
 
 In order to update centrally makefiles in all subdirectories
 do the following:
    cd ./ffbench 
-   make makflag
-This causes mapping makefile.template->makefile in all subdirectories
-updating compilation flags everywhere 
-using flags from the mother ./ffbench/Makefile,
+   make -f KKMakefile makflag
+   make -f KKMakefil  emakprod
+
+This causes mapping makefile.template->KKMakefile 
+in all subdirectories, updating compilation flags everywhere,
+copying flags from the mother ./ffbench/KKMakefile,
 WHICH HAS TO BE FIRST MODIFIED MANUALLY in first place.
 In the case you read EW formfactors you may also consider:
    make default

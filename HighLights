@@ -35,6 +35,9 @@ Physics:
   final state particles may have different mass and arbitrary charge.
 
   Beamstrahlung with realistic spectra from CIRCE/GuineaPig packages.
+  
+  Recently added possibility of m+mu- and q-qbar beams insetad of e+e-
+  Q-qbar beams with collinear PDFs in some rudimentary form are there.
 
 Programming:
   Output in /hepevt/ and /lujets/ formats.
@@ -49,11 +52,10 @@ Programming:
   DIZET, this is done once for ever for given Higgs and Top mass.
   Present pretabulation up to 1020GeV
 
-  Partial OOP is implementer, see OOPrules file for more.
+  Partial OOP is implementer, see POOPrules file for details.
 ------------------------------------------------------------------------------
 Limitations:
-  Neutrino channel not tested,
-  Lack of t-chanel exchange for electron chanel.
+  Neutrino channel not well tested,
   Incomplete second order for FSR CEEX.
 ------------------------------------------------------------------------------
 
