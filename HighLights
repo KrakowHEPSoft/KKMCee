@@ -38,6 +38,10 @@ Physics:
   
   Recently added possibility of m+mu- and q-qbar beams insetad of e+e-
   Q-qbar beams with collinear PDFs in some rudimentary form are there.
+  
+  Recently added: beams can be muons or quarks.
+  In case of quarks beamstrahlung spectra may be replaced manually
+  with the collinear PDFs in BornV.f. See lines marked with *[[[[ there.
 
 Programming:
   Output in /hepevt/ and /lujets/ formats.

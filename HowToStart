@@ -1,51 +1,59 @@
-HOW TO START, compile and run basic demo's:
+HOW TO START (compiling and running basic demo's)
 
-If you are under Linux then proceed as below immediately.
+Under Linux (SLC) proceed as below immediately.
+Alternatively system of Makefile.am is also in place
+and autotools can me used to create/update Makefile's everywhere.
 
-All subdirectories include interrelated  custom KKMakefile's.
-In case an adjustment of the fortran options is needed, 
-then it is done only in the master makefile ffbench/KKMakefile.
-It is then MANDATORY to update KKMakefile's everywhere:
+System of custom KKMakefile's in all subdirectories
+is first created running master makefile ffbench/KKMakefile:
   cd ./ffbench
   alias kmake='make -f KKMakefile'
   kmake makflag
   kmake makprod
-
-Alternatively system of Makefile.am is also in place
-and one may use autotools to create/update Makefile's everywhere.
-
-User Manual is published in Comp. Phys. Commun. 130 (2000) 260.
+If an adjustment of the fortran compilation options is needed,
+then do it only in the master KKMakefile and repeat the above.
 
 BASIC DEMO:
 Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
-as for the detector simulation  (20min, Pentium III 500MHz)::
+as for the detector simulation:
 	cd  ./ffbench
 	cp demo/demo.input.1k demo/demo.input
 	kmake demo-start
 	diff -b demo/demo.output.1k demo/demo.output | less
 
 OTHER DEMOS:
-Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events (19min)::
+Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events:
 	cp Inclusive/Inclusive.input.1k Inclusive/Inclusive.input
 	kmake Inclusive-start
 	diff -b Inclusive/pro.output.1k Inclusive/pro.output | less
 
 Tau's, decays on, beam polarization on:
-	cp Tau/Tau.input.200ev Tau/Tau.input
+	cp Tau/Tau.input.1k Tau/Tau.input
 	kmake Tau-start
-	diff -b Tau/pro.output.200ev Tau/pro.output | less
+	diff -b Tau/pro.output.1k Tau/pro.output | less
 
 Muons only, v<0.99, wt=1 events:
-	cp Mu/Mu.input,100ev,0.99vmax Mu/Mu.input
+	cp Mu/Mu.input.1k Mu/Mu.input
 	kmake Mu-start
-	diff -b Mu/pro.output,100ev,0.99vmax Mu/pro.output | less
+	diff -b Mu/pro.output.1k Mu/pro.output | less
 
+User Manual published in Comp. Phys. Commun. 130 (2000) 260.
+--------------------------------------------------------------------------------
+SPECIALS:
 Beamstrahlung at 500GeV:
-  cp Beast/Foam500,200ev.input Beast/Beast.input
+  cp Beast/Foam500,1k.input Beast/Beast.input
 	kmake Beast-start
-	diff -b Beast/Foam500,200ev.output Beast/pro.output | less
+	diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
 
-etc. etc.........
-Read more in ./ffbench/KKMakefile
+Muon beams example:
+  cp Inclusive/E189GeV_MuonBeam.input  Inclusive/Inclusive.input
+  kmake Inclusive-start
+  
+Quark beams u-ubar example:
+  cp Inclusive/E189GeV_DownBeam.input Inclusive/Inclusive.input
+  kmake Inclusive-start
 
--------------------------------------------------------------------
+Example with quark beams according to collinear PDFs:
+  Use Beast/E7TeV-ddBeams.input and uncomment *[[[ ...*]]] in KK2f/BornV.f
+-------------------------------------------------------------------------------
+
