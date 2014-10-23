@@ -236,7 +236,8 @@ gtar: Clean
 #-----------------------------------------------------------------------
 VERS=v4_22
 export: Clean
-	(rm -rf    ./KKMC_$(VERS);    mkdir  ./KKMC_$(VERS) )
+	(rm -f     ./KKMC_$(VERS).tgz)
+	(rm -rf    ./KKMC_$(VERS);      mkdir  ./KKMC_$(VERS) )
 ### user directory
 	(mkdir     ./KKMC_$(VERS)/ffbench )
 	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)

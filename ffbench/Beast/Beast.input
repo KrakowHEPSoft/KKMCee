@@ -1,6 +1,6 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
-       200           NEVT number of events
       1000           NEVT number of events
+       200           NEVT number of events
       5000           NEVT number of events
     100000           NEVT number of events
         10           NEVT number of events
