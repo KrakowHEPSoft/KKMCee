@@ -39,6 +39,7 @@ class ROBOL2{
   TH1D   *hst_LnThPhVis;
   //
   TH1D   *hst_vTrueMain;
+  TH1D   *hst_vTrueMu;
   TH1D   *hst_vTrueCeex2;
   ///
   TH1D   *hst_vPhotMain;
@@ -52,9 +53,16 @@ class ROBOL2{
   TH1D   *hst_mPhotCeex1;
   TH1D   *hst_mPhotCeex2;
   TH1D   *hst_mPhotCeex12;
-  //
+  ///
+  TH1D   *hst_nPhotCeex1;
+  TH1D   *hst_nPhotCeex2;
+  TH1D   *hst_nPhotCeex12;
+  TH1D   *hst_lPhotCeex1;
+  TH1D   *hst_lPhotCeex2;
+  TH1D   *hst_lPhotCeex12;
+  ///
   TH1D   *hst_CosPLCeex2;
-  //
+  ///
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
   //

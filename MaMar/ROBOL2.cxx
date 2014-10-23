@@ -58,8 +58,10 @@ void ROBOL2::Initialize(long &NevTot)
   hst_nPhVis->Sumw2();
   ///
   int nbv =150;   // too small
-  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue ",   nbv, 0.000 ,1.000);
+  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue nu ",nbv, 0.000 ,1.000);
+  hst_vTrueMu   = new TH1D("hst_vTrueMu",    "dSig/dvTrue mu ",nbv, 0.000 ,1.000);
   hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ",   nbv, 0.000 ,1.000);
+  hst_vTrueMu->Sumw2();
   hst_vTrueMain->Sumw2();
   hst_vTrueCeex2->Sumw2();
   hst_vPhotMain= new TH1D("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
@@ -82,6 +84,22 @@ void ROBOL2::Initialize(long &NevTot)
   hst_mPhotCeex1->Sumw2();
   hst_mPhotCeex2->Sumw2();
   hst_mPhotCeex12->Sumw2();
+  /// wider beams, energy in GeV
+  double Eg2= vv2*CMSene/2;
+  double Eg1= vv1*CMSene/2;
+  int nb4 =10;   /// small range, wider bins
+  hst_nPhotCeex1 = new TH1D("hst_nPhotCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_nPhotCeex2 = new TH1D("hst_nPhotCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_nPhotCeex12= new TH1D("hst_nPhotCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_nPhotCeex1->Sumw2();
+  hst_nPhotCeex2->Sumw2();
+  hst_nPhotCeex12->Sumw2();
+  hst_lPhotCeex1 = new TH1D("hst_lPhotCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_lPhotCeex2 = new TH1D("hst_lPhotCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_lPhotCeex12= new TH1D("hst_lPhotCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_lPhotCeex1->Sumw2();
+  hst_lPhotCeex2->Sumw2();
+  hst_lPhotCeex12->Sumw2();
   ///
   int nbc =50;
   hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
@@ -152,18 +170,22 @@ void ROBOL2::Production(long &iEvent)
   double Ebeam  = CMSene/2;
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
-  // ********************************************************************
-  // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
+  /// ********************************************************************
+  /// ***   Photon trigger TrigPho is for every final state
   double Pi=4*atan(1.0);
   double phEne,phTheta,phCosth,phPT,yy;
+  /// muon acceptance data
+  double CosTheMumax = 0.95;
+  /// photon acceptance data
   double XEneMin = 0.10;  /// Emin/Ebeam  for visible photon
   double XTraMin = 0.02;  /// kTmin/Ebeam for visible photon
-  double ThetaMin = 15;                   /// theta minimum  for visible photon
-  int nph_vis=0;  /// No. of visible (triggered) photons
-  double phEneVis = 0;  /// Energy of triggered photon
-  int TrigPho=1;  /// =1 for accepted, =0 for rejected
+  double ThetaMin =  15;  /// theta minimum  for visible photon
+  /// photon acceptance params
+  int    nph_vis=0;       /// No. of visible (triggered) photons
+  double phEneVis = 0;    /// Energy of triggered photon
+  int    TrigPho=1;       /// =1 for accepted, =0 for rejected
   ///**************************************************
-  ///        **** fermion inentification ****
+  /// **** fermion inentification ****
   long KF=0, NuYes=0;
 //  KKMC_generator->GetKFfin(KF); /// does not work
   if( PartFindStable( 12) ) KF=12;  /// electron neutrino found
@@ -174,7 +196,7 @@ void ROBOL2::Production(long &iEvent)
   ///*********************************************************************
   ///      ******** Histogramming starts here **********
   ///*********************************************************************
-  /// Loop over photons
+  /// Loop over photons. defining visible photons
   ///**************************************************
   for(iphot=0;iphot<m_Nphot;iphot++){
     phEne   = m_phot[iphot].Energy();
@@ -222,35 +244,51 @@ void ROBOL2::Production(long &iEvent)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
-  if( NuYes==1 ){
-  hst_vTrueMain->Fill(       vv, WtMain);
-  hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
-  ///
-  if( nph_vis == 1 ) hst_vPhotMain->Fill(  vPhot, WtMain);
-  if( nph_vis == 1 ) hst_vPhotCeex1->Fill( vPhot, WtCEEX1);
-  if( nph_vis == 1 ) hst_vPhotCeex2->Fill( vPhot, WtCEEX2);
-  if( nph_vis == 1 ) hst_vPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
-//!///////////////////////////////////////////////////////////
-/// comparing Nuel with Numu
-  if( (nph_vis == 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
-  if( (nph_vis == 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtMain);
+/// All 3 types of nu+nubar
+if( NuYes==1 ){
+  hst_vTrueMain->Fill(       vv, WtMain);  /// true nu-pair mass distribution
+  hst_vTrueCeex2->Fill(      vv, WtCEEX2); /// true nu-pair mass distribution
+  /// nu+nubar + visible photons
+  if( nph_vis >= 1 ) hst_vPhotMain->Fill(  vPhot, WtMain); /// full v-range
+  /// histos with restricted v-range
+  if( nph_vis >= 1 ) hst_vPhotCeex1->Fill( vPhot, WtCEEX1);
+  if( nph_vis >= 1 ) hst_vPhotCeex2->Fill( vPhot, WtCEEX2);
+  if( nph_vis >= 1 ) hst_vPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
+  /// wider bins, absolute energy
+  if( nph_vis >= 1 ) hst_nPhotCeex1->Fill( phEneVis, WtCEEX1);
+  if( nph_vis >= 1 ) hst_nPhotCeex2->Fill( phEneVis, WtCEEX2);
+  if( nph_vis >= 1 ) hst_nPhotCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+  /// comparing Nuel with Numu
+  if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
+  if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtMain);
 }/// NuYes
   /// *********************************************************************
   ///         various QED models, muon channel
   /// *********************************************************************
-  if( KF==13 && vv<0.9) { hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);}
-  if( KF==13 && CosThe1<0.95 &&  CosThe2<0.95 && nph_vis==1 && vPhot>XEneMin){
+  int inAngMu =0;    /// angular limits on muon-pairs
+  if (CosThe1<CosTheMumax &&  CosThe2<CosTheMumax ) inAngMu =1;
+if( KF==13 ) {
+  hst_vTrueMu->Fill(  vv, WtMain);   /// true mu-pair mass distribution
+/// mu_pair+gammas, both visible (in the detector)
+  if( nph_vis>=1 && inAngMu==1 ){
+    hst_CosPLCeex2->Fill(CosThePL, WtCEEX2); /// Ang. distr.
+    /// histos with restricted v-range
     hst_mPhotCeex1->Fill( vPhot, WtCEEX1);
     hst_mPhotCeex2->Fill( vPhot, WtCEEX2);
-    hst_mPhotCeex12->Fill(vPhot,WtCEEX1-WtCEEX2);
-  }/// KF=13
+    hst_mPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
+    /// wider bins, absolute energy
+    hst_lPhotCeex1->Fill( phEneVis, WtCEEX1);
+    hst_lPhotCeex2->Fill( phEneVis, WtCEEX2);
+    hst_lPhotCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+  }/// visible phot and mu-pair
+}/// KF=13
 
 //!///////////////////////////////////////////////////////////
   /// Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
   hst_weight->Fill(WtMain);     /// weight
-  hst_Mff->Fill(Mff,WtMain);    /// fermion pair mass
+  hst_Mff->Fill(Mff,WtMain);    /// fermion-pair mass
   // debug debug debug debug debug debug debug
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;
