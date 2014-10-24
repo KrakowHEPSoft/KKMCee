@@ -40,6 +40,13 @@ $(TeX6).pdf: 	$(TeX6).tex $(GRAFLIST)
 	(pdflatex	$(TeX6) )
 $(TeX6)-pdf:	$(TeX6).pdf
 	($(XPdf) $(TeX6).pdf& )
+#==============================================================================
+# make FCCeeParis14.pdf
+TeX8 =  FCCeeParis14
+$(TeX8).pdf: 	$(TeX8).tex $(GRAFLIST)
+	(pdflatex	$(TeX8) )
+$(TeX8)-pdf:	$(TeX8).pdf
+	($(XPdf) $(TeX8).pdf& )
 #=============================================================================
 export:
 	(rm -rf InvizTLEP14; mkdir InvizTLEP14;)
