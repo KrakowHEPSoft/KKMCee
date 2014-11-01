@@ -131,8 +131,6 @@
 \begin{frame}[fragile]
 \frametitle{\bf Outline}
 
-\includegraphics[width=60mm]{./sli0.jpg}
-
 \vspace{2mm}
 \large\cbl
 Three subjects/parts:
@@ -140,14 +138,42 @@ Three subjects/parts:
 \item\cbl
  Main points (updates) of previous talk on prec. MCs
 \item
- New wiki page of MC generators for FCCee
+ New wiki page of MC generators for FCCee\\
  (mostly undusted LEP codes)
 \item
  Update on invisible Z width from radiative return
 \end{itemize}
 \end{frame}
 
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{\bf Precision Monte Carlo event generators}
 
+\vspace{-3mm}
+\includegraphics[width=60mm]{./sli0.jpg}
+
+\begin{itemize}
+\item\cbl
+ Theoretical predictions with precision $\leq 1\%$.
+\item
+ Real and virtual diagram contributions
+\item
+ All kind of non-factorisable contribution not the problem
+\item
+ Can handle arbitrary experimental cuts/selection
+\item
+ Soft-collinenar photon resummations in exclusive form
+\item
+ But very costly in the developement, precision validation!\\
+ hence mostly for known physics, like SM
+\item
+ Most of LEP-era precision MC appeared after LEP start!!!
+\end{itemize}
+\
+\end{frame}
+
+%
 %----------------------------------------------------------------
 %----------------------------------------------------------------
 \begin{frame}[fragile]
@@ -185,39 +211,65 @@ Three subjects/parts:
  Main points from CERN June 2014 talk on precision MCs for FCCee}
 \framesubtitle{\large\bf\crd WW and ZZ far and near from the threshold}
 
-\vspace{-2mm}
-\footnotesize
+%\vspace{-2mm}
 \begin{itemize}
 \item
 KORALZ+YFSWW (2002) and YFSZZ for ee -> 4f,
-kept alive but little new after LEP (spin correlations added), http://placzek.web.cern.ch/placzek/ , slides and papers also there.\\
-Quadri-precision in KORALW for ee->eeee under LINUX recently.
+kept alive but little new after LEP (spin correlations added),\\
+{\cbl http://placzek.web.cern.ch/placzek/}
 \item
-RacoonWW (2004) stays essentially at the level of LEP, http://ltpth.web.psi.ch/racoonww/racoonww.html
+KORALW in quadri-precision for ee->eeee revived under LINUX recently.
 \item
-But complete QED+EW 1st order corrections for selected 4f final states,
-results were published http://arxiv.org/abs/hep-ph/0505253,
-while MC programs not published.
-Still lacks QED exponentiation.
+RacoonWW (2004) stays essentially at the level of LEP,\\
+{\cbl http://ltpth.web.psi.ch/racoonww/racoonww.html}
 \item
-Resummation QED interferences for YFSWW MC outlined in http://cern.ch/~jadach/public/granada\_2001march.pdf
-but never implemented (was not needed for LEP2)
+WHIZARD (2014) rather primitive ISR, lacks EW corrections,\\
+{\cbl https://whizard.hepforge.org}
 \item
-WHIZARD (2014) rather primitive ISR, lacks EW corrections, https://whizard.hepforge.org
+GRACE (2006) EW corrections seems to be there, but simplistic QED\\ 
+{\cbl http://minami-home.kek.jp}
 \item
-GRACE (2006) EW corrections (like RacoonWW?), simplistic QED http://minami-home.kek.jp
-\item
-YFSZZ: main MC for ee->ZZ at LEP http://placzek.web.cern.ch/placzek/
+YFSZZ: main MC for ee->ZZ at LEP\\
+{\cbl http://placzek.web.cern.ch/placzek/}
 \end{itemize}
 \end{frame}
 
-% %----------------------------------------------------------------
-% \begin{frame}[fragile]
-% \frametitle{\bf\ns 
-%  Main poins from CERN June 2014 talk on precision MCs for FCCee}
-% 
-% \includegraphics[width=115mm]{./sli8.jpg}
-% \end{frame}
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{\bf\ns 
+ Main points from CERN June 2014 talk on precision MCs for FCCee}
+\framesubtitle{\large\bf\crd WW and ZZ far and near from the threshold}
+
+Post-LEP developments:
+\begin{itemize}
+\item
+Important work by Denner, Dittmaier Roth, Wieders:\\
+\item
+%{\footnotesize
+Full ee->WW->4f NLO calculation, with fully off-shell W bosons
+(the first 2->4 NLO calculation.) 
+It nicely confirms the validity of our older results based on the double-pole approximation at the expected level of accuracy.
+%}
+\item
+Results published http://arxiv.org/abs/hep-ph/0502063, hep-ph/0505042
+\item
+Limited to WW-like final states like
+$u \bar{d}  \mu \bar{\nu}_\mu$.
+\item
+MC programs not published, QED expon. still missing.
+\end{itemize}
+Other unfinished work:
+\begin{itemize}
+\item
+Resummation QED interferences for YFSWW MC outlined\\ http://cern.ch/~jadach/public/granada\_2001march.pdf\\
+but never implemented (was not needed for LEP2)
+\end{itemize}
+
+
+\end{frame}
+%----------------------------------------------------------------
 
 %----------------------------------------------------------------
 %----------------------------------------------------------------
@@ -267,7 +319,7 @@ YFSZZ: main MC for ee->ZZ at LEP http://placzek.web.cern.ch/placzek/
 \item Some new codes, for instance ISR to Higgs lineshape...
 \item Selected/relevant presentations
 \end{itemize}
-\item 
+\item\crd
  {\bf The rule} will be that we include only codes which run
  under modern compilators 
  and are supplied with simple instruction 
@@ -482,7 +534,7 @@ MC events were generated using KKMC.
 \begin{frame}[fragile]
 \frametitle{\bf Update on invisible Z width from radiative return}
 
-{\bf Conclusions on invisible Z}
+{\bf Today's conclusions on invisible Z:}
 \begin{itemize}
 \item 
  QED h.o. corrections very small $\sim 10^{-4}$
