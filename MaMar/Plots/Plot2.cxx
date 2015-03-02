@@ -27,7 +27,7 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
-TFile DiskFileA("../test2/rmain.root");
+TFile DiskFileA("../workZinv/rmain.root");
 //=============================================================================
 
 Double_t sqr( const Double_t x ){ return x*x;};

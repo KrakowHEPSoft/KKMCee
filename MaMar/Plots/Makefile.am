@@ -4,16 +4,39 @@ METASOURCES = AUTO
 
 bin_PROGRAMS = Plot1 Plot2
 
+########### KK2f MC libraries ###########
+$(top_builddir)/KK2f/libKK2f.a:
+	(cd $(top_builddir)/KK2f/; make)
+$(top_builddir)/glibk/libGlibk.a:
+	(cd $(top_builddir)/glibk/; make)
+$(top_builddir)/jetset/libJetset.a:
+	(cd $(top_builddir)/jetset/; make)
+$(top_builddir)/bornv/libBornvDizet.a:
+	(cd $(top_builddir)/bornv/; make)
+$(top_builddir)/tauola/libTauola.a:
+	(cd $(top_builddir)/tauola/; make)
+$(top_builddir)/photos/libPhotos.a:
+	(cd $(top_builddir)/photos/; make)
+$(top_builddir)/dizet/libDizet.a:
+	(cd $(top_builddir)/dizet/; make)
+############### extras ##################
+$(top_builddir)/KKsem/libKKsem.a:
+	(cd $(top_builddir)/KKsem/; make)
+$(top_builddir)/bornv/libBornvTabs.a:
+	(cd $(top_builddir)/bornv/; make)
+#########################################
+	
+KK2f_Libs2= \
+	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a \
+	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
+	$(top_builddir)/dizet/libDizet.a \
+	$(top_builddir)/KKsem/libKKsem.a
+
 Plot1_SOURCES = KKsem.cxx Plot1.cxx
-Plot1_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/dizet/libDizet.a $(top_builddir)/KKsem/libKKsem.a \
-	$(ROOTAUXLIBS) $(ROOTGLIBS)
+Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 Plot2_SOURCES = Plot2.cxx
-Plot2_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/dizet/libDizet.a $(top_builddir)/KKsem/libKKsem.a \
-	$(ROOTAUXLIBS) $(ROOTGLIBS)
+Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
