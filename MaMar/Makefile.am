@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 SUBDIRS = test0 workZinv Plots
 
-bin_PROGRAMS = Test ProdZinv
+bin_PROGRAMS = Prod0 ProdZinv
 AM_FFLAGS = @MY_F77_FLAGS@
 
 ########### KK2f MC libraries #############
@@ -27,13 +27,9 @@ KK2f_Libs= \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a
 
-Test_SOURCES = Test.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
-Test_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Test_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
-
-Main2_SOURCES = Main2.cxx KKMC.cxx PartLund.cxx ROBOL2.cxx Semaph.cxx
-Main2_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Main2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
+Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
+Prod0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ProdZinv_SOURCES = ProdZinv.cxx KKMC.cxx PartLund.cxx ROBOL2.cxx Semaph.cxx
 ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)

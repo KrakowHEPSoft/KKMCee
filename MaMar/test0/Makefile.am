@@ -4,7 +4,7 @@ METASOURCES = AUTO
 #-----------------------------------------------------------------------
 #       Template for makefile in production directory demo
 #-----------------------------------------------------------------------
-MAIN=Test
+MAIN=Prod0
 DSET=test0
 CLASS=long
 #-----------------------------------------------------------------------
@@ -12,11 +12,13 @@ SRCLIST= "../ ../../yfslib ../../bornv ../../glibk ../../KK2f"
 #-----------------------------------------------------------------------
 # Interactive:  run start stop and continue
 #-----------------------------------------------------------------------
+../${MAIN}:
+	(cd ..; make ../${MAIN})
 prepare:
 	(ln -s ../../.KK2f_defaults ./.KK2f_defaults )
 	(ln -s ../../dizet          ./dizet )
 #-----------------------------------------------------------------------
-start:
+start: 
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\
