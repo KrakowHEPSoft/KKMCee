@@ -11,11 +11,11 @@ histogramming in ROBOL.cxx, wrappers in KKMC.cxx,
 work directory ./test0 and Plots/Plot1.cxx for plotting.
 
 -------------------------------------------------------------------------
-Presently (febr. 2014), production chain for nu+nu+gamma 
+Presently (febr. 2014, febr 2015), production chain for nu+nu+gamma 
 channel is added with:
-- main program Main2.cxx
+- main program ProdZinv.cxx
 - histogramming in ROBOL2.cxx
-- work directory ./test2 and 
+- work directory ./workZinv and 
 - Plots/Plot2.cxx for plotting
 
 -------------------------------------------------------------------------
