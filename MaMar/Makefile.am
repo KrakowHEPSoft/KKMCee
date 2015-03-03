@@ -1,8 +1,8 @@
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
-SUBDIRS = test0 workZinv Plots
+SUBDIRS = test0 workZinv workFSR Plots
 
-bin_PROGRAMS = Prod0 ProdZinv
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR
 AM_FFLAGS = @MY_F77_FLAGS@
 
 ########### KK2f MC libraries #############
@@ -35,6 +35,10 @@ ProdZinv_SOURCES = ProdZinv.cxx KKMC.cxx PartLund.cxx ROBOL2.cxx Semaph.cxx
 ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
 ProdZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
+ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
+ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
+ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
 ########################################################################
 ###                   USER PART
 ###  make test0-start
@@ -54,4 +58,10 @@ workZinv-stop:
 	(cd ./workZinv;  make stop )
 Plot2:
 	(cd Plots; make Plot2; ./Plot2)
+#-----------------------------------------------------------------------
+###   make workFSR-start
+workFSR-start: all
+	(cd ./workFSR; make start)
+PlotFSR:
+	(cd Plots; make PlotFSR; ./PlotFSR)
 #-----------------------------------------------------------------------
