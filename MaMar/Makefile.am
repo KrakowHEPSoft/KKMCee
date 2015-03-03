@@ -62,6 +62,8 @@ Plot2:
 ###   make workFSR-start
 workFSR-start: all
 	(cd ./workFSR; make start)
+workFSR-stop:
+	(cd ./workFSR; make stop)
 PlotFSR:
 	(cd Plots; make PlotFSR; ./PlotFSR)
 #-----------------------------------------------------------------------
