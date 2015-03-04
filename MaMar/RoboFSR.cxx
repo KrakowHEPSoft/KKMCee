@@ -61,23 +61,7 @@ void RoboFSR::Initialize(long &NevTot)
   hst_vTrueCeex2->Sumw2();
   hst_vAlepCeex2->Sumw2();
   hst_vXGenCeex2->Sumw2();
-  int nbc =50;
-  hst_Cost1Ceex2= new TH1D("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
-  hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
-  hst_CosPRCeex2= new TH1D("hst_CosPRCeex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_Cost1Ceex2->Sumw2();
-  hst_CosPLCeex2->Sumw2();
-  hst_CosPRCeex2->Sumw2();
-  hst_CosPREex2= new TH1D("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_CosPREex2->Sumw2();
-  sca_vTcPR_Ceex2= new TH2D("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Eex2 = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Ceex2->Sumw2();
-  sca_vTcPR_Eex2->Sumw2();
-  sca_vXcPR_Ceex2= new TH2D("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vXcPR_Ceex2->Sumw2();
-  sca_vXcPR_Eex2->Sumw2();
+
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
@@ -216,17 +200,6 @@ void RoboFSR::Production(long &iEvent)
   hst_vAlepCeex2->Fill(1-zAleph, WtCEEX2); // M^star guessed
   hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
   //
-  if(vv<0.9){
-    hst_Cost1Ceex2->Fill( CosThe1, WtCEEX2);
-    hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);
-    hst_CosPRCeex2->Fill(  CosPRD, WtCEEX2);
-  }
-  hst_CosPREex2->Fill(  CosPRD, WtEEX2);
-  // big scatergrams
-  sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2); 
-  sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
-  sca_vXcPR_Ceex2->Fill(  vvk, CosPRD, WtCEEX2); 
-  sca_vXcPR_Eex2->Fill(   vvk, CosPRD, WtEEX2);
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
