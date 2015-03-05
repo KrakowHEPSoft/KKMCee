@@ -61,6 +61,11 @@ void RoboFSR::Initialize(long &NevTot)
   hst_vTrueCeex2->Sumw2();
   hst_vAlepCeex2->Sumw2();
   hst_vXGenCeex2->Sumw2();
+  int nbs =50;
+  hst_s1Ceex2  = new TH1D("hst_s1Ceex2",  "dSig/ds1 ", nbs, 85.0 , 95.0);
+  hst_svk      = new TH1D("hst_svk",      "dSig/ds1 ", nbs, 85.0 , 95.0);
+  hst_s1Ceex2->Sumw2();
+  hst_svk->Sumw2();
 
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
@@ -123,7 +128,7 @@ void RoboFSR::Production(long &iEvent)
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
   // ********************************************************************
-  // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
+  // ***   Photon trigger TrigPho is for everybody, all pions, muons etc
   double Pi=4*atan(1.0);
   double phEne,phTheta,phCosth;
   double XEnePho  = 0.010;              // Emin for visible photom
@@ -199,7 +204,11 @@ void RoboFSR::Production(long &iEvent)
   hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
   hst_vAlepCeex2->Fill(1-zAleph, WtCEEX2); // M^star guessed
   hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
-  //
+  // NEW!!!
+  hst_s1Ceex2->Fill(   sqrt(s1), WtCEEX2); // M^2(2f) of mun pair
+  double svk= s*(1-vvk);
+  hst_svk->Fill(   sqrt(svk), WtCEEX2);
+
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;

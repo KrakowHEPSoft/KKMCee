@@ -49,6 +49,9 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vAlepCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vXGenCeex2") );
   //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_s1Ceex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_svk") );
+  //
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -119,11 +122,9 @@ void FigInfo()
   TH1D *hst_vAlepCeex2 = (TH1D*)DiskFileA.Get("hst_vAlepCeex2");
   TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
 
-  /*
-  TH1D *hst_Cost1Ceex2 = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
-  TH1D *hst_CosPLCeex2 = (TH1D*)DiskFileA.Get("hst_CosPLCeex2");
-  TH1D *hst_CosPRCeex2 = (TH1D*)DiskFileA.Get("hst_CosPRCeex2");
-  */
+  TH1D *hst_s1Ceex2  = (TH1D*)DiskFileA.Get("hst_s1Ceex2");
+  TH1D *hst_svk      = (TH1D*)DiskFileA.Get("hst_svk");
+
 //------------------------------------------------------------------------  
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 80,    1000,  800);
@@ -160,19 +161,11 @@ void FigInfo()
   CaptT->DrawLatex(0.10,0.95,"d#sigma/dv (Ceex2); Black=Bare, Red=Aleph, Blue=Gener");
   //==========plot4==============
   cFigInfo->cd(4);
-  /*
-  //-----------------------------
-  hst_Cost1Ceex2->SetStats(0);
-  hst_Cost1Ceex2->SetTitle(0);
-  hst_Cost1Ceex2->DrawCopy("h");
-  //
-  hst_CosPRCeex2->SetLineColor(2);
-  hst_CosPRCeex2->DrawCopy("hsame");
-  //
-  hst_CosPLCeex2->SetLineColor(4);
-  hst_CosPLCeex2->DrawCopy("hsame");  
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dc (Ceex2); Black=   #theta_{1}, Red=PRD, Blue=PL");
-  */
+
+  hst_s1Ceex2->DrawCopy("h");
+
+  hst_svk->SetLineColor(4);
+  hst_svk->DrawCopy("hsame");
   //----------------------------
   cFigInfo->cd();
 }
@@ -192,17 +185,6 @@ void FigVtest()
   TH1D *vdis_ISR2      = (TH1D*)DiskFileB.Get("vdis_ISR2");
   TH1D *vdis_ISR2_FSR2 = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");
   //
-  //[[[TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
-  //[[[TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
-  //------------------------------------------------------------------------
-  //****************************************************************************************
-  //************************** Developement corner *****************************************
-  //TH1D *hst_ProjV = (TH1D*)sca_vTcPR_Ceex2->ProjectionX("hst_projV",1,50,"e");
-  /*
-  TH1D *hst_projV;
-  ProjX1(sca_vTcPR_Ceex2, hst_projV);
-  hst_projV->SetName("hst_projV");
-  */
   //****************************************************************************************
   //****************************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -230,12 +212,6 @@ void FigVtest()
   //
   vdis_ISR2_FSR2->SetLineColor(6); // magenta
   vdis_ISR2_FSR2->DrawCopy("hsame");
-  //
-  ////hst_projV->SetLineColor(8); // green
-  ////hst_projV->DrawCopy("same");
-  //
-  //HstNew->SetLineColor(7); // cyan
-  //HstNew->DrawCopy("same");
   //
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); Black=Bare, Red=Gener, Blue=ISR, Mag=ISR+FSR");
   //==========plot2==============
@@ -285,7 +261,7 @@ int main(int argc, char **argv)
   KKsemMakeHisto();        //
   //========== PLOTTING ==========
   FigInfo();
-  FigVtest(); //***
+  //FigVtest(); //***
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
