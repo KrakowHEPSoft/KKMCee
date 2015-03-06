@@ -162,11 +162,11 @@ void FigInfo()
   //==========plot4==============
   cFigInfo->cd(4);
 
-  hst_s1Ceex2->DrawCopy("h");
-
   hst_svk->SetLineColor(4);
-  hst_svk->DrawCopy("hsame");
-  //----------------------------
+  hst_svk->DrawCopy("h");
+
+  hst_s1Ceex2->DrawCopy("hsame");
+//----------------------------
   cFigInfo->cd();
 }
 
