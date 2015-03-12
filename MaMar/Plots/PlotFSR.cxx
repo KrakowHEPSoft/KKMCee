@@ -207,10 +207,10 @@ void FigVtest()
   hst_vTrueCeex2->SetTitle(0);
   hst_vTrueCeex2->DrawCopy("h");  // black
   //
-  vdis_ISR2->SetLineColor(4); // blue
+  vdis_ISR2->SetLineColor(kBlue); // blue
   vdis_ISR2->DrawCopy("hsame");
   //
-  vdis_ISR2_FSR2->SetLineColor(6); // magenta
+  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
   vdis_ISR2_FSR2->DrawCopy("hsame");
   //
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); Black=Bare, Red=Gener, Blue=ISR, Mag=ISR+FSR");
@@ -229,10 +229,10 @@ void FigVtest()
   gPad->SetLogy(); // !!!!!!
   hst_vXGenCeex2->SetStats(0);
   hst_vXGenCeex2->SetTitle(0);
-  hst_vXGenCeex2->SetLineColor(2); // red
+  hst_vXGenCeex2->SetLineColor(kRed); // red
   hst_vXGenCeex2->DrawCopy("h");
   //
-  vdis_ISR2->SetLineColor(4); // blue
+  vdis_ISR2->SetLineColor(kBlue); // blue
   vdis_ISR2->DrawCopy("hsame");
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); Red=Gener, Blue=ISR");
   //==========plot4==============
@@ -261,7 +261,7 @@ int main(int argc, char **argv)
   KKsemMakeHisto();        //
   //========== PLOTTING ==========
   FigInfo();
-  //FigVtest(); //***
+  FigVtest(); //***
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
