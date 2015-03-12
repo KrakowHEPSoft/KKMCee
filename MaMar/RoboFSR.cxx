@@ -62,8 +62,8 @@ void RoboFSR::Initialize(long &NevTot)
   hst_vAlepCeex2->Sumw2();
   hst_vXGenCeex2->Sumw2();
   int nbs =50;
-  hst_s1Ceex2  = new TH1D("hst_s1Ceex2",  "dSig/ds1 ", nbs, 85.0 , 95.0);
-  hst_svk      = new TH1D("hst_svk",      "dSig/ds1 ", nbs, 85.0 , 95.0);
+  hst_s1Ceex2  = new TH1D("hst_s1Ceex2",  "dSig/ds1 ", nbs, 86.0 , 96.0);
+  hst_svk      = new TH1D("hst_svk",      "dSig/ds1 ", nbs, 86.0 , 96.0);
   hst_s1Ceex2->Sumw2();
   hst_svk->Sumw2();
 
@@ -195,19 +195,24 @@ void RoboFSR::Production(long &iEvent)
   double WtEEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
-  double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
-  double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
+  double WtCEEX1 = KKMC_generator->GetWtAlter(252);    //  CEEX O(alf1) Interf. off
+  double WtCEEX2 = KKMC_generator->GetWtAlter(253);    //  CEEX O(alf2) Interf. off
   //
   hst_nPhAll->Fill(  m_Nphot,WtMain);
   hst_nPhVis->Fill(  nph_ene,WtMain);
   hst_vTrueMain->Fill(       vv, WtMain);
-  hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
   hst_vAlepCeex2->Fill(1-zAleph, WtCEEX2); // M^star guessed
-  hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
+  //
+  //hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
+  //hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
+  hst_vTrueCeex2->Fill(      vv, WtEEX3); // M(2f) of mun pair
+  hst_vXGenCeex2->Fill(     vvk, WtEEX3); // M^star from MC (illegal)
   // NEW!!!
-  hst_s1Ceex2->Fill(   sqrt(s1), WtCEEX2); // M^2(2f) of mun pair
   double svk= s*(1-vvk);
-  hst_svk->Fill(   sqrt(svk), WtCEEX2);
+  //hst_s1Ceex2->Fill(   sqrt(s1), WtCEEX2); // M^2(2f) of mun pair
+  //hst_svk->Fill(      sqrt(svk), WtCEEX2);
+  hst_s1Ceex2->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of mun pair
+  hst_svk->Fill(      sqrt(svk), WtEEX3);
 
   // Miscelaneous
   m_YSum  += WtMain;

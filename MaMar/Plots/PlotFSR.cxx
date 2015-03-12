@@ -207,8 +207,8 @@ void FigVtest()
   hst_vTrueCeex2->SetTitle(0);
   hst_vTrueCeex2->DrawCopy("h");  // black
   //
-  vdis_ISR2->SetLineColor(kBlue); // blue
-  vdis_ISR2->DrawCopy("hsame");
+  //vdis_ISR2->SetLineColor(kBlue); // blue
+  //vdis_ISR2->DrawCopy("hsame");
   //
   vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
   vdis_ISR2_FSR2->DrawCopy("hsame");
@@ -223,7 +223,7 @@ void FigVtest()
   hst_vTrueCeex2->SetMaximum(1.15);
   hst_vTrueCeex2->DrawCopy("h");
   //
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); red: Gener/KKsemISR");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); red: Gener/KKsemISR+FSR");
   //==========plot3==============
   cFigVtest->cd(3);
   gPad->SetLogy(); // !!!!!!
@@ -243,6 +243,7 @@ void FigVtest()
   hst_vXGenCeex2->SetMinimum(0.85);
   hst_vXGenCeex2->SetMaximum(1.15);
   hst_vXGenCeex2->DrawCopy("h");  // black
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (Ceex2); red: Gener/KKsemISR");
   //----------------------------
   cFigVtest->cd();
   //================================================
