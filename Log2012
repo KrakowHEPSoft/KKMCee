@@ -9,6 +9,13 @@ Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
 ====================================================================
 
 -------------------------------------------------------------------
+November 2014 (for Paris FCCee workshop)
+In MaMar directory: 
+  * NuNuGamma analysis added,
+  * Autotools improved (KKMakefile is now obsolete there).
+
+
+-------------------------------------------------------------------
 June. 10th, 2013
 Beamsstrahlung repleced by the product toy-model PDFs of 
 initial the q-qbar beams, see
