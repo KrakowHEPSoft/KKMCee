@@ -1,4 +1,11 @@
-# Obsolete?!?! use instead ./Test executable produced by autotools
+#     **********************************************
+#     *****  !!!!! OBSOLETE !!!!!  But keep it *****
+#     **********************************************
+# And use autotools instead!!!
+# Mainly because would cost too much effert to maintain it as a master makefile
+# (already two master makefiles in ../ffbench and ../yfspro)
+# Note that main program Test.cxx is now renamed as Prod0.cxx
+# ******************************************************************************
 #===============================================================================
 #  make -f KKMakefile test0-start	<==  basic production progr.
 #  make -f KKMakefile test0-stop
