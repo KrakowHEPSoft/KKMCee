@@ -535,7 +535,7 @@ void FigCprod()
   // from KKsem
   TH1D *cdisKS_ISR2      = (TH1D*)DiskFileB.Get("cdisKS_ISR2");
   TH1D *cdisDZ_ISR2      = (TH1D*)DiskFileB.Get("cdisDZ_ISR2");
-  TH1D *cdis2_ISR2     = (TH1D*)DiskFileB.Get("cdis2_ISR2"); // no Z, pure QED
+  TH1D *cdis2_ISR2       = (TH1D*)DiskFileB.Get("cdis2_ISR2"); // no Z, pure QED
   //****************************************************************************************
   //****************************************************************************************
   int nbMax=0; // this is cut on costheta, 0= no cut
@@ -589,12 +589,14 @@ void FigCprod()
   Hcth_vTcPR_Ceex2->SetStats(0);
   Hcth_vTcPR_Ceex2->SetTitle(0);
   Hcth_vTcPR_Ceex2->SetLineColor(4); // blue
+  Hcth_vTcPR_Ceex2->SetMinimum(0);
   Hcth_vTcPR_Ceex2->DrawCopy("h");
+  cdisKS_ISR2->SetLineColor(kBlack); // black
   cdisKS_ISR2->DrawCopy("hsame");
   // Dizet??
   cdisDZ_ISR2->SetLineColor(8); // green
   cdisDZ_ISR2->DrawCopy("same");
-  CaptT->DrawLatex(0.02,0.95,"(a) Ceex2: d#sigma/dcos#theta, Blue v=1-s'/s <0.9"); 
+  CaptT->DrawLatex(0.02,0.95,"(a) Ceex2: d#sigma/dcos#theta Blue, KKsem EW-on/off green/black, v=1-s'/s <0.9!");
   CaptTb->Draw();
   //==========plot2==============
   cFigCprod->cd(2);
@@ -625,6 +627,7 @@ void FigCprod()
   Hcth2_vTcPR_Ceex2->SetStats(0);
   Hcth2_vTcPR_Ceex2->SetTitle(0);
   Hcth2_vTcPR_Ceex2->SetLineColor(2); // red
+  Hcth2_vTcPR_Ceex2->SetMinimum(0);
   Hcth2_vTcPR_Ceex2->DrawCopy("h");
   //
   Hcth3_vTcPR_Ceex2->SetLineColor(8); // green
