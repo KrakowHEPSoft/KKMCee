@@ -618,7 +618,7 @@ void FigCprod()
   // Dizet???
   cdisDZ3_ISR2->SetLineColor(8); // green
   cdisDZ3_ISR2->DrawCopy("same");
-  CaptT->DrawLatex(0.02,0.95,"(b) KKsem: Z contr. (d#sigma(#theta)-d#sigma(-#theta))/sum "); 
+  CaptT->DrawLatex(0.02,0.95,"(b) KKsem: Z contr. on (d#sigma(#theta)-d#sigma(-#theta))/sum, EW on/off, ISR only ");
   CaptTb->Draw();
   //==========plot3==============
   cFigCprod->cd(3);
