@@ -48,6 +48,7 @@ class ROBOL{
   TH2D   *sca_vTcPR_Eex2;
   TH2D   *sca_vXcPR_Ceex2;
   TH2D   *sca_vXcPR_Eex2;
+  TH2D   *sca_vTcPR_Ceex2n;
   //
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2

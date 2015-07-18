@@ -74,6 +74,8 @@ void ROBOL::Initialize(long &NevTot)
   sca_vTcPR_Eex2 = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Ceex2->Sumw2();
   sca_vTcPR_Eex2->Sumw2();
+  sca_vTcPR_Ceex2n= new TH2D("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2n->Sumw2();
   sca_vXcPR_Ceex2= new TH2D("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Ceex2->Sumw2();
@@ -208,6 +210,7 @@ void ROBOL::Production(long &iEvent)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
+  double WtCEEX2n= KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2) IFI off
   //
   hst_nPhAll->Fill(  m_Nphot,WtMain);
   hst_nPhVis->Fill(  nph_ene,WtMain);
@@ -227,6 +230,8 @@ void ROBOL::Production(long &iEvent)
   sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
   sca_vXcPR_Ceex2->Fill(  vvk, CosPRD, WtCEEX2); 
   sca_vXcPR_Eex2->Fill(   vvk, CosPRD, WtEEX2);
+  // IFI off
+  sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
