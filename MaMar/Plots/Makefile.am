@@ -44,3 +44,8 @@ Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 PlotFSR_SOURCES = KKsem.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+######################### private #############################
+plot1: Plot1
+	./Plot1
+###############################################################

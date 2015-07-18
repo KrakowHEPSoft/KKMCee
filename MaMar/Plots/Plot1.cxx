@@ -532,6 +532,7 @@ void FigCprod()
   //
   TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
+  TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
   // from KKsem
   TH1D *cdisKS_ISR2      = (TH1D*)DiskFileB.Get("cdisKS_ISR2");
   TH1D *cdisDZ_ISR2      = (TH1D*)DiskFileB.Get("cdisDZ_ISR2");
@@ -554,8 +555,19 @@ void FigCprod()
   nbMax=5;     // vMax = 5/50=0.1
   TH1D                    *Hcth3_vTcPR_Ceex2, *Hcas3_vTcPR_Ceex2;
   ProjC( sca_vTcPR_Ceex2,  Hcth3_vTcPR_Ceex2,  Hcas3_vTcPR_Ceex2, nbMax);
-  Hcth3_vTcPR_Ceex2->SetName("Hcth2_vTcPR_Ceex2");
+  Hcth3_vTcPR_Ceex2->SetName("Hcth3_vTcPR_Ceex2");
   Hcas3_vTcPR_Ceex2->SetName("Hcas3_vTcPR_Ceex2");
+  //
+  nbMax=1;     // vMax = 5/50=0.02
+  TH1D                    *Hcth4_vTcPR_Ceex2, *Hcas4_vTcPR_Ceex2;
+  ProjC( sca_vTcPR_Ceex2,  Hcth4_vTcPR_Ceex2,  Hcas4_vTcPR_Ceex2, nbMax);
+  Hcth4_vTcPR_Ceex2->SetName("Hcth4_vTcPR_Ceex2");
+  Hcas4_vTcPR_Ceex2->SetName("Hcas4_vTcPR_Ceex2");
+  // IFI off
+  TH1D                     *Hcth4_vTcPR_Ceex2n, *Hcas4_vTcPR_Ceex2n;
+  ProjC( sca_vTcPR_Ceex2n,  Hcth4_vTcPR_Ceex2n,  Hcas4_vTcPR_Ceex2n, nbMax);
+  Hcth4_vTcPR_Ceex2n->SetName("Hcth4_vTcPR_Ceex2n");
+  Hcas4_vTcPR_Ceex2n->SetName("Hcas4_vTcPR_Ceex2n");
   //
   TH1D                  *cdisKS3_ISR2;
   MakeAFB(cdisKS_ISR2,   cdisKS3_ISR2);
@@ -596,7 +608,7 @@ void FigCprod()
   // Dizet??
   cdisDZ_ISR2->SetLineColor(8); // green
   cdisDZ_ISR2->DrawCopy("same");
-  CaptT->DrawLatex(0.02,0.95,"(a) Ceex2: d#sigma/dcos#theta Blue, KKsem EW-on/off green/black, v=1-s'/s <0.9!");
+  CaptT->DrawLatex(0.02,0.95,"(a) Ceex2: d#sigma/dcos#theta Blue, KKsem EW-on/off green/black, v=<0.9!");
   CaptTb->Draw();
   //==========plot2==============
   cFigCprod->cd(2);
@@ -606,7 +618,6 @@ void FigCprod()
   cdisKS3_ISR2->SetTitle(0);
   cdisKS3_ISR2->SetLineColor(6); // magenta
   cdisKS3_ISR2->DrawCopy("h");
-  hZero->DrawCopy("hsame");
   // no Z
   //cdis4_ISR2->SetLineColor(2); // red no Z
   //cdis4_ISR2->DrawCopy("hsame");
@@ -620,6 +631,12 @@ void FigCprod()
   // Dizet???
   cdisDZ3_ISR2->SetLineColor(8); // green
   cdisDZ3_ISR2->DrawCopy("same");
+  //
+  Hcas_vTcPR_Ceex2->SetLineColor(4); // blue
+  Hcas_vTcPR_Ceex2->DrawCopy("hsame");
+  //
+  hZero->DrawCopy("hsame");
+  //
   CaptT->DrawLatex(0.02,0.95,"(b) KKsem: Z contr. on (d#sigma(#theta)-d#sigma(-#theta))/sum, EW on/off, ISR only ");
   CaptTb->Draw();
   //==========plot3==============
@@ -632,25 +649,34 @@ void FigCprod()
   //
   Hcth3_vTcPR_Ceex2->SetLineColor(8); // green
   Hcth3_vTcPR_Ceex2->DrawCopy("hsame");
+  //
+  Hcth4_vTcPR_Ceex2->SetLineColor(kBlack); // black
+  Hcth4_vTcPR_Ceex2->DrawCopy("hsame");
   //cdisKS_ISR2->DrawCopy("hsame");
-  CaptT->DrawLatex(0.02,0.95,"(c) Ceex2: d#sigma/dcos#theta, Red v=1-s'/s<0.3, Grenv<0.1"); 
+  CaptT->DrawLatex(0.02,0.95,"(c) Ceex2: d#sigma/dcos#theta, Red v<0.3, Green v<0.1, Magen v<0.02");
   CaptTb->Draw();
   //==========plot4==============
   cFigCprod->cd(4);
-  Hcas2_vTcPR_Ceex2->SetStats(0);
-  Hcas2_vTcPR_Ceex2->SetTitle(0);
-  Hcas2_vTcPR_Ceex2->SetLineColor(2); // red
-  Hcas2_vTcPR_Ceex2->DrawCopy("h");
+  Hcas4_vTcPR_Ceex2->SetStats(0);
+  Hcas4_vTcPR_Ceex2->SetTitle(0);
+  Hcas4_vTcPR_Ceex2->SetLineColor(kBlack); // black
+  Hcas4_vTcPR_Ceex2->DrawCopy("h");
+  // IFI off
+  Hcas4_vTcPR_Ceex2n->SetLineColor(kMagenta); // magenta
+  Hcas4_vTcPR_Ceex2n->DrawCopy("hsame");
   //
   Hcas3_vTcPR_Ceex2->SetLineColor(8); // green
   Hcas3_vTcPR_Ceex2->DrawCopy("hsame");
   //
   Hcas_vTcPR_Ceex2->SetLineColor(4); // blue
   Hcas_vTcPR_Ceex2->DrawCopy("hsame");
-  cdisKS3_ISR2->DrawCopy("hsame");
+  //
+  Hcas2_vTcPR_Ceex2->SetLineColor(kRed); // red
+  Hcas2_vTcPR_Ceex2->DrawCopy("hsame");
+  //
   hZero->DrawCopy("hsame");
   CaptT->DrawLatex(0.02,0.95,
-	 "(d) (d#sigma(#theta)-d#sigma(-#theta))/sum, Blue v=<0.9, Red v<0.3, Green v<0.1"); 
+	 "(d) AFB(#theta), Blue v=<0.9, Red v<0.3, Green v<0.1, Black v<0.02");
   CaptTb->Draw();
   //----------------------------
   cFigCprod->cd();
