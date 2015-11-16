@@ -1,21 +1,54 @@
 This directory was originally for studies of the
 mu-pair production process at BaBar experiment (2002).
 
-Similarly as in RHadr subrojest, main program level (histogrammin, plotting)
-written in C++, interface to fortran level through standar wrappers.
+Similarly as in RHadr subproject, main program level (histogrammin, plotting)
+is written in C++, using interface to fortran level through standar wrappers.
 
 Make system is organized using autotolls.
+(Obsolete custom KK-makefile system is still kept.)
 
-This original setup includes main program ./Test.cxx,
-histogramming in ROBOL.cxx, wrappers in KKMC.cxx,
-work directory ./test0 and Plots/Plot1.cxx for plotting.
+Presently there are THREE chains of the user-level analysis programs:
 
--------------------------------------------------------------------------
-Presently (febr. 2014, febr 2015), production chain for nu+nu+gamma 
-channel is added with:
-- main program ProdZinv.cxx
-- histogramming in ROBOL2.cxx
-- work directory ./workZinv and 
-- Plots/Plot2.cxx for plotting
+************************ (A) ************************
+The original chain (2002) for muon AFB analysis consists of:
+-- main program                ./Test.cxx
+-- histogramming               ./ROBOL.cxx
+-- wrappers to f77             ./KKMC.cxx
+-- work direct. (input/output) ./test0
+-- post-generation analysis    ./Plots/Plot1.cxx
+Presently used to examine QED effects
+in AFB close to Z resonance (init-fin. interf.).
+Running instructions:
+     cp test0/test0_95GeV.input test0/test0.input
+     make test0-start
+     make test0-stop
+     make Plot1
+     
+************************ (B) ************************
+Analysis chain introduced in febr. 2014, (febr 2015), 
+for ee->nu+nu+gamma process (invisible Z width at FCCee):
+-- main program                ./ProdZinv.cxx
+-- histogramming               ./ROBOL2.cxx
+-- work directory              ./workZinv
+-- post-generation analysis    ./Plots/Plot2.cxx
+Running instructions:
+   cp workZinv/workZinv.input_E161GeV workZinv/workZinv.input
+   make workZinv-start
+   make workZinv-stop
+   make Plot2
+   
+************************ (C) ************************
+Analysis chain introduced in march 2015 to examine effects 
+of switching on/off QED FSR in mu and tau pair production
 
--------------------------------------------------------------------------
+-- main program                ./ProdFSR.cxx
+-- histogramming               ./ROBOFSR.cxx
+-- work directory              ./workFSR
+-- post-generation analysis    ./Plots/PlotFSR.cxx
+Running instructions:
+   cp workFSR/workFSR.input_E125GeV workFSR/workFSR.input
+   make workFSR-start
+   make workFSR-stop
+   make PlotFSR
+
+=========================== The End =============================
