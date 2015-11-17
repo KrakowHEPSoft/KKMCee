@@ -2,7 +2,7 @@ This directory was originally for studies of the
 mu-pair production process at BaBar experiment (2002).
 
 Similarly as in RHadr subproject, main program level (histogrammin, plotting)
-is written in C++, using interface to fortran level through standar wrappers.
+is written in C++, using interface to f77 level through standard wrappers.
 
 Make system is organized using autotolls.
 (Obsolete custom KK-makefile system is still kept.)
