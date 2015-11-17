@@ -227,25 +227,20 @@ Clean:
 	(cd ../dizet;	  $(MAKE) clean)
 	(cd ../bornv/tabtest; $(MAKE) clean)
 	(cd ../KKsem;	  $(MAKE) clean)
+# this clean managed by autotools!
+	(cd ../MaMar;	  make clean)
 #-----------------------------------------------------------------------
 gtar: Clean
 	(cd ../../; gtar -cvzf KK2f-all.tar.gz  KK2f-all )
 	(cd ../../; chmod -w KK2f-all.tar.gz)
 #-----------------------------------------------------------------------
+# Exporting subset of KKMC directories as in CPC version (2000)  
 #       make -i -f KKMakefile export
 #-----------------------------------------------------------------------
 VERS=v4_22
 export: Clean
 	(rm -f     ./KKMC_$(VERS).tgz)
 	(rm -rf    ./KKMC_$(VERS);      mkdir  ./KKMC_$(VERS) )
-### user directory
-	(mkdir     ./KKMC_$(VERS)/ffbench )
-	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
-	(cp -prt ./KKMC_$(VERS)/ffbench/ \
-	    ./demo/ ./Mu ./Tau     ./Inclusive  \
-	    ./Down  ./Up ./Botom   ./demo_R \
-	    ./Beast ./Test ./iniseed  \
-	    ./Plots )
 ### MC generator
 	(mkdir  ./KKMC_$(VERS)/KK2f;   cp -pt  ./KKMC_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
 	(mkdir  ./KKMC_$(VERS)/bornv;  cp -pt  ./KKMC_$(VERS)/bornv/  ../bornv/*.* )
@@ -259,6 +254,55 @@ export: Clean
 ### Main and miscelaneous
 	(mkdir  ./KKMC_$(VERS)/m4;  cp -prt ./KKMC_$(VERS)/ ../m4/ )
 	(cp -pt ./KKMC_$(VERS)/ ../* ../.KK2f_defaults )
+### user directory
+	(mkdir     ./KKMC_$(VERS)/ffbench )
+	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
+	(cp -prt ./KKMC_$(VERS)/ffbench/ \
+	    ./demo/ ./Mu ./Tau     ./Inclusive  \
+	    ./Down  ./Up ./Botom   ./demo_R \
+	    ./Beast ./Test ./iniseed  \
+	    ./Plots )
+### cleaning
+	(rm -f ./KKMC_$(VERS)/KKall12.kdevses ./KKMC_$(VERS)/ToBeDone ./KKMC_$(VERS)/*~ )
+	(find  ./KKMC_$(VERS)/ -name .svn -exec rm -r -f {} \; )
+	(tar -cvzf ./KKMC_$(VERS).tgz ./KKMC_$(VERS) )
+#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------
+# Exporting KKMC with extra MaMar directory,  C++ top layer of analysis
+#       make -i -f KKMakefile exportM
+#-----------------------------------------------------------------------
+VERS=v4_22m
+exportM: Clean
+	(rm -f     ./KKMC_$(VERS).tgz)
+	(rm -rf    ./KKMC_$(VERS);      mkdir  ./KKMC_$(VERS) )
+### Main and miscelaneous
+	(mkdir  ./KKMC_$(VERS)/m4;  cp -prt ./KKMC_$(VERS)/ ../m4/ )
+	(cp -pt ./KKMC_$(VERS)/ ../* ../.KK2f_defaults \
+                    ../Makefile.in ../Makefile.am ../configure.ac ../Makefile.cvs)
+### MC generator
+	(mkdir  ./KKMC_$(VERS)/KK2f;   cp -pt  ./KKMC_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  \
+                                              ../KK2f/*.templ ../KK2f/*.am ../KK2f/*.in)
+	(mkdir  ./KKMC_$(VERS)/bornv;  cp -pt  ./KKMC_$(VERS)/bornv/  ../bornv/*.* )
+	                              (cp -prt ./KKMC_$(VERS)/bornv/  ../bornv/tabtest)
+	(mkdir  ./KKMC_$(VERS)/dizet;  cp -prt ./KKMC_$(VERS)/ ../dizet/ )
+	(mkdir  ./KKMC_$(VERS)/glibk;  cp -pt  ./KKMC_$(VERS)/glibk/  ../glibk/*.* )
+	(mkdir  ./KKMC_$(VERS)/jetset; cp -pt  ./KKMC_$(VERS)/jetset/ ../jetset/*.* )
+	(mkdir  ./KKMC_$(VERS)/tauola; cp -pt  ./KKMC_$(VERS)/tauola/ ../tauola/*.* )
+	(mkdir  ./KKMC_$(VERS)/photos; cp -pt  ./KKMC_$(VERS)/photos/ ../photos/*.* )
+	(mkdir  ./KKMC_$(VERS)/KKsem;  cp -pt  ./KKMC_$(VERS)/KKsem/  ../KKsem/*.* )
+### this user directory of CPC distribution
+	(mkdir   ./KKMC_$(VERS)/ffbench )
+	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
+	(cp -prt ./KKMC_$(VERS)/ffbench/ ./Plots \
+	    ./demo/ ./Mu ./Tau     ./Inclusive  \
+	    ./Down  ./Up ./Botom   ./demo_R \
+	    ./Beast ./Test ./iniseed  )
+### extra user directory with C++ upper layer
+	(mkdir   ./KKMC_$(VERS)/MaMar )
+	(cp -pt  ./KKMC_$(VERS)/MaMar/  ../MaMar/*.cxx ../MaMar/*.h ../MaMar/Makefile.in ../MaMar/Makefile.am)
+	(cp -prt ./KKMC_$(VERS)/MaMar/ ../MaMar/Plots \
+	    ../MaMar/test0 ../MaMar/workZinv  ../MaMar/workFSR \
+	    ../MaMar/farming  ../MaMar/iniseed )
 ### cleaning
 	(rm -f ./KKMC_$(VERS)/KKall12.kdevses ./KKMC_$(VERS)/ToBeDone ./KKMC_$(VERS)/*~ )
 	(find  ./KKMC_$(VERS)/ -name .svn -exec rm -r -f {} \; )
