@@ -1,0 +1,20 @@
+#######################################################
+LOCAL_LIB   =  glib.a 
+LIB_OBJECTS =  formf.o tauola.o 
+##############   What has to be built
+all:	$(LOCAL_LIB) 
+FFLAGS =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77 = gfortran
+AR  = ar cru
+RANLIB = ranlib
+LD = $(F77)
+############################
+############################
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR)     $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+clean:
+	rm -f *.o; rm -f *.a; rm -f *~ 
+#######################################################
