@@ -271,40 +271,40 @@ export: Clean
 # Exporting KKMC with extra MaMar directory,  C++ top layer of analysis
 #       make -i -f KKMakefile exportM
 #-----------------------------------------------------------------------
-VERS=v4_22m
+VERSm=v4_22m
 exportM: Clean
-	(rm -f     ./KKMC_$(VERS).tgz)
-	(rm -rf    ./KKMC_$(VERS);      mkdir  ./KKMC_$(VERS) )
+	(rm -f     ./KKMC_$(VERSm).tgz)
+	(rm -rf    ./KKMC_$(VERSm);      mkdir  ./KKMC_$(VERSm) )
 ### Main and miscelaneous
-	(mkdir  ./KKMC_$(VERS)/m4;  cp -prt ./KKMC_$(VERS)/ ../m4/ )
-	(cp -pt ./KKMC_$(VERS)/ ../* ../.KK2f_defaults \
+	(mkdir  ./KKMC_$(VERSm)/m4;  cp -prt ./KKMC_$(VERSm)/ ../m4/ )
+	(cp -pt ./KKMC_$(VERSm)/ ../* ../.KK2f_defaults \
                     ../Makefile.in ../Makefile.am ../configure.ac ../Makefile.cvs)
 ### MC generator
-	(mkdir  ./KKMC_$(VERS)/KK2f;   cp -pt  ./KKMC_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  \
+	(mkdir  ./KKMC_$(VERSm)/KK2f;   cp -pt  ./KKMC_$(VERSm)/KK2f/   ../KK2f/*.f ../KK2f/*.h  \
                                               ../KK2f/*.templ ../KK2f/*.am ../KK2f/*.in)
-	(mkdir  ./KKMC_$(VERS)/bornv;  cp -pt  ./KKMC_$(VERS)/bornv/  ../bornv/*.* )
-	                              (cp -prt ./KKMC_$(VERS)/bornv/  ../bornv/tabtest)
-	(mkdir  ./KKMC_$(VERS)/dizet;  cp -prt ./KKMC_$(VERS)/ ../dizet/ )
-	(mkdir  ./KKMC_$(VERS)/glibk;  cp -pt  ./KKMC_$(VERS)/glibk/  ../glibk/*.* )
-	(mkdir  ./KKMC_$(VERS)/jetset; cp -pt  ./KKMC_$(VERS)/jetset/ ../jetset/*.* )
-	(mkdir  ./KKMC_$(VERS)/tauola; cp -pt  ./KKMC_$(VERS)/tauola/ ../tauola/*.* )
-	(mkdir  ./KKMC_$(VERS)/photos; cp -pt  ./KKMC_$(VERS)/photos/ ../photos/*.* )
-	(mkdir  ./KKMC_$(VERS)/KKsem;  cp -pt  ./KKMC_$(VERS)/KKsem/  ../KKsem/*.* )
-### this user directory of CPC distribution
-	(mkdir   ./KKMC_$(VERS)/ffbench )
-	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
-	(cp -prt ./KKMC_$(VERS)/ffbench/ ./Plots \
+	(mkdir  ./KKMC_$(VERSm)/bornv;  cp -pt  ./KKMC_$(VERSm)/bornv/  ../bornv/*.* )
+	                              (cp -prt ./KKMC_$(VERSm)/bornv/  ../bornv/tabtest)
+	(mkdir  ./KKMC_$(VERSm)/dizet;  cp -prt ./KKMC_$(VERSm)/ ../dizet/ )
+	(mkdir  ./KKMC_$(VERSm)/glibk;  cp -pt  ./KKMC_$(VERSm)/glibk/  ../glibk/*.* )
+	(mkdir  ./KKMC_$(VERSm)/jetset; cp -pt  ./KKMC_$(VERSm)/jetset/ ../jetset/*.* )
+	(mkdir  ./KKMC_$(VERSm)/tauola; cp -pt  ./KKMC_$(VERSm)/tauola/ ../tauola/*.* )
+	(mkdir  ./KKMC_$(VERSm)/photos; cp -pt  ./KKMC_$(VERSm)/photos/ ../photos/*.* )
+	(mkdir  ./KKMC_$(VERSm)/KKsem;  cp -pt  ./KKMC_$(VERSm)/KKsem/  ../KKsem/*.* )
+### user directoryddbench of CPC distribution
+	(mkdir   ./KKMC_$(VERSm)/ffbench )
+	(cp -pt  ./KKMC_$(VERSm)/ffbench/  *.* *-*  KKMakefile)
+	(cp -prt ./KKMC_$(VERSm)/ffbench/ ./Plots \
 	    ./demo/ ./Mu ./Tau     ./Inclusive  \
 	    ./Down  ./Up ./Botom   ./demo_R \
 	    ./Beast ./Test ./iniseed  )
-### extra user directory with C++ upper layer
-	(mkdir   ./KKMC_$(VERS)/MaMar )
-	(cp -pt  ./KKMC_$(VERS)/MaMar/  ../MaMar/*.cxx ../MaMar/*.h ../MaMar/Makefile.in ../MaMar/Makefile.am)
-	(cp -prt ./KKMC_$(VERS)/MaMar/ ../MaMar/Plots \
+### extra user directory MaMar with C++ upper layer, ROOT, autotools
+	(mkdir   ./KKMC_$(VERSm)/MaMar )
+	(cp -pt  ./KKMC_$(VERSm)/MaMar/  ../MaMar/*.cxx ../MaMar/*.h ../MaMar/Makefile.in ../MaMar/Makefile.am)
+	(cp -prt ./KKMC_$(VERSm)/MaMar/ ../MaMar/Plots \
 	    ../MaMar/test0 ../MaMar/workZinv  ../MaMar/workFSR \
 	    ../MaMar/farming  ../MaMar/iniseed )
 ### cleaning
-	(rm -f ./KKMC_$(VERS)/KKall12.kdevses ./KKMC_$(VERS)/ToBeDone ./KKMC_$(VERS)/*~ )
-	(find  ./KKMC_$(VERS)/ -name .svn -exec rm -r -f {} \; )
-	(tar -cvzf ./KKMC_$(VERS).tgz ./KKMC_$(VERS) )
+	(rm -f ./KKMC_$(VERSm)/KKall12.kdevses ./KKMC_$(VERSm)/ToBeDone ./KKMC_$(VERSm)/*~ )
+	(find  ./KKMC_$(VERSm)/ -name .svn -exec rm -r -f {} \; )
+	(tar -cvzf ./KKMC_$(VERSm).tgz ./KKMC_$(VERSm) )
 #-----------------------------------------------------------------------
