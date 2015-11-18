@@ -189,10 +189,6 @@ makprod:
 	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Inclusive#' -e 's#<class>#long#' ./makefile.production > ./Inclusive/KKMakefile)
 	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#Beast#' -e 's#<class>#long#' ./makefile.production > ./Beast/KKMakefile)
 	(sed -e 's#<main>#ProdMC.exe#' -e 's#<dset>#demo_R#' -e 's#<class>#long#' ./makefile.production > ./demo_R/KKMakefile)
-#-----------------------------------
-clean:                                                     
-	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
-	(cd ./Plots;	$(MAKE) clean)
 #=============================================================================
 # Update fortran compilation flags
 #--- external dirs
@@ -215,8 +211,11 @@ mbr:
 default:
 	(cd ../dizet;  $(MAKE) default)
 #-----------------------------------------------------------------------
+clean:                                                     
+	rm -f *.o *.a *~ *.exe
+	(cd ./Plots;	$(MAKE) clean)
 Clean:
-	rm -f *.o; rm -f *.a; rm -f *~; rm -f *.exe
+	rm -f *.o *.a *~ *.exe DEMO ProdMC
 	(cd ./Plots;	  $(MAKE) clean)
 	(cd ../glibk;	  $(MAKE) clean)
 	(cd ../KK2f;	  $(MAKE) clean)
@@ -258,7 +257,7 @@ export: Clean
 	(mkdir     ./KKMC_$(VERS)/ffbench )
 	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
 	(cp -prt ./KKMC_$(VERS)/ffbench/ \
-	    ./demo/ ./Mu ./Tau     ./Inclusive  \
+	    ./demo  ./Mu ./Tau     ./Inclusive  \
 	    ./Down  ./Up ./Botom   ./demo_R \
 	    ./Beast ./Test ./iniseed  \
 	    ./Plots )
@@ -298,7 +297,7 @@ exportM: Clean
 	(mkdir   ./KKMC_$(VERSm)/ffbench )
 	(cp -pt  ./KKMC_$(VERSm)/ffbench/  *.* *-*  KKMakefile)
 	(cp -prt ./KKMC_$(VERSm)/ffbench/ ./Plots \
-	    ./demo/ ./Mu ./Tau     ./Inclusive  \
+	    ./demo  ./Mu ./Tau     ./Inclusive  \
 	    ./Down  ./Up ./Botom   ./demo_R \
 	    ./Beast ./Test ./iniseed  )
 ### extra user directory MaMar with C++ upper layer, ROOT, autotools
