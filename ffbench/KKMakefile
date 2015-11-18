@@ -281,7 +281,7 @@ exportM: Clean
 	(mkdir  ./KKMC_$(VERSm)/m4;  cp -prt ./KKMC_$(VERSm)/ ../m4/ )
 	(cp -pt ./KKMC_$(VERSm)/ ../.KK2f_defaults  ../HighLights \
             ../ReleaseNotes ../POOPrules ../HowToStart ../HowToMore ../TitlePage ../Log2012 \
-            ../*-* ../*.* ../configure ../libtool ../missing   )
+            ../*-* ../*.* ../configure ../libtool ../missing  ../depcomp   )
 ### MC generator
 	(mkdir  ./KKMC_$(VERSm)/KK2f;   cp -pt  ./KKMC_$(VERSm)/KK2f/   ../KK2f/*.f ../KK2f/*.h  \
                                               ../KK2f/*.templ ../KK2f/*.am ../KK2f/*.in)

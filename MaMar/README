@@ -1,14 +1,22 @@
-This directory was originally for studies of the
+This directory was originally developed for studies of the
 mu-pair production process at BaBar experiment (2002).
 
-Similarly as in RHadr subproject, main program level (histogrammin, plotting)
-is written in C++, using interface to f77 level through standard wrappers.
+Main program level (histogrammin, plotting) written in C++, 
+using interface to f77 level through standard wrappers.
 
 Make system is organized using autotolls.
 (Obsolete custom KK-makefile system is still kept.)
+IMPORTANT: present version works with ROOT version 5!
+
+Building program (autotools) from the distribution tarfile:
+  tar -xvzf KKMC_v4_22m.tgz
+  cd KKMC_v4_22m
+  ./configure
+  make
+in case of problems one may also need to do:
+  autoreconf -i --force
 
 Presently there are THREE chains of the user-level analysis programs:
-
 ************************ (A) ************************
 The original chain (2002) for muon AFB analysis consists of:
 -- main program                ./Test.cxx

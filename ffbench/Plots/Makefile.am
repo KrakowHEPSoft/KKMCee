@@ -18,6 +18,6 @@ figinc_LDADD = $(top_builddir)/KK2f/libKK2f.a \
 figinc-run: figinc
 	./figinc
 figinc-pdf: figinc-run
-	(pdflatex figinc.tex; kpdf figinc.pdf&)
+	(pdflatex figinc.tex; xpdf figinc.pdf&)
 #----------------------------------------------------------------------
 AM_FFLAGS = @MY_F77_FLAGS@
