@@ -737,6 +737,7 @@
       WRITE(m_out,bxl1f) WTsup ,    'WTsup, largest WT  ','WTsup ','a10'
       WRITE(m_out,bxtxt) '** some auxiliary info **'
       WRITE(m_out,bxl1f) xBorPb,     'xs_born   picobarns','xborn','a11'
+      WRITE(m_out,bxl1f) sig0pb,     'sig0 unit picobarns','sig0 ','a12'
       CALL GLK_MgetAve(m_Idyfs+40, avmlt, ermlt, upmlt)
       WRITE(m_out,bxl1f) avmlt,      'Raw phot. multipl. ','     ','==='
       WRITE(m_out,bxl1f) upmlt,      'Highest phot. mult.','     ','==='
