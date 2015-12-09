@@ -132,10 +132,10 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
 
       Etot= SQRT(ABS(Psum(4)**2 -Psum(3)**2 -Psum(2)**2 -Psum(1)**2))
 * Check on total 4-momentum conservation
-      IF( ABS(Etot/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.1d-4) THEN
+      IF( ABS(Etot/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
          WRITE(*,*) '++++ HepEvt_Fill: something wrong with Etot=',Etot
       ENDIF
-      IF( ABS(Psum(4)/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.1d-4) THEN
+      IF( ABS(Psum(4)/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
          WRITE(*,*) '++++ HepEvt_Fill: something wrong with Psum(4)=',Psum(4)
          WRITE(*,*) '++++ HepEvt_Fill: pf1(4)+pf2(4)+aph(4)+bph(4) =',pf1(4)+pf2(4)+aph(4)+bph(4)
          CALL KK2f_Print1(6)
