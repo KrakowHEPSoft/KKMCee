@@ -368,7 +368,7 @@ C end
       alpha =  Par(3)+1d0
       beta  = -0.50d0           ! ISR crude is as (1-vv)**(-1.5)=(1-vv)**(beta-1)
 *[[[PDFs
-*      alpha = 3.0+1.0
+      alpha = 3.0+1.0
 *]]]
 *//////////////////////////////////////////////////////////////////////////////////////
       R    = xarg(1)
@@ -436,7 +436,8 @@ C end
 * Valence 2*x*u(x):   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
 * Valence x*d(x):     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
 * Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
-*        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
+*                Valence UP and UP-bar of sea
+        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
 *]]]
       ENDIF
       Rho = Rho *SF12
@@ -545,7 +546,7 @@ C end
       ENDIF
       Rho = Rho *SF1
 *[[[PDFs
-*      Rho = 1d-20
+      Rho = 1d-20
 *]]]
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Born Xsection at s' =m_XXXene**2 *(1-vv) =m_CMSene**2 *(1-XX)
@@ -594,7 +595,7 @@ C end
 *----------------------------------------
       Rho = Rho *IRC_circee(1d0,1d0)           !<-- implicit factor from circee 
 *[[[PDFs
-*      Rho = 1d-20
+      Rho = 1d-20
 *]]]
 *----------------------------------------
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
