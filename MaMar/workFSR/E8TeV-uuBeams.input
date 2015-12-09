@@ -10,11 +10,11 @@ BeginX
     0         100000      100k   NEVT = number of events
 *     Center-of-mass energy [GeV]
     1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-    1       7000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1       8000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
 *     KeyWgt=0,1 to get constant,variable weight events
    10              1      KeyWgt=xpar(10) Deafault is 0
-   10              0      KeyWgt=xpar(10) Deafault is 0
+*  10              0      KeyWgt=xpar(10) Deafault is 0
 *       KeyELW=0,1 Type of Elewctroweak corrections, 
 * KeyElw=0, for primitive Born, is only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
