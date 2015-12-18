@@ -118,6 +118,7 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             CALL IRC_circes(0d0, 0d0, IRCroots, IRCacc, IRCver, IRCdate, IRCxchat)
             KeyGrid  = xpar_input(76)
             CALL BStra_Initialize(KeyGrid,m_XCrude)         ! beamstrahlung initialization
+            XCrude    = m_XCrude
          ELSEIF(m_KeyFix .EQ. -1) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
 *//  The case of ISR swithed off, Born process                                       //
