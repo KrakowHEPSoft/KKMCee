@@ -39,6 +39,8 @@ extern "C" void kksem_vvplot_vec_(const long&, char[5], const long&, const doubl
 extern "C" void kksem_setcrange_(const double&, const double&);
 //      SUBROUTINE KKsem_SetKeyZet(KeyZet)
 extern "C" void kksem_setkeyzet_( const long& );
+//      SUBROUTINE KKsem_MakeBorn(svar,Born)
+extern "C" void kksem_makeborn_(const double&, double&);
 //------------------------------------------------------------
 
 

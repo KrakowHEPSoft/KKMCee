@@ -44,6 +44,8 @@ class RoboFSR{
   TH1D   *hst_s1Ceex2;
   TH1D   *hst_svk;
   //
+  TH1D   *hst_M100mu;
+  //
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
   //

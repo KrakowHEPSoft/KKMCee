@@ -7,7 +7,8 @@ BeginX
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0        1000000      1M   NEVT = number of events
     0      100000000      100M NEVT = number of events
-    0         100000      100k   NEVT = number of events
+    0         100000      100k NEVT = number of events
+***    0          10000      10k  NEVT = number of events
 *     Center-of-mass energy [GeV]
     1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1       8000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]

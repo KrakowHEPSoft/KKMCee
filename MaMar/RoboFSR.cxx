@@ -66,6 +66,9 @@ void RoboFSR::Initialize(long &NevTot)
   hst_svk      = new TH1D("hst_svk",      "dSig/ds1 ", nbs, 86.0 , 96.0);
   hst_s1Ceex2->Sumw2();
   hst_svk->Sumw2();
+  //  ******************** NEW for LHC ***********************
+  int nbm =100;
+  hst_M100mu  = new TH1D("hst_M100mu",  "dSig/dMll ", nbm, 60 , 160);
 
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
@@ -213,7 +216,8 @@ void RoboFSR::Production(long &iEvent)
   //hst_svk->Fill(      sqrt(svk), WtCEEX2);
   hst_s1Ceex2->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of mun pair
   hst_svk->Fill(      sqrt(svk), WtEEX3);
-
+  /// ********************** NEW **********************
+  hst_M100mu->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of muon pair
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;

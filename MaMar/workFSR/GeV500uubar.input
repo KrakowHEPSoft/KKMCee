@@ -27,8 +27,8 @@ BeginX
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17         0.80e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-*   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17            1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 **    Interference ISR/FSR to be ON/OFF
 *   27              2      KeyINT=xpar(27)  Default is  2
    27              0      KeyINT=xpar(27)  Default is  2
