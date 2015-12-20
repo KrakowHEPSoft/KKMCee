@@ -20,6 +20,13 @@ using namespace std;
 #include "TApplication.h"
 #include "TMarker.h"
 
+#include "TFoam.h"
+#include "TFile.h"
+#include "TApplication.h"
+#include "TRandom3.h"
+#include "TFoamIntegrand.h"
+
+
 #include "KKsem.h"
 
 // ROOT headers
@@ -36,6 +43,149 @@ Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
 #include "HisNorm.h"
 #include "Marker.h"
+
+//_____________________________________________________________________________
+class RhoISR: public TFoamIntegrand{
+public:
+	double m_Mmin;
+	double m_Mmax;
+	double m_Mll;
+	double m_x1;
+	double m_x2;
+public:
+Double_t Density(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
+	Double_t Dist=1;
+	double xmin=0.001;
+	double xmax=0.999;
+
+	m_x1 = xmin+(xmax-xmin)*Xarg[0];
+	m_x2 = xmin+(xmax-xmin)*Xarg[1];
+	Dist *= sqr(xmax-xmin);
+
+	// Valence 2*x*u(x):   XUPV = 2.18   * X**0.5D0    * (1.D0-X)**3.D0
+	// Valence x*d(x):     XDNV = 1.23   * X**0.5D0    * (1.D0-X)**4.D0
+	// Sea     x*s(x):     XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0
+	//                Valence UP and UP-bar of sea
+    //SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
+	double PDFu   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
+    double PDFsea = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
+    Dist *= PDFu *PDFsea;
+
+	double CMSene=7000;
+	double svar= sqr(CMSene);
+	double shat= svar*m_x1*m_x2;
+	m_Mll = sqrt(shat);
+
+	long KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+	kksem_setkeyfob_( KeyFob );
+	double xBorn;
+	kksem_makeborn_( shat, xBorn);
+	Dist *= xBorn;
+
+	return Dist;
+}// Density
+public:
+///////////////////////////////////////////////////////////////////////////////
+void GetMll( double &Mll)  { Mll=m_Mll; }
+};//
+
+//______________________________________________________________________________
+void ISRgener()
+{
+  cout<<"--- demo_small started ---"<<endl;
+  double Mmin= 60;
+  double Mmax=160;
+  TH1D  *hst_Mll = new TH1D("hst_Mll" ,  "Mass distr.", 50,Mmin,Mmax);
+
+  //TFoamIntegrand *Rho1= new RhoISR();
+  RhoISR *Rho1= new RhoISR();
+  Rho1->m_Mmin = Mmin;
+  Rho1->m_Mmax = Mmax;
+  //
+  TRandom  *PseRan   = new TRandom3();  // Create random number generator
+  PseRan->SetSeed(4357);
+  TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
+  FoamX->SetkDim(2);         // No. of dimensions, obligatory!
+  FoamX->SetnCells(500);     // No. of cells, can be omitted, default=2000
+  FoamX->SetRho(Rho1);     // Set 2-dim distribution, included above
+  FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  FoamX->Initialize();       // Initialize simulator, may take time...
+
+  double Mll;
+  for(long loop=0; loop<100000; loop++)
+  {
+    FoamX->MakeEvent();            // generate MC event
+    //Rho1->GetMll(Mll);
+    Mll = Rho1->m_Mll;
+    cout<<"Mll =  "<< Mll <<endl;
+    hst_Mll->Fill(Mll);
+  }// loop
+  TCanvas *cMass = new TCanvas("cMass","Canvas for plotting",600,600);
+  cMass->cd();
+  gPad->SetLogy(); // !!!!!!
+  hst_Mll->DrawCopy("h");  // final plot
+  cMass->Update();
+  //
+}//ISRgener
+
+//_____________________________________________________________________________
+class TFDISTR: public TFoamIntegrand{
+public:
+  TFDISTR(){};
+  Double_t Density(int nDim, Double_t *Xarg)
+  { // 2-dimensional distribution for Foam, normalized to one (within 1e-5)
+    Double_t x=Xarg[0];
+    Double_t y=Xarg[1];
+    Double_t GamSq= sqr(0.100e0);
+    Double_t Dist= 0;
+    Dist +=exp(-(sqr(x-1./3) +sqr(y-1./3))/GamSq)/GamSq/TMath::Pi();
+    Dist +=exp(-(sqr(x-2./3) +sqr(y-2./3))/GamSq)/GamSq/TMath::Pi();
+    return 0.5*Dist;
+  }//
+};
+//______________________________________________________________________________
+void demo_small()
+{
+  cout<<"--- demo_small started ---"<<endl;
+  TH2D     *hst_xy = new TH2D("hst_xy" ,  "x-y plot", 50,0,1.0, 50,0,1.0);
+  Double_t *MCvect = new Double_t[2]; // 2-dim vector generated in the MC run
+  TFoamIntegrand *Camel2= new TFDISTR();
+  //
+  TRandom  *PseRan   = new TRandom3();  // Create random number generator
+  PseRan->SetSeed(4357);
+  TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
+  FoamX->SetkDim(2);         // No. of dimensions, obligatory!
+  FoamX->SetnCells(500);     // No. of cells, can be omitted, default=2000
+  FoamX->SetRho(Camel2);     // Set 2-dim distribution, included above
+  FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  FoamX->Initialize();       // Initialize simulator, may take time...
+  //
+  // From now on FoamX is ready to generate events according to Camel2(x,y)
+  // now hst_xy will be ploted, visualising generated distribution
+  TCanvas *cKanwa = new TCanvas("cKanwa","Canvas for plotting",600,600);
+  cKanwa->cd();
+  int nshow=5000;
+  for(long loop=0; loop<100000; loop++)
+  {
+    FoamX->MakeEvent();            // generate MC event
+    FoamX->GetMCvect( MCvect);     // get generated vector (x,y)
+    Double_t x=MCvect[0];
+    Double_t y=MCvect[1];
+    if(loop<10) cout<<"(x,y) =  ( "<< x <<", "<< y <<" )"<<endl;
+    hst_xy->Fill(x,y);
+  }// loop
+  //
+  hst_xy->DrawCopy("lego2");  // final plot
+  cKanwa->Update();
+  //
+  Double_t MCresult, MCerror;
+  FoamX->GetIntegMC( MCresult, MCerror);  // get MC integral, should be one
+  cout << " MCresult= " << MCresult << " +- " << MCerror <<endl;
+  cout<<"--- demo_small ended ---"<<endl;
+}//demo_small
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -349,6 +499,9 @@ int main(int argc, char **argv)
   //FigInfo();
   //FigVtest(); //***
   FigMass();
+
+  //demo_small();
+  ISRgener();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

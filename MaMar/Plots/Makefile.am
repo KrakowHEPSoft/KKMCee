@@ -42,7 +42,7 @@ Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 PlotFSR_SOURCES = KKsem.cxx PlotFSR.cxx
-PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
+PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ######################### private #############################
