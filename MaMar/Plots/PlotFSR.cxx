@@ -56,8 +56,8 @@ public:
 Double_t Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
 	Double_t Dist=1;
-	double xmin=0.001;
-	double xmax=0.999;
+	double xmin=0.000001;
+	double xmax=0.999999;
 
 	m_x1 = xmin+(xmax-xmin)*Xarg[0];
 	m_x2 = xmin+(xmax-xmin)*Xarg[1];
@@ -68,19 +68,24 @@ Double_t Density(int nDim, Double_t *Xarg)
 	// Sea     x*s(x):     XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0
 	//                Valence UP and UP-bar of sea
     //SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
-	double PDFu   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
-    double PDFsea = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
-    Dist *= PDFu *PDFsea;
+	double PDFu1   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
+    double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
+    double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
+    Dist *= (PDFu1+ PDFsea1/6.) * (PDFsea2/6.);
 
-	double CMSene=7000;
+	double CMSene=8000;
 	double svar= sqr(CMSene);
 	double shat= svar*m_x1*m_x2;
 	m_Mll = sqrt(shat);
+
+	if( m_Mll < 60.0 || m_Mll >160.0 ) Dist=0;
 
 	long KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
 	kksem_setkeyfob_( KeyFob );
 	double xBorn;
 	kksem_makeborn_( shat, xBorn);
+	xBorn *= 1./3.;  // colour factor corrected by hand
+	xBorn *= 1000.;  // switching to picobarns
 	Dist *= xBorn;
 
 	return Dist;
@@ -107,8 +112,9 @@ void ISRgener()
   PseRan->SetSeed(4357);
   TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
   FoamX->SetkDim(2);         // No. of dimensions, obligatory!
-  FoamX->SetnCells(500);     // No. of cells, can be omitted, default=2000
-  FoamX->SetRho(Rho1);     // Set 2-dim distribution, included above
+  FoamX->SetnCells(10000);    // No. of cells, can be omitted, default=2000
+  FoamX->SetnSampl(10000);    // No. of MC evts/cell in exploration, default=200
+  FoamX->SetRho(Rho1);       // Set 2-dim distribution, included above
   FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
   FoamX->Initialize();       // Initialize simulator, may take time...
 
@@ -118,7 +124,7 @@ void ISRgener()
     FoamX->MakeEvent();            // generate MC event
     //Rho1->GetMll(Mll);
     Mll = Rho1->m_Mll;
-    cout<<"Mll =  "<< Mll <<endl;
+    //cout<<"Mll =  "<< Mll <<endl;
     hst_Mll->Fill(Mll);
   }// loop
   TCanvas *cMass = new TCanvas("cMass","Canvas for plotting",600,600);
