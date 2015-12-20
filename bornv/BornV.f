@@ -348,6 +348,7 @@ C end
       INCLUDE 'BornV.h'
       DOUBLE PRECISION  xarg(10)
       DOUBLE PRECISION  R,r1,r2
+      DOUBLE PRECISION  SFu1, SFsea1, SFsea2
       DOUBLE PRECISION  Power,Jacob,sf12
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee
       DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
@@ -437,7 +438,11 @@ C end
 * Valence x*d(x):     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
 * Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
 *                Valence UP and UP-bar of sea
-        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
+        SFu1   = 2.18   *m_x1**3.D0 *z1**0.5D0/z1
+        SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
+        SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
+        SF12   = (SFu1 + SFsea1/6)* (SFsea2/6)
+****        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
 *]]]
       ENDIF
       Rho = Rho *SF12
