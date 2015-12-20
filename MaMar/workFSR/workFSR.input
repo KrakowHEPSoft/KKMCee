@@ -1,59 +1,71 @@
-********************** THIS IS INPUT FILE FOR DEMO PROGRAM *********************
-*  This is input data for CEEX matrix element
+
+----------cccccccccccccccccccccccccccccommentttttttttttttttttttttttttttttttttttt
 BeginX
 ********************************************************************************
 *               ACTUAL DATA FOR THIS PARTICULAR RUN
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
-    0           1000      1k   NEVT = number of events
     0        1000000      1M   NEVT = number of events
     0      100000000      100M NEVT = number of events
-* Center-of-mass energy [GeV]
-    1           95e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-    1          125e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-    1          0.5e3      CMSene =xpar( 1) Average Center of mass energy [GeV]
-    2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
-* KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
-   10              1      0/1 = constant/varying weight events
-* KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
-*   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
-   12              0      !!!! NO EW, NO VACPOL !!!!
+    0         100000      100k NEVT = number of events
+***    0          10000      10k  NEVT = number of events
+*     Center-of-mass energy [GeV]
+    1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1       8000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
+*     KeyWgt=0,1 to get constant,variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
+*  10              0      KeyWgt=xpar(10) Deafault is 0
+*       KeyELW=0,1 Type of Elewctroweak corrections, 
+* KeyElw=0, for primitive Born, is only for tests
+   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
+   12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
+   17            1d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17         0.50d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+********************************************************************************
+**    EQD/EW bremsstrahlung flags/data
+   20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
-* Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
-* For the overall precision 1e-4 one should keep vmin=1e-5.
-   16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
-** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
-** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
-** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
-   17         0.80e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-*   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-**    Interference ISR/FSR to be ON/OFF
-*   27              2      KeyINT=xpar(27)  Default is  2
-   27              0      KeyINT=xpar(27)  Default is  2
-** New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
-** which overrules KeyGPS for each type of final fermion
-*   28              0      KeyGPS=xpar(28)  Default is  1
+   25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
+*     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
+   50              0      KeyHad=xpar(50)  Default is  1
+ 2001           -1d0      Jak1   =xpar(71)  First  Tau decay mask, Default is  0
+ 2002           -1d0      Jak2   =xpar(72)  Second Tau decay mask, Default is  0
+********************************************************************************
+* Beamstrahlung parameters for Thorsten Ohl's package CIRCE 
+   71          800d0      IRCroots   sqrt(s) [GeV] discrete values 350,500,800GeV
+   72            3d0      IRCacc     
+   73            5d0      IRCver     version
+   74     19980505d0      IRCdat     date
+   75            1d0      IRCxchat   printout level
+***   76            0d0  KeyGrid, Vegas: default=0 create, not read, -1 create and dump, +1 read
+   76            2d0  KeyGrid, Foam: =2
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     Define process
+*     LIST of Final state flavours to be generated randomly according
+*     to QED corrected x-sections, at least one line/item should be present.
+*     (Remember that electron has incomplete M.E. and top might be too heavy.)
+* 401              1      KFfin, d
+* 402              1      KFfin, u
+* 403              1      KFfin, s
+* 404              1      KFfin, c
+* 405              1      KFfin, b
+  413              1      KFfin, muon
+* 415              1      KFfin, tau
+* 412              1      KFfin, neutrino electron
+* 414              1      KFfin, neutrino muon
+* 416              1      KFfin, neutrino tau
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+**     Define process
 **     Beam flavour code
 * 400             11      KFini = xpar(400) dont change it                |<<<<|
 * 400              1      KFini = xpar(400) DOWN-quark beams !!!
   400              2      KFini = xpar(400) UP-quark beams !!!
   516        0.010e0      current mass [GeV] (5-15MeV in PDG) Down quark
   526        0.005e0      current mass [GeV] (2-8MeV  in PDG) Up quark
-**     LIST of Final state flavours to be generated randomly according
-*     to QED corrected x-sections, at least one line/item should be present.
-*     (Remember that electron has incomplete M.E. and top might be too heavy.)
-  413              1      KFfin, muon
-  638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
-********************************************************************************
-*****                Entries 800-999 reserved for Electroweak libraries     ****
-**      DIZET flags NPAR(i)=NPAR(900+i)
-**  901              1  Ihvp  ! =1,2,3  (Jegerlehner/Eidelman, Jegerlehner(1988), Burkhardt etal.)
-**  901              3  Ihvp  ! 3 is the best for low energies
-*indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
