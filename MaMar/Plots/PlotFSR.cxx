@@ -28,6 +28,7 @@ using namespace std;
 
 
 #include "KKsem.h"
+#include "KKMC.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -50,9 +51,11 @@ public:
 	double m_CMSene;
 	double m_Mmin;
 	double m_Mmax;
+	double m_vvmax;
 	double m_Mll;
 	double m_x1;
 	double m_x2;
+	double m_vv;
 public:
 Double_t Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
@@ -78,13 +81,30 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double svar= sqr(m_CMSene);
 	double shat= svar*m_x1*m_x2;
 
+	//      SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami,alfi)
+	double gamiCR,gami,alfi;
+	double CMSene1= sqrt(shat);
+	bornv_makegami_( CMSene1, gamiCR,gami,alfi);
+	// cout<<" CMSene1,gami= "<< CMSene1 <<"  "<< gami <<endl;
+
 //    CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
 //    m_vv  = R**(1d0/gami)*m_vvmax
 //    Rho   = Rho* m_vv/R/gami*m_vvmax
+	//[[[
+	m_vvmax=0.5;
+	// mapping
+	double R= Xarg[2];
+	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
+	Dist *= m_vv/R/gami ;                  // Jacobian
+
+	//m_vv = R*m_vvmax;
+	//Dist *= m_vvmax;
+
+	Dist *= gami*exp(gami*log(m_vv))/m_vv; // ISR distribution
+	shat *= (1-m_vv);
+	//]]]
 
 	m_Mll = sqrt(shat);
-
-	if( m_Mll < 60.0 || m_Mll >160.0 ) Dist=0;
 
 	long KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
 	kksem_setkeyfob_( KeyFob );
@@ -93,6 +113,8 @@ Double_t Density(int nDim, Double_t *Xarg)
 	xBorn *= 1./3.;  // colour factor corrected by hand
 	// xBorn *= 1000.;  // switching to picobarns
 	Dist *= xBorn;
+
+	if( m_Mll < 60.0 || m_Mll >160.0 ) Dist=0;
 
 	return Dist;
 }// Density
@@ -119,9 +141,10 @@ void ISRgener()
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
   TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
-  FoamX->SetkDim(2);         // No. of dimensions, obligatory!
-  FoamX->SetnCells( 2000);   // No. of cells, can be omitted, default=2000
-  FoamX->SetnSampl( 2000);   // No. of MC evts/cell in exploration, default=200
+  //FoamX->SetkDim(2);         // No. of dimensions, obligatory!
+  FoamX->SetkDim(3);         // No. of dimensions, obligatory!
+  FoamX->SetnCells( 5000);   // No. of cells, can be omitted, default=2000
+  FoamX->SetnSampl( 5000);   // No. of MC evts/cell in exploration, default=200
   FoamX->SetRho(Rho1);       // Set 2-dim distribution, included above
   FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
   FoamX->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
@@ -521,7 +544,7 @@ void FigMass()
   Hst2->SetTitle(0);
   Hst2->DrawCopy("h");
 
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV] FOAM");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV] FOAM with ISR");
   CaptT->DrawLatex(0.40,0.75, capt2);
 
   //==========plot3==============

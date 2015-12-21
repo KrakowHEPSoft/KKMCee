@@ -47,30 +47,6 @@ extern CommonPYDAT1 pydat1_ ;
 //////////////////////////////////////////////////////////////////////////////
 
 
-///      SUBROUTINE KK2f_Initialize(xpar)
-extern "C" void kk2f_initialize_(double xpar[]);
-extern "C" void kk2f_make_();
-extern "C" void kk2f_finalize_();
-extern "C" void kk2f_print1_(    const long&);
-extern "C" void kk2f_fort_open_( const long&, char*, long);
-extern "C" void kk2f_fort_close_(const long&);
-///////////////////////////////////////////////////////////////////////////////
-extern "C" void kk2f_getwt_(     double&, double&);
-extern "C" void kk2f_getxsecmc_( double&, double&);
-extern "C" void kk2f_getbeams_(   double [], double []);
-extern "C" void kk2f_getfermions_(double [], double []);
-extern "C" void kk2f_getnphot_(  long&);
-extern "C" void kk2f_getphoton1_( long&, double []);
-extern "C" void kk2f_getprimanorma_( double&, const int&);
-extern "C" void kk2f_getxsnormpb_( double&, double&);
-extern "C" void kk2f_getwtalter_( long&, double&);
-///////////////////////////////////////////////////////////////////////////////
-extern "C" void pylist_(const long&);
-extern "C" void pygive_(char *directive, long s1);
-extern "C" void hepevt_getkffin_(  long&);
-//
-///////////////////////////////////////////////////////////////////////////////
-
 //////////////////////////////////////////////////////////////////////////////
 void KKMC::Initialize(double ypar[])
 {

@@ -406,7 +406,8 @@ C end
          CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
          IF( gami .LE. 0d0 ) GOTO 800
          m_vv  = R**(1d0/gami)*m_vvmax
-         Rho   = Rho* m_vv/R/gami*m_vvmax
+*******        Rho   = Rho* m_vv/R/gami*m_vvmax ! mostake!!!
+         Rho   = Rho* m_vv/R/gami
          m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
          Rho   = Rho   *m_x1/r1/alpha
          m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
