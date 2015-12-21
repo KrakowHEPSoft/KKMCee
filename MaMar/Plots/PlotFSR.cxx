@@ -71,7 +71,8 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double PDFu1   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
     double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
     double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
-    Dist *= (PDFu1+ PDFsea1/6.) * (PDFsea2/6.);
+    Dist *= (PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
+    Dist *= 2;                                   // (u-ubar)+(ubar-u)
 
 	double CMSene=8000;
 	double svar= sqr(CMSene);
