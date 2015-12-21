@@ -457,11 +457,17 @@ void FigMass()
   Double_t Xmin = Hst1->GetXaxis()->GetXmin();
   double dx = (Xmax-Xmin)/nbX;
   double xsum1 = 0;
-  double xsum2 = 0;
   for(int ix=1; ix <= nbX; ix++){
 	 xsum1  += Hst1->GetBinContent(  ix ) *dx;
-	 xsum2  += Hst2->GetBinContent(  ix ) *dx;
 //	 cout<< "ix="<< ix <<"  xsum1="<< xsum<<endl;
+  }//ix
+  nbX  = Hst2->GetNbinsX();
+  Xmax = Hst2->GetXaxis()->GetXmax();
+  Xmin = Hst2->GetXaxis()->GetXmin();
+  dx = (Xmax-Xmin)/nbX;
+  double xsum2 = 0;
+  for(int ix=1; ix <= nbX; ix++){
+	 xsum2  += Hst2->GetBinContent(  ix ) *dx;
   }//ix
 
   char capt1[100];
