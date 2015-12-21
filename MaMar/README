@@ -63,5 +63,9 @@ Running instructions:
  --- Miscelaneous ----
  Wiki page for FCCee activity:  
    http://192.245.169.66:8000/FCCeeMC/wiki/kkmc
+ ****************************************************
+ --- To be done
+ 1. automake seems to ignore source change in ../KK2f/
+ 2. factor 1/3 missing in normalization for quark beams
 
 =========================== The End =============================

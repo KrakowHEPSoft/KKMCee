@@ -39,7 +39,7 @@ TFile DiskFileA("../workFSR/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-Double_t sqr( const Double_t x ){ return x*x;};
+double sqr( const double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
 #include "HisNorm.h"
 #include "Marker.h"
@@ -47,6 +47,7 @@ Double_t sqr( const Double_t x ){ return x*x;};
 //_____________________________________________________________________________
 class RhoISR: public TFoamIntegrand{
 public:
+	double m_CMSene;
 	double m_Mmin;
 	double m_Mmax;
 	double m_Mll;
@@ -72,10 +73,9 @@ Double_t Density(int nDim, Double_t *Xarg)
     double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
     double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
     Dist *= (PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
-    Dist *= 2;                                   // (u-ubar)+(ubar-u)
+    Dist *= 2;  // (u-ubar)+(ubar-u)
 
-	double CMSene=8000;
-	double svar= sqr(CMSene);
+	double svar= sqr(m_CMSene);
 	double shat= svar*m_x1*m_x2;
 	m_Mll = sqrt(shat);
 
@@ -86,48 +86,58 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double xBorn;
 	kksem_makeborn_( shat, xBorn);
 	xBorn *= 1./3.;  // colour factor corrected by hand
-	xBorn *= 1000.;  // switching to picobarns
+	// xBorn *= 1000.;  // switching to picobarns
 	Dist *= xBorn;
 
 	return Dist;
 }// Density
 public:
-///////////////////////////////////////////////////////////////////////////////
-void GetMll( double &Mll)  { Mll=m_Mll; }
 };//
 
 //______________________________________________________________________________
 void ISRgener()
 {
   cout<<"--- demo_small started ---"<<endl;
+  DiskFileB.cd();
+
   double Mmin= 60;
   double Mmax=160;
   TH1D  *hst_Mll = new TH1D("hst_Mll" ,  "Mass distr.", 50,Mmin,Mmax);
+  hst_Mll->Sumw2();
 
   //TFoamIntegrand *Rho1= new RhoISR();
   RhoISR *Rho1= new RhoISR();
   Rho1->m_Mmin = Mmin;
   Rho1->m_Mmax = Mmax;
-  //
+  Rho1->m_CMSene = 8000;
+// Setting up Foam object
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
   TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
   FoamX->SetkDim(2);         // No. of dimensions, obligatory!
-  FoamX->SetnCells(10000);    // No. of cells, can be omitted, default=2000
-  FoamX->SetnSampl(10000);    // No. of MC evts/cell in exploration, default=200
+  FoamX->SetnCells(10000);   // No. of cells, can be omitted, default=2000
+  FoamX->SetnSampl(10000);   // No. of MC evts/cell in exploration, default=200
   FoamX->SetRho(Rho1);       // Set 2-dim distribution, included above
   FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  FoamX->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
   FoamX->Initialize();       // Initialize simulator, may take time...
-
-  double Mll;
-  for(long loop=0; loop<100000; loop++)
+// loop over MC events
+  double wt,Mll;
+  long   NevTot = 1000000;
+  for(long loop=0; loop<NevTot; loop++)
   {
     FoamX->MakeEvent();            // generate MC event
+    FoamX->GetMCwt(wt);
     //Rho1->GetMll(Mll);
     Mll = Rho1->m_Mll;
     //cout<<"Mll =  "<< Mll <<endl;
-    hst_Mll->Fill(Mll);
+    hst_Mll->Fill(Mll,wt);
   }// loop
+//renormalizing histo
+  double Xsav, dXsav;
+  FoamX->GetIntNorm(Xsav,dXsav);
+  HisNorm0( NevTot, Xsav, hst_Mll);
+// plotting result
   TCanvas *cMass = new TCanvas("cMass","Canvas for plotting",600,600);
   cMass->cd();
   gPad->SetLogy(); // !!!!!!
@@ -431,25 +441,34 @@ void FigMass()
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
 
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  char capt1[100];
-  sprintf(capt1,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
+  char captEne[100];
+  sprintf(captEne,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
 
-  //
-  TH1D *hst_M100mu      = (TH1D*)DiskFileA.Get("hst_M100mu");
+  // From FOAM
+  TH1D *hst_Mll      = (TH1D*)DiskFileB.Get("hst_Mll");
+  // From KKMC
+  TH1D *hst_M100mu   = (TH1D*)DiskFileA.Get("hst_M100mu");
+
   // integrate over bins
   TH1D *Hst1 =hst_M100mu;
+  TH1D *Hst2 =hst_Mll;
   int      nbX  = Hst1->GetNbinsX();
   Double_t Xmax = Hst1->GetXaxis()->GetXmax();
   Double_t Xmin = Hst1->GetXaxis()->GetXmin();
   double dx = (Xmax-Xmin)/nbX;
-  double xsum = 0;
+  double xsum1 = 0;
+  double xsum2 = 0;
   for(int ix=1; ix <= nbX; ix++){
-	 xsum  += Hst1->GetBinContent(  ix ) *dx;
-//	 cout<< "ix="<< ix <<"  xsum="<< xsum<<endl;
+	 xsum1  += Hst1->GetBinContent(  ix ) *dx;
+	 xsum2  += Hst2->GetBinContent(  ix ) *dx;
+//	 cout<< "ix="<< ix <<"  xsum1="<< xsum<<endl;
   }//ix
-  xsum *= 1./3.; // colour factor by hand
+
+  char capt1[100];
+  sprintf(capt1,"#sigma_{KKMC} =%9.6f [pb]", 1000*xsum1);
   char capt2[100];
-  sprintf(capt2,"#sigma =%9.6f [pb]", 1000*xsum);
+   sprintf(capt2,"#sigma_{FOAM} =%9.6f [pb]", 1000*xsum2);
+   //
 
 //------------------------------------------------------------------------
   ///////////////////////////////////////////////////////////////////////////////
@@ -475,12 +494,20 @@ void FigMass()
   Hst1->SetLineColor(kBlue);
   Hst1->DrawCopy("h");
 
+  hst_Mll->SetLineColor(kRed);
+  hst_Mll->DrawCopy("hsame");
+
   CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV]");
-  CaptT->DrawLatex(0.40,0.85, capt1);
-  CaptT->DrawLatex(0.40,0.75, capt2);
+  CaptT->DrawLatex(0.40,0.85, captEne);
+  CaptT->DrawLatex(0.40,0.75, capt1);
 
   //==========plot2==============
   cFigMass->cd(2);
+  gPad->SetLogy(); // !!!!!!
+
+  hst_Mll->DrawCopy("h");
+  CaptT->DrawLatex(0.40,0.75, capt2);
+
   //==========plot3==============
   cFigMass->cd(3);
   gPad->SetLogy(); // !!!!!!
@@ -505,10 +532,11 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   //FigInfo();
   //FigVtest(); //***
+
+  ISRgener();
   FigMass();
 
   //demo_small();
-  ISRgener();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

@@ -441,12 +441,11 @@ C end
         SFu1   = 2.18   *m_x1**3.D0 *z1**0.5D0/z1
         SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
         SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
-        SF12   = (SFu1 + SFsea1/6)* (SFsea2/6)
-****        SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
+        SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)
+        SF12   = SF12/3.                    ! missing 1/NC colour factor for intial q-qbar
 *]]]
       ENDIF
-      Rho = Rho *SF12
-
+      Rho = Rho *SF12 /z1/z2    ! correcting old mistake in normalization
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
       BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv)
       RETURN

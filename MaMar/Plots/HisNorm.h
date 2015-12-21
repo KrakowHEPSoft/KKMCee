@@ -1,8 +1,22 @@
 /////////////////////////////////////////////////////////////////////
 // This works for 1-dim histograms
+void HisNorm0( long   Nevt, double Xsav, TH1 *Hst){
+// normalize histogram in nanobarns
+  cout<<"HisNorm1: Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
+  //
+  int      nbX  = Hst->GetNbinsX();
+  //cout<<"nbt = "<<nbt<<endl;
+  Double_t Xmax = Hst->GetXaxis()->GetXmax();
+  Double_t Xmin = Hst->GetXaxis()->GetXmin();
+  Double_t Fact = nbX*Xsav/(Xmax-Xmin)/Nevt;
+  cout<<"HisNorm1: Fact = "<<Fact<<endl;
+  Hst->Scale(Fact);
+}
+
+/////////////////////////////////////////////////////////////////////
+// This works for 1-dim histograms
 void HisNorm1(TH1D *NorHst, TH1 *Hst){
   // normalize histogram in nanobarns
-//  Long_t   Nevt = NorHst->GetEntries();
   Long_t   Nevt = NorHst->GetEntries();
   Double_t Xsav = NorHst->GetBinContent(0)/Nevt; // NANOBARNS
   cout<<"HisNorm1: Xsav = "<<Xsav<<"  Nevt =  "<<Nevt<<endl;
@@ -15,6 +29,7 @@ void HisNorm1(TH1D *NorHst, TH1 *Hst){
   cout<<"HisNorm1: Fact = "<<Fact<<endl;
   Hst->Scale(Fact);
 }
+
 
 /////////////////////////////////////////////////////////////////////
 void HisNorm1M(TH1D *NorHst, TH1D *Hst, Float_t msize, Int_t mcolor, Int_t mark){
