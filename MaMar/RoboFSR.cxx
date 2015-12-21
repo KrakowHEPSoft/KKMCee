@@ -69,6 +69,7 @@ void RoboFSR::Initialize(long &NevTot)
   //  ******************** NEW for LHC ***********************
   int nbm =100;
   hst_M100mu  = new TH1D("hst_M100mu",  "dSig/dMll ", nbm, 60 , 160);
+  hst_M100mu->Sumw2();
 
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);

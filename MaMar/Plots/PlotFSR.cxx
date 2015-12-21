@@ -77,6 +77,11 @@ Double_t Density(int nDim, Double_t *Xarg)
 
 	double svar= sqr(m_CMSene);
 	double shat= svar*m_x1*m_x2;
+
+//    CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
+//    m_vv  = R**(1d0/gami)*m_vvmax
+//    Rho   = Rho* m_vv/R/gami*m_vvmax
+
 	m_Mll = sqrt(shat);
 
 	if( m_Mll < 60.0 || m_Mll >160.0 ) Dist=0;
@@ -115,8 +120,8 @@ void ISRgener()
   PseRan->SetSeed(4357);
   TFoam   *FoamX    = new TFoam("FoamX");   // Create Simulator
   FoamX->SetkDim(2);         // No. of dimensions, obligatory!
-  FoamX->SetnCells(10000);   // No. of cells, can be omitted, default=2000
-  FoamX->SetnSampl(10000);   // No. of MC evts/cell in exploration, default=200
+  FoamX->SetnCells( 2000);   // No. of cells, can be omitted, default=2000
+  FoamX->SetnSampl( 2000);   // No. of MC evts/cell in exploration, default=200
   FoamX->SetRho(Rho1);       // Set 2-dim distribution, included above
   FoamX->SetPseRan(PseRan);  // Set random number generator, mandatory!
   FoamX->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
@@ -138,11 +143,13 @@ void ISRgener()
   FoamX->GetIntNorm(Xsav,dXsav);
   HisNorm0( NevTot, Xsav, hst_Mll);
 // plotting result
+/*
   TCanvas *cMass = new TCanvas("cMass","Canvas for plotting",600,600);
   cMass->cd();
   gPad->SetLogy(); // !!!!!!
   hst_Mll->DrawCopy("h");  // final plot
   cMass->Update();
+*/
   //
 }//ISRgener
 
@@ -503,7 +510,7 @@ void FigMass()
   hst_Mll->SetLineColor(kRed);
   hst_Mll->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV]");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV] KKMC and FOAM (red)");
   CaptT->DrawLatex(0.40,0.85, captEne);
   CaptT->DrawLatex(0.40,0.75, capt1);
 
@@ -511,7 +518,10 @@ void FigMass()
   cFigMass->cd(2);
   gPad->SetLogy(); // !!!!!!
 
-  hst_Mll->DrawCopy("h");
+  Hst2->SetTitle(0);
+  Hst2->DrawCopy("h");
+
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dM [nb/GeV] FOAM");
   CaptT->DrawLatex(0.40,0.75, capt2);
 
   //==========plot3==============
