@@ -129,7 +129,7 @@ void ISRgener()
 
   double Mmin= 60;
   double Mmax=160;
-  TH1D  *hst_Mll = new TH1D("hst_Mll" ,  "Mass distr.", 50,Mmin,Mmax);
+  TH1D  *hst_Mll = new TH1D("hst_Mll" ,  "Mass distr.", 100,Mmin,Mmax);
   hst_Mll->Sumw2();
 
   //TFoamIntegrand *Rho1= new RhoISR();
@@ -549,7 +549,15 @@ void FigMass()
 
   //==========plot3==============
   cFigMass->cd(3);
-  gPad->SetLogy(); // !!!!!!
+
+  TH1D *Hst12_Rat =(TH1D*)Hst1->Clone("Hst12_Rat");
+  Hst12_Rat->Divide(Hst2);
+
+  Hst12_Rat->SetMinimum(0.);
+  Hst12_Rat->DrawCopy("h");
+
+  CaptT->DrawLatex(0.10,0.95,"Ratio:  KKMC/FOAM ");
+
   //==========plot4==============
   cFigMass->cd(4);
 
