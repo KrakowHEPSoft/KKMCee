@@ -553,6 +553,8 @@ void FigMass()
   TH1D *Hst12_Rat =(TH1D*)Hst1->Clone("Hst12_Rat");
   Hst12_Rat->Divide(Hst2);
 
+  Hst12_Rat->Scale(3./8.);
+
   Hst12_Rat->SetMinimum(0.);
   Hst12_Rat->DrawCopy("h");
 
