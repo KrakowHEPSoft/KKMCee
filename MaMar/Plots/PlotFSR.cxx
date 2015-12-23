@@ -559,9 +559,10 @@ void FigMass()
   Hst12_Rat->Scale(3./8.);
 
   Hst12_Rat->SetMinimum(0.);
+  Hst12_Rat->SetMaximum(2.);
   Hst12_Rat->DrawCopy("h");
 
-  CaptT->DrawLatex(0.10,0.95,"Ratio:  KKMC/FOAM ");
+  CaptT->DrawLatex(0.10,0.95,"Ratio:  KKMC/FOAM *3/8 ");
 
   //==========plot4==============
   cFigMass->cd(4);
