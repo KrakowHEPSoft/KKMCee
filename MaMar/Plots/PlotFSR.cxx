@@ -125,8 +125,11 @@ public:
 void ISRgener()
 {
   cout<<"--- demo_small started ---"<<endl;
-  DiskFileB.cd();
 
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+
+  DiskFileB.cd();
   double Mmin= 60;
   double Mmax=160;
   TH1D  *hst_Mll = new TH1D("hst_Mll" ,  "Mass distr.", 100,Mmin,Mmax);
@@ -136,7 +139,7 @@ void ISRgener()
   RhoISR *Rho1= new RhoISR();
   Rho1->m_Mmin = Mmin;
   Rho1->m_Mmax = Mmax;
-  Rho1->m_CMSene = 8000;
+  Rho1->m_CMSene = CMSene;
 // Setting up Foam object
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
