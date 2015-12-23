@@ -81,13 +81,15 @@ RhoISR(const char* Name)
 	  m_ceuler  = 0.57721566;
 	  m_alfinv  = 137.035;
 	  m_alfpi   = 1/m_alfinv/m_pi;
-	  m_beam    = 0.510999e-3;
+	  m_beam    = 0.510999e-3;  // electron
+	  m_beam    = 0.005;        // u quark
+//	  m_beam    = 0.010;        // d quark
 	  //
 	  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
 	  m_nCells  = 2000;         // No. of cells, optional, default=2000
 	  m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
 
-	  m_KeyISR  = 1; // Type of ISR/QED switch
+	  m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
 
 	cout<< "----> RhoISR USER Constructor "<<endl;
 	}///
@@ -182,11 +184,11 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double R= Xarg[2];
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
-
 	//m_vv = R*m_vvmax;
 	//Dist *= m_vvmax;
 
-	Dist *= gami*exp(gami*log(m_vv))/m_vv; // ISR distribution
+	//Dist *= gami*exp(gami*log(m_vv))/m_vv; // ISR distribution
+	Dist *= Rho(shat,m_vv);  // take care of m_mbeam
 	shat *= (1-m_vv);
 	//]]]
 
@@ -567,6 +569,7 @@ void FigMass()
   TH1D *hst_Mll      = (TH1D*)DiskFileB.Get("hst_Mll");
   // From KKMC
   TH1D *hst_M100mu   = (TH1D*)DiskFileA.Get("hst_M100mu");
+  hst_M100mu->Scale(3./8.);
 
   // integrate over bins
   TH1D *Hst1 =hst_M100mu;
@@ -642,13 +645,12 @@ void FigMass()
   TH1D *Hst12_Rat =(TH1D*)Hst1->Clone("Hst12_Rat");
   Hst12_Rat->Divide(Hst2);
 
-  Hst12_Rat->Scale(3./8.);
 
   Hst12_Rat->SetMinimum(0.);
   Hst12_Rat->SetMaximum(2.);
   Hst12_Rat->DrawCopy("h");
 
-  CaptT->DrawLatex(0.10,0.95,"Ratio:  KKMC/FOAM *3/8 ");
+  CaptT->DrawLatex(0.10,0.95,"Ratio:  KKMC/FOAM ");
 
   //==========plot4==============
   cFigMass->cd(4);
