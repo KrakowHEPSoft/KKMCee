@@ -215,15 +215,16 @@ void RoboFSR::Production(long &iEvent)
   double svk= s*(1-vvk);
   //hst_s1Ceex2->Fill(   sqrt(s1), WtCEEX2); // M^2(2f) of mun pair
   //hst_svk->Fill(      sqrt(svk), WtCEEX2);
-  hst_s1Ceex2->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of mun pair
-  hst_svk->Fill(      sqrt(svk), WtEEX3);
+  hst_s1Ceex2->Fill(   sqrt(s1),  WtEEX3); // M^2(2f) of mun pair
+  hst_svk->Fill(       sqrt(svk), WtEEX3);
   /// ********************** NEW **********************
   hst_M100mu->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of muon pair
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
   hst_weight->Fill(WtMain);              // histogramming
-  hst_Mff->Fill(Mff,WtMain);             // histogramming
+
+  hst_Mff->Fill(Mff,WtEEX3);             // histogramming
   // debug debug debug debug debug debug debug
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;

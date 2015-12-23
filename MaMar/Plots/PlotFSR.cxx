@@ -56,7 +56,93 @@ public:
 	double m_x1;
 	double m_x2;
 	double m_vv;
+	//
+	double m_gnanob;
+	double m_pi;
+	double m_ceuler;
+	double m_alfinv;
+	double m_alfpi;
+	double m_beam;
+
+	int    m_kDim;
+	int    m_nCells;
+	int    m_nSampl;
+	int    m_KeyISR;
+
 public:
+	///_____________________________________________________________
+RhoISR(const char* Name)
+	{
+	//! all defaults defined here can be changed by the user
+	//! before calling TMCgen::Initialize
+
+	  m_gnanob  = 389.37966e3;
+	  m_pi      = 3.1415926535897932;
+	  m_ceuler  = 0.57721566;
+	  m_alfinv  = 137.035;
+	  m_alfpi   = 1/m_alfinv/m_pi;
+	  m_beam    = 0.510999e-3;
+	  //
+	  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
+	  m_nCells  = 2000;         // No. of cells, optional, default=2000
+	  m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
+
+	  m_KeyISR  = 1; // Type of ISR/QED switch
+
+	cout<< "----> RhoISR USER Constructor "<<endl;
+	}///
+
+///------------------------------------------------------------------------
+double gamISR( double svar){
+	  return  2*m_alfpi*( log(svar/sqr(m_beam)) -1);
+}
+///------------------------------------------------------------------------
+double FFact( double svar){
+	/// YFS formfactor
+  double beti  = gamISR(svar);
+  return  exp(-m_ceuler*beti)/TMath::Gamma(1+beti)
+         *exp( beti/4 +m_alfpi *(-0.5  +sqr(m_pi)/3.0) );
+}
+
+///------------------------------------------------------------------------
+double Rho(double svar, double vv){
+/// ISR rho-function for ISR
+
+  double alf1   = m_alfpi;
+  double beti   = gamISR(svar);
+///
+  double gamfac = exp(-m_ceuler*beti)/TMath::Gamma(1+beti);
+  double delb   = beti/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
+  double ffact  = gamfac*exp(delb);
+
+  double rho,dels,delh;
+  if(       m_KeyISR == 0){
+/// zero   order exponentiated
+	dels = 0;
+	delh = 0;
+	//rho  = beti* exp( log(vv)*(beti-1) ) *(1 +dels +delh);
+	rho  = ffact*beti* exp( log(vv)*(beti-1) ) *(1 +dels +delh);
+  }else if( m_KeyISR == 1){
+/// first  order
+	dels = beti/2;   /// NLO part =0 as for vector boson???
+    delh = vv*(-1 +vv/2);
+    rho = ffact*beti* exp( log(vv)*(beti-1) ) *(1 +dels +delh);
+  }else if( m_KeyISR == 2){
+/// second order without NLO part
+    dels = beti/2 +sqr(beti)/8;
+    delh = vv*(-1+vv/2.0)
+          +beti*0.5*(-0.25*(4.0-6.0*vv+3.0*vv*vv)*log(1-vv)-vv);
+    rho = ffact*beti* exp( log(vv)*(beti-1) ) *(1 +dels +delh);
+  }else{
+	  cout<<"+++++TMCgenH::RhoISR: Wrong KeyISR = " << m_KeyISR<<endl;
+	  exit(5);
+  }
+///
+  return rho;
+}//RhoISR
+
+
+
 Double_t Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
 	Double_t Dist=1;
@@ -136,7 +222,7 @@ void ISRgener()
   hst_Mll->Sumw2();
 
   //TFoamIntegrand *Rho1= new RhoISR();
-  RhoISR *Rho1= new RhoISR();
+  RhoISR *Rho1= new RhoISR("RhoISR");
   Rho1->m_Mmin = Mmin;
   Rho1->m_Mmax = Mmax;
   Rho1->m_CMSene = CMSene;
