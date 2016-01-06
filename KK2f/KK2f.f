@@ -171,7 +171,7 @@
       INTEGER             Nbranch, KFferm
       DOUBLE PRECISION    BornV_Integrated, BornV_Sig0nb
       DOUBLE PRECISION    BornV_GetMass, BornV_GetAuxPar, MinMas
-      DOUBLE PRECISION    WtMax,  amferm, xcru
+      DOUBLE PRECISION    WtMax,  amferm, xcru_karl
       DOUBLE PRECISION    WMlist(200), Xborn(200)  ! 200 should be class parameter!!!
       INTEGER             NBbranch,   KFlist(200), Nbin
       DOUBLE PRECISION    vvmin, pol1, pol2, PolBeam1(4), PolBeam2(4)
@@ -302,7 +302,7 @@
       ENDDO
 *----------------------------------------------------------------------
       CALL  BornV_Initialize( m_xpar)
-      CALL KarLud_Initialize(m_xpar,xcru)
+      CALL KarLud_Initialize(m_xpar,xcru_karl)
       CALL KarFin_Initialize(m_xpar)
       CALL   QED3_Initialize(m_xpar)
       IF(m_KeyGPS .NE. 0 ) THEN
@@ -326,7 +326,7 @@
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) 'KK2f: Initialization '
 * Primary normalization in nanobarns
-      m_Xcrunb = xcru * BornV_Sig0nb(m_CMSene)
+      m_Xcrunb = xcru_karl * BornV_Sig0nb(m_CMSene)
       WRITE(m_out,bxl1g) m_Xcrunb,   'x-crude [nb]       ','Xcrunb','**'
 * Note that m_Xborn initialized here is used for KF generation for KeyISR=0
 *
