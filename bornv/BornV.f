@@ -348,9 +348,9 @@ C end
       INCLUDE 'BornV.h'
       DOUBLE PRECISION  xarg(10)
       DOUBLE PRECISION  R,r1,r2
-      DOUBLE PRECISION  SFu1, SFsea1, SFsea2
+      DOUBLE PRECISION  SFu1, SFsea1, SFsea2, Mll, BornU, RhoISR2
       DOUBLE PRECISION  Power,Jacob,sf12
-      DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee
+      DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee,BornV_Differential, BornV_Simple
       DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
       DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr
@@ -403,27 +403,38 @@ C end
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   simplified analytical importance sampling transformations
       ELSEIF( Option .EQ. 2 ) THEN
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
+*/
+*         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
+*         Rho   = Rho   *m_x1/r1/alpha
+*         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
+*         Rho = Rho   *m_x2/r2/alpha
+*/
+         m_x1  = r1
+         m_x2  = r2
+         z1 = 1d0-m_x1
+         z2 = 1d0-m_x2
+         m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
+         CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)  ! make gamiCR at reduced XXXene
          IF( gami .LE. 0d0 ) GOTO 800
+
          m_vv  = R**(1d0/gami)*m_vvmax
-*******        Rho   = Rho* m_vv/R/gami*m_vvmax ! mostake!!!
+         IF(  m_vv < 1d-300)  GO TO 800    !!! temporary fix
          Rho   = Rho* m_vv/R/gami
-         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
-         Rho   = Rho   *m_x1/r1/alpha
-         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
-         Rho = Rho   *m_x2/r2/alpha
+*          m_vv  = R*m_vvmax
+*          Rho   = Rho*m_vvmax
+*******        Rho   = Rho* m_vv/R/gami*m_vvmax ! mIstake!!!
 ***         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800  ! WRONG
          IF( m_vv .GT. m_vvmax ) GOTO 800  ! vmax from input, the best to keep vmax=1
-         IF( m_x1 .GT. 0.99999 ) GOTO 800  ! cutting off extremely perigheral
-         IF( m_x2 .GT. 0.99999 ) GOTO 800  ! cutting off extremely perigheral
-         IF( m_CMSene*SQRT((1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2)) .LT. 1d0 ) GOTO 800  ! mass(Z)>1GeV
+*         IF( m_x1 .GT. 0.99999999 ) GOTO 800  ! cutting off extremely perigheral
+*         IF( m_x2 .GT. 0.99999999 ) GOTO 800  ! cutting off extremely perigheral
+*         IF( m_CMSene*SQRT((1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2)) .LT. 1d0 ) GOTO 800  ! mass(Z)>1GeV
       ENDIF
-      z1 = 1d0-m_x1
-      z2 = 1d0-m_x2
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Calculate ISR crude structure function (the same as in Karlud)
-      m_XXXene =  m_CMSene*SQRT(z1*z2)                   ! hidden input for BornV_Crude
       CALL BornV_MakeISR(RhoISR)                         !<-- uses m_XXXene and m_vv
+*[[[
+      RhoISR2 = gami*exp(gami*log(m_vv))/m_vv   ! ISR distribution
+*]]]
       Rho = Rho *RhoISR
       IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -443,12 +454,24 @@ C end
         SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
         SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
         SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)
-        SF12   = SF12/3.                    ! missing 1/NC colour factor for intial q-qbar
+        Mll= m_XXXene*sqrt(1d0-m_vv)
+*[[[
+        IF( Mll < 60 ) SF12=0
+*       IF( Mll < 60 .OR. Mll > 160 ) SF12=0
 *]]]
       ENDIF
-      Rho = Rho *SF12 /z1/z2    ! correcting old mistake in normalization
+      Rho = Rho *SF12     ! correcting old mistake in normalization
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
-      BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv)
+*[[[
+*     BornU = BornV_Simple( 2, 13,Mll**2,0d0) ! u+ubar->mu+mu quark
+*     BornU = BornU/(1d0-m_vv)/(z1*z2)
+*     BornU = 1
+*      BornU = BornV_Differential( 0, 13, Mll**2 , 0.d0, 0.d0,0.d0, 0.d0,0.d0 )/(1d0-m_vv)/(z1*z2)
+*]]]
+      BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
+      BornU  = BornU/3.             ! missing 1/NC colour factor for intial q-qbar
+      BornV_RhoFoamC = Rho*BornU
+****     BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
       RETURN
  800  CONTINUE
       BornV_RhoFoamC =0d0

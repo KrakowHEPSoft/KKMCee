@@ -9,14 +9,14 @@
 *//   by MBrB                                                                        //
 *//////////////////////////////////////////////////////////////////////////////////////
 
-      SUBROUTINE BStra_Initialize(KeyGrid,Xcrude)
+      SUBROUTINE BStra_Initialize(KeyGrid,KeyWgt,Xcrude)
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Initialization phase                                                           //
 *//////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'BStra.h'
       INCLUDE 'BXformat.h'
-      INTEGER            KeyGrid
+      INTEGER            KeyGrid, KeyWgt
       DOUBLE PRECISION   XCrude
       INTEGER  k,j
       DOUBLE PRECISION   XsCru(10), WMList(10)
@@ -36,6 +36,7 @@
       m_ModeA  =   KeyGrid
       m_ModeB  =   KeyGrid
       m_ModeC  =   KeyGrid
+      m_KeyWgt =   KeyWgt
 *
       CALL KarLud_GetXXXene(XXXene)
 *
@@ -97,7 +98,7 @@
       WRITE(*,*) '*****************************************************************'
       CALL FoamC_SetKdim(       3) ! No. of dimensions<5
       CALL FoamC_SetnBuf(    5000) ! Length of buffer<5000,  =Maximum No. of cells
-      CALL FoamC_SetnSampl(  5000) ! No. of MC sampling inside single cell, default=100
+      CALL FoamC_SetnSampl( 20000) ! No. of MC sampling inside single cell, default=100
       CALL FoamC_SetnBin(       4) ! No of bins for edge explorations
       CALL FoamC_SetEvPerBin(  25) ! No. of equiv. MC events per bin
       CALL FoamC_SetOptEdge(    0) ! OptEdge excludes vertices
@@ -199,19 +200,27 @@
          STOP 
       ENDIF
       CALL BornV_GetVXX(vv,x1,x2)
+
 * random swap, necessary because FoamB integrand is asymmetric
-      CALL PseuMar_MakeVec(Qrand,2)
-      IF( Qrand(1) .LT. 0.5d0 ) THEN
-         x  = x1
-         x1 = x2
-         x2 = x
+*     CALL PseuMar_MakeVec(Qrand,1)
+*     IF( Qrand(1) .LT. 0.5d0 ) THEN
+*        x  = x1
+*        x1 = x2
+*        x2 = x
+*     ENDIF
+
+* Rejection or wted events
+      IF(   m_KeYWgt .EQ. 0) THEN
+        CALL PseuMar_MakeVec(Qrand,1)
+        rand = Qrand(1)
+        CALL MBrB_Fill(MCwt   ,rand)
+        IF(rand .GT. MCwt) GOTO 100
+        MCwt = 1d0
+      ELSE
+        MCwt = MCwt *Wt_KF
       ENDIF
-      MCwt = MCwt *Wt_KF
-* Rejection
-      rand = Qrand(2)
-      CALL MBrB_Fill(MCwt   ,rand)
-      IF(rand .GT. MCwt) GOTO 100
-      MCwt = 1d0
+
+      CALL MBrB_Fill(MCwt   ,0d0)
       END                       ! BStra_Make
 
       SUBROUTINE BStra_GetXCrude(XCrude)

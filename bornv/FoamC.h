@@ -14,11 +14,11 @@
       INTEGER        m_DimMax
       PARAMETER  (   m_DimMax  = m_NdiMax+ m_KdiMax )   !  maximum total dimension
       INTEGER        m_nBufMax
-      PARAMETER  (   m_nBufMax = 10000 )  ! maximum buffer length for all cells
+      PARAMETER  (   m_nBufMax = 100000 )  ! maximum buffer length for all cells
       INTEGER        m_vMax
-      PARAMETER  (   m_vMax    = 10000  ) ! maximum number of vertices
+      PARAMETER  (   m_vMax    = 100000  ) ! maximum number of vertices
       INTEGER        m_cMax
-      PARAMETER  (   m_cMax    = 10000 )  ! maximum number of (active) Cells
+      PARAMETER  (   m_cMax    = 100000 )  ! maximum number of (active) Cells
       INTEGER        m_sMax
       PARAMETER  (   m_sMax    = 5 )     ! statistics of the weight
       INTEGER        m_NpairMax
