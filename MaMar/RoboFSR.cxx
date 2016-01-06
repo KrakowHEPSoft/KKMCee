@@ -68,9 +68,16 @@ void RoboFSR::Initialize(long &NevTot)
   hst_svk->Sumw2();
   //  ******************** NEW for LHC ***********************
   int nbm =100;
-  hst_M100mu  = new TH1D("hst_M100mu",  "dSig/dMll ", nbm, 60 , 160);
-  hst_M100mu->Sumw2();
-
+  hst_Mll_main  = new TH1D("hst_Mll_main",  "dSig/dMll ", nbm, 60 , 160);
+  hst_Mll_eex0  = new TH1D("hst_Mll_eex0",  "dSig/dMll ", nbm, 60 , 160);
+  hst_Mll_eex2  = new TH1D("hst_Mll_eex2",  "dSig/dMll ", nbm, 60 , 160);
+  hst_Mll_main->Sumw2();
+  hst_Mll_eex0->Sumw2();
+  hst_Mll_eex2->Sumw2();
+  hst_Mka_eex0  = new TH1D("hst_Mka_eex0",  "dSig/dMkar ", nbm, 60 , 160);
+  hst_Mka_eex2  = new TH1D("hst_Mka_eex2",  "dSig/dMkar ", nbm, 60 , 160);
+  hst_Mka_eex0->Sumw2();
+  hst_Mka_eex2->Sumw2();
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
@@ -110,8 +117,12 @@ void RoboFSR::Production(long &iEvent)
   KKMC_generator->GetWt(WtMain,WtCrude);
   KKMC_generator->GetBeams(m_pbea1,m_pbea2);
   KKMC_generator->GetFermions(m_pfer1,m_pfer2);
-  KKMC_generator->GetNphot(m_Nphot);                  // photon multiplicity
-  TLorentzVector VSumPhot;    // By default all components are initialized by zero. 
+
+  TLorentzVector pf1,pf2;
+  KKMC_generator->GetFermKarlud(pf1,pf2);     // fermions from Karlud, before any FSR
+  TLorentzVector VSumPhot;    // By default all components are initialized by zero.
+
+  KKMC_generator->GetNphot(m_Nphot);          // photon multiplicity
   long iphot,iphot1;
   for(iphot=0;iphot<m_Nphot;iphot++){
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
@@ -196,6 +207,9 @@ void RoboFSR::Production(long &iEvent)
   // *********************************************************************
   //          Most of histogramming starts here
   // *********************************************************************
+  double wteex0  = KKMC_generator->GetWtAlter(  1);    //  zero   ord. EEX2 O(alf0) ISR only
+  double wteex2  = KKMC_generator->GetWtAlter(  3);    //  Second ord. EEX2 O(alf2) ISR only
+  double WtEEX0  = KKMC_generator->GetWtAlter( 71);    //  zero   ord. EEX0 O(alf0)
   double WtEEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
@@ -217,8 +231,16 @@ void RoboFSR::Production(long &iEvent)
   //hst_svk->Fill(      sqrt(svk), WtCEEX2);
   hst_s1Ceex2->Fill(   sqrt(s1),  WtEEX3); // M^2(2f) of mun pair
   hst_svk->Fill(       sqrt(svk), WtEEX3);
-  /// ********************** NEW **********************
-  hst_M100mu->Fill(   sqrt(s1), WtEEX3); // M^2(2f) of muon pair
+  /// ********************** NEW *****************************
+  double sbare =(pf1+pf2)*(pf1+pf2);
+  double Mll   = sqrt(s1);
+  double Mka   = sqrt(sbare);
+  hst_Mll_main->Fill(   Mll, WtMain); // M^2(2f) of muon pair
+  hst_Mll_eex0->Fill(   Mll, WtEEX0); // M^2(2f) of muon pair
+  hst_Mll_eex2->Fill(   Mll, WtEEX2); // M^2(2f) of muon pair
+  hst_Mka_eex0->Fill(   Mka, wteex0); // M^2(2f) ISR only
+  hst_Mka_eex2->Fill(   Mka, wteex2); // M^2(2f) ISR only
+  /// *********************************************************
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;

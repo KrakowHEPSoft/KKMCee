@@ -6,11 +6,12 @@ BeginX
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0        1000000      1M   NEVT = number of events
-    0      100000000      100M NEVT = number of events
-*   0         100000      100k NEVT = number of events
+***    0       10000000      10M  NEVT = number of events
+***    0      100000000      100M NEVT = number of events
+***    0         100000      100k NEVT = number of events
 ***    0          10000      10k  NEVT = number of events
 *     Center-of-mass energy [GeV]
-    1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1       1000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     1       8000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
 *     KeyWgt=0,1 to get constant,variable weight events
@@ -21,14 +22,23 @@ BeginX
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
    12              0      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
+*     Minimum and maximum v, where v = 1-sprim/s, v=1 alowed
+   16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
+*
    17            1d0      vvmax =xpar(17)  if 1d0 then reduced inside program
    17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
    17         0.50d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*  17         0.01d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+*  17        0.001d0      vvmax =xpar(17)  if 1d0 then reduced inside program
 ********************************************************************************
 **    EQD/EW bremsstrahlung flags/data
    20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
-   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions
+   21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
    25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
+*(\\\\SPECIAL tests: mass terms in crude MC photon distrib.\\\\\\\\\\\\\\\\\\\\\
+   26              1\\\\\\KeyWtm\\\\\\\\\\ Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
+**    Interference ISR/FSR to be ON/OFF
+   27              0      KeyINT=xpar(27)  Default is  2
 *     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
    50              0      KeyHad=xpar(50)  Default is  1
  2001           -1d0      Jak1   =xpar(71)  First  Tau decay mask, Default is  0
@@ -65,6 +75,9 @@ BeginX
   400              2      KFini = xpar(400) UP-quark beams !!!
   516        0.010e0      current mass [GeV] (5-15MeV in PDG) Down quark
   526        0.005e0      current mass [GeV] (2-8MeV  in PDG) Up quark
+*[[[[
+* 637          1.0e0      WtMax Maximum weight for rejection muon default=8
+*]]]]
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2

@@ -41,9 +41,13 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const long& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
+//      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
+extern "C" double bornv_sig0nb_(const double&);
 
 //      SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami,alfi)
 extern "C" void bornv_makegami_(const double&, double&, double&, double&);
+//      DOUBLE PRECISION  FUNCTION BornV_Simple(KFi,KFf,svar,costhe)
+extern "C" double bornv_simple_( const long&,  const long&, const double&, const double&);
 
 //------------------------------------------------------------
 

@@ -34,6 +34,8 @@ extern "C" void kk2f_getprimanorma_( double&, const int&);
 extern "C" void kk2f_getxsnormpb_( double&, double&);
 extern "C" void kk2f_getwtalter_( long&, double&);
 ///////////////////////////////////////////////////////////////////////////////
+extern "C" void karlud_getfermions_(double [], double []);
+///////////////////////////////////////////////////////////////////////////////
 extern "C" void pylist_(const long&);
 extern "C" void pygive_(char *directive, long s1);
 extern "C" void hepevt_getkffin_(  long&);
@@ -71,6 +73,7 @@ class KKMC{
   void GetBeams(    TLorentzVector&,  TLorentzVector&);
   void GetFermions( TLorentzVector&,  TLorentzVector&);
   void GetPhoton1(const long, TLorentzVector&);
+  void GetFermKarlud( TLorentzVector &,  TLorentzVector &);
 //  void GetPhoton1(long & , TLorentzVector&);
   void GetNphot(  long &);
   void GetXsecMC( double &,  double &);

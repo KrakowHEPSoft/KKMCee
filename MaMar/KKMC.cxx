@@ -173,6 +173,18 @@ void KKMC::GetFermions( TLorentzVector &F1,  TLorentzVector &F2)
   //for(int i=0;i<4;i++) cout<<B2[i]<<"  "; cout<<endl;
 }
 ///////////////////////////////////////////////////////////////////////////////
+void KKMC::GetFermKarlud( TLorentzVector &F1,  TLorentzVector &F2)
+{
+// get 4-momenta of final fermions
+  double p1[4];
+  double p2[4];
+  karlud_getfermions_(p1,p2);
+  F1.SetPxPyPzE(p1[0],p1[1],p1[2],p1[3]);
+  F2.SetPxPyPzE(p2[0],p2[1],p2[2],p2[3]);
+  //for(int i=0;i<4;i++) cout<<B1[i]<<"  "; cout<<endl;
+  //for(int i=0;i<4;i++) cout<<B2[i]<<"  "; cout<<endl;
+}
+///////////////////////////////////////////////////////////////////////////////
 void KKMC::GetXsecMC( double &xSecPb,  double &xErrPb)
 {
 // get MC final xsection PICOBARNS
