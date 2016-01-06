@@ -20,7 +20,7 @@
       INCLUDE 'BXformat.h'
       DOUBLE PRECISION   xpar_input(*)
       DOUBLE PRECISION   XCrude, prec, Mathlib_Gauss
-      INTEGER            ke, KFbeam, n, KeyGrid, KeyRes
+      INTEGER            ke, KFbeam, n, KeyGrid, KeyWgt, KeyRes
       DOUBLE PRECISION   a,b,result,error
       DOUBLE PRECISION   BornV_Crude
       DOUBLE PRECISION   xborn,xdel
@@ -117,7 +117,8 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             IRCxchat = xpar_input(75)
             CALL IRC_circes(0d0, 0d0, IRCroots, IRCacc, IRCver, IRCdate, IRCxchat)
             KeyGrid  = xpar_input(76)
-            CALL BStra_Initialize(KeyGrid,m_XCrude)         ! beamstrahlung initialization
+            KeyWgt   = xpar_input(10)
+            CALL BStra_Initialize(KeyGrid,KeyWgt,m_XCrude)         ! beamstrahlung initialization
             XCrude    = m_XCrude
          ELSEIF(m_KeyFix .EQ. -1) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -350,8 +351,10 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             CALL BStra_GetXCrude(ISRcru)
             CALL BStra_Finalize(ISRbest,ErRela)
             ISRerr   = ISRbest*ErRela
-            XKarlud  = ISRbest                     ! crude from internal loop
-            KError   = ISRerr                      ! and its error
+***            XKarlud  = ISRbest                     ! crude from internal loop
+***            KError   = ISRerr                      ! and its error
+            XKarlud  = ISRcru                     ! true crude
+            KError   = 0d0                        ! and its error
          ELSEIF( m_KeyFix .EQ. -1 ) THEN
             ISRcru   = m_XCrude
             ISRbest  = m_XCrude
