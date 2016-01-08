@@ -21,7 +21,6 @@
       INTEGER  k,j
       DOUBLE PRECISION   XsCru(10), WMList(10)
       DOUBLE PRECISION   XsectA, XsectB,  XsectC
-      DOUBLE PRECISION   ErrelA,  ErrelB,  ErrelC
       DOUBLE PRECISION   BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
       EXTERNAL           BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
       DOUBLE PRECISION   XXXene, vvmax
@@ -49,9 +48,6 @@
       XsectA   = 1d-100
       XsectB   = 1d-100
       XsectC   = 1d-100
-      ErrelA   = 1d0
-      ErrelB   = 1d0
-      ErrelC   = 1d0
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   1-dimensional case                                                             //
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -109,16 +105,11 @@
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   The best Vegas Integral estimators from initialization (grid building) phase   //
 *//////////////////////////////////////////////////////////////////////////////////////
-      CALL FoamA_GetTotPrim( XsectA) ! Integral estimate from Initialization
-      ErrelA  = ErrelA/XsectA
-      CALL FoamB_GetTotPrim( XsectB) ! Integral estimate from Initialization
-      ErrelB  = ErrelB/XsectB
-      CALL FoamC_GetTotPrim( XsectC) ! Integral estimate from Initialization
-      ErrelC  = ErrelC/XsectC
+      CALL FoamA_GetTotPrim( XsectA) ! Crude from Initialization
+      CALL FoamB_GetTotPrim( XsectB) ! Crude from Initialization
+      CALL FoamC_GetTotPrim( XsectC) ! Crude from Initialization
 
-      m_XGridB =  XsectA+XsectB+XsectC ! is it really used ?????
-      m_EGridB =  DSQRT( (ErrelA*XsectA)**2 +(ErrelB*XsectB)**2 +(ErrelC*XsectC)**2)
-      m_EGridB =  m_EGridB/m_XGridB
+      m_XCrude =  XsectA+XsectB+XsectC ! is it really used ?????
 *
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator                '
@@ -126,11 +117,7 @@
       WRITE(m_out,bxl1g) XsectA ,    'XsectA  1-dimen.  ','XsectA','**'
       WRITE(m_out,bxl1g) XsectB ,    'XsectB  2-dimen.  ','XsectB','**'
       WRITE(m_out,bxl1g) XsectC ,    'XsectC  3-dimen.  ','XsectC','**'
-      WRITE(m_out,bxl1f) ErrelA  ,   'ErrelA  1-dimen.  ','ErrelA','**'
-      WRITE(m_out,bxl1f) ErrelB  ,   'ErrelB  2-dimen.  ','ErrelB','**'
-      WRITE(m_out,bxl1f) ErrelC  ,   'ErrelC  3-dimen.  ','ErrelC','**'
-      WRITE(m_out,bxl1g) m_XGridB,   'XGridB  total.    ','XGridB','**'
-      WRITE(m_out,bxl1f) m_EGridB,   'EGridB, rel. total','EGridB','**'
+      WRITE(m_out,bxl1g) m_XCrude,   'XGridB  total.    ','XGridB','**'
       WRITE(m_out,bxclo)
 *//////////////////////////////////////////////////////////////////////////////////////
 *//     Calculate Crude Xcru(i), i=1,2,3,  branch per branch                         //
@@ -154,9 +141,9 @@
 *// Because in Bstra we have internal rejection loop we send to Karlud and KK2f      //
 *// the best estimator of integral we have at this moment                            // 
 *// It will be used for histogram normalization (sometimes)                          // 
-*// Note that xsection from KK2f_finalize uses m_XCrude*<wt)> or m_XGridB            //
+*// Note that xsection from KK2f_finalize uses m_XCrude*<wt)> or m_XCrude            //
 *//////////////////////////////////////////////////////////////////////////////////////
-      XCrude   = m_XGridB
+      XCrude   = m_XCrude
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator, PreGeneration '
       WRITE(m_out,bxl1g) XsCru(1) ,   'XsCru(1)  1-dimen.  ','XsCru(1) ','**'
@@ -182,6 +169,7 @@
       INTEGER           Itype
       DOUBLE PRECISION  rand
 *-------------------------------------------------------------------------------
+      m_NevCru = 0
  100  CONTINUE
       m_Nevgen  =  m_Nevgen +1
       CALL MBrB_GenKF(Itype, Wt_KF)
@@ -214,9 +202,11 @@
         CALL PseuMar_MakeVec(Qrand,1)
         rand = Qrand(1)
         CALL MBrB_Fill(MCwt   ,rand)
+        m_NevCru = m_NevCru+1
         IF(rand .GT. MCwt) GOTO 100
         MCwt = 1d0
       ELSE
+        m_NevCru = 1
         MCwt = MCwt *Wt_KF
       ENDIF
 
@@ -256,8 +246,7 @@
       WRITE(m_out,bxl1f) ErRelMC,   'relat. error  ','ErRelMC','**'
       WRITE(m_out,bxl1f) WtSup,     'maximum wt    ','WtSup  ','**'
       WRITE(m_out,bxtxt) '  From grid building (initializ.)'  
-      WRITE(m_out,bxl1g) m_XGridB,   'XGridB  total.    ','XGridB','**'
-      WRITE(m_out,bxl1f) m_EGridB,   'EGridB, rel. total','EGridB','**'
+      WRITE(m_out,bxl1g) m_XCrude,  'XCrude  total.','XCrude','**'
       WRITE(m_out,bxclo)
 * Print more on the main weight
       CALL MBrB_Print0
@@ -265,15 +254,16 @@
       CALL MBrB_Print1
       END       ! BStra_Finalize
 
-      SUBROUTINE BStra_GetXGridB(XGridB,EGridB)
+      SUBROUTINE BStra_GetSumCru(XCrude,NevCru)
 *//////////////////////////////////////////////////////////////////////////////////////
-*//   Get TRUE crude integram                                                        //
+*//   Get TRUE crude local sums                                                     //
 *//////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'BStra.h'
-      DOUBLE PRECISION     XGridB,EGridB
-      XGridB   = m_XGridB
-      EGridB   = m_EGridB
+      DOUBLE PRECISION     XCrude
+      INTEGER              NevCru
+      XCrude   = m_XCrude
+      NevCru   = m_NevCru
       END                       ! BStra_GetXGridB
 
       SUBROUTINE BStra_GetIntegMC(IntegMC,ErRelMC)
