@@ -450,16 +450,16 @@
       REAL              rvec(10)
       INTEGER           i,j,k
       INTEGER           LevPri,Ie1Pri,Ie2Pri
-      INTEGER           KFfin
+      INTEGER           KFfin,NevCru
       INTEGER           TauIsInitialized
-      DOUBLE PRECISION  wt_fsr,wt_isr,WtScaled
+      DOUBLE PRECISION  wt_fsr,wt_isr,WtScaled,XCruNb
       DOUBLE PRECISION  CMSE, vv, svar1, Exe, SvarQ
       DOUBLE PRECISION  charg2,amfi1,amfi2
       DOUBLE PRECISION  BornV_GetMass,BornV_GetCharge,BornV_GetAuxPar
       DOUBLE PRECISION  BornV_Differential
       DOUBLE PRECISION  WtSetNew(200), WtBest, WtBest1, WtBest2
       DOUBLE PRECISION  rn
-      DOUBLE PRECISION  MminCEEX
+      DOUBLE PRECISION  MminCEEX, BornV_Sig0nb
 *-----------------------------------------------------------
       m_nevgen   = m_nevgen +1
       m_ypar( 9) = m_nevgen
@@ -574,7 +574,11 @@
       IF(m_KeyWgt .EQ. 0) THEN              !!! CONSTANT-WEIGHT events
          CALL PseuMar_MakeVec(rvec,1)
          rn = rvec(1)
-         CALL GLK_Mfill(m_idgen, m_Xcrunb*m_WTmax, rn)
+         CALL KarLud_CrudeInfo(XCruNb,NevCru)
+*        Emulation of the internal rejection loop in Bstra
+         DO j=1,NevCru
+            CALL GLK_Mfill(m_idgen, XCruNb*m_WTmax, rn)
+         ENDDO
          CALL MBrA_Fill(m_WtMain   ,rn)
          WtScaled = m_WtMain/m_WTmax
          IF( WtScaled .GT. 1d0) THEN
@@ -589,7 +593,8 @@
             m_WtList(j) = m_WtSet(j)/WtBest ! Division by zero impossible due to rejection
          ENDDO
       ELSE                                  !!! VARIABLE-WEIGHT events
-         CALL GLK_Mfill(m_idgen   , m_Xcrunb, 0d0)
+         CALL KarLud_CrudeInfo(XCruNb,NevCru)
+         CALL GLK_Mfill(m_idgen   , XCruNb, 0d0)
          CALL MBrA_Fill(m_WtMain,  0d0)
 * collection of the weights for the advanced user
          DO j=1,m_lenwt

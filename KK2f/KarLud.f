@@ -735,6 +735,25 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
       END
 
 
+      SUBROUTINE KarLud_CrudeInfo(XCruNb,NevCru)
+*//////////////////////////////////////////////////////////////////////////////////////
+*//   Get TRUE crude local sums                                                     //
+*//////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KarLud.h'
+      DOUBLE PRECISION     XCruNb
+      INTEGER              NevCru
+      DOUBLE PRECISION     BornV_Sig0nb
+      NevCru = 1
+      XCruNb = m_XCrude * BornV_Sig0nb(m_CMSene)
+*     The case of initial PDFs
+      IF(m_KeyFix .EQ. 2) THEN
+         CALL BStra_GetSumCru(XCruNb,NevCru)
+         XCruNb = XCruNb* BornV_Sig0nb(m_CMSene)
+      ENDIF
+      END                       ! BStra_GetXGridB
+
+
       SUBROUTINE KarLud_GetXXXene(XXXene)
 *///////////////////////////////////////////////////////////////////////////////
 *//                                                                           //
