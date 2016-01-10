@@ -231,9 +231,11 @@ Double_t Density(int nDim, Double_t *Xarg)
 	//                Valence UP and UP-bar of sea
     //SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
 	double PDFu1   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
+	double PDFd1   = 1.23   *exp(4.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
     double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
     double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
     double SF12  = 2*(PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
+    //double SF12  = 2*(PDFd1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
 
     Dist *= SF12;  // (u-ubar)+(ubar-u)
 	double svar1= svar*m_x1*m_x2;
@@ -243,16 +245,21 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double gamiCR,gami,alfi;
 	double CMSene1= sqrt(svar1);
 	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
+	//[[[[ debug
+	//gami = gamISR(CMSene1);
+	//]]]]
 	// cout<<" CMSene1,gami= "<< CMSene1 <<"  "<< gami <<endl;
 	double R= Xarg[2];
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
-	//[[[[ primitive
+	//[[[[ primitive for debug
 	//m_vv = R*m_vvmax;
 	//Dist *= m_vvmax;
 	//cout << "Density: svar1, gami = "<< svar1 <<"  "<<gami<<endl;
 	//double Rho1 = gami*exp(gami*log(m_vv))/m_vv; // ISR distribution
 	//]]]]
+	if( gami < 0 )      return 0.0;    // temporary fix
+    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
 	double Rho2 = Rho_isr(svar1,m_vv);               // remember take care of m_mbeam!!!
 	Dist *= Rho2;
 	svarCum *= (1-m_vv);
@@ -287,9 +294,9 @@ Double_t Density(int nDim, Double_t *Xarg)
 // ******* inline cutoff for better efficiency *********
 	m_Mll = sqrt(svarCum); // final
 	m_Mka = sqrt(svar2);   // after ISR
-	//if( m_Mka < m_Mmin ) Dist=0;
+	if( m_Mka < m_Mmin ) Dist=0;
 	//if( m_Mll < m_Mmin ) Dist=0;
-	if( m_Mka < m_Mmin || m_Mka >m_Mmax ) Dist=0;
+	//if( m_Mka < m_Mmin || m_Mka >m_Mmax ) Dist=0;
 	//if( m_Mll < m_Mmin || m_Mll >m_Mmax ) Dist=0;
 
 	return Dist;
@@ -338,8 +345,8 @@ void ISRgener()
 // Setting up Foam objects !st FOAM for ISR only
   TFoam   *MC_isr    = new TFoam("MC_isr");   // Create Simulator
   MC_isr->SetkDim(3);         // No. of dimensions, obligatory!
-  MC_isr->SetnCells( 5000);   // No. of cells, can be omitted, default=2000
-  MC_isr->SetnSampl(10000);   // No. of MC evts/cell in exploration, default=200
+  MC_isr->SetnCells(  5000);  // No. of cells, can be omitted, default=2000
+  MC_isr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
   MC_isr->SetRho(Rho1);       // Set 2-dim distribution, included above
   MC_isr->SetPseRan(PseRan);  // Set random number generator, mandatory!
   MC_isr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
@@ -465,6 +472,7 @@ void FigCalib()
 
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   char captEne[100];
+  //sprintf(captEne,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
   sprintf(captEne,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
 
   Long_t   Nevt = HST_KKMC_NORMA->GetEntries();
@@ -573,8 +581,8 @@ void FigCalib()
   //  ISR only EEX
   TH1D *Hst10_Rat =(TH1D*)Hst1->Clone("Hst10_Rat");
   Hst10_Rat->Divide(HST1);
-  //Hst10_Rat->SetMinimum(0.75);
-  //Hst10_Rat->SetMaximum(1.25);
+  Hst10_Rat->SetMinimum(0.90);
+  Hst10_Rat->SetMaximum(1.10);
   Hst10_Rat->DrawCopy("h");
   HST_One->DrawCopy("hsame");
 
@@ -600,8 +608,8 @@ void FigCalib()
 
   TH1D *Hst30_Rat =(TH1D*)Hst3->Clone("Hst30_Rat");
   Hst30_Rat->Divide(HST3);
-  Hst30_Rat->SetMinimum(0.75);
-  Hst30_Rat->SetMaximum(1.25);
+  Hst30_Rat->SetMinimum(0.90);
+  Hst30_Rat->SetMaximum(1.10);
   Hst30_Rat->DrawCopy("h");
   HST_One->DrawCopy("hsame");
 
@@ -664,7 +672,7 @@ void FigFSR()
   TH1D *Hst12_Rat =(TH1D*)Hst1->Clone("Hst12_Rat");
   Hst12_Rat->Divide(Hst2);
   Hst12_Rat->SetMinimum(0.8);
-  Hst12_Rat->SetMaximum(2.2);
+  Hst12_Rat->SetMaximum(2.6);
   Hst12_Rat->DrawCopy("h");
   HST_One2->DrawCopy("hsame");
   CaptT->DrawLatex(0.10,0.95,"KKMC 2nd Order: (ISR+FSR)/ISR");
