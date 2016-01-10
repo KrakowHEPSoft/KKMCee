@@ -338,7 +338,9 @@ C end
       DOUBLE PRECISION FUNCTION BornV_RhoFoamC(xarg)
 *//////////////////////////////////////////////////////////////////////////////////
 *//                                                                              //
-*//   Integrand for FoamC in 3-dim mode for beamstrahlung                        //
+*//   Integrand for FoamC in 3-dim mode for PDFs of quarks in hadron             //
+*//   Origunally it was for beamstrahlung and this can be restored               //
+*//   However, Circe should be replaced by a continuous 2dim. representation     //
 *//                                                                              //
 *//   Remember that BornV_Crude and BornV_MakeRho use hidden input  m_XXXene!!   //
 *//   BornV_Crude is in R-units (poitnlike xsection at  sqrt(s)=m_XXXene!        //
@@ -348,8 +350,8 @@ C end
       INCLUDE 'BornV.h'
       DOUBLE PRECISION  xarg(10)
       DOUBLE PRECISION  R,r1,r2
-      DOUBLE PRECISION  SFu1, SFsea1, SFsea2, Mll, BornU, RhoISR2
-      DOUBLE PRECISION  Power,Jacob,sf12
+      DOUBLE PRECISION  SFu1, SFd1, SFsea1, SFsea2, Mqq, BornU, RhoISR2
+      DOUBLE PRECISION  Power,Jacob,SF12
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee,BornV_Differential, BornV_Simple
       DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
@@ -376,39 +378,14 @@ C end
       r1   = xarg(2)
       r2   = xarg(3)
       Rho  = 1d0
-      Option = 1                ! Option = 1, sophisticated, a litle bit better
-      Option = 2                ! Option = 2, simple, good enough
-      IF( Option .EQ. 1 ) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
-*//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
-         IF( gami .LE. 0d0 ) GOTO 800
-         GamBig = gami+2d0*alpha                            ! total singularity at XX=0
-         CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX=1-ZZ
-         Rho = Rho *RJac0
-*//   r1 --> m_vv
-         alpha2 = 2d0*alpha
-         CALL BornV_ReBin2a(r1, gami, alpha2, yisr, ybms, RJac1) ! Mapping  r1 => m_vv
-         xisr = yisr *XX
-         xbms = ybms *XX/(1d0-yisr*XX)
-         Rho  = Rho  *XX/(1d0-yisr*XX) *RJac1
-         zisr = 1d0-xisr
-         zbms = 1d0-xbms
-         m_vv = xisr
-*//   r2 --> m_x2
-         CALL BornV_ReBin2a(r2, alpha, alpha, y1, y2, RJac2) ! Mapping  r2 => m_x2
-         m_x1 =   y1*xbms
-         m_x2 =   y2*xbms/(1d0-y1*xbms)
-         Rho  = Rho *xbms/(1d0-y1*xbms) *RJac2 
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   simplified analytical importance sampling transformations
-      ELSEIF( Option .EQ. 2 ) THEN
-*/
+*[[[[ mapping for Beamsstrahlung PDF, singular as m_x1**(alpha-1)
 *         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
 *         Rho   = Rho   *m_x1/r1/alpha
 *         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
 *         Rho = Rho   *m_x2/r2/alpha
-*/
+*]]]]
+*//   For quarks without any mapping
          m_x1  = r1
          m_x2  = r2
          z1 = 1d0-m_x1
@@ -420,58 +397,48 @@ C end
          m_vv  = R**(1d0/gami)*m_vvmax
          IF(  m_vv < 1d-300)  GO TO 800    !!! temporary fix
          Rho   = Rho* m_vv/R/gami
+*******  Rho   = Rho* m_vv/R/gami*m_vvmax ! mistake in previous release!!!
+*[[[[ DEBUG for testing Foam
 *          m_vv  = R*m_vvmax
 *          Rho   = Rho*m_vvmax
-*******        Rho   = Rho* m_vv/R/gami*m_vvmax ! mIstake!!!
-***         IF( (1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2) .LT. (1d0-m_vvmax) ) GOTO 800  ! WRONG
+*]]]]
          IF( m_vv .GT. m_vvmax ) GOTO 800  ! vmax from input, the best to keep vmax=1
-*         IF( m_x1 .GT. 0.99999999 ) GOTO 800  ! cutting off extremely perigheral
-*         IF( m_x2 .GT. 0.99999999 ) GOTO 800  ! cutting off extremely perigheral
-*         IF( m_CMSene*SQRT((1d0-m_vv)*(1d0-m_x1)*(1d0-m_x2)) .LT. 1d0 ) GOTO 800  ! mass(Z)>1GeV
-      ENDIF
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Calculate ISR crude structure function (the same as in Karlud)
       CALL BornV_MakeISR(RhoISR)                         !<-- uses m_XXXene and m_vv
-*[[[
-      RhoISR2 = gami*exp(gami*log(m_vv))/m_vv   ! ISR distribution
-*]]]
       Rho = Rho *RhoISR
       IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   Beamsstrahlung structure function, singular as m_x1**(alpha-1)
-      IF( (z1.EQ.1d0) .OR. (z2.EQ.1d0) ) THEN ! rounding errors may cause problems
-         SF12 = 0d0
-      ELSE
+      IF( (z1.EQ.1d0) .OR. (z2.EQ.1d0) ) GOTO 800
+*[[[[   Beamstrahlung inactive option
 ***      SF12 = IRC_circee( z1, z2 )
-         SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
-***      SF12 = Par(1) *m_x1**Par(3)               *Par(1) *m_x2**Par(3)    ! Truncated
-*[[[PDFs
-* Valence 2*x*u(x):   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
-* Valence x*d(x):     XDNV = 1.23 * X**0.5D0 * (1.D0-X)**4.D0
+***      SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
+*]]]]
+************************* quark PDFs *************************
+* Valence 2*x*u(x):  XUPV =   2.18 * X**0.5D0    * (1.D0-X)**3.D0
+* Valence x*d(x):    XDNV =   1.23 * X**0.5D0    * (1.D0-X)**4.D0
 * Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
 *                Valence UP and UP-bar of sea
-        SFu1   = 2.18   *m_x1**3.D0 *z1**0.5D0/z1
-        SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
-        SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
-        SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)
-        Mll= m_XXXene*sqrt(1d0-m_vv)
-*[[[
-        IF( Mll < 60 ) SF12=0
-*       IF( Mll < 60 .OR. Mll > 160 ) SF12=0
-*]]]
-      ENDIF
+      SFu1   = 2.18   *m_x1**3.D0 *z1**0.5D0/z1
+      SFd1   = 1.23   *m_x1**4.D0 *z1**0.5D0/z1
+      SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
+      SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
+      SF12   = 2* (SFd1 + SFsea1/6)* (SFsea2/6)   ! d-dbar chanel
+      SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)   ! u-ubar chanel
+
+      Mqq= m_XXXene*sqrt(1d0-m_vv)
+*[[[[  temporarry cutof to improve MC efficiency
+      IF( Mqq < 60 ) SF12=0
+*     IF( Mqq < 60 .OR. Mqq > 160 ) SF12=0
+*]]]]
       Rho = Rho *SF12     ! correcting old mistake in normalization
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
-*[[[
-*     BornU = BornV_Simple( 2, 13,Mll**2,0d0) ! u+ubar->mu+mu quark
-*     BornU = BornU/(1d0-m_vv)/(z1*z2)
-*     BornU = 1
-*      BornU = BornV_Differential( 0, 13, Mll**2 , 0.d0, 0.d0,0.d0, 0.d0,0.d0 )/(1d0-m_vv)/(z1*z2)
-*]]]
+*[[[***  DEBUG
+*     BornU = BornV_Simple( 2, 13,Mqq**2,0d0)/(1d0-m_vv)/(z1*z2)
+*     BornU = BornV_Differential( 0, 13, Mqq**2 , 0.d0, 0.d0,0.d0, 0.d0,0.d0 )/(1d0-m_vv)/(z1*z2)
+*]]]***
       BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
-      BornU  = BornU/3.             ! missing 1/NC colour factor for intial q-qbar
+      BornU  = BornU/3.                 ! missing 1/NC colour factor for intial q-qbar
       BornV_RhoFoamC = Rho*BornU
-****     BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
       RETURN
  800  CONTINUE
       BornV_RhoFoamC =0d0

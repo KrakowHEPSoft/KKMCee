@@ -6,9 +6,9 @@ BeginX
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0        1000000      1M   NEVT = number of events
-***    0       10000000      10M  NEVT = number of events
+    0       10000000      10M  NEVT = number of events
 ***    0      100000000      100M NEVT = number of events
-***    0         100000      100k NEVT = number of events
+***    0         200000      200k NEVT = number of events
 ***    0          10000      10k  NEVT = number of events
 *     Center-of-mass energy [GeV]
     1       1000.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
@@ -76,7 +76,7 @@ BeginX
   516        0.010e0      current mass [GeV] (5-15MeV in PDG) Down quark
   526        0.005e0      current mass [GeV] (2-8MeV  in PDG) Up quark
 *[[[[
-* 637          1.0e0      WtMax Maximum weight for rejection muon default=8
+* 637          4.0e0      WtMax Maximum weight for rejection muon default=8
 *]]]]
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator

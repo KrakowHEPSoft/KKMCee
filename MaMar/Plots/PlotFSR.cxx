@@ -37,7 +37,7 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 TFile DiskFileA("../workFSR/rmain.root");
-TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
+TFile DiskFileB("PlotFSR.root","RECREATE","histograms");
 //=============================================================================
 
 double sqr( const double_t x ){ return x*x;};
@@ -359,7 +359,7 @@ void ISRgener()
 // loop over MC events
   double wt,Mll, wt2, Mka;
   long NevTot = 2000000;  // 2M
-  //NevTot =      8000000;  // 8M
+  NevTot =      8000000;  // 8M
   //NevTot =    100000000;  // 100M
   for(long loop=0; loop<NevTot; loop++)
   {
@@ -573,8 +573,8 @@ void FigCalib()
   //  ISR only EEX
   TH1D *Hst10_Rat =(TH1D*)Hst1->Clone("Hst10_Rat");
   Hst10_Rat->Divide(HST1);
-  Hst10_Rat->SetMinimum(0.75);
-  Hst10_Rat->SetMaximum(1.25);
+  //Hst10_Rat->SetMinimum(0.75);
+  //Hst10_Rat->SetMaximum(1.25);
   Hst10_Rat->DrawCopy("h");
   HST_One->DrawCopy("hsame");
 
@@ -700,7 +700,9 @@ int main(int argc, char **argv)
   FigFSR();
 
   //++++++++++++++++++++++++++++++++++++++++
+  cout<< "###############  root file of MC       ###################"<<endl;
   DiskFileA.ls();
+  cout<< "###############  root file of analysis ###################"<<endl;
   DiskFileB.ls();
   DiskFileB.Write();
   DiskFileB.Close();
