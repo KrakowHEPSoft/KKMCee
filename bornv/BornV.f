@@ -428,7 +428,7 @@ C end
       Mqq= m_XXXene*sqrt(1d0-m_vv)
 *[[[[  temporarry cutof to improve MC efficiency
       IF( Mqq < 60 ) SF12=0
-*     IF( Mqq < 60 .OR. Mqq > 160 ) SF12=0
+***      IF( Mqq < 60 .OR. Mqq > 500 ) SF12=0
 *]]]]
       Rho = Rho *SF12     ! correcting old mistake in normalization
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
@@ -437,7 +437,7 @@ C end
 *     BornU = BornV_Differential( 0, 13, Mqq**2 , 0.d0, 0.d0,0.d0, 0.d0,0.d0 )/(1d0-m_vv)/(z1*z2)
 *]]]***
       BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
-      BornU  = BornU/3.                 ! missing 1/NC colour factor for intial q-qbar
+      if( m_KFini .LT. 10) BornU  = BornU/3.        ! missing 1/NC colour factor for intial q-qbar
       BornV_RhoFoamC = Rho*BornU
       RETURN
  800  CONTINUE
