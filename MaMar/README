@@ -5,7 +5,7 @@ Main program level (histogrammin, plotting) written in C++,
 using interface to f77 level through standard wrappers.
 
 Make system is organized using autotolls.
-(Obsolete custom KK-makefile system is still kept.)
+Custom KK-makefile system still kept, sometime works better.
 IMPORTANT: present version works with ROOT version 5!
 
 Building program (autotools) from the distribution tarfile:
@@ -46,8 +46,9 @@ Running instructions:
    make Plot2
    
 ************************ (C) ************************
-Analysis chain introduced in march 2015 to examine effects 
-of switching on/off QED FSR in mu and tau pair production
+Analysis chain as in Jan. 2016 to examine effects 
+of switching on/off QED FSR in p p -> l+ l- (with PDFs).
+Overall normalization debuged using ./Plots/PlotFSR.cxx
 
 -- main program                ./ProdFSR.cxx
 -- histogramming               ./ROBOFSR.cxx
@@ -65,7 +66,6 @@ Running instructions:
    http://192.245.169.66:8000/FCCeeMC/wiki/kkmc
  ****************************************************
  --- To be done
- 1. automake seems to ignore source change in ../KK2f/
- 2. factor 1/3 missing in normalization for quark beams
+ 1. automake ignores source change in *.h files in fortran code
 
 =========================== The End =============================
