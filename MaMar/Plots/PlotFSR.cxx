@@ -36,7 +36,11 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
-TFile DiskFileA("../workFSR/rmain.root");
+//{{{{ additional input in the code //}}}}
+TFile DiskFileA("../workFSR/rmain_ddBeams_FSRon_100M.root");            // ddbar->mu-mu+
+//TFile DiskFileA("../workFSR/rmain_uuBeams_FSRon_1G.root");            // uubar->mu-mu+
+//TFile DiskFileA("../workFSR/rmain_uuBeams_FSRon_tau_1G.root"); // uubar->tau-tau+
+//TFile DiskFileA("../workFSR/rmain.root");
 TFile DiskFileB("PlotFSR.root","RECREATE","histograms");
 //=============================================================================
 
@@ -97,24 +101,25 @@ Rho4Foam(const char* Name)
 	  m_alfinv  = 137.035;
 	  m_alfpi   = 1/m_alfinv/m_pi;
 	  m_vvmax   = 0.20;
-
+//{{{{{{{{{{{
 //	  m_beam    = 0.510999e-3;  // electron
 //	  m_chini   = 1.0;          // electron
 
-	  m_beam    = 0.005;        // u quark
-	  m_chini   = 2./3.;        // u quark
+//	  m_beam    = 0.005;        // u quark
+//	  m_chini   = 2./3.;        // u quark
 
-//	  m_beam    = 0.010;        // d quark
-//	  m_chini   = 1./3.;        // d quark
+	  m_beam    = 0.010;        // d quark
+	  m_chini   = 1./3.;        // d quark
 
 	  m_fin     = 0.105;        // final ferm. muon
+//	  m_fin     = 1.777;        // final ferm. tau
 
 	  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
 	  m_nCells  = 2000;         // No. of cells, optional, default=2000
 	  m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
 
 	  m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
-
+//}}}}}}}}}}}
 	cout<< "----> Rho4Foam USER Constructor "<<endl;
 	}///
 
@@ -234,9 +239,10 @@ Double_t Density(int nDim, Double_t *Xarg)
 	double PDFd1   = 1.23   *exp(4.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
     double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
     double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
-    double SF12  = 2*(PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
-    //double SF12  = 2*(PDFd1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
-
+    //{{{{
+    //double SF12  = 2*(PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
+    double SF12  = 2*(PDFd1+ PDFsea1/6.) * (PDFsea2/6.);  //  d-dbar
+    //}}}}
     Dist *= SF12;  // (u-ubar)+(ubar-u)
 	double svar1= svar*m_x1*m_x2;
 	svarCum *=m_x1*m_x2;
@@ -431,8 +437,9 @@ void KKsemMake(){
   // initilalization of KKsem
   KKsem LibSem;
   LibSem.Initialize(DiskFileA);
-  //
+  //{{{{{{
   long KF=13; // muon ?????
+  //}}}}}}
   long KeyDis, KeyFob;
   char chak[5];
   //KeyDis = 302;   // ISR O(alf2)
@@ -472,9 +479,11 @@ void FigCalib()
 
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   char captEne[100];
-  //sprintf(captEne,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
-  sprintf(captEne,"#sqrt{s} =%4.0fGeV, u-ubar", CMSene);
-
+  //{{{{{{
+  sprintf(captEne,"#sqrt{s} =%4.0fGeV, d#bar{d} -> #mu^{+}#mu^{-}", CMSene);
+  //sprintf(captEne,"#sqrt{s} =%4.0fGeV, u#bar{u} -> #mu^{+}#mu^{-}", CMSene);
+  //sprintf(captEne,"#sqrt{s} =%4.0fGeV, u#bar{u} -> #tau^{+}#tau^{-}", CMSene);
+  //}}}}}}
   Long_t   Nevt = HST_KKMC_NORMA->GetEntries();
   Double_t Xsav = HST_KKMC_NORMA->GetBinContent(0)/Nevt; // NANOBARNS
 
