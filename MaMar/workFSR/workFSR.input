@@ -71,8 +71,8 @@ BeginX
 **     Define process
 **     Beam flavour code
 * 400             11      KFini = xpar(400) dont change it                |<<<<|
-* 400              1      KFini = xpar(400) DOWN-quark beams !!!
-  400              2      KFini = xpar(400) UP-quark beams !!!
+  400              1      KFini = xpar(400) DOWN-quark beams !!!
+* 400              2      KFini = xpar(400) UP-quark beams !!!
   516        0.010e0      current mass [GeV] (5-15MeV in PDG) Down quark
   526        0.005e0      current mass [GeV] (2-8MeV  in PDG) Up quark
 *[[[[

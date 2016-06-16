@@ -237,7 +237,10 @@ void RoboFSR::Production(long &iEvent)
   double Mka   = sqrt(sbare);
   hst_Mll_main->Fill(   Mll, WtMain); // M^2(2f) of muon pair
   hst_Mll_eex0->Fill(   Mll, WtEEX0); // M^2(2f) of muon pair
-  hst_Mll_eex2->Fill(   Mll, WtEEX2); // M^2(2f) of muon pair
+  //hst_Mll_eex2->Fill(   Mll, WtEEX2); // M^2(2f) of muon pair
+  //{{{
+  //hst_Mll_eex2->Fill(   Mll, WtCEEX2); // M^2(2f) of muon pair
+  //}}}
   hst_Mka_eex0->Fill(   Mka, wteex0); // M^2(2f) ISR only
   hst_Mka_eex2->Fill(   Mka, wteex2); // M^2(2f) ISR only
   /// *********************************************************
