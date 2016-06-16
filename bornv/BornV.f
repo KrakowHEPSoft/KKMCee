@@ -414,6 +414,7 @@ C end
 ***      SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
 *]]]]
 ************************* quark PDFs *************************
+*//{{{{
 * Valence 2*x*u(x):  XUPV =   2.18 * X**0.5D0    * (1.D0-X)**3.D0
 * Valence x*d(x):    XDNV =   1.23 * X**0.5D0    * (1.D0-X)**4.D0
 * Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
@@ -423,8 +424,8 @@ C end
       SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
       SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
       SF12   = 2* (SFd1 + SFsea1/6)* (SFsea2/6)   ! d-dbar chanel
-      SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)   ! u-ubar chanel
-
+*      SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)   ! u-ubar chanel
+*//}}}}
       Mqq= m_XXXene*sqrt(1d0-m_vv)
 *[[[[  temporarry cutof to improve MC efficiency
       IF( Mqq < 60 ) SF12=0
