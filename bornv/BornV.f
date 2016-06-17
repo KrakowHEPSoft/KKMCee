@@ -355,7 +355,7 @@ C end
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee,BornV_Differential, BornV_Simple
       DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
-      DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr
+      DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr, Emin
       DOUBLE PRECISION  Par(0:3)
       INTEGER Option
       INTEGER           Icont
@@ -391,6 +391,11 @@ C end
          z1 = 1d0-m_x1
          z2 = 1d0-m_x2
          m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
+*****[[[   Correction by Scott Yost
+         Emin = 0.5* m_XXXene * m_vvmin
+         CALL KK2f_SetEmin(   Emin)
+         CALL KarFin_SetEmin( Emin)
+*****]]]
          CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)  ! make gamiCR at reduced XXXene
          IF( gami .LE. 0d0 ) GOTO 800
 
