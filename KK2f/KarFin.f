@@ -1029,6 +1029,17 @@
       WtMass = m_WtMass
       END
 
+      SUBROUTINE KarFin_SetEmin(Emin)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//   Photon minimum energy in LAB system                                           //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KarFin.h'
+      DOUBLE PRECISION   Emin
+*
+      m_Emin = Emin
+      END
+
       SUBROUTINE KarFin_Print(iev,ie1,ie2)
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //

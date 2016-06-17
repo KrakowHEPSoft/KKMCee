@@ -1438,6 +1438,17 @@
       Emin = m_Emin
       END
 
+      SUBROUTINE KK2f_SetEmin(Emin)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//   Photon minimum energy in LAB system                                           //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KK2f.h'
+      DOUBLE PRECISION   Emin
+*
+      m_Emin = Emin
+      END
+
       SUBROUTINE KK2f_GetMasPhot(MasPhot)
 */////////////////////////////////////////////////////////////////////////////////////
 *//   Photon mass for virtual corrections                                           //
