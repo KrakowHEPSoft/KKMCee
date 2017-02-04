@@ -1,15 +1,46 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
-                                                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   kmake afb_int-ps
+\documentclass[12pt]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{epsfig}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{euscript}
+
+\usepackage{fancybox}
+\usepackage{xcolor}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% gmake afb_int-ps
-%======================
-
-
 \input Energy.tex
-\def\Energy{MZ-1.8GeV (had.)}
+%\def\Energy{MZ-1.8GeV (had.)}
 \def\Angle{$\theta^{\bullet}$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  copied from seminar.con
+\def\titbox#1{\begin{center}\doublebox{#1}\end{center}}
+
+\newcommand{\KK}{${\cal KK}$}
+%--------------------------------------------------------------
+\def\Order#1{${\cal O}(#1)$}
+\def\Ordpr#1{${\cal O}(#1)_{prag}$}
+\def\Oceex#1{${\cal O}(#1)_{_{\rm CEEX}}$}
+\def\Oeex#1{${\cal O}(#1)_{_{\rm EEX}}$}
+\def\OrderLL#1{${\cal O}(#1)_{\rm LL}$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth  = 16cm % <-- maximum CERN
+\textheight = 22cm % <-- maximum CERN
+\hoffset    = -1cm
+\voffset    = -1cm
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,98 +51,73 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} ISR*FSR in $\sigma$, cut-off dependence}}
+\newpage
+\titbox{{\color{magenta} ISR*FSR in $\sigma$, cut-off dependence}}
 
-{\small\Color{ForestGreen}
-  The ISR*FSR {\Color{Red} interference} correction
-  to $\sigma(s'_{\min})$ at \Energy.
-  No cut in $\cos$\Angle.
-  From {\color{red} \KK\ M.C. with \Oceex{\alpha^2} }
-  exponentiation at the amplitude level.
-}
 
 \begin{center}
-\setlength{\unitlength}{1mm}
-\begin{picture}(65,60)
-%#####\put(0,0){\framebox( 65,60){ }}
-\put(-2, 00){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-sig1.eps,width=65mm,height=60mm}
-}}
-\end{picture}
+\epsfig{file=afb_int-sig1.eps,width=160mm}
 \end{center}
+
+\large
+The ISR*FSR {\color{red} interference} correction
+to $\sigma(s'_{\min})$ at \Energy.
+No cut in $\cos$\Angle.
+From {\color{red} \KK\ M.C. with \Oceex{\alpha^2}}
+exponentiation at the amplitude level.
+
+
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\newpage
+\titbox{{\color{magenta} 
       ISR*FSR in $A_{FB}$, energy cut-off study}}
 
-{\small\Color{ForestGreen}
-  The ISR*FSR {\Color{Red} interference} correction
-  to $A_{FB}$ at \Energy.
-  No cut in $\cos$\Angle.
-  From {\color{red} \KK\ M.C. with \Oceex{\alpha^2} }
-  exponentiation at the amplitude level.
-}
-
 \begin{center}
-\setlength{\unitlength}{1mm}
-\begin{picture}(65,60)
-%#####\put(0,0){\framebox( 65,60){ }}
-\put(-2, 00){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-afb1.eps,width=65mm,height=60mm}
-}}
-\end{picture}
+\epsfig{file=afb_int-afb1.eps,width=160mm}
 \end{center}
+
+The ISR*FSR {\color{red} interference} correction
+to $A_{FB}$ at \Energy.
+No cut in $\cos$\Angle.
+From {\color{red} \KK\ M.C. with \Oceex{\alpha^2} }
+exponentiation at the amplitude level.
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\newpage
+\titbox{{\color{magenta} 
       ISR*FSR in $A_{FB}$, energy cut-off study}}
 
-{\small\Color{ForestGreen}
-  Bin-per-bin  $s'$-dependence of $A_{FB}$ \\
-  -- the~ISR*FSR {\Color{Red} interference} contribution at \Energy.\\
-  Results from {\color{red} \KK\ M.C. with \Oceex{\alpha^2} }
-  exponentiation at the amplitude level.\\
-  No cut in $\cos$\Angle.
-}
 
 \begin{center}
-\setlength{\unitlength}{1mm}
-\begin{picture}(65,60)
-%#####\put(0,0){\framebox( 65,60){ }}
-\put(-2, 00){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-afb2.eps,width=65mm,height=60mm}
-}}
-\end{picture}
+\epsfig{file=afb_int-afb2.eps,width=160mm}
 \end{center}
+
+Bin-per-bin  $s'$-dependence of $A_{FB}$ 
+-- the~ISR*FSR {\color{red} interference} contribution at \Energy.
+Results from {\color{red} \KK\ M.C. with \Oceex{\alpha^2} }
+exponentiation at the amplitude level.
+No cut in $\cos$\Angle.
+
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
 
 
 
+\end{document}                       %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\end{document}
 

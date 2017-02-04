@@ -1,14 +1,47 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[dvips,portrait]{seminar}             %%%%%%%%%%%%%%%%%%
-                                                    %%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% gmake afb_ang-ps
-%======================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   kmake afb_ang-ps
+\documentclass[12pt]{article}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{epsfig}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{euscript}
+
+\usepackage{fancybox}
+\usepackage{xcolor}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input Energy.tex
-\def\Energy{MZ-1.8GeV (had.)}
+%\def\Energy{MZ-1.8GeV (had.)}
 \def\Angle{$\theta^{\bullet}$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  copied from seminar.con
+\def\titbox#1{\begin{center}\doublebox{#1}\end{center}}
+
+\newcommand{\KK}{${\cal KK}$}
+%--------------------------------------------------------------
+\def\Order#1{${\cal O}(#1)$}
+\def\Ordpr#1{${\cal O}(#1)_{prag}$}
+\def\Oceex#1{${\cal O}(#1)_{_{\rm CEEX}}$}
+\def\Oeex#1{${\cal O}(#1)_{_{\rm EEX}}$}
+\def\OrderLL#1{${\cal O}(#1)_{\rm LL}$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth  = 16cm % <-- maximum CERN
+\textheight = 22cm % <-- maximum CERN
+\hoffset    = -1cm
+\voffset    = -1cm
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19,51 +52,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\titbox{{\color{magenta} 
       ISR*FSR interf. in angular distribution}}
 
-{\small\Color{Blue}
-  The influence of ISR*FSR  interference at \Energy. 
-  The energy cut is on $s'/s$, where $s'=m^2_{f\bar{f}}$.
-  The angular cut is $|\cos\theta|<\cos\theta_{\max}$}
-{\small\Color{Blue} Scattering angle is $\theta=$\Angle. }
-{\tiny\Color{Blue}  [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
+%-----------------------------------------------------------
+\begin{center}
+\epsfig{file=afb_int-G1.eps,width=75mm}
+\epsfig{file=afb_int-com1.eps,width=75mm}
+\epsfig{file=afb_int-G1x.eps,width=75mm}
+\epsfig{file=afb_int-com1x.eps,width=75mm}
+\end{center}
+
+The influence of ISR*FSR  interference at \Energy. 
+The energy cut is on $s'/s$, where $s'=m^2_{f\bar{f}}$.
+The angular cut is $|\cos\theta|<\cos\theta_{\max}$
+{\color{blue} Scattering angle is $\theta=$\Angle. }
+{\color{blue} [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
 
 %-----------------------------------------------------------
-\begin{center}
-\setlength{\unitlength}{1mm}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-G1.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-com1.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\end{center}
-%-----------------------------------------------------------
-\begin{center}
-\setlength{\unitlength}{1mm}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-G1x.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-com1x.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\end{center}
-%-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
+
 
 
 
@@ -71,38 +79,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\newpage
+\titbox{{\color{magenta} 
       ISR*FSR interf. Realistic acceptance}}
 
-{\small\Color{Blue}
-  The influence of ISR*FSR  interference at \Energy. 
-  The energy cut is on $v_p=1-Q^2_{Aleph}/s$, where $Q^2_{Aleph}$ 
-  is s-channel propagator variable of ALEPH.
-  The angular cut is $|\cos\theta|<\cos\theta_{\max}$}
-{\small\Color{Blue} Scattering angle is $\theta=$\Angle. }
-{\tiny\Color{Blue}  [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
-
 %-----------------------------------------------------------
 \begin{center}
-\setlength{\unitlength}{1mm}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-G1xxx.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-com1xxx.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
+\epsfig{file=afb_int-G1xxx.eps,width=100mm}
+\epsfig{file=afb_int-com1xxx.eps,width=100mm}
 \end{center}
+
+The influence of ISR*FSR  interference at \Energy. 
+The energy cut is on $v_p=1-Q^2_{Aleph}/s$, where $Q^2_{Aleph}$ 
+is s-channel propagator variable of ALEPH.
+The angular cut is $|\cos\theta|<\cos\theta_{\max}$.
+{\color{blue} Scattering angle is $\theta=$\Angle. }
+{\color{blue}  [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
+
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
-
 
 
 
@@ -111,37 +106,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\titbox{{\color{magenta} 
       ISR*FSR interf. Realistic acceptance}}
 
-{\small\Color{Blue}
-  The influence of ISR*FSR interference at \Energy. 
-  The energy cut is on $v_p=1-Q^2_{Aleph}/s$, where $Q^2_{Aleph}$ 
-  is s-channel propagator variable of ALEPH.
-  No angular cut.}
+
 %-----------------------------------------------------------
 \begin{center}
-\setlength{\unitlength}{1mm}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-sig1S.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-afb1S.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
+\epsfig{file=afb_int-sig1S.eps,width=100mm}
+\epsfig{file=afb_int-afb1S.eps,width=100mm}
 \end{center}
+
+The influence of ISR*FSR interference at \Energy. 
+The energy cut is on $v_p=1-Q^2_{Aleph}/s$, where $Q^2_{Aleph}$ 
+is s-channel propagator variable of ALEPH.
+No angular cut.
+
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
-
-
-
 
 
 
@@ -149,40 +130,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                                                          %%%%%%%%%%%%%%%%%%%%
-\begin{slide*}
-\titbox{{\small\Color{Magenta} 
+\newpage
+\titbox{{\color{magenta} 
       ISR*FSR interf. KORALZ 1-st order}}
 
-{\small\Color{Blue}
-  The influence of ISR*FSR  interference at \Energy. 
-  The energy cut is on $s'/s$, where $s'=m^2_{f\bar{f}}$.
-  The angular cut is $|\cos\theta|<\cos\theta_{\max}$}
-{\small\Color{Blue} Scattering angle is $\theta=$\Angle. }
-{\tiny\Color{Blue}  [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
-
 %-----------------------------------------------------------
 \begin{center}
-\setlength{\unitlength}{1mm}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-AngMx.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
-\begin{picture}(35,35)
-\put(-1, 0){\makebox(0,0)[lb]{
-\epsfig{file=afb_int-comMx.eps,width=35mm,height=34mm}
-}}\end{picture}
-%
+\epsfig{file=afb_int-AngMx.eps,width=100mm}
+\epsfig{file=afb_int-comMx.eps,width=100mm}
 \end{center}
+
+The influence of ISR*FSR  interference at \Energy. 
+The energy cut is on $s'/s$, where $s'=m^2_{f\bar{f}}$.
+The angular cut is $|\cos\theta|<\cos\theta_{\max}$.
+
+{\color{blue} Scattering angle is $\theta=$\Angle. }
+{\color{blue}  [Angle $\theta^{\bullet}$ is defined in Phys. Rev. {\bf D41}, 1425 (1990)]}
+
 %-----------------------------------------------------------
 \vfill
-\end{slide*}   %%%
-%%%%%%%%%%%%%%%%%%
-
-
-
-
 
 
 \end{document}                                           %%%%%%%%%%%%%%%%%%%%
