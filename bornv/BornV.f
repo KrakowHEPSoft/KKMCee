@@ -370,43 +370,35 @@ C end
       alpha =  0.40d0           ! beamsstrahl: x1**(alpha-1), alpha manualy adjusted
       alpha =  Par(3)+1d0
       beta  = -0.50d0           ! ISR crude is as (1-vv)**(-1.5)=(1-vv)**(beta-1)
-*[[[PDFs
-      alpha = 3.0+1.0
-*]]]
 *//////////////////////////////////////////////////////////////////////////////////////
       R    = xarg(1)
       r1   = xarg(2)
       r2   = xarg(3)
       Rho  = 1d0
 *//////////////////////////////////////////////////////////////////////////////////////
-*[[[[ mapping for Beamsstrahlung PDF, singular as m_x1**(alpha-1)
-*         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
-*         Rho   = Rho   *m_x1/r1/alpha
-*         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
-*         Rho = Rho   *m_x2/r2/alpha
-*]]]]
-*//   For quarks without any mapping
-         m_x1  = r1
-         m_x2  = r2
+* Mapping for Beamsstrahlung PDF, singular as m_x1**(alpha-1)
+         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
+         Rho   = Rho   *m_x1/r1/alpha
+         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
+         Rho = Rho   *m_x2/r2/alpha
+*//[[[   For tests without any mapping
+*         m_x1  = r1
+*         m_x2  = r2
+*//]]]
          z1 = 1d0-m_x1
          z2 = 1d0-m_x2
          m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
-*****[[[   Correction by Scott Yost
+*****(((   Correction by Scott Yost
          Emin = 0.5* m_XXXene * m_vvmin
          CALL KK2f_SetEmin(   Emin)
          CALL KarFin_SetEmin( Emin)
-*****]]]
+*****)))
          CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)  ! make gamiCR at reduced XXXene
          IF( gami .LE. 0d0 ) GOTO 800
 
          m_vv  = R**(1d0/gami)*m_vvmax
          IF(  m_vv < 1d-300)  GO TO 800    !!! temporary fix
          Rho   = Rho* m_vv/R/gami
-*******  Rho   = Rho* m_vv/R/gami*m_vvmax ! mistake in previous release!!!
-*[[[[ DEBUG for testing Foam
-*          m_vv  = R*m_vvmax
-*          Rho   = Rho*m_vvmax
-*]]]]
          IF( m_vv .GT. m_vvmax ) GOTO 800  ! vmax from input, the best to keep vmax=1
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Calculate ISR crude structure function (the same as in Karlud)
@@ -414,36 +406,14 @@ C end
       Rho = Rho *RhoISR
       IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
       IF( (z1.EQ.1d0) .OR. (z2.EQ.1d0) ) GOTO 800
-*[[[[   Beamstrahlung inactive option
-***      SF12 = IRC_circee( z1, z2 )
-***      SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
-*]]]]
-************************* quark PDFs *************************
-*//{{{{
-* Valence 2*x*u(x):  XUPV =   2.18 * X**0.5D0    * (1.D0-X)**3.D0
-* Valence x*d(x):    XDNV =   1.23 * X**0.5D0    * (1.D0-X)**4.D0
-* Sea     x*s(x):    XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0 
-*                Valence UP and UP-bar of sea
-      SFu1   = 2.18   *m_x1**3.D0 *z1**0.5D0/z1
-      SFd1   = 1.23   *m_x1**4.D0 *z1**0.5D0/z1
-      SFsea1 = 0.6733 *m_x1**7.D0 *z1**(-0.2D0)/z1
-      SFsea2 = 0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z2
-      SF12   = 2* (SFd1 + SFsea1/6)* (SFsea2/6)   ! d-dbar chanel
-*      SF12   = 2* (SFu1 + SFsea1/6)* (SFsea2/6)   ! u-ubar chanel
-*//}}}}
-      Mqq= m_XXXene*sqrt(1d0-m_vv)
-*[[[[  temporarry cutof to improve MC efficiency
-      IF( Mqq < 60 ) SF12=0
-***      IF( Mqq < 60 .OR. Mqq > 500 ) SF12=0
-*]]]]
+*   Beamstrahlung spectrum
+      SF12 = IRC_circee( z1, z2 )
+      SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
+*
       Rho = Rho *SF12     ! correcting old mistake in normalization
-* Born Xsection at s' = m_XXXene**2 *(1-vv)
-*[[[***  DEBUG
-*     BornU = BornV_Simple( 2, 13,Mqq**2,0d0)/(1d0-m_vv)/(z1*z2)
-*     BornU = BornV_Differential( 0, 13, Mqq**2 , 0.d0, 0.d0,0.d0, 0.d0,0.d0 )/(1d0-m_vv)/(z1*z2)
-*]]]***
+*
       BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
-      if( m_KFini .LT. 10) BornU  = BornU/3.        ! missing 1/NC colour factor for intial q-qbar
+*
       BornV_RhoFoamC = Rho*BornU
       RETURN
  800  CONTINUE
@@ -546,9 +516,6 @@ C end
          SF1 = 2d0 *Par(0) *Par(1) *m_x1**Par(3) *z1**Par(2)   ! the same as circee
       ENDIF
       Rho = Rho *SF1
-*[[[PDFs
-      Rho = 1d-20
-*]]]
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Born Xsection at s' =m_XXXene**2 *(1-vv) =m_CMSene**2 *(1-XX)
       BornV_RhoFoamB = Rho* BornV_Crude(m_vv)/(1d0-m_vv)
@@ -595,9 +562,6 @@ C end
       Rho = Rho*RJac
 *----------------------------------------
       Rho = Rho *IRC_circee(1d0,1d0)           !<-- implicit factor from circee 
-*[[[PDFs
-      Rho = 1d-20
-*]]]
 *----------------------------------------
 * Born Xsection at s' = m_XXXene**2 *(1-vv)
       IF(m_KeyZet .EQ. -2) THEN   ! Artificial constant x-section for test runs
