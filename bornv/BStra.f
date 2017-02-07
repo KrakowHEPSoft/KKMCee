@@ -5,8 +5,9 @@
 *//                                                                                  //
 *//   Foam is now the basic MC sampler for beamstrahlung and ISR.                    //
 *//   Notes: BStra has internal rejection procedure,                                 //
-*//   consequently, normalization is determined by average weight, which is monitored//
-*//   by MBrB                                                                        //
+*//   consequently, normalization is determined by average weight,                   //
+*//   which is monitored by MBrB                                                     //
+*//   Brancher MBrB has only one branch, its purpose to monitoring weight of FoamC   //
 *//////////////////////////////////////////////////////////////////////////////////////
 
       SUBROUTINE BStra_Initialize(KeyGrid,KeyWgt,Xcrude)
@@ -29,13 +30,10 @@
       m_out     = 16
       m_Nevgen  =  0
 *//////////////////////////////////////////////////////////////////////////////////////
-*// Mode=-1 creation+dump, =+1 reading, =0 creation without dump (default)           //
-*//////////////////////////////////////////////////////////////////////////////////////
       m_KeyWgt =   KeyWgt
       m_Nev    = 0d0
       m_SWT    = 0d0
       m_SSWT   = 0d0
-*
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   3-dimensional case                                                             //
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -48,46 +46,31 @@
       CALL FoamC_SetnBin(       4) ! No of bins for edge explorations
       CALL FoamC_SetEvPerBin(  25) ! No. of equiv. MC events per bin
       CALL FoamC_SetOptEdge(    0) ! OptEdge excludes vertices
-c      CALL FoamA_SetOptDrive(   2) ! 0,1,2 =True,Sigma,WtMax !!!
+      CALL FoamC_SetOptDrive(   2) ! 0,1,2 =True,Sigma,WtMax !!!
       CALL FoamC_SetOptRanIni(  0) ! No internal initialization of rand.num.gen
       CALL FoamC_SetOptRanLux( -1) ! Ranmar choosen
       CALL FoamC_SetChat(       1) ! printout level =0,1,2
       CALL FoamC_Initialize(BornV_RhoFoamC)
 *//////////////////////////////////////////////////////////////////////////////////////
-*//   The best Vegas Integral estimators from initialization (grid building) phase   //
-*//////////////////////////////////////////////////////////////////////////////////////
       CALL FoamC_GetTotPrim( XsectC) ! Crude from Initialization
-c///{{{{{{{{{{{{{
-      XsectA=0
-      XsectB=0
-c}}}}}}}}}}}}}}}}
-      m_XCrude =  XsectA+XsectB+XsectC ! is it really used ?????
+      m_XCrude =  XsectC ! is it really used ?????
 *
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator                '
-      WRITE(m_out,bxtxt) '  Grid initialization finished        '
+      WRITE(m_out,bxtxt) '  Foam initialization finished        '
       WRITE(m_out,bxl1g) XsectC ,    'XsectC  3-dimen.  ','XsectC','**'
-      WRITE(m_out,bxl1g) m_XCrude,   'XGridB  total.    ','XGridB','**'
+      WRITE(m_out,bxl1g) m_XCrude,   'XCrude  total.    ','XCrude','**'
       WRITE(m_out,bxclo)
 *//////////////////////////////////////////////////////////////////////////////////////
-*//     Calculate Crude Xcru(i), i=1,2,3,  branch per branch                         //
-*//////////////////////////////////////////////////////////////////////////////////////
-      XsCru(1)=0
-      XsCru(2)=0
-      CALL FoamC_GetTotPrim(XsCru(3)) ! get crude normalization for MC
-*//////////////////////////////////////////////////////////////////////////////////////
 *//   Initialization of MBrB, the own copy of a brancher                             //
-*//////////////////////////////////////////////////////////////////////////////////////
+*//   Now brancher has only one branch, its purpose to monitoring weight of FoamC
       CALL KK2f_GetIdyfs(Idyfs)
       IdBra = Idyfs+200
       CALL MBrB_Initialize(m_out,IdBra,50, 1d0, 'MBrB: Bstra main weight$')
-      Nbin  = 500
+      Nbin      = 500
       WMList(1) = 1.00d0
-      WMList(2) = 1.00d0
-      WMList(3) = 1.00d0
-      CALL MBrB_AddBranch(1, Nbin, WMList(1), 'MBrB: next branch A  !!! $')
-      CALL MBrB_AddBranch(2, Nbin, WMList(2), 'MBrB: next branch B  !!! $')
-      CALL MBrB_AddBranch(3, Nbin, WMList(3), 'MBrB: next branch C  !!! $')
+      XsCru(1)  = XsectC
+      CALL MBrB_AddBranch(1, Nbin, WMList(1), 'MBrB: branch for FoamC !!$')
       CALL MBrB_SetXSList(XsCru)
       CALL MBrB_GetXCrude(m_XCrude)
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -99,13 +82,10 @@ c}}}}}}}}}}}}}}}}
       XCrude   = m_XCrude
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator, PreGeneration '
-      WRITE(m_out,bxl1g) XsCru(3) ,   'XsCru(3)  3-dimen.  ','XsCru(3) ','**'
-      WRITE(m_out,bxl1f) WMlist(3) ,  'WMlist(3) 3-dimen.  ','WMlist(3)','**'
+      WRITE(m_out,bxl1g) XsCru(1) ,   'XsCru(1)  3-dimen.  ','XsCru(1) ','**'
+      WRITE(m_out,bxl1f) WMlist(1) ,  'WMlist(1) 3-dimen.  ','WMlist(1)','**'
       WRITE(m_out,bxl1g) m_XCrude ,   'XCrude   total      ','XCrude   ','**'
       WRITE(m_out,bxclo)
-c[[[
-c      STOP
-c]]]
       END
 
       SUBROUTINE BStra_Make(vv, x1, x2, MCwt)
@@ -115,8 +95,6 @@ c]]]
       IMPLICIT NONE
       INCLUDE 'BStra.h'
       DOUBLE PRECISION  vv, x1, x2, MCwt, x, Wt_KF
-cc      DOUBLE PRECISION  BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
-cc      EXTERNAL          BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
       DOUBLE PRECISION  BornV_RhoFoamC
       EXTERNAL          BornV_RhoFoamC
       REAL              Qrand(10)        ! for PseuMar
@@ -126,7 +104,8 @@ cc      EXTERNAL          BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
       m_NevCru = 0
  100  CONTINUE
       m_Nevgen  =  m_Nevgen +1
-      CALL MBrB_GenKF(Itype, Wt_KF)  ! Obsolet, Wt_KF=1
+      CALL MBrB_GenKF(Itype, Wt_KF)  ! Needed to define KF_last
+      Wt_KF = 1
 
       CALL FoamC_MakeEvent(BornV_RhoFoamC) ! generate MC event
       CALL FoamC_GetMCwt(  MCwt) ! get MC weight
@@ -134,7 +113,7 @@ cc      EXTERNAL          BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
       CALL BornV_GetVXX(vv,x1,x2)
 
 * Rejection or wted events
-*[[[[  m_KeYWgt=0 option does not work properly!!!!???
+*[[[[  m_KeYWgt=0 option does it work properly!!!!???
       IF(   m_KeYWgt .EQ. 0) THEN
         CALL PseuMar_MakeVec(Qrand,1)
         rand = Qrand(1)
