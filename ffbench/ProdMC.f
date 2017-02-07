@@ -141,6 +141,7 @@
       WRITE(6,*) ' generation finished '
       CALL KK2f_Finalize                          ! final bookkeping, printouts etc.
       CALL KK2f_GetXsecMC(xSecPb, xErrPb)         ! get MC x-section
+      WRITE(6,*) ' xSecPb, xErrPb =', xSecPb, xErrPb
 *
       IF(kat1 .EQ. 1) CALL Robol1(1,xpar)
       CALL  dumpeh(iev)    ! dump final results on the disk
