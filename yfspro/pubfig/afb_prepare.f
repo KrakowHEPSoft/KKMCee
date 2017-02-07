@@ -47,23 +47,17 @@
 ************************** 189 GeV **************************
 c      Hname  = '../E91GeV/pro.hst'            ! current
 c      Dname  = '../E91GeV/pro.input'          ! current
-c      Hname  = '../E189GeV/pro.hst'            ! current
-c      Dname  = '../E189GeV/pro.input'          ! current
+      Hname  = '../E189GeV/pro.hst'            ! current
+      Dname  = '../E189GeV/pro.input'          ! current
 c
-c      Dname  = '../E189GeV/E189GeV_DownBeam_30M.input' ! 2013
-c      Hname  = '../E189GeV/E189GeV_DownBeam_30M.hst'   ! 2013
+c      Dname  = '../E189GeV/E189GeV_20M.input'          ! 2013, PRD88
+c      Hname  = '../E189GeV/E189GeV_20M.hst'            ! 2013, PRD88
 c
-c      Dname  = '../E189GeV/E189GeV_UpBeam_23M.input' ! 2013
-c      Hname  = '../E189GeV/E189GeV_UpBeam_23M.hst'   ! 2013
+c      Dname  = '../E189GeV/E189GeV_PRD63.input'        ! PRD63, 2000
+c      Hname  = '../E189GeV/E189GeV_PRD63.hst'          ! PRD63, 2000
 c
-      Dname  = '../E189GeV/E189GeV_20M.input' ! 2013
-      Hname  = '../E189GeV/E189GeV_20M.hst'   ! 2013
-c
-c      Dname  = '../E189GeV/E189GeV_PRD63.input' ! PRD63, 2000
-c      Hname  = '../E189GeV/E189GeV_PRD63.hst'   ! PRD63, 2000
-c
-c      Dname  = '../E189GeV/E189GeV.input.ori'      ! latest PRD63
-c      Hname  = '../E189GeV/E189GeV.hst'            ! latest PRD63
+c      Dname  = '../E189GeV/E189GeV.input.ori'          ! latest
+c      Hname  = '../E189GeV/E189GeV.hst'                ! latest
 c      Hname  = '../E189GeV/E189GeV,theta1.hst' ! another theta!!!
 c((((((
 c      Dname  = '../E189GeV/QuarksFSRoffYR.input'
