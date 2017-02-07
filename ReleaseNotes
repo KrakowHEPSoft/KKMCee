@@ -1,6 +1,12 @@
 --------------------------------------------------------------------------------
                 Release Notes in anti-chronological order
 ********************************************************************************
+First version of the KKMCee branch, DEVELOPEMENT VERSION, February 10-th 2017
+  Beamstrahlung reorganized and simplified. Still tested only partialy.
+  Spectrum of circe has Dirac delta components. They are now modeled using
+  very narrow gausian peaks. Single Foam can cope with this distribution.
+
+********************************************************************************
 Changes in v. 4.22, DEVELOPEMENT VERSION, June 10-th 2013
 - Arbitrary f-fbar beams impelemented. Tested with KKsem for f=muon,tau,u,d,s,c.
   Corrected mapping in Vesko1 (gamiCR->gami)
