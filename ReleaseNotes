@@ -1,10 +1,17 @@
 --------------------------------------------------------------------------------
                 Release Notes in anti-chronological order
 ********************************************************************************
-First version of the KKMCee branch, DEVELOPEMENT VERSION, February 10-th 2017
-  Beamstrahlung reorganized and simplified. Still tested only partialy.
-  Spectrum of circe has Dirac delta components. They are now modeled using
-  very narrow gausian peaks. Single Foam can cope with this distribution.
+***********  First version of the KKMCee development branch   ******************
+*********     (The other branch KKMChh is for hadron beams)     ****************
+
+Changes in the present DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
+1. Beamstrahlung reorganized and simplified. Still tested only partialy.
+   Spectrum of circe has Dirac delta components. They are now modeled using
+   very narrow gausian peaks. Single Foam can cope with this distribution.
+   Benchmarks of PDR63 and PRD88 ar reproduced:
+       cd yfspro; kmake E189GeV-start; cd pubfig kmake afb_sig2-ps
+   More instructions in yfspro/KKMakefile and  yfspro/pubfig/KKMakefile
+   All development and testing were done under SLC6 scientific linux.
 
 ********************************************************************************
 Changes in v. 4.22, DEVELOPEMENT VERSION, June 10-th 2013
