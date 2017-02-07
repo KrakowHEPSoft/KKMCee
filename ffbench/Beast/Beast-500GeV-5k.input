@@ -1,5 +1,5 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
-      5000           NEVT number of events
+     10000           NEVT number of events
        200           NEVT number of events
     100000           NEVT number of events
         10           NEVT number of events
@@ -13,6 +13,10 @@ BeginX
 *     Center-of-mass energy [GeV]
     1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
+*indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+    9          1.0e0      WtMax =xpar( 9)   Maximum weight for rejection
+*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1      KeyWgt=xpar(10) Deafault is 0
    17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
    25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
 *     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
