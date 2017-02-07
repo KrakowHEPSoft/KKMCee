@@ -20,8 +20,7 @@ LD = $(F77)
 LIB_OBJECTSa =  BornV.o BornV_StartEW.o
 LIB_OBJECTSd =  BornV.o
 LIB_OBJECTS2 =  Vesk1.o BStra.o IRC.o MBrA.o MBrB.o \
-		FoamA.o FoamB.o FoamC.o ranlux.o
-#		FoamA.o FoamB.o FoamC.o ranlux.o RRes.o
+		        FoamC.o ranlux.o
 $(LOCAL_LIBa):                  $(LIB_OBJECTSa) $(LIB_OBJECTS2)
 	$(AR)     $(LOCAL_LIBa) $(LIB_OBJECTSa) $(LIB_OBJECTS2)
 	$(RANLIB) $(LOCAL_LIBa)
@@ -36,8 +35,6 @@ BStra.o:	BStra.h
 Vesk1.o:	Vesk1.h
 MBrA.o:		MBrA.h
 MBrB.o:		MBrB.h
-FoamA.o:	FoamA.h
-FoamB.o:	FoamB.h
 FoamC.o:	FoamC.h
 RRes.o:		RRes.h
 ##########################################################################

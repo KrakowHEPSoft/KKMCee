@@ -6,12 +6,15 @@
 *//                                                                                  //
 *//////////////////////////////////////////////////////////////////////////////////////
 
-      DOUBLE PRECISION   m_XCrude
+      DOUBLE PRECISION   m_XCrude, m_Nev, m_SWT, m_SSWT
       INTEGER            m_out,     m_Nevgen,  m_KeyWgt
       INTEGER            m_ModeA,   m_ModeB,   m_ModeC,  m_NevCru
 
       COMMON /c_BStra/   
      $    m_XCrude,                         ! crude xsection
+     $    m_Nev,                            ! no. of events
+     $    m_SWT,                            ! sum of WT
+     $    m_SSWT,                           ! sum of WT**2
      $    m_Nevgen,                         ! serial no of event
      $    m_ModeA,                          ! operational mode for Initialization
      $    m_ModeB,                          ! operational mode for Initialization

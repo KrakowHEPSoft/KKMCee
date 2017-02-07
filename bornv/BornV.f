@@ -353,9 +353,9 @@ C end
       DOUBLE PRECISION  SFu1, SFd1, SFsea1, SFsea2, Mqq, BornU, RhoISR2
       DOUBLE PRECISION  Power,Jacob,SF12
       DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee,BornV_Differential, BornV_Simple
-      DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, alpha, alpha2
+      DOUBLE PRECISION  z1, z2, XX, RhoISR, gamiCR, gami, alfi, beta, GamBig, delta
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
-      DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr, Emin
+      DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr, Emin, W, SF1, SF2, GS1, GS2, pi
       DOUBLE PRECISION  Par(0:3)
       INTEGER Option
       INTEGER           Icont
@@ -366,54 +366,51 @@ C end
 *//  they can be varied by 25% or so and weight distribution will be exactly the same!
 *//  grid will absorb their variations.
       CALL IRC_GetParamee (Par) ! dee(z) = Par(1) *z1**Par(2)  *(1-z1)**Par(3), z1=1-x1
-****  IF(Icont.LE.1) WRITE(*,*) ' Par(i)= ', Par(0), Par(1),Par(2),Par(3)
-      alpha =  0.40d0           ! beamsstrahl: x1**(alpha-1), alpha manualy adjusted
-      alpha =  Par(3)+1d0
-      beta  = -0.50d0           ! ISR crude is as (1-vv)**(-1.5)=(1-vv)**(beta-1)
+      IF(Icont.LE.1) WRITE(*,*) ' Par(i)= ', Par(0), Par(1),Par(2),Par(3)
 *//////////////////////////////////////////////////////////////////////////////////////
       R    = xarg(1)
       r1   = xarg(2)
       r2   = xarg(3)
       Rho  = 1d0
 *//////////////////////////////////////////////////////////////////////////////////////
-* Mapping for Beamsstrahlung PDF, singular as m_x1**(alpha-1)
-         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
-         Rho   = Rho   *m_x1/r1/alpha
-         m_x2  = r2**(1d0/alpha)                             ! Mapping  r2 => x2
-         Rho = Rho   *m_x2/r2/alpha
-*//[[[   For tests without any mapping
-*         m_x1  = r1
-*         m_x2  = r2
-*//]]]
-         z1 = 1d0-m_x1
-         z2 = 1d0-m_x2
-         m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
+* delta is the "infinitesimal" width of Gasian representation
+* of the Dirac delta in the circe spectrum. Its value is adjusted empricaly
+* Foam tolerates alpha down to 0.005.
+* This is ok for overall photon energy spectrum.
+      delta = 0.0005
+      m_x1  = r1
+      m_x2  = r2
+      z1 = 1d0-m_x1
+      z2 = 1d0-m_x2
+      pi = 4.0 *DATAN(1d0)
+      GS1  = par(0)*DSQRT( 2d0/pi)/delta *EXP (-(m_x1/delta)**2/2 )
+      GS2  = par(0)*DSQRT( 2d0/pi)/delta *EXP (-(m_x2/delta)**2/2 )
+      SF1 = Par(1) *m_x1**Par(3) *(1d0-m_x1)**Par(2)   ! the same as circee
+      SF2 = Par(1) *m_x2**Par(3) *(1d0-m_x2)**Par(2)   ! the same as circee
+      SF12 = (GS1+SF1)*(GS2+SF2)
+*//////////////////////////////////////////////////////////////////////////////////////
+      m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
 *****(((   Correction by Scott Yost
-         Emin = 0.5* m_XXXene * m_vvmin
-         CALL KK2f_SetEmin(   Emin)
-         CALL KarFin_SetEmin( Emin)
+      Emin = 0.5* m_XXXene * m_vvmin
+      CALL KK2f_SetEmin(   Emin)
+      CALL KarFin_SetEmin( Emin)
 *****)))
-         CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)  ! make gamiCR at reduced XXXene
-         IF( gami .LE. 0d0 ) GOTO 800
-
-         m_vv  = R**(1d0/gami)*m_vvmax
-         IF(  m_vv < 1d-300)  GO TO 800    !!! temporary fix
-         Rho   = Rho* m_vv/R/gami
-         IF( m_vv .GT. m_vvmax ) GOTO 800  ! vmax from input, the best to keep vmax=1
+      CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)  ! make gamiCR at reduced XXXene
+      IF( gami .LE. 0d0 ) GOTO 800
+* Mapping bremstrahlung variable vv
+      m_vv  = R**(1d0/gami)*m_vvmax
+      IF(  m_vv < 1d-300)  GO TO 800    !!! temporary fix
+      Rho   = Rho* m_vv/R/gami
+      IF( (1d0-m_vv)*z1*z2 .LT. (1d0-m_vvmax) ) GOTO 800
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Calculate ISR crude structure function (the same as in Karlud)
       CALL BornV_MakeISR(RhoISR)                         !<-- uses m_XXXene and m_vv
       Rho = Rho *RhoISR
       IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
-      IF( (z1.EQ.1d0) .OR. (z2.EQ.1d0) ) GOTO 800
+      IF( (z1.GE.1d0) .OR. (z2.GE.1d0) ) GOTO 800
 *   Beamstrahlung spectrum
-      SF12 = IRC_circee( z1, z2 )
-      SF12 = Par(1) *m_x1**Par(3) *z1**Par(2)   *Par(1) *m_x2**Par(3) *z2**Par(2)
-*
-      Rho = Rho *SF12     ! correcting old mistake in normalization
-*
+      Rho = Rho *SF12
       BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
-*
       BornV_RhoFoamC = Rho*BornU
       RETURN
  800  CONTINUE
@@ -425,154 +422,7 @@ C end
       STOP
       END
 
-      DOUBLE PRECISION FUNCTION BornV_RhoFoamB(xarg)
-*//////////////////////////////////////////////////////////////////////////////////
-*//                                                                              //
-*//   Integrand for FoamB in 2-dim mode for beamstrahlung                        //
-*//                                                                              //
-*//   Remember that BornV_Crude and BornV_MakeRho use hidden input  m_XXXene!!   //
-*//   BornV_Crude is in R-units (poitnlike xsection at  sqrt(s)=m_XXXene!        //
-*//                                                                              //
-*//                                                                              //
-*//                                                                              //
-*//////////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      DOUBLE PRECISION  xarg(10)
-      DOUBLE PRECISION  R,r1
-      DOUBLE PRECISION  Rho,BornV_Crude,IRC_circee
-      DOUBLE PRECISION  gamiCR, gami, alfi, beta, RJac0, RJac1, RJacS
-      DOUBLE PRECISION  alpha,  alpha2,  eps,  eps2
-      DOUBLE PRECISION  GamBig, RhoISR, SF1, XX, yisr, ybms, z1, aa
-      DOUBLE PRECISION  anor, xnor
-      DOUBLE PRECISION  Par(0:3)
-      INTEGER Option
-      INTEGER           Icont
-      DATA              Icont/0/
-      Icont = Icont+1
-*//////////////////////////////////////////////////////////////////////////////////////
-*//  gamiCR, alpha, beta are dummy parameters in variable transformations
-*//  they can be varied by 25% or so and weight distribution will be exactly the same!
-*//  grid will absorb their variations.
-      CALL IRC_GetParamee (Par) ! dee(z) = Par(1) *z1**Par(2)  *(1-z1)**Par(3), z1=1-x1
-****  IF(Icont.LE.1) WRITE(*,*) ' Par(i)= ', Par(0), Par(1),Par(2),Par(3)
-      alpha =  0.40d0           ! beamsstrahl: x1**(alpha-1), alpha manualy adjusted
-      alpha =  Par(3)+1d0
-      beta  = -0.50d0           ! ISR crude is as (1-vv)**(-1.5)=(1-vv)**(beta-1)
-*//////////////////////////////////////////////////////////////////////////////////////
-      R    = xarg(1)
-      r1   = xarg(2)
-      m_x2 = 0d0
-      Rho  = 1d0
-      Option = 3                ! Option = 3 for tests of normalization only
-      Option = 1                ! Option = 1 sophisticated
-      Option = 2                ! Option = 2 simple, good enough
-      IF( Option .EQ. 1 ) THEN
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   (over)complicated analytical importance sampling transformations
-*//   R --> XX,   ZZ=1-XX=(1-vv)*(1-x1)= total loss factor, ISR and beamsstrahlung
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)          ! make gamiCR at CMSene
-         IF( gami .LE. 0d0 ) GOTO 800
-         GamBig = gami+alpha                                ! total singularity at XX=0
-         CALL BornV_ReBin1a(R,GamBig,beta,m_vvmax,XX,RJac0) ! Mapping  R => XX
-         Rho = Rho *RJac0
-*//   r1 --> m_vv
-         IF( gami .LE. 0d0 ) GOTO 800
-         CALL BornV_ReBin2a(r1, gami, alpha, yisr, ybms, RJac1) ! Mapping  r1 => m_vv
-         m_vv =  yisr* XX
-         m_x1 =  ybms* XX/(1d0-yisr*XX)
-         Rho  =  Rho  *XX/(1d0-yisr*XX) *RJac1
-         IF( m_x1 .GE. 1d0) GOTO 900
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   simplified analytical importance sampling transformations
-      ELSEIF( Option .EQ. 2 ) THEN
-         CALL BornV_MakeGami(m_CMSene,gamiCR,gami,alfi)           ! make gamiCR at CMSene
-         IF( gami .LE. 0d0 ) GOTO 800
-         m_vv  = R**(1d0/gami)*m_vvmax
-         Rho   = Rho* m_vv/R/gami*m_vvmax
-         m_x1  = r1**(1d0/alpha)                             ! Mapping  r1 => x1
-         Rho   = Rho *m_x1/r1/alpha
-         IF( (1d0-m_vv)*(1d0-m_x1) .LT. (1d0-m_vvmax) ) GOTO 800
-      ELSEIF( Option .EQ. 3 ) THEN
-*//   primitive test options, usefull for checking normalization
-         m_vv = R*m_vvmax
-         Rho = Rho *m_vvmax
-         m_x1  = r1
-         IF( (1d0-m_vv)*(1d0-m_x1) .LT. (1d0-m_vvmax) ) GOTO 800
-      ENDIF
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   Calculate ISR crude structure function (the same as in Karlud)
-      m_XXXene =  m_CMSene*SQRT(1d0-m_x1)              ! hidden input for BornV_Crude
-      CALL BornV_MakeISR(RhoISR)                       !<-- uses m_XXXene and m_vv
-      Rho = Rho *RhoISR
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   Beamsstrahlung structure function, singular as m_x1**(alpha-1)
-      z1 = 1d0-m_x1
-      IF( (z1.EQ.1d0) .OR. (m_x1.EQ.0d0) ) THEN ! rounding errors may cause problems
-         SF1 = 0d0
-      ELSE
-*****    SF1 = 2d0 *IRC_circee( z1, 1d0 )   ! factor 2 due to implicit symmetrization x1<-->x2
-*****    SF1 = 2d0 *Par(0) *Par(1) *m_x1**Par(3)               ! truncated
-         SF1 = 2d0 *Par(0) *Par(1) *m_x1**Par(3) *z1**Par(2)   ! the same as circee
-      ENDIF
-      Rho = Rho *SF1
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   Born Xsection at s' =m_XXXene**2 *(1-vv) =m_CMSene**2 *(1-XX)
-      BornV_RhoFoamB = Rho* BornV_Crude(m_vv)/(1d0-m_vv)
-      RETURN
- 800  CONTINUE
-      BornV_RhoFoamB =0d0
-      RETURN
- 900  CONTINUE
-      WRITE(*,*) ' STOP in BornV_RhoFoamB, m_x1 = ', m_x1
-      WRITE(*,*) ' XX, m_vv= ', XX, m_vv
-      STOP
-      END                       ! BornV_RhoFoamB
 
-
-      DOUBLE PRECISION FUNCTION BornV_RhoFoamA(xarg)
-*//////////////////////////////////////////////////////////////////////////////////
-*//                                                                              //
-*//   Integrand for FoamA in 1-dim mode beamstrahlung off/on                     //
-*//   !!! DEFINES m_vv !!!!                                                      //
-*//                                                                              //
-*//   Remember that BornV_Crude and BornV_MakeRho use hidden input  m_XXXene!!   //
-*//   BornV_Crude is in R-units (poitnlike xsection at  sqrt(s)=m_XXXene!        //
-*//                                                                              //
-*//////////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      DOUBLE PRECISION  xarg(10)
-      DOUBLE PRECISION  R
-      DOUBLE PRECISION  Rho,BornV_Crude
-      DOUBLE PRECISION  gamiCR, gami, alfi, beta, RJac
-      DOUBLE PRECISION  IRC_circee
-*----------------------------------------
-      R  = xarg(1)
-      m_x1 = 0d0
-      m_x2 = 0d0
-*-----------------------------------------------
-      m_XXXene =  m_CMSene        ! hidden input for BornV_Crude
-      CALL BornV_MakeGami(m_XXXene,gamiCR,gami,alfi)
-      IF( gami .LE. 0d0 ) GOTO 800
-*     Mapping  r => vv change  to improve on efficiency
-      m_vv  = R**(1d0/gami)*m_vvmax
-      RJac  = m_vv/R/gami*m_vvmax
-      CALL BornV_MakeISR(Rho)                  !<-- uses m_XXXene and m_vv
-      Rho = Rho*RJac
-*----------------------------------------
-      Rho = Rho *IRC_circee(1d0,1d0)           !<-- implicit factor from circee 
-*----------------------------------------
-* Born Xsection at s' = m_XXXene**2 *(1-vv)
-      IF(m_KeyZet .EQ. -2) THEN   ! Artificial constant x-section for test runs
-         BornV_RhoFoamA = Rho* BornV_Crude(0d0)
-      ELSE                        ! 1/(1-vv) because BornV_Crude is in R-units
-         BornV_RhoFoamA = Rho* BornV_Crude(m_vv)/(1d0-m_vv)
-      ENDIF
-      RETURN
- 800  CONTINUE
-      BornV_RhoFoamA =0d0
-      END
 
       DOUBLE PRECISION  FUNCTION BornV_RhoVesko1(R)
 *//////////////////////////////////////////////////////////////////////////////////

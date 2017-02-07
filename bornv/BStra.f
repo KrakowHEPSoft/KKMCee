@@ -21,9 +21,8 @@
       INTEGER  k,j
       DOUBLE PRECISION   XsCru(10), WMList(10)
       DOUBLE PRECISION   XsectA, XsectB,  XsectC
-      DOUBLE PRECISION   BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
-      EXTERNAL           BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
-      DOUBLE PRECISION   XXXene, vvmax
+      DOUBLE PRECISION   BornV_RhoFoamC
+      EXTERNAL           BornV_RhoFoamC
       INTEGER            nCallsA,  nCallsB,  nCallsC
       INTEGER            IterMaxA, IterMaxB, IterMaxC,  Idyfs,  IdBra, Nbin
 *-------------------------------
@@ -32,60 +31,11 @@
 *//////////////////////////////////////////////////////////////////////////////////////
 *// Mode=-1 creation+dump, =+1 reading, =0 creation without dump (default)           //
 *//////////////////////////////////////////////////////////////////////////////////////
-      m_ModeA  =   KeyGrid
-      m_ModeB  =   KeyGrid
-      m_ModeC  =   KeyGrid
       m_KeyWgt =   KeyWgt
+      m_Nev    = 0d0
+      m_SWT    = 0d0
+      m_SSWT   = 0d0
 *
-      CALL KarLud_GetXXXene(XXXene)
-*
-      IF(m_ModeA.EQ.2) WMList(1) = 1.00d0
-      IF(m_ModeB.EQ.2) WMList(2) = 1.00d0
-      IF(m_ModeC.EQ.2) WMList(3) = 1.00d0
-*
-      CALL KarLud_Getvvmax(vvmax)
-*//////////////////////////////////////////////////////////////////////////////////////
-      XsectA   = 1d-100
-      XsectB   = 1d-100
-      XsectC   = 1d-100
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   1-dimensional case                                                             //
-*//////////////////////////////////////////////////////////////////////////////////////
-      WRITE(*,*) '*****************************************************************'
-      WRITE(*,*) '****** BE PATIENT FoamA CREATING GRID FOR BEAMSTRAHLUNG *********'
-      WRITE(*,*) '*****************************************************************'
-      CALL FoamA_SetKdim(       1) ! No of dimensions<5
-      CALL FoamA_SetnBuf(    1000) ! Length of buffer<5000,  =Maximum No. of cells
-      CALL FoamA_SetnSampl(  1000) ! No. of MC sampling inside single cell, default=100
-      CALL FoamA_SetnBin(       4) ! No of bins for edge explorations
-      CALL FoamA_SetEvPerBin(  25) ! No. of equiv. MC events per bin
-      CALL FoamA_SetOptEdge(    0) ! OptEdge excludes vertices
-      CALL FoamA_SetOptRanIni(  0) ! No internal initialization of rand.num.gen
-      CALL FoamA_SetOptRanLux( -1) ! Ranmar choosen
-      CALL FoamA_SetChat(       1) ! printout level =0,1,2
-      CALL FoamA_Initialize(BornV_RhoFoamA)
-*//////////////////////////////////////////////////////////////////////////////////////
-*//   2-dimensional case                                                             //
-*//////////////////////////////////////////////////////////////////////////////////////
-      WRITE(*,*) '*****************************************************************'
-      WRITE(*,*) '****** BE PATIENT FoamB CREATING GRID FOR BEAMSTRAHLUNG *********'
-      WRITE(*,*) '*****************************************************************'
-      CALL FoamB_SetKdim(       2) ! No of dimensions<5
-      CALL FoamB_SetnBuf(    5000) ! Length of buffer<5000,  =Maximum No. of cells
-      CALL FoamB_SetnSampl(  5000) ! No. of MC sampling inside single cell, default=100
-      CALL FoamB_SetnBin(       4) ! No of bins for edge explorations
-      CALL FoamB_SetEvPerBin(  25) ! No. of equiv. MC events per bin
-      CALL FoamB_SetOptEdge(    0) ! OptEdge excludes vertices
-      CALL FoamB_SetOptRanIni(  0) ! No internal initialization of rand.num.gen
-      CALL FoamB_SetOptRanLux( -1) ! Ranmar choosen
-      CALL FoamB_SetChat(       1) ! printout level =0,1,2
-      CALL FoamB_Initialize(BornV_RhoFoamB)
-*     Debug plotting; nbuf=250 is maximum for ploting cell boundries
-      OPEN(23,FILE='./map.tex')
-      CALL FoamB_PltBegin(23)
-      CALL FoamB_PltVert
-      CALL FoamB_PltCell        ! nbuf<250
-      CALL FoamB_PltEnd
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   3-dimensional case                                                             //
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -93,11 +43,12 @@
       WRITE(*,*) '****** BE PATIENT FoamC CREATING GRID FOR BEAMSTRAHLUNG *********'
       WRITE(*,*) '*****************************************************************'
       CALL FoamC_SetKdim(       3) ! No. of dimensions<5
-      CALL FoamC_SetnBuf(    5000) ! Length of buffer<5000,  =Maximum No. of cells
-      CALL FoamC_SetnSampl( 20000) ! No. of MC sampling inside single cell, default=100
+      CALL FoamC_SetnBuf(   40000) ! Length of buffer<5000,  =Maximum No. of cells
+      CALL FoamC_SetnSampl(100000) ! No. of MC sampling inside single cell, default=100
       CALL FoamC_SetnBin(       4) ! No of bins for edge explorations
       CALL FoamC_SetEvPerBin(  25) ! No. of equiv. MC events per bin
       CALL FoamC_SetOptEdge(    0) ! OptEdge excludes vertices
+c      CALL FoamA_SetOptDrive(   2) ! 0,1,2 =True,Sigma,WtMax !!!
       CALL FoamC_SetOptRanIni(  0) ! No internal initialization of rand.num.gen
       CALL FoamC_SetOptRanLux( -1) ! Ranmar choosen
       CALL FoamC_SetChat(       1) ! printout level =0,1,2
@@ -105,25 +56,24 @@
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   The best Vegas Integral estimators from initialization (grid building) phase   //
 *//////////////////////////////////////////////////////////////////////////////////////
-      CALL FoamA_GetTotPrim( XsectA) ! Crude from Initialization
-      CALL FoamB_GetTotPrim( XsectB) ! Crude from Initialization
       CALL FoamC_GetTotPrim( XsectC) ! Crude from Initialization
-
+c///{{{{{{{{{{{{{
+      XsectA=0
+      XsectB=0
+c}}}}}}}}}}}}}}}}
       m_XCrude =  XsectA+XsectB+XsectC ! is it really used ?????
 *
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator                '
       WRITE(m_out,bxtxt) '  Grid initialization finished        '
-      WRITE(m_out,bxl1g) XsectA ,    'XsectA  1-dimen.  ','XsectA','**'
-      WRITE(m_out,bxl1g) XsectB ,    'XsectB  2-dimen.  ','XsectB','**'
       WRITE(m_out,bxl1g) XsectC ,    'XsectC  3-dimen.  ','XsectC','**'
       WRITE(m_out,bxl1g) m_XCrude,   'XGridB  total.    ','XGridB','**'
       WRITE(m_out,bxclo)
 *//////////////////////////////////////////////////////////////////////////////////////
 *//     Calculate Crude Xcru(i), i=1,2,3,  branch per branch                         //
 *//////////////////////////////////////////////////////////////////////////////////////
-      CALL FoamA_GetTotPrim(XsCru(1)) ! get crude normalization for MC
-      CALL FoamB_GetTotPrim(XsCru(2)) ! get crude normalization for MC
+      XsCru(1)=0
+      XsCru(2)=0
       CALL FoamC_GetTotPrim(XsCru(3)) ! get crude normalization for MC
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Initialization of MBrB, the own copy of a brancher                             //
@@ -132,6 +82,9 @@
       IdBra = Idyfs+200
       CALL MBrB_Initialize(m_out,IdBra,50, 1d0, 'MBrB: Bstra main weight$')
       Nbin  = 500
+      WMList(1) = 1.00d0
+      WMList(2) = 1.00d0
+      WMList(3) = 1.00d0
       CALL MBrB_AddBranch(1, Nbin, WMList(1), 'MBrB: next branch A  !!! $')
       CALL MBrB_AddBranch(2, Nbin, WMList(2), 'MBrB: next branch B  !!! $')
       CALL MBrB_AddBranch(3, Nbin, WMList(3), 'MBrB: next branch C  !!! $')
@@ -146,14 +99,13 @@
       XCrude   = m_XCrude
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BStra  Initializator, PreGeneration '
-      WRITE(m_out,bxl1g) XsCru(1) ,   'XsCru(1)  1-dimen.  ','XsCru(1) ','**'
-      WRITE(m_out,bxl1g) XsCru(2) ,   'XsCru(2)  2-dimen.  ','XsCru(2) ','**'
       WRITE(m_out,bxl1g) XsCru(3) ,   'XsCru(3)  3-dimen.  ','XsCru(3) ','**'
-      WRITE(m_out,bxl1f) WMlist(1) ,  'WMlist(1) 1-dimen.  ','WMlist(1)','**'
-      WRITE(m_out,bxl1f) WMlist(2) ,  'WMlist(2) 2-dimen.  ','WMlist(2)','**'
       WRITE(m_out,bxl1f) WMlist(3) ,  'WMlist(3) 3-dimen.  ','WMlist(3)','**'
       WRITE(m_out,bxl1g) m_XCrude ,   'XCrude   total      ','XCrude   ','**'
       WRITE(m_out,bxclo)
+c[[[
+c      STOP
+c]]]
       END
 
       SUBROUTINE BStra_Make(vv, x1, x2, MCwt)
@@ -163,8 +115,10 @@
       IMPLICIT NONE
       INCLUDE 'BStra.h'
       DOUBLE PRECISION  vv, x1, x2, MCwt, x, Wt_KF
-      DOUBLE PRECISION  BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
-      EXTERNAL          BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
+cc      DOUBLE PRECISION  BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
+cc      EXTERNAL          BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC
+      DOUBLE PRECISION  BornV_RhoFoamC
+      EXTERNAL          BornV_RhoFoamC
       REAL              Qrand(10)        ! for PseuMar
       INTEGER           Itype
       DOUBLE PRECISION  rand
@@ -172,32 +126,15 @@
       m_NevCru = 0
  100  CONTINUE
       m_Nevgen  =  m_Nevgen +1
-      CALL MBrB_GenKF(Itype, Wt_KF)
-      IF(     Itype .EQ. 1 ) THEN
-         CALL FoamA_MakeEvent(BornV_RhoFoamA) ! generate MC event
-         CALL FoamA_GetMCwt(  MCwt) ! get MC weight
-      ELSEIF( Itype .EQ. 2 ) THEN
-         CALL FoamB_MakeEvent(BornV_RhoFoamB) ! generate MC event
-         CALL FoamB_GetMCwt(  MCwt) ! get MC weight
-      ELSEIF( Itype .EQ. 3 ) THEN
-         CALL FoamC_MakeEvent(BornV_RhoFoamC) ! generate MC event
-         CALL FoamC_GetMCwt(  MCwt) ! get MC weight
-      ELSE
-         WRITE(m_out,*) '+++++ STOP in BStra_Make '
-         WRITE(    *,*) '+++++ STOP in BStra_Make '
-         STOP 
-      ENDIF
+      CALL MBrB_GenKF(Itype, Wt_KF)  ! Obsolet, Wt_KF=1
+
+      CALL FoamC_MakeEvent(BornV_RhoFoamC) ! generate MC event
+      CALL FoamC_GetMCwt(  MCwt) ! get MC weight
+
       CALL BornV_GetVXX(vv,x1,x2)
 
-* random swap, necessary because FoamB integrand is asymmetric
-*     CALL PseuMar_MakeVec(Qrand,1)
-*     IF( Qrand(1) .LT. 0.5d0 ) THEN
-*        x  = x1
-*        x1 = x2
-*        x2 = x
-*     ENDIF
-
 * Rejection or wted events
+*[[[[  m_KeYWgt=0 option does not work properly!!!!???
       IF(   m_KeYWgt .EQ. 0) THEN
         CALL PseuMar_MakeVec(Qrand,1)
         rand = Qrand(1)
@@ -235,6 +172,7 @@
       DOUBLE PRECISION     Integ,Errel
       DOUBLE PRECISION     IntegMC,ErrelMC
       DOUBLE PRECISION     AverWt, WtSup
+      DOUBLE PRECISION     AwtNew
 *-----------------------------------------------------------------------------
       CALL MBrB_MgetAve(AverWt, ErRelMC, WtSup)
       IntegMC= m_XCrude*AverWt
@@ -244,6 +182,7 @@
       WRITE(m_out,bxtxt) '  BStra  Finalize MC results     '
       WRITE(m_out,bxl1g) IntegMC,   'MC integral   ','IntegMC','**'
       WRITE(m_out,bxl1f) ErRelMC,   'relat. error  ','ErRelMC','**'
+      WRITE(m_out,bxl1f) AverWt,    'average wt    ','AverWt ','**'
       WRITE(m_out,bxl1f) WtSup,     'maximum wt    ','WtSup  ','**'
       WRITE(m_out,bxtxt) '  From grid building (initializ.)'  
       WRITE(m_out,bxl1g) m_XCrude,  'XCrude  total.','XCrude','**'

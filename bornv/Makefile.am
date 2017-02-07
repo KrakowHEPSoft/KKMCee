@@ -1,9 +1,9 @@
 INCLUDES = -I$(top_srcdir)/bornv
 METASOURCES = AUTO
 lib_LIBRARIES = libBornvTabs.a libBornvDizet.a
-libBornvDizet_a_SOURCES = BornV.f BStra.f FoamA.f FoamB.f FoamC.f IRC.f MBrA.f\
+libBornvDizet_a_SOURCES = BornV.f BStra.f FoamC.f IRC.f MBrA.f\
 	MBrB.f ranlux.f Vesk1.f
-libBornvTabs_a_SOURCES = BornV.f BornV_StartEW.f BStra.f FoamA.f FoamB.f FoamC.f\
+libBornvTabs_a_SOURCES = BornV.f BornV_StartEW.f BStra.f FoamC.f\
 	IRC.f MBrA.f MBrB.f ranlux.f Vesk1.f
 
 ##########################################################################
