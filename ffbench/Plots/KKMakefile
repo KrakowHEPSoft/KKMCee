@@ -5,7 +5,7 @@ SRCLIST= "../../glibk"
 #----------------------------------------------------------------------
 XDVI   = kdvi      -bg white -fg black  -s 4 
 XPS    = ghostview
-XPDF   = kpdf
+XPDF   = xpdf
 #----------------------------------------------------------------------
 FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LDFLAGS =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
