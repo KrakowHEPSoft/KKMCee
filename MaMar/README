@@ -4,7 +4,7 @@ mu-pair production process at BaBar experiment (2002).
 Main program level (histogrammin, plotting) written in C++, 
 using interface to f77 level through standard wrappers.
 
-Make system is organized using autotolls.
+Make system is organized using autotools.
 Custom KK-makefile system still kept, sometime works better.
 IMPORTANT: present version works with ROOT version 5!
 
