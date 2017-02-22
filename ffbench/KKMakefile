@@ -268,13 +268,13 @@ export: Clean
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 # Exporting KKMC with extra MaMar directory,  C++ top layer of analysis
-#       make -i -f KKMakefile exportM
+#       make -i -f KKMakefile Export
 # Before that autotools has to be reconfigured:
 #   1. comment out yfspro and RRhad in configure.ac and Makefile.am in main directory
 #   2. ( make distclean;  autoreconf -i --force ; ./configure)
 #-----------------------------------------------------------------------
-VERSm=v4_22m
-exportM: Clean
+VERSm=v4_24a
+Export: Clean
 	(rm -f     ./*.tgz)
 	(rm -rf    ./KKMC_$(VERSm);      mkdir  ./KKMC_$(VERSm) )
 ### Main and miscelaneous
