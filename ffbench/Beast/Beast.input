@@ -1,6 +1,7 @@
  1 1 0 0 0 0 0 0         KAT1-KAT8        <- Input for the main program
-     10000           NEVT number of events
+      1000           NEVT number of events
        200           NEVT number of events
+      5000           NEVT number of events
     100000           NEVT number of events
         10           NEVT number of events
          1           NEVT number of events
@@ -13,11 +14,7 @@ BeginX
 *     Center-of-mass energy [GeV]
     1        500.0D0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000D0      DelEne =xpar( 2)  Beam energy spread [GeV]
-*indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-    9          1.0e0      WtMax =xpar( 9)   Maximum weight for rejection
-*     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
-   10              1      KeyWgt=xpar(10) Deafault is 0
-   17         0.90d0      vvmax =xpar(17)  if 1d0 then reduced inside program
+   17            1d0      vvmax =xpar(17)  if 1d0 then reduced inside program
    25              2      KeyFix:   Vesko1(=0),  Vegas(=1), Beamstrahlung(=2), see KeyGrd
 *     Hadronization/showering flag, KeyHad=0,1 => hadronization OFF,ON.
    50              0      KeyHad=xpar(50)  Default is  1
@@ -25,13 +22,13 @@ BeginX
  2002           -1d0      Jak2   =xpar(72)  Second Tau decay mask, Default is  0
 ********************************************************************************
 * Beamstrahlung parameters for Thorsten Ohl's package CIRCE 
-   71          500d0      IRCroots   sqrt(s) [GeV] discrete values 350,500,800GeV
+   71          800d0      IRCroots   sqrt(s) [GeV] discrete values 350,500,800GeV
    72            3d0      IRCacc     
    73            5d0      IRCver     version
    74     19980505d0      IRCdat     date
    75            1d0      IRCxchat   printout level
 ***   76            0d0  KeyGrid, Vegas: default=0 create, not read, -1 create and dump, +1 read
-   76            2d0      KeyGrid, Foam: =2
+   76            2d0  KeyGrid, Foam: =2
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     Define process
 *     LIST of Final state flavours to be generated randomly according
@@ -44,9 +41,9 @@ BeginX
   405              1      KFfin, b
   413              1      KFfin, muon
   415              1      KFfin, tau
-*  412              1      KFfin, neutrino electron
-*  414              1      KFfin, neutrino muon
-*  416              1      KFfin, neutrino tau
+  412              1      KFfin, neutrino electron
+  414              1      KFfin, neutrino muon
+  416              1      KFfin, neutrino tau
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2

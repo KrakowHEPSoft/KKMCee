@@ -7,7 +7,7 @@ and autotools can me used to create/update Makefile's everywhere.
      ****************
      **   ffbench  **
      ****************
- 
+Main program in f77,
 System of custom KKMakefile's in all subdirectories
 is first created running master makefile ffbench/KKMakefile:
     cd ./ffbench
@@ -49,14 +49,15 @@ Beamstrahlung at 500GeV:
      ****************
      **    MaMar   **
      ****************
- 
+Main program in C++.
 Here autotools are better:
      cd KKMC_v4_24x
      make distclean
      autoreconf -i --force
      ./configure
-     make
+     make -k
 Running example program:
+     cd MaMar
      cp test0/test0_95GeV.input test0/test0.input
      make test0-start
      make test0-stop
