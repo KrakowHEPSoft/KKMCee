@@ -15,7 +15,7 @@ Changes in the present DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
 3. Benchmarks of PDR63 and PRD88 are succesfuly reproduced:
    PRD88: cd yfspro; kmake E189GeV-start; cd pubfig kmake afb_sig2-ps
    PRD63: see instructions in yfspro/KKMakefile and  yfspro/pubfig/KKMakefile,
-   but yfspro is still not in public distribution:(
+   However, yfspro is still not in public distribution:(
 4. Two systems of makefiles are still kept in parallel, however,
    KKmakefile's are recommended for ffbench and Makefile.am for MaMar
 All development and testing were done under SLC6 scientific linux.
