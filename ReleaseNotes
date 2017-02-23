@@ -26,7 +26,7 @@ All development and testing were done under SLC6 scientific linux.
 Changes in v. 4.22, DEVELOPEMENT VERSION, June 10-th 2013
 - Arbitrary f-fbar beams impelemented. Tested with KKsem for f=muon,tau,u,d,s,c.
   Corrected mapping in Vesko1 (gamiCR->gami)
-- energy spread of q-qbar beams with semplistic PDFs (instead of Bemastrahlung).
+- energy spread of q-qbar beams with semplistic PDFs (instead of Beamstrahlung).
   Done as a source patch. Very preliminary. No summation over beam type.
 ********************************************************************************
 Changes in v. 4.20, DEVELOPEMENT VERSION, May 20-th 2013
