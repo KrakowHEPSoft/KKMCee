@@ -11,7 +11,7 @@ subdirectories is first created running master makefile ffbench/KKMakefile:
     kmake makflag
     kmake makprod
 If an adjustment of the fortran compilation options is needed,
-then do it only in the master KKMakefile and repeat the above.
+then do it only in the master ffbench/KKMakefile and repeat the above.
 -------------------------------------------------------------
 BASIC DEMO:
 Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
