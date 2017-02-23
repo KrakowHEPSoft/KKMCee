@@ -1,22 +1,18 @@
 HOW TO START (compiling and running basic demo's)
-
-Under Linux (SLC) proceed as below immediately.
-Alternatively system of Makefile.am is also in place
-and autotools can me used to create/update Makefile's everywhere.
-
+-------------------------------------------------------------------------------
+Under Linux (SLC) proceed as below immediately:)
      ****************
      **   ffbench  **
      ****************
-Main program in f77,
-System of custom KKMakefile's in all subdirectories
-is first created running master makefile ffbench/KKMakefile:
+Main program in f77. System of custom KKMakefile's in all 
+subdirectories is first created running master makefile ffbench/KKMakefile:
     cd ./ffbench
     alias kmake='make -f KKMakefile'
     kmake makflag
     kmake makprod
 If an adjustment of the fortran compilation options is needed,
 then do it only in the master KKMakefile and repeat the above.
-
+-------------------------------------------------------------
 BASIC DEMO:
 Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
 as for the detector simulation:
@@ -24,7 +20,7 @@ as for the detector simulation:
 	cp demo/demo.input.1k demo/demo.input
 	kmake demo-start
 	diff -b demo/demo.output.1k demo/demo.output | less
-
+-------------------------------------------------------------
 OTHER DEMOS:
 Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events:
 	cp Inclusive/Inclusive.input.1k Inclusive/Inclusive.input
@@ -45,12 +41,11 @@ Beamstrahlung at 500GeV (takes a few minutes):
   cp Beast/Foam500,1k.input Beast/Beast.input
   kmake Beast-start
   diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
-
+-------------------------------------------------------------------------------
      ****************
      **    MaMar   **
      ****************
-Main program in C++.
-Here autotools are better:
+Main program in C++. Here autotools are recommended:
      cd KKMC_v4_24x
      make distclean
      autoreconf -i --force
