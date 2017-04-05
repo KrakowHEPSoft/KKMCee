@@ -46,6 +46,7 @@ Running instructions:
    make Plot2
    
 ************************ (C) ************************
+!!!! Obsolete chain in the present development branch KKMCee
 Analysis chain as in Jan. 2016 to examine effects 
 of switching on/off QED FSR in p p -> l+ l- (with PDFs).
 Overall normalization debuged using ./Plots/PlotFSR.cxx
