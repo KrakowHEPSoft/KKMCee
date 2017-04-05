@@ -52,15 +52,15 @@ void ROBOL::Initialize(long &NevTot)
   hst_nPhVis  = new TH1D("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
   hst_nPhAll->Sumw2();
   hst_nPhVis->Sumw2();
-  int nbv =50;
-  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vAlepCeex2= new TH1D("hst_vAlepCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vXGenCeex2= new TH1D("hst_vXGenCeex2", "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  int nbv = 50;
+  hst_vTrueMain    = new TH1D("hst_vTrueMain",   "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vTrueCeex2   = new TH1D("hst_vTrueCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vXGenCeex2   = new TH1D("hst_vXGenCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
   hst_vTrueMain->Sumw2();
   hst_vTrueCeex2->Sumw2();
-  hst_vAlepCeex2->Sumw2();
   hst_vXGenCeex2->Sumw2();
+  hst_vAlepCeex2   = new TH1D("hst_vAlepCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vAlepCeex2->Sumw2();
   int nbc =50;
   hst_Cost1Ceex2= new TH1D("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
   hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
@@ -70,6 +70,7 @@ void ROBOL::Initialize(long &NevTot)
   hst_CosPRCeex2->Sumw2();
   hst_CosPREex2= new TH1D("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
   hst_CosPREex2->Sumw2();
+  // scatergrams
   sca_vTcPR_Ceex2= new TH2D("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Eex2 = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Ceex2->Sumw2();
@@ -80,6 +81,27 @@ void ROBOL::Initialize(long &NevTot)
   sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Ceex2->Sumw2();
   sca_vXcPR_Eex2->Sumw2();
+  //  New bigger scatergrams
+  int NBv =100; int NBc = 100;
+  double vmx2= 0.20;
+  sct_vAcPR_Ceex2= new TH2D("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPR_Ceex2->Sumw2();
+  sct_vAcPR_Ceex2n= new TH2D("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPR_Ceex2n->Sumw2();
+  sct_vTcPL_Ceex2= new TH2D("sct_vTcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex2->Sumw2();
+  sct_vKcPL_Ceex2= new TH2D("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vKcPL_Ceex2->Sumw2();
+  sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPL_Ceex2->Sumw2();
+  // for xcheck and h.o ISR
+  hst_vACeex2   = new TH1D("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex21F = new TH1D("hst_vACeex21F","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex21B = new TH1D("hst_vACeex21B","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex2->Sumw2();
+  hst_vACeex21F->Sumw2();
+  hst_vACeex21B->Sumw2();
+
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
@@ -197,11 +219,11 @@ void ROBOL::Production(long &iEvent)
 //*-------------------------------
 //* LL formula for s'/s from angles according to ALEPH note 1996
   zAleph =  (sin(Theta1)+sin(Theta2) -fabs(sin(Theta1+Theta2)))
-            /(sin(Theta1)+sin(Theta2) +fabs(sin(Theta1+Theta2)));
+           /(sin(Theta1)+sin(Theta2) +fabs(sin(Theta1+Theta2)));
   s1Aleph  = s*zAleph;
   //
-  double vvk,x1,x2;
-  karlud_getvvxx_(vvk,x1,x2);
+  double vvK,x1,x2;
+  karlud_getvvxx_(vvK,x1,x2);
   // *********************************************************************
   //          Most of histogramming starts here
   // *********************************************************************
@@ -209,16 +231,28 @@ void ROBOL::Production(long &iEvent)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
+  double WtCEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
   double WtCEEX2n= KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2) IFI off
   //
+  double vvA = 1-zAleph;
   hst_nPhAll->Fill(  m_Nphot,WtMain);
   hst_nPhVis->Fill(  nph_ene,WtMain);
-  hst_vTrueMain->Fill(       vv, WtMain);
-  hst_vTrueCeex2->Fill(      vv, WtCEEX2); // M(2f) of mun pair
-  hst_vAlepCeex2->Fill(1-zAleph, WtCEEX2); // M^star guessed
-  hst_vXGenCeex2->Fill(     vvk, WtCEEX2); // M^star from MC (illegal)
-  //
+  hst_vTrueMain->Fill(   vv, WtMain);
+  hst_vTrueCeex2->Fill(  vv, WtCEEX2);          // M(2f) of mun pair
+  hst_vXGenCeex2->Fill(  vvK, WtCEEX2);         // M^star from MC (illegal)
+  // semirealistic
+  hst_vAlepCeex2->Fill(  vvA, WtCEEX2);         // M^star guessed
+  //****[[[
+  hst_vACeex2->Fill(       vvA, WtCEEX2);         // M^star guessed
+  //hst_vACeex2->Fill(       vv, WtEEX3);         // M^star guessed
+  if( CosPRD>0)
+      hst_vACeex21F->Fill( vvA, WtCEEX2n-WtCEEX1); // M^star guessed
+      //hst_vACeex21F->Fill( vv, WtEEX3-WtEEX2); // M^star guessed
+  else
+      hst_vACeex21B->Fill( vvA, WtCEEX2n-WtCEEX1); // M^star guessed
+      //hst_vACeex21B->Fill( vv, WtEEX3-WtEEX2); // M^star guessed
+  //****]]]
   if(vv<0.9){
     hst_Cost1Ceex2->Fill( CosThe1, WtCEEX2);
     hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);
@@ -228,10 +262,18 @@ void ROBOL::Production(long &iEvent)
   // big scatergrams
   sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2); 
   sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
-  sca_vXcPR_Ceex2->Fill(  vvk, CosPRD, WtCEEX2); 
-  sca_vXcPR_Eex2->Fill(   vvk, CosPRD, WtEEX2);
+  sca_vXcPR_Ceex2->Fill(  vvK, CosPRD, WtCEEX2);
+  sca_vXcPR_Eex2->Fill(   vvK, CosPRD, WtEEX2);
   // IFI off
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
+  //-------------------------------------------
+  // New very BIG scaterplots
+  sct_vAcPR_Ceex2->Fill(   vvA, CosPRD,   WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
+  sct_vAcPR_Ceex2n->Fill(  vvA, CosPRD,   WtCEEX2n); // IFI  off
+  sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL
+  sct_vTcPL_Ceex2->Fill(    vv, CosThePL, WtCEEX2);  // vv bare muons
+  sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
+
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;

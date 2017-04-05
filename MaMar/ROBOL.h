@@ -44,11 +44,23 @@ class ROBOL{
   TH1D   *hst_CosPLCeex2;
   TH1D   *hst_CosPRCeex2;
   TH1D   *hst_CosPREex2;
+  //
   TH2D   *sca_vTcPR_Ceex2;
+  TH2D   *sca_vTcPR_Ceex2n;
   TH2D   *sca_vTcPR_Eex2;
   TH2D   *sca_vXcPR_Ceex2;
   TH2D   *sca_vXcPR_Eex2;
-  TH2D   *sca_vTcPR_Ceex2n;
+  //
+  TH2D   *sct_vAcPR_Ceex2;    // Main CEEX2 KKMC , ISR+FSR
+  TH2D   *sct_vAcPR_Ceex2n;   // IFI  off
+  TH2D   *sct_vKcPL_Ceex2;    // vv from Karlud (pure ISR) thetaPL
+  TH2D   *sct_vTcPL_Ceex2;    // vv bare muons
+  TH2D   *sct_vAcPL_Ceex2;    // Main CEEX2 KKMC , ISR+FSR
+    //
+  TH1D   *hst_vACeex2;
+  TH1D   *hst_vACeex21F;
+  TH1D   *hst_vACeex21B;
+
   //
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2

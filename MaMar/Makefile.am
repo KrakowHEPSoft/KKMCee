@@ -1,6 +1,6 @@
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
-SUBDIRS = test0 workZinv workFSR Plots
+SUBDIRS = test0 workAFB workZinv workFSR Plots
 
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR
 AM_FFLAGS = @MY_F77_FLAGS@
@@ -48,8 +48,16 @@ test0-start:	all
 	(cd ./test0;  make start )
 test0-stop:
 	(cd ./test0;  make stop )
+workAFB-start:	all
+	(cd ./workAFB;  make start )
+workAFB-stop:
+	(cd ./workAFB;  make stop )
 Plot1:
 	(cd Plots; make Plot1; ./Plot1)
+PlotAFB:
+	(cd Plots; make PlotAFB; ./PlotAFB)
+PlotAFB2:
+	(cd Plots; make PlotAFB2; ./PlotAFB2)
 #-----------------------------------------------------------------------
 ###   make workZinv-start
 workZinv-start:	all
