@@ -1,13 +1,5 @@
-Present version is customized as a starting point 
-for the KKMChh developmnet branch for Drell-Yan process.
-
-Production chain (C) was used to crosscheck Fig.1 in paper
-https://arxiv.org/abs/1602.04035
-
-Simplified PDFs of u and d quarks are introduced
-directly in the bornv/BornV.f source code.
-
-Only ProdFSR production chain is active and will be preserved
+This directory was originally developed for studies of the
+mu-pair production process at BaBar experiment (2002).
 
 Main program level (histogrammin, plotting) written in C++, 
 using interface to f77 level through standard wrappers.
@@ -16,10 +8,6 @@ Make system is organized using autotolls.
 Custom KK-makefile system still kept, sometime works better.
 IMPORTANT: present version works with ROOT version 5!
 
-The following instruction are mostly OBSOLETE,
-appart of desription of chain (C).
-
-*********************************************************
 Building program (autotools) from the distribution tarfile:
   tar -xvzf KKMC_v4_22m.tgz
   cd KKMC_v4_22m
@@ -35,7 +23,7 @@ The original chain (2002) for muon AFB analysis consists of:
 -- histogramming               ./ROBOL.cxx
 -- wrappers to f77             ./KKMC.cxx
 -- work direct. (input/output) ./test0
--- post-generation analysis    ./Plots/Plot1.cxx ./Plots/PlotAFB.cxx
+-- post-generation analysis    ./Plots/Plot1.cxx
 Presently used to examine QED effects
 in AFB close to Z resonance (init-fin. interf.).
 Running instructions:
@@ -43,9 +31,6 @@ Running instructions:
      make test0-start
      make test0-stop
      make Plot1
-     make PlotAFB
-     make workAFB-start
-     make PlotAFB2
      
 ************************ (B) ************************
 Analysis chain introduced in febr. 2014, (febr 2015), 
@@ -61,7 +46,6 @@ Running instructions:
    make Plot2
    
 ************************ (C) ************************
-!!!! Obsolete in KKMCee branch !!!!!
 Analysis chain as in Jan. 2016 to examine effects 
 of switching on/off QED FSR in p p -> l+ l- (with PDFs).
 Overall normalization debuged using ./Plots/PlotFSR.cxx
@@ -76,8 +60,12 @@ Running instructions:
    make workFSR-stop
    make PlotFSR
  
-*****************************************************************
+ ****************************************************
+ --- Miscelaneous ----
+ Wiki page for FCCee activity:  
+   http://192.245.169.66:8000/FCCeeMC/wiki/kkmc
+ ****************************************************
  --- To be done
- 1. automake ignores source change in *.h files in the fortran code
+ 1. automake ignores source change in *.h files in fortran code
 
 =========================== The End =============================
