@@ -127,7 +127,7 @@ void ProjY1(TH2D *Scat, TH1D *&HstProjY)
 ///////////////////////////////////////////////////////////////////////////////////
 void ProjV(TH2D *Scat, TH1D *&hxTot, TH1D *&hxAfb, int NbMax)
 {
-  // Dedicated Projection onto Z=v axis, suming over Y=cos(theta)
+  //  Projection onto v axis, suming over Y=cos(theta) up to a limit
   int      nbX  = Scat->GetNbinsX();
   int      nbY  = Scat->GetNbinsY();
   Double_t Xmax = Scat->GetXaxis()->GetXmax();
@@ -176,7 +176,7 @@ void ProjV(TH2D *Scat, TH1D *&hxTot, TH1D *&hxAfb, int NbMax)
 ///////////////////////////////////////////////////////////////////////////////////
 void ProjC(TH2D *Scat, TH1D *&hTot, TH1D *&hAsy, int NbMax)
 {
-  // Simple Projection onto Y axis taking into account errors!
+  // Projection onto c=cos(theta) axis, suming over v up to a limit
   int      nbX  = Scat->GetNbinsX();
   int      nbY  = Scat->GetNbinsY();
   Double_t Xmax = Scat->GetXaxis()->GetXmax();
@@ -231,6 +231,30 @@ void ProjC(TH2D *Scat, TH1D *&hTot, TH1D *&hAsy, int NbMax)
 }// ProjC
 
 ///////////////////////////////////////////////////////////////////////////////////
+void MakeCumul(TH1D *hst1, TH1D *&hcum1)
+{
+  // makes cumulative distribution
+  cout<<"Entering MakeCumul for  ";
+  cout<< hst1->GetName() <<endl;
+  int      nbX  = hst1->GetNbinsX();
+  Double_t Xmax = hst1->GetXaxis()->GetXmax();
+  Double_t Xmin = hst1->GetXaxis()->GetXmin();
+  //
+  hcum1 = (TH1D*)hst1->Clone("hcum1"); // allocate hcum1
+  hcum1->Reset();
+  double sum=0 ,sum2=0;
+  double dx= (Xmax-Xmin)/nbX; // integration over X
+  for(int iv=0; iv <= nbX; iv++){
+    sum   += hst1->GetBinContent(  iv);
+    sum2 += sqr(hst1->GetBinError(iv));
+    hcum1->SetBinContent(iv,     dx*(sum));
+    hcum1->SetBinError(  iv, dx*sqrt(sum2));
+   }
+//
+
+}//MakeCumul
+
+  ///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB)
 {
   // makes Afb(c) out of hAll(c)
