@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-//    make Plot1
+//    make PlotFSR
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -37,10 +37,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 //{{{{ additional input in the code //}}}}
-//TFile DiskFileA("../workFSR/rmain_ddBeams_FSRon_100M.root");            // ddbar->mu-mu+
+TFile DiskFileA("../workFSR/rmain_ddBeams_FSRon_100M.root");            // ddbar->mu-mu+
 //TFile DiskFileA("../workFSR/rmain_uuBeams_FSRon_1G.root");            // uubar->mu-mu+
 //TFile DiskFileA("../workFSR/rmain_uuBeams_FSRon_tau_1G.root"); // uubar->tau-tau+
-TFile DiskFileA("../workFSR/rmain.root");
+//TFile DiskFileA("../workFSR/rmain.root");
 TFile DiskFileB("PlotFSR.root","RECREATE","histograms");
 //=============================================================================
 
