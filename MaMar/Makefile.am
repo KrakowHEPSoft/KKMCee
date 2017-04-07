@@ -58,6 +58,8 @@ PlotAFB:
 	(cd Plots; make PlotAFB; ./PlotAFB)
 PlotAFB2:
 	(cd Plots; make PlotAFB2; ./PlotAFB2)
+PlotIFI:
+	(cd Plots; make PlotIFI; ./PlotIFI)
 #-----------------------------------------------------------------------
 ###   make workZinv-start
 workZinv-start:	all
