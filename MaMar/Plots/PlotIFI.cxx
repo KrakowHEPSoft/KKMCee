@@ -199,14 +199,15 @@ void FigVprod()
   HTot_vTcPR_Ceex2->Divide(vcum_ISR2_FSR2);
   HTot_vTcPR_Ceex2->SetMinimum(0.975);
   HTot_vTcPR_Ceex2->SetMaximum(1.100);
+  HTot_vTcPR_Ceex2->SetStats(0);
+  HTot_vTcPR_Ceex2->SetTitle(0);
   HTot_vTcPR_Ceex2->DrawCopy("h");
   //
   HTot_vTcPR_Ceex2n->SetLineColor(kMagenta);
   HTot_vTcPR_Ceex2n->Divide(vcum_ISR2_FSR2);
   HTot_vTcPR_Ceex2n->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"(b) Ceex2/KKsem, IFIon, Blue=|cos(#theta|<1, Red=|cos(#theta|<0.88 ");
-  CaptT->DrawLatex(0.16,0.85,"    Magenta: Ceex2/KKsem for IFIoff, |cos(#theta|<1 ");
+  CaptT->DrawLatex(0.12,0.85,"Ceex2/KKsem, Blue/Magenta for IFI on/off");
   CaptT->DrawLatex(0.60,0.75,TextEne);
   CaptTb->Draw();
   //----------------------------
@@ -221,6 +222,7 @@ void FigVprod()
   HAfb_vTcPR_Ceex2->Add(HAfb_vTcPR_Ceex2,  afbv_ISR2_FSR2,1.0, -1.0);
   HAfb_vTcPR_Ceex2->SetLineColor(kRed); // red
   HAfb_vTcPR_Ceex2->SetStats(0);
+  HAfb_vTcPR_Ceex2->SetTitle(0);
   HAfb_vTcPR_Ceex2->SetMinimum(-0.02);
   HAfb_vTcPR_Ceex2->SetMaximum( 0.06);
   HAfb_vTcPR_Ceex2->DrawCopy("h");
@@ -233,8 +235,9 @@ void FigVprod()
   //afbv_ISR2_FSR2->SetLineColor(kBlack);
   //afbv_ISR2_FSR2->DrawCopy("hsame");
   //
-  CaptT->DrawLatex(0.12,0.95,"(d) A^{KKMC}_{FB}(|cos(#theta|<0.88), Red/Green=IFIon/off");
-  CaptT->DrawLatex(0.17,0.85,"  A^{KKsem}_{FB}(|cos(#theta|<0.88), Black=IFIoff");
+  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{KKsem}_{FB}, Red/Green = IFI on/off");
+  CaptT->DrawLatex(0.60,0.75,TextEne);
+
   //----------------------------
   cFigVprod2->cd();
   cFigVprod2->SaveAs("cFigVprod2.jpg");
@@ -263,3 +266,4 @@ int main(int argc, char **argv)
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
 }
+
