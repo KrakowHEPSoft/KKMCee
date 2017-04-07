@@ -29,12 +29,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // archive
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 // current
 //TFile DiskFileA("../test0/rmain.root");
-//TFile DiskFileA("../workAFB/rmain.root");
+TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
@@ -883,11 +883,11 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
-  //FigScatA();
+  FigScatA();
   FigInfo();
 
-  //FigVtest();  // introduct. tests/calibrations
-  //FigCtest();  // introduct. tests/calibrations
+  FigVtest();  // introduct. tests/calibrations
+  FigCtest();  // introduct. tests/calibrations
 
   FigVprod();
   FigCprod();

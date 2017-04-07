@@ -277,6 +277,7 @@ void FigCdifIFI()
   CaptT->DrawLatex(0.35,0.75,
      "Red: #Delta A^{IFI}_{FB}(s_{+}) - #Delta A^{IFI}_{FB}(s_{-})");
   cCdifIFI->cd();
+  cCdifIFI->SaveAs("cCdifIFI.jpg");
 //
 }// FigCdifIFI
 

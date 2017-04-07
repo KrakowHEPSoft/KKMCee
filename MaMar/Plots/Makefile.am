@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2
+bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -52,6 +52,10 @@ Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 PlotFSR_SOURCES = KKsem.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+PlotIFI_SOURCES = KKsem.cxx PlotIFI.cxx
+PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ######################### private #############################
 plot1: Plot1
