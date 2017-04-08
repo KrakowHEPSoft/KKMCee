@@ -60,12 +60,13 @@ PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 ######################### private #############################
 plot1: Plot1
 	./Plot1
-################# PRD88 Table 1 benchmark ##########
-#		make sig_afb_prd88-pdf
+################# PRD88 Table I benchmark ##########
+#		make BMarkPRD88-pdf
+BM1 = BMarkPRD88
 FigVprod.jpg: PlotIFI
 	./PlotIFI
-sig_afb_prd88.pdf: sig_afb_prd88.tex FigVprod.jpg
-	pdflatex sig_afb_prd88.tex
-sig_afb_prd88-pdf: sig_afb_prd88.pdf
-	xpdf sig_afb_prd88.pdf
+$(BM1).pdf: $(BM1).tex FigVprod.jpg
+	pdflatex $(BM1).tex
+$(BM1)-pdf: $(BM1).pdf
+	xpdf $(BM1).pdf
 ###############################################################
