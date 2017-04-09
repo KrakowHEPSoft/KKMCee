@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <stdio.h>
 using namespace std;
 
 #include <math.h>
@@ -19,6 +20,7 @@ using namespace std;
 #include "TGaxis.h"
 #include "TApplication.h"
 #include "TMarker.h"
+#include "TObjString.h"
 
 #include "KKsem.h"
 
@@ -33,6 +35,10 @@ using namespace std;
 //TFile DiskFileA("../test0/rmain.root");
 TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
+FILE *DiskFileT;
+// Interface to KKsem and some extra plotting facilities
+KKsem LibSem;
+
 //=============================================================================
 
 Double_t sqr( const Double_t x ){ return x*x;};
@@ -75,7 +81,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  KKsem LibSem;
+  //KKsem LibSem;
   LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon
@@ -160,8 +166,6 @@ void ReMakeMChisto(){
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVprod()
 {
@@ -244,12 +248,97 @@ void FigVprod()
   //================================================
 }//FigVprod
 
+
+void GLK_PlCap(FILE *ltx, int lint)
+{
+//----------------------------------------------------------------------
+// Lint =0     Normal mode, full LaTeX header
+// Lint =1     For TeX file is used in \input, no  LaTeX header
+// Lint =2     LaTeX header for one-page plot used as input for postscript
+// Negative Lint only for debug, big frame around plot is added.
+//----------------------------------------------------------------------
+if( abs(lint) == 0){
+// Normal mode, no colors!!!
+   fprintf(ltx,"\\documentclass[12pt]{article}\n");
+   fprintf(ltx,"\\textwidth  = 16cm\n");
+   fprintf(ltx,"\\textheight = 18cm\n");
+   fprintf(ltx,"\\begin{document}\n");
+   fprintf(ltx,"  \n");
+} else if( abs(lint) == 1) {
+// For TeX file is used in \input
+   fprintf(ltx,"  \n");
+} else if( abs(lint) == 2){
+// For one-page plot being input for postscript
+   fprintf(ltx,"\\documentclass[12pt,dvips]{article}\n");
+   fprintf(ltx,"\\usepackage{amsmath}\n");
+   fprintf(ltx,"\\usepackage{amssymb}\n");
+   fprintf(ltx,"\\usepackage{epsfig}\n");
+   fprintf(ltx,"\\usepackage{epic}\n");
+   fprintf(ltx,"\\usepackage{eepic}\n");
+   fprintf(ltx,"\\usepackage{color}\n"); //<-for colors!!!
+   fprintf(ltx,"\\begin{document}\n");
+   fprintf(ltx,"\\pagestyle{empty}\n");
+   fprintf(ltx,"  \n");
+} else {
+   cout<<"+++STOP in GLK_PlInt, wrong lint =" <<lint<< endl;
+}// lint
+}//GLK_PlCap
+
+void GLK_PlEnd(FILE *ltex, int lint)
+{//---------------------------------------------------
+// Note that TeX file is used in \input then you may not want
+// to have header and \end{document}
+if( lint |= 1){
+   fprintf(ltex,"\\end{document} \nl");
+}
+}//GLK_PlEnd
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void TabBN1()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= TabBN1 start=========================== "<<endl;
+//************************************
+  DiskFileT = fopen("Table1.txp","w");
+//************************************
+//
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
+
+  LibSem.PlCap(DiskFileT, 2);
+
+  fprintf(DiskFileT,"$\\sqrt{s} =$ %4.2fGeV \n", CMSene);
+
+  TObjString *capt[10];
+  capt[1]="{\\color{blue}$v_{\\max}$}";
+  capt[2]='{\\color{blue} ${\\cal KK}$sem Refer.}';
+  capt[3]='{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }';
+  capt[4]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}';
+  capt[5]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }';
+
+  fprintf(DiskFileT,"%s \n", capt[1]);
+
+
+  LibSem.PlEnd(DiskFileT, 2);
+
+
+//************************************
+  fclose(DiskFileT);
+//************************************
+  cout<<" ========================= TabBN1 end =========================== "<<endl;
+}//TabBN1
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+  DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
@@ -257,11 +346,14 @@ int main(int argc, char **argv)
 
   FigVprod();
 
+  TabBN1();
+
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
   DiskFileB.Write();
   DiskFileB.Close();
+
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++

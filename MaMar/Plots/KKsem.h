@@ -63,8 +63,11 @@ class KKsem{
   void Initialize(TFile&);
   void VVplot( TH1 *, long , char [], long, long );
   void Cplot(  TH1 *, long , char [], long, long, double, double);
+  void PlCap(FILE *, int );
+  void PlEnd(FILE *, int );
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(KKsem,1)
-};
+};// KKsem
+
 ////////////////////////////////////////////////////////////////////////////
 #endif

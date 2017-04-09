@@ -92,6 +92,53 @@ void KKsem::Cplot( TH1 *hstNew,
   kksem_setcrange_(-1.0,1.0); // back to normal
 }// KKsem::VVplot
 
+
+void KKsem::PlCap(FILE *ltx, int lint)
+{
+//----------------------------------------------------------------------
+// Lint =0     Normal mode, full LaTeX header
+// Lint =1     For TeX file is used in \input, no  LaTeX header
+// Lint =2     LaTeX header for one-page plot used as input for postscript
+// Negative Lint only for debug, big frame around plot is added.
+//----------------------------------------------------------------------
+if( abs(lint) == 0){
+// Normal mode, no colors!!!
+   fprintf(ltx,"\\documentclass[12pt]{article}\n");
+   fprintf(ltx,"\\textwidth  = 16cm\n");
+   fprintf(ltx,"\\textheight = 18cm\n");
+   fprintf(ltx,"\\begin{document}\n");
+   fprintf(ltx,"  \n");
+} else if( abs(lint) == 1) {
+// For TeX file is used in \input
+   fprintf(ltx,"  \n");
+} else if( abs(lint) == 2){
+// For one-page plot being input for postscript
+   fprintf(ltx,"\\documentclass[12pt,dvips]{article}\n");
+   fprintf(ltx,"\\usepackage{amsmath}\n");
+   fprintf(ltx,"\\usepackage{amssymb}\n");
+   fprintf(ltx,"\\usepackage{epsfig}\n");
+   fprintf(ltx,"\\usepackage{epic}\n");
+   fprintf(ltx,"\\usepackage{eepic}\n");
+   fprintf(ltx,"\\usepackage{color}\n"); //<-for colors!!!
+   fprintf(ltx,"\\begin{document}\n");
+   fprintf(ltx,"\\pagestyle{empty}\n");
+   fprintf(ltx,"  \n");
+} else {
+   cout<<"+++STOP in GLK_PlInt, wrong lint =" <<lint<< endl;
+}// lint
+}//GLK_PlCap
+
+void KKsem::PlEnd(FILE *ltex, int lint)
+{//---------------------------------------------------
+// Note that TeX file is used in \input then you may not want
+// to have header and \end{document}
+if( lint |= 1){
+   fprintf(ltex,"\\end{document} \nl");
+}
+}//GLK_PlEnd
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //                End of Class KKsem                                         //
