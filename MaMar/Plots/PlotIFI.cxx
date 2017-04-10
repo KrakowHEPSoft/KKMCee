@@ -313,11 +313,11 @@ void TabBN1()
   fprintf(DiskFileT,"$\\sqrt{s} =$ %4.2fGeV \n", CMSene);
 
   TObjString *capt[10];
-  capt[1]="{\\color{blue}$v_{\\max}$}";
-  capt[2]='{\\color{blue} ${\\cal KK}$sem Refer.}';
-  capt[3]='{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }';
-  capt[4]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}';
-  capt[5]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }';
+//  capt[1]="{\\color{blue}$v_{\\max}$}";
+//  capt[2]='{\\color{blue} ${\\cal KK}$sem Refer.}';
+//  capt[3]='{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }';
+//  capt[4]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}';
+//  capt[5]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }';
 
   fprintf(DiskFileT,"%s \n", capt[1]);
 
