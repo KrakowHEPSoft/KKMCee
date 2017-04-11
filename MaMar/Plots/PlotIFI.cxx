@@ -312,14 +312,19 @@ void TabBN1()
 
   fprintf(DiskFileT,"$\\sqrt{s} =$ %4.2fGeV \n", CMSene);
 
-  TObjString *capt[10];
-//  capt[1]="{\\color{blue}$v_{\\max}$}";
-//  capt[2]='{\\color{blue} ${\\cal KK}$sem Refer.}';
-//  capt[3]='{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }';
-//  capt[4]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}';
-//  capt[5]='{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }';
+  Char_t capt[20][132];
+
+  strcpy(capt[1],"{\\color{blue}$v_{\\max}$}");
+  strcpy(capt[2],"{\\color{blue} ${\\cal KK}$sem Refer.}");
+  strcpy(capt[3],"{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }");
+  strcpy(capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
+  strcpy(capt[5],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
+
 
   fprintf(DiskFileT,"%s \n", capt[1]);
+  fprintf(DiskFileT,"%s \n", capt[2]);
+
+
 
 
   LibSem.PlEnd(DiskFileT, 2);
@@ -340,11 +345,11 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
-  KKsemMakeHisto();    // prepare histos from KKsem
-  ReMakeMChisto();     // reprocessing MC histos
+  //KKsemMakeHisto();    // prepare histos from KKsem
+  //ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
 
-  FigVprod();
+  //FigVprod();
 
   TabBN1();
 
