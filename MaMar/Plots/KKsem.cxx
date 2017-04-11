@@ -139,7 +139,7 @@ if( m_lint |= 1){
 }//GLK_PlEnd
 
 //  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
-void KKsem::PlTable2(int Npl, FILE *ltex, Char_t *Capt[], const char *chr1)
+void KKsem::PlTable2(int Npl, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1)
 //* Tables in TeX, up to 9 columns
 //* Npl           = numbers of columns/histograms
 //* idl(1:Npl)    = list of histo id's
@@ -158,11 +158,6 @@ void KKsem::PlTable2(int Npl, FILE *ltex, Char_t *Capt[], const char *chr1)
 //*    caption, line by line, see also comments in GLK_PlCapt routine.
 {
 
-  //fprintf(ltex,"%s \n", Capt[1]);
-  //fprintf(ltex,"%s \n", Capt[2]);
-
-  //if( chr1 == "S" ) fprintf(ltex,"ch1= %s \n", chr1);
-
   if( chr1 == " "){
 	  //------------------------------!
 	  //           Header
@@ -177,15 +172,6 @@ void KKsem::PlTable2(int Npl, FILE *ltex, Char_t *Capt[], const char *chr1)
 	      fprintf(ltex,"\\begin{table}[!ht] \n");
 	      fprintf(ltex,"\\centering \n");
 	  }
-	  //------------------------------!
-	  // Central Caption
-	  //------------------------------!
-	  //if(ABS(m_lint) |= 2 ) {
-	  //  fprintf(ltex,"\\caption{\\footnotesize\\sf'
-	  //  for(int i=1, i<=m_KeyTit; i++){
-	  //  fprintf(ltex,"%s \n",    m_titch(i));
-	  //}
-	  //fprintf(ltex," \n");
 
 	  //------------------------------!
 	  // Tabular header
@@ -193,33 +179,63 @@ void KKsem::PlTable2(int Npl, FILE *ltex, Char_t *Capt[], const char *chr1)
 	  //WRITE(m_ltx,'(20A)') m_BS,'begin{tabular} {|',  ('|r',j=1,Npl+1),  '||}'
 	  //WRITE(m_ltx,'(4A)') m_BS,'hline',m_BS,'hline'
       fprintf(ltex,"\\begin{tabular}{|");
-	  for(int i=1; i<=Npl; i++ ) fprintf(ltex,"|r");
+	  for(int i=0; i<=Npl; i++ ) fprintf(ltex,"|r");
 	  fprintf(ltex,"||}\n");
 	  fprintf(ltex,"\\hline\\hline\n");
+
 	  //------------------------------!
 	  // Captions in columns
 	  //------------------------------!
 	  //WRITE(m_ltx,'(2A)') ccapt(1),('&',ccapt(j+1),j=1,Npl)
-	  fprintf(ltex,"%s  \n", Capt[1]);
-	  for(int i=2; i<=Npl; i++ ) fprintf(ltex,"& %s \n", Capt[i]);
-  }//chr1
-  fprintf(ltex,"\\\\ \\hline\n");
+	  fprintf(ltex,"%s  \n", Capt[0]);
+	  for(int i=1; i<=Npl; i++ ) fprintf(ltex,"& %s \n", Capt[i]);
+
+	  fprintf(ltex,"\\\\ \\hline\n");
+  }
 
 
+  //------------------------------!
+  // Optional multicolumn caption
+  //------------------------------!
+  //if(Mcapt |= " "){
+  fprintf(ltex,"& \\multicolumn{ %i }{c||}{",Npl);
+  fprintf(ltex,"  %s  } \\\\   \\hline\n", Mcapt);
+  //}//Mcapt
 
+  // X range taken from 1-st histogram
+  int      nbX  = (iHst[1])->GetNbinsX();
+  Double_t Xmax = (iHst[1])->GetXaxis()->GetXmax();
+  Double_t Xmin = (iHst[1])->GetXaxis()->GetXmin();
+  double dx = (Xmax-Xmin)/nbX;
+  cout<<"  nbX=  " <<nbX<<endl;
+  cout<<"  Xmin= " <<Xmin<<endl;
+  cout<<"  Xmax= " <<Xmax<<endl;
+  // Raws
+
+  double xk, yi, ei;
+
+  int k1,k2,dk;
+  k1=10; k2=90; dk=20;  //original
+  k1= 5; k2=45; dk=10;
+  for(int k=k1; k<=k2; k+=dk){    // loop over bin (raw) number
+	cout<<" k="<<k<<endl;
+	xk = Xmin +dx*k; // right edge
+    fprintf(ltex,"$  %10.2f $", xk);
+    for( int j=1; j<=Npl; j++ ){
+	   yi = (iHst[j])->GetBinContent(k);
+	   ei = (iHst[j])->GetBinError(k);
+	   fprintf(ltex," & $ %10.4f \\pm %8.4f $ ", yi, ei);
+     }//j
+    fprintf(ltex,"\\\\ \n");
+ }//k
 
   //------------------------------!
   // Ending
   //------------------------------!
   fprintf(ltex,"\\hline\n");
+
+
   fprintf(ltex,"\\end{tabular}\n");
-  if(abs(m_lint) == 2 ){
-       fprintf(ltex,"% ========================================\n");
-  } else {
-       fprintf(ltex,"\\end{table}\n");
-  }
-  fprintf(ltex,"% ============= end   table ==============\n");
-  fprintf(ltex,"% ========================================\n");
 
 }//GLK_PlTable2
 

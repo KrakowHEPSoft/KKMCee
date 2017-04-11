@@ -66,7 +66,7 @@ class KKsem{
   void Cplot(  TH1 *, long , char [], long, long, double, double);
   void PlInitialize(FILE *, int );
   void PlEnd(FILE *);
-  void PlTable2(int, FILE *, Char_t *Capt[], const char* );
+  void PlTable2(int, TH1D* iHst[], FILE*, Char_t *Capt[], Char_t[] , const char* );
 
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(KKsem,1)

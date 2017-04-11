@@ -249,94 +249,81 @@ void FigVprod()
 }//FigVprod
 
 
-void GLK_PlCap(FILE *ltx, int lint)
-{
-//----------------------------------------------------------------------
-// Lint =0     Normal mode, full LaTeX header
-// Lint =1     For TeX file is used in \input, no  LaTeX header
-// Lint =2     LaTeX header for one-page plot used as input for postscript
-// Negative Lint only for debug, big frame around plot is added.
-//----------------------------------------------------------------------
-if( abs(lint) == 0){
-// Normal mode, no colors!!!
-   fprintf(ltx,"\\documentclass[12pt]{article}\n");
-   fprintf(ltx,"\\textwidth  = 16cm\n");
-   fprintf(ltx,"\\textheight = 18cm\n");
-   fprintf(ltx,"\\begin{document}\n");
-   fprintf(ltx,"  \n");
-} else if( abs(lint) == 1) {
-// For TeX file is used in \input
-   fprintf(ltx,"  \n");
-} else if( abs(lint) == 2){
-// For one-page plot being input for postscript
-   fprintf(ltx,"\\documentclass[12pt,dvips]{article}\n");
-   fprintf(ltx,"\\usepackage{amsmath}\n");
-   fprintf(ltx,"\\usepackage{amssymb}\n");
-   fprintf(ltx,"\\usepackage{epsfig}\n");
-   fprintf(ltx,"\\usepackage{epic}\n");
-   fprintf(ltx,"\\usepackage{eepic}\n");
-   fprintf(ltx,"\\usepackage{color}\n"); //<-for colors!!!
-   fprintf(ltx,"\\begin{document}\n");
-   fprintf(ltx,"\\pagestyle{empty}\n");
-   fprintf(ltx,"  \n");
-} else {
-   cout<<"+++STOP in GLK_PlInt, wrong lint =" <<lint<< endl;
-}// lint
-}//GLK_PlCap
-
-void GLK_PlEnd(FILE *ltex, int lint)
-{//---------------------------------------------------
-// Note that TeX file is used in \input then you may not want
-// to have header and \end{document}
-if( lint |= 1){
-   fprintf(ltex,"\\end{document} \nl");
-}
-}//GLK_PlEnd
-
 
 ///////////////////////////////////////////////////////////////////////////////////
 void TabBN1()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= TabBN1 start=========================== "<<endl;
-//************************************
-  DiskFileT = fopen("Table1.txp","w");
-//************************************
 //
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
+  //
+  // KKsem
+  TH1D *vcum_ISR2_FSR2   = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");
+  TH1D *afbv_ISR2_FSR2   = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");
 
-  LibSem.PlInitialize(DiskFileT, 2);
+  // Distributions of v=vTrue
+  // without cutoff on c=cos(thetaPRD)
+  TH1D *HTot_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2");
+  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");
 
-
-  int nColumn=5;   // KORALZ eliminated
+  TH1D *HTot_vTcPR_Ceex2n= (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
+  TH1D *HAfb_vTcPR_Ceex2n= (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n");
 
 //  Char_t Capt[20][132];
 
-  Char_t *Capt[nColumn+1];
-  for( int i=0; i<=nColumn; i++ ) Capt[i]=new char[132];
+// Column captions
+  int nPlt=4;   // KORALZ eliminated
+  Char_t *Capt[nPlt+1];
+  for( int i=0; i<=nPlt; i++ ) Capt[i]=new char[132];
+  strcpy(Capt[0],"{\\color{blue}$v_{\\max}$}");
+  strcpy(Capt[1],"{\\color{blue} ${\\cal KK}$sem Refer.}");
+  strcpy(Capt[2],"{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }");
+  strcpy(Capt[3],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
+  strcpy(Capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
 
-  strcpy(Capt[1],"{\\color{blue}$v_{\\max}$}");
-  strcpy(Capt[2],"{\\color{blue} ${\\cal KK}$sem Refer.}");
-  strcpy(Capt[3],"{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }");
-  strcpy(Capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
-  strcpy(Capt[5],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
+// formats
+  Char_t fmt[3][10];
+  strcpy(fmt[0],"f10.2");
+  strcpy(fmt[1],"f10.4");
+  strcpy(fmt[2],"f8.4");
 
+// pointers to histograms
+  TH1D *iHst[nPlt+1];
+  iHst[1]= vcum_ISR2_FSR2;     //KKsem
+  iHst[2]= HTot_vTcPR_Ceex2n;  //EEX3??
+  iHst[3]= HTot_vTcPR_Ceex2n;  //CEEX2 INT off
+  iHst[4]= HTot_vTcPR_Ceex2;   //CEEX2
+  iHst[1]->Scale(1e3);    // nano- to pico-barns
+  iHst[2]->Scale(1e3);    // nano- to pico-barns
+//  iHst[3]->Scale(1e3);   // nano- to pico-barns ???
+  iHst[4]->Scale(1e3);    // nano- to pico-barns
+// multicolumn caption
+  Char_t Mcapt[132];
+  strcpy(Mcapt,"{\\color{red}$\\sigma(v_{\\max})$ [pb]}");
 
-//  fprintf(DiskFileT,"%s \n", Capt[1]);
-//  fprintf(DiskFileT,"%s \n", Capt[2]);
-//  fprintf(DiskFileT,"%s \n", Capt[5]);
+///************************************
+  DiskFileT = fopen("Table1.txp","w");
+//************************************
+// Initialization of the latex source file
+  LibSem.PlInitialize(DiskFileT, 2);
 
-  fprintf(DiskFileT,"TEST!!!!!!!!!!!!! $\\sqrt{s} =$ %4.2fGeV \n", CMSene);
-
+// The actual plotting
 //  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
-  LibSem.PlTable2(nColumn, DiskFileT, Capt, " ");
+  LibSem.PlTable2(nPlt, iHst, DiskFileT, Capt,  Mcapt, " ");
 
+  iHst[1]= afbv_ISR2_FSR2;     //KKsem
+  iHst[2]= HAfb_vTcPR_Ceex2;   //EEX3??
+  iHst[3]= HAfb_vTcPR_Ceex2n;  //CEEX2 INT off
+  iHst[4]= HAfb_vTcPR_Ceex2;   //CEEX2
+
+  LibSem.PlTable2(nPlt, iHst, DiskFileT, Capt,  Mcapt, "S");
+
+// finishing latex sourca file
   LibSem.PlEnd(DiskFileT);
-
-
 //************************************
   fclose(DiskFileT);
 //************************************
@@ -351,13 +338,13 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
 
-  TabBN1();
-
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
+
+  TabBN1();
 
   FigVprod();
 
