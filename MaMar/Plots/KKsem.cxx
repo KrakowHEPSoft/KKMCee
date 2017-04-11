@@ -93,7 +93,7 @@ void KKsem::Cplot( TH1 *hstNew,
 }// KKsem::VVplot
 
 
-void KKsem::PlCap(FILE *ltx, int lint)
+void KKsem::PlInitialize(FILE *ltx, int lint)
 {
 //----------------------------------------------------------------------
 // Lint =0     Normal mode, full LaTeX header
@@ -101,6 +101,7 @@ void KKsem::PlCap(FILE *ltx, int lint)
 // Lint =2     LaTeX header for one-page plot used as input for postscript
 // Negative Lint only for debug, big frame around plot is added.
 //----------------------------------------------------------------------
+   m_lint=lint;
 if( abs(lint) == 0){
 // Normal mode, no colors!!!
    fprintf(ltx,"\\documentclass[12pt]{article}\n");
@@ -128,15 +129,99 @@ if( abs(lint) == 0){
 }// lint
 }//GLK_PlCap
 
-void KKsem::PlEnd(FILE *ltex, int lint)
+void KKsem::PlEnd(FILE *ltex)
 {//---------------------------------------------------
 // Note that TeX file is used in \input then you may not want
 // to have header and \end{document}
-if( lint |= 1){
+if( m_lint |= 1){
    fprintf(ltex,"\\end{document} \nl");
 }
 }//GLK_PlEnd
 
+//  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
+void KKsem::PlTable2(int Npl, FILE *ltex, Char_t *Capt[], const char *chr1)
+//* Tables in TeX, up to 9 columns
+//* Npl           = numbers of columns/histograms
+//* idl(1:Npl)    = list of histo id's
+//* ccapt(1:Npl+1)= list of column-captions above each column
+//* mcapt         = multicolumn header, none if mcapt=' ',
+//* fmt(1:1)      = format to print x(i) in first columb,
+//*                 h(i) and error he(i) in further columns
+//* chr1          = ' ' normal default, ='S' the Same table continued
+//* chr2          = ' ' midle of the bin for x(i) in the first column
+//*               = 'R' right edge,     ='L' left edge of the bin
+//* chr3          = ' ' no page eject,  ='E' with page eject at the end.
+//* Furthermore:
+//* Captions are defined by means of
+//*    CALL GLK_PlCapt(capt) before CALL GLK_PlTable2
+//*    where CHARACTER*80 capt(50) is content of
+//*    caption, line by line, see also comments in GLK_PlCapt routine.
+{
+
+  //fprintf(ltex,"%s \n", Capt[1]);
+  //fprintf(ltex,"%s \n", Capt[2]);
+
+  //if( chr1 == "S" ) fprintf(ltex,"ch1= %s \n", chr1);
+
+  if( chr1 == " "){
+	  //------------------------------!
+	  //           Header
+	  //------------------------------!
+	  fprintf(ltex," \n");
+	  fprintf(ltex,"% ========================================\n");
+	  fprintf(ltex,"% ============ begin table ===============\n");
+	  //
+	  if (abs(m_lint) == 2 ){
+	      fprintf(ltex,"\\noindent\n");
+	  } else {
+	      fprintf(ltex,"\\begin{table}[!ht] \n");
+	      fprintf(ltex,"\\centering \n");
+	  }
+	  //------------------------------!
+	  // Central Caption
+	  //------------------------------!
+	  //if(ABS(m_lint) |= 2 ) {
+	  //  fprintf(ltex,"\\caption{\\footnotesize\\sf'
+	  //  for(int i=1, i<=m_KeyTit; i++){
+	  //  fprintf(ltex,"%s \n",    m_titch(i));
+	  //}
+	  //fprintf(ltex," \n");
+
+	  //------------------------------!
+	  // Tabular header
+	  //------------------------------!
+	  //WRITE(m_ltx,'(20A)') m_BS,'begin{tabular} {|',  ('|r',j=1,Npl+1),  '||}'
+	  //WRITE(m_ltx,'(4A)') m_BS,'hline',m_BS,'hline'
+      fprintf(ltex,"\\begin{tabular}{|");
+	  for(int i=1; i<=Npl; i++ ) fprintf(ltex,"|r");
+	  fprintf(ltex,"||}\n");
+	  fprintf(ltex,"\\hline\\hline\n");
+	  //------------------------------!
+	  // Captions in columns
+	  //------------------------------!
+	  //WRITE(m_ltx,'(2A)') ccapt(1),('&',ccapt(j+1),j=1,Npl)
+	  fprintf(ltex,"%s  \n", Capt[1]);
+	  for(int i=2; i<=Npl; i++ ) fprintf(ltex,"& %s \n", Capt[i]);
+  }//chr1
+  fprintf(ltex,"\\\\ \\hline\n");
+
+
+
+
+  //------------------------------!
+  // Ending
+  //------------------------------!
+  fprintf(ltex,"\\hline\n");
+  fprintf(ltex,"\\end{tabular}\n");
+  if(abs(m_lint) == 2 ){
+       fprintf(ltex,"% ========================================\n");
+  } else {
+       fprintf(ltex,"\\end{table}\n");
+  }
+  fprintf(ltex,"% ============= end   table ==============\n");
+  fprintf(ltex,"% ========================================\n");
+
+}//GLK_PlTable2
 
 
 ///////////////////////////////////////////////////////////////////////////////

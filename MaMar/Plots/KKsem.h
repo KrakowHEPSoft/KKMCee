@@ -56,6 +56,7 @@ extern "C" double bornv_simple_( const long&,  const long&, const double&, const
 class KKsem{
   //double m_ypar ... to be implemented?
  public:
+	int m_lint;      // type of input
 //------ constructors destructors -------
   KKsem(){;};
   ~KKsem(){;};
@@ -63,8 +64,10 @@ class KKsem{
   void Initialize(TFile&);
   void VVplot( TH1 *, long , char [], long, long );
   void Cplot(  TH1 *, long , char [], long, long, double, double);
-  void PlCap(FILE *, int );
-  void PlEnd(FILE *, int );
+  void PlInitialize(FILE *, int );
+  void PlEnd(FILE *);
+  void PlTable2(int, FILE *, Char_t *Capt[], const char* );
+
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(KKsem,1)
 };// KKsem

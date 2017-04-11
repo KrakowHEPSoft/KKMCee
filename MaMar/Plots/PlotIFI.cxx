@@ -308,26 +308,33 @@ void TabBN1()
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
 
-  LibSem.PlCap(DiskFileT, 2);
-
-  fprintf(DiskFileT,"$\\sqrt{s} =$ %4.2fGeV \n", CMSene);
-
-  Char_t capt[20][132];
-
-  strcpy(capt[1],"{\\color{blue}$v_{\\max}$}");
-  strcpy(capt[2],"{\\color{blue} ${\\cal KK}$sem Refer.}");
-  strcpy(capt[3],"{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }");
-  strcpy(capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
-  strcpy(capt[5],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
+  LibSem.PlInitialize(DiskFileT, 2);
 
 
-  fprintf(DiskFileT,"%s \n", capt[1]);
-  fprintf(DiskFileT,"%s \n", capt[2]);
+  int nColumn=5;   // KORALZ eliminated
+
+//  Char_t Capt[20][132];
+
+  Char_t *Capt[nColumn+1];
+  for( int i=0; i<=nColumn; i++ ) Capt[i]=new char[132];
+
+  strcpy(Capt[1],"{\\color{blue}$v_{\\max}$}");
+  strcpy(Capt[2],"{\\color{blue} ${\\cal KK}$sem Refer.}");
+  strcpy(Capt[3],"{\\color{blue}${\\cal O}(\\alpha^3)_{\\rm EEX3}$ }");
+  strcpy(Capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
+  strcpy(Capt[5],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
 
 
+//  fprintf(DiskFileT,"%s \n", Capt[1]);
+//  fprintf(DiskFileT,"%s \n", Capt[2]);
+//  fprintf(DiskFileT,"%s \n", Capt[5]);
 
+  fprintf(DiskFileT,"TEST!!!!!!!!!!!!! $\\sqrt{s} =$ %4.2fGeV \n", CMSene);
 
-  LibSem.PlEnd(DiskFileT, 2);
+//  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
+  LibSem.PlTable2(nColumn, DiskFileT, Capt, " ");
+
+  LibSem.PlEnd(DiskFileT);
 
 
 //************************************
@@ -343,15 +350,16 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
-  DiskFileB.cd();
-  HistNormalize();     // Renormalization of MC histograms
-  //KKsemMakeHisto();    // prepare histos from KKsem
-  //ReMakeMChisto();     // reprocessing MC histos
-  //========== PLOTTING ==========
-
-  //FigVprod();
 
   TabBN1();
+
+  DiskFileB.cd();
+  HistNormalize();     // Renormalization of MC histograms
+  KKsemMakeHisto();    // prepare histos from KKsem
+  ReMakeMChisto();     // reprocessing MC histos
+  //========== PLOTTING ==========
+
+  FigVprod();
 
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
