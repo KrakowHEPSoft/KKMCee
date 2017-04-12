@@ -216,7 +216,7 @@ void FigVprod()
   CaptTb->Draw();
   //----------------------------
   cFigVprod->cd();
-  cFigVprod->SaveAs("cFigVprod.jpg");
+  cFigVprod->SaveAs("cFigVprod.pdf");
 
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigVprod2 = new TCanvas("cFigVprod2","FigVprod2",100, 50,    700, 700);
@@ -244,10 +244,9 @@ void FigVprod()
 
   //----------------------------
   cFigVprod2->cd();
-  cFigVprod2->SaveAs("cFigVprod2.jpg");
+  cFigVprod2->SaveAs("cFigVprod2.pdf");
   //================================================
 }//FigVprod
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -285,11 +284,11 @@ void TabBN1()
   strcpy(Capt[3],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ intOFF}");
   strcpy(Capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
 
-// formats
-  Char_t fmt[3][10];
-  strcpy(fmt[0],"f10.2");
-  strcpy(fmt[1],"f10.4");
-  strcpy(fmt[2],"f8.4");
+// formats, not used in PlTable2
+//  Char_t fmt[3][10];
+//  strcpy(fmt[0],"f10.2");
+//  strcpy(fmt[1],"f10.4");
+//  strcpy(fmt[2],"f8.4");
 
 // pointers to histograms
   TH1D *iHst[nPlt+1];
@@ -311,18 +310,25 @@ void TabBN1()
 // Initialization of the latex source file
   LibSem.PlInitialize(DiskFileT, 2);
 
-// The actual plotting
-//  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
-  LibSem.PlTable2(nPlt, iHst, DiskFileT, Capt,  Mcapt, " ");
+
+//  int k1,k2,dk;
+//  k1=10; k2=90; dk=20;  //original
+//  k1= 5; k2=45; dk=10;
+  LibSem.PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
+  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
 
   iHst[1]= afbv_ISR2_FSR2;     //KKsem
   iHst[2]= HAfb_vTcPR_Ceex2;   //EEX3??
   iHst[3]= HAfb_vTcPR_Ceex2n;  //CEEX2 INT off
   iHst[4]= HAfb_vTcPR_Ceex2;   //CEEX2
 
-  LibSem.PlTable2(nPlt, iHst, DiskFileT, Capt,  Mcapt, "S");
+  strcpy(Mcapt,"{\\color{red}$A_{\\rm FB}(v_{\\max})$}");
+  LibSem.PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 1, 1, 1); // for 50 bins
+  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "E",50,50, 1); // for 50 bins
 
-// finishing latex sourca file
+// finalizing latex source file
   LibSem.PlEnd(DiskFileT);
 //************************************
   fclose(DiskFileT);

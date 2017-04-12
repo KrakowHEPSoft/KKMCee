@@ -58,15 +58,33 @@ PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ######################### private #############################
+SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
+#==============================================================
+#===============================================
+.txp.eps:
+	(latex $*.txp; dvips -E $*.dvi -o $*.eps;)
+.txp.pdf:
+	( latex $*.txp; dvips -E $*.dvi -o $*.eps ; ps2pdf -dEPSCrop $*.eps ;)
+#	($(FIG2PDF)  $*.fig $*.pdf )
+#################
 plot1: Plot1
 	./Plot1
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
+PlotIFI.phony: PlotIFI
+	(./PlotIFI; touch PlotIFI.phony;)
+#######
 BM1 = BMarkPRD88
-FigVprod.jpg: PlotIFI
-	./PlotIFI
-$(BM1).pdf: $(BM1).tex FigVprod.jpg
+FigVprod.pdf:  PlotIFI.phony
+FigVprod2.pdf: PlotIFI.phony
+Table1.txp:    PlotIFI.phony
+#######
+$(BM1).pdf: $(BM1).tex Table1.pdf FigVprod.pdf
 	pdflatex $(BM1).tex
 $(BM1)-pdf: $(BM1).pdf
-	xpdf $(BM1).pdf
+	evince  $(BM1).pdf
+#######
+klean:
+	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap *.phony)
+	(rm -f *.txp chi afb output-* *.hst)
 ###############################################################

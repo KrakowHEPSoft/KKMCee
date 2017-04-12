@@ -138,27 +138,20 @@ if( m_lint |= 1){
 }
 }//GLK_PlEnd
 
-//  SUBROUTINE GLK_PlTable2(Npl,idl,ccapt,mcapt,fmt,chr1,chr2,chr3)
-void KKsem::PlTable2(int Npl, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1)
+void KKsem::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1, int k1,int k2,int dk)
 //* Tables in TeX, up to 9 columns
-//* Npl           = numbers of columns/histograms
+//* Ncol          = numbers of columns/histograms
 //* idl(1:Npl)    = list of histo id's
 //* ccapt(1:Npl+1)= list of column-captions above each column
 //* mcapt         = multicolumn header, none if mcapt=' ',
-//* fmt(1:1)      = format to print x(i) in first columb,
-//*                 h(i) and error he(i) in further columns
-//* chr1          = ' ' normal default, ='S' the Same table continued
-//* chr2          = ' ' midle of the bin for x(i) in the first column
-//*               = 'R' right edge,     ='L' left edge of the bin
-//* chr3          = ' ' no page eject,  ='E' with page eject at the end.
-//* Furthermore:
-//* Captions are defined by means of
-//*    CALL GLK_PlCapt(capt) before CALL GLK_PlTable2
-//*    where CHARACTER*80 capt(50) is content of
-//*    caption, line by line, see also comments in GLK_PlCapt routine.
+//* chr1          = ' ' normal default, = Header+Table+Ending
+//*               = 'B' no page eject,  = Header+Table
+//*               = 'E' no page eject,  =        Table+Ending
+//*               = 'E' no page eject,  =        Table
+//* k1,k2,dk      = range of bins is (k1,k2) with increment dk
 {
-
-  if( chr1 == " "){
+  int Npl=abs(Ncol);
+  if( chr1 == " " || chr1 == "B"){
 	  //------------------------------!
 	  //           Header
 	  //------------------------------!
@@ -193,14 +186,13 @@ void KKsem::PlTable2(int Npl, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t M
 	  fprintf(ltex,"\\\\ \\hline\n");
   }
 
-
-  //------------------------------!
-  // Optional multicolumn caption
-  //------------------------------!
-  //if(Mcapt |= " "){
-  fprintf(ltex,"& \\multicolumn{ %i }{c||}{",Npl);
-  fprintf(ltex,"  %s  } \\\\   \\hline\n", Mcapt);
-  //}//Mcapt
+  //------------------------------------------!
+  // Optional Multicolumn caption
+  //------------------------------------------!
+  if(Ncol>0){
+     fprintf(ltex,"& \\multicolumn{ %i }{c||}{",Npl);
+     fprintf(ltex,"  %s  } \\\\   \\hline\n", Mcapt);
+  }//Mcapt
 
   // X range taken from 1-st histogram
   int      nbX  = (iHst[1])->GetNbinsX();
@@ -213,10 +205,6 @@ void KKsem::PlTable2(int Npl, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t M
   // Raws
 
   double xk, yi, ei;
-
-  int k1,k2,dk;
-  k1=10; k2=90; dk=20;  //original
-  k1= 5; k2=45; dk=10;
   for(int k=k1; k<=k2; k+=dk){    // loop over bin (raw) number
 	cout<<" k="<<k<<endl;
 	xk = Xmin +dx*k; // right edge
@@ -228,14 +216,18 @@ void KKsem::PlTable2(int Npl, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t M
      }//j
     fprintf(ltex,"\\\\ \n");
  }//k
+ fprintf(ltex,"\\hline\n");
 
   //------------------------------!
   // Ending
   //------------------------------!
-  fprintf(ltex,"\\hline\n");
+  if( chr1 == " " || chr1 == "E"){
+	  fprintf(ltex,"\\end{tabular}\n");
+	  fprintf(ltex,"% ============ end   table ===============\n");
+	  fprintf(ltex,"% ========================================\n");
+	  fprintf(ltex," \n");
+  }//chr1
 
-
-  fprintf(ltex,"\\end{tabular}\n");
 
 }//GLK_PlTable2
 
