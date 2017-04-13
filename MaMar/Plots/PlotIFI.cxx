@@ -139,19 +139,24 @@ void ReMakeMChisto(){
   //****************************************************************************************
   // Pure MC reprocessing part
   //
-  TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
+  TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
 
   ///****************************************************************************************
   /// Distributions of v=vTrue with limited c=cos(theta)
   //  without cutoff on c=cos(thetaPRD)
   int nbMax=0;   // cosThetaMax = 1.0
+  TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
+  ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
+  HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
+  HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
+  nbMax=0;   // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
   ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
   HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
   HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
-  //if( CMSene<91.0 ) HAfb_vTcPR_Ceex2->Scale(-1);
+  //
   // IFI off
   nbMax=0;   // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
@@ -200,16 +205,20 @@ void FigVprod()
   //                                   Name    Title     xoff,yoff, WidPix,HeiPix
   cFigVprod->SetFillColor(10);
 
-  HTot_vTcPR_Ceex2->Divide(vcum_ISR2_FSR2);
-  HTot_vTcPR_Ceex2->SetMinimum(0.975);
-  HTot_vTcPR_Ceex2->SetMaximum(1.100);
-  HTot_vTcPR_Ceex2->SetStats(0);
-  HTot_vTcPR_Ceex2->SetTitle(0);
-  HTot_vTcPR_Ceex2->DrawCopy("h");
+  TH1D *HTot_rat_Ceex2 =(TH1D*)HTot_vTcPR_Ceex2->Clone("HTot_rat_Ceex2");
+  HTot_rat_Ceex2->Divide(vcum_ISR2_FSR2);
+
+  HTot_rat_Ceex2->SetMinimum(0.975);
+  HTot_rat_Ceex2->SetMaximum(1.100);
+  HTot_rat_Ceex2->SetStats(0);
+  HTot_rat_Ceex2->SetTitle(0);
+  HTot_rat_Ceex2->DrawCopy("h");
   //
-  HTot_vTcPR_Ceex2n->SetLineColor(kMagenta);
-  HTot_vTcPR_Ceex2n->Divide(vcum_ISR2_FSR2);
-  HTot_vTcPR_Ceex2n->DrawCopy("hsame");
+  TH1D *HTot_rat_Ceex2n = (TH1D*)HTot_vTcPR_Ceex2n->Clone("HTot_rat_Ceex2n");
+  HTot_rat_Ceex2n->Divide(vcum_ISR2_FSR2);
+
+  HTot_rat_Ceex2n->SetLineColor(kMagenta);
+  HTot_rat_Ceex2n->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.85,"Ceex2/KKsem, Blue/Magenta for IFI on/off");
   CaptT->DrawLatex(0.60,0.75,TextEne);
@@ -223,22 +232,23 @@ void FigVprod()
   //                                   Name    Title     xoff,yoff, WidPix,HeiPix
   cFigVprod2->SetFillColor(10);
 
-  HAfb_vTcPR_Ceex2->Add(HAfb_vTcPR_Ceex2,  afbv_ISR2_FSR2,1.0, -1.0);
-  HAfb_vTcPR_Ceex2->SetLineColor(kRed); // red
-  HAfb_vTcPR_Ceex2->SetStats(0);
-  HAfb_vTcPR_Ceex2->SetTitle(0);
-  HAfb_vTcPR_Ceex2->SetMinimum(-0.02);
-  HAfb_vTcPR_Ceex2->SetMaximum( 0.06);
-  HAfb_vTcPR_Ceex2->DrawCopy("h");
+  TH1D *HAfb_diff_Ceex2 =(TH1D*)HAfb_vTcPR_Ceex2->Clone("HAfb_diff_Ceex2");
+  HAfb_diff_Ceex2->Add(HAfb_diff_Ceex2,  afbv_ISR2_FSR2, 1.0, -1.0);
+
+  HAfb_diff_Ceex2->SetLineColor(kRed); // red
+  HAfb_diff_Ceex2->SetStats(0);
+  HAfb_diff_Ceex2->SetTitle(0);
+  HAfb_diff_Ceex2->SetMinimum(-0.02);
+  HAfb_diff_Ceex2->SetMaximum( 0.06);
+  HAfb_diff_Ceex2->DrawCopy("h");
   //
-  HAfb_vTcPR_Ceex2n->Add(HAfb_vTcPR_Ceex2n,afbv_ISR2_FSR2,1.0, -1.0) ;
-  HAfb_vTcPR_Ceex2n->SetLineColor(kGreen); // green
-  HAfb_vTcPR_Ceex2n->SetLineWidth(2);
-  HAfb_vTcPR_Ceex2n->DrawCopy("hsame");
+  TH1D *HAfb_diff_Ceex2n =(TH1D*)HAfb_vTcPR_Ceex2n->Clone("HAfb_diff_Ceex2n");
+  HAfb_diff_Ceex2n->Add(HAfb_diff_Ceex2n, afbv_ISR2_FSR2, 1.0, -1.0) ;
+  HAfb_diff_Ceex2n->SetLineColor(kGreen); // green
+  HAfb_diff_Ceex2n->SetLineWidth(2);
+  HAfb_diff_Ceex2n->DrawCopy("hsame");
   //
-  //afbv_ISR2_FSR2->SetLineColor(kBlack);
-  //afbv_ISR2_FSR2->DrawCopy("hsame");
-  //
+   //
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{KKsem}_{FB}, Red/Green = IFI on/off");
   CaptT->DrawLatex(0.60,0.75,TextEne);
 
@@ -266,6 +276,9 @@ void TabBN1()
 
   // Distributions of v=vTrue
   // without cutoff on c=cos(thetaPRD)
+  TH1D *HTot_vTcPR_Eex2  = (TH1D*)DiskFileB.Get("HTot_vTcPR_Eex2");
+  TH1D *HAfb_vTcPR_Eex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Eex2");
+
   TH1D *HTot_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2");
   TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");
 
@@ -293,12 +306,12 @@ void TabBN1()
 // pointers to histograms
   TH1D *iHst[nPlt+1];
   iHst[1]= vcum_ISR2_FSR2;     //KKsem
-  iHst[2]= HTot_vTcPR_Ceex2n;  //EEX3??
+  iHst[2]= HTot_vTcPR_Eex2;    //EEX2
   iHst[3]= HTot_vTcPR_Ceex2n;  //CEEX2 INT off
   iHst[4]= HTot_vTcPR_Ceex2;   //CEEX2
   iHst[1]->Scale(1e3);    // nano- to pico-barns
   iHst[2]->Scale(1e3);    // nano- to pico-barns
-//  iHst[3]->Scale(1e3);   // nano- to pico-barns ???
+  iHst[3]->Scale(1e3);    // nano- to pico-barns
   iHst[4]->Scale(1e3);    // nano- to pico-barns
 // multicolumn caption
   Char_t Mcapt[132];
@@ -319,7 +332,7 @@ void TabBN1()
   LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
 
   iHst[1]= afbv_ISR2_FSR2;     //KKsem
-  iHst[2]= HAfb_vTcPR_Ceex2;   //EEX3??
+  iHst[2]= HAfb_vTcPR_Eex2;    //EEX2
   iHst[3]= HAfb_vTcPR_Ceex2n;  //CEEX2 INT off
   iHst[4]= HAfb_vTcPR_Ceex2;   //CEEX2
 
@@ -350,9 +363,9 @@ int main(int argc, char **argv)
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
 
-  TabBN1();
-
   FigVprod();
+
+  TabBN1();
 
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
