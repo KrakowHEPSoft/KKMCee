@@ -81,7 +81,7 @@ void ROBOL::Initialize(long &NevTot)
   sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Ceex2->Sumw2();
   sca_vXcPR_Eex2->Sumw2();
-  //  New bigger scatergrams
+  //  New bigger scatergrams, restricted vmax
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
   sct_vAcPR_Ceex2= new TH2D("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
