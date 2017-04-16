@@ -27,7 +27,7 @@ using namespace std;
 #include "TFoamIntegrand.h"
 
 
-#include "KKsem.h"
+#include "KKcol.h"
 #include "KKMC.h"
 
 // ROOT headers
@@ -434,8 +434,8 @@ void KKsemMake(){
 //------------------------------------------------------------------------  
   cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<endl;
   cout<<"xxxxxxxxxxxxxxxx KKsemMake  BEGIN xxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<endl;
-  // initilalization of KKsem
-  KKsem LibSem;
+  // initilalization of KKcol
+  KKcol LibSem;
   LibSem.Initialize(DiskFileA);
   //{{{{{{
   long KF=13; // muon ?????

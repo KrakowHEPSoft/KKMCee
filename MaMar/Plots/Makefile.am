@@ -33,15 +33,15 @@ KK2f_Libs2= \
 	$(top_builddir)/dizet/libDizet.a \
 	$(top_builddir)/KKsem/libKKsem.a
 
-Plot1_SOURCES = KKsem.cxx Plot1.cxx
+Plot1_SOURCES = KKcol.cxx Plot1.cxx
 Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotAFB_SOURCES = KKsem.cxx PlotAFB.cxx
+PlotAFB_SOURCES = KKcol.cxx PlotAFB.cxx
 PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotAFB2_SOURCES = KKsem.cxx PlotAFB2.cxx
+PlotAFB2_SOURCES = KKcol.cxx PlotAFB2.cxx
 PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
@@ -49,11 +49,11 @@ Plot2_SOURCES = Plot2.cxx
 Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotFSR_SOURCES = KKsem.cxx PlotFSR.cxx
+PlotFSR_SOURCES = KKcol.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotIFI_SOURCES = KKsem.cxx PlotIFI.cxx
+PlotIFI_SOURCES = KKcol.cxx PlotIFI.cxx
 PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 

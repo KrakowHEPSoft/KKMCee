@@ -20,7 +20,7 @@ using namespace std;
 #include "TApplication.h"
 #include "TMarker.h"
 
-#include "KKsem.h"
+#include "KKcol.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -76,7 +76,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  KKsem LibSem;
+  KKcol LibSem;
   LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon

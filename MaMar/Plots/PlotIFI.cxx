@@ -22,7 +22,7 @@ using namespace std;
 #include "TMarker.h"
 #include "TObjString.h"
 
-#include "KKsem.h"
+#include "KKcol.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -36,8 +36,8 @@ using namespace std;
 TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
-// Interface to KKsem and some extra plotting facilities
-KKsem LibSem;
+// Interface to KKcol and some extra plotting facilities
+KKcol LibSem;
 
 //=============================================================================
 
@@ -81,7 +81,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  //KKsem LibSem;
+  //KKcol LibSem;
   LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon

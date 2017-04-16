@@ -18,7 +18,7 @@ using namespace std;
 #include "TApplication.h"
 #include "TMarker.h"
 
-#include "KKsem.h"
+#include "KKcol.h"
 
 // ROOT headers
 #include "TROOT.h"
