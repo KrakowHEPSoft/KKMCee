@@ -9,6 +9,9 @@
 #include <iomanip>
 using namespace std;
 
+#include "TH2.h"
+
+double sqr( const Double_t x );
 
 // This works for 1-dim histograms
 void HisNorm0( long   Nevt, double Xsav, TH1 *Hst);

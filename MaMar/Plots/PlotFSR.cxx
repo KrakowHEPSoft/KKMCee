@@ -26,13 +26,10 @@ using namespace std;
 #include "TRandom3.h"
 #include "TFoamIntegrand.h"
 
-
-#include "KKcol.h"
 #include "KKMC.h"
+#include "KKcol.h"
+#include "HisNorm.h"
 
-// ROOT headers
-#include "TROOT.h"
-#include "TFile.h"
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
@@ -44,10 +41,9 @@ TFile DiskFileA("../workFSR/rmain_ddBeams_FSRon_100M.root");            // ddbar
 TFile DiskFileB("PlotFSR.root","RECREATE","histograms");
 //=============================================================================
 
-double sqr( const double_t x ){ return x*x;};
+//double sqr( const double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
-#include "HisNorm.h"
-#include "Marker.h"
+//#include "Marker.h"
 
 //_____________________________________________________________________________
 class Rho4Foam: public TFoamIntegrand{
@@ -123,6 +119,8 @@ Rho4Foam(const char* Name)
 	cout<< "----> Rho4Foam USER Constructor "<<endl;
 	}///
 
+//
+//double sqr( const double_t x ){ return x*x;};
 ///------------------------------------------------------------------------
 double gamISR( double svar){
 	  return  sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);

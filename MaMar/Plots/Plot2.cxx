@@ -12,6 +12,7 @@ using namespace std;
 #include <TLine.h>
 #include <TArrow.h>
 #include <TLatex.h>
+
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "TF2.h"
@@ -19,21 +20,18 @@ using namespace std;
 #include "TGaxis.h"
 #include "TApplication.h"
 #include "TMarker.h"
-
-
-// ROOT headers
-#include "TROOT.h"
 #include "TFile.h"
+
+#include "HisNorm.h"
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 TFile DiskFileA("../workZinv/rmain.root");
 //=============================================================================
 
-Double_t sqr( const Double_t x ){ return x*x;};
+//Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
-#include "HisNorm.h"
-#include "Marker.h"
+//#include "Marker.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){

@@ -21,6 +21,7 @@ using namespace std;
 #include "TMarker.h"
 
 #include "KKcol.h"
+#include "HisNorm.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -38,9 +39,9 @@ TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-Double_t sqr( const Double_t x ){ return x*x;};
+//Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
-#include "HisNorm.h"
+//#include "HisNorm.h"
 #include "Marker.h"
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -21,13 +21,11 @@ using namespace std;
 #include "TApplication.h"
 #include "TMarker.h"
 #include "TObjString.h"
+#include "TFile.h"
 
 #include "KKcol.h"
 #include "HisNorm.h"
 
-// ROOT headers
-#include "TROOT.h"
-#include "TFile.h"
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================

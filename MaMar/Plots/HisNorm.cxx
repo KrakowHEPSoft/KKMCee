@@ -1,13 +1,10 @@
 /////////////////////////////////////////////////////////////////////
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-using namespace std;
+#include "HisNorm.h"
 
 
-#include "TH2.h"
 
-Double_t sqr( const Double_t x ){ return x*x;};
+
+double sqr( const Double_t x ){ return x*x;};
 
 
 // This works for 1-dim histograms

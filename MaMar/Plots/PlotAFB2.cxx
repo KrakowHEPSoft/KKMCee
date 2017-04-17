@@ -20,6 +20,7 @@ using namespace std;
 #include "TMarker.h"
 
 #include "KKcol.h"
+#include "HisNorm.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -39,9 +40,9 @@ TFile DiskFileA4("../workAFB/rmain.root_10GeV_30M");
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 //=============================================================================
 
-Double_t sqr( const Double_t x ){ return x*x;};
+//Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
-#include "HisNorm.h"
+//#include "HisNorm.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
