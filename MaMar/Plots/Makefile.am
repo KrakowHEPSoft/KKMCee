@@ -53,7 +53,7 @@ PlotFSR_SOURCES = KKcol.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotIFI_SOURCES = KKcol.cxx PlotIFI.cxx
+PlotIFI_SOURCES = KKcol.cxx HisNorm.cxx PlotIFI.cxx
 PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 

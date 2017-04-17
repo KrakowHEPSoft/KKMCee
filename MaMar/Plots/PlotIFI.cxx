@@ -23,6 +23,7 @@ using namespace std;
 #include "TObjString.h"
 
 #include "KKcol.h"
+#include "HisNorm.h"
 
 // ROOT headers
 #include "TROOT.h"
@@ -30,7 +31,6 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
-
 // current
 //TFile DiskFileA("../test0/rmain.root");
 TFile DiskFileA("../workAFB/rmain.root");
@@ -40,13 +40,16 @@ FILE *DiskFileT;
 KKcol LibSem;
 
 //=============================================================================
-
-Double_t sqr( const Double_t x ){ return x*x;};
+//Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
-#include "HisNorm.h"
-#include "Marker.h"
-
+//#include "HisNorm.h"
 ///////////////////////////////////////////////////////////////////////////////////
+
+//void HisNorm1(TH1D *NorHst, TH1 *Hst);
+//void HisNorm2(TH1D *NorHst, TH2 *Hst);
+//void ProjV(TH2D *Scat, TH1D *&hxTot, TH1D *&hxAfb, int NbMax);
+
+
 void HistNormalize(){
   //
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
