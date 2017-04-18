@@ -212,8 +212,6 @@ double Rho_fsr(double svar, double uu){
   return rho;
 }//Rho_fsr
 
-
-
 ///////////////////////////////////////////////////////////////
 Double_t Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
@@ -305,8 +303,7 @@ Double_t Density(int nDim, Double_t *Xarg)
 
 	return Dist;
 }// Density
-public:
-};//
+};// class Rho4Foam
 
 ////////////////////////////////////////////////////////////////////////////////
 //

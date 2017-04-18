@@ -14,23 +14,22 @@ void KKcol::Initialize(TFile &DiskFileA){
   //------------------------------------------------------------------------
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   cout<<"==================================================================="<<endl;
-  cout<<"================ KKcol::initialize begin ==========================="<<endl;
-  const int jmax =10000;
-  double ypar[jmax];
-  for(int j=1; j<=jmax; j++)
-    ypar[j-1]=HST_KKMC_NORMA->GetBinContent(j);    // xpar encoded
+  cout<<"================ KKsem initialization begin ==========================="<<endl;
+  m_jmax =10000;
+  for(int j=1; j<=m_jmax; j++)
+    m_ypar[j-1]=HST_KKMC_NORMA->GetBinContent(j);    // xpar encoded
   //[[[[[
   cout<<"***********************KKsem::initialize****************************"<<endl;
   for(int j=0;j<30;j++)
-    cout<<j+1<<"   "<<ypar[j]<<endl;
+    cout<<j+1<<"   "<<m_ypar[j]<<endl;
   //]]]]]
   char *output_file = "./kksem.output";
   long stl2 = strlen(output_file);
   long mout =16;
   kk2f_fort_open_(mout,output_file,stl2);
-  kk2f_initialize_(ypar);
-  kksem_initialize_(ypar);
-  cout<<"================ KKsem_initialize END   ==========================="<<endl;
+  kk2f_initialize_(m_ypar);
+  kksem_initialize_(m_ypar);
+  cout<<"================ KKsem initialization END   ==========================="<<endl;
   cout<<"==================================================================="<<endl;
   //long kdum; kk2f_getkeyfsr_(kdum); //<-- to avoid linker bug! (if no kk2f_initialize)
 }
@@ -230,7 +229,6 @@ void KKcol::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t 
 	  fprintf(ltex,"% ========================================\n");
 	  fprintf(ltex," \n");
   }//chr1
-
 
 }//GLK_PlTable2
 
