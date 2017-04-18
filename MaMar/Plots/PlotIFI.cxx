@@ -34,6 +34,7 @@ using namespace std;
 TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
+
 // Interface to KKcol and some extra plotting facilities
 KKcol LibSem;
 
@@ -166,11 +167,10 @@ void ReMakeMChisto(){
   HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
   //if( CMSene<91.0 ) HAfb_vTcPR_Ceex2n->Scale(-1);
 
-
-
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVprod()
@@ -352,6 +352,186 @@ void TabBN1()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+void FigVtest()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigVtest =========================== "<<endl;
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  //
+  TH1D *hst_vTrueCeex2 = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
+  TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
+  //
+  TH1D *HST_Mll        = (TH1D*)DiskFileB.Get("HST_Mll");
+  TH1D *HST_Mll_cumul;
+  MakeCumul(HST_Mll,HST_Mll_cumul);
+  //
+  //TH1D *vdis_ISR2      = (TH1D*)DiskFileB.Get("vdis_ISR2");
+  //TH1D *vdis_ISR2_FSR2 = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");
+  //TH1D *Hpro_vT_Ceex2  = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2");
+  //
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVtest = new TCanvas("cFigVtest","FigVtest: photonic2", 50, 50,    1000, 800);
+  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigVtest->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigVtest->Divide( 2,  2);
+  //cFigVtest->Divide( 2,  2,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  //==========plot1==============
+  cFigVtest->cd(1);
+  gPad->SetLogy(); // !!!!!!
+  // MC v-true direct
+  hst_vTrueCeex2->SetStats(0);
+  hst_vTrueCeex2->SetTitle(0);
+  hst_vTrueCeex2->SetMinimum(1e-4*hst_vTrueCeex2->GetMaximum());
+  hst_vTrueCeex2->DrawCopy("h");  // black
+
+  HST_Mll_cumul->SetLineColor(kGreen); // green
+  HST_Mll_cumul->DrawCopy("hsame");
+  // MC vtrue from scatergram
+//  Hpro_vT_Ceex2->SetLineColor(kGreen); // green
+//  Hpro_vT_Ceex2->DrawCopy("same");
+  // KKsem ISR+FSR
+//  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
+//  vdis_ISR2_FSR2->DrawCopy("hsame");
+  // KKsem ISR only
+//  vdis_ISR2->SetLineColor(kBlue); // blue
+//  vdis_ISR2->DrawCopy("hsame");
+  //
+  //
+  CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) KKMC CEEX2: Black, Red; KKsem=Magenta");
+  CaptT->DrawLatex(0.02,0.91, "           ISR only, KKsem=Blue");
+  //==========plot2==============
+  cFigVtest->cd(2);
+  hst_vTrueCeex2->Divide(HST_Mll_cumul);
+//  hst_vTrueCeex2->SetStats(0);
+//  hst_vTrueCeex2->SetTitle(0);
+  hst_vTrueCeex2->SetMinimum(0.85);
+  hst_vTrueCeex2->SetMaximum(1.15);
+  hst_vTrueCeex2->SetLineColor(kBlue);
+  hst_vTrueCeex2->DrawCopy("h");
+  //
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); KKMC_CEEX2/KKsem");
+  //==========plot3==============
+  cFigVtest->cd(3);
+  gPad->SetLogy(); // !!!!!!
+  hst_vXGenCeex2->SetStats(0);
+  hst_vXGenCeex2->SetTitle(0);
+  hst_vXGenCeex2->SetLineColor(kRed); // red
+  hst_vXGenCeex2->DrawCopy("h");
+  //
+//  vdis_ISR2->SetLineColor(kBlue); // blue
+//  vdis_ISR2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR),  KKMC_CEEX2=Red, Blue=KKsem");
+  //==========plot4==============
+  cFigVtest->cd(4);
+//  hst_vXGenCeex2->Divide(vdis_ISR2);
+//  hst_vXGenCeex2->SetStats(0);
+//  hst_vXGenCeex2->SetTitle(0);
+//  hst_vXGenCeex2->SetMinimum(0.85);
+//  hst_vXGenCeex2->SetMaximum(1.15);
+//  hst_vXGenCeex2->SetLineColor(kRed);
+//  hst_vXGenCeex2->DrawCopy("h");  // black
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR); KKMC_CEEX2/KKsem");
+  //----------------------------
+  cFigVtest->cd();
+  //================================================
+}//FigVtest
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Quick Monte Carlo exercise based on Foam
+//  Two PDFs, QED and Born from KKMC
+//
+////////////////////////////////////////////////////////////////////////////////
+//______________________________________________________________________________
+void ISRgener()
+{
+  cout<<"--- ISRgener started ---"<<endl;
+
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  double vvmax   = HST_KKMC_NORMA->GetBinContent(17);
+
+  DiskFileB.cd();
+  TH1D *hst_template  = (TH1D*)DiskFileA.Get("hst_vTrueMain"); // for cloning only
+  TH1D *HST_Mka = (TH1D*)hst_template->Clone("HST_Mka");
+  HST_Mka->Reset();
+  TH1D *HST_Mll = (TH1D*)hst_template->Clone("HST_Mll");
+  HST_Mll->Reset();
+
+  Rho4Foam *Rho1= new Rho4Foam("Rho4Foam");
+//  double Mmin= 60;
+//  double Mmax=160;
+//  Rho1->m_Mmin   = Mmin;
+//  Rho1->m_Mmax   = Mmax;
+  Rho1->m_CMSene = CMSene;
+  Rho1->m_vvmax  = vvmax;
+//  Rho1->m_KeyISR = 2;
+  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
+//------------------------------------------
+  TRandom  *PseRan   = new TRandom3();  // Create random number generator
+  PseRan->SetSeed(4357);
+//------------------------------------------------------------------
+// WARNIBG!!! MC_isr->Density() is common for both FOAM objects
+// hence MC_isr->m_KeyFSR has to be adjusted before every Foam call!
+  //----------------------------------------------------------------
+// 2nd FOAM for ISR+FSR
+  TFoam   *MC_fisr    = new TFoam("MC_fisr");   // Create Simulator
+  MC_fisr->SetkDim(2);         // No. of dimensions, obligatory!
+  MC_fisr->SetnCells( 10000);   // No. of cells, can be omitted, default=2000
+  MC_fisr->SetnSampl(100000);   // No. of MC evts/cell in exploration, default=200
+  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
+  MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  MC_fisr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
+  MC_fisr->Initialize();       // Initialize simulator, may take time...
+
+// loop over MC events
+  double wt,Mll, wt2, Mka, vv;
+  long NevTot = 2000000;  // 2M
+  NevTot =      8000000;  // 8M
+  //NevTot =    100000000;  // 100M
+  for(long loop=0; loop<NevTot; loop++)
+  {
+	//----------------------------------------------------------
+	/// Generate ISR event
+//	Rho1->m_KeyFSR = 0;  ///!!!
+//    MC_isr->MakeEvent();            // generate MC event
+//    MC_isr->GetMCwt(wt);
+//    Mka=Rho1->m_Mka;
+//    HST_Mka->Fill(Mka,wt);
+
+	//----------------------------------------------------------
+	/// Generate ISR+FSR event
+    MC_fisr->MakeEvent();            // generate MC event
+    MC_fisr->GetMCwt(wt2);
+    Mll = Rho1->m_Mll;
+    vv = 1-sqr(Mll/CMSene);
+    HST_Mll->Fill(vv,wt2);
+    if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
+  }// loop
+//renormalizing histo
+  double Xsav, dXsav;
+//  MC_isr->GetIntNorm(Xsav,dXsav);
+//  HisNorm0( NevTot, Xsav, HST_Mka);
+  //
+  MC_fisr->GetIntNorm(Xsav,dXsav);
+  HisNorm0( NevTot, Xsav, HST_Mll);
+//
+  cout<<"--- ISRgener ended ---"<<endl;
+}//ISRgener
+
+
+///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   //++++++++++++++++++++++++++++++++++++++++
@@ -363,6 +543,9 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
+  ISRgener();
+
+  FigVtest();
 
   FigVprod();
 

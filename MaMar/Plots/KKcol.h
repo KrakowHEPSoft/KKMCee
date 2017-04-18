@@ -61,7 +61,7 @@ extern "C" double bornv_simple_( const long&,  const long&, const double&, const
 //------------------------------------------------------------
 
 
-class KKcol: public TFoamIntegrand{
+class KKcol{
  public:
     int       m_jmax;
     double    m_ypar[10000];   // input parameters of KKMC
@@ -79,7 +79,7 @@ class KKcol: public TFoamIntegrand{
   void PlInitialize(FILE *, int );
   void PlEnd(FILE *);
   void PlTable2(int, TH1D* iHst[], FILE*, Char_t *Capt[], Char_t[] , const char* , int,int,int);
-  Double_t Density(int nDim, Double_t *Xarg){;};
+//  Double_t Density(int nDim, Double_t *Xarg){;};
 
 ////////////////////////////////////////////////////////////////////////////
 };// KKsem
@@ -138,25 +138,18 @@ Rho4Foam(const char* Name)
 	  m_alfinv  = 137.035;
 	  m_alfpi   = 1/m_alfinv/m_pi;
 	  m_vvmax   = 0.20;
-//{{{{{{{{{{{
-//	  m_beam    = 0.510999e-3;  // electron
-//	  m_chini   = 1.0;          // electron
-
-//	  m_beam    = 0.005;        // u quark
-//	  m_chini   = 2./3.;        // u quark
-
-	  m_beam    = 0.010;        // d quark
-	  m_chini   = 1./3.;        // d quark
+//
+	  m_beam    = 0.510999e-3;  // electron
+	  m_chini   = 1.0;          // electron
 
 	  m_fin     = 0.105;        // final ferm. muon
-//	  m_fin     = 1.777;        // final ferm. tau
 
 	  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
 	  m_nCells  = 2000;         // No. of cells, optional, default=2000
 	  m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
 
 	  m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
-//}}}}}}}}}}}
+
 	cout<< "----> Rho4Foam USER Constructor "<<endl;
 	}///
 
@@ -262,37 +255,16 @@ Double_t Density(int nDim, Double_t *Xarg)
 
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
-// ******** mapping for PDFs *******
-	m_x1 = xmin+(xmax-xmin)*Xarg[0];
-	m_x2 = xmin+(xmax-xmin)*Xarg[1];
-	Dist *= sqr(xmax-xmin);
-
-	// Valence 2*x*u(x):   XUPV = 2.18   * X**0.5D0    * (1.D0-X)**3.D0
-	// Valence x*d(x):     XDNV = 1.23   * X**0.5D0    * (1.D0-X)**4.D0
-	// Sea     x*s(x):     XSEA = 0.6733 * X**(-0.2D0) * (1.D0-X)**7.D0
-	//                Valence UP and UP-bar of sea
-    //SF12 = 2.18 *m_x1**3.D0 *z1**0.5D0   *0.6733 *m_x2**7.D0 *z2**(-0.2D0)/z1/z2
-	double PDFu1   = 2.18   *exp(3.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
-	double PDFd1   = 1.23   *exp(4.0 *log(1-m_x1))  *exp( 0.5*log(m_x1))/m_x1;
-    double PDFsea1 = 0.6733 *exp(7.0 *log(1-m_x1))  *exp(-0.2*log(m_x1))/m_x1;
-    double PDFsea2 = 0.6733 *exp(7.0 *log(1-m_x2))  *exp(-0.2*log(m_x2))/m_x2;
-    //{{{{
-    //double SF12  = 2*(PDFu1+ PDFsea1/6.) * (PDFsea2/6.);  //  u-ubar
-    double SF12  = 2*(PDFd1+ PDFsea1/6.) * (PDFsea2/6.);  //  d-dbar
-    //}}}}
-    Dist *= SF12;  // (u-ubar)+(ubar-u)
-	double svar1= svar*m_x1*m_x2;
-	svarCum *=m_x1*m_x2;
 
 // ******** mapping for ISR *******
 	double gamiCR,gami,alfi;
-	double CMSene1= sqrt(svar1);
+	double CMSene1= sqrt(svar);
 	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
 	//[[[[ debug
 	//gami = gamISR(CMSene1);
 	//]]]]
 	// cout<<" CMSene1,gami= "<< CMSene1 <<"  "<< gami <<endl;
-	double R= Xarg[2];
+	double R= Xarg[0];
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
 	//[[[[ primitive for debug
@@ -303,30 +275,26 @@ Double_t Density(int nDim, Double_t *Xarg)
 	//]]]]
 	if( gami < 0 )      return 0.0;    // temporary fix
     if( m_vv < 1e-200 ) return 0.0;    // temporary fix
-	double Rho2 = Rho_isr(svar1,m_vv);               // remember take care of m_mbeam!!!
+	double Rho2 = Rho_isr(svar,m_vv);               // remember take care of m_mbeam!!!
 	Dist *= Rho2;
 	svarCum *= (1-m_vv);
-	double svar2 = svar1*(1-m_vv);
+	double svar2 = svar*(1-m_vv);
 
 // ******** mapping for FSR *******
-    if( m_KeyFSR > 0){
-      double rr= Xarg[3];
-      double gamf   = gamFSR(svar2);
-      m_uu = exp(1.0/gamf *log(rr));     // mapping
-      Dist *= m_uu/rr/gamf;              // Jacobian
+    double rr= Xarg[1];
+    double gamf   = gamFSR(svar2);
+    m_uu = exp(1.0/gamf *log(rr));     // mapping
+    Dist *= m_uu/rr/gamf;              // Jacobian
 
-  	  double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
-  	  Dist *= Rho3;
-      svarCum *= (1-m_uu);
-
-    }// m_KeyFSR
+  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
+  	Dist *= Rho3;
+    svarCum *= (1-m_uu);
 
 // ******** finally Born factor *******
 	long KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
 	kksem_setkeyfob_( KeyFob );
 	double xBorn;
 	kksem_makeborn_( svar2, xBorn);
-	xBorn *= 1./3.;  // colour factor corrected by hand
 //[[[[[ debug
 //  double Sig0nb= bornv_sig0nb_(m_CMSene);
 //	xBorn = bornv_simple_( 2, 13,m_Mll*m_Mll,0e0);
@@ -337,7 +305,7 @@ Double_t Density(int nDim, Double_t *Xarg)
 // ******* inline cutoff for better efficiency *********
 	m_Mll = sqrt(svarCum); // final
 	m_Mka = sqrt(svar2);   // after ISR
-	if( m_Mka < m_Mmin ) Dist=0;
+	//if( m_Mka < m_Mmin ) Dist=0;
 	//if( m_Mll < m_Mmin ) Dist=0;
 	//if( m_Mka < m_Mmin || m_Mka >m_Mmax ) Dist=0;
 	//if( m_Mll < m_Mmin || m_Mll >m_Mmax ) Dist=0;

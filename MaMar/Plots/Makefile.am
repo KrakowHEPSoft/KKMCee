@@ -60,7 +60,7 @@ PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
 #==============================================================
-#===============================================
+#==============================================================
 .txp.eps:
 	(latex $*.txp; dvips -E $*.dvi -o $*.eps;)
 .txp.pdf:
@@ -69,6 +69,11 @@ SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
 #################
 plot1: Plot1
 	./Plot1
+#################
+PlotIFI-run: PlotIFI
+	./PlotIFI
+PlotAFB-run: PlotAFB
+	./PlotAFB
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI

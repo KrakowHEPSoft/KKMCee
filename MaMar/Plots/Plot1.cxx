@@ -19,13 +19,11 @@ using namespace std;
 #include "TGaxis.h"
 #include "TApplication.h"
 #include "TMarker.h"
-
-#include "KKcol.h"
-#include "HisNorm.h"
-
-// ROOT headers
-#include "TROOT.h"
 #include "TFile.h"
+
+#include "HisNorm.h"
+#include "KKcol.h"
+
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
@@ -42,7 +40,8 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
 //#include "HisNorm.h"
-#include "Marker.h"
+
+KKcol LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -77,7 +76,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  KKcol LibSem;
+  //KKcol LibSem;
   LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon
