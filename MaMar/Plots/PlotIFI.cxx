@@ -38,16 +38,7 @@ FILE *DiskFileT;
 // Interface to KKcol and some extra plotting facilities
 KKcol LibSem;
 
-//=============================================================================
-//Double_t sqr( const Double_t x ){ return x*x;};
-// Auxiliary procedures for plotting
-//#include "HisNorm.h"
 ///////////////////////////////////////////////////////////////////////////////////
-
-//void HisNorm1(TH1D *NorHst, TH1 *Hst);
-//void HisNorm2(TH1D *NorHst, TH2 *Hst);
-//void ProjV(TH2D *Scat, TH1D *&hxTot, TH1D *&hxAfb, int NbMax);
-
 
 void HistNormalize(){
   //
@@ -103,20 +94,20 @@ void KKsemMakeHisto(){
   KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //------------------------------------------------------------------------
 
-  TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueMain");
+  TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
   TH1D *hstCtemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
 //------------------------------------------------------------------------
-//   MuMu  Sigma(vmax) with limited c=cos(theta)
+//   MuMu  Sigma(vmax) with ulimited c=cos(theta)
 //------------------------------------------------------------------------
 // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
   TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
-
 //-------------------------------------------------
-// and finally AFB(vmax) for ulimited c=cos(theta)
-  kksem_setcrange_(0, 25.0/25); // forward
+//    AFB(vmax) for unlimited c=cos(theta)
+//-------------------------------------------------
+  kksem_setcrange_(0, 25.0/25); // forward, unlimited cos(theta)
   TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
   afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
@@ -130,8 +121,7 @@ void KKsemMakeHisto(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 void ReMakeMChisto(){
-	// Here we produce semianalytical plots using KKsem program, No plotting
-	// also some MC histos are preprocessed
+	// Some KKMC histos are preprocessed
 	//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
@@ -146,7 +136,7 @@ void ReMakeMChisto(){
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
 
   ///****************************************************************************************
-  /// Distributions of v=vTrue with limited c=cos(theta)
+  /// Distributions of v=vTrue with unlimited c=cos(theta)
   //  without cutoff on c=cos(thetaPRD)
   int nbMax=0;   // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
@@ -173,10 +163,10 @@ void ReMakeMChisto(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigVprod()
+void FigOldBench()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigVprod =========================== "<<endl;
+  cout<<" ========================= FigOldBench =========================== "<<endl;
   //
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -202,9 +192,9 @@ void FigVprod()
   CaptTb->SetNDC(); // !!!
   CaptTb->SetTextSize(0.04);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVprod = new TCanvas("cFigVprod","FigVprod", 70, 20,    700, 700);
+  TCanvas *cFigOldBench = new TCanvas("cFigOldBench","FigOldBench", 70, 20,    700, 700);
   //                                   Name    Title     xoff,yoff, WidPix,HeiPix
-  cFigVprod->SetFillColor(10);
+  cFigOldBench->SetFillColor(10);
 
   TH1D *HTot_rat_Ceex2 =(TH1D*)HTot_vTcPR_Ceex2->Clone("HTot_rat_Ceex2");
   HTot_rat_Ceex2->Divide(vcum_ISR2_FSR2);
@@ -225,13 +215,13 @@ void FigVprod()
   CaptT->DrawLatex(0.60,0.75,TextEne);
   CaptTb->Draw();
   //----------------------------
-  cFigVprod->cd();
-  cFigVprod->SaveAs("cFigVprod.pdf");
+  cFigOldBench->cd();
+  cFigOldBench->SaveAs("cFigOldBench.pdf");
 
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVprod2 = new TCanvas("cFigVprod2","FigVprod2",100, 50,    700, 700);
+  TCanvas *cFigOldBench2 = new TCanvas("cFigOldBench2","FigOldBench2",100, 50,    700, 700);
   //                                   Name    Title     xoff,yoff, WidPix,HeiPix
-  cFigVprod2->SetFillColor(10);
+  cFigOldBench2->SetFillColor(10);
 
   TH1D *HAfb_diff_Ceex2 =(TH1D*)HAfb_vTcPR_Ceex2->Clone("HAfb_diff_Ceex2");
   HAfb_diff_Ceex2->Add(HAfb_diff_Ceex2,  afbv_ISR2_FSR2, 1.0, -1.0);
@@ -254,17 +244,17 @@ void FigVprod()
   CaptT->DrawLatex(0.60,0.75,TextEne);
 
   //----------------------------
-  cFigVprod2->cd();
-  cFigVprod2->SaveAs("cFigVprod2.pdf");
+  cFigOldBench2->cd();
+  cFigOldBench2->SaveAs("cFigOldBench2.pdf");
   //================================================
-}//FigVprod
+}//FigOldBench
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void TabBN1()
+void TabOldBench()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= TabBN1 start=========================== "<<endl;
+  cout<<" ========================= TabOldBench start=========================== "<<endl;
 //
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -319,7 +309,7 @@ void TabBN1()
   strcpy(Mcapt,"{\\color{red}$\\sigma(v_{\\max})$ [pb]}");
 
 ///************************************
-  DiskFileT = fopen("Table1.txp","w");
+  DiskFileT = fopen("TabOldBench.txp","w");
 //************************************
 // Initialization of the latex source file
   LibSem.PlInitialize(DiskFileT, 2);
@@ -347,8 +337,79 @@ void TabBN1()
 //************************************
   fclose(DiskFileT);
 //************************************
-  cout<<" ========================= TabBN1 end =========================== "<<endl;
-}//TabBN1
+  cout<<" ========================= TabOldBench end =========================== "<<endl;
+}//TabOldBench
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Monte Carlo integration/run using Foam
+//
+////////////////////////////////////////////////////////////////////////////////
+//______________________________________________________________________________
+void ISRgener()
+{
+  cout<<"--- ISRgener started ---"<<endl;
+
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  double vvmax   = HST_KKMC_NORMA->GetBinContent(17);
+
+  // %%% Histogramming %%%
+  DiskFileB.cd();
+  TH1D *hst_Vtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
+  TH1D *hst_Ctemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
+  TH2D *sca_VCtemplate= (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
+
+  TH1D *HST_vv_Ceex2n = (TH1D*)hst_Vtemplate->Clone("HST_vv_Ceex2n");
+  HST_vv_Ceex2n->Reset();
+
+  // %%% Configuring integrand for Foam %%%
+  Rho4Foam *Rho1= new Rho4Foam("Rho4Foam");
+  Rho1->m_CMSene = CMSene;
+  Rho1->m_vvmax  = vvmax;
+  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
+  //------------------------------------------
+  TRandom  *PseRan   = new TRandom3();  // Create random number generator
+  PseRan->SetSeed(4357);
+  // %%% FOAM simulator/integrator %%%
+  //------------------------------------------
+  TFoam   *MC_fisr    = new TFoam("MC_fisr");   // Create Simulator
+  MC_fisr->SetkDim(2);         // No. of dimensions, obligatory!
+  MC_fisr->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
+  MC_fisr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
+  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
+  MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  MC_fisr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
+  MC_fisr->Initialize();       // Initialize simulator, may take time...
+
+  // %%% loop over MC events %%%
+  double wt,Mll, wt2, Mka, vv;
+  long NevTot = 2000000;  // 2M
+  NevTot      = 8000000;  // 8M
+  //NevTot =    100000000;  // 100M
+  for(long loop=0; loop<NevTot; loop++)
+  {
+	//----------------------------------------------------------
+	/// Generate ISR+FSR event
+    MC_fisr->MakeEvent();            // generate MC event
+    MC_fisr->GetMCwt(wt2);
+    Mll = Rho1->m_Mll;
+    vv = 1-sqr(Mll/CMSene);
+    HST_vv_Ceex2n->Fill(vv,wt2);
+    if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
+  }// loop
+  //  Renormalizing histograms
+  double Xsav, dXsav;
+  MC_fisr->GetIntNorm(Xsav,dXsav);
+  HisNorm0( NevTot, Xsav, HST_vv_Ceex2n);
+  //
+  TH1D *HST_vmax_Ceex2n;
+  MakeCumul(HST_vv_Ceex2n,HST_vmax_Ceex2n);
+  HST_vmax_Ceex2n->SetName("HST_vmax_Ceex2n");
+//
+  cout<<"--- ISRgener ended ---"<<endl;
+}//ISRgener
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -363,9 +424,8 @@ void FigVtest()
   TH1D *hst_vTrueCeex2 = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
   TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
   //
-  TH1D *HST_Mll        = (TH1D*)DiskFileB.Get("HST_Mll");
-  TH1D *HST_Mll_cumul;
-  MakeCumul(HST_Mll,HST_Mll_cumul);
+  TH1D *HST_vv_Ceex2n        = (TH1D*)DiskFileB.Get("HST_vv_Ceex2n");
+  TH1D *HST_vmax_Ceex2n      = (TH1D*)DiskFileB.Get("HST_vmax_Ceex2n");
   //
   //TH1D *vdis_ISR2      = (TH1D*)DiskFileB.Get("vdis_ISR2");
   //TH1D *vdis_ISR2_FSR2 = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");
@@ -394,8 +454,8 @@ void FigVtest()
   hst_vTrueCeex2->SetMinimum(1e-4*hst_vTrueCeex2->GetMaximum());
   hst_vTrueCeex2->DrawCopy("h");  // black
 
-  HST_Mll_cumul->SetLineColor(kGreen); // green
-  HST_Mll_cumul->DrawCopy("hsame");
+  HST_vmax_Ceex2n->SetLineColor(kGreen); // green
+  HST_vmax_Ceex2n->DrawCopy("hsame");
   // MC vtrue from scatergram
 //  Hpro_vT_Ceex2->SetLineColor(kGreen); // green
 //  Hpro_vT_Ceex2->DrawCopy("same");
@@ -411,7 +471,7 @@ void FigVtest()
   CaptT->DrawLatex(0.02,0.91, "           ISR only, KKsem=Blue");
   //==========plot2==============
   cFigVtest->cd(2);
-  hst_vTrueCeex2->Divide(HST_Mll_cumul);
+  hst_vTrueCeex2->Divide(HST_vmax_Ceex2n);
 //  hst_vTrueCeex2->SetStats(0);
 //  hst_vTrueCeex2->SetTitle(0);
   hst_vTrueCeex2->SetMinimum(0.85);
@@ -447,89 +507,6 @@ void FigVtest()
 }//FigVtest
 
 
-////////////////////////////////////////////////////////////////////////////////
-//
-//  Quick Monte Carlo exercise based on Foam
-//  Two PDFs, QED and Born from KKMC
-//
-////////////////////////////////////////////////////////////////////////////////
-//______________________________________________________________________________
-void ISRgener()
-{
-  cout<<"--- ISRgener started ---"<<endl;
-
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  double vvmax   = HST_KKMC_NORMA->GetBinContent(17);
-
-  DiskFileB.cd();
-  TH1D *hst_template  = (TH1D*)DiskFileA.Get("hst_vTrueMain"); // for cloning only
-  TH1D *HST_Mka = (TH1D*)hst_template->Clone("HST_Mka");
-  HST_Mka->Reset();
-  TH1D *HST_Mll = (TH1D*)hst_template->Clone("HST_Mll");
-  HST_Mll->Reset();
-
-  Rho4Foam *Rho1= new Rho4Foam("Rho4Foam");
-//  double Mmin= 60;
-//  double Mmax=160;
-//  Rho1->m_Mmin   = Mmin;
-//  Rho1->m_Mmax   = Mmax;
-  Rho1->m_CMSene = CMSene;
-  Rho1->m_vvmax  = vvmax;
-//  Rho1->m_KeyISR = 2;
-  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
-//------------------------------------------
-  TRandom  *PseRan   = new TRandom3();  // Create random number generator
-  PseRan->SetSeed(4357);
-//------------------------------------------------------------------
-// WARNIBG!!! MC_isr->Density() is common for both FOAM objects
-// hence MC_isr->m_KeyFSR has to be adjusted before every Foam call!
-  //----------------------------------------------------------------
-// 2nd FOAM for ISR+FSR
-  TFoam   *MC_fisr    = new TFoam("MC_fisr");   // Create Simulator
-  MC_fisr->SetkDim(2);         // No. of dimensions, obligatory!
-  MC_fisr->SetnCells( 10000);   // No. of cells, can be omitted, default=2000
-  MC_fisr->SetnSampl(100000);   // No. of MC evts/cell in exploration, default=200
-  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
-  MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
-  MC_fisr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
-  MC_fisr->Initialize();       // Initialize simulator, may take time...
-
-// loop over MC events
-  double wt,Mll, wt2, Mka, vv;
-  long NevTot = 2000000;  // 2M
-  NevTot =      8000000;  // 8M
-  //NevTot =    100000000;  // 100M
-  for(long loop=0; loop<NevTot; loop++)
-  {
-	//----------------------------------------------------------
-	/// Generate ISR event
-//	Rho1->m_KeyFSR = 0;  ///!!!
-//    MC_isr->MakeEvent();            // generate MC event
-//    MC_isr->GetMCwt(wt);
-//    Mka=Rho1->m_Mka;
-//    HST_Mka->Fill(Mka,wt);
-
-	//----------------------------------------------------------
-	/// Generate ISR+FSR event
-    MC_fisr->MakeEvent();            // generate MC event
-    MC_fisr->GetMCwt(wt2);
-    Mll = Rho1->m_Mll;
-    vv = 1-sqr(Mll/CMSene);
-    HST_Mll->Fill(vv,wt2);
-    if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
-  }// loop
-//renormalizing histo
-  double Xsav, dXsav;
-//  MC_isr->GetIntNorm(Xsav,dXsav);
-//  HisNorm0( NevTot, Xsav, HST_Mka);
-  //
-  MC_fisr->GetIntNorm(Xsav,dXsav);
-  HisNorm0( NevTot, Xsav, HST_Mll);
-//
-  cout<<"--- ISRgener ended ---"<<endl;
-}//ISRgener
-
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -543,13 +520,12 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
+  // New benchmarks KKMC vs. KKcol with Foam integrator
   ISRgener();
-
   FigVtest();
-
-  FigVprod();
-
-  TabBN1();
+  // Old benchmarks KKMC vs. KKsem with Gauss integrator
+  FigOldBench();
+  TabOldBench();
 
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();

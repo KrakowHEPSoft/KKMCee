@@ -78,13 +78,13 @@ PlotAFB-run: PlotAFB
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI
 	(./PlotIFI; touch PlotIFI.phony;)
-#######
+####### make BMarkPRD88-pdf
 BM1 = BMarkPRD88
-FigVprod.pdf:  PlotIFI.phony
-FigVprod2.pdf: PlotIFI.phony
-Table1.txp:    PlotIFI.phony
+cFigOldBench.pdf:  PlotIFI.phony
+cFigOldBench2.pdf: PlotIFI.phony
+TabOldBench.txp:   PlotIFI.phony
 #######
-$(BM1).pdf: $(BM1).tex Table1.pdf FigVprod.pdf
+$(BM1).pdf: $(BM1).tex TabOldBench.pdf cFigOldBench.pdf
 	pdflatex $(BM1).tex
 $(BM1)-pdf: $(BM1).pdf
 	evince  $(BM1).pdf
