@@ -72,9 +72,8 @@ void HistNormalize(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 void ReMakeMChisto(){
-	// Here we produce semianalytical plots using KKsem program, No plotting
-	// also some MC histos are preprocessed
-	//------------------------------------------------------------------------
+// Some MC histos from KKMC are preprocessed
+//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
   Double_t CMSene;

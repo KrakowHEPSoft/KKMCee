@@ -291,7 +291,15 @@ Double_t Density(int nDim, Double_t *Xarg)
     svarCum *= (1-m_uu);
 
 // ******** finally Born factor *******
-	long KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+    long KeyFob;
+    KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+    KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+    KeyFob=  -10; // KKsem_BornV, NO EW, NO integration OK!
+    KeyFob= -100; // KKsem_BornV, NO EW, WITH integration, OK
+    KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+//  -----------------
+	//KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+    //KeyFob=   10; // BornV_Dizet, with EW and without integration ???
 	kksem_setkeyfob_( KeyFob );
 	double xBorn;
 	kksem_makeborn_( svar2, xBorn);

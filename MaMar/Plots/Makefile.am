@@ -70,6 +70,8 @@ SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
 plot1: Plot1
 	./Plot1
 #################
+Plot1-run: Plot1
+	./Plot1
 PlotIFI-run: PlotIFI
 	./PlotIFI
 PlotAFB-run: PlotAFB

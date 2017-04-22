@@ -93,7 +93,6 @@ void KKsemMakeHisto(){
   KeyFob= -100; // KKsem_BornV, NO EW, WITH integration, OK
   KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //------------------------------------------------------------------------
-
   TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
   TH1D *hstCtemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
 //------------------------------------------------------------------------
@@ -107,12 +106,23 @@ void KKsemMakeHisto(){
 //-------------------------------------------------
 //    AFB(vmax) for unlimited c=cos(theta)
 //-------------------------------------------------
-  kksem_setcrange_(0, 25.0/25); // forward, unlimited cos(theta)
+  kksem_setcrange_(0, 25.0/25); // forward cos(theta)
   TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
   afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
   afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
+  kksem_setcrange_(-1.0, 1.0); // undoing forward,
   //
+  //------------------------------------------------------------------------
+  //   MuMu  dsigma/dv, unlimited cos(theta)
+  //------------------------------------------------------------------------
+  // ISR*FSR
+  KeyDis = 302302;        // ISR*FSR O(alf2)
+  sprintf(chak,"XRHO2");  // ISR*FSR Mff
+  TH1D *vdis_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vdis_ISR2_FSR2");
+  LibSem.VVplot(vdis_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
+
+
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
   cout<<"==================================================================="<<endl;
 //------------------------------------------------------------------------
@@ -155,7 +165,17 @@ void ReMakeMChisto(){
   ProjV( sca_vTcPR_Ceex2n,  HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
   HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
   HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
-  //if( CMSene<91.0 ) HAfb_vTcPR_Ceex2n->Scale(-1);
+  //
+  ///****************************************************************************************
+  //  dsigma/dv unlimited cos(theta)
+  TH1D *Hpro_vT_Ceex2;
+  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
+  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
+
+  //  dsigma/dv unlimited cos(theta)
+  TH1D *Hpro_vT_Ceex2n;
+  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2n);
+  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2n");
 
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -219,7 +239,7 @@ void FigOldBench()
   cFigOldBench->SaveAs("cFigOldBench.pdf");
 
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigOldBench2 = new TCanvas("cFigOldBench2","FigOldBench2",100, 50,    700, 700);
+  TCanvas *cFigOldBench2 = new TCanvas("cFigOldBench2","FigOldBench2",270, 50,    700, 700);
   //                                   Name    Title     xoff,yoff, WidPix,HeiPix
   cFigOldBench2->SetFillColor(10);
 
@@ -321,6 +341,10 @@ void TabOldBench()
   LibSem.PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
   LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
   LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
+  iHst[1]->Scale(1e-3);    // back to nano-barns
+  iHst[2]->Scale(1e-3);    //
+  iHst[3]->Scale(1e-3);    //
+  iHst[4]->Scale(1e-3);    //
 
   iHst[1]= afbv_ISR2_FSR2;     //KKsem
   iHst[2]= HAfb_vTcPR_Eex2;    //EEX2
@@ -421,15 +445,15 @@ void FigVtest()
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   //
-  TH1D *hst_vTrueCeex2 = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
-  TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
+  TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
-  TH1D *HST_vv_Ceex2n        = (TH1D*)DiskFileB.Get("HST_vv_Ceex2n");
-  TH1D *HST_vmax_Ceex2n      = (TH1D*)DiskFileB.Get("HST_vmax_Ceex2n");
+  TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
   //
-  //TH1D *vdis_ISR2      = (TH1D*)DiskFileB.Get("vdis_ISR2");
-  //TH1D *vdis_ISR2_FSR2 = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");
-  //TH1D *Hpro_vT_Ceex2  = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2");
+  TH1D *HST_vv_Ceex2n     = (TH1D*)DiskFileB.Get("HST_vv_Ceex2n");      // Foam dsigma/d(v)
+  TH1D *HST_vmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_vmax_Ceex2n");    // Foam sigma(vmax)
+  //
+  TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
+  TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
   //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -445,61 +469,68 @@ void FigVtest()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  //==========plot1==============
+  //====================plot1========================
+  //                sigma(vmax)
   cFigVtest->cd(1);
-  gPad->SetLogy(); // !!!!!!
+  //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
-  hst_vTrueCeex2->SetStats(0);
-  hst_vTrueCeex2->SetTitle(0);
-  hst_vTrueCeex2->SetMinimum(1e-4*hst_vTrueCeex2->GetMaximum());
-  hst_vTrueCeex2->DrawCopy("h");  // black
-
-  HST_vmax_Ceex2n->SetLineColor(kGreen); // green
-  HST_vmax_Ceex2n->DrawCopy("hsame");
-  // MC vtrue from scatergram
-//  Hpro_vT_Ceex2->SetLineColor(kGreen); // green
-//  Hpro_vT_Ceex2->DrawCopy("same");
-  // KKsem ISR+FSR
-//  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
-//  vdis_ISR2_FSR2->DrawCopy("hsame");
-  // KKsem ISR only
-//  vdis_ISR2->SetLineColor(kBlue); // blue
-//  vdis_ISR2->DrawCopy("hsame");
+  TH1D *Hst1 = HTot_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat.
   //
+  Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  //Hst1->SetMinimum(1e-3*Hst1->GetMaximum());
+  Hst1->DrawCopy("h");
+  //
+  HST_vmax_Ceex2n->SetLineColor(kGreen);   // green
+  HST_vmax_Ceex2n->DrawCopy("hsame");      // Foam sigma(vmax)
+  //
+  //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
+  //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
   CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) KKMC CEEX2: Black, Red; KKsem=Magenta");
   CaptT->DrawLatex(0.02,0.91, "           ISR only, KKsem=Blue");
-  //==========plot2==============
+  //====================plot2========================
   cFigVtest->cd(2);
-  hst_vTrueCeex2->Divide(HST_vmax_Ceex2n);
-//  hst_vTrueCeex2->SetStats(0);
-//  hst_vTrueCeex2->SetTitle(0);
-  hst_vTrueCeex2->SetMinimum(0.85);
-  hst_vTrueCeex2->SetMaximum(1.15);
-  hst_vTrueCeex2->SetLineColor(kBlue);
-  hst_vTrueCeex2->DrawCopy("h");
+  TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
+  Hst1_ratio->Divide(HST_vmax_Ceex2n);
+  Hst1_ratio->SetMinimum(0.95);
+  Hst1_ratio->SetMaximum(1.10);
+  Hst1_ratio->SetLineColor(kBlue);
+  Hst1_ratio->DrawCopy("h");
   //
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); KKMC_CEEX2/KKsem");
-  //==========plot3==============
+  //====================plot3========================
+  //                 dsigma/d(v)
   cFigVtest->cd(3);
   gPad->SetLogy(); // !!!!!!
-  hst_vXGenCeex2->SetStats(0);
-  hst_vXGenCeex2->SetTitle(0);
-  hst_vXGenCeex2->SetLineColor(kRed); // red
-  hst_vXGenCeex2->DrawCopy("h");
+  TH1D *Hst3 = Hpro_vT_Ceex2n;           // KKMC dsigma/dv from scat.
+  Hst3->SetStats(0);
+  Hst3->SetTitle(0);
+  Hst3->SetLineColor(kRed); // red
+  Hst3->DrawCopy("h");
   //
-//  vdis_ISR2->SetLineColor(kBlue); // blue
-//  vdis_ISR2->DrawCopy("hsame");
+  // KKsem ISR+FSR
+  //vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
+  //vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR
+
+  HST_vv_Ceex2n->SetLineColor(kBlue);     // blue
+  HST_vv_Ceex2n->DrawCopy("hsame");       // Foam dsigma/d(v)
+
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR),  KKMC_CEEX2=Red, Blue=KKsem");
-  //==========plot4==============
+  //====================plot4========================
   cFigVtest->cd(4);
-//  hst_vXGenCeex2->Divide(vdis_ISR2);
-//  hst_vXGenCeex2->SetStats(0);
-//  hst_vXGenCeex2->SetTitle(0);
-//  hst_vXGenCeex2->SetMinimum(0.85);
-//  hst_vXGenCeex2->SetMaximum(1.15);
-//  hst_vXGenCeex2->SetLineColor(kRed);
-//  hst_vXGenCeex2->DrawCopy("h");  // black
+
+  TH1D *Hst3_ratio =(TH1D*)Hst3->Clone("Hst3_ratio");
+  //Hst3_ratio->Divide(vdis_ISR2_FSR2);
+  Hst3_ratio->Divide(HST_vv_Ceex2n);
+
+  Hst3_ratio->SetStats(0);
+  Hst3_ratio->SetTitle(0);
+//  Hst3_ratio->SetMinimum(0.85);
+//  Hst3_ratio->SetMaximum(1.15);
+//  Hst3_ratio->SetLineColor(kRed);
+  Hst3_ratio->DrawCopy("h");  // black
+
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR); KKMC_CEEX2/KKsem");
   //----------------------------
   cFigVtest->cd();
