@@ -38,6 +38,7 @@ extern "C" void kk2f_fort_close_(const long&);
 extern "C" void kksem_initialize_(double xpar[]);
 //      SUBROUTINE KK2f_Initialize(xpar)
 extern "C" void kk2f_initialize_(double xpar[]);
+//-----------------------
 //      SUBROUTINE KKsem_SetKFfin(KFfin)
 extern "C" void kksem_setkffin_( const long& );
 //      SUBROUTINE BornV_SetKF(KFferm)
@@ -52,6 +53,7 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const long& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
+//---------------------------------
 //      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
 extern "C" double bornv_sig0nb_(const double&);
 //      SUBROUTINE BornV_MakeGami(CMSene,gamiCR,gami,alfi)
@@ -59,9 +61,16 @@ extern "C" void bornv_makegami_(const double&, double&, double&, double&);
 //      DOUBLE PRECISION  FUNCTION BornV_Simple(KFi,KFf,svar,costhe)
 extern "C" double bornv_simple_( const long&,  const long&, const double&, const double&);
 //------------------------------------------------------------
+//      SUBROUTINE BornV_InterpoGSW(KFf,svar,CosThe)
+extern "C" double bornv_interpogsw_( const long&,  const double&, const double&);
+//      DOUBLE PRECISION FUNCTION BornV_Dizet(Mode,KFi,KFf,svar,CosThe,eps1,eps2,ta,tb)
+extern "C" double bornv_dizet_(const long&, const long&, const long&,
+		const double&, const double&, const double&, const double&, const double&, const double& );
+//------------------------------------------------------------
 
 
 class KKcol{
+// Interface and extensions to KKsem toolbox
  public:
     int       m_jmax;
     double    m_ypar[10000];   // input parameters of KKMC
@@ -82,7 +91,7 @@ class KKcol{
 //  Double_t Density(int nDim, Double_t *Xarg){;};
 
 ////////////////////////////////////////////////////////////////////////////
-};// KKsem
+};// KKcol
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -105,6 +114,8 @@ public:
 	double m_chini;
 
 	double m_fin;
+	long   m_KFini;  // electron
+	long   m_KFf;    // muon
 
 	int    m_kDim;
 	int    m_nCells;
@@ -113,12 +124,13 @@ public:
 	int    m_KeyFSR;
 
 ///******** MC EVENT ********
-	double m_x1;
-	double m_x2;
+//	double m_x1;
+//	double m_x2;
 	double m_vv;
 	double m_uu;
 	double m_Mll;
 	double m_Mka;
+	double m_CosTheta;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -143,6 +155,9 @@ Rho4Foam(const char* Name)
 	  m_chini   = 1.0;          // electron
 
 	  m_fin     = 0.105;        // final ferm. muon
+
+	  m_KFini   = 11; // electron
+	  m_KFf     = 13; // muon
 
 	  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
 	  m_nCells  = 2000;         // No. of cells, optional, default=2000
@@ -275,7 +290,7 @@ Double_t Density(int nDim, Double_t *Xarg)
 	//]]]]
 	if( gami < 0 )      return 0.0;    // temporary fix
     if( m_vv < 1e-200 ) return 0.0;    // temporary fix
-	double Rho2 = Rho_isr(svar,m_vv);               // remember take care of m_mbeam!!!
+	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
 	Dist *= Rho2;
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
@@ -290,6 +305,10 @@ Double_t Density(int nDim, Double_t *Xarg)
   	Dist *= Rho3;
     svarCum *= (1-m_uu);
 
+    // ******** mapping for polar angle *******
+    m_CosTheta = -1.0 + 2.0* Xarg[2];
+    Dist *= 2.0;
+
 // ******** finally Born factor *******
     long KeyFob;
     KeyFob=   10; // BornV_Dizet, with EW and without integration ???
@@ -298,25 +317,31 @@ Double_t Density(int nDim, Double_t *Xarg)
     KeyFob= -100; // KKsem_BornV, NO EW, WITH integration, OK
     KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //  -----------------
-	//KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
-    //KeyFob=   10; // BornV_Dizet, with EW and without integration ???
 	kksem_setkeyfob_( KeyFob );
-	double xBorn;
-	kksem_makeborn_( svar2, xBorn);
-//[[[[[ debug
-//  double Sig0nb= bornv_sig0nb_(m_CMSene);
-//	xBorn = bornv_simple_( 2, 13,m_Mll*m_Mll,0e0);
-//	xBorn *= 1/(1e0-m_vv)/(m_x1*m_x2)*Sig0nb;
-//]]]]
-	Dist *= xBorn;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//double xBorn;
+	//Integrated Born from KKMC
+	//kksem_makeborn_( svar2, xBorn);
+	//Dist *= xBorn/2.0;
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+//    In BornV_Differential:
+//    CALL BornV_InterpoGSW( ABS(KFf),  svar, CosThe)
+//    Born= BornV_Dizet( 1,m_KFini,KFf, svar, CosThe, eps1,eps2,ta,tb)
+//    Born = 4*pi*alfa**2/(3d0*svar )*BornY  *m_gnanob
+
+//
+	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
+	double dSig_dCos = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
+
+	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+
+	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
 
 // ******* inline cutoff for better efficiency *********
-	m_Mll = sqrt(svarCum); // final
+	m_Mll = sqrt(svarCum); // final aafter FSR
 	m_Mka = sqrt(svar2);   // after ISR
-	//if( m_Mka < m_Mmin ) Dist=0;
-	//if( m_Mll < m_Mmin ) Dist=0;
-	//if( m_Mka < m_Mmin || m_Mka >m_Mmax ) Dist=0;
-	//if( m_Mll < m_Mmin || m_Mll >m_Mmax ) Dist=0;
 
 	return Dist;
 }// Density

@@ -399,7 +399,7 @@ void ISRgener()
   // %%% FOAM simulator/integrator %%%
   //------------------------------------------
   TFoam   *MC_fisr    = new TFoam("MC_fisr");   // Create Simulator
-  MC_fisr->SetkDim(2);         // No. of dimensions, obligatory!
+  MC_fisr->SetkDim(3);         // No. of dimensions, obligatory!
   MC_fisr->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
   MC_fisr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
   MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
