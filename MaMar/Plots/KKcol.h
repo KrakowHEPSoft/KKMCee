@@ -124,8 +124,6 @@ public:
 	int    m_KeyFSR;
 
 ///******** MC EVENT ********
-//	double m_x1;
-//	double m_x2;
 	double m_vv;
 	double m_uu;
 	double m_Mll;
