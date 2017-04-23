@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <iomanip>
 using namespace std;
 
 #include <math.h>
@@ -22,7 +23,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKcol.h"
+#include "KKtbox.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
@@ -37,11 +38,7 @@ TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-//Double_t sqr( const Double_t x ){ return x*x;};
-// Auxiliary procedures for plotting
-//#include "HisNorm.h"
-
-KKcol LibSem;
+KKtbox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -74,11 +71,7 @@ void KKsemMakeHisto(){
   cout<<"================ KKsem MakeHisto  BEGIN ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-
-  // initialization of KKsem
-  //KKcol LibSem;
-  LibSem.Initialize(DiskFileA);
-  //
+ //
   long KF=13; // muon
   long KeyDis, KeyFob;
   char chak[5];
@@ -879,6 +872,8 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+  LibSem.Initialize(DiskFileA);
+
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos

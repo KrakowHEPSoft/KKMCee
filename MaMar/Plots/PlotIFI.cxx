@@ -24,7 +24,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKcol.h"
+#include "KKtbox.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
@@ -35,8 +35,8 @@ TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
-// Interface to KKcol and some extra plotting facilities
-KKcol LibSem;
+// Interface to KKtbox and some extra plotting facilities
+KKtbox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -74,8 +74,8 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  //KKcol LibSem;
-  LibSem.Initialize(DiskFileA);
+  //KKtbox LibSem;
+  //LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon
   long KeyDis, KeyFob;
@@ -389,10 +389,14 @@ void ISRgener()
   HST_vv_Ceex2n->Reset();
 
   // %%% Configuring integrand for Foam %%%
-  Rho4Foam *Rho1= new Rho4Foam("Rho4Foam");
-  Rho1->m_CMSene = CMSene;
-  Rho1->m_vvmax  = vvmax;
-  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
+//  KKdistr *Rho1= new KKdistr("KKdistr");
+//  Rho1->m_CMSene = CMSene;
+//  Rho1->m_vvmax  = vvmax;
+//  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
+
+  LibSem.m_CMSene = CMSene;
+  LibSem.m_vvmax  = vvmax;
+
   //------------------------------------------
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
@@ -402,7 +406,10 @@ void ISRgener()
   MC_fisr->SetkDim(3);         // No. of dimensions, obligatory!
   MC_fisr->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
   MC_fisr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
-  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
+
+//  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
+  MC_fisr->SetRho(&LibSem);
+
   MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
   MC_fisr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
   MC_fisr->Initialize();       // Initialize simulator, may take time...
@@ -418,7 +425,10 @@ void ISRgener()
 	/// Generate ISR+FSR event
     MC_fisr->MakeEvent();            // generate MC event
     MC_fisr->GetMCwt(wt2);
-    Mll = Rho1->m_Mll;
+    //Mll = Rho1->m_Mll;
+
+    Mll = LibSem.m_Mll;
+
     vv = 1-sqr(Mll/CMSene);
     HST_vv_Ceex2n->Fill(vv,wt2);
     if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
@@ -545,13 +555,14 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+  LibSem.Initialize(DiskFileA);
 
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
-  // New benchmarks KKMC vs. KKcol with Foam integrator
+  // New benchmarks KKMC vs. KKtbox with Foam integrator
   ISRgener();
   FigVtest();
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
