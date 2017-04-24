@@ -377,7 +377,6 @@ void ISRgener()
 
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  double vvmax   = HST_KKMC_NORMA->GetBinContent(17);
 
   // %%% Histogramming %%%
   DiskFileB.cd();
@@ -388,14 +387,8 @@ void ISRgener()
   TH1D *HST_vv_Ceex2n = (TH1D*)hst_Vtemplate->Clone("HST_vv_Ceex2n");
   HST_vv_Ceex2n->Reset();
 
-  // %%% Configuring integrand for Foam %%%
-//  KKdistr *Rho1= new KKdistr("KKdistr");
-//  Rho1->m_CMSene = CMSene;
-//  Rho1->m_vvmax  = vvmax;
-//  cout<<"%%%%%   ISRgener:  vvmax= "<< vvmax << " from KKMC" <<endl;
-
-  LibSem.m_CMSene = CMSene;
-  LibSem.m_vvmax  = vvmax;
+  TH2D *SCA_vc_Ceex2n = (TH2D*)sca_VCtemplate->Clone("SCA_vc_Ceex2n");
+  SCA_vc_Ceex2n->Reset();
 
   //------------------------------------------
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
@@ -407,7 +400,6 @@ void ISRgener()
   MC_fisr->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
   MC_fisr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
 
-//  MC_fisr->SetRho(Rho1);       // Set 2-dim distribution, included above
   MC_fisr->SetRho(&LibSem);
 
   MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
@@ -415,7 +407,7 @@ void ISRgener()
   MC_fisr->Initialize();       // Initialize simulator, may take time...
 
   // %%% loop over MC events %%%
-  double wt,Mll, wt2, Mka, vv;
+  double wt,Mll, wt2, Mka, vv, xx, CosTheta;
   long NevTot = 2000000;  // 2M
   NevTot      = 8000000;  // 8M
   //NevTot =    100000000;  // 100M
@@ -425,12 +417,13 @@ void ISRgener()
 	/// Generate ISR+FSR event
     MC_fisr->MakeEvent();            // generate MC event
     MC_fisr->GetMCwt(wt2);
-    //Mll = Rho1->m_Mll;
 
-    Mll = LibSem.m_Mll;
+    xx  = LibSem.m_xx;
+    CosTheta = LibSem.m_CosTheta;
 
-    vv = 1-sqr(Mll/CMSene);
-    HST_vv_Ceex2n->Fill(vv,wt2);
+    HST_vv_Ceex2n->Fill(xx,wt2);
+    SCA_vc_Ceex2n->Fill(xx,CosTheta,wt2);
+
     if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
   }// loop
   //  Renormalizing histograms
