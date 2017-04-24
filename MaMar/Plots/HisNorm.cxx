@@ -1,8 +1,9 @@
 /////////////////////////////////////////////////////////////////////
+// Collection of programs for renormalizing histograms
+// and projecting 2D scatergrams into 1D histograms
+// Also tools for calculating AFB(vmax)
+/////////////////////////////////////////////////////////////////////
 #include "HisNorm.h"
-
-
-
 
 double sqr( const Double_t x ){ return x*x;};
 
