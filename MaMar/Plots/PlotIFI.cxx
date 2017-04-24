@@ -485,9 +485,6 @@ void FigVdist()
   cFigVdist->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVdist->Divide( 2,  2);
-  //cFigVdist->Divide( 2,  2,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
-  //////////////////////////////////////////////
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
@@ -564,6 +561,76 @@ void FigVdist()
   //================================================
 }//FigVdist
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb =========================== "<<endl;
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+
+  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2"); // KKMC
+  TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
+
+  TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
+
+  TH1D *HAfb_vmax_Ceex2n  = (TH1D*)DiskFileB.Get("HAfb_vmax_Ceex2n");  // FOAM scatt.
+ //
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb: photonic2", 20, 300,   1000, 550);
+  //                            Name    Title                   xoff,yoff, WidPix,HeiPix
+  cFigAfb->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigAfb->Divide( 2,  0);
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  //====================plot1========================
+  //                sigma(vmax)
+  cFigAfb->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  // MC v-true direct
+  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat.
+  //
+  Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  Hst1->DrawCopy("h");
+  //
+  afbv_ISR2_FSR2->SetLineColor(kRed);     // red
+  afbv_ISR2_FSR2->DrawCopy("hsame");      // KKsem AFB(vmax) direct.
+  //
+  HAfb_vmax_Ceex2n->SetLineColor(kBlue);   // blue
+  HAfb_vmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
+  //
+  //
+  CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
+  //====================plot2========================
+  cFigAfb->cd(2);
+  TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
+  TH1D *Hst1_diff2 =(TH1D*)Hst1->Clone("Hst1_diff2");
+
+  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2, 1.0, -1.0);   // diff. with KKsem
+  Hst1_diff2->Add(Hst1_diff2, HAfb_vmax_Ceex2n, 1.0, -1.0); // diff. with FOAM
+
+  Hst1_diff1->SetMinimum(-0.03);
+  Hst1_diff1->SetMaximum( 0.03);
+  Hst1_diff1->SetLineColor(kRed);
+  Hst1_diff1->DrawCopy("h");
+
+  Hst1_diff2->SetLineColor(kBlue);
+  Hst1_diff2->DrawCopy("hsame");
+  //
+  //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
+  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
+
+  cFigAfb->cd();
+  //================================================
+}//FigAfb
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -582,6 +649,7 @@ int main(int argc, char **argv)
   // New benchmarks KKMC vs. KKabox with Foam integrator
   ISRgener();  // MC mini-run of Foam
   FigVdist();  // sigma(v) and sigma(vmax)
+  FigAfb();    // AFB(vmax)
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
   FigOldBench();
   TabOldBench();
