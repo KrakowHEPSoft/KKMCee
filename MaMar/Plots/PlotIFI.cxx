@@ -605,6 +605,8 @@ void FigAfb()
   HAfb_vmax_Ceex2n->SetLineColor(kBlue);   // blue
   HAfb_vmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
   //
+  HAfb_vTcPR_Ceex2->SetLineColor(kMagenta); // magenta
+  HAfb_vTcPR_Ceex2->DrawCopy("hsame");      // IFI on !!!
   //
   CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
   //====================plot2========================
