@@ -459,10 +459,10 @@ void ISRgener()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigVtest()
+void FigVdist()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigVtest =========================== "<<endl;
+  cout<<" ========================= FigVdist =========================== "<<endl;
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
@@ -480,12 +480,12 @@ void FigVtest()
   //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVtest = new TCanvas("cFigVtest","FigVtest: photonic2", 50, 50,    1000, 800);
+  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist: photonic2", 50, 50,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
-  cFigVtest->SetFillColor(10);
+  cFigVdist->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigVtest->Divide( 2,  2);
-  //cFigVtest->Divide( 2,  2,     0.0,     0.0,   10);
+  cFigVdist->Divide( 2,  2);
+  //cFigVdist->Divide( 2,  2,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
@@ -494,7 +494,7 @@ void FigVtest()
   CaptT->SetTextSize(0.04);
   //====================plot1========================
   //                sigma(vmax)
-  cFigVtest->cd(1);
+  cFigVdist->cd(1);
   //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
   TH1D *Hst1 = HTot_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat.
@@ -513,10 +513,9 @@ void FigVtest()
   //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
   //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
-  CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) KKMC CEEX2: Black, Red; KKsem=Magenta");
-  CaptT->DrawLatex(0.02,0.91, "           ISR only, KKsem=Blue");
+  CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) Black KKMC_CEEX2, Blue FOAM");
   //====================plot2========================
-  cFigVtest->cd(2);
+  cFigVdist->cd(2);
   TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
   //Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
   //Hst1_ratio->Divide(HST_vmax_Ceex2n);  // divide by Foam direct
@@ -526,10 +525,10 @@ void FigVtest()
   Hst1_ratio->SetLineColor(kBlue);
   Hst1_ratio->DrawCopy("h");
   //
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); KKMC_CEEX2/KKsem");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
   //====================plot3========================
   //                 dsigma/d(v)
-  cFigVtest->cd(3);
+  cFigVdist->cd(3);
   gPad->SetLogy(); // !!!!!!
   TH1D *Hst3 = Hpro_vT_Ceex2n;           // KKMC dsigma/dv from scat.
   Hst3->SetStats(0);
@@ -544,9 +543,9 @@ void FigVtest()
   HST_vv_Ceex2n->SetLineColor(kBlue);     // blue
   HST_vv_Ceex2n->DrawCopy("hsame");       // Foam dsigma/d(v)
 
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR),  KKMC_CEEX2=Red, Blue=KKsem");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR),  Red KKMC_CEEX2, Blue FOAM");
   //====================plot4========================
-  cFigVtest->cd(4);
+  cFigVdist->cd(4);
 
   TH1D *Hst3_ratio =(TH1D*)Hst3->Clone("Hst3_ratio");
   //Hst3_ratio->Divide(vdis_ISR2_FSR2);
@@ -559,11 +558,11 @@ void FigVtest()
 //  Hst3_ratio->SetLineColor(kRed);
   Hst3_ratio->DrawCopy("h");  // black
 
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR); KKMC_CEEX2/KKsem");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR ); Ratio KKMC/FOAM");
   //----------------------------
-  cFigVtest->cd();
+  cFigVdist->cd();
   //================================================
-}//FigVtest
+}//FigVdist
 
 
 
@@ -581,8 +580,8 @@ int main(int argc, char **argv)
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
   // New benchmarks KKMC vs. KKabox with Foam integrator
-  ISRgener();
-  FigVtest();
+  ISRgener();  // MC mini-run of Foam
+  FigVdist();  // sigma(v) and sigma(vmax)
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
   FigOldBench();
   TabOldBench();
