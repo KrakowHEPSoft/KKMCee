@@ -23,7 +23,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKtbox.h"
+#include "KKabox.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
@@ -38,7 +38,7 @@ TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-KKtbox LibSem;
+KKabox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){

@@ -24,7 +24,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKtbox.h"
+#include "KKabox.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
@@ -35,8 +35,8 @@ TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
-// Interface to KKtbox and some extra plotting facilities
-KKtbox LibSem;
+// Interface to KKabox and some extra plotting facilities
+KKabox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +74,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  //KKtbox LibSem;
+  //KKabox LibSem;
   //LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon
@@ -555,7 +555,7 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
-  // New benchmarks KKMC vs. KKtbox with Foam integrator
+  // New benchmarks KKMC vs. KKabox with Foam integrator
   ISRgener();
   FigVtest();
   // Old benchmarks KKMC vs. KKsem with Gauss integrator

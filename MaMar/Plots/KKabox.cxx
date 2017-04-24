@@ -1,23 +1,23 @@
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
-//               Class   KKtbox                                             //
+//               Class   KKabox                                             //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-// KKtbox is multipurpose toolbox for KKMC testing.
+// KKabox is multipurpose toolbox for KKMC testing.
 //  1. Interfaces (erappers) to KKMC and KKsem F77 subrograms
 //  2. Integrand for Foam
 //  3. A few routines for producing tatex table out of histograms
 //////////////////////////////////////////////////////////////////////////////
 
-#include "KKtbox.h"
+#include "KKabox.h"
 
-KKtbox::KKtbox(const char* Name)
+KKabox::KKabox(const char* Name)
 {
-		cout<< "----> KKtbox USER Constructor "<<endl;
+		cout<< "----> KKabox USER Constructor "<<endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKtbox::Initialize(TFile &DiskFileA){
+void KKabox::Initialize(TFile &DiskFileA){
   //------------------------------------------------------------------------
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   cout<<"==================================================================="<<endl;
@@ -68,7 +68,7 @@ void KKtbox::Initialize(TFile &DiskFileA){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKtbox::VVplot( TH1 *hstNew, long KF, char chak[5], long KeyDis, long KeyFob)
+void KKabox::VVplot( TH1 *hstNew, long KF, char chak[5], long KeyDis, long KeyFob)
 {
   long   nbin = hstNew->GetNbinsX();
   double xmin = hstNew->GetXaxis()->GetXmin();
@@ -83,16 +83,16 @@ void KKtbox::VVplot( TH1 *hstNew, long KF, char chak[5], long KeyDis, long KeyFo
   //
   hstNew->Reset();
   for(int ib=0;ib<nbin;ib++){
-    cout<<"KKtbox::VVplot: ib= "<<ib<<"  Bin(ib) =  "<<Bin[ib]<<endl;
+    cout<<"KKabox::VVplot: ib= "<<ib<<"  Bin(ib) =  "<<Bin[ib]<<endl;
     hstNew->SetBinContent(ib+1, Bin[ib]);
     hstNew->SetBinError(  ib+1, 0.0);
   }
-}// KKtbox::VVplot
+}// KKabox::VVplot
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKtbox::Cplot( TH1 *hstNew,
+void KKabox::Cplot( TH1 *hstNew,
 		   long KF, char chak[5], long KeyDis, long KeyFob, double vmin, double vmax)
 {
   long   nbc = hstNew->GetNbinsX();
@@ -121,15 +121,15 @@ void KKtbox::Cplot( TH1 *hstNew,
     kksem_setcrange_(c1,c2);
     kksem_vvplot_vec_(KeyDis,chak,nbv,vmin,vmax,vBin); // vBin has only one bin!
     Dsig=vBin[0]/dc*(vmax-vmin); // integration over v!
-    cout<<"KKtbox::Cplot: ib= "<<ib<<" cBin(ib) =  "<<Dsig<<endl;
+    cout<<"KKabox::Cplot: ib= "<<ib<<" cBin(ib) =  "<<Dsig<<endl;
     hstNew->SetBinContent(ib+1, Dsig);
     hstNew->SetBinError(  ib+1, 0.0);
   }
   kksem_setcrange_(-1.0,1.0); // back to normal
-}// KKtbox::VVplot
+}// KKabox::VVplot
 
 
-void KKtbox::PlInitialize(FILE *ltx, int lint)
+void KKabox::PlInitialize(FILE *ltx, int lint)
 {
 //----------------------------------------------------------------------
 // Lint =0     Normal mode, full LaTeX header
@@ -165,7 +165,7 @@ if( abs(lint) == 0){
 }// lint
 }//GLK_PlCap
 
-void KKtbox::PlEnd(FILE *ltex)
+void KKabox::PlEnd(FILE *ltex)
 {//---------------------------------------------------
 // Note that TeX file is used in \input then you may not want
 // to have header and \end{document}
@@ -174,7 +174,7 @@ if( m_lint |= 1){
 }
 }//GLK_PlEnd
 
-void KKtbox::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1, int k1,int k2,int dk)
+void KKabox::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1, int k1,int k2,int dk)
 //* Tables in TeX, up to 9 columns
 //* Ncol          = numbers of columns/histograms
 //* idl(1:Npl)    = list of histo id's
@@ -267,17 +267,17 @@ void KKtbox::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t
 }//GLK_PlTable2
 
 ///------------------------------------------------------------------------
-double KKtbox::gamISR( double svar){
+double KKabox::gamISR( double svar){
 	  return  sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);
 }
 
 ///------------------------------------------------------------------------
-double KKtbox::gamFSR( double svar){
+double KKabox::gamFSR( double svar){
 	  return              2*m_alfpi*( log(svar/sqr(m_fin)) -1);
 }
 
 ///------------------------------------------------------------------------
-double KKtbox::Rho_isr(double svar, double vv){
+double KKabox::Rho_isr(double svar, double vv){
 /// ISR rho-function for ISR
 
   double alf1   = m_alfpi;
@@ -316,7 +316,7 @@ double KKtbox::Rho_isr(double svar, double vv){
 
 
 ///------------------------------------------------------------------------
-double KKtbox::Rho_fsr(double svar, double uu){
+double KKabox::Rho_fsr(double svar, double uu){
 /// ISR+FSR rho-function
 
   double alf1   = m_alfpi;
@@ -358,7 +358,7 @@ double KKtbox::Rho_fsr(double svar, double uu){
 }//Rho_fsr
 
 ///////////////////////////////////////////////////////////////
-Double_t KKtbox::Density(int nDim, Double_t *Xarg)
+Double_t KKabox::Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
 	Double_t Dist=1;
 	double xmin=0.000001;
@@ -449,6 +449,6 @@ Double_t KKtbox::Density(int nDim, Double_t *Xarg)
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//                End of Class KKtbox                                        //
+//                End of Class KKabox                                        //
 ///////////////////////////////////////////////////////////////////////////////
 

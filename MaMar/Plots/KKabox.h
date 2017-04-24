@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
-//               Class   KKtbox                                             //
+//               Class   KKabox                                             //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-// KKtbox is multipurpose toolbox for KKMC testing.
+// KKabox is multipurpose toolbox for KKMC testing.
 //  1. Interfaces (wrappers) to KKMC and KKsem F77 subrograms
 //  2. Integrand for Foam in semianalytical xcheck
 //  3. A few routines for producing latex table out of histograms
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KKtbox_H
-#define KKtbox_H
+#ifndef KKabox_H
+#define KKabox_H
 #include<stdlib.h>
 #include<stdio.h>
 #include <math.h>
@@ -71,7 +71,7 @@ extern "C" double bornv_dizet_(const long&, const long&, const long&,
 //------------------------------------------------------------
 
 
-class KKtbox: public TFoamIntegrand{
+class KKabox: public TFoamIntegrand{
 // Interface and extensions to KKsem toolbox
  public:
     int       m_jmax;
@@ -115,9 +115,9 @@ class KKtbox: public TFoamIntegrand{
 	int       m_lint;         // type of input
 //------ constructors destructors -------
  public:
-  KKtbox(){;}
-  ~KKtbox(){;}
-  KKtbox(const char* Name);
+  KKabox(){;}
+  ~KKabox(){;}
+  KKabox(const char* Name);
 public:
   // Interfaces to KKsem integration routines using Gauss method
   void Initialize(TFile&);
@@ -137,7 +137,7 @@ public:
   Double_t Density(int, Double_t*);
 
 ////////////////////////////////////////////////////////////////////////////
-};// KKtbox
+};// KKabox
 
 
 
