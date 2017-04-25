@@ -31,7 +31,8 @@ using namespace std;
 //=============================================================================
 // current
 //TFile DiskFileA("../test0/rmain.root");
-TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workAFB/rmain.root");
+TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
