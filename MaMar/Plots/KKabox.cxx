@@ -52,6 +52,8 @@ void KKabox::Initialize(TFile &DiskFileA){
 
   m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
 
+  m_count   = 0;            // counter for debug
+
   cout<<"***********************KKsem::initialize****************************"<<endl;
   for(int j=0;j<30;j++)
     cout<<j+1<<"   "<<m_ypar[j]<<endl;
@@ -360,6 +362,8 @@ double KKabox::Rho_fsr(double svar, double uu){
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
+	m_count++;  // counter for debug
+	//
 	Double_t Dist=1;
 	double xmin=0.000001;
 	double xmax=0.999999;
@@ -435,13 +439,40 @@ Double_t KKabox::Density(int nDim, Double_t *Xarg)
 	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
 	double dSig_dCos = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 
-	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-
-	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
-
 // ******* effective masses *********
 	m_Mll = sqrt(svarCum); // final after FSR
 	m_Mka = sqrt(svar2);   // after ISR
+
+// =============== Sigm/dOmega from spin amplitudes ===============
+// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
+	double Ene = m_Mka/2;
+	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
+	m_p1 = { 0, 0 , Pmb, Ene};  // beam
+	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
+	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
+	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	double PX[4] = {0, 0, 0, 2*Ene};
+	double dSigAng;
+//*****Gps_Bornf_(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
+    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
+                                               m_p3,m_fin,  m_p4, -m_fin,   dSigAng);
+//    double fleps = 1e-50;
+//    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,fleps,  m_p2, -fleps,
+//    		                                   m_p3,fleps,  m_p4, -fleps,   dSigAng);
+// Debug
+    if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug
+    	double Rat = dSigAng/(dSig_dCos );
+    	cout<<" Density debug m_count= "<< m_count<< endl;
+    	cout<<" dSig_dCos  = "<< dSig_dCos;
+    	cout<<" dSigAng    = "<< dSigAng;
+    	cout<<" svar/svar2 = "<< svar/svar2;
+    	cout<<" Rat = "<<Rat<<endl;
+    } // end debug
+//
+	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+//	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
+	Dist *=  dSigAng *3.0/8.0 *sig0nb;
 
 	return Dist;
 }// Density

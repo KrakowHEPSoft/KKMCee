@@ -69,6 +69,11 @@ extern "C" double bornv_interpogsw_( const long&,  const double&, const double&)
 extern "C" double bornv_dizet_(const long&, const long&, const long&,
 		const double&, const double&, const double&, const double&, const double&, const double& );
 //------------------------------------------------------------
+//      SUBROUTINE GPS_BornF(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
+extern "C" void gps_bornf_(const long&, const long&, double[], const double&,
+		    double[], const double&, double[], const double&, double[], const double&, double[], const double&,
+		    const double&);
+//------------------------------------------------------------
 
 
 class KKabox: public TFoamIntegrand{
@@ -110,6 +115,13 @@ class KKabox: public TFoamIntegrand{
  	//
  	double m_Mll;
  	double m_Mka;
+ 	//
+ 	double m_p1[4];
+ 	double m_p2[4];
+ 	double m_p3[4];
+ 	double m_p4[4];
+ 	//
+ 	long   m_count;
 //
 // Latex output from ROOT histograms
 	int       m_lint;         // type of input
