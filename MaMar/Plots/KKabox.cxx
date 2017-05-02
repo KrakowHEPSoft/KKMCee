@@ -52,6 +52,8 @@ void KKabox::Initialize(TFile &DiskFileA){
 
   m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
 
+  m_Mode    = 3;            // Operation mode for Foam
+
   m_count   = 0;            // counter for debug
 
   cout<<"***********************KKsem::initialize****************************"<<endl;
@@ -362,11 +364,20 @@ double KKabox::Rho_fsr(double svar, double uu){
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
+    if ( abs(m_Mode) == 3 )
+    	Density3(nDim, Xarg);
+    else {
+    	cout<<"+++ KKabox::Density: Wrong m_Mode = "<< m_Mode<<endl;
+    	exit(20);
+    }
+}// Density
+
+///////////////////////////////////////////////////////////////
+Double_t KKabox::Density3(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
 	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
-	double xmin=0.000001;
-	double xmax=0.999999;
 
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
