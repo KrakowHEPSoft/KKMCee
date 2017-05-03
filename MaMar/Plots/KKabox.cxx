@@ -393,14 +393,9 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	double R= Xarg[0];
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
-	//[[[[ primitive for debug
-	//m_vv = R*m_vvmax;
-	//Dist *= m_vvmax;
-	//cout << "Density: svar1, gami = "<< svar1 <<"  "<<gami<<endl;
-	//double Rho1 = gami*exp(gami*log(m_vv))/m_vv; // ISR distribution
-	//]]]]
 	if( gami < 0 )      return 0.0;    // temporary fix
     if( m_vv < 1e-200 ) return 0.0;    // temporary fix
+    // ISR photonic distribution
 	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
 	Dist *= Rho2;
 	svarCum *= (1-m_vv);
@@ -411,7 +406,7 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
     double gamf   = gamFSR(svar2);
     m_uu = exp(1.0/gamf *log(rr));     // mapping
     Dist *= m_uu/rr/gamf;              // Jacobian
-
+// FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
   	Dist *= Rho3;
     svarCum *= (1-m_uu);
@@ -464,26 +459,35 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
 	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
 	double PX[4] = {0, 0, 0, 2*Ene};
+	double dSigAngF;
+	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
+//*****  Obsolete gps_bornf_()
 	double dSigAng;
-//*****Gps_Bornf_(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSigAng);
+//*****GPS_Bornf_(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
 //    double fleps = 1e-50;
 //    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,fleps,  m_p2, -fleps,
-//    		                                   m_p3,fleps,  m_p4, -fleps,   dSigAng);
-// Debug
+//    		                                     m_p3,fleps,  m_p4, -fleps,   dSigAng);
+//************ Debug*** Debug*** Debug*** Debug*** Debug ***********
     if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug
-    	double Rat = dSigAng/(dSig_dCos );
+//    if( m_count <1000 ){  // debug
+    	double Rat;
+    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
+        double dSigAngFF = gps_makerhofoam_(1.0);
+//    	Rat = dSigAngF/( dSig_dCos );
+    	Rat = dSigAngF/( dSigAngFF );
     	cout<<" Density debug m_count= "<< m_count<< endl;
     	cout<<" dSig_dCos  = "<< dSig_dCos;
     	cout<<" dSigAng    = "<< dSigAng;
+    	cout<<" dSigAngF    = "<< dSigAngF;
     	cout<<" svar/svar2 = "<< svar/svar2;
     	cout<<" Rat = "<<Rat<<endl;
-    } // end debug
+    } // end debug **********
 //
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
 //	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
-	Dist *=  dSigAng *3.0/8.0 *sig0nb;
+	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
 
 	return Dist;
 }// Density

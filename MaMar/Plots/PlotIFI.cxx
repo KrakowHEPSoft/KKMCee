@@ -391,6 +391,9 @@ void ISRgener()
   TH2D *SCA_vc_Ceex2n = (TH2D*)sca_VCtemplate->Clone("SCA_vc_Ceex2n");
   SCA_vc_Ceex2n->Reset();
 
+  TH1D *hst_weight = new TH1D("hst_weight" ,  "MC weight",      100, -1.0, 2.0);
+  hst_weight->Sumw2();
+
   //------------------------------------------
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
@@ -431,6 +434,8 @@ void ISRgener()
 
     HST_vv_Ceex2n->Fill(xx,wt2);
     SCA_vc_Ceex2n->Fill(xx,CosTheta,wt2);
+
+    hst_weight->Fill(wt2,1.0);
 
     HST_FOAM_NORMA->Fill(-1.0,Xsav);  // fill normalization into underflow
 
@@ -635,6 +640,45 @@ void FigAfb()
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigInfo()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigInfo =========================== "<<endl;
+  Double_t CMSene;
+  TH1D *hst_weight  = (TH1D*)DiskFileB.Get("hst_weight"); // KKMC
+ //
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 140, 500,   1000, 550);
+  //                            Name    Title                     xoff,yoff, WidPix,HeiPix
+  cFigInfo->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigInfo->Divide( 2,  0);
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  //====================plot1========================
+  //                sigma(vmax)
+  cFigInfo->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  // MC v-true direct
+  TH1D *Hst1 = hst_weight;  //  weight of Foam
+  //
+  //Hst1->SetStats(0);
+  Hst1->SetTitle(0);
+  Hst1->DrawCopy("h");
+
+  CaptT->DrawLatex(0.02,0.95, " Weight distribution Foam");
+  //====================plot2========================
+  cFigInfo->cd(2);
+
+  cFigInfo->cd();
+  //================================================
+}//FigAfb
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -657,6 +701,7 @@ int main(int argc, char **argv)
   FigOldBench();
   TabOldBench();
 
+  FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

@@ -74,7 +74,11 @@ extern "C" void gps_bornf_(const long&, const long&, double[], const double&,
 		    double[], const double&, double[], const double&, double[], const double&, double[], const double&,
 		    const double&);
 //------------------------------------------------------------
-
+//      SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Xborn)
+extern "C" void gps_bornfoam_(const long&,   const long&,   const long&,
+		                      const double&, const double&, const double&);
+//      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
+extern "C" double gps_makerhofoam_(const double&);
 
 class KKabox: public TFoamIntegrand{
 // Interface and extensions to KKsem toolbox
