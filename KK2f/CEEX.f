@@ -523,6 +523,33 @@ C]]]]]]]]]]
       Icont = Icont +1
       END                       !!!end of GPS_Make!!!
 
+
+      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
+*//////////////////////////////////////////////////////////////////////////////////
+*//                                                                              //
+*//   Calculate differential distributions (normalized to LIPS) from spin ampl.  //
+*//                UNPOLARIZED final fermions                                    //
+*//                                                                              //
+*//////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'GPS.h'
+      DOUBLE PRECISION   XNorm
+      DOUBLE PRECISION   Sum0
+      INTEGER            j1,j2,j3,j4
+
+      Sum0 = 0d0
+      DO j1 = 1,2
+         DO j2 = 1,2
+            DO j3 = 1,2
+               DO j4 = 1,2
+                   Sum0 = Sum0 +DREAL( m_AmpBorn(j1,j2,j3,j4)*DCONJG(m_AmpBorn1(j1,j2,j3,j4)) )
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDDO
+      GPS_MakeRhoFoam = Sum0
+      END
+
       SUBROUTINE GPS_MakeRho(ExpoNorm)
 *//////////////////////////////////////////////////////////////////////////////////
 *//                                                                              //
@@ -1416,6 +1443,8 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       SUBROUTINE GPS_BornF(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
+*//                  !!!!!!      OBSOLETE     !!!!!!                                //
+*//                                                                                 //
 *//   It is esentialy a clone of GPS_Born with elements of GPS_BornPlus             //
 *//   To be used for integrand of FOAM                                              //
 *//                                                                                 //
@@ -1514,9 +1543,9 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
       IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 * Exponentiate Resonance BigLogs according to Greco et al.
-      IF(  m_KeyINT .EQ. 2 .AND. m_KeyISR .NE. 0 .AND.  m_HasFSR .NE. 0  ) THEN
-         PropZet = PropZet * EXP(m_IntReson)
-      ENDIF
+*      IF(  m_KeyINT .EQ. 2 .AND. m_KeyISR .NE. 0 .AND.  m_HasFSR .NE. 0  ) THEN
+*         PropZet = PropZet * EXP(m_IntReson)
+*      ENDIF
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //
 *//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
@@ -1544,7 +1573,173 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
          ENDDO
       ENDDO
       Xborn = BornSum
-      END                       !!!GPS_Born!!!
+      END                       !!!GPS_BornF!!!
+
+
+      SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Xborn)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//   It is esentialy a clone of GPS_Born with elements of GPS_BornPlus             //
+*//   To be used for integrand of FOAM                                              //
+*//                                                                                 //
+*//   Masses of the fermion kept exactly.                                           //
+*//                                                                                 //
+*//   KFi, Kff = beam and final fermion flavour codes (to define charges)           //
+*//   PX       = s-chanel momentum for gamma and Z propagators (not for spinors)    //
+*//   Costhe   = cos(theta)                                                         //
+*//   pi,mi    are for spinors, not for gamma and Z propagators                     //
+*//   p1,m1    =fermion momentum and mass (beam)                                    //
+*//   p2,m2    =fermion momentum and mass (beam)                                    //
+*//   p3,m3    =fermion momentum and mass final state                               //
+*//   p4,m4    =fermion momentum and mass final state                               //
+*//                                                                                 //
+*//   Output:                                                                       //
+*//   Xborn     = dsigma/dcosTheta                                                  //
+*//   m_AmpBorn = Born spin amplitudes                                              //
+*//                                                                                 //
+*//   Notes:                                                                        //
+*//   Electron mass neglected in spinors, this is why we may use Chisholm!          //
+*//   Final fermion mass kept exactly.                                              //
+*//   Gamma and Z in s-chanel.                                                      //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'GPS.h'
+*
+      INTEGER           KFi,KFf,Mode,Level
+      DOUBLE PRECISION  PX(4),p1(4),p2(4),p3(4),p4(4)
+      DOUBLE PRECISION  CMSene, CosThe, m1,m2,m3,m4,meps
+*      DOUBLE COMPLEX    AmpBorn(2,2,2,2)
+      DOUBLE COMPLEX    AmpBorn
+      DOUBLE PRECISION  Xborn
+*
+      DOUBLE PRECISION  T3e,Qe
+      DOUBLE PRECISION  T3f,Qf
+      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi
+      DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
+      INTEGER           NCf,NCe
+      DOUBLE PRECISION  svarX
+*-----------------------------------------------------------------------------
+      INTEGER           i,j,k,l
+      INTEGER           j1,j2,j3,j4
+      INTEGER           Hel1,Hel2,Hel3,Hel4
+      DOUBLE COMPLEX    PropGam,PropZet
+      DOUBLE COMPLEX    s31,s24,s14,s32
+      DOUBLE COMPLEX    FFacTT(2),      FFacUU(2)
+      DOUBLE COMPLEX    SpinoTT(2,2,2,2),SpinoUU(2,2,2,2)
+      DOUBLE COMPLEX    TT,UU
+      DOUBLE COMPLEX    GPS_iProd1
+      DOUBLE COMPLEX    GPS_iProd2
+      DOUBLE PRECISION  dummy, BornSum, Mini, Mfin, Ene, Pini, Pfin
+*-----------------------------------------------------------------------------
+      CALL GPS_Initialize
+*=============================================================
+*=============================================================
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+      Mini =  0.510999e-3  ! electron
+      Mfin =  0.105        ! final ferm. muon
+      Ene = CMSene/2
+      DO j = 1,4
+        P1(j) = 0d0
+        P2(j) = 0d0
+        P3(j) = 0d0
+        P4(j) = 0d0
+      ENDDO
+      Pini  =  DSQRT( (Ene-Mini)*(Ene+Mini) )
+      Pfin  =  DSQRT( (Ene-Mfin)*(Ene+Mfin) )
+      P1(4) =  Ene
+      P1(3) =  Pini
+      P2(4) =  Ene
+      P2(3) = -Pini
+      P3(4) =  Ene
+      P3(3) =  Pfin *CosThe
+      P3(1) =  Pfin *DSQRT(1-CosThe**2)
+      P4(4) =  Ene
+      P4(3) = -P3(3)
+      P4(1) = -P3(1)
+      meps  = 1d-50
+      m1 = Mini
+      m2 =-Mini
+      m3 = Mfin
+      m4 =-Mfin
+*=============================================================
+      DO j1 = 1,2
+         DO j2 = 1,2
+            DO j3 = 1,2
+               DO j4 = 1,2
+                  Hel1 = 3-2*j1
+                  Hel2 = 3-2*j2
+                  Hel3 = 3-2*j3
+                  Hel4 = 3-2*j4
+                  TT  = DCMPLX(0d0,0d0)
+                  UU  = DCMPLX(0d0,0d0)
+                  IF( Hel2 .EQ. -Hel1) THEN   !!! <--helicity conservation imposed
+                     s31 = GPS_iProd2(  Hel3, p3, m3,   Hel1, p1, m1) ! t
+                     s24 = GPS_iProd2(  Hel2, p2, m2,   Hel4, p4, m4) ! t1
+                     s32 = GPS_iProd2(  Hel3, p3, m3,   Hel2, p2,-m2) ! u1
+                     s14 = GPS_iProd2(  Hel1, p1,-m1,   Hel4, p4, m4) ! u
+                     TT  = s31*s24
+                     UU  = s14*s32
+                  ENDIF
+                  SpinoTT(j1,j2,j3,j4) =  TT
+                  SpinoUU(j1,j2,j3,j4) =  UU
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDDO
+*////////////////////////////////////////////////////////////////////////////////////////////
+*//                        ElectroWeak Corrections                                         //
+*////////////////////////////////////////////////////////////////////////////////////////////
+      svarX= CMSene**2
+***      svarX=PX(4)**2-PX(3)**2-PX(2)**2-PX(1)**2
+      IF(svarX .LE. (ABS(m3)+ABS(m4))**2 ) RETURN
+      CALL GPS_EWFFact(KFi,KFf,SvarX, CosThe ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+* Propagators, with s-dependent width
+      PropGam =    DCMPLX(  1d0/svarX,  0d0)
+      PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
+* Possibility to switch off Z or gamma, etc.
+      IF(m_KeyZet .LE. 0) PropZet =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
+* Exponentiate Resonance BigLogs according to Greco et al.
+*      IF(  m_KeyINT .EQ. 2 .AND. m_KeyISR .NE. 0 .AND.  m_HasFSR .NE. 0  ) THEN
+*         PropZet = PropZet * EXP(m_IntReson)
+*      ENDIF
+*////////////////////////////////////////////////////////////////////////////////////////////
+*//     Primitives formfactor-type for construction of spin amplitudes                     //
+*//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
+*////////////////////////////////////////////////////////////////////////////////////////////
+      DO j1 = 1,2
+         Hel1 = 3-2*j1
+         FFacTT(j1) = PropGam*GamVPi *Qe*Qf *RsqV
+     $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV +Hel1*Ve*Af*RsqA -Ae*Af*RsqA) !
+         FFacUU(j1) = PropGam*GamVPi *Qe*Qf *RsqV
+     $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
+      ENDDO
+*////////////////////////////////////////////////////////////////////////////////////////////
+*//                     Total result = Spinors*Formfactor                                  //
+*////////////////////////////////////////////////////////////////////////////////////////////
+      BornSum = 0d0
+      DO j1 = 1,2
+         DO j2 = 1,2
+            DO j3 = 1,2
+               DO j4 = 1,2
+                  AmpBorn =  SpinoTT(j1,j2,j3,j4)* FFacTT(j1)
+     $                      +SpinoUU(j1,j2,j3,j4)* FFacUU(j1)
+                  BornSum = BornSum +AmpBorn*DCONJG(AmpBorn)
+                  IF( Mode .EQ. 0 ) THEN
+                    m_AmpBorn(j1,j2,j3,j4) =AmpBorn
+                  ELSE
+                    m_AmpBorn1(j1,j2,j3,j4) =AmpBorn
+                  ENDIF
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDDO
+      Xborn = BornSum
+      END                       !!!GPS_BornFoam!!!
 
 
 
