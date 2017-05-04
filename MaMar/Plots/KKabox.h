@@ -153,6 +153,7 @@ public:
   double Rho_fsr(double, double );
   Double_t Density(int, Double_t*);
   Double_t Density3(int, Double_t*);
+  Double_t Density5(int, Double_t*);
 
 ////////////////////////////////////////////////////////////////////////////
 };// KKabox

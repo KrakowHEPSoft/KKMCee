@@ -385,39 +385,37 @@ void ISRgener()
   TH1D *hst_Ctemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
   TH2D *sca_VCtemplate= (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
 
-  TH1D *HST_vv_Ceex2n = (TH1D*)hst_Vtemplate->Clone("HST_vv_Ceex2n");
-  HST_vv_Ceex2n->Reset();
+  TH1D *hst_weight3 = new TH1D("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
+  hst_weight3->Sumw2();
 
-  TH2D *SCA_vc_Ceex2n = (TH2D*)sca_VCtemplate->Clone("SCA_vc_Ceex2n");
-  SCA_vc_Ceex2n->Reset();
+  // Direct xx=vTrue distribution
+  TH1D *HST_xx_Ceex2n = (TH1D*)hst_Vtemplate->Clone("HST_xx_Ceex2n");
+  HST_xx_Ceex2n->Reset();
 
-  TH1D *hst_weight = new TH1D("hst_weight" ,  "MC weight",      100, -1.0, 2.0);
-  hst_weight->Sumw2();
+  // Master scattergram
+  TH2D *SCA_xc_Ceex2n = (TH2D*)sca_VCtemplate->Clone("SCA_xc_Ceex2n");
+  SCA_xc_Ceex2n->Reset();
 
-  //------------------------------------------
+  //------------------------------------------------------------------
   TRandom  *PseRan   = new TRandom3();  // Create random number generator
   PseRan->SetSeed(4357);
-  // %%% FOAM simulator/integrator %%%
-  //------------------------------------------
-  TFoam   *MC_fisr    = new TFoam("MC_fisr");   // Create Simulator
-  MC_fisr->SetkDim(3);         // No. of dimensions, obligatory!
-  MC_fisr->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
-  MC_fisr->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
-
-  MC_fisr->SetRho(&LibSem);
-
-  MC_fisr->SetPseRan(PseRan);  // Set random number generator, mandatory!
-  MC_fisr->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
-  MC_fisr->Initialize();       // Initialize simulator, may take time...
-
-  //  For renormalizing histograms
-  double Xsav, dXsav;
-  MC_fisr->GetIntNorm(Xsav,dXsav);
-
-  TH1D *HST_FOAM_NORMA = new TH1D("HST_FOAM_NORMA","MC normalization",10,0.0,10000.0);
+  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  // %%%%%%%%%%%%%%% FOAM simulators/integrators %%%%%%%%%%%%%%%
+  TFoam   *MC_Gen3    = new TFoam("MC_Gen3");   // Create Simulator
+  MC_Gen3->SetkDim(3);         // No. of dimensions, obligatory!
+  MC_Gen3->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
+  MC_Gen3->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
+  MC_Gen3->SetRho(&LibSem);
+  MC_Gen3->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  MC_Gen3->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
+  LibSem.m_Mode = 3;           // Choose Density3
+  MC_Gen3->Initialize();       // Initialize simulator, may take time...
+  double Xsav3, dXsav3;          //  For renormalizing histograms
+  MC_Gen3->GetIntNorm(Xsav3,dXsav3);
+  TH1D *HST_FOAM3_NORMA = new TH1D("HST_FOAM3_NORMA","MC normalization",10,0.0,10000.0);
 
   // %%% loop over MC events %%%
-  double wt,Mll, wt2, Mka, vv, xx, CosTheta;
+  double Mll, wt3, Mka, vv, xx, CosTheta;
   long NevTot = 2000000;  // 2M
   NevTot      = 8000000;  // 8M
   //NevTot =    100000000;  // 100M
@@ -426,18 +424,15 @@ void ISRgener()
   for(long loop=0; loop<NevTot; loop++)
   {
 	/// Generate ISR+FSR event
-    MC_fisr->MakeEvent();            // generate MC event
-    MC_fisr->GetMCwt(wt2);
-
+	LibSem.m_Mode = 3;
+    MC_Gen3->MakeEvent();            // generate MC event
+    MC_Gen3->GetMCwt(wt3);
     xx  = LibSem.m_xx;
     CosTheta = LibSem.m_CosTheta;
-
-    HST_vv_Ceex2n->Fill(xx,wt2);
-    SCA_vc_Ceex2n->Fill(xx,CosTheta,wt2);
-
-    hst_weight->Fill(wt2,1.0);
-
-    HST_FOAM_NORMA->Fill(-1.0,Xsav);  // fill normalization into underflow
+    hst_weight3->Fill(wt3,1.0);
+    HST_xx_Ceex2n->Fill(xx,wt3);
+    SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
+    HST_FOAM3_NORMA->Fill(-1.0,Xsav3);  // fill normalization into underflow
 
     if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
   }// loop
@@ -445,20 +440,20 @@ void ISRgener()
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   //  Renormalizing histograms
-  HisNorm1(HST_FOAM_NORMA, HST_vv_Ceex2n );
-  HisNorm2(HST_FOAM_NORMA, SCA_vc_Ceex2n );
+  HisNorm1(HST_FOAM3_NORMA, HST_xx_Ceex2n );
+  HisNorm2(HST_FOAM3_NORMA, SCA_xc_Ceex2n );
 
   // sigma(vmax) direct histogramming
-  TH1D *HST_vmax_Ceex2n;
-  MakeCumul(HST_vv_Ceex2n,HST_vmax_Ceex2n);
-  HST_vmax_Ceex2n->SetName("HST_vmax_Ceex2n");
+  TH1D *HST_xmax_Ceex2n;
+  MakeCumul(HST_xx_Ceex2n,HST_xmax_Ceex2n);
+  HST_xmax_Ceex2n->SetName("HST_xmax_Ceex2n");
 
   // sigma(vmax) and AFB(vmax) from sacttergram
   int nbMax=0;   // cosThetaMax = 1.0
-  TH1D                 *HTot_vmax_Ceex2n, *HAfb_vmax_Ceex2n;
-  ProjV( SCA_vc_Ceex2n, HTot_vmax_Ceex2n,  HAfb_vmax_Ceex2n, nbMax);  //!!!!
-  HTot_vmax_Ceex2n->SetName("HTot_vmax_Ceex2n");
-  HAfb_vmax_Ceex2n->SetName("HAfb_vmax_Ceex2n");
+  TH1D                 *Htot_xmax_Ceex2n, *Hafb_xmax_Ceex2n;
+  ProjV( SCA_xc_Ceex2n, Htot_xmax_Ceex2n,  Hafb_xmax_Ceex2n, nbMax);  //!!!!
+  Htot_xmax_Ceex2n->SetName("Htot_xmax_Ceex2n");
+  Hafb_xmax_Ceex2n->SetName("Hafb_xmax_Ceex2n");
 //
   cout<<"--- ISRgener ended ---"<<endl;
 }//ISRgener
@@ -477,9 +472,9 @@ void FigVdist()
   //
   TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
   //
-  TH1D *HST_vv_Ceex2n     = (TH1D*)DiskFileB.Get("HST_vv_Ceex2n");      // Foam dsigma/d(v) direct
-  TH1D *HST_vmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_vmax_Ceex2n");    // Foam sigma(vmax) direct
-  TH1D *HTot_vmax_Ceex2n  = (TH1D*)DiskFileB.Get("HTot_vmax_Ceex2n");    //Foam sigma(vmax) scatt.
+  TH1D *HST_xx_Ceex2n     = (TH1D*)DiskFileB.Get("HST_xx_Ceex2n");      // Foam dsigma/d(v) direct
+  TH1D *HST_xmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_xmax_Ceex2n");    // Foam sigma(vmax) direct
+  TH1D *Htot_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Htot_xmax_Ceex2n");    //Foam sigma(vmax) scatt.
   //
   TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
   TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
@@ -507,11 +502,11 @@ void FigVdist()
   //Hst1->SetMinimum(1e-3*Hst1->GetMaximum());
   Hst1->DrawCopy("h");
   //
-  HST_vmax_Ceex2n->SetLineColor(kRed);     // red
-  HST_vmax_Ceex2n->DrawCopy("hsame");      // Foam sigma(vmax) direct.
+  HST_xmax_Ceex2n->SetLineColor(kRed);     // red
+  HST_xmax_Ceex2n->DrawCopy("hsame");      // Foam sigma(vmax) direct.
   //
-  HTot_vmax_Ceex2n->SetLineColor(kBlue);   // blue
-  HTot_vmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
+  Htot_xmax_Ceex2n->SetLineColor(kBlue);   // blue
+  Htot_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
   //
   //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
   //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
@@ -521,8 +516,8 @@ void FigVdist()
   cFigVdist->cd(2);
   TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
   //Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
-  //Hst1_ratio->Divide(HST_vmax_Ceex2n);  // divide by Foam direct
-  Hst1_ratio->Divide(HTot_vmax_Ceex2n);   // divide by Foam scatt.
+  //Hst1_ratio->Divide(HST_xmax_Ceex2n);  // divide by Foam direct
+  Hst1_ratio->Divide(Htot_xmax_Ceex2n);   // divide by Foam scatt.
   Hst1_ratio->SetMinimum(0.95);
   Hst1_ratio->SetMaximum(1.10);
   Hst1_ratio->SetLineColor(kBlue);
@@ -543,8 +538,8 @@ void FigVdist()
   //vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
   //vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR
 
-  HST_vv_Ceex2n->SetLineColor(kBlue);     // blue
-  HST_vv_Ceex2n->DrawCopy("hsame");       // Foam dsigma/d(v)
+  HST_xx_Ceex2n->SetLineColor(kBlue);     // blue
+  HST_xx_Ceex2n->DrawCopy("hsame");       // Foam dsigma/d(v)
 
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR),  Red KKMC_CEEX2, Blue FOAM");
   //====================plot4========================
@@ -552,7 +547,7 @@ void FigVdist()
 
   TH1D *Hst3_ratio =(TH1D*)Hst3->Clone("Hst3_ratio");
   //Hst3_ratio->Divide(vdis_ISR2_FSR2);
-  Hst3_ratio->Divide(HST_vv_Ceex2n);
+  Hst3_ratio->Divide(HST_xx_Ceex2n);  // direct
 
   Hst3_ratio->SetStats(0);
   Hst3_ratio->SetTitle(0);
@@ -581,7 +576,7 @@ void FigAfb()
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
 
-  TH1D *HAfb_vmax_Ceex2n  = (TH1D*)DiskFileB.Get("HAfb_vmax_Ceex2n");  // FOAM scatt.
+  TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // FOAM scatt.
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -608,8 +603,8 @@ void FigAfb()
   afbv_ISR2_FSR2->SetLineColor(kRed);     // red
   afbv_ISR2_FSR2->DrawCopy("hsame");      // KKsem AFB(vmax) direct.
   //
-  HAfb_vmax_Ceex2n->SetLineColor(kBlue);   // blue
-  HAfb_vmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
+  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue
+  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
   //
   HAfb_vTcPR_Ceex2->SetLineColor(kMagenta); // magenta
   HAfb_vTcPR_Ceex2->DrawCopy("hsame");      // IFI on !!!
@@ -621,7 +616,7 @@ void FigAfb()
   TH1D *Hst1_diff2 =(TH1D*)Hst1->Clone("Hst1_diff2");
 
   Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2, 1.0, -1.0);   // diff. with KKsem
-  Hst1_diff2->Add(Hst1_diff2, HAfb_vmax_Ceex2n, 1.0, -1.0); // diff. with FOAM
+  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // diff. with FOAM
 
   Hst1_diff1->SetMinimum(-0.03);
   Hst1_diff1->SetMaximum( 0.03);
@@ -646,7 +641,7 @@ void FigInfo()
 //------------------------------------------------------------------------
   cout<<" ========================= FigInfo =========================== "<<endl;
   Double_t CMSene;
-  TH1D *hst_weight  = (TH1D*)DiskFileB.Get("hst_weight"); // KKMC
+  TH1D *hst_weight3  = (TH1D*)DiskFileB.Get("hst_weight3"); // KKMC
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -664,7 +659,7 @@ void FigInfo()
   cFigInfo->cd(1);
   //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
-  TH1D *Hst1 = hst_weight;  //  weight of Foam
+  TH1D *Hst1 = hst_weight3;  //  weight of Foam
   //
   //Hst1->SetStats(0);
   Hst1->SetTitle(0);

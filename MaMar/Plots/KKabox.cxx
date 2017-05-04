@@ -364,13 +364,16 @@ double KKabox::Rho_fsr(double svar, double uu){
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density(int nDim, Double_t *Xarg)
 { // density distribution for Foam
-    if ( abs(m_Mode) == 3 )
+    if (     abs(m_Mode) == 3 )
     	Density3(nDim, Xarg);
+    else if( abs(m_Mode) == 5 )
+    	Density5(nDim, Xarg);
     else {
     	cout<<"+++ KKabox::Density: Wrong m_Mode = "<< m_Mode<<endl;
     	exit(20);
     }
 }// Density
+
 
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density3(int nDim, Double_t *Xarg)
@@ -477,7 +480,7 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
         double dSigAngFF = gps_makerhofoam_(1.0);
 //    	Rat = dSigAngF/( dSig_dCos );
     	Rat = dSigAngF/( dSigAngFF );
-    	cout<<" Density debug m_count= "<< m_count<< endl;
+    	cout<<" Density3 debug m_count= "<< m_count<< endl;
     	cout<<" dSig_dCos  = "<< dSig_dCos;
     	cout<<" dSigAng    = "<< dSigAng;
     	cout<<" dSigAngF    = "<< dSigAngF;
@@ -490,7 +493,88 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
 
 	return Dist;
-}// Density
+}// Density3
+
+
+///////////////////////////////////////////////////////////////
+Double_t KKabox::Density5(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
+	m_count++;  // counter for debug
+	//
+	Double_t Dist=1;
+
+	double svar = sqr(m_CMSene);
+	double svarCum = svar;
+
+// ******** mapping for ISR *******
+	double gamiCR,gami,alfi;
+	double CMSene1= sqrt(svar);
+	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
+
+	double R= Xarg[0];
+	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
+	Dist *= m_vv/R/gami ;                  // Jacobian
+	if( gami < 0 )      return 0.0;    // temporary fix
+    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
+    // ISR photonic distribution
+	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
+	Dist *= Rho2;
+	svarCum *= (1-m_vv);
+	double svar2 = svar*(1-m_vv);
+
+// ******** mapping for FSR *******
+    double rr= Xarg[1];
+    double gamf   = gamFSR(svar2);
+    m_uu = exp(1.0/gamf *log(rr));     // mapping
+    Dist *= m_uu/rr/gamf;              // Jacobian
+// FSR photonic distribution
+  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
+  	Dist *= Rho3;
+    svarCum *= (1-m_uu);
+
+    // ******** mapping for polar angle *******
+    m_CosTheta = -1.0 + 2.0* Xarg[2];
+    Dist *= 2.0;
+
+    double zz = (1-m_vv)*(1-m_uu);
+    m_xx = 1-zz;
+    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
+
+// ******* effective masses *********
+	m_Mll = sqrt(svarCum); // final after FSR
+	m_Mka = sqrt(svar2);   // after ISR
+
+// =============== Sigm/dOmega from spin amplitudes ===============
+// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
+	double Ene = m_Mka/2;
+	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
+	m_p1 = { 0, 0 , Pmb, Ene};  // beam
+	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
+	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
+	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	double PX[4] = {0, 0, 0, 2*Ene};
+	double dSigAngF,dSigAngF1,dSigAngF2;
+	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF1);
+	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF2);
+    dSigAngF = gps_makerhofoam_(1.0);
+//************ Debug*** Debug*** Debug*** Debug*** Debug ***********
+    if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug
+//    if( m_count <1000 ){  // debug
+    	double Rat;
+    	Rat = dSigAngF1/( dSigAngF2 );
+    	cout<<" Density5 debug m_count= "<< m_count<< endl;
+    	cout<<" dSigAngF1    = "<< dSigAngF1;
+    	cout<<" dSigAngF2    = "<< dSigAngF2;
+    	cout<<" svar/svar2 = "<< svar/svar2;
+    	cout<<" Rat = "<<Rat<<endl;
+    } // end debug **********
+//
+	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
+
+	return Dist;
+}// Density5
 
 
 ///////////////////////////////////////////////////////////////////////////////
