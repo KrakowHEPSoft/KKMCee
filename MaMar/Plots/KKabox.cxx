@@ -41,7 +41,8 @@ void KKabox::Initialize(TFile &DiskFileA){
   m_beam    = 0.510999e-3;  // electron
   m_chini   = 1.0;          // electron
 
-  m_fin     = 0.105;        // final ferm. muon
+  m_fin     = 0.105;        // final ferm. muon mass
+  m_chfin   = 1.0;          // final ferm. muon charge
 
   m_KFini   = 11; // electron
   m_KFf     = 13; // muon
@@ -277,7 +278,12 @@ double KKabox::gamISR( double svar){
 
 ///------------------------------------------------------------------------
 double KKabox::gamFSR( double svar){
-	  return              2*m_alfpi*( log(svar/sqr(m_fin)) -1);
+	  return  sqr(m_chfin)*2*m_alfpi*( log(svar/sqr(m_fin)) -1);
+}
+
+///------------------------------------------------------------------------
+double KKabox::gamIFI( double costhe){
+	  return  m_chini*m_chfin*2*m_alfpi* log( (1-costhe)/(1+costhe));
 }
 
 ///------------------------------------------------------------------------
@@ -316,7 +322,6 @@ double KKabox::Rho_isr(double svar, double vv){
 ///
   return rho;
 }//Rho_isr
-
 
 
 ///------------------------------------------------------------------------
@@ -360,6 +365,19 @@ double KKabox::Rho_fsr(double svar, double uu){
 ///
   return rho;
 }//Rho_fsr
+
+
+///------------------------------------------------------------------------
+double KKabox::Rho_ifi(double costhe, double uu){
+/// ISR+FSR rho-function
+
+  double alf1   = m_alfpi;
+  double gami   = gamIFI( costhe );
+  double Fac = exp(-m_ceuler*gami)/TMath::Gamma(1+gami);
+  double rho = Fac* gami*exp( log(uu)*(gami-1) );
+  return rho;
+}//Rho_ifi
+
 
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density(int nDim, Double_t *Xarg)
@@ -527,20 +545,26 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     double gamf   = gamFSR(svar2);
     m_uu = exp(1.0/gamf *log(rr));     // mapping
     Dist *= m_uu/rr/gamf;              // Jacobian
-// FSR photonic distribution
+    // FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
   	Dist *= Rho3;
     svarCum *= (1-m_uu);
 
     // ******** mapping for polar angle *******
-    m_CosTheta = -1.0 + 2.0* Xarg[2];
-    Dist *= 2.0;
+    double cmax = 0.999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
+    Dist *= 2.0*cmax;
 
-    double zz = (1-m_vv)*(1-m_uu);
+    // ******** mapping for IFI *******
+    double delta =1e-6;
+    m_r1 =0;
+    m_r2 =0;
+
+// ******* MC event *******
+    double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
     m_xx = 1-zz;
-    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
-
-// ******* effective masses *********
+//    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
+// effective masses
 	m_Mka = sqrt(svar2);   // after ISR
 	m_Mll = sqrt(svarCum); // after ISR+FSR
 
@@ -554,9 +578,11 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
 	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
 	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-	double dSigAngF,dSigAngF1,dSigAngF2;
-	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF1);
-	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF2);
+	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
+	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
+	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
+	gps_bornfoam_( 0,m_KFini,m_KFf,Misr1,m_CosTheta,dSigAngF1);
+	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSigAngF2);
     dSigAngF = gps_makerhofoam_(1.0);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
     if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug

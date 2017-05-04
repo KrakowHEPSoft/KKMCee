@@ -102,6 +102,7 @@ class KKabox: public TFoamIntegrand{
  	double m_chini;
  	//
  	double m_fin;
+ 	double m_chfin;
  	long   m_KFini;  // electron
  	long   m_KFf;    // muon
  	//
@@ -114,9 +115,11 @@ class KKabox: public TFoamIntegrand{
  	int    m_Mode;   // operation mode for Density
 //******** MC EVENT ********
  	double m_CosTheta;
- 	double m_vv;
- 	double m_uu;
- 	double m_xx;
+ 	double m_vv;  // ISR
+ 	double m_uu;  // FSR
+ 	double m_r1;  // IFI
+ 	double m_r2;  // IFI
+ 	double m_xx;  // total
  	//
  	double m_Mll;
  	double m_Mka;
@@ -147,10 +150,12 @@ public:
   void PlTable2(int, TH1D* iHst[], FILE*, Char_t *Capt[], Char_t[] , const char* , int,int,int);
 
   // Foam integrand
-  double gamISR( double svar);
-  double gamFSR( double svar);
+  double gamISR( double );
+  double gamFSR( double );
+  double gamIFI( double );
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
+  double Rho_ifi(double, double );
   Double_t Density(int, Double_t*);
   Double_t Density3(int, Double_t*);
   Double_t Density5(int, Double_t*);
