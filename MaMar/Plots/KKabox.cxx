@@ -541,8 +541,8 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
 
 // ******* effective masses *********
-	m_Mll = sqrt(svarCum); // final after FSR
 	m_Mka = sqrt(svar2);   // after ISR
+	m_Mll = sqrt(svarCum); // after ISR+FSR
 
 // =============== Sigm/dOmega from spin amplitudes ===============
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
