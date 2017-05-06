@@ -272,6 +272,11 @@ void KKabox::PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t
 }//GLK_PlTable2
 
 ///------------------------------------------------------------------------
+double KKabox::Fyfs(double gam){
+	  return exp(-m_ceuler*gam)/TMath::Gamma(1+gam);
+}
+
+///------------------------------------------------------------------------
 double KKabox::gamISR( double svar){
 	  return  sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);
 }
@@ -287,6 +292,64 @@ double KKabox::gamIFI( double costhe){
 }
 
 ///------------------------------------------------------------------------
+void KKabox::MapIFI( double r, double gam, double eps, double &v){
+// Maping for POSITIVE gam
+// Input r in (0,1) is random number
+// Returned v is distributed according to gam*v^{gam-1}
+  double del = 0.001;
+  if( fabs(gam*log(eps)) > del){
+	  if( r< exp(gam*log(eps)) ){
+		  v = eps;
+	  } else {
+		  v = exp((1/gam)*log(r));
+	  }
+  } else {
+	  if( r< 1+gam*log(eps)){
+		  v = eps;
+	  } else {
+		  v = exp(-(1/gam)*(1-r));
+	  }
+  }
+  if( v<0 || v>1) {
+	  cout<<"STOP in KKabox::MapIFI: +++ v = "<<v<<endl;
+	  exit(11);
+  }
+}// MapIFI
+
+///------------------------------------------------------------------------
+void KKabox::MapIFI2( double r, double gam, double eps, double &v, double &R1){
+// Maping for NEGATIVE gam
+// Input r in (0,1) is random number
+// Returned v is distributed according to gam*v^{gam-1}
+// R1 is normalization (part of Jacobian) factor
+  double r0, eg, del= 0.001;
+  if( fabs(gam*log(eps)) > del){
+	  eg = exp(gam*log(eps));
+	  r0 =eg/(2*eg-1);
+	  if( r< r0 ){
+		  v = eps;
+	  } else {
+		  v = exp( (1/gam)*log( 2*eg -(2*eg-1)*r ) );
+	  }
+	  R1 = 2*eg-1;
+  } else {
+	  eg = 1+gam*log(eps);
+	  r0 = eg/(2*eg-1);
+	  if( r< r0){
+		  v = eps;
+	  } else {
+		  v = exp( (1/gam)*(1-r)*(2*eg-1) );
+	  }
+	  R1 = 2*eg-1;
+  }
+  if( v<0 || v>1) {
+	  cout<<"STOP in KKabox::MapIFI2: +++ v = "<<v<<endl;
+	  exit(11);
+  }
+}// MapIFI2
+
+
+///------------------------------------------------------------------------
 double KKabox::Rho_isr(double svar, double vv){
 /// ISR rho-function for ISR
 
@@ -294,7 +357,7 @@ double KKabox::Rho_isr(double svar, double vv){
   double gami   = gamISR(svar);
   //gami = sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);
 ///
-  double gamfac = exp(-m_ceuler*gami)/TMath::Gamma(1+gami);
+  double gamfac = Fyfs(1+gami);
   double delb   = gami/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
   double ffact  = gamfac*exp(delb);
 
@@ -333,10 +396,10 @@ double KKabox::Rho_fsr(double svar, double uu){
 ///
   /////delb   = Chf2* alf1*(0.5d0*bilg -1d0  +pi**2/3d0)
   /////delb   = delb -betf/2 *dlog(1-uu)
-  double gamfac = exp(-m_ceuler*gamf)/TMath::Gamma(1+gamf);
+  /////double gamfac = exp(-m_ceuler*gamf)/TMath::Gamma(1+gamf);
   double delb   = gamf/4 +alf1*(-0.5  +sqr(m_pi)/3.0)
 		         -gamf/2 *log(1-uu);
-  double ffact  = gamfac*exp(delb);
+  double ffact  = Fyfs(gamf)*exp(delb);
 
   double rho,dels,delh;
   if(       m_KeyISR == 0){
@@ -371,10 +434,9 @@ double KKabox::Rho_fsr(double svar, double uu){
 double KKabox::Rho_ifi(double costhe, double uu){
 /// ISR+FSR rho-function
 
-  double alf1   = m_alfpi;
+//  double alf1   = m_alfpi;
   double gami   = gamIFI( costhe );
-  double Fac = exp(-m_ceuler*gami)/TMath::Gamma(1+gami);
-  double rho = Fac* gami*exp( log(uu)*(gami-1) );
+  double rho    = Fyfs(gami)* gami*exp( log(uu)*(gami-1) );
   return rho;
 }//Rho_ifi
 
@@ -467,7 +529,6 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	double dSig_dCos = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 
 // ******* effective masses *********
-	m_Mll = sqrt(svarCum); // final after FSR
 	m_Mka = sqrt(svar2);   // after ISR
 
 // =============== Sigm/dOmega from spin amplitudes ===============
@@ -555,18 +616,28 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
     Dist *= 2.0*cmax;
 
-    // ******** mapping for IFI *******
-    double delta =1e-6;
+    // ******** mapping for IFI variaable *******
+    double R1 = 1, R2=1;
+    double eps =1e-6;
+    double gamint = gamIFI(m_CosTheta);
+    if(gamint > 0)
+    	MapIFI(  Xarg[3], gamint, eps, m_r1);     // mapping
+    else
+        MapIFI2( Xarg[3], gamint, eps, m_r1, R1);
+    if(gamint > 0)
+    	MapIFI(  Xarg[4], gamint, eps, m_r2);     // mapping
+    else
+        MapIFI2( Xarg[4], gamint, eps, m_r2, R2);
+//
     m_r1 =0;
     m_r2 =0;
-
+//
 // ******* MC event *******
     double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
     m_xx = 1-zz;
 //    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
 // effective masses
 	m_Mka = sqrt(svar2);   // after ISR
-	m_Mll = sqrt(svarCum); // after ISR+FSR
 
 // =============== Sigm/dOmega from spin amplitudes ===============
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)

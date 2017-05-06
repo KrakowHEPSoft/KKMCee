@@ -121,7 +121,6 @@ class KKabox: public TFoamIntegrand{
  	double m_r2;  // IFI
  	double m_xx;  // total
  	//
- 	double m_Mll;
  	double m_Mka;
  	//
  	double m_p1[4];
@@ -150,12 +149,15 @@ public:
   void PlTable2(int, TH1D* iHst[], FILE*, Char_t *Capt[], Char_t[] , const char* , int,int,int);
 
   // Foam integrand
+  double Fyfs( double );
   double gamISR( double );
   double gamFSR( double );
   double gamIFI( double );
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
   double Rho_ifi(double, double );
+  void MapIFI(  double r, double gam, double eps, double &v);
+  void MapIFI2( double r, double gam, double eps, double &v, double &R1);
   Double_t Density(int, Double_t*);
   Double_t Density3(int, Double_t*);
   Double_t Density5(int, Double_t*);
