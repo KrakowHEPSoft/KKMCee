@@ -113,6 +113,7 @@ class KKabox: public TFoamIntegrand{
  	int    m_KeyFSR;
 //
  	int    m_Mode;   // operation mode for Density
+ 	double m_del;
 //******** MC EVENT ********
  	double m_CosTheta;
  	double m_vv;  // ISR
@@ -155,9 +156,10 @@ public:
   double gamIFI( double );
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
-  double Rho_ifi(double, double );
-  void MapIFI(  double r, double gam, double eps, double &v);
-  void MapIFI2( double r, double gam, double eps, double &v, double &R1);
+  double Rho_ifi(double, double , double );
+  void MapIFI1( double, double, double, double &, double &);
+  void MapIFI2( double, double, double, double &, double &);
+  void MapIFI(  double, double, double, double &, double &);
   Double_t Density(int, Double_t*);
   Double_t Density3(int, Double_t*);
   Double_t Density5(int, Double_t*);

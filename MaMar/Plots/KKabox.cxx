@@ -54,6 +54,7 @@ void KKabox::Initialize(TFile &DiskFileA){
   m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
 
   m_Mode    = 3;            // Operation mode for Foam
+  m_del     = 0.0001;       // limit for gamma*ln(eps) in IFI mapping
 
   m_count   = 0;            // counter for debug
 
@@ -292,22 +293,25 @@ double KKabox::gamIFI( double costhe){
 }
 
 ///------------------------------------------------------------------------
-void KKabox::MapIFI( double r, double gam, double eps, double &v){
+void KKabox::MapIFI1( double r, double gam, double eps, double &v, double &dJac){
 // Maping for POSITIVE gam
 // Input r in (0,1) is random number
 // Returned v is distributed according to gam*v^{gam-1}
-  double del = 0.001;
-  if( fabs(gam*log(eps)) > del){
-	  if( r< exp(gam*log(eps)) ){
-		  v = eps;
+  if( fabs(gam*log(eps)) > m_del){
+	  double eg = exp(gam*log(eps));
+	  if( r< eg ){
+		  v = 0;  dJac=1/eg;
 	  } else {
-		  v = exp((1/gam)*log(r));
+		  v = exp((1/gam)*log(r)); // mapping
+		  dJac = 1/(r*gam/v);      // jacobian
 	  }
   } else {
-	  if( r< 1+gam*log(eps)){
-		  v = eps;
+	  double eg = 1+gam*log(eps);
+	  if( r< eg ){
+		  v = 0; dJac=1/eg;
 	  } else {
-		  v = exp(-(1/gam)*(1-r));
+		  v = exp(-(1/gam)*(1-r)); // mapping
+		  dJac = 1/(gam/v);        // jacobian
 	  }
   }
   if( v<0 || v>1) {
@@ -317,30 +321,30 @@ void KKabox::MapIFI( double r, double gam, double eps, double &v){
 }// MapIFI
 
 ///------------------------------------------------------------------------
-void KKabox::MapIFI2( double r, double gam, double eps, double &v, double &R1){
+void KKabox::MapIFI2( double r, double gam, double eps, double &v, double &dJac){
 // Maping for NEGATIVE gam
 // Input r in (0,1) is random number
 // Returned v is distributed according to gam*v^{gam-1}
-// R1 is normalization (part of Jacobian) factor
-  double r0, eg, del= 0.001;
-  if( fabs(gam*log(eps)) > del){
+// dJac is normalization (part of Jacobian) factor
+  double r0, eg;
+  if( fabs(gam*log(eps)) > m_del){
 	  eg = exp(gam*log(eps));
 	  r0 =eg/(2*eg-1);
 	  if( r< r0 ){
-		  v = eps;
+		  v = 0; dJac= 1/r0;
 	  } else {
-		  v = exp( (1/gam)*log( 2*eg -(2*eg-1)*r ) );
+		  v = exp( (1/gam)*log( 2*eg -(2*eg-1)*r ) ); // mapping
+		  dJac = (2*eg-1)/(-gam/v*exp(gam*log(v)));   // jacobian
 	  }
-	  R1 = 2*eg-1;
   } else {
 	  eg = 1+gam*log(eps);
 	  r0 = eg/(2*eg-1);
 	  if( r< r0){
-		  v = eps;
+		  v = 0; dJac= 1/r0;
 	  } else {
-		  v = exp( (1/gam)*(1-r)*(2*eg-1) );
+		  v = exp( (1/gam)*(1-r)*(2*eg-1) ); // mapping
+		  dJac = (2*eg-1)/(-gam/v);          // jacobian
 	  }
-	  R1 = 2*eg-1;
   }
   if( v<0 || v>1) {
 	  cout<<"STOP in KKabox::MapIFI2: +++ v = "<<v<<endl;
@@ -348,6 +352,14 @@ void KKabox::MapIFI2( double r, double gam, double eps, double &v, double &R1){
   }
 }// MapIFI2
 
+///------------------------------------------------------------------------
+void KKabox::MapIFI( double r, double gam, double eps, double &v, double &R){
+//// mapping for IFI
+if(gam > 0)
+	MapIFI1( r, gam, eps, v, R);
+else
+    MapIFI2( r, gam, eps, v, R);
+}// MapIFI
 
 ///------------------------------------------------------------------------
 double KKabox::Rho_isr(double svar, double vv){
@@ -357,7 +369,7 @@ double KKabox::Rho_isr(double svar, double vv){
   double gami   = gamISR(svar);
   //gami = sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);
 ///
-  double gamfac = Fyfs(1+gami);
+  double gamfac = Fyfs(gami);
   double delb   = gami/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
   double ffact  = gamfac*exp(delb);
 
@@ -429,17 +441,27 @@ double KKabox::Rho_fsr(double svar, double uu){
   return rho;
 }//Rho_fsr
 
-
-///------------------------------------------------------------------------
-double KKabox::Rho_ifi(double costhe, double uu){
+///--------------------------------------------------------------
+double KKabox::Rho_ifi(double costhe, double uu, double eps){
 /// ISR+FSR rho-function
-
-//  double alf1   = m_alfpi;
-  double gami   = gamIFI( costhe );
-  double rho    = Fyfs(gami)* gami*exp( log(uu)*(gami-1) );
+  double rho, gami;
+  gami   = gamIFI( costhe );
+  if( fabs(gami*log(eps)) > m_del){
+	  if( uu < eps){
+		  rho = exp( log(eps)*gami );
+	  } else {
+		  rho = gami*exp( log(uu)*(gami-1) );
+	  }
+  } else {
+	  if( uu < eps){
+		  rho = 1+ gami*log(eps);
+	  }  else {
+		  rho = gami/uu;
+	  }
+  }
+  rho *= Fyfs(gami);
   return rho;
 }//Rho_ifi
-
 
 ///////////////////////////////////////////////////////////////
 Double_t KKabox::Density(int nDim, Double_t *Xarg)
@@ -617,20 +639,20 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     Dist *= 2.0*cmax;
 
     // ******** mapping for IFI variaable *******
-    double R1 = 1, R2=1;
     double eps =1e-6;
     double gamint = gamIFI(m_CosTheta);
-    if(gamint > 0)
-    	MapIFI(  Xarg[3], gamint, eps, m_r1);     // mapping
-    else
-        MapIFI2( Xarg[3], gamint, eps, m_r1, R1);
-    if(gamint > 0)
-    	MapIFI(  Xarg[4], gamint, eps, m_r2);     // mapping
-    else
-        MapIFI2( Xarg[4], gamint, eps, m_r2, R2);
 //
-    m_r1 =0;
-    m_r2 =0;
+    double R1, R2;
+    MapIFI( Xarg[3], gamint, eps, m_r1, R1);     // mapping
+    MapIFI( Xarg[4], gamint, eps, m_r2, R2);     // mapping
+    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1, eps);
+    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2, eps);
+//
+//    m_r1 =0;
+//    m_r2 =0;
+    double WT1 = R1 *RhoIFI1;
+    double WT2 = R2 *RhoIFI2;
+    Dist *= WT1*WT2;
 //
 // ******* MC event *******
     double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
@@ -656,7 +678,7 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
 	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSigAngF2);
     dSigAngF = gps_makerhofoam_(1.0);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
-    if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug
+    if( m_count <1 && fabs(svar/svar2-1)>0.20 ){  // debug
 //    if( m_count <1000 ){  // debug
     	double Rat;
     	Rat = dSigAngF1/( dSigAngF2 );
@@ -665,10 +687,23 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     	cout<<" dSigAngF2    = "<< dSigAngF2;
     	cout<<" svar/svar2 = "<< svar/svar2;
     	cout<<" Rat = "<<Rat<<endl;
-    } // end debug **********
-//
+    } //
+//    if( m_count <10000 && m_r1 > 0 && m_r2 >0 ){  // debug
+    if( m_count <10000 && m_r1 > 0 && gamint <0 ){  // debug
+    	cout<<" Density5 debug m_count= "<< m_count<< endl;
+    	cout<<" m_r1= "<< m_r1 <<"  m_r2="<< m_r2<<"  m_xx="<< m_xx <<endl;
+    	cout<<" m_CosTheta ="<< m_CosTheta <<" gamint= "<<gamint<<endl;
+    	cout<<" WT1 ="<< WT1 <<"  WT2="<< WT2<<endl;
+   }
+//   **********  end debug **********
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
 	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
+
+//	if( Dist < 0){
+//		cout<< " Density5: Dist= "<< Dist <<endl;
+//	}
+
+	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
 
 	return Dist;
 }// Density5

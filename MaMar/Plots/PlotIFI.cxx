@@ -407,6 +407,19 @@ void ISRgener()
   PseRan->SetSeed(4357);
   // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   // %%%%%%%%%%%%%%% FOAM simulators/integrators %%%%%%%%%%%%%%%
+  // ISR+FSR+IFI
+  TFoam   *MC_Gen5    = new TFoam("MC_Gen5");   // Create Simulator
+  MC_Gen5->SetkDim(5);         // No. of dimensions, obligatory!
+  MC_Gen5->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
+  MC_Gen5->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
+  MC_Gen5->SetRho(&LibSem);
+  MC_Gen5->SetPseRan(PseRan);  // Set random number generator, mandatory!
+  MC_Gen5->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
+  LibSem.m_Mode = 5;           // Choose Density5
+  MC_Gen5->Initialize();       // Initialize simulator, may take time...
+  double Xsav5, dXsav5;          //  For renormalizing histograms
+  MC_Gen5->GetIntNorm(Xsav5,dXsav5);
+  TH1D *HST_FOAM5_NORMA = new TH1D("HST_FOAM5_NORMA","MC normalization",10,0.0,10000.0);
   // ISR+FSR only
   TFoam   *MC_Gen3    = new TFoam("MC_Gen3");   // Create Simulator
   MC_Gen3->SetkDim(3);         // No. of dimensions, obligatory!
@@ -420,19 +433,6 @@ void ISRgener()
   double Xsav3, dXsav3;          //  For renormalizing histograms
   MC_Gen3->GetIntNorm(Xsav3,dXsav3);
   TH1D *HST_FOAM3_NORMA = new TH1D("HST_FOAM3_NORMA","MC normalization",10,0.0,10000.0);
-  // ISR+FSR+IFI
-  TFoam   *MC_Gen5    = new TFoam("MC_Gen5");   // Create Simulator
-  MC_Gen5->SetkDim(5);         // No. of dimensions, obligatory!
-  MC_Gen5->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
-  MC_Gen5->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
-  MC_Gen5->SetRho(&LibSem);
-  MC_Gen5->SetPseRan(PseRan);  // Set random number generator, mandatory!
-  MC_Gen5->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
-  LibSem.m_Mode = 5;           // Choose Density3
-  MC_Gen5->Initialize();       // Initialize simulator, may take time...
-  double Xsav5, dXsav5;          //  For renormalizing histograms
-  MC_Gen5->GetIntNorm(Xsav5,dXsav5);
-  TH1D *HST_FOAM5_NORMA = new TH1D("HST_FOAM5_NORMA","MC normalization",10,0.0,10000.0);
 
   // %%% loop over MC events %%%
   double Mll, Mka, vv, xx, CosTheta;
@@ -456,7 +456,7 @@ void ISRgener()
     HST_FOAM3_NORMA->Fill(-1.0,Xsav3);  // fill normalization into underflow
 
     /// Generate ISR+FSR+IFI event
-	LibSem.m_Mode = 5;
+	LibSem.m_Mode = -5;
     MC_Gen5->MakeEvent();            // generate MC event
     MC_Gen5->GetMCwt(wt5);
     xx  = LibSem.m_xx;
@@ -614,7 +614,7 @@ void FigAfb()
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
-  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2"); // KKMC
+  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
@@ -634,24 +634,25 @@ void FigAfb()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   //====================plot1========================
-  //                sigma(vmax)
+  //                AFB(vmax)
   cFigAfb->cd(1);
   //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
-  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat.
+  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat. IFI off
+  TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC sigma(vmax) from scat. IFI on
   //
   Hst1->SetStats(0);
   Hst1->SetTitle(0);
   Hst1->DrawCopy("h");
+  //
+  Hst2->SetLineColor(kMagenta); // magenta
+  Hst2->DrawCopy("hsame");      // KKMC IFI on !!!
   //
   afbv_ISR2_FSR2->SetLineColor(kRed);     // red
   afbv_ISR2_FSR2->DrawCopy("hsame");      // KKsem AFB(vmax) direct.
   //
   Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM ISR+FSR
   Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
-  //
-  HAfb_vTcPR_Ceex2->SetLineColor(kMagenta); // magenta
-  HAfb_vTcPR_Ceex2->DrawCopy("hsame");      // IFI on !!!
   //
   Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM ISR+FSR+IFI
   Hafb_xmax_Ceex2->DrawCopy("hsame");      // FOAM ISR+FSR+IFI
@@ -661,17 +662,27 @@ void FigAfb()
   cFigAfb->cd(2);
   TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
   TH1D *Hst1_diff2 =(TH1D*)Hst1->Clone("Hst1_diff2");
+  TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
+  TH1D *Hst1_diff4 =(TH1D*)Hafb_xmax_Ceex2->Clone("Hst1_diff4");
 
-  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2, 1.0, -1.0);   // diff. with KKsem
-  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // diff. with FOAM
+  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2,   1.0, -1.0); // KKMC_noIFI minus KKsem_noIFI
+  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_noIFI minus FOAM  noIFI
+  Hst2_diff1->Add(Hst2_diff1, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_IFI   minus FOAM  noIFI
+  Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI
 
-  Hst1_diff1->SetMinimum(-0.03);
-  Hst1_diff1->SetMaximum( 0.03);
+  Hst1_diff1->SetMinimum(-0.02);
+  Hst1_diff1->SetMaximum( 0.06);
   Hst1_diff1->SetLineColor(kRed);
   Hst1_diff1->DrawCopy("h");
 
   Hst1_diff2->SetLineColor(kBlue);
   Hst1_diff2->DrawCopy("hsame");
+
+  Hst2_diff1->SetLineColor(kBlack);
+  Hst2_diff1->DrawCopy("hsame");
+
+  Hst1_diff4->SetLineColor(kMagenta);
+  Hst1_diff4->DrawCopy("hsame");
   //
   //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
