@@ -32,7 +32,8 @@ using namespace std;
 // current
 //TFile DiskFileA("../test0/rmain.root");
 //TFile DiskFileA("../workAFB/rmain.root");
-TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
+TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
+//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
@@ -438,7 +439,7 @@ void ISRgener()
   double Mll, Mka, vv, xx, CosTheta;
   double wt3, wt5;
   long NevTot = 2000000;  // 2M
-  NevTot      = 8000000;  // 8M
+  //NevTot      = 8000000;  // 8M
   //NevTot =    100000000;  // 100M
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -521,7 +522,7 @@ void FigVdist()
   //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist: photonic2", 50, 50,    1000, 800);
+  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist: NEW", 50, 50,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   cFigVdist->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -624,7 +625,7 @@ void FigAfb()
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb: photonic2", 20, 300,   1000, 550);
+  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb: NEW", 20, 300,   1000, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -638,23 +639,26 @@ void FigAfb()
   cFigAfb->cd(1);
   //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
-  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat. IFI off
-  TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC sigma(vmax) from scat. IFI on
+  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
+  TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
   //
-  Hst1->SetStats(0);
-  Hst1->SetTitle(0);
-  Hst1->DrawCopy("h");
+  Hst2->SetStats(0);
+  Hst2->SetTitle(0);
+  Hst2->SetMinimum(-0.02);
+  Hst2->SetMaximum( 0.06);
+  Hst2->SetLineColor(kMagenta);            // magenta
+  Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
-  Hst2->SetLineColor(kMagenta); // magenta
-  Hst2->DrawCopy("hsame");      // KKMC IFI on !!!
+  Hst1->SetLineColor(kBlack);              // black
+  Hst1->DrawCopy("hsame");                 // KKMC AFB(vmax) from scat. IFI off
   //
-  afbv_ISR2_FSR2->SetLineColor(kRed);     // red
-  afbv_ISR2_FSR2->DrawCopy("hsame");      // KKsem AFB(vmax) direct.
+  afbv_ISR2_FSR2->SetLineColor(kRed);      // red
+  afbv_ISR2_FSR2->DrawCopy("hsame");       // KKsem AFB(vmax) direct. IFI off
   //
-  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM ISR+FSR
-  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
+  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM ISR+FSR IFI off
+  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam AFB(vmax) scatt.
   //
-  Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM ISR+FSR+IFI
+  Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM ISR+FSR+IFI, IFI on
   Hafb_xmax_Ceex2->DrawCopy("hsame");      // FOAM ISR+FSR+IFI
   //
   CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
@@ -756,8 +760,8 @@ int main(int argc, char **argv)
   FigVdist();  // sigma(v) and sigma(vmax)
   FigAfb();    // AFB(vmax)
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
-  FigOldBench();
-  TabOldBench();
+  //FigOldBench();
+  //TabOldBench();
 
   FigInfo();
   //++++++++++++++++++++++++++++++++++++++++

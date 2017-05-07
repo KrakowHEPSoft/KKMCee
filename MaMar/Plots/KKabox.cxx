@@ -437,7 +437,8 @@ double KKabox::Rho_fsr(double svar, double uu){
 	  cout<<"+++++TMCgenH::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
 	  exit(5);
   }
-///
+//
+  //if(rho<0) rho=0;
   return rho;
 }//Rho_fsr
 
@@ -509,11 +510,14 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 // ******** mapping for FSR *******
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
-    m_uu = exp(1.0/gamf *log(rr));     // mapping
-    Dist *= m_uu/rr/gamf;              // Jacobian
+    if( gamf <0 )       return 0.0;      // just in case
+    m_uu = exp(1.0/gamf *log(rr));       // mapping
+    if( m_uu < 1e-200 ) return 0.0;      // temporary fix
+    Dist *= m_uu/rr/gamf;                // Jacobian
 // FSR photonic distribution
-  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
-  	Dist *= Rho3;
+  	double Rho3 = Rho_fsr(svar2,m_uu);   // remember take care of m_mbeam!!!
+  	if( Rho3 <0 ) return 1e-100;
+ 	Dist *= Rho3;
     svarCum *= (1-m_uu);
 
     // ******** mapping for polar angle *******
@@ -593,6 +597,21 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 //	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
 	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
 
+/*
+	if(Dist > 1.0e100 ) {
+       cout<<" ********************************** Density3: Dist ="<<Dist<<endl;
+       cout<<" m_CosTheta="<<m_CosTheta;
+       cout<<" m_vv ="<<m_vv<<" m_uu= "<<m_uu;
+       cout<<" dSigAngF="<<dSigAngF;
+//       cout<<" dSigAng="<< dSigAng;
+//       cout<<" dSig_dCos="<<dSig_dCos;
+       cout<<" Rho3="<<Rho3;
+       cout<<endl;
+	}
+*/
+
+	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
+
 	return Dist;
 }// Density3
 
@@ -628,6 +647,8 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     double gamf   = gamFSR(svar2);
     m_uu = exp(1.0/gamf *log(rr));     // mapping
     Dist *= m_uu/rr/gamf;              // Jacobian
+	if( gamf < 0 )      return 0.0;    // temporary fix
+    if( m_uu < 1e-200 ) return 0.0;    // temporary fix
     // FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
   	Dist *= Rho3;
@@ -689,7 +710,7 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
     	cout<<" Rat = "<<Rat<<endl;
     } //
 //    if( m_count <10000 && m_r1 > 0 && m_r2 >0 ){  // debug
-    if( m_count <10000 && m_r1 > 0 && gamint <0 ){  // debug
+    if( m_count <1 && m_r1 > 0 && gamint <0 ){  // debug
     	cout<<" Density5 debug m_count= "<< m_count<< endl;
     	cout<<" m_r1= "<< m_r1 <<"  m_r2="<< m_r2<<"  m_xx="<< m_xx <<endl;
     	cout<<" m_CosTheta ="<< m_CosTheta <<" gamint= "<<gamint<<endl;
@@ -702,6 +723,8 @@ Double_t KKabox::Density5(int nDim, Double_t *Xarg)
 //	if( Dist < 0){
 //		cout<< " Density5: Dist= "<< Dist <<endl;
 //	}
+
+	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
 
 	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
 
