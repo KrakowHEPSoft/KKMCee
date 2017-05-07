@@ -760,8 +760,8 @@ int main(int argc, char **argv)
   FigVdist();  // sigma(v) and sigma(vmax)
   FigAfb();    // AFB(vmax)
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
-  //FigOldBench();
-  //TabOldBench();
+  FigOldBench();
+  TabOldBench();
 
   FigInfo();
   //++++++++++++++++++++++++++++++++++++++++

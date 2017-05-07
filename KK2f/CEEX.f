@@ -542,7 +542,7 @@ C]]]]]]]]]]
          DO j2 = 1,2
             DO j3 = 1,2
                DO j4 = 1,2
-                   Sum0 = Sum0 +DREAL( m_AmpBorn(j1,j2,j3,j4)*DCONJG(m_AmpBorn1(j1,j2,j3,j4)) )
+                   Sum0 = Sum0 +DREAL( m_AmpBorn2(j1,j2,j3,j4)*DCONJG(m_AmpBorn1(j1,j2,j3,j4)) )
                ENDDO
             ENDDO
          ENDDO
@@ -1609,7 +1609,6 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       INTEGER           KFi,KFf,Mode,Level
       DOUBLE PRECISION  PX(4),p1(4),p2(4),p3(4),p4(4)
       DOUBLE PRECISION  CMSene, CosThe, m1,m2,m3,m4,meps
-*      DOUBLE COMPLEX    AmpBorn(2,2,2,2)
       DOUBLE COMPLEX    AmpBorn
       DOUBLE PRECISION  Xborn
 *
@@ -1625,12 +1624,18 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       INTEGER           Hel1,Hel2,Hel3,Hel4
       DOUBLE COMPLEX    PropGam,PropZet
       DOUBLE COMPLEX    s31,s24,s14,s32
-      DOUBLE COMPLEX    FFacTT(2),      FFacUU(2)
+      DOUBLE COMPLEX    FFacTT(2), FFacUU(2)
+      DOUBLE COMPLEX    FFacTG(2), FFacTZ(2), FFacUG(2),FFacUZ(2)
       DOUBLE COMPLEX    SpinoTT(2,2,2,2),SpinoUU(2,2,2,2)
+      DOUBLE COMPLEX    BoxGG(2,2,2,2),    BoxGZ(2,2,2,2)
       DOUBLE COMPLEX    TT,UU
       DOUBLE COMPLEX    GPS_iProd1
       DOUBLE COMPLEX    GPS_iProd2
-      DOUBLE PRECISION  dummy, BornSum, Mini, Mfin, Ene, Pini, Pfin
+      DOUBLE COMPLEX    AmpBoxy
+      DOUBLE COMPLEX    BVR_CBoxGG, BVR_CBoxGZ, BVR_IntIR, BVR_IntReson
+      DOUBLE COMPLEX    Coef, IntIR
+      DOUBLE PRECISION  dummy, BornSum, Mini, Mfin, Ene, Pini, Pfin, CosThetD
+      DOUBLE PRECISION  s,t,u, MasPhot
 *-----------------------------------------------------------------------------
       CALL GPS_Initialize
 *=============================================================
@@ -1638,6 +1643,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+      CALL KK2f_GetMasPhot(MasPhot)
       Mini =  0.510999e-3  ! electron
       Mfin =  0.105        ! final ferm. muon
       Ene = CMSene/2
@@ -1665,6 +1671,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       m3 = Mfin
       m4 =-Mfin
 *=============================================================
+* Basic spinor products
       DO j1 = 1,2
          DO j2 = 1,2
             DO j3 = 1,2
@@ -1689,6 +1696,50 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
             ENDDO
          ENDDO
       ENDDO
+****************  Boxes:
+* IR-subtracted, helicity conservation imposed (small mass approx.)
+      svarX= CMSene**2
+      IF(SvarX .LE. (ABS(m3)+ABS(m4))**2 ) RETURN
+      s =  SvarX
+      CosThetD = CosThe
+      t = -s*(1d0-CosThetD)/2d0
+      u = -s*(1d0+CosThetD)/2d0
+      Coef  = DCMPLX(m_Alfpi*Qe*Qf)
+* Virtual 2*(B(t)-B(u)) Intereference IR part to be subtracted from boxes
+      IntIR      = Coef*BVR_IntIR(MasPhot,s,t,u)                 !!<- asymetric in (t,u)
+      m_IntReson = Coef*BVR_IntReson(MasPhot,m_MZ,m_GammZ,s,t,u) !!<- asymetric in (t,u)
+      m_BoxGGtu  = Coef*( BVR_CBoxGG(MasPhot,             s,t,u)) -IntIR
+      m_BoxGZtu  = Coef*( BVR_CBoxGZ(MasPhot,m_MZ,m_GammZ,s,t,u)) -IntIR
+      m_BoxGGut  = Coef*(-BVR_CBoxGG(MasPhot,             s,u,t)) -IntIR
+      m_BoxGZut  = Coef*(-BVR_CBoxGZ(MasPhot,m_MZ,m_GammZ,s,u,t)) -IntIR
+* Exponentiate Resonance BigLogs according to Greco et al.
+      IF( m_KeyInt .EQ. 2) THEN
+         m_BoxGZtu = m_BoxGZtu -m_IntReson
+         m_BoxGZut = m_BoxGZut -m_IntReson
+      ENDIF
+      DO j1 = 1,2
+         DO j2 = 1,2
+            DO j3 = 1,2
+               DO j4 = 1,2
+                  Hel1 = 3-2*j1
+                  Hel2 = 3-2*j2
+                  Hel3 = 3-2*j3
+                  Hel4 = 3-2*j4
+                  BoxGG(j1,j2,j3,j4) =DCMPLX(0d0,0d0)
+                  BoxGZ(j1,j2,j3,j4) =DCMPLX(0d0,0d0)
+                  IF((Hel2 .EQ. -Hel1) .AND. (Hel4 .EQ. -Hel3)) THEN !!<--helicity conserv.
+                     IF( Hel1*Hel3 .EQ. 1) THEN
+                        BoxGG(j1,j2,j3,j4) = m_BoxGGtu
+                        BoxGZ(j1,j2,j3,j4) = m_BoxGZtu
+                     ELSE
+                        BoxGG(j1,j2,j3,j4) = m_BoxGGut
+                        BoxGZ(j1,j2,j3,j4) = m_BoxGZut
+                     ENDIF
+                  ENDIF
+               ENDDO
+            ENDDO
+         ENDDO
+      ENDDO
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                        ElectroWeak Corrections                                         //
 *////////////////////////////////////////////////////////////////////////////////////////////
@@ -1699,24 +1750,23 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Propagators, with s-dependent width
       PropGam =    DCMPLX(  1d0/svarX,  0d0)
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
-* Possibility to switch off Z or gamma, etc.
-      IF(m_KeyZet .LE. 0) PropZet =  DCMPLX(0d0)
-      IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
-      IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 * Exponentiate Resonance BigLogs according to Greco et al.
-*      IF(  m_KeyINT .EQ. 2 .AND. m_KeyISR .NE. 0 .AND.  m_HasFSR .NE. 0  ) THEN
-*         PropZet = PropZet * EXP(m_IntReson)
-*      ENDIF
+      IF(  m_KeyINT .EQ. 2 ) THEN
+         PropZet = PropZet * EXP(m_IntReson)
+      ENDIF
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //
+*//     For boxes we need separately photon and Z parts                                    //
 *//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
 *////////////////////////////////////////////////////////////////////////////////////////////
       DO j1 = 1,2
          Hel1 = 3-2*j1
-         FFacTT(j1) = PropGam*GamVPi *Qe*Qf *RsqV
-     $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV +Hel1*Ve*Af*RsqA -Ae*Af*RsqA) !
-         FFacUU(j1) = PropGam*GamVPi *Qe*Qf *RsqV
-     $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
+         FFacTG(j1) = PropGam*GamVPi *Qe*Qf *RsqV
+         FFacTZ(j1) = PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV +Hel1*Ve*Af*RsqA -Ae*Af*RsqA) !
+         FFacUG(j1) = PropGam*GamVPi *Qe*Qf *RsqV
+         FFacUZ(j1) = PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
+         FFacTT(j1) = FFacTG(j1)+FFacTZ(j1)
+         FFacUU(j1) = FFacUG(j1)+FFacUZ(j1)
       ENDDO
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                     Total result = Spinors*Formfactor                                  //
@@ -1726,13 +1776,20 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
          DO j2 = 1,2
             DO j3 = 1,2
                DO j4 = 1,2
-                  AmpBorn =  SpinoTT(j1,j2,j3,j4)* FFacTT(j1)
-     $                      +SpinoUU(j1,j2,j3,j4)* FFacUU(j1)
+* Born,  Zero order
+                  AmpBorn = SpinoTT(j1,j2,j3,j4)* FFacTT(j1)
+     $                     +SpinoUU(j1,j2,j3,j4)* FFacUU(j1)
+* Boxes, First order
+                  AmpBoxy = SpinoTT(j1,j2,j3,j4)* FFacTG(j1) *BoxGG(j1,j2,j3,j4)
+     $                     +SpinoTT(j1,j2,j3,j4)* FFacTZ(j1) *BoxGZ(j1,j2,j3,j4)
+     $                     +SpinoUU(j1,j2,j3,j4)* FFacUG(j1) *BoxGG(j1,j2,j3,j4)
+     $                     +SpinoUU(j1,j2,j3,j4)* FFacUZ(j1) *BoxGZ(j1,j2,j3,j4)
+*
                   BornSum = BornSum +AmpBorn*DCONJG(AmpBorn)
                   IF( Mode .EQ. 0 ) THEN
-                    m_AmpBorn(j1,j2,j3,j4) =AmpBorn
+                    m_AmpBorn2(j1,j2,j3,j4) =AmpBorn+AmpBoxy
                   ELSE
-                    m_AmpBorn1(j1,j2,j3,j4) =AmpBorn
+                    m_AmpBorn1(j1,j2,j3,j4) =AmpBorn+AmpBoxy
                   ENDIF
                ENDDO
             ENDDO
