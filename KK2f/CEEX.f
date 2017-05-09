@@ -1443,7 +1443,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       SUBROUTINE GPS_BornF(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
-*//                  !!!!!!      OBSOLETE     !!!!!!                                //
+*//                              Pure Born                                         //
 *//                                                                                 //
 *//   It is esentialy a clone of GPS_Born with elements of GPS_BornPlus             //
 *//   To be used for integrand of FOAM                                              //
@@ -1538,14 +1538,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Propagators, with s-dependent width
       PropGam =    DCMPLX(  1d0/svarX,  0d0)
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
-* Possibility to switch off Z or gamma, etc.
-      IF(m_KeyZet .LE. 0) PropZet =  DCMPLX(0d0)
-      IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
-      IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
-* Exponentiate Resonance BigLogs according to Greco et al.
-*      IF(  m_KeyINT .EQ. 2 .AND. m_KeyISR .NE. 0 .AND.  m_HasFSR .NE. 0  ) THEN
-*         PropZet = PropZet * EXP(m_IntReson)
-*      ENDIF
+      PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //
 *//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
@@ -1578,6 +1571,8 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 
       SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Xborn)
 */////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//                         Born + Boxes                                            //
 *//                                                                                 //
 *//   It is esentialy a clone of GPS_Born with elements of GPS_BornPlus             //
 *//   To be used for integrand of FOAM                                              //
@@ -1744,7 +1739,6 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 *//                        ElectroWeak Corrections                                         //
 *////////////////////////////////////////////////////////////////////////////////////////////
       svarX= CMSene**2
-***      svarX=PX(4)**2-PX(3)**2-PX(2)**2-PX(1)**2
       IF(svarX .LE. (ABS(m3)+ABS(m4))**2 ) RETURN
       CALL GPS_EWFFact(KFi,KFf,SvarX, CosThe ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
 * Propagators, with s-dependent width
@@ -1752,7 +1746,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
 * Exponentiate Resonance BigLogs according to Greco et al.
       IF(  m_KeyINT .EQ. 2 ) THEN
-         PropZet = PropZet * EXP(m_IntReson)
+          PropZet = PropZet * EXP(m_IntReson)
       ENDIF
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //

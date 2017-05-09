@@ -567,48 +567,31 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
 	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-	double dSigAngF;
-	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
-//*****  Obsolete gps_bornf_()
+//***** pure Born of CEEX
 	double dSigAng;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSigAng);
-//*****GPS_Bornf_(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
-//    double fleps = 1e-50;
-//    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,fleps,  m_p2, -fleps,
-//    		                                     m_p3,fleps,  m_p4, -fleps,   dSigAng);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
-    if( m_count <1000 && fabs(svar/svar2-1)>0.20 ){  // debug
-//    if( m_count <1000 ){  // debug
-    	double Rat;
-    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
-        double dSigAngFF = gps_makerhofoam_(1.0);
-//    	Rat = dSigAngF/( dSig_dCos );
-    	Rat = dSigAngF/( dSigAngFF );
-    	cout<<" Density3 debug m_count= "<< m_count<< endl;
-    	cout<<" dSig_dCos  = "<< dSig_dCos;
-    	cout<<" dSigAng    = "<< dSigAng;
-    	cout<<" dSigAngF    = "<< dSigAngF;
-    	cout<<" svar/svar2 = "<< svar/svar2;
-    	cout<<" Rat = "<<Rat<<endl;
+//    if( m_count <10 && m_xx>0.6 ){  // debug
+    if( m_count <10 && fabs(dSigAng/dSig_dCos -1) >0.001 ){  // debug
+    	cout<<" ******************** Density3 debug m_count= "<< m_count<< endl;
+    	cout<<" dSigAng/dSig_dCos  = "<< dSigAng/dSig_dCos ;
+   	    // Born+boxes, WARNING Z-box may be modified for KeyZet=2
+        double dSigAngF;
+    	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
+    	cout<<" dSigAngF/dSig_dCos = "<< dSigAngF/dSig_dCos;
+//    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
+//      double dSigAngFF = gps_makerhofoam_(1.0);
+//    	cout<<" dSigAngFF/dSigAngF = "<< dSigAngFF/dSigAngF;
+////    	cout<<" dSig_dCos  = "<< dSig_dCos;
+////    	cout<<" dSigAng    = "<< dSigAng;
+////    	cout<<" dSigAngF   = "<< dSigAngF;
+    	cout<<endl;
     } // end debug **********
 //
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-//	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;
-	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
-
-/*
-	if(Dist > 1.0e100 ) {
-       cout<<" ********************************** Density3: Dist ="<<Dist<<endl;
-       cout<<" m_CosTheta="<<m_CosTheta;
-       cout<<" m_vv ="<<m_vv<<" m_uu= "<<m_uu;
-       cout<<" dSigAngF="<<dSigAngF;
-//       cout<<" dSigAng="<< dSigAng;
-//       cout<<" dSig_dCos="<<dSig_dCos;
-       cout<<" Rho3="<<Rho3;
-       cout<<endl;
-	}
-*/
+//	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;  // Born of EEX
+	Dist *=  dSigAng   *3.0/8.0 *sig0nb;  // Born of CEEX
 
 	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
 

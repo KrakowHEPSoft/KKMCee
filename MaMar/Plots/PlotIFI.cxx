@@ -32,8 +32,8 @@ using namespace std;
 // current
 //TFile DiskFileA("../test0/rmain.root");
 //TFile DiskFileA("../workAFB/rmain.root");
-TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
+TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
@@ -430,6 +430,7 @@ void ISRgener()
   MC_Gen3->SetPseRan(PseRan);  // Set random number generator, mandatory!
   MC_Gen3->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
   LibSem.m_Mode = 3;           // Choose Density3
+  LibSem.m_count =0;           // resetting debug counter
   MC_Gen3->Initialize();       // Initialize simulator, may take time...
   double Xsav3, dXsav3;          //  For renormalizing histograms
   MC_Gen3->GetIntNorm(Xsav3,dXsav3);
@@ -439,7 +440,7 @@ void ISRgener()
   double Mll, Mka, vv, xx, CosTheta;
   double wt3, wt5;
   long NevTot = 2000000;  // 2M
-  //NevTot      = 8000000;  // 8M
+  NevTot      = 8000000;  // 8M
   //NevTot =    100000000;  // 100M
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -644,8 +645,8 @@ void FigAfb()
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
-  Hst2->SetMinimum(-0.02);
-  Hst2->SetMaximum( 0.06);
+//  Hst2->SetMinimum(-0.02);  // 10GeV
+//  Hst2->SetMaximum( 0.08);  // 10GeV
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
@@ -668,11 +669,13 @@ void FigAfb()
   TH1D *Hst1_diff2 =(TH1D*)Hst1->Clone("Hst1_diff2");
   TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
   TH1D *Hst1_diff4 =(TH1D*)Hafb_xmax_Ceex2->Clone("Hst1_diff4");
+  TH1D *Hst2_diff2 =(TH1D*)Hst2->Clone("Hst2_diff2");
 
-  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2,   1.0, -1.0); // KKMC_noIFI minus KKsem_noIFI
-  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_noIFI minus FOAM  noIFI
-  Hst2_diff1->Add(Hst2_diff1, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_IFI   minus FOAM  noIFI
-  Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI
+  Hst2_diff1->Add(Hst2_diff1, Hst1,             1.0, -1.0); // KKMC_IFI   minus KKMC  noIFI black
+  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2,   1.0, -1.0); // KKMC_noIFI minus KKsem_noIFI red
+  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_noIFI minus FOAM  noIFI blue
+  Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI magenta
+  Hst2_diff2->Add(Hst2_diff2, Hafb_xmax_Ceex2,  1.0, -1.0); // KKMC_IFI   minus FOAM  IFI   green
 
   Hst1_diff1->SetMinimum(-0.02);
   Hst1_diff1->SetMaximum( 0.06);
@@ -687,6 +690,9 @@ void FigAfb()
 
   Hst1_diff4->SetLineColor(kMagenta);
   Hst1_diff4->DrawCopy("hsame");
+
+  Hst2_diff2->SetLineColor(kGreen);
+  Hst2_diff2->DrawCopy("hsame");
   //
   //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
