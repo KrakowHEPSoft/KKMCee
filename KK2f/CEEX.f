@@ -1538,7 +1538,6 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Propagators, with s-dependent width
       PropGam =    DCMPLX(  1d0/svarX,  0d0)
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
-      PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //
 *//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
@@ -1779,6 +1778,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
      $                     +SpinoUU(j1,j2,j3,j4)* FFacUG(j1) *BoxGG(j1,j2,j3,j4)
      $                     +SpinoUU(j1,j2,j3,j4)* FFacUZ(j1) *BoxGZ(j1,j2,j3,j4)
 *
+*////                  AmpBoxy = DCMPLX(0,0)
                   BornSum = BornSum +AmpBorn*DCONJG(AmpBorn)
                   IF( Mode .EQ. 0 ) THEN
                     m_AmpBorn2(j1,j2,j3,j4) =AmpBorn+AmpBoxy

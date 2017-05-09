@@ -47,11 +47,11 @@
 ************************** 189 GeV **************************
 c      Hname  = '../E91GeV/pro.hst'            ! current
 c      Dname  = '../E91GeV/pro.input'          ! current
-      Hname  = '../E189GeV/pro.hst'            ! current
-      Dname  = '../E189GeV/pro.input'          ! current
+c      Hname  = '../E189GeV/pro.hst'            ! current
+c      Dname  = '../E189GeV/pro.input'          ! current
 c
-c      Dname  = '../E189GeV/E189GeV_20M.input'          ! 2013, PRD88
-c      Hname  = '../E189GeV/E189GeV_20M.hst'            ! 2013, PRD88
+      Dname  = '../E189GeV/E189GeV_20M.input'          ! 2013, PRD88
+      Hname  = '../E189GeV/E189GeV_20M.hst'            ! 2013, PRD88
 c
 c      Dname  = '../E189GeV/E189GeV_PRD63.input'        ! PRD63, 2000
 c      Hname  = '../E189GeV/E189GeV_PRD63.hst'          ! PRD63, 2000

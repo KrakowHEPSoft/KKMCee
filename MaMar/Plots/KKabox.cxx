@@ -571,27 +571,27 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 	double dSigAng;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSigAng);
+//[[[[[[[
+    double dSigRef = bornv_dizet_( 1, m_KFini, m_KFf, svar2, 0.0 , 0.0, 0.0, 0.0, 0.0); // at cos(theta)=0
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && m_xx>0.6 ){  // debug
 //    if( m_count <100000 && fabs(dSigAng/dSig_dCos -1) >0.10 ){  // debug
-    if( fabs(dSigAng/dSig_dCos -1) >0.10 ){  // debug
+    if( fabs( (dSigAng-dSig_dCos)/dSigRef) >0.001 ){  // debug
     	cout<<" ******************** Density3 debug m_count= "<< m_count<< endl;
-    	cout<<" dSigAng/dSig_dCos  = "<< dSigAng/dSig_dCos ;
-    	cout<<" m_CosTheta= "<< m_CosTheta;
-    	cout<<" m_vv= "<< m_vv;
-    	cout<<" m_uu= "<< m_uu;
-    	cout<<" m_Mka= "<< m_Mka;
-   	    // Born+boxes, WARNING Z-box may be modified for KeyZet=2
-//      double dSigAngF;
-//    	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
+    	cout<<" (dSigAng-dSig_dCos)/ref  = "<< (dSigAng-dSig_dCos)/dSigRef ;
+   	  // Born+boxes, WARNING Z-box may be modified for KeyZet=2
+      double dSigAngF0,dSigAngF1;
+    	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF0);
 //    	cout<<" dSigAngF/dSig_dCos = "<< dSigAngF/dSig_dCos;
-//    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF);
-//      double dSigAngFF = gps_makerhofoam_(1.0);
-//    	cout<<" dSigAngFF/dSigAngF = "<< dSigAngFF/dSigAngF;
-////    	cout<<" dSig_dCos  = "<< dSig_dCos;
-////    	cout<<" dSigAng    = "<< dSigAng;
-////    	cout<<" dSigAngF   = "<< dSigAngF;
-    	cout<<endl;
+    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF1);
+      double dSigAngFF = gps_makerhofoam_(1.0);
+      cout<<" // dSigAngFF: "<< (dSigAngFF-dSig_dCos)/dSigRef;
+      cout<<"    dSigAngF0: "<< (dSigAngF0-dSig_dCos)/dSigRef;
+  	  cout<<" m_CosTheta= "<< m_CosTheta;
+      cout<<" m_Mka= "<< m_Mka;
+////    	cout<<" m_vv= "<< m_vv;
+////    	cout<<" m_uu= "<< m_uu;
+      cout<<endl;
     } // end debug **********
 //
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
