@@ -32,8 +32,14 @@ using namespace std;
 // current
 //TFile DiskFileA("../test0/rmain.root");
 //TFile DiskFileA("../workAFB/rmain.root");
+//
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
+//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
+//
+TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../test0/rmain.root_88GeV_100M");
+//
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileT;
 
@@ -440,7 +446,7 @@ void ISRgener()
   double Mll, Mka, vv, xx, CosTheta;
   double wt3, wt5;
   long NevTot = 2000000;  // 2M
-  NevTot      = 8000000;  // 8M
+  //NevTot      = 8000000;  // 8M
   //NevTot =    100000000;  // 100M
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -677,16 +683,21 @@ void FigAfb()
   Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI magenta
   Hst2_diff2->Add(Hst2_diff2, Hafb_xmax_Ceex2,  1.0, -1.0); // KKMC_IFI   minus FOAM  IFI   green
 
-  Hst1_diff1->SetMinimum(-0.02);
-  Hst1_diff1->SetMaximum( 0.06);
+//  Hst2_diff1->SetMinimum(-0.02);  // 189GeV
+//  Hst2_diff1->SetMaximum( 0.06);  // 189GeV
+//  Hst2_diff1->SetMinimum(-0.002);  // 91GeV
+//  Hst2_diff1->SetMaximum( 0.015);  // 91GeV
+  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
+  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
+
+  Hst2_diff1->SetLineColor(kBlack);
+  Hst2_diff1->DrawCopy("h");
+
   Hst1_diff1->SetLineColor(kRed);
-  Hst1_diff1->DrawCopy("h");
+  Hst1_diff1->DrawCopy("hsame");
 
   Hst1_diff2->SetLineColor(kBlue);
   Hst1_diff2->DrawCopy("hsame");
-
-  Hst2_diff1->SetLineColor(kBlack);
-  Hst2_diff1->DrawCopy("hsame");
 
   Hst1_diff4->SetLineColor(kMagenta);
   Hst1_diff4->DrawCopy("hsame");
