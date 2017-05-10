@@ -33,7 +33,7 @@ using namespace std;
 #include "HisNorm.h"
 
 //------------------------------------------------------------
-//  wrappers to f77 routines ik KKMC
+//  wrappers to f77 routines in KKMC and KKsem
 extern "C" void kk2f_fort_open_( const long&, char*, long);
 extern "C" void kk2f_fort_close_(const long&);
 //      SUBROUTINE KKsem_Initialize(xpar_input)
@@ -131,9 +131,7 @@ class KKabox: public TFoamIntegrand{
  	//
  	long   m_count;
 //
-//[[[// Latex output from ROOT histograms
-//[[[	int       m_lint;         // type of input
-//------ constructors destructors -------
+/------ constructors destructors -------
  public:
   KKabox(){;}
   ~KKabox(){;}
@@ -143,11 +141,6 @@ public:
   void Initialize(TFile&);
   void VVplot( TH1 *, long , char [], long, long );
   void Cplot(  TH1 *, long , char [], long, long, double, double);
-
-  // Latex output from ROOT histograms
-  void PlInitialize(FILE *, int );
-  void PlEnd(FILE *);
-  void PlTable2(int, TH1D* iHst[], FILE*, Char_t *Capt[], Char_t[] , const char* , int,int,int);
 
   // Foam integrand
   double Fyfs( double );
