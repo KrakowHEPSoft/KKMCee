@@ -576,7 +576,7 @@ Double_t KKabox::Density3(int nDim, Double_t *Xarg)
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && m_xx>0.6 ){  // debug
 //    if( m_count <100000 && fabs(dSigAng/dSig_dCos -1) >0.10 ){  // debug
-    if( fabs( (dSigAng-dSig_dCos)/dSigRef) >0.001 ){  // debug
+    if( fabs( m_count <10000 && (dSigAng-dSig_dCos)/dSigRef) >0.002 ){  // debug
     	cout<<" ******************** Density3 debug m_count= "<< m_count<< endl;
     	cout<<" (dSigAng-dSig_dCos)/ref  = "<< (dSigAng-dSig_dCos)/dSigRef ;
    	  // Born+boxes, WARNING Z-box may be modified for KeyZet=2

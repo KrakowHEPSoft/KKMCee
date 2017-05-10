@@ -35,9 +35,9 @@ using namespace std;
 //
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
-//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");
+TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
 //
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
@@ -651,8 +651,8 @@ void FigAfb()
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
-//  Hst2->SetMinimum(-0.02);  // 10GeV
-//  Hst2->SetMaximum( 0.08);  // 10GeV
+  Hst2->SetMinimum(-0.02);  // 10GeV
+  Hst2->SetMaximum( 0.08);  // 10GeV
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
@@ -683,12 +683,12 @@ void FigAfb()
   Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI magenta
   Hst2_diff2->Add(Hst2_diff2, Hafb_xmax_Ceex2,  1.0, -1.0); // KKMC_IFI   minus FOAM  IFI   green
 
-//  Hst2_diff1->SetMinimum(-0.02);  // 189GeV
-//  Hst2_diff1->SetMaximum( 0.06);  // 189GeV
+  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
+  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
 //  Hst2_diff1->SetMinimum(-0.002);  // 91GeV
 //  Hst2_diff1->SetMaximum( 0.015);  // 91GeV
-  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
-  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
+//  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
+//  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
 
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");
