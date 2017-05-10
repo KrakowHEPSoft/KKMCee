@@ -131,8 +131,8 @@ class KKabox: public TFoamIntegrand{
  	//
  	long   m_count;
 //
-// Latex output from ROOT histograms
-	int       m_lint;         // type of input
+//[[[// Latex output from ROOT histograms
+//[[[	int       m_lint;         // type of input
 //------ constructors destructors -------
  public:
   KKabox(){;}

@@ -35,9 +35,9 @@ using namespace std;
 //
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
-TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
+//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
 //
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
@@ -340,15 +340,15 @@ void TabOldBench()
   DiskFileT = fopen("TabOldBench.txp","w");
 //************************************
 // Initialization of the latex source file
-  LibSem.PlInitialize(DiskFileT, 2);
+  PlInitialize(DiskFileT, 2);
 
 
 //  int k1,k2,dk;
 //  k1=10; k2=90; dk=20;  //original
 //  k1= 5; k2=45; dk=10;
-  LibSem.PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
-  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
-  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
+  PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
   iHst[1]->Scale(1e-3);    // back to nano-barns
   iHst[2]->Scale(1e-3);    //
   iHst[3]->Scale(1e-3);    //
@@ -360,12 +360,12 @@ void TabOldBench()
   iHst[4]= HAfb_vTcPR_Ceex2;   //CEEX2
 
   strcpy(Mcapt,"{\\color{red}$A_{\\rm FB}(v_{\\max})$}");
-  LibSem.PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 1, 1, 1); // for 50 bins
-  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
-  LibSem.PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "E",50,50, 1); // for 50 bins
+  PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 1, 1, 1); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "E",50,50, 1); // for 50 bins
 
 // finalizing latex source file
-  LibSem.PlEnd(DiskFileT);
+  PlEnd(DiskFileT);
 //************************************
   fclose(DiskFileT);
 //************************************
@@ -446,8 +446,9 @@ void ISRgener()
   double Mll, Mka, vv, xx, CosTheta;
   double wt3, wt5;
   long NevTot = 2000000;  // 2M
-  NevTot      = 8000000;  // 8M
-//  NevTot =     64000000;  // 64M
+  NevTot = 4000000;  // 4M
+//  NevTot      = 8000000;  // 8M
+//  NevTot      =64000000;  // 64M
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   for(long loop=0; loop<NevTot; loop++)
@@ -651,8 +652,8 @@ void FigAfb()
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
-  Hst2->SetMinimum(-0.02);  // 10GeV
-  Hst2->SetMaximum( 0.08);  // 10GeV
+//  Hst2->SetMinimum(-0.02);  // 10GeV
+//  Hst2->SetMaximum( 0.08);  // 10GeV
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
@@ -683,12 +684,12 @@ void FigAfb()
   Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI magenta
   Hst2_diff2->Add(Hst2_diff2, Hafb_xmax_Ceex2,  1.0, -1.0); // KKMC_IFI   minus FOAM  IFI   green
 
-  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
-  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
+//  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
+//  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
 //  Hst2_diff1->SetMinimum(-0.002);  // 91GeV
 //  Hst2_diff1->SetMaximum( 0.015);  // 91GeV
-//  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
-//  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
+  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
+  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
 
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");

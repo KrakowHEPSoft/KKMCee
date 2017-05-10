@@ -45,5 +45,11 @@ void MakeCumul(TH1D *hst1, TH1D *&hcum1);
   ///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB);
 
+void PlInitialize(FILE *ltx, int lint);
+
+void PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1, int k1,int k2,int dk);
+
+void PlEnd(FILE *ltex);
+
 ////////////////////////////////////////////////////////////////////////////
 #endif
