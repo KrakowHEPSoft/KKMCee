@@ -35,13 +35,15 @@ void RoboFoam::Initialize(long &NevTot)
   cout<<" RoboFoam::Initialize:  NevTot = "<<NevTot<<endl;
   //  ************* user histograms  *************
 
-  TH1D *hst_weight3 = new TH1D("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
+  hst_weight3 = new TH1D("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
   hst_weight3->Sumw2();
-  TH1D *hst_weight5 = new TH1D("hst_weight5" ,  "MC weight",      100, -1.0, 2.0);
+  hst_weight5 = new TH1D("hst_weight5" ,  "MC weight",      100, -1.0, 2.0);
   hst_weight5->Sumw2();
 
   // scatergrams
   int nbv = 50;
+  HST_xx_Ceex2  = new TH1D("HST_xx_Ceex2" ,   "dSig/dv",      100, -1.0, 2.0);
+  HST_xx_Ceex2n = new TH1D("HST_xx_Ceex2n" ,  "dSig/dv",      100, -1.0, 2.0);
   int nbc = 50;
   SCA_xc_Ceex2 = new TH2D("SCA_xc_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   SCA_xc_Ceex2->Sumw2();
@@ -139,7 +141,7 @@ void RoboFoam::Production(long &iEvent)
   if(iEvent<15){
     cout<<"-------------------------------  "<<iEvent;
     cout<<"  -------------------------------"<<endl;
-    cout<< " xx = "<<xx<< "CosTheta = "<<CosTheta<<endl;
+    cout<< " xx = "<<xx<< "      CosTheta = "<<CosTheta<<endl;
   }
 } //
 
