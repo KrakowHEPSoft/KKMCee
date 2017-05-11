@@ -15,11 +15,11 @@
 //      *************** temporary entries from KKMC ****************
 //      SUBROUTINE KarLud_GetVVxx(vv,x1,x2)
 extern "C" void  karlud_getvvxx_(double&, double&, double&);
-extern "C" void  pyhepc_(long&);
-extern "C" void  photos_(long&);
-extern "C" void  phoini_();
-extern "C" void  hepevt_setphotosflagtrue_(long&);
-extern "C" void  hepevt_getnhep_(long&);
+//extern "C" void  pyhepc_(long&);
+//extern "C" void  photos_(long&);
+//extern "C" void  phoini_();
+//extern "C" void  hepevt_setphotosflagtrue_(long&);
+//extern "C" void  hepevt_getnhep_(long&);
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////

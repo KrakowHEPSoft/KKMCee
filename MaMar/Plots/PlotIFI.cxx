@@ -775,8 +775,8 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   // New benchmarks KKMC vs. KKabox with Foam integrator
   ISRgener();  // MC mini-run of Foam
-  FigVdist();  // sigma(v) and sigma(vmax)
-  FigAfb();    // AFB(vmax)
+  FigVdist();  // sigma(v) and sigma(vmax) KKMC/Foam
+  FigAfb();    // AFB(vmax) KKMC/Foam
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
   FigOldBench();
   TabOldBench();

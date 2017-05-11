@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
-//               Class   KKabox                                             //
+//               Class   KKfoam                                             //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-// KKabox is multipurpose toolbox for KKMC testing.
+// KKfoam is multipurpose toolbox for KKMC testing.
 //  1. Interfaces (wrappers) to KKMC and KKsem F77 subrograms
 //  2. Integrand for Foam in semianalytical xcheck
 //  3. A few routines for producing latex table out of histograms
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KKabox_H
-#define KKabox_H
+#ifndef KKFOAM_H
+#define KKFOAM_H
 #include<stdlib.h>
 #include<stdio.h>
 #include <math.h>
@@ -30,31 +30,15 @@ using namespace std;
 #include "TFoam.h"
 #include "TFoamIntegrand.h"
 
-#include "HisNorm.h"
-
 //------------------------------------------------------------
 //  wrappers to f77 routines in KKMC and KKsem
 extern "C" void kk2f_fort_open_( const long&, char*, long);
 extern "C" void kk2f_fort_close_(const long&);
-//      SUBROUTINE KKsem_Initialize(xpar_input)
-extern "C" void kksem_initialize_(double xpar[]);
 //      SUBROUTINE KK2f_Initialize(xpar)
 extern "C" void kk2f_initialize_(double xpar[]);
 //-----------------------
-//      SUBROUTINE KKsem_SetKFfin(KFfin)
-extern "C" void kksem_setkffin_( const long& );
 //      SUBROUTINE BornV_SetKF(KFferm)
 extern "C" void bornv_setkf_( const long& ); // set SINGLE Final State
-//      SUBROUTINE KKsem_SetKeyFoB(KeyFoB)
-extern "C" void kksem_setkeyfob_( const long& );
-//      SUBROUTINE KKsem_VVplot_vec(key,chak,nbin,xmin,xmax,yy)
-extern "C" void kksem_vvplot_vec_(const long&, char[5], const long&, const double&, const double&, double[]);
-//      SUBROUTINE KKsem_SetCrange(Cmin,Cmax)
-extern "C" void kksem_setcrange_(const double&, const double&);
-//      SUBROUTINE KKsem_SetKeyZet(KeyZet)
-extern "C" void kksem_setkeyzet_( const long& );
-//      SUBROUTINE KKsem_MakeBorn(svar,Born)
-extern "C" void kksem_makeborn_(const double&, double&);
 //---------------------------------
 //      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
 extern "C" double bornv_sig0nb_(const double&);
@@ -80,7 +64,7 @@ extern "C" void gps_bornfoam_(const long&,   const long&,   const long&,
 //      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
 extern "C" double gps_makerhofoam_(const double&);
 
-class KKabox: public TFoamIntegrand{
+class KKfoam: public TFoamIntegrand{
 // Interface and extensions to KKsem toolbox
  public:
     int       m_jmax;
@@ -133,12 +117,12 @@ class KKabox: public TFoamIntegrand{
 //
 //------ constructors destructors -------
  public:
-  KKabox(){;}
-  ~KKabox(){;}
-  KKabox(const char* Name);
+  KKfoam(){;}
+  ~KKfoam(){;}
+  KKfoam(const char* Name);
 public:
   // Interfaces to KKsem integration routines using Gauss method
-  void Initialize(TFile&);
+  void Initialize( double ypar[10000]);
   void VVplot( TH1 *, long , char [], long, long );
   void Cplot(  TH1 *, long , char [], long, long, double, double);
 
@@ -158,7 +142,7 @@ public:
   Double_t Density5(int, Double_t*);
 
 ////////////////////////////////////////////////////////////////////////////
-};// KKabox
+};// KKfoam
 
 
 

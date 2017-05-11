@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 SUBDIRS = test0 workAFB workZinv workFSR Plots
 
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam
 AM_FFLAGS = @MY_F77_FLAGS@
 
 ########### KK2f MC libraries #############
@@ -38,6 +38,10 @@ ProdZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
 ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
 ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+ProdFoam_SOURCES =  KKMC.cxx KKfoam.cxx  RoboFoam.cxx ProdFoam.cxx Semaph.cxx
+ProdFoam_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+ProdFoam_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ########################################################################
 ###                   USER PART
