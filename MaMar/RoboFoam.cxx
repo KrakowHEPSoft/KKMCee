@@ -42,8 +42,11 @@ void RoboFoam::Initialize(long &NevTot)
 
   // scatergrams
   int nbv = 50;
-  HST_xx_Ceex2  = new TH1D("HST_xx_Ceex2" ,   "dSig/dv",      100, -1.0, 2.0);
-  HST_xx_Ceex2n = new TH1D("HST_xx_Ceex2n" ,  "dSig/dv",      100, -1.0, 2.0);
+  HST_xx_Ceex2  = new TH1D("HST_xx_Ceex2" ,   "dSig/dv",   nbv, 0.0, 1.0);
+  HST_xx_Ceex2->Sumw2();
+  HST_xx_Ceex2n = new TH1D("HST_xx_Ceex2n" ,  "dSig/dv",   nbv, 0.0, 1.0);
+  HST_xx_Ceex2n->Sumw2();
+  nbv = 50;
   int nbc = 50;
   SCA_xc_Ceex2 = new TH2D("SCA_xc_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   SCA_xc_Ceex2->Sumw2();
