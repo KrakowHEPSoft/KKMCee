@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI
+bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam1
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -57,6 +57,10 @@ PlotIFI_SOURCES = KKabox.cxx HisNorm.cxx PlotIFI.cxx
 PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
+PlotFoam1_SOURCES = KKabox.cxx HisNorm.cxx PlotFoam1.cxx
+PlotFoam1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotFoam1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
 #==============================================================
@@ -76,6 +80,8 @@ PlotIFI-run: PlotIFI
 	./PlotIFI
 PlotAFB-run: PlotAFB
 	./PlotAFB
+PlotFoam1-run: PlotFoam1
+	./PlotFoam1
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI

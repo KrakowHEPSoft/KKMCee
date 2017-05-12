@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-//    make Plot1
+//    make PlotIFI-run
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -41,7 +41,7 @@ TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
-FILE *DiskFileT;
+FILE *DiskFileTeX;
 
 // Interface to KKabox and some extra plotting facilities
 KKabox LibSem;
@@ -337,18 +337,18 @@ void TabOldBench()
   strcpy(Mcapt,"{\\color{red}$\\sigma(v_{\\max})$ [pb]}");
 
 ///************************************
-  DiskFileT = fopen("TabOldBench.txp","w");
+  DiskFileTeX = fopen("TabOldBench.txp","w");
 //************************************
 // Initialization of the latex source file
-  PlInitialize(DiskFileT, 2);
+  PlInitialize(DiskFileTeX, 2);
 
 
 //  int k1,k2,dk;
 //  k1=10; k2=90; dk=20;  //original
 //  k1= 5; k2=45; dk=10;
-  PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
-  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
-  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
+  PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "B", 1, 1, 1); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T",50,50, 1); // for 50 bins
   iHst[1]->Scale(1e-3);    // back to nano-barns
   iHst[2]->Scale(1e-3);    //
   iHst[3]->Scale(1e-3);    //
@@ -360,14 +360,14 @@ void TabOldBench()
   iHst[4]= HAfb_vTcPR_Ceex2;   //CEEX2
 
   strcpy(Mcapt,"{\\color{red}$A_{\\rm FB}(v_{\\max})$}");
-  PlTable2( nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 1, 1, 1); // for 50 bins
-  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
-  PlTable2(-nPlt, iHst, DiskFileT, Capt,  Mcapt, "E",50,50, 1); // for 50 bins
+  PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T", 1, 1, 1); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T", 5,45,10); // for 50 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "E",50,50, 1); // for 50 bins
 
 // finalizing latex source file
-  PlEnd(DiskFileT);
+  PlEnd(DiskFileTeX);
 //************************************
-  fclose(DiskFileT);
+  fclose(DiskFileTeX);
 //************************************
   cout<<" ========================= TabOldBench end =========================== "<<endl;
 }//TabOldBench
@@ -446,7 +446,7 @@ void ISRgener()
   double Mll, Mka, vv, xx, CosTheta;
   double wt3, wt5;
   long NevTot = 2000000;  // 2M
-  NevTot = 4000000;  // 4M
+//  NevTot = 4000000;  // 4M
 //  NevTot      = 8000000;  // 8M
 //  NevTot      =64000000;  // 64M
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -714,52 +714,6 @@ void FigAfb()
 }//FigAfb
 
 
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigInfo()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigInfo =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *hst_weight3  = (TH1D*)DiskFileB.Get("hst_weight3"); // Foam3
-  TH1D *hst_weight5  = (TH1D*)DiskFileB.Get("hst_weight5"); // Foam5
- //
-  //*****************************************************************************
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 140, 500,   1000, 550);
-  //                            Name    Title                     xoff,yoff, WidPix,HeiPix
-  cFigInfo->SetFillColor(10);
-  ////////////////////////////////////////////////////////////////////////////////
-  cFigInfo->Divide( 2,  0);
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-  //====================plot1========================
-  //                sigma(vmax)
-  cFigInfo->cd(1);
-  //gPad->SetLogy(); // !!!!!!
-  // MC v-true direct
-  TH1D *Hst1 = hst_weight3;  //  weight of Foam
-  //
-  //Hst1->SetStats(0);
-  Hst1->SetTitle(0);
-  Hst1->DrawCopy("h");
-
-  CaptT->DrawLatex(0.02,0.95, " Weight distribution Foam");
-  //====================plot2========================
-  cFigInfo->cd(2);
-
-  Hst1 = hst_weight5;
-  Hst1->SetTitle(0);
-  Hst1->DrawCopy("h");
-
-  cFigInfo->cd();
-  //================================================
-}//FigAfb
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -780,8 +734,6 @@ int main(int argc, char **argv)
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
   FigOldBench();
   TabOldBench();
-
-  FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
