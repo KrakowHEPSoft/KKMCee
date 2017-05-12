@@ -33,31 +33,31 @@ KK2f_Libs2= \
 	$(top_builddir)/dizet/libDizet.a \
 	$(top_builddir)/KKsem/libKKsem.a
 
-Plot1_SOURCES = KKabox.cxx HisNorm.cxx Plot1.cxx
-Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+Plot1_SOURCES = KKplot.cxx HisNorm.cxx Plot1.cxx
+Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotAFB_SOURCES = KKabox.cxx HisNorm.cxx PlotAFB.cxx
-PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotAFB_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB.cxx
+PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotAFB2_SOURCES = KKabox.cxx HisNorm.cxx PlotAFB2.cxx
-PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotAFB2_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB2.cxx
+PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 Plot2_SOURCES =  HisNorm.cxx Plot2.cxx
-Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotFSR_SOURCES = KKabox.cxx HisNorm.cxx PlotFSR.cxx
+PlotFSR_SOURCES = KKplot.cxx HisNorm.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotIFI_SOURCES = KKabox.cxx HisNorm.cxx PlotIFI.cxx
-PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
+PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotFoam1_SOURCES = KKabox.cxx HisNorm.cxx PlotFoam1.cxx
+PlotFoam1_SOURCES = KKplot.cxx HisNorm.cxx PlotFoam1.cxx
 PlotFoam1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFoam1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 

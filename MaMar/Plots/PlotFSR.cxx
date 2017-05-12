@@ -27,7 +27,7 @@ using namespace std;
 #include "TFoamIntegrand.h"
 
 #include "KKMC.h"
-#include "KKabox.h"
+#include "KKplot.h"
 #include "HisNorm.h"
 
 //=============================================================================
@@ -45,7 +45,7 @@ TFile DiskFileB("PlotFSR.root","RECREATE","histograms");
 // Auxiliary procedures for plotting
 //#include "Marker.h"
 
-KKabox LibSem;
+KKplot LibSem;
 
 //_____________________________________________________________________________
 class Rho4Foam: public TFoamIntegrand{

@@ -19,7 +19,7 @@ using namespace std;
 #include "TApplication.h"
 #include "TMarker.h"
 
-#include "KKabox.h"
+#include "KKplot.h"
 #include "HisNorm.h"
 
 // ROOT headers

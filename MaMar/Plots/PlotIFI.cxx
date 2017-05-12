@@ -24,7 +24,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKabox.h"
+#include "KKplot.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
@@ -43,8 +43,8 @@ TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileTeX;
 
-// Interface to KKabox and some extra plotting facilities
-KKabox LibSem;
+// Interface to KKplot and some extra plotting facilities
+KKplot LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +82,7 @@ void KKsemMakeHisto(){
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   // initialization of KKsem
-  //KKabox LibSem;
+  //KKplot LibSem;
   //LibSem.Initialize(DiskFileA);
   //
   long KF=13; // muon
@@ -373,139 +373,6 @@ void TabOldBench()
 }//TabOldBench
 
 
-////////////////////////////////////////////////////////////////////////////////
-//
-//  Monte Carlo integration/run using Foam
-//
-////////////////////////////////////////////////////////////////////////////////
-//______________________________________________________________________________
-void ISRgener()
-{
-  cout<<"--- ISRgener started ---"<<endl;
-
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-
-  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  // %%%%%%%%%%%%%%% Booking new Histograms %%%%%%%%%%%%%%%%%%%%
-  DiskFileB.cd();
-  TH1D *hst_Vtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
-  TH1D *hst_Ctemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
-  TH2D *sca_VCtemplate= (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
-
-  TH1D *hst_weight3 = new TH1D("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
-  hst_weight3->Sumw2();
-  TH1D *hst_weight5 = new TH1D("hst_weight5" ,  "MC weight",      100, -1.0, 2.0);
-  hst_weight5->Sumw2();
-
-  // Direct xx=vTrue distribution
-  TH1D *HST_xx_Ceex2n = (TH1D*)hst_Vtemplate->Clone("HST_xx_Ceex2n");
-  HST_xx_Ceex2n->Reset();
-
-  // Master scattergram ISR+FSR
-  TH2D *SCA_xc_Ceex2n = (TH2D*)sca_VCtemplate->Clone("SCA_xc_Ceex2n");
-  SCA_xc_Ceex2n->Reset();
-  // Master scattergram ISR+FSR+IFI
-  TH2D *SCA_xc_Ceex2 = (TH2D*)sca_VCtemplate->Clone("SCA_xc_Ceex2");
-  SCA_xc_Ceex2->Reset();
-
-  //------------------------------------------------------------------
-  TRandom  *PseRan   = new TRandom3();  // Create random number generator
-  PseRan->SetSeed(4357);
-  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  // %%%%%%%%%%%%%%% FOAM simulators/integrators %%%%%%%%%%%%%%%
-  // ISR+FSR+IFI
-  TFoam   *MC_Gen5    = new TFoam("MC_Gen5");   // Create Simulator
-  MC_Gen5->SetkDim(5);         // No. of dimensions, obligatory!
-  MC_Gen5->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
-  MC_Gen5->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
-  MC_Gen5->SetRho(&LibSem);
-  MC_Gen5->SetPseRan(PseRan);  // Set random number generator, mandatory!
-  MC_Gen5->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
-  LibSem.m_Mode = 5;           // Choose Density5
-  MC_Gen5->Initialize();       // Initialize simulator, may take time...
-  double Xsav5, dXsav5;          //  For renormalizing histograms
-  MC_Gen5->GetIntNorm(Xsav5,dXsav5);
-  TH1D *HST_FOAM5_NORMA = new TH1D("HST_FOAM5_NORMA","MC normalization",10,0.0,10000.0);
-  // ISR+FSR only
-  TFoam   *MC_Gen3    = new TFoam("MC_Gen3");   // Create Simulator
-  MC_Gen3->SetkDim(3);         // No. of dimensions, obligatory!
-  MC_Gen3->SetnCells( 10000);  // No. of cells, can be omitted, default=2000
-  MC_Gen3->SetnSampl(100000);  // No. of MC evts/cell in exploration, default=200
-  MC_Gen3->SetRho(&LibSem);
-  MC_Gen3->SetPseRan(PseRan);  // Set random number generator, mandatory!
-  MC_Gen3->SetOptRej(0);       // wted events (=0), default wt=1 events (=1)
-  LibSem.m_Mode = 3;           // Choose Density3
-  LibSem.m_count =0;           // resetting debug counter
-  MC_Gen3->Initialize();       // Initialize simulator, may take time...
-  double Xsav3, dXsav3;          //  For renormalizing histograms
-  MC_Gen3->GetIntNorm(Xsav3,dXsav3);
-  TH1D *HST_FOAM3_NORMA = new TH1D("HST_FOAM3_NORMA","MC normalization",10,0.0,10000.0);
-
-  // %%% loop over MC events %%%
-  double Mll, Mka, vv, xx, CosTheta;
-  double wt3, wt5;
-  long NevTot = 2000000;  // 2M
-//  NevTot = 4000000;  // 4M
-//  NevTot      = 8000000;  // 8M
-//  NevTot      =64000000;  // 64M
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  for(long loop=0; loop<NevTot; loop++)
-  {
-	/// Generate ISR+FSR event ISR+FSR
-	LibSem.m_Mode = 3;
-    MC_Gen3->MakeEvent();            // generate MC event
-    MC_Gen3->GetMCwt(wt3);
-    xx  = LibSem.m_xx;
-    CosTheta = LibSem.m_CosTheta;
-    hst_weight3->Fill(wt3,1.0);
-    HST_xx_Ceex2n->Fill(xx,wt3);
-    SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
-    HST_FOAM3_NORMA->Fill(-1.0,Xsav3);  // fill normalization into underflow
-
-    /// Generate ISR+FSR+IFI event
-	LibSem.m_Mode = -5;
-    MC_Gen5->MakeEvent();            // generate MC event
-    MC_Gen5->GetMCwt(wt5);
-    xx  = LibSem.m_xx;
-    CosTheta = LibSem.m_CosTheta;
-    hst_weight5->Fill(wt5,1.0);
-    SCA_xc_Ceex2->Fill(xx,CosTheta,wt5);
-    HST_FOAM5_NORMA->Fill(-1.0,Xsav5);  // fill normalization into underflow
-
-    if( 1000000*(loop/1000000) == loop) cout<<" Nev ="<< loop<< endl;
-  }// loop
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  //  Renormalizing histograms
-  HisNorm1(HST_FOAM3_NORMA, HST_xx_Ceex2n );
-  HisNorm2(HST_FOAM3_NORMA, SCA_xc_Ceex2n );
-
-  HisNorm2(HST_FOAM5_NORMA, SCA_xc_Ceex2 );
-
-  // sigma(vmax) direct histogramming
-  TH1D *HST_xmax_Ceex2n;
-  MakeCumul(HST_xx_Ceex2n,HST_xmax_Ceex2n);
-  HST_xmax_Ceex2n->SetName("HST_xmax_Ceex2n");
-
-  // sigma(vmax) and AFB(vmax) from sacttergram
-  int nbMax=0;   // <--- CosThetaMax = 1.0
-  TH1D                 *Htot_xmax_Ceex2n, *Hafb_xmax_Ceex2n;
-  ProjV( SCA_xc_Ceex2n, Htot_xmax_Ceex2n,  Hafb_xmax_Ceex2n, nbMax);  //!!!!
-  Htot_xmax_Ceex2n->SetName("Htot_xmax_Ceex2n");
-  Hafb_xmax_Ceex2n->SetName("Hafb_xmax_Ceex2n");
-  //
-  TH1D                *Htot_xmax_Ceex2, *Hafb_xmax_Ceex2;
-  ProjV( SCA_xc_Ceex2, Htot_xmax_Ceex2,  Hafb_xmax_Ceex2, nbMax);  //!!!!
-  Htot_xmax_Ceex2->SetName("Htot_xmax_Ceex2");
-  Hafb_xmax_Ceex2->SetName("Hafb_xmax_Ceex2");
-//
-  cout<<"--- ISRgener ended ---"<<endl;
-}//ISRgener
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVdist()
 {
@@ -518,12 +385,6 @@ void FigVdist()
   TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
   TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
-  //
-  TH1D *HST_xx_Ceex2n     = (TH1D*)DiskFileB.Get("HST_xx_Ceex2n");      // Foam dsigma/d(v) direct
-  TH1D *HST_xmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_xmax_Ceex2n");    // Foam sigma(vmax) direct
-  //
-  TH1D *Htot_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Htot_xmax_Ceex2n");    //Foam sigma(vmax) scatt.ISR+FSR
-  TH1D *Htot_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Htot_xmax_Ceex2");     //Foam sigma(vmax) scatt.ISR+FSR+IFI
   //
   TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
   TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
@@ -551,25 +412,14 @@ void FigVdist()
   //Hst1->SetMinimum(1e-3*Hst1->GetMaximum());
   Hst1->DrawCopy("h");
   //
-  HST_xmax_Ceex2n->SetLineColor(kRed);     // red
-  HST_xmax_Ceex2n->DrawCopy("hsame");      // Foam sigma(vmax) direct.
-  //
-  Htot_xmax_Ceex2n->SetLineColor(kBlue);   // blue ISR+FSR
-  Htot_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
-  //
-  //Htot_xmax_Ceex2->SetLineColor(kGreen);   // green ISR+FSR+IFI
-  //Htot_xmax_Ceex2->DrawCopy("hsame");      // Foam sigma(vmax) scatt.
-  //
-  //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
-  //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
+  vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
+  vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
   CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) Black KKMC_CEEX2, Blue FOAM");
   //====================plot2========================
   cFigVdist->cd(2);
   TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
-  //Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
-  //Hst1_ratio->Divide(HST_xmax_Ceex2n);  // divide by Foam direct
-  Hst1_ratio->Divide(Htot_xmax_Ceex2n);   // divide by Foam scatt.
+  Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
   Hst1_ratio->SetMinimum(0.95);
   Hst1_ratio->SetMaximum(1.10);
   Hst1_ratio->SetLineColor(kBlue);
@@ -587,25 +437,18 @@ void FigVdist()
   Hst3->DrawCopy("h");
   //
   // KKsem ISR+FSR
-  //vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
-  //vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR
-
-  HST_xx_Ceex2n->SetLineColor(kBlue);     // blue
-  HST_xx_Ceex2n->DrawCopy("hsame");       // Foam dsigma/d(v)
+  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
+  vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR
 
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR),  Red KKMC_CEEX2, Blue FOAM");
   //====================plot4========================
   cFigVdist->cd(4);
 
   TH1D *Hst3_ratio =(TH1D*)Hst3->Clone("Hst3_ratio");
-  //Hst3_ratio->Divide(vdis_ISR2_FSR2);
-  Hst3_ratio->Divide(HST_xx_Ceex2n);  // direct
+  Hst3_ratio->Divide(vdis_ISR2_FSR2);
 
   Hst3_ratio->SetStats(0);
   Hst3_ratio->SetTitle(0);
-//  Hst3_ratio->SetMinimum(0.85);
-//  Hst3_ratio->SetMaximum(1.15);
-//  Hst3_ratio->SetLineColor(kRed);
   Hst3_ratio->DrawCopy("h");  // black
 
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR ); Ratio KKMC/FOAM");
@@ -627,9 +470,6 @@ void FigAfb()
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
-
-  TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // FOAM scatt.
-  TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // FOAM scatt.
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -652,8 +492,6 @@ void FigAfb()
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
-//  Hst2->SetMinimum(-0.02);  // 10GeV
-//  Hst2->SetMaximum( 0.08);  // 10GeV
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
@@ -663,31 +501,14 @@ void FigAfb()
   afbv_ISR2_FSR2->SetLineColor(kRed);      // red
   afbv_ISR2_FSR2->DrawCopy("hsame");       // KKsem AFB(vmax) direct. IFI off
   //
-  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM ISR+FSR IFI off
-  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam AFB(vmax) scatt.
-  //
-  Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM ISR+FSR+IFI, IFI on
-  Hafb_xmax_Ceex2->DrawCopy("hsame");      // FOAM ISR+FSR+IFI
-  //
   CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
   //====================plot2========================
   cFigAfb->cd(2);
   TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
-  TH1D *Hst1_diff2 =(TH1D*)Hst1->Clone("Hst1_diff2");
-  TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
-  TH1D *Hst1_diff4 =(TH1D*)Hafb_xmax_Ceex2->Clone("Hst1_diff4");
-  TH1D *Hst2_diff2 =(TH1D*)Hst2->Clone("Hst2_diff2");
+   TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
 
   Hst2_diff1->Add(Hst2_diff1, Hst1,             1.0, -1.0); // KKMC_IFI   minus KKMC  noIFI black
   Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2,   1.0, -1.0); // KKMC_noIFI minus KKsem_noIFI red
-  Hst1_diff2->Add(Hst1_diff2, Hafb_xmax_Ceex2n, 1.0, -1.0); // KKMC_noIFI minus FOAM  noIFI blue
-  Hst1_diff4->Add(Hst1_diff4, Hafb_xmax_Ceex2n, 1.0, -1.0); // Foam_IFI   minus FOAM  noIFI magenta
-  Hst2_diff2->Add(Hst2_diff2, Hafb_xmax_Ceex2,  1.0, -1.0); // KKMC_IFI   minus FOAM  IFI   green
-
-//  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
-//  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
-//  Hst2_diff1->SetMinimum(-0.002);  // 91GeV
-//  Hst2_diff1->SetMaximum( 0.015);  // 91GeV
   Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
   Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
 
@@ -696,15 +517,6 @@ void FigAfb()
 
   Hst1_diff1->SetLineColor(kRed);
   Hst1_diff1->DrawCopy("hsame");
-
-  Hst1_diff2->SetLineColor(kBlue);
-  Hst1_diff2->DrawCopy("hsame");
-
-  Hst1_diff4->SetLineColor(kMagenta);
-  Hst1_diff4->DrawCopy("hsame");
-
-  Hst2_diff2->SetLineColor(kGreen);
-  Hst2_diff2->DrawCopy("hsame");
   //
   //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
@@ -727,8 +539,7 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
-  // New benchmarks KKMC vs. KKabox with Foam integrator
-  ISRgener();  // MC mini-run of Foam
+  // Some comparisons with KKsem
   FigVdist();  // sigma(v) and sigma(vmax) KKMC/Foam
   FigAfb();    // AFB(vmax) KKMC/Foam
   // Old benchmarks KKMC vs. KKsem with Gauss integrator

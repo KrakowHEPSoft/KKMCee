@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
-//               Class   KKabox                                             //
+//               Class   KKplot                                             //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-// KKabox is multipurpose toolbox for KKMC testing.
+// KKplot is multipurpose toolbox for KKMC testing.
 //  1. Interfaces (wrappers) to KKMC and KKsem F77 subrograms
 //  2. Integrand for Foam in semianalytical xcheck
 //  3. A few routines for producing latex table out of histograms
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KKabox_H
-#define KKabox_H
+#ifndef KKplot_H
+#define KKplot_H
 #include<stdlib.h>
 #include<stdio.h>
 #include <math.h>
@@ -80,7 +80,7 @@ extern "C" void gps_bornfoam_(const long&,   const long&,   const long&,
 //      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
 extern "C" double gps_makerhofoam_(const double&);
 
-class KKabox: public TFoamIntegrand{
+class KKplot{
 // Interface and extensions to KKsem toolbox
  public:
     int       m_jmax;
@@ -112,53 +112,20 @@ class KKabox: public TFoamIntegrand{
  	int    m_KeyISR;
  	int    m_KeyFSR;
 //
- 	int    m_Mode;   // operation mode for Density
- 	double m_del;
-//******** MC EVENT ********
- 	double m_CosTheta;
- 	double m_vv;  // ISR
- 	double m_uu;  // FSR
- 	double m_r1;  // IFI
- 	double m_r2;  // IFI
- 	double m_xx;  // total
- 	//
- 	double m_Mka;
- 	//
- 	double m_p1[4];
- 	double m_p2[4];
- 	double m_p3[4];
- 	double m_p4[4];
- 	//
- 	long   m_count;
 //
 //------ constructors destructors -------
  public:
-  KKabox(){;}
-  ~KKabox(){;}
-  KKabox(const char* Name);
+  KKplot(){;}
+  ~KKplot(){;}
+  KKplot(const char* Name);
 public:
   // Interfaces to KKsem integration routines using Gauss method
   void Initialize(TFile&);
   void VVplot( TH1 *, long , char [], long, long );
   void Cplot(  TH1 *, long , char [], long, long, double, double);
 
-  // Foam integrand
-  double Fyfs( double );
-  double gamISR( double );
-  double gamFSR( double );
-  double gamIFI( double );
-  double Rho_isr(double, double );
-  double Rho_fsr(double, double );
-  double Rho_ifi(double, double , double );
-  void MapIFI1( double, double, double, double &, double &);
-  void MapIFI2( double, double, double, double &, double &);
-  void MapIFI(  double, double, double, double &, double &);
-  Double_t Density(int, Double_t*);
-  Double_t Density3(int, Double_t*);
-  Double_t Density5(int, Double_t*);
-
 ////////////////////////////////////////////////////////////////////////////
-};// KKabox
+};// KKplot
 
 
 

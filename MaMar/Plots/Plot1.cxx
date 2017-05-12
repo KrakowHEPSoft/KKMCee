@@ -23,22 +23,22 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-#include "KKabox.h"
+#include "KKplot.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // archive
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 // current
 //TFile DiskFileA("../test0/rmain.root");
-TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-KKabox LibSem;
+KKplot LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
