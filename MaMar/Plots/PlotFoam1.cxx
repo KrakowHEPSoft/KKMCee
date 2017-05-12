@@ -32,7 +32,8 @@ using namespace std;
 //
 TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 // current
-TFile DiskFileF("../workFOAM/rmain.root");
+//TFile DiskFileF("../workFOAM/rmain.root");
+TFile DiskFileF("../workFOAM/rmain_95GeV_64M.root");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 
