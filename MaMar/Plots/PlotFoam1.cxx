@@ -24,7 +24,7 @@ using namespace std;
 #include "TFile.h"
 
 #include "HisNorm.h"
-//#include "KKabox.h"
+#include "KKplot.h"
 
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
@@ -42,6 +42,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //KKabox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
+KKplot LibSem;
 
 void HistNormalize(){
   //
@@ -195,6 +196,46 @@ void ReMakeMChisto2(){
   cout<<"================ ReMakeMChisto2 ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto2
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void KKsemMakeHisto(){
+  // Here we produce semianalytical plots using KKsem program, No plotting
+  //------------------------------------------------------------------------
+  cout<<"==================================================================="<<endl;
+  cout<<"================ KKsem MakeHisto  BEGIN ============================"<<endl;
+  //
+  long KF=13; // muon
+  long KeyDis, KeyFob;
+  char chak[5];
+  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+//------------------------------------------------------------------------
+  TH1D *hstVtemplate = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2");
+//------------------------------------------------------------------------
+//   MuMu  Sigma(vmax) with ulimited c=cos(theta)
+//------------------------------------------------------------------------
+// ISR*FSR
+  KeyDis = 302302;        // ISR*FSR O(alf2)
+  sprintf(chak,"XCHI2");  // ISR*FSR Mff
+  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
+  LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
+//-------------------------------------------------
+//    AFB(vmax) for unlimited c=cos(theta)
+//-------------------------------------------------
+  kksem_setcrange_(0, 25.0/25); // forward cos(theta)
+  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
+  LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
+  afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
+  afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
+  kksem_setcrange_(-1.0, 1.0); // undoing forward,
+  //
+
+  cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
+  cout<<"==================================================================="<<endl;
+//------------------------------------------------------------------------
+//------------------------------------------------------------------------
+}//  KKsemMakeHisto
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -425,7 +466,9 @@ void FigAfb2()
 
   TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
   TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
- //
+
+  TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
+//
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", 70, 350,   1000, 550);
@@ -456,6 +499,10 @@ void FigAfb2()
   Hafb2_xmax_Ceex2n->DrawCopy("hsame");   // Foam IFI OFF
   Hafb2_xmax_Ceex2->SetLineColor(kGreen);
   Hafb2_xmax_Ceex2->DrawCopy("hsame");    // Foam IFI ON
+
+  afbv_ISR2_FSR2->SetLineColor(kRed);     // KKsem  RED!!!
+  afbv_ISR2_FSR2->DrawCopy("hsame");
+
   //
   CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IFI on}(v_{max})  KKMC=magenta, Foam=green");
   CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}) KKMC=black,  Foam=blue");
@@ -506,6 +553,49 @@ void FigAfb2()
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigTech()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigTech =========================== "<<endl;
+
+  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
+  TH1D *afbv_ISR2_FSR2     = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");     // KKsem
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigTech = new TCanvas("cFigTech","FigTech", 100, 400,   1000, 550);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  cFigTech->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigTech->Divide( 2,  0);
+  //====================plot1========================
+  //                AFB(vmax)
+  cFigTech->cd(1);
+
+  //====================plot2========================
+  cFigTech->cd(2);
+
+  TH1D *HstTech_diff =(TH1D*)Hafb2_xmax_Ceex2n->Clone("HstTech_diff");
+  HstTech_diff->Add(HstTech_diff, afbv_ISR2_FSR2,  1.0, -1.0); // KKMC-Foam IFIoff
+
+  HstTech_diff->SetStats(0);
+  HstTech_diff->SetTitle(0);
+  HstTech_diff->SetMinimum(-0.0005);  // zoom
+  HstTech_diff->SetMaximum( 0.0005);  // zoom
+  HstTech_diff->DrawCopy("h");
+
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem");
+
+  cFigTech->cd();
+  //================================================
+
+}//FigTech
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -562,19 +652,20 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
-  //LibSem.Initialize(DiskFileA);
+  LibSem.Initialize(DiskFileA);
 
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
-//  KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
-  ReMakeMChisto2();     // reprocessing MC histos from KKC and Foam
+  ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam
+  KKsemMakeHisto();    // prepare histos from KKsem
 //========== PLOTTING ==========
 // vmax=1
   FigVdist();  // sigma(v) and sigma(vmax) KKMC/Foam
   FigAfb();    // AFB(vmax) KKMC/Foam
 // vmax =0.2
   FigAfb2();
+  FigTech();
 // weight distribution
   FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
