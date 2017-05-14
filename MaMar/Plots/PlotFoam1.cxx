@@ -30,10 +30,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 // current
-//TFile DiskFileF("../workFOAM/rmain.root");
-TFile DiskFileF("../workFOAM/rmain_95GeV_64M.root");
+TFile DiskFileF("../workFOAM/rmain.root");
+//TFile DiskFileF("../workFOAM/rmain_95GeV_64M.root");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 
@@ -77,20 +78,23 @@ void ReMakeMChisto(){
   TH1D *HST_FOAM_NORMA5 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA5");
 
   TH1D *HST_xx_Ceex2n = (TH1D*)DiskFileF.Get("HST_xx_Ceex2n");  // FOAM
-  TH2D *SCA_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2n");  // FOAM
-  TH2D *SCA_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2");   // FOAM
-
+  TH2D *SCA_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2n");  // FOAM big range
+  TH2D *SCA_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2");   // FOAM big range
+  TH2D *SCT_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2n");  // FOAM small range
+  TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2");   // FOAM small range
 
   HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
   HisNorm2(HST_FOAM_NORMA3, SCA_xc_Ceex2n );  // normalizing
   HisNorm2(HST_FOAM_NORMA5, SCA_xc_Ceex2 );   // normalizing
+  HisNorm2(HST_FOAM_NORMA3, SCT_xc_Ceex2n );  // normalizing
+  HisNorm2(HST_FOAM_NORMA5, SCT_xc_Ceex2 );   // normalizing
 
   // sigma(vmax) direct histogramming
   TH1D *HST_xmax_Ceex2n;
   MakeCumul(HST_xx_Ceex2n,HST_xmax_Ceex2n);
   HST_xmax_Ceex2n->SetName("HST_xmax_Ceex2n");
 
-  // sigma(vmax) and AFB(vmax) from sacttergram
+  // sigma(vmax) and AFB(vmax) from scattergram vmax<1
   int nbMax=0;   // <--- CosThetaMax = 1.0
   TH1D                 *Htot_xmax_Ceex2n, *Hafb_xmax_Ceex2n;
   ProjV( SCA_xc_Ceex2n, Htot_xmax_Ceex2n,  Hafb_xmax_Ceex2n, nbMax);  //!!!!
@@ -102,22 +106,32 @@ void ReMakeMChisto(){
   Htot_xmax_Ceex2->SetName("Htot_xmax_Ceex2");
   Hafb_xmax_Ceex2->SetName("Hafb_xmax_Ceex2");
 
-////////////////////////////////////////////////////////////////////
+
+  // sigma(vmax) and AFB(vmax) from scattergram vmax<0.2
+  nbMax=0;   // <--- CosThetaMax = 1.0
+  TH1D                 *Htot2_xmax_Ceex2n, *Hafb2_xmax_Ceex2n;
+  ProjV( SCT_xc_Ceex2n, Htot2_xmax_Ceex2n,  Hafb2_xmax_Ceex2n, nbMax);  //!!!!
+  Htot2_xmax_Ceex2n->SetName("Htot2_xmax_Ceex2n");
+  Hafb2_xmax_Ceex2n->SetName("Hafb2_xmax_Ceex2n");
+  //
+  TH1D                *Htot2_xmax_Ceex2, *Hafb2_xmax_Ceex2;
+  ProjV( SCT_xc_Ceex2, Htot2_xmax_Ceex2,  Hafb2_xmax_Ceex2, nbMax);  //!!!!
+  Htot2_xmax_Ceex2->SetName("Htot2_xmax_Ceex2");
+  Hafb2_xmax_Ceex2->SetName("Hafb2_xmax_Ceex2");
+
+  ////////////////////////////////////////////////////////////////////
+//********************************************************************
+// Pure KKMC reprocessing part
   cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
 
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-
-  //****************************************************************************************
-  // Pure MC reprocessing part
-  //
-  TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
-  TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
+  // Wide range, vmax<1.
+  TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
+  TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
-
   ///****************************************************************************************
   /// Distributions of v=vTrue with unlimited c=cos(theta)
-  //  without cutoff on c=cos(thetaPRD)
   nbMax=0;   // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
   ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
@@ -128,20 +142,17 @@ void ReMakeMChisto(){
   ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
   HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
   HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
-  //
   // IFI off
   nbMax=0;   // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
-  ProjV( sca_vTcPR_Ceex2n,  HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
+  ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
   HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
   HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
-  //
   ///****************************************************************************************
   //  dsigma/dv unlimited cos(theta)
   TH1D *Hpro_vT_Ceex2;
   ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
   Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
-
   //  dsigma/dv unlimited cos(theta)
   TH1D *Hpro_vT_Ceex2n;
   ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2n);
@@ -150,6 +161,40 @@ void ReMakeMChisto(){
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void ReMakeMChisto2(){
+	//------------------------------------------------------------------------
+  cout<<"==================================================================="<<endl;
+  cout<<"================ ReMakeMChisto2  BEGIN  ============================"<<endl;
+//////////////////////////////////////////////////////////////////
+  // Pure KKMC reprocessing part
+    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
+
+    TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+    // Wide range, vmax<1.
+    TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
+    TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
+    ///****************************************************************************************
+    ///****************************************************************************************
+    /// Distributions of v=vTrue with unlimited c=cos(theta)
+    int nbMax=0;   // cosThetaMax = 1.0
+    TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
+    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, nbMax);  //!!!!
+    HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
+    HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
+    // IFI off
+    nbMax=0;   // cosThetaMax = 1.0
+    TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
+    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, nbMax);  //!!!!
+    HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
+    HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
+    ///****************************************************************************************
+
+  cout<<"================ ReMakeMChisto2 ENDs  ============================="<<endl;
+  cout<<"==================================================================="<<endl;
+}//RemakeMChisto2
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +221,7 @@ void FigVdist()
   //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist: NEW", 50, 50,    1000, 800);
+  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist", 50, 50,    1000, 800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   cFigVdist->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -269,6 +314,8 @@ void FigAfb()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
+
 
   TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
@@ -280,7 +327,7 @@ void FigAfb()
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb: NEW", 20, 300,   1000, 550);
+  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 20, 300,   1000, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +335,7 @@ void FigAfb()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
+  CaptT->SetTextSize(0.035);
   //====================plot1========================
   //                AFB(vmax)
   cFigAfb->cd(1);
@@ -307,16 +354,15 @@ void FigAfb()
   Hst1->SetLineColor(kBlack);              // black
   Hst1->DrawCopy("hsame");                 // KKMC AFB(vmax) from scat. IFI off
   //
-//  afbv_ISR2_FSR2->SetLineColor(kRed);      // red
-//  afbv_ISR2_FSR2->DrawCopy("hsame");       // KKsem AFB(vmax) direct. IFI off
-  //
-  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM ISR+FSR IFI off
-  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam AFB(vmax) scatt.
-  //
-  Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM ISR+FSR+IFI, IFI on
+  Hafb_xmax_Ceex2->SetLineColor(kGreen);   // green FOAM IFI on
   Hafb_xmax_Ceex2->DrawCopy("hsame");      // FOAM ISR+FSR+IFI
   //
-  CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
+  Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM IFI off
+  Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam AFB(vmax) scatt.
+  //
+  CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IF on}(v_{max}):  KKMC=magenta, Foam=green");
+  CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}): KKMC=black,  Foam=blue");
+  CaptT->DrawLatex(0.60,0.75,TextEne);
   //====================plot2========================
   cFigAfb->cd(2);
 //  TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
@@ -337,6 +383,8 @@ void FigAfb()
 //  Hst2_diff1->SetMaximum( 0.015);  // 91GeV
   Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
   Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
+//  Hst2_diff1->SetMinimum(-0.002);  // zoom
+//  Hst2_diff1->SetMaximum( 0.002);  // zoom
 
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");
@@ -353,12 +401,109 @@ void FigAfb()
   Hst2_diff2->SetLineColor(kGreen);
   Hst2_diff2->DrawCopy("hsame");
   //
-  //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
-  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max}): Black KKMC, Magenta=FOAM");
+  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
 
   cFigAfb->cd();
   //================================================
 }//FigAfb
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb2 =========================== "<<endl;
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
+
+  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
+  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
+
+  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
+  TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
+ //
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", 70, 350,   1000, 550);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  cFigAfb2->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigAfb2->Divide( 2,  0);
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  //====================plot1========================
+  //                AFB(vmax)
+  cFigAfb2->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  TH1D *Hst1 = HAfb2_vTcPR_Ceex2n;         // KKMC AFB(vmax) from scat. IFI off
+  TH1D *Hst2 = HAfb2_vTcPR_Ceex2;          // KKMC AFB(vmax) from scat. IFI on
+  //
+  Hst2->SetStats(0);
+  Hst2->SetTitle(0);
+  Hst2->SetLineColor(kMagenta);            // magenta
+  Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
+  //
+  Hst1->SetLineColor(kBlack);              // black
+  Hst1->DrawCopy("hsame");                 // KKMC AFB(vmax) from scat. IFI off
+  //
+  Hafb2_xmax_Ceex2n->SetLineColor(kBlue);
+  Hafb2_xmax_Ceex2n->DrawCopy("hsame");   // Foam IFI OFF
+  Hafb2_xmax_Ceex2->SetLineColor(kGreen);
+  Hafb2_xmax_Ceex2->DrawCopy("hsame");    // Foam IFI ON
+  //
+  CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IFI on}(v_{max})  KKMC=magenta, Foam=green");
+  CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}) KKMC=black,  Foam=blue");
+
+  CaptT->DrawLatex(0.60,0.75,TextEne);
+  //====================plot2========================
+  cFigAfb2->cd(2);
+
+  TH1D *Hst21_diff =(TH1D*)Hst2->Clone("Hst21_diff");
+  Hst21_diff->Add(Hst21_diff, Hst1,  1.0, -1.0); // KKMC_IFI
+
+  TH1D *HST21_diff =(TH1D*)Hafb2_xmax_Ceex2->Clone("HST21_diff");
+  HST21_diff->Add(HST21_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // FOAMC_IFI
+
+  Hst21_diff->SetMinimum(-0.004);  // zoom
+  Hst21_diff->SetMaximum( 0.004);  // zoom
+
+  Hst21_diff->SetLineColor(kBlack);              // blue, KKMC
+  Hst21_diff->DrawCopy("h");
+  HST21_diff->SetLineColor(kMagenta);               // red, FOAM
+  HST21_diff->DrawCopy("hsame");
+
+  TH1D *HstKF_diff =(TH1D*)Hst2->Clone("HstKF_diff");
+  HstKF_diff->Add(HstKF_diff, Hafb2_xmax_Ceex2,  1.0, -1.0); // KKMC-Foam IFIon
+
+  TH1D *HstKFn_diff =(TH1D*)Hst1->Clone("HstKFn_diff");
+  HstKFn_diff->Add(HstKFn_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // KKMC-Foam IFIoff
+
+  HstKF_diff->SetLineColor(kGreen);               // KKMC-Foam IFIon
+  HstKF_diff->DrawCopy("hsame");
+
+  HstKFn_diff->SetLineColor(kBlue);              // KKMC-Foam IFIon
+  HstKFn_diff->DrawCopy("hsame");
+
+// zero line
+  TH1D *hZero = (TH1D*)Hst1->Clone("hZero");  // zero line
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
+
+  hZero->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max}): Black KKMC, Magenta=FOAM");
+  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
+
+  cFigAfb2->cd();
+  //================================================
+}//FigAfb2
+
+
 
 
 
@@ -423,9 +568,14 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
 //  KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
+  ReMakeMChisto2();     // reprocessing MC histos from KKC and Foam
 //========== PLOTTING ==========
+// vmax=1
   FigVdist();  // sigma(v) and sigma(vmax) KKMC/Foam
   FigAfb();    // AFB(vmax) KKMC/Foam
+// vmax =0.2
+  FigAfb2();
+// weight distribution
   FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();

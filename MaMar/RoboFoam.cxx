@@ -56,10 +56,10 @@ void RoboFoam::Initialize(long &NevTot)
   //  New bigger scatergrams, restricted vmax
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
-  //sct_vAcPR_Ceex2= new TH2D("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  //sct_vAcPR_Ceex2->Sumw2();
-  //sct_vAcPR_Ceex2n= new TH2D("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  //sct_vAcPL_Ceex2n->Sumw2();
+  SCT_xc_Ceex2=  new TH2D("SCT_xc_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  SCT_xc_Ceex2->Sumw2();
+  SCT_xc_Ceex2n= new TH2D("SCT_xc_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  SCT_xc_Ceex2n->Sumw2();
 
   //************* special normalization histos  *************
   HST_FOAM_NORMA3 = new TH1D("HST_KKMC_NORMA3","KKMC normalization &xpar",jmax,0.0,10000.0);
@@ -128,6 +128,7 @@ void RoboFoam::Production(long &iEvent)
   hst_weight3->Fill(wt3,1.0);
   HST_xx_Ceex2n->Fill(xx,wt3);
   SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
+  SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   HST_FOAM_NORMA3->Fill(-1.0,m_Xsav3);  // fill normalization into underflow
 
 /// Generate ISR+FSR+IFI event
@@ -138,6 +139,7 @@ void RoboFoam::Production(long &iEvent)
   CosTheta = LibSem->m_CosTheta;
   hst_weight5->Fill(wt5,1.0);
   SCA_xc_Ceex2->Fill(xx,CosTheta,wt5);
+  SCT_xc_Ceex2->Fill(xx,CosTheta,wt5);
   HST_FOAM_NORMA5->Fill(-1.0,m_Xsav5);  // fill normalization into underflow
 
   // debug debug debug debug debug debug debug

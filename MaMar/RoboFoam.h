@@ -47,6 +47,9 @@ class RoboFoam{
   TH2D   *SCA_xc_Ceex2;    // Main CEEX2 KKMC , ISR+FSR
   TH2D   *SCA_xc_Ceex2n;   // IFI  off
   //
+  TH2D   *SCT_xc_Ceex2;    // Rescricted v-range
+  TH2D   *SCT_xc_Ceex2n;
+  //
  public:
   RoboFoam(){
 // my constructor

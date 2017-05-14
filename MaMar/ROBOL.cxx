@@ -84,6 +84,11 @@ void ROBOL::Initialize(long &NevTot)
   //  New bigger scatergrams, restricted vmax
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
+  sct_vTcPR_Ceex2 = new TH2D("sct_vTcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPR_Ceex2n= new TH2D("sct_vTcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPR_Ceex2->Sumw2();
+  sct_vTcPR_Ceex2n->Sumw2();
+  //
   sct_vAcPR_Ceex2= new TH2D("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vAcPR_Ceex2->Sumw2();
   sct_vAcPR_Ceex2n= new TH2D("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -268,6 +273,8 @@ void ROBOL::Production(long &iEvent)
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   //-------------------------------------------
   // New very BIG scaterplots
+  sct_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);  // true v, IFI on
+  sct_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   sct_vAcPR_Ceex2->Fill(   vvA, CosPRD,   WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   sct_vAcPR_Ceex2n->Fill(  vvA, CosPRD,   WtCEEX2n); // IFI  off
   sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL
