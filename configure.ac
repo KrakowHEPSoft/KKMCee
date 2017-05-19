@@ -46,6 +46,8 @@ jetset/Makefile \
 tauola/Makefile \
 photos/Makefile  \
 KKsem/Makefile \
+Foam2/Makefile \
+MCdev/Makefile MCdev/farming/Makefile \
 ffbench/Makefile ffbench/Plots/Makefile \
 MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile \
                MaMar/workZinv/Makefile MaMar/workFSR/Makefile  MaMar/workFOAM/Makefile \
