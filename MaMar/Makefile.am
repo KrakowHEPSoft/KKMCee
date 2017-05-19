@@ -1,9 +1,34 @@
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
+# ****** This is input data file for Automake ****** 
+# Automake creates Makefile using all information defined below
+INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
 SUBDIRS = test0 workAFB workZinv workFSR workFOAM Plots
+#---------------------------------------------------------------
+#   ROOT Dictionary file definition
+dictC = KKfmDict.cxx
+dictH = KKfmDict.h
+nodist_libKKfm_la_SOURCES = $(dictC)
+noinst_HEADERS = LinkDef.h
+CLEANFILES = $(dictC) $(dictH)
+#   ROOT Directory generation:
+ROOTCINTHDRS= $(include_HEADERS) $(noinst_HEADERS)
+$(dictC) : $(ROOTCINTHDRS)
+	$(ROOTCINT) -f $(dictC) -c $(INCLUDES) $(ROOTCINTHDRS)
+#---------------------------------------------------------------
+#  Local library
+#Header files:
+include_HEADERS = TMCgenFOAM.h TRobolFOAM.h
+#Additional flags:
+lib_LTLIBRARIES = libKKfm.la
+libKKfm_la_SOURCES =  TMCgenFOAM.cxx TRobolFOAM.cxx
+libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
+    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
+# explicit target in ../
+$(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
+	(cd $(top_builddir)/MCdev/; make)
 
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam
-AM_FFLAGS = @MY_F77_FLAGS@
+#---------------------------------------------------------------
 
 ########### KK2f MC libraries #############
 $(top_builddir)/KK2f/libKK2f.a:
@@ -26,6 +51,17 @@ KK2f_Libs= \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a
+
+#---------------------------------------------------------------
+# Local executables
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM
+AM_FFLAGS = @MY_F77_FLAGS@
+
+MainFOAM_SOURCES = MainFOAM.cxx 
+MainFOAM_LDADD = $(KK2f_Libs) $(top_builddir)/MaMar/libKKfm.la $(top_builddir)/MCdev/.libs/libMCdev.a \
+	$(top_builddir)/Foam2/.libs/libFOAM.a  \
+    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
 
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
 Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
