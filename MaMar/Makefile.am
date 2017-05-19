@@ -2,7 +2,7 @@
 # Automake creates Makefile using all information defined below
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
-SUBDIRS = test0 workAFB workZinv workFSR workFOAM Plots
+SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK Plots
 #---------------------------------------------------------------
 #   ROOT Dictionary file definition
 dictC = KKfmDict.cxx
@@ -122,4 +122,10 @@ workFOAM-start: all
 	(cd ./workFOAM; make start)
 workFOAM-stop:
 	(cd ./workFOAM; make stop)
+#-----------------------------------------------------------------------
+###   make workFOKK-start
+workFOKK-start: all
+	(cd ./workFOKK; make start)
+workFOAM-stop:
+	(cd ./workFOKK; make stop)
 #-----------------------------------------------------------------------

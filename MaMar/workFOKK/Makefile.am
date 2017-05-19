@@ -14,7 +14,7 @@ check_all:
 	(cd ..; make )
 start:  check_all
 	rm -f ./pro.output ./histo.root ./mcgen.root
-	$(ROOTEXEC)  -b -q -l ./StartH.C
+	$(ROOTEXEC)  -b -q -l ./Start.C
 	time ../${MAIN}
 stop:
 	$(ROOTEXEC)  -b -q -l ../../MCdev/farming/Stop.C
