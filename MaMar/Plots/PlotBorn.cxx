@@ -90,8 +90,8 @@ cout<<"================ TabBorn BEGIN ============================"<<endl;
 //////////////////////////////////////////////////////////////
 double   m_xpar[10001];      // complete input of KKMC run
 const int jmax =10000;
-//ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // numbering as in input!!!
-ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
+ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // numbering as in input!!!
+//ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
 // User input data
 //ReaData("../workAFB/workAFB_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
 double ypar[jmax];
@@ -102,7 +102,7 @@ long stl2 = strlen(output_file);
 long mout =16;
 kk2f_fort_open_(mout,output_file,stl2);
 kk2f_initialize_(ypar);
-kksem_initialize_(ypar);
+//kksem_initialize_(ypar);
 
 //  ************* user histograms  *************
 TH1D *hst_weight3 = new TH1D("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
@@ -116,7 +116,7 @@ int m_KFini = 11;
 int m_KFf   = 13;
 fprintf(DFile," e+e- --> mu+ mu- \n");
 fprintf(DFile," d(sigma)/d(cos_theta) [nb], cos_theta = 0.0, 0.3, 0.6, 0.9 \n");
-for( double Ene=70; Ene<=150; Ene += 2 ){
+for( double Ene=70; Ene<=150; Ene += 5 ){
    cout<<"Ene="<<Ene<<endl;
    svar2 = Ene*Ene;
    //

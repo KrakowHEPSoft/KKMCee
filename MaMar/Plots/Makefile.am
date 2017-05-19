@@ -24,9 +24,20 @@ $(top_builddir)/KKsem/libKKsem.a:
 	(cd $(top_builddir)/KKsem/; make)
 $(top_builddir)/bornv/libBornvTabs.a:
 	(cd $(top_builddir)/bornv/; make)
-#########################################
-	
+############################################
+#  Tables (re)generated in flight.
+#  To be xchecked if it works correctly!!!
+############################################
 KK2f_Libs2= \
+	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
+	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
+	$(top_builddir)/dizet/libDizet.a \
+	$(top_builddir)/KKsem/libKKsem.a
+############################################
+#  From tables on the disk (original)
+############################################
+KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \

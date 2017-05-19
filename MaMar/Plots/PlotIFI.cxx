@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 //    make PlotIFI-run
+//    make BMarkPRD88-pdf
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -35,9 +36,9 @@ using namespace std;
 //
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
-//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
+TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
 //
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../test0/rmain.root_88GeV_100M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
