@@ -34,7 +34,7 @@ RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
 ///*****************************************************************
 ///      Create new instance of MC generator
-TMCgenH *MCgen = new TMCgenFOAM("MCgen");
+TMCgenFOAM *MCgen = new TMCgenFOAM("MCgen");
 //########### Change some input parameters ###########
 MCgen->m_kDim    =  3;       // energy spread  ON   ##
 //MCgen->m_kDim    =  2;       // energy spread  OFF  ##

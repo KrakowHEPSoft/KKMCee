@@ -25,6 +25,8 @@ TRobolFOAM::TRobolFOAM(const char* Name)
   cout<< "====> TMCgenFOAM USER Constructor "<<endl;
 }
 
+TRobolFOAM::~TRobolFOAM() {}
+
 ///////////////////////////////////////////////////////////////////////////////
 void TRobolFOAM::Initialize(long &NevTot)
 {

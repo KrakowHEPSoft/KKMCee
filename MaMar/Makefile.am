@@ -58,9 +58,9 @@ bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM
 AM_FFLAGS = @MY_F77_FLAGS@
 
 MainFOAM_SOURCES = MainFOAM.cxx 
-MainFOAM_LDADD = $(KK2f_Libs) $(top_builddir)/MaMar/libKKfm.la $(top_builddir)/MCdev/.libs/libMCdev.a \
+MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
 	$(top_builddir)/Foam2/.libs/libFOAM.a  \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) $(top_builddir)/MaMar/libKKfm.la $(KK2f_Libs)
 MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
 
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx

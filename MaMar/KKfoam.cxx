@@ -182,7 +182,7 @@ double KKfoam::Rho_isr(double svar, double vv){
           +gami*0.5*(-0.25*(4.0-6.0*vv+3.0*vv*vv)*log(1-vv)-vv);
     rho = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
   }else{
-	  cout<<"+++++TMCgenH::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
+	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
 	  exit(5);
   }
 ///
@@ -225,7 +225,7 @@ double KKfoam::Rho_fsr(double svar, double uu){
           +gamf*0.5*( -0.5*uu -0.25*uu*(-1.0 +0.5*uu)*log(1-uu));
     rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
   }else{
-	  cout<<"+++++TMCgenH::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
+	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
 	  exit(5);
   }
 //

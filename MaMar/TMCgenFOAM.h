@@ -83,12 +83,15 @@ class TMCgenFOAM: public TMCgen{
  	double m_Mmin;
  	double m_Mmax;
  	double m_vvmax;
+ 	double m_sigE;
  	//
  	double m_gnanob;
  	double m_pi;
  	double m_ceuler;
  	double m_alfinv;
  	double m_alfpi;
+ 	double m_MH;
+        double m_GamH;
  	//
  	double m_beam;
  	double m_chini;
