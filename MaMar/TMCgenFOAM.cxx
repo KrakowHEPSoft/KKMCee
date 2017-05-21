@@ -1,78 +1,172 @@
-//////////////////////////////////////////////////////////////////////////////
-//                                                                          //
-//               Class   TMCgenFOAM                                             //
-//                                                                          //
-//////////////////////////////////////////////////////////////////////////////
-// TMCgenFOAM is multipurpose toolbox for KKMC testing.
-//  1. Interfaces (erappers) to KKMC and KKsem F77 subrograms
-//  2. Integrand for Foam
-//  3. A few routines for producing tatex table out of histograms
-//////////////////////////////////////////////////////////////////////////////
-
 #include "TMCgenFOAM.h"
+#include <stdio.h>
 
-double sqr( const Double_t x ){ return x*x;};
+////////////////////////////////////////////////////////////////////////////////
+///     TMCgenFOAM class
+/// This is class for axiliary exercises,  mainly integration with Monte Carlo
 
-//////////////////////////////////////////////////////////////////////////////
 ClassImp(TMCgenFOAM);
-//////////////////////////////////////////////////////////////////////////////
+
 TMCgenFOAM::TMCgenFOAM():
   TMCgen()
 {
   /// This constructor is for ROOT streamers ONLY
   cout<< "----> TMCgenFOAM Default Constructor (for ROOT only) "<<endl;
+  m_Foam3 = NULL;
 }
 
-TMCgenFOAM::TMCgenFOAM(const char* Name)
+///_____________________________________________________________
+TMCgenFOAM::TMCgenFOAM(const char* Name):
+  TMCgen(Name)
 {
-  cout<< "====> TMCgenFOAM USER Constructor "<<endl;
-}
-
-TMCgenFOAM::~TMCgenFOAM() {}
-
-///////////////////////////////////////////////////////////////////////////////////
-void TMCgenFOAM::Initialize( double ypar[10000] ){
-  //------------------------------------------------------------------------
-  cout<<"==================================================================="<<endl;
-  cout<<"================ TMCgenFOAM initialization begin ======================"<<endl;
-  m_jmax =10000;
-  for(int j=1; j<=m_jmax; j++)
-	  m_ypar[j-1]= ypar[j-1];   // ypar has c++ numbering
-
-  m_CMSene  = m_ypar[ 1 -1];
-  m_vvmax   = m_ypar[17 -1];
-
-  m_alfinv   = m_ypar[30 -1];     // 1/alphaQED at Q^2=0
-  m_gnanob   = m_ypar[31 -1];     // GeV^2 -> nanobarns
-
+//! all defaults defined here can be changed by the user
+//! before calling TMCgen::Initialize
+  m_Foam3 = NULL;
+///////////////////////////////////////////////////
+// Physics
+  m_gnanob  = 389.37966e3;
   m_pi      = 3.1415926535897932;
   m_ceuler  = 0.57721566;
-//
+  m_alfinv  = 137.035;
   m_alfpi   = 1/m_alfinv/m_pi;
+  m_amel    = 0.510999e-3;
 //
   m_beam    = 0.510999e-3;  // electron
   m_chini   = 1.0;          // electron
-
+//
   m_fin     = 0.105;        // final ferm. muon mass
   m_chfin   = 1.0;          // final ferm. muon charge
-
-  m_KFini   = 11; // electron
-  m_KFf     = 13; // muon
-
-  m_kDim    =    3;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
+//
+  m_KFini   = 11;           // electron
+  m_KFf     = 13;           // muon
+//
+  m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
+  m_jmax    = 10000;        // length of xpar
+///////////////////////////////////////////////////
+/// Foam setup
+  m_kDim    =    5;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
   m_nCells  = 2000;         // No. of cells, optional, default=2000
   m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
-
-  m_KeyISR  = 2;            // Type of ISR/QED switch, 0,1,2
-
-  m_Mode    = 3;            // Operation mode for Foam
   m_del     = 0.0001;       // limit for gamma*ln(eps) in IFI mapping
+  m_Mode    = 5;
+///////////////////////////////////////////////////
+// debug
+  m_count   =0;
 
-  m_count   = 0;            // counter for debug
+cout<< "----> TMCgenFOAM::TMCgenFOAM USER Constructor "<<endl;
+}///
 
-  cout<<"   TMCgenFOAM::Initialize:  m_CMSene= "<< m_CMSene<<endl;
-  cout<<"================ TMCgenFOAM initialization end  ======================"<<endl;
-}// TMCgenFOAM::Initialize
+///______________________________________________________________________________________
+TMCgenFOAM::~TMCgenFOAM()
+{
+  //!Explicit destructor
+  cout<< "----> TMCgenFOAM::TMCgenFOAM !!!! DESTRUCTOR !!!! "<<endl;
+}///destructor
+
+///______________________________________________________________________________________
+void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
+{
+  cout<< "----> TMCgenFOAM::Initialize, Entering "<<endl;
+  ///	      SETTING UP RANDOM NUMBER GENERATOR
+  TMCgen::Initialize(  RNgen, OutFile, h_NORMA);
+
+/////////////////////////////////////////////////////////
+//  m_NevGen=0;
+  const int jmax =m_jmax;
+  ReaData("../../.KK2f_defaults", jmax, m_xpar);  // numbering as in input!!!
+  ReaData("./pro.input",         -jmax, m_xpar);  // jmax<0 means no-zeroing
+  double ypar[jmax];
+  for(int j=0;j<jmax;j++) ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
+  //
+  //NevTot = (long)m_xpar[0];                       // NevTot hidden in xpar[0] !!!
+  m_CMSene  = m_xpar[ 1];
+  m_vvmax   = m_xpar[17];
+
+  cout<<" TMCgen::Initialize: m_CMSene="<<m_CMSene<<endl;
+  cout<<" TMCgen::Initialize: m_vvmax="<<m_vvmax<<endl;
+
+  char *output_file = "./kkmc.output";
+  long stl2 = strlen(output_file);
+  long mout =16;
+  kk2f_fort_open_(mout,output_file,stl2);
+  kk2f_initialize_(ypar);
+
+  /////////////////////////////////////////////////////////
+  if(f_IsInitialized == 0)
+  {
+  /// ******  SETTING UP FOAM of base class  *****
+  f_FoamI   = new TFOAM("FoamI");   // new instance of MC generator FOAM
+  m_kDim    = 5;
+  m_nCells  =  10000;
+  m_nSampl  = 100000;
+  f_FoamI->SetkDim(m_kDim);         // No. of dims. Obligatory!
+  f_FoamI->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+  f_FoamI->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+  f_FoamI->SetnBin(        16);     // No. of bins default 8
+  f_FoamI->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+  m_Mode    = 5;
+  f_FoamI->Initialize( f_RNgen, this);     // Initialize FOAM
+  //////////////////////////////////////////////////////////////
+  /// ******  SETTING UP additional FOAM of the user class *****
+  m_Foam3   = new TFOAM("Foam3");   // new instance of MC generator FOAM
+  m_kDim    = 3;
+  m_Foam3->SetkDim(m_kDim);         // No. of dims. Obligatory!
+  m_Foam3->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+  m_Foam3->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+  m_Foam3->SetnBin(        16);     // No. of bins default 8
+  m_Foam3->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+  m_Mode    = 3;
+  m_count =0;
+  m_Foam3->Initialize( f_RNgen, this);     // Initialize FOAM
+  //////////////////////////////////////////////////////////////
+  double errel;
+  f_FoamI->GetIntNorm(m_Xnorm,errel);   // universal normalization
+  m_Foam3->GetIntNorm(m_Xsav3,errel);
+  //screen output
+  BXOPE(*f_Out);
+  BXTXT(*f_Out,"========================================");
+  BXTXT(*f_Out,"======   TMCgenFOAM::Initialize     ======");
+  BXTXT(*f_Out,"========================================");
+  BXTXT(*f_Out,"========================================");
+  f_IsInitialized = 1;  /// re-initialization inhibited
+  } else {
+	  cout<< "----> TMCgenFOAM::Initialize, already initialized "<<endl;
+  }
+}/// Initialize
+
+///______________________________________________________________________________________
+void TMCgenFOAM::Generate()
+{
+  f_NevGen++;
+  f_FoamI->MakeEvent();         // Foam of base class
+  m_WT   = f_FoamI->GetMCwt();  // get weight
+
+  ///  Fill special normalization histogram f_TMCgen_NORMA
+  f_TMCgen_NORMA->Fill(-1, m_Xnorm);    // New style
+//  f_TMCgen_NORMA->Fill(0.5, m_Xnorm);   // 1-st bin = Normal*Nevtot
+//  f_TMCgen_NORMA->Fill(1.5, 1);         // 2-nd bin = Nevtot
+
+}//! Generate
+
+///______________________________________________________________________________________
+void TMCgenFOAM::Finalize()
+{
+  TMCgen::Finalize();
+  ///   Finalize MC  run, final printouts, cleaning etc.
+  BXOPE(*f_Out);
+  BXTXT(*f_Out,"****************************************");
+  BXTXT(*f_Out,"******     TMCgenFOAM::Finalize     ******");
+  BXTXT(*f_Out,"****************************************");
+  ///------------------------
+  Double_t MCresult, MCerror;
+  f_FoamI->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
+  cout << "**************************************************************"<<endl;
+  cout << "**************** Foam::Finalize  ************************"<<endl;
+  cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
+  cout << "**************************************************************"<<endl;
+  ///------------------------
+}//!Finalize
+
 
 
 ///------------------------------------------------------------------------
@@ -164,6 +258,7 @@ else
     MapIFI2( r, gam, eps, v, R);
 }// MapIFI
 
+
 ///------------------------------------------------------------------------
 double TMCgenFOAM::Rho_isr(double svar, double vv){
 /// ISR rho-function for ISR
@@ -245,6 +340,7 @@ double TMCgenFOAM::Rho_fsr(double svar, double uu){
   return rho;
 }//Rho_fsr
 
+
 ///--------------------------------------------------------------
 double TMCgenFOAM::Rho_ifi(double costhe, double uu, double eps){
 /// ISR+FSR rho-function
@@ -267,18 +363,136 @@ double TMCgenFOAM::Rho_ifi(double costhe, double uu, double eps){
   return rho;
 }//Rho_ifi
 
-///////////////////////////////////////////////////////////////
-Double_t TMCgenFOAM::Density(int nDim, Double_t *Xarg)
-{ // density distribution for Foam
-    if (     abs(m_Mode) == 3 )
-    	Density3(nDim, Xarg);
-    else if( abs(m_Mode) == 5 )
-    	Density5(nDim, Xarg);
-    else {
-    	cout<<"+++ TMCgenFOAM::Density: Wrong m_Mode = "<< m_Mode<<endl;
-    	exit(20);
-    }
+
+
+///________________________________________________________________________
+double TMCgenFOAM::Density(int nDim, double *Xarg){
+	//
+	if( abs(m_Mode) == 3 ){
+	    return Density5(nDim, Xarg);
+	} else if( abs(m_Mode) == 5 ){
+		return Density3(nDim, Xarg);
+	} else {
+		cout<<" TMCgenFOAM::Density: wrong Mode ="<<m_Mode<<endl;
+		exit(-9);
+	}
 }// Density
+
+///////////////////////////////////////////////////////////////
+double TMCgenFOAM::Density5(int nDim, double *Xarg)
+{ // density distribution for Foam
+	m_count++;  // counter for debug
+	//
+	Double_t Dist=1;
+
+	double svar = sqr(m_CMSene);
+	double svarCum = svar;
+
+// ******** mapping for ISR *******
+	double gamiCR,gami,alfi;
+	double CMSene1= sqrt(svar);
+	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
+
+	double R= Xarg[0];
+	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
+	Dist *= m_vv/R/gami ;                  // Jacobian
+	if( gami < 0 )      return 0.0;    // temporary fix
+    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
+    // ISR photonic distribution
+	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
+	Dist *= Rho2;
+	svarCum *= (1-m_vv);
+	double svar2 = svar*(1-m_vv);
+
+// ******** mapping for FSR *******
+    double rr= Xarg[1];
+    double gamf   = gamFSR(svar2);
+    m_uu = exp(1.0/gamf *log(rr));     // mapping
+    Dist *= m_uu/rr/gamf;              // Jacobian
+	if( gamf < 0 )      return 0.0;    // temporary fix
+    if( m_uu < 1e-200 ) return 0.0;    // temporary fix
+    // FSR photonic distribution
+  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
+  	Dist *= Rho3;
+    svarCum *= (1-m_uu);
+
+    // ******** mapping for polar angle *******
+    double cmax = 0.999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
+    Dist *= 2.0*cmax;
+
+    // ******** mapping for IFI variaable *******
+    double eps =1e-6;
+    double gamint = gamIFI(m_CosTheta);
+//
+    double R1, R2;
+    MapIFI( Xarg[3], gamint, eps, m_r1, R1);     // mapping
+    MapIFI( Xarg[4], gamint, eps, m_r2, R2);     // mapping
+    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1, eps);
+    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2, eps);
+//
+//    m_r1 =0;
+//    m_r2 =0;
+    double WT1 = R1 *RhoIFI1;
+    double WT2 = R2 *RhoIFI2;
+    Dist *= WT1*WT2;
+//
+// ******* MC event *******
+    double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
+    m_xx = 1-zz;
+//    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
+// effective masses
+	m_Mka = sqrt(svar2);   // after ISR
+
+// =============== Sigm/dOmega from spin amplitudes ===============
+// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
+	double Ene = m_Mka/2;
+	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
+	m_p1 = { 0, 0 , Pmb, Ene};  // beam
+	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
+	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
+	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	double PX[4] = {0, 0, 0, 2*Ene};
+	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
+	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
+	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
+	gps_bornfoam_( 0,m_KFini,m_KFf,Misr1,m_CosTheta,dSigAngF1);
+	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSigAngF2);
+    dSigAngF = gps_makerhofoam_(1.0);
+//************ Debug*** Debug*** Debug*** Debug*** Debug ***********
+    if( m_count <1 && fabs(svar/svar2-1)>0.20 ){  // debug
+//    if( m_count <1000 ){  // debug
+    	double Rat;
+    	Rat = dSigAngF1/( dSigAngF2 );
+    	cout<<" Density5 debug m_count= "<< m_count<< endl;
+    	cout<<" dSigAngF1    = "<< dSigAngF1;
+    	cout<<" dSigAngF2    = "<< dSigAngF2;
+    	cout<<" svar/svar2 = "<< svar/svar2;
+    	cout<<" Rat = "<<Rat<<endl;
+    } //
+//    if( m_count <10000 && m_r1 > 0 && m_r2 >0 ){  // debug
+    if( m_count <1 && m_r1 > 0 && gamint <0 ){  // debug
+    	cout<<" Density5 debug m_count= "<< m_count<< endl;
+    	cout<<" m_r1= "<< m_r1 <<"  m_r2="<< m_r2<<"  m_xx="<< m_xx <<endl;
+    	cout<<" m_CosTheta ="<< m_CosTheta <<" gamint= "<<gamint<<endl;
+    	cout<<" WT1 ="<< WT1 <<"  WT2="<< WT2<<endl;
+   }
+//   **********  end debug **********
+	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
+
+//	if( Dist < 0){
+//		cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
+//	}
+
+	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
+
+	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+
+	return Dist;
+}// Density5
+
 
 
 ///////////////////////////////////////////////////////////////
@@ -407,124 +621,65 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 }// Density3
 
 
-///////////////////////////////////////////////////////////////
-Double_t TMCgenFOAM::Density5(int nDim, Double_t *Xarg)
-{ // density distribution for Foam
-	m_count++;  // counter for debug
-	//
-	Double_t Dist=1;
-
-	double svar = sqr(m_CMSene);
-	double svarCum = svar;
-
-// ******** mapping for ISR *******
-	double gamiCR,gami,alfi;
-	double CMSene1= sqrt(svar);
-	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
-
-	double R= Xarg[0];
-	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
-	Dist *= m_vv/R/gami ;                  // Jacobian
-	if( gami < 0 )      return 0.0;    // temporary fix
-    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
-    // ISR photonic distribution
-	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
-	Dist *= Rho2;
-	svarCum *= (1-m_vv);
-	double svar2 = svar*(1-m_vv);
-
-// ******** mapping for FSR *******
-    double rr= Xarg[1];
-    double gamf   = gamFSR(svar2);
-    m_uu = exp(1.0/gamf *log(rr));     // mapping
-    Dist *= m_uu/rr/gamf;              // Jacobian
-	if( gamf < 0 )      return 0.0;    // temporary fix
-    if( m_uu < 1e-200 ) return 0.0;    // temporary fix
-    // FSR photonic distribution
-  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
-  	Dist *= Rho3;
-    svarCum *= (1-m_uu);
-
-    // ******** mapping for polar angle *******
-    double cmax = 0.999;
-    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
-    Dist *= 2.0*cmax;
-
-    // ******** mapping for IFI variaable *******
-    double eps =1e-6;
-    double gamint = gamIFI(m_CosTheta);
-//
-    double R1, R2;
-    MapIFI( Xarg[3], gamint, eps, m_r1, R1);     // mapping
-    MapIFI( Xarg[4], gamint, eps, m_r2, R2);     // mapping
-    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1, eps);
-    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2, eps);
-//
-//    m_r1 =0;
-//    m_r2 =0;
-    double WT1 = R1 *RhoIFI1;
-    double WT2 = R2 *RhoIFI2;
-    Dist *= WT1*WT2;
-//
-// ******* MC event *******
-    double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
-    m_xx = 1-zz;
-//    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
-// effective masses
-	m_Mka = sqrt(svar2);   // after ISR
-
-// =============== Sigm/dOmega from spin amplitudes ===============
-// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
-	double Ene = m_Mka/2;
-	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
-	m_p1 = { 0, 0 , Pmb, Ene};  // beam
-	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
-	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
-	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
-	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
-	double PX[4] = {0, 0, 0, 2*Ene};
-	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
-	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
-	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
-	gps_bornfoam_( 0,m_KFini,m_KFf,Misr1,m_CosTheta,dSigAngF1);
-	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSigAngF2);
-    dSigAngF = gps_makerhofoam_(1.0);
-//************ Debug*** Debug*** Debug*** Debug*** Debug ***********
-    if( m_count <1 && fabs(svar/svar2-1)>0.20 ){  // debug
-//    if( m_count <1000 ){  // debug
-    	double Rat;
-    	Rat = dSigAngF1/( dSigAngF2 );
-    	cout<<" Density5 debug m_count= "<< m_count<< endl;
-    	cout<<" dSigAngF1    = "<< dSigAngF1;
-    	cout<<" dSigAngF2    = "<< dSigAngF2;
-    	cout<<" svar/svar2 = "<< svar/svar2;
-    	cout<<" Rat = "<<Rat<<endl;
-    } //
-//    if( m_count <10000 && m_r1 > 0 && m_r2 >0 ){  // debug
-    if( m_count <1 && m_r1 > 0 && gamint <0 ){  // debug
-    	cout<<" Density5 debug m_count= "<< m_count<< endl;
-    	cout<<" m_r1= "<< m_r1 <<"  m_r2="<< m_r2<<"  m_xx="<< m_xx <<endl;
-    	cout<<" m_CosTheta ="<< m_CosTheta <<" gamint= "<<gamint<<endl;
-    	cout<<" WT1 ="<< WT1 <<"  WT2="<< WT2<<endl;
-   }
-//   **********  end debug **********
-	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
-
-//	if( Dist < 0){
-//		cout<< " Density5: Dist= "<< Dist <<endl;
-//	}
-
-	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
-
-	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
-
-	return Dist;
-}// Density5
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//                End of Class TMCgenFOAM                                        //
+//                             UTILITIES                                     //
+//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+void TMCgenFOAM::ReaData(char DiskFile[], int imax, double xpar[])
+//////////////////////////////////////////////////////////////
+//    subprogram reading input data file and packing        //
+//    entries into matrix xpar                              //
+//    WARNING: input file cannot include empty lines        //
+//    it cannot handle entries like 1d-30, has to be 1e-30! //
+//////////////////////////////////////////////////////////////
+{
+  char trail[200];
+  char ch1;
+  int  foundB=0, foundE=0, line, indx;
+  int  line_max =2000;
+  double value;
+  cout<<"============================ReaData=============================="<<endl;
+  cout<<"===                     "<< DiskFile <<"               =========="<<endl;
+  cout<<"================================================================="<<endl;
+  ifstream InputFile;
+  InputFile.open(DiskFile);
+  for(indx=0;indx<imax; indx++) xpar[indx]=0.0;
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'B') foundB=1;
+    InputFile.getline(trail,200);
+    if(foundB) break;
+  }
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'E'){
+      foundE=1;
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<"["<<line<<"]"<<endl;
+      break;
+    }
+    if( ch1 == '*'){
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<endl;
+    }else{
+      InputFile>>indx>>value;
+      if(indx<0 || indx>abs(imax) ){
+	cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
+	exit(0);
+      }
+      xpar[indx] = value;
+      //xpar[indx-1] = value; // correction for fortran indexing in input file
+      InputFile.getline(trail,200);
+      cout<<ch1;
+      cout<<setw(4)<<indx<<setw(15)<<value<<" ";
+      cout<<trail<<endl;
+    }
+  }
+  cout<<"================================================================="<<endl;
+  InputFile.close();
+}
+
 

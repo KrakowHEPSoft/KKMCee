@@ -128,16 +128,16 @@ int main()
   RoboT->FileDump();
   //////////////////////////////////////////////////////////////////////
   //      Some TESTS and control printouts
-  //cout<<"------------------------------ls----------------------------------"<<endl;
-  //HistoFile->ls();
-  //MCgenFile->Write();
-  //cout<<"------------------------------Map---------------------------------"<<endl;
-  //HistoFile->Map();
-  //cout<<"-------------------------ShowStreamerInfo-------------------------"<<endl;
-  //MCgenFile->ShowStreamerInfo();
-  //cout<<"------------------------GetListOfKeys-----------------------------"<<endl;
-  //HistoFile->GetListOfKeys()->Print();
-  //cout<<"------------------------------end---------------------------------"<<endl;
+  cout<<"------------------------------ls----------------------------------"<<endl;
+  HistoFile->ls();
+  MCgenFile->Write();
+  cout<<"------------------------------Map---------------------------------"<<endl;
+  HistoFile->Map();
+  cout<<"-------------------------ShowStreamerInfo-------------------------"<<endl;
+  MCgenFile->ShowStreamerInfo();
+  cout<<"------------------------GetListOfKeys-----------------------------"<<endl;
+  HistoFile->GetListOfKeys()->Print();
+  cout<<"------------------------------end---------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES
   HistoFile->Close();

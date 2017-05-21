@@ -14,6 +14,7 @@ check_all:
 	(cd ..; make )
 start:  check_all
 	rm -f ./pro.output ./histo.root ./mcgen.root
+	cp ./$(DSET).input ./pro.input
 	$(ROOTEXEC)  -b -q -l ./Start.C
 	time ../${MAIN}
 stop:
