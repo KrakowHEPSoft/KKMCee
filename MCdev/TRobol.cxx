@@ -43,6 +43,7 @@ TRobol::TRobol(const char* Name){
   if(strlen(Name)  >65) StopM("TRobol::TRobol: +++ stop, Name too long");
   sprintf(f_Name,"%s",Name);         // Class name
   ///
+  f_HistNormName = "h_TMCgen_NORMA";
   f_RNgen    = NULL;
   f_MCgen    = NULL;
   f_HstFile  = NULL;
@@ -113,8 +114,8 @@ void TRobol::Initialize(
   ///
   /// book histogram keeping track of overall normalization
   f_HstFile->cd(); /// to keep h_TMCgen_NORMA in  f_HstFile!!!
-  //TH1D *h_TMCgen_NORMA = TH1D_UP("h_TMCgen_NORMA","Normalization histo",100,0,100);
-  TH1D *h_TMCgen_NORMA = new TH1D("h_TMCgen_NORMA","Normalization histo",100,0,100);
+  TH1D *h_TMCgen_NORMA = TH1D_UP(f_HistNormName,"Normalization histo",100,0,100);
+  //TH1D *h_TMCgen_NORMA = new TH1D("h_TMCgen_NORMA","Normalization histo",100,0,100);
   ///
   /// Read prepared object MC of generator from the disk
   f_GenFile->cd();

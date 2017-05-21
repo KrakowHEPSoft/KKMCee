@@ -27,6 +27,7 @@ class TRobol : public TObject {
 /// Base class part
  public:
   char     f_Name[64];          // Name of a give instance of the class
+  TString  f_HistNormName;      // name of the normalization histo
   TRandom  *f_RNgen;            //! Central RN event generator
   TMCgen   *f_MCgen;            //! MC event generator
   TFile    *f_HstFile;          //! ROOT DiskFile with all histos
