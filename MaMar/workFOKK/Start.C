@@ -1,7 +1,7 @@
 {
 ///============================================================================
 ///
-/// This is configuration/initialization script for ../MainPr main program
+/// This is configuration/initialization script for ../MainFOAM main program
 /// To start MC run in the interactive mode just type "make start" 
 ///
 /// This series of calculations integrates a given distribution 
