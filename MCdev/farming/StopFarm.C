@@ -1,7 +1,6 @@
 {
 gROOT->Reset();
-//gSystem->Load("../../lib/libTemplate.so");
-gSystem->Load("../../lib/libMCdev.so");
+gSystem->Load("../../MCdev/.libs/libMCdev.so");
 //_________________________________________________________________
 
 TString Dir1=gSystem->WorkingDirectory();
