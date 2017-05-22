@@ -138,6 +138,7 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 void TMCgenFOAM::Generate()
 {
   f_NevGen++;
+  m_Mode = -5;
   f_FoamI->MakeEvent();         // Foam of base class
   m_WT   = f_FoamI->GetMCwt();  // get weight
 
@@ -368,9 +369,9 @@ double TMCgenFOAM::Rho_ifi(double costhe, double uu, double eps){
 ///________________________________________________________________________
 double TMCgenFOAM::Density(int nDim, double *Xarg){
 	//
-	if( abs(m_Mode) == 3 ){
+	if( abs(m_Mode) == 5 ){
 	    return Density5(nDim, Xarg);
-	} else if( abs(m_Mode) == 5 ){
+	} else if( abs(m_Mode) == 3 ){
 		return Density3(nDim, Xarg);
 	} else {
 		cout<<" TMCgenFOAM::Density: wrong Mode ="<<m_Mode<<endl;
@@ -384,6 +385,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
+//	cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
 
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
@@ -482,7 +484,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
 	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
 
-//	if( Dist < 0){
+//	if( Dist < 0 ){
 //		cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
 //	}
 

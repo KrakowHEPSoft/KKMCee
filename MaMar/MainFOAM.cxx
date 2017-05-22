@@ -14,7 +14,6 @@ using namespace std;
 // ROOT headers
 #include "TROOT.h"
 #include "TFile.h"
-//#include "TH1.h"
 
 // OUR headers
 #include "TSemaf.h"
@@ -128,15 +127,17 @@ int main()
   RoboT->FileDump();
   //////////////////////////////////////////////////////////////////////
   //      Some TESTS and control printouts
-  cout<<"------------------------------ls----------------------------------"<<endl;
+  cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
   HistoFile->ls();
   MCgenFile->Write();
-  cout<<"------------------------------Map---------------------------------"<<endl;
+  cout<<"------------------------------HistoFile.Map---------------------------------"<<endl;
   HistoFile->Map();
-  cout<<"-------------------------ShowStreamerInfo-------------------------"<<endl;
+  cout<<"-------------------------HistoFile.ShowStreamerInfo-------------------------"<<endl;
   MCgenFile->ShowStreamerInfo();
-  cout<<"------------------------GetListOfKeys-----------------------------"<<endl;
+  cout<<"------------------------HistoFile.GetListOfKeys-----------------------------"<<endl;
   HistoFile->GetListOfKeys()->Print();
+  cout<<"------------------------MCgenFile.GetListOfKeys-----------------------------"<<endl;
+  MCgenFile->GetListOfKeys()->Print();
   cout<<"------------------------------end---------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES

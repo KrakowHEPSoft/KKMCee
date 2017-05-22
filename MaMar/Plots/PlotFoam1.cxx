@@ -30,10 +30,14 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-TFile DiskFileA("../workAFB/rmain.root");
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../workAFB/rmain.root");
+TFile DiskFileA("../workAFB/rmain_95GeV.root");
+//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 // current
-TFile DiskFileF("../workFOAM/rmain.root");
+//TFile DiskFileF("../workFOKK/histo.root");
+TFile DiskFileF("../workFOKK/histo_95GeV_241M.root");
+//
+//TFile DiskFileF("../workFOAM/rmain.root");
 //TFile DiskFileF("../workFOAM/rmain_95GeV_64M.root");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
@@ -107,7 +111,6 @@ void ReMakeMChisto(){
   Htot_xmax_Ceex2->SetName("Htot_xmax_Ceex2");
   Hafb_xmax_Ceex2->SetName("Hafb_xmax_Ceex2");
 
-
   // sigma(vmax) and AFB(vmax) from scattergram vmax<0.2
   nbMax=0;   // <--- CosThetaMax = 1.0
   TH1D                 *Htot2_xmax_Ceex2n, *Hafb2_xmax_Ceex2n;
@@ -174,9 +177,11 @@ void ReMakeMChisto2(){
     cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
 
     TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-    // Wide range, vmax<1.
+    cout<<"ReMakeMChisto2 [1]"<<endl;
+   // Wide range, vmax<1.
     TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
     TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
+    cout<<"ReMakeMChisto2 [2]"<<endl;
     ///****************************************************************************************
     ///****************************************************************************************
     /// Distributions of v=vTrue with unlimited c=cos(theta)
@@ -673,7 +678,15 @@ int main(int argc, char **argv)
   DiskFileB.ls();
   DiskFileB.Write();
   DiskFileB.Close();
-
+  //cout<<"------------------------------A.ls----------------------------------"<<endl;
+  //DiskFileA.ls();
+  //cout<<"------------------------------F.ls----------------------------------"<<endl;
+  //DiskFileF.ls();
+  //cout<<"------------------------A.GetListOfKeys-----------------------------"<<endl;
+  //DiskFileA.GetListOfKeys()->Print();
+  //cout<<"------------------------F.GetListOfKeys-----------------------------"<<endl;
+  //DiskFileF.GetListOfKeys()->Print();
+  //cout<<"------------------------------end---------------------------------"<<endl;
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++

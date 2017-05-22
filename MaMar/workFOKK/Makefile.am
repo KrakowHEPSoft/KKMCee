@@ -16,7 +16,7 @@ start:  check_all
 	rm -f ./pro.output ./histo.root ./mcgen.root
 	cp ./$(DSET).input ./pro.input
 	$(ROOTEXEC)  -b -q -l ./Start.C
-	time ../${MAIN}
+	time ../${MAIN} &
 stop:
 	$(ROOTEXEC)  -b -q -l ../../MCdev/farming/Stop.C
 cont:

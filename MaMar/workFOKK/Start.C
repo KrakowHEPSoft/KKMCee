@@ -17,8 +17,8 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 ///   Create new instance of Semaphre object
 ///   and fill it with the MC run general parameters
 TString semaf   = "START";
-double nevtot   = 1e6;
-double nevgrp   = 2e5; // 200k
+double nevtot   = 1e10;
+double nevgrp   = 5e5; // 200k
 ///------------------------------------------------------------------
 SemFile.cd();
 TSemaf *Semafor = new TSemaf(semaf, nevtot, nevgrp);
