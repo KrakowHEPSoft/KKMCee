@@ -1,6 +1,6 @@
 {
 gROOT->Reset();
-gSystem->Load("../../lib/libMCdev.so");
+gSystem->Load("../../MCdev/.libs/libMCdev.so");
 //_________________________________________________________________
 TFile SemFile("./semaf.root","UPDATE","Semafor");
 SemFile.cd();
