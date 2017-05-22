@@ -30,8 +30,8 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-//TFile DiskFileA("../workAFB/rmain.root");
-TFile DiskFileA("../workAFB/rmain_95GeV.root");
+TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workAFB/rmain_95GeV.root");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 // current
 //TFile DiskFileF("../workFOKK/histo.root");
