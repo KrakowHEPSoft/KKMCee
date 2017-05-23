@@ -3,7 +3,7 @@
 cout<<"%%%%%%%%%%%%%%%%%%%%%%%% farm-querry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
 gROOT->Reset();
-gSystem.Load("../../lib/libMCdev.so");
+gSystem->Load("../../MCdev/.libs/libMCdev.so");
 
 TString Dir1=gSystem.WorkingDirectory();
 cout<<Dir1<<endl;

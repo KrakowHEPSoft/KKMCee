@@ -9,8 +9,7 @@
 int SubmFarmQ(TString qsubCMD = "qsub", TString queue = "1h", int nfarm = 6)
 {
 gROOT->Reset();
-//gSystem->Load("../../lib/libTemplate.so");
-gSystem->Load("../../lib/libMCdev.so");
+gSystem->Load("../../MCdev/.libs/libMCdev.so");
 ///_________________________________________________________________
 TString Dir1=gSystem->WorkingDirectory();
 cout<<" working directiry: " << Dir1<<endl;

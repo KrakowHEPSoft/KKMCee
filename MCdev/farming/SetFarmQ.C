@@ -7,8 +7,7 @@ int SetFarmQ(TString dname = "WORK", int nfarm = 6)
 ///_________________________________________________________________
   cout<<"%%% ================== SetFarm ================== %%%%"<<endl;
   gROOT->Reset();
-//  gSystem->Load("../../lib/libTemplate.so");
-gSystem->Load("../../lib/libMCdev.so");
+  gSystem->Load("../../MCdev/.libs/libMCdev.so");
   TString Dir1=gSystem->WorkingDirectory();
   cout<<"%%% working directory= " <<Dir1<<endl;
 //   cout<<"%%% working directory= " <<Dir1<<endl;
@@ -58,6 +57,7 @@ gSystem->Load("../../lib/libMCdev.so");
          OutFile.close();
          gSystem->Exec("chmod 755 ./*.cmd.*");
 ///------- COPY MCGEN.ROOT AND RESET RN. SEED ---------------
+         gSystem->Exec("cp ../../pro.input  ./pro.input");
          gSystem->Exec("cp ../../histo.root ./histo.root");
          gSystem->Exec("cp ../../semaf.root ./semaf.root");
          gSystem->Exec("cp ../../mcgen.root ./mcgen.root");
