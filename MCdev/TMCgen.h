@@ -34,7 +34,7 @@ class TMCgen   : public TFOAM_INTEGRAND {
   /// Engines and services
   TRandom  *f_RNgen;            //  External RN event generator
   TFOAM    *f_FoamI;            //  Foam object for generating Initial density
-  TH1D     *f_TMCgen_NORMA;     // special histo keeping overall normalization
+  TH1D     *f_TMCgen_NORMA;     //! special histo keeping overall normalization
    /// data members
  public:
   int       f_IsInitialized;    //  prevents repeating initialization

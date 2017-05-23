@@ -49,7 +49,6 @@ private:
 /// Methods
   virtual void Initialize(ofstream*, TFile*, TFile*);
   virtual void Production(double&);
-  virtual void FileDump();
   virtual void Finalize();
   TH1D *TH1D_UP(const char*, const char*, int, double, double);
   TH2D *TH2D_UP(const char*, const char*, int, double, double, int, double, double);

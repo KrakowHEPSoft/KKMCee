@@ -159,18 +159,6 @@ void TRobol::Production(double &iEvent)
 }///Production
 
 //______________________________________________________________________________
-void TRobol::FileDump()
-{
-  f_HstFile->cd();
-  f_HstFile->Write("",TObject::kOverwrite);       // All histograms
-  f_HstFile->Save();                              // may be helps??
-  f_HstFile->Flush();                             // may be helps??
-  f_GenFile->cd();
-  f_RNgen->Write("RN_gen",TObject::kOverwrite);  // status of r.n. generator
-  f_GenFile->Flush();
-}///FileDump
-
-//______________________________________________________________________________
 void TRobol::Finalize()
 {
   //////////////////////////////////////////////////////////////
