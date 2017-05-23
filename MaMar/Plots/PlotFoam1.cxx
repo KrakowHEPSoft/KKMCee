@@ -34,8 +34,8 @@ using namespace std;
 TFile DiskFileA("../workAFB/rmain_95GeV.root");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 // current
-//TFile DiskFileF("../workFOKK/histo.root");
-TFile DiskFileF("../workFOKK/histo_95GeV_241M.root");
+TFile DiskFileF("../workFOKK/histo.root");
+//TFile DiskFileF("../workFOKK/histo_95GeV_241M.root");
 //
 //TFile DiskFileF("../workFOAM/rmain.root");
 //TFile DiskFileF("../workFOAM/rmain_95GeV_64M.root");
@@ -684,8 +684,8 @@ int main(int argc, char **argv)
   //DiskFileF.ls();
   //cout<<"------------------------A.GetListOfKeys-----------------------------"<<endl;
   //DiskFileA.GetListOfKeys()->Print();
-  //cout<<"------------------------F.GetListOfKeys-----------------------------"<<endl;
-  //DiskFileF.GetListOfKeys()->Print();
+  cout<<"------------------------F.GetListOfKeys-----------------------------"<<endl;
+  DiskFileF.GetListOfKeys()->Print();
   //cout<<"------------------------------end---------------------------------"<<endl;
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();

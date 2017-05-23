@@ -20,29 +20,32 @@ using namespace std;
 #include "TRobol.h"
 #include "TSystem.h"
 
-
+TFile HistoFile("histo.root","UPDATE","histograms");
+TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
   gSystem->Load("../.libs/libKKfm.so");
-  TFile *HistoFile;    // ROOT objects, histograms etc.
-  TFile *MCgenFile;    // Monte Carlo generator objects NEVER CLOSE!
+  char chcyc[100];          // Cycle text variable
+  Text_t *Tcycle;           // Cycle text variable
+  //TFile *HistoFile;    // ROOT objects, histograms etc.
+  //TFile *MCgenFile;    // Monte Carlo generator objects NEVER CLOSE!
   TFile *SemafFile;    // Semaphore and loop params
-  HistoFile =TFile::Open("histo.root","UPDATE","Histograms");
-  MCgenFile =TFile::Open("mcgen.root","UPDATE","Generators");
+  //HistoFile =TFile::Open("histo.root","UPDATE","Histograms");
+  //MCgenFile =TFile::Open("mcgen.root","UPDATE","Generators");
   SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
   ofstream   OutFile("pro.output",ios::out);  // Logfile output
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  |  MainPr   Entering | "<<endl<<flush;
+  cout    << "  | MainFOAM  Entering | "<<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  |  MainPr   Entering | "<<endl<<flush;
+  OutFile << "  | MainFOAM  Entering | "<<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
   double NevTot =2e14; // Total (limit) of events, redefined below
   double NGroup =2e5;  // no. of events in the group, TO BE TUNED
-  double iLoop;        // external loop event counter
-  double iGroup;       // internal loop event counter
+  long   iLoop;        // external loop event counter
+  long   iGroup;       // internal loop event counter
   double iEvent = 0;   // serial number of event in the MC generation
   //////////////////////////////////////////////////////////////////////////
   TString Status = "START";   // to be overwitten
@@ -63,16 +66,20 @@ int main()
   //--------------------------------------------------------------------------
   if( Status == "STOP") cout<<"MainPr: +++Warning+++ Status=STOP in semaphore"<<endl;
   //////////////////////////////////////////////////////////////////////////
-  TRobol *RoboT =(TRobol*)MCgenFile->Get("RoboT");   /// read analysis object
+  TRobol *RoboT =(TRobol*)MCgenFile.Get("RoboT");   /// read analysis object
   RoboT->Initialize(
         &OutFile,   /// Central log-file for messages
-        MCgenFile,  /// ROOT disk file for CRNG and MC gen.
-        HistoFile); /// ROOT disk file for histograms
-  /// immediate dump of results of initialization into the disk
-  MCgenFile->Write("",TObject::kOverwrite,0);
-  MCgenFile->Flush();
+        &MCgenFile,  /// ROOT disk file for CRNG and MC gen.
+        &HistoFile); /// ROOT disk file for histograms
+  /// immediate dump of results of initialization into the disk ????
+  //MCgenFile->cd();
+  //MCgenFile->Write();  //!!!
+  //HistoFile.cd();
+  //HistoFile.Write();  //!!!
+  //MCgenFile->Write("",TObject::kOverwrite,0);
+  //MCgenFile->Flush();
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
-  cout<< "|| MainPr:  to be generated "<<NevTot<< " events  "<<endl;
+  cout<< "|| MainFOAM: to be generated "<<NevTot<< " events "<<endl;
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
   ///***********************************************************************
   ///          MAIN LOOP OVER MONTE CARLO EVENTS
@@ -91,11 +98,26 @@ int main()
       OutFile <<"iEvent = "<<iEvent<<endl<<flush;
       ///////////////////////////////////////////////////////////////
       // Disk Write for all histos and r.n. generator
-      RoboT->FileDump();
+      //// RoboT->FileDump();
+      sprintf(chcyc,"*;%i",iLoop); Tcycle = chcyc;
+      //cout<<"Main iLoop, Tcycle = "<< iLoop <<"|||"<< Tcycle <<"|||"<<endl;
+      //
+      HistoFile.cd();
+      HistoFile.Write();  //!!!
+      HistoFile.Delete(Tcycle);
+      //
+      //HistoFile->Write("",TObject::kOverwrite);       // All histograms
+      //HistoFile->Save();                              // may be helps??
+      //HistoFile->Flush();                             // may be helps??
+      //
+      MCgenFile.cd();
+      MCgenFile.Write();  //!!!
+      MCgenFile.Delete(Tcycle);
+      //MCgenFile->Write("RN_gen",TObject::kOverwrite);  // status of r.n. generator
+      //MCgenFile->Flush();
       ///////////////////////////////////////////////////////////////
       // Checks semaphore for each group of NGroup events
       SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
-      //SemafFile->ReOpen("UPDATE"); // Bug in ROOT?
       Semafor = (TSemaf*)SemafFile->Get("Semafor");  // read semafor from the disk
       Status   = Semafor->m_flag;                   // get flag
       Semafor->m_nevent = iEvent;                   // record no. of events
@@ -122,35 +144,38 @@ int main()
   RoboT->Finalize();
   //////////////////////////////////////////////////////////////////////
   //  LAST WRITEs
-  MCgenFile->cd();
+  MCgenFile.cd();
   RoboT->Write("RoboT",TObject::kOverwrite);  // only for tests
-  RoboT->FileDump();
+  //RoboT->FileDump()
+  //MCgenFile->Write();
+  //HistoFile.Write();
   //////////////////////////////////////////////////////////////////////
   //      Some TESTS and control printouts
   cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
-  HistoFile->ls();
-  MCgenFile->Write();
+  HistoFile.ls();
   cout<<"------------------------------HistoFile.Map---------------------------------"<<endl;
-  HistoFile->Map();
-  cout<<"-------------------------HistoFile.ShowStreamerInfo-------------------------"<<endl;
-  MCgenFile->ShowStreamerInfo();
+  HistoFile.Map();
+  //cout<<"-------------------------MCgenFile.ShowStreamerInfo-------------------------"<<endl;
+  //MCgenFile.ShowStreamerInfo();
   cout<<"------------------------HistoFile.GetListOfKeys-----------------------------"<<endl;
-  HistoFile->GetListOfKeys()->Print();
+  HistoFile.GetListOfKeys()->Print();
   cout<<"------------------------MCgenFile.GetListOfKeys-----------------------------"<<endl;
-  MCgenFile->GetListOfKeys()->Print();
+  MCgenFile.GetListOfKeys()->Print();
+  cout<<"------------------------SemafFile.GetListOfKeys-----------------------------"<<endl;
+  SemafFile->GetListOfKeys()->Print();
   cout<<"------------------------------end---------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES
-  HistoFile->Close();
-  MCgenFile->Close();
+  HistoFile.Close();
+  MCgenFile.Close();
   OutFile.close();
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  |  MainPr   Ended    | "<<endl<<flush;
+  cout    << "  |  MainFOAM  Ended   | "<<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  |  MainPr   Ended    | "<<endl<<flush;
+  OutFile << "  |  MainFOAM  Ended   | "<<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
   return 0;
   }

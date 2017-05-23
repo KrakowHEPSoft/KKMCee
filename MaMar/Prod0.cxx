@@ -86,6 +86,7 @@ main()
       sprintf(chcyc,"*;%i",iLoop);
       Tcycle = chcyc;
       DiskFile.Delete(Tcycle);
+      cout<<"Main iLoop, chcyc, Tcycle = "<< iLoop <<" |||"<< chcyc <<"|||"<< Tcycle <<endl;
       //
       MainSemaphore.ReadStatus(Semaph1);
       if( iEvent  >= NevTot )      break;  // production stoped
@@ -102,6 +103,7 @@ main()
   DiskFile.Delete(Tcycle);
   //
   DiskFile.ls();
+  DiskFile.GetListOfKeys()->Print();
   DiskFile.Close();
   
 Finis:
