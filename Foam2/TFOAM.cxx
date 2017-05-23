@@ -1098,10 +1098,11 @@ void TFOAM::Initialize(TRandom *PseRan, TFOAM_INTEGRAND *fun ){
   }
   //====== Initialize list of histograms
 #ifdef ROOT_DEF
-  m_HistWt  = new TH1D("HistWt","Histogram of MC weight",100,0.0, 1.5*m_MaxWtRej); // MC weight
-  m_HistEdg = new TObjArray(m_nProj);           // Initialize list of histograms
   char hname[100];
   char htitle[100];
+  sprintf(hname,"%s_HistEdge_",m_Name);
+  m_HistWt  = new TH1D(hname,"Histogram of MC weight",100,0.0, 1.5*m_MaxWtRej); // MC weight
+  m_HistEdg = new TObjArray(m_nProj);           // Initialize list of histograms
   for(int i=0;i<m_nProj;i++){
     sprintf(hname,"%s_HistEdge_%1i",m_Name,i);
     sprintf(htitle,"Edge Histogram No. %1i",i);
