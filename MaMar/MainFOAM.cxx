@@ -27,11 +27,7 @@ int main()
   gSystem->Load("../.libs/libKKfm.so");
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable
-  //TFile *HistoFile;    // ROOT objects, histograms etc.
-  //TFile *MCgenFile;    // Monte Carlo generator objects NEVER CLOSE!
   TFile *SemafFile;    // Semaphore and loop params
-  //HistoFile =TFile::Open("histo.root","UPDATE","Histograms");
-  //MCgenFile =TFile::Open("mcgen.root","UPDATE","Generators");
   SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
   ofstream   OutFile("pro.output",ios::out);  // Logfile output
   cout    <<endl<<flush;
@@ -71,13 +67,6 @@ int main()
         &OutFile,   /// Central log-file for messages
         &MCgenFile,  /// ROOT disk file for CRNG and MC gen.
         &HistoFile); /// ROOT disk file for histograms
-  /// immediate dump of results of initialization into the disk ????
-  //MCgenFile->cd();
-  //MCgenFile->Write();  //!!!
-  //HistoFile.cd();
-  //HistoFile.Write();  //!!!
-  //MCgenFile->Write("",TObject::kOverwrite,0);
-  //MCgenFile->Flush();
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
   cout<< "|| MainFOAM: to be generated "<<NevTot<< " events "<<endl;
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
@@ -98,23 +87,16 @@ int main()
       OutFile <<"iEvent = "<<iEvent<<endl<<flush;
       ///////////////////////////////////////////////////////////////
       // Disk Write for all histos and r.n. generator
-      //// RoboT->FileDump();
       sprintf(chcyc,"*;%i",iLoop); Tcycle = chcyc;
       //cout<<"Main iLoop, Tcycle = "<< iLoop <<"|||"<< Tcycle <<"|||"<<endl;
-      //
       HistoFile.cd();
       HistoFile.Write();  //!!!
       HistoFile.Delete(Tcycle);
-      //
-      //HistoFile->Write("",TObject::kOverwrite);       // All histograms
-      //HistoFile->Save();                              // may be helps??
-      //HistoFile->Flush();                             // may be helps??
+      HistoFile.Flush();
       //
       MCgenFile.cd();
       MCgenFile.Write();  //!!!
       MCgenFile.Delete(Tcycle);
-      //MCgenFile->Write("RN_gen",TObject::kOverwrite);  // status of r.n. generator
-      //MCgenFile->Flush();
       ///////////////////////////////////////////////////////////////
       // Checks semaphore for each group of NGroup events
       SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
@@ -146,9 +128,6 @@ int main()
   //  LAST WRITEs
   MCgenFile.cd();
   RoboT->Write("RoboT",TObject::kOverwrite);  // only for tests
-  //RoboT->FileDump()
-  //MCgenFile->Write();
-  //HistoFile.Write();
   //////////////////////////////////////////////////////////////////////
   //      Some TESTS and control printouts
   cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
