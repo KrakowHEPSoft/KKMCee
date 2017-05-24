@@ -58,7 +58,7 @@ sfarm24:	farm-clean check_all
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 ssubmit6:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
-sssubmitall:
+ssubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
 ########################################################################
 farm-gtar:
