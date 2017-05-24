@@ -132,17 +132,17 @@ int main()
   //      Some TESTS and control printouts
   cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
   HistoFile.ls();
-  cout<<"------------------------------HistoFile.Map---------------------------------"<<endl;
-  HistoFile.Map();
+  //cout<<"------------------------------HistoFile.Map---------------------------------"<<endl;
+  //HistoFile.Map();
   //cout<<"-------------------------MCgenFile.ShowStreamerInfo-------------------------"<<endl;
   //MCgenFile.ShowStreamerInfo();
   cout<<"------------------------HistoFile.GetListOfKeys-----------------------------"<<endl;
   HistoFile.GetListOfKeys()->Print();
   cout<<"------------------------MCgenFile.GetListOfKeys-----------------------------"<<endl;
   MCgenFile.GetListOfKeys()->Print();
-  cout<<"------------------------SemafFile.GetListOfKeys-----------------------------"<<endl;
-  SemafFile->GetListOfKeys()->Print();
-  cout<<"------------------------------end---------------------------------"<<endl;
+  cout<<"-------------------------------SemafFile.ls---------------------------------"<<endl;
+  SemafFile->ls();
+  cout<<"---------------------------------end---------------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES
   HistoFile.Close();
