@@ -32,9 +32,10 @@ Running instructions:
      make test0-stop
      make Plot1
      
-************************ (B) ************************
-Analysis chain introduced in febr. 2014, (febr 2015), 
-for ee->nu+nu+gamma process (invisible Z width at FCCee):
+************************ (B) **********************************
+Analysis chain of febr. 2014, (febr 2015), 
+for ee->nu+nu+gamma process (invisible Z width), Paris 2014,
+http://nz42.ifj.edu.pl/_media/user/jadach/main/talks/fcceeparis14.pdf
 -- main program                ./ProdZinv.cxx
 -- histogramming               ./ROBOL2.cxx
 -- work directory              ./workZinv
@@ -45,12 +46,37 @@ Running instructions:
    make workZinv-stop
    make Plot2
    
-************************ (C) ************************
-!!!! Obsolete chain in the present development branch KKMCee
+ ************************ (C) **********************************
+ First analysis of the IFI contribution to AFB near Z
+ in ee->mumu process, presented at FCC Week 2016, Rome,
+ http://nz42.ifj.edu.pl/_media/user/jadach/main/talks/2016-rome-fccweek.pdf
+-- KKMC run  with main Prod0.cxx and
+   KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
+-- work directory: ./workAFB  
+-- analysis progs: ./Plots/Plot1 ./Plots/PlotAFB  ./Plots/PlotAFB2
+                    and more recent ./Plots/PlotIFI.cxx
+   
+ ************************ (D1) **********************************
+ New analysis "in progress" of the IFI contribution to AFB near Z
+ in ee->mumu process, started april 2017 using FOAM
+ Obsolete (!!!) branch to be kept for some time:
+ -- FOAM based MC, main prog.:  ProdFoam.cxx 
+    and KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
+ -- work directory: ./workFOAM
+ -- analysis: ./Plots/PlotFoam1.cxx, exploiting results of (C)
+ ************************ (D2) **********************************
+ Better new version, with possibility of runing on the farm:
+ -- FOAM based MC main prog.:  MainFOAM.cxx
+    and shared library of TMCgenFOAM.cxx TRobolFOAM.cxx
+ -- work directory: ./workFOKK
+ -- analysis: ./Plots/PlotFoam1.cxx, exploiting results of (C)
+ 
+   
+============================= (X) ================================
+!!!! Obsolete !!!! in KKMCee branch, mooved to KKMChh
 Analysis chain as in Jan. 2016 to examine effects 
 of switching on/off QED FSR in p p -> l+ l- (with PDFs).
 Overall normalization debuged using ./Plots/PlotFSR.cxx
-
 -- main program                ./ProdFSR.cxx
 -- histogramming               ./ROBOFSR.cxx
 -- work directory              ./workFSR
@@ -60,6 +86,8 @@ Running instructions:
    make workFSR-start
    make workFSR-stop
    make PlotFSR
+ 
+ 
  
  ****************************************************
  --- Miscelaneous ----

@@ -77,7 +77,7 @@ ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
 ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
 ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-ProdFoam_SOURCES =  KKMC.cxx KKfoam.cxx  RoboFoam.cxx ProdFoam.cxx Semaph.cxx
+ProdFoam_SOURCES =  ProdFoam.cxx KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
 ProdFoam_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 ProdFoam_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
