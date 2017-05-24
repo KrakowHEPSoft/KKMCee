@@ -2,7 +2,7 @@
 # Invokes all kind of scripts which setup (Start.C) and executes MAIN
 #    make start
 #    make stop
-# Sets up input files/scripts and runs on the PC-farm (batch)
+# Seting up input files/scripts and runing on the PC-farm (batch)
 #    make sfarm6
 #    make ssubmit6
 #    make q-sem
@@ -38,14 +38,6 @@ debug:  check_all
 qfarm6:	farm-clean check_all
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",6)' ;)
-	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-qfarm24:	farm-clean check_all
-	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
-	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",24)' ;)
-	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-qfarm55:	farm-clean check_all
-	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
-	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",55)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 qfarm40:	farm-clean check_all
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
