@@ -1,7 +1,14 @@
 #=======================================================================
-# Invokes all kind of scripts which setup (Start.C) and execute 
-# program MAIN interactively and/or on the PC-farm (batch)
-# Part edited by hand (Below part edited by Automake Manager od KDevelop)
+# Invokes all kind of scripts which setup (Start.C) and executes MAIN
+#    make start
+#    make stop
+# Sets up input files/scripts and runs on the PC-farm (batch)
+#    make sfarm6
+#    make ssubmit6
+#    make q-sem
+#    make q-nev
+#    make farm-stop
+#    make combine
 #=======================================================================
 MAIN=MainFOAM
 DSET=workFOKK
@@ -44,10 +51,23 @@ qfarm40:	farm-clean check_all
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",40)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-submit6:
+qsubmit6:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",6)' )
-qsubmitall:
+qqsubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",200)' )
+#########################################################################
+sfarm6:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",6)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+sfarm24:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",24)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+ssubmit6:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
+sssubmitall:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
 ########################################################################
 farm-gtar:
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
