@@ -30,10 +30,9 @@ using namespace std;
 //=============================================================================
 // archive
 TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
-//TFile DiskFileA("../test0/rmain.root_88GeV_100M"); // archive
+//TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 // current
-//TFile DiskFileA("../test0/rmain.root");
 //TFile DiskFileA("../workAFB/rmain.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
