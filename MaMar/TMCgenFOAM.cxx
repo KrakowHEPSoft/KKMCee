@@ -15,6 +15,13 @@ TMCgenFOAM::TMCgenFOAM():
   m_Foam3 = NULL;
 }
 
+///______________________________________________________________________________________
+TMCgenFOAM::~TMCgenFOAM()
+{
+  //!Explicit destructor
+  cout<< "----> TMCgenFOAM::TMCgenFOAM !!!! DESTRUCTOR !!!! "<<endl;
+}///destructor
+
 ///_____________________________________________________________
 TMCgenFOAM::TMCgenFOAM(const char* Name):
   TMCgen(Name)
@@ -55,13 +62,6 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
 
 cout<< "----> TMCgenFOAM::TMCgenFOAM USER Constructor "<<endl;
 }///
-
-///______________________________________________________________________________________
-TMCgenFOAM::~TMCgenFOAM()
-{
-  //!Explicit destructor
-  cout<< "----> TMCgenFOAM::TMCgenFOAM !!!! DESTRUCTOR !!!! "<<endl;
-}///destructor
 
 ///______________________________________________________________________________________
 void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)

@@ -74,6 +74,13 @@ TMCgenKKMC::TMCgenKKMC(const char* Name):
 }///TMCgenKKMC
 
 ///______________________________________________________________________________________
+TMCgenKKMC::~TMCgenKKMC()
+{
+  //!Explicit destructor
+  cout<< "----> TMCgenKKMC::TMCgenKKMC !!!! DESTRUCTOR !!!! "<<endl;
+}///destructor
+
+///______________________________________________________________________________________
 void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 {
   cout<< "----> TMCgenKKMC::Initialize, Entering "<<endl;

@@ -49,8 +49,6 @@ extern "C" double gps_makerhofoam_(const double&);
 
 class TMCgenFOAM :public TMCgen
 {
-/// member data
-  public:
 /// member functions
   public:
   TMCgenFOAM();                // explicit default constructor for streamer
