@@ -163,3 +163,9 @@ workFOKK-start: all
 workFOKK-stop:
 	(cd ./workFOKK; make stop)
 #-----------------------------------------------------------------------
+###   make workKKMC-start
+workKKMC-start: all
+	(cd ./workKKMC; make start)
+workFOKK-stop:
+	(cd ./workKKMC; make stop)
+##-----------------------------------------------------------------------
