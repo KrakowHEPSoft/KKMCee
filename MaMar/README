@@ -32,7 +32,7 @@ Running instructions:
      make test0-stop
      make Plot1
      
-************************ (B) **********************************
+************************ (B1) **********************************
 Analysis chain of febr. 2014, (febr 2015), 
 for ee->nu+nu+gamma process (invisible Z width), Paris 2014,
 http://nz42.ifj.edu.pl/_media/user/jadach/main/talks/fcceeparis14.pdf
@@ -55,7 +55,11 @@ Running instructions:
 -- work directory: ./workAFB  
 -- analysis progs: ./Plots/Plot1 ./Plots/PlotAFB  ./Plots/PlotAFB2
                     and more recent ./Plots/PlotIFI.cxx
-   
+ ************************ (C2) **********************************
+ MainKKMC+TMCgenKKMC+TRobolKKMC+workKKMC/Start.C chain
+ Analysis of the IFI contribution to AFB near Z in ee->mumu process
+ Version customized for running on PC-farm
+ 
  ************************ (D1) **********************************
  New analysis "in progress" of the IFI contribution to AFB near Z
  in ee->mumu process, started april 2017 using FOAM
@@ -64,7 +68,9 @@ Running instructions:
     and KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
  -- work directory: ./workFOAM
  -- analysis: ./Plots/PlotFoam1.cxx, exploiting results of (C)
+ 
  ************************ (D2) **********************************
+ MainFOAM+TMCgenFOAM+TRobolFOAM+workFOKK/Star.C chain
  Better new version, with possibility of runing on the farm:
  -- FOAM based MC main prog.:  MainFOAM.cxx
     and shared library of TMCgenFOAM.cxx TRobolFOAM.cxx
