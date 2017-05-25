@@ -2,33 +2,56 @@
 # Automake creates Makefile using all information defined below
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
-SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK Plots
+SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK workKKMC Plots
+#///////////////////////////////////////////////////////////////
+lib_LTLIBRARIES = libKKfm.la libKKmc.la
+CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
 #---------------------------------------------------------------
-#   ROOT Dictionary file definition
-dictC = KKfmDict.cxx
-dictH = KKfmDict.h
-nodist_libKKfm_la_SOURCES = $(dictC)
-noinst_HEADERS = LinkDef.h
-CLEANFILES = $(dictC) $(dictH)
-#   ROOT Directory generation:
-ROOTCINTHDRS= $(include_HEADERS) $(noinst_HEADERS)
-$(dictC) : $(ROOTCINTHDRS)
-	$(ROOTCINT) -f $(dictC) -c $(INCLUDES) $(ROOTCINTHDRS)
+#   ROOT Dictionary 1 file definition
+dict1C = KKfmDict.cxx
+dict1H = KKfmDict.h
+#  Header files:
+include_HEADERS1 = TMCgenFOAM.h TRobolFOAM.h
+noinst_HEADERS1 = LinkDef1.h
+#  ROOT Directory generation:
+ROOTCINTHDRS1= $(include_HEADERS1) $(noinst_HEADERS1)
+$(dict1C) : $(ROOTCINTHDRS1)
+	$(ROOTCINT) -f $(dict1C) -c $(INCLUDES) $(ROOTCINTHDRS1)
 #---------------------------------------------------------------
-#  Local library
-#Header files:
-include_HEADERS = TMCgenFOAM.h TRobolFOAM.h
-#Additional flags:
-lib_LTLIBRARIES = libKKfm.la
+#  Local library 1
+#  Additional flags:
+nodist_libKKfm_la_SOURCES = $(dict1C)
 libKKfm_la_SOURCES =  TMCgenFOAM.cxx TRobolFOAM.cxx
 libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
     $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
-# explicit target in ../
+#  explicit target in ../
 $(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
 	(cd $(top_builddir)/MCdev/; make)
-
 #---------------------------------------------------------------
+#///////////////////////////////////////////////////////////////
+#   ROOT Dictionary 2 file definition
+dict2C = KKmcDict.cxx
+dict2H = KKmcDict.h
+#  Header files:
+include_HEADERS2 = TMCgenKKMC.h TRobolKKMC.h TPartLund.h
+noinst_HEADERS2 = LinkDef2.h
+#  ROOT Directory generation:
+ROOTCINTHDRS2= $(include_HEADERS2) $(noinst_HEADERS2)
+$(dict2C) : $(ROOTCINTHDRS2)
+	$(ROOTCINT) -f $(dict2C) -c $(INCLUDES) $(ROOTCINTHDRS2)
+#---------------------------------------------------------------
+#  Local library 2
+#  Additional flags:
+nodist_libKKmc_la_SOURCES = $(dict2C)
+libKKmc_la_SOURCES =  TMCgenKKMC.cxx TRobolKKMC.cxx TPartLund.cxx
+libKKmc_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
+    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+libKKmc_la_LDFLAGS = -L$(ROOTLIBDIR)
+#  explicit target in ../
+$(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
+	(cd $(top_builddir)/MCdev/; make)
+##---------------------------------------------------------------
 
 ########### KK2f MC libraries #############
 $(top_builddir)/KK2f/libKK2f.a:
@@ -51,10 +74,9 @@ KK2f_Libs= \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a
-
-#---------------------------------------------------------------
-# Local executables
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM
+#/////////////////////////////////////////////////////////////////////////
+# Local executables with ROOT persistency
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC
 AM_FFLAGS = @MY_F77_FLAGS@
 
 MainFOAM_SOURCES = MainFOAM.cxx 
@@ -65,6 +87,16 @@ MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
     			 $(KK2f_Libs)
 MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
 
+MainKKMC_SOURCES = MainKKMC.cxx 
+MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
+				 $(top_builddir)/Foam2/.libs/libFOAM.a  \
+    			 $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
+    			 $(top_builddir)/MaMar/libKKmc.la \
+    			 $(KK2f_Libs)
+MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
+
+#/////////////////////////////////////////////////////////////////////////
+# Local executables witout ROOT persistency
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
 Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Prod0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
