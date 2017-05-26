@@ -19,18 +19,21 @@ class TRobolKKMC : public TRobol
 {
 ///--- data members
  public:
-  long   m_NevGen;           // event serial number
-  long   m_count1;           // auxiliary event counter (debug)
-  double m_xpar[10001];      // complete input of KKMC run
+  long   m_NevGen;             // event serial number
+  long   m_count1;             // auxiliary event counter (debug)
+  double m_xpar[10001];        // complete input of KKMC run
 //  KKMC   *KKMC_generator;    // goes to base class
   // =============== local mirror of KKMC event =======================
-  TLorentzVector m_pbea1,m_pbea2;    // initial beams
-  TLorentzVector m_pfer1,m_pfer2;    // final fermions
-  long           m_Nphot;            // photon multiplicity
-  TLorentzVector m_phot[100];        // photon 4-momenta
-  long           m_Npart;            // no of particles in Lund/Pythia common
-  TPartLund m_Event[4000];            // content of /PYJETS/
-  TLorentzVector m_pMu1, m_pMu2;     // muon 4-momenta
+  TLorentzVector m_pbea1;      //! initial beams
+  TLorentzVector m_pbea2;      //! initial beams
+  TLorentzVector m_pfer1;      //! final fermions
+  TLorentzVector m_pfer2;      //! final fermions
+  long           m_Nphot;      //! photon multiplicity
+  TLorentzVector m_phot[100];  //! photon 4-momenta
+  long           m_Npart;      //! no of particles in Lund/Pythia common
+  TPartLund m_Event[4000];     //! content of /PYJETS/
+  TLorentzVector m_pMu1;       //! muon 4-momenta
+  TLorentzVector m_pMu2;       //! muon 4-momenta
   // ============== Histograms follow =================================
   //TH1D   *HST_KKMC_NORMA;    // goes to base class
   //
