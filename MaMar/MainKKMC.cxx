@@ -24,7 +24,7 @@ TFile HistoFile("histo.root","UPDATE","histograms");
 TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
-  gSystem->Load("../.libs/libKKfm.so");
+  gSystem->Load("../.libs/libKKmc.so");
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable
   TFile *SemafFile;    // Semaphore and loop params
@@ -32,11 +32,11 @@ int main()
   ofstream   OutFile("pro.output",ios::out);  // Logfile output
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  | MainFOAM  Entering | "<<endl<<flush;
+  cout    << "  | MainKKMC  Entering | "<<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  | MainFOAM  Entering | "<<endl<<flush;
+  OutFile << "  | MainKKMC  Entering | "<<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
   double NevTot =2e14; // Total (limit) of events, redefined below
   double NGroup =2e5;  // no. of events in the group, TO BE TUNED
@@ -68,7 +68,7 @@ int main()
         &MCgenFile,  /// ROOT disk file for CRNG and MC gen.
         &HistoFile); /// ROOT disk file for histograms
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
-  cout<< "|| MainFOAM: to be generated "<<NevTot<< " events "<<endl;
+  cout<< "|| MainKKMC: to be generated "<<NevTot<< " events "<<endl;
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
   ///***********************************************************************
   ///          MAIN LOOP OVER MONTE CARLO EVENTS
@@ -150,11 +150,11 @@ int main()
   OutFile.close();
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  |  MainFOAM  Ended   | "<<endl<<flush;
+  cout    << "  |  MainKKMC  Ended   | "<<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  |  MainFOAM  Ended   | "<<endl<<flush;
+  OutFile << "  |  MainKKMC  Ended   | "<<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
   return 0;
   }

@@ -28,10 +28,11 @@ class TRobolKKMC : public TRobol
   TLorentzVector m_pbea2;      //! initial beams
   TLorentzVector m_pfer1;      //! final fermions
   TLorentzVector m_pfer2;      //! final fermions
-  long           m_Nphot;      //! photon multiplicity
+//  int           m_Nphot;      //! photon multiplicity
+  int            m_Nphot;      //! photon multiplicity
   TLorentzVector m_phot[100];  //! photon 4-momenta
-  long           m_Npart;      //! no of particles in Lund/Pythia common
-  TPartLund m_Event[4000];     //! content of /PYJETS/
+  int           m_Npart;      //! no of particles in Lund/Pythia common
+  //TPartLund m_Event[4000];     //! content of /PYJETS/
   TLorentzVector m_pMu1;       //! muon 4-momenta
   TLorentzVector m_pMu2;       //! muon 4-momenta
   // ============== Histograms follow =================================
@@ -93,18 +94,18 @@ class TRobolKKMC : public TRobol
   }
  public:
 // Methods
-  void Initialize(long &NevTot);
-  void Production(long &iEvent);
+  void Initialize(int &NevTot);
+  void Production(int &iEvent);
   void KKMC_NORMA();
 */
 //////////////////////////////////////////////
 // Other user methods
   void Finalize();
-  void PartImport();
-  long PartCount(  const long);
-  long PartFindAny(const long);
-  long PartFindStable(const long);
-  void PyPrint(const int );
+//  void PartImport();
+//  int PartCount(  const int);
+//  int PartFindAny(const int);
+//  int PartFindStable(const int);
+//  void PyPrint(const int );
   void MomPrint( TLorentzVector&);
 ////////////////////////////////////////////////////////////////////////////
                       ClassDef(TRobolKKMC,1)

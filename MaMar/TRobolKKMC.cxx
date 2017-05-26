@@ -99,6 +99,14 @@ void TRobolKKMC::Initialize(
 ///////////////////////////////////////////////////////////////////////////////
 void TRobolKKMC::Hbooker()
 {
+  ///
+  cout<< "****> TRobolFOAM::Hbooker: histogram booking STARTS"<<endl;
+  BXOPE(*f_Out);
+  BXTXT(*f_Out,"========================================");
+  BXTXT(*f_Out,"======    TRobol::Hbooker    ===========");
+  BXTXT(*f_Out,"========================================");
+  BXCLO(*f_Out);
+  f_HstFile->cd();
   //  ************* user histograms  *************
   double CMSene = m_xpar[1];
   int nbin=1000;
@@ -204,12 +212,14 @@ void TRobolKKMC::Production(double &iEvent)
   // ****************************************************************
   // ************ Generate event and import it here  ****************
   m_NevGen++;
-  // KKMC_generator->Make(); // done in base class
+  TMCgenKKMC *KKMC_generator = (TMCgenKKMC*)f_MCgen;
+  KKMC_generator->Generate(); // done in user class
   /// *************************************************
   /// KKMC generation in base class
-  TMCgenKKMC *KKMC_generator = (TMCgenKKMC*)f_MCgen;
   /// *************************************************
+  /*[[[
   PartImport(); // Import Pythia common block content into local LuPart matrix
+  */
   // IMPORT KKMC event and weights
   double WtMain,WtCrude;
   KKMC_generator->GetWt(WtMain,WtCrude);
@@ -225,10 +235,12 @@ void TRobolKKMC::Production(double &iEvent)
   if(iEvent<10){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
-    cout<<" VSumPhot= "; MomPrint( VSumPhot );
+    cout<<"  WtMain= "<< WtMain  << "  WtCrude= "<< WtCrude<<endl;
+    cout<<" m_Nphot= "<< m_Nphot<<endl;
+    cout<<"VSumPhot= "; MomPrint( VSumPhot );
     KKMC_generator->Print1();
-    KKMC_generator->PyList(2);
-    PyPrint(1);
+    //KKMC_generator->PyList(2);
+    //PyPrint(1);
   }
   // ****************************************************************
   double s  =(m_pbea1+m_pbea2)*(m_pbea1+m_pbea2);
@@ -253,6 +265,8 @@ void TRobolKKMC::Production(double &iEvent)
       nph_ene++;
     }
   }
+
+  /*[[[[
   //********************************************************************
   // Muon trigger, it is not realy necessary if MC ir run for mu only
   //********************************************************************
@@ -278,6 +292,15 @@ void TRobolKKMC::Production(double &iEvent)
   double CosThe2 = m_pMu2.CosTheta();
   double Theta2  = m_pMu2.Theta();
   double E2      = m_pMu2.Energy();
+  */
+
+  double CosThe1 = m_pfer1.CosTheta();
+  double Theta1  = m_pfer1.Theta();
+  double E1      = m_pfer1.Energy();
+  double CosThe2 = m_pfer2.CosTheta();
+  double Theta2  = m_pfer2.Theta();
+  double E2      = m_pfer2.Energy();
+
   double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph;
 //--------------------------------------------------------------------
 //* Various definitions of Theta and s-propagator
@@ -421,6 +444,8 @@ void TRobolKKMC::Finalize()
 //                             UTILITIES                                     //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+/*[[[
 ///////////////////////////////////////////////////////////////////////////////
 void TRobolKKMC::PartImport(){
 /////////////////////////////////////////////////////////////////////////
@@ -436,6 +461,9 @@ void TRobolKKMC::PartImport(){
     //m_Event[j].Print(1);
   }
 }
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 long TRobolKKMC::PartCount(const long flav){
   long jCount=0;
@@ -445,6 +473,8 @@ long TRobolKKMC::PartCount(const long flav){
     }
   return jCount;
 }
+
+
 ///////////////////////////////////////////////////////////////////////////////
 long TRobolKKMC::PartFindAny(const long flav){
 // fortran numbering!!!
@@ -482,6 +512,8 @@ void TRobolKKMC::PyPrint(const int mode){
   cout<<"                  Total 4-momentum --> ";
   MomPrint(Sum);
 }
+*/
+
 void TRobolKKMC::MomPrint( TLorentzVector &Vect){
 //////////////////////////////////////////////////////////////
 // printing entire four-vector in one line (with endline)

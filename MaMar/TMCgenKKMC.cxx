@@ -65,7 +65,7 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   const int jmax =m_jmax;
   ReaData("../../.KK2f_defaults", jmax, m_xpar);  // numbering as in input!!!
   ReaData("./pro.input",         -jmax, m_xpar);  // jmax<0 means no-zeroing
-  double ypar[jmax];
+  //double ypar[jmax];
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
   //
   double CMSene  = m_xpar[ 1];
@@ -76,16 +76,16 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
   //=============================================================
   //   opening disk fime for fortran part of code
-  m_out = ypar[3];
+  m_out = m_ypar[3];
   char *output_file = "./pro.output";
-  long sl2 = strlen(output_file);
+  int sl2 = strlen(output_file);
   kk2f_fort_open_(m_out,output_file,sl2);
 
   //*******************//
   kk2f_initialize_(m_ypar);
   //*******************//
 
-  long NevPrim;
+  int NevPrim;
   kk2f_getxsnormpb_( m_XsNormPb, m_XsErroPb);
   cout<<" TMCgen::Initialize: m_XsNormPb="<<m_XsNormPb<<endl;
   cout<<" TMCgen::Initialize: m_XsErroPb="<<m_XsErroPb<<endl;
@@ -136,17 +136,18 @@ void TMCgenKKMC::Finalize()
   kk2f_fort_close_(m_out);
 }//Finalize
 
+/*[[[[
 ///////////////////////////////////////////////////////////////////////////////
-long TMCgenKKMC::GetPyNpart()
+int TMCgenKKMC::GetPyNpart()
 {
 // provides no. of entries in Lund/Pythia common block
-  long npart = cb_PYjets.n;
+  int npart = cb_PYjets.n;
   //cout<<"KKMC::Make: npart ="<<npart<<endl;
   return npart;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::GetPyParticle( const long j, TPartLund &Event)
+void TMCgenKKMC::GetPyParticle( const int j, TPartLund &Event)
 {
 // Export one particle from /PYJETS/
   Event= TPartLund(j+1,
@@ -159,6 +160,7 @@ void TMCgenKKMC::GetPyParticle( const long j, TPartLund &Event)
   //cout<<" here we are!!! j= "<<j<<endl;
   //Event.Print(1);
 }
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 void TMCgenKKMC::Print1()
@@ -167,8 +169,9 @@ void TMCgenKKMC::Print1()
   kk2f_print1_(m_out);
 }
 
+/*
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::PyList(long lev)
+void TMCgenKKMC::PyList(int lev)
 {
 // print event using pythia
   PyGive("MSTU(11)=16");
@@ -176,11 +179,12 @@ void TMCgenKKMC::PyList(long lev)
   PyGive("MSTU(11)=6");
   pylist_(lev);
 }
+*/
 ///////////////////////////////////////////////////////////////////////////////
 void TMCgenKKMC::PyGive(char *directive)
 {
 // set pythia directive
-  long s1;
+  int s1;
   s1 = strlen(directive);
   pygive_(directive, s1);
 }
@@ -231,7 +235,7 @@ void TMCgenKKMC::GetXsecMC( double &xSecPb,  double &xErrPb)
   kk2f_getxsecmc_(xSecPb, xErrPb);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::GetPrimaNorma(double &XsPrim, long &NevPrim)
+void TMCgenKKMC::GetPrimaNorma(double &XsPrim, int &NevPrim)
 {
 // get normalization elements NANOBARNS
   int NevPrim1;
@@ -239,30 +243,31 @@ void TMCgenKKMC::GetPrimaNorma(double &XsPrim, long &NevPrim)
   NevPrim=NevPrim1;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::GetPhoton1(const long iphot, TLorentzVector &phot)
+void TMCgenKKMC::GetPhoton1(const int iphot, TLorentzVector &phot)
 {
 // get one photon 4-vector from KKMC
   double p1[4];
-  long iphot1=iphot;
+  int iphot1=iphot;
   kk2f_getphoton1_(iphot1, p1);
   phot.SetPxPyPzE(p1[0],p1[1],p1[2],p1[3]);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::GetNphot(long &Nphot)
+//void TMCgenKKMC::GetNphot(int &Nphot)
+void TMCgenKKMC::GetNphot( int &Nphot)
 {
 // get photon multiplicity from KKMC
   kk2f_getnphot_( Nphot);
 }
 ///////////////////////////////////////////////////////////////////////////////
-double TMCgenKKMC::GetWtAlter(const long id)
+double TMCgenKKMC::GetWtAlter(const int id)
 {
   double WtAlter;
-  long id1 =id;
+  int id1 =id;
   kk2f_getwtalter_( id1, WtAlter);
   return WtAlter;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::GetKFfin(long &KF)
+void TMCgenKKMC::GetKFfin(int &KF)
 {
 // get KF code of final fermion
   hepevt_getkffin_( KF);
