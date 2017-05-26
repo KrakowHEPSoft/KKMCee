@@ -73,7 +73,7 @@ KK2f_Libs= \
 	$(top_builddir)/dizet/libDizet.a
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC StartKKMC
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC
 AM_FFLAGS = @MY_F77_FLAGS@
 #-------------------------------------------------------------------------
 MainFOAM_SOURCES = MainFOAM.cxx 
