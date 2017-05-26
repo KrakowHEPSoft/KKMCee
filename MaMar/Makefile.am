@@ -73,9 +73,9 @@ KK2f_Libs= \
 	$(top_builddir)/dizet/libDizet.a
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC StartKKMC
 AM_FFLAGS = @MY_F77_FLAGS@
-
+#-------------------------------------------------------------------------
 MainFOAM_SOURCES = MainFOAM.cxx 
 MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
 				 $(top_builddir)/Foam2/.libs/libFOAM.a  \
@@ -83,7 +83,7 @@ MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
     			 $(top_builddir)/MaMar/libKKfm.la \
     			 $(KK2f_Libs)
 MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-
+#-------------------------------------------------------------------------
 MainKKMC_SOURCES = MainKKMC.cxx 
 MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
 				 $(top_builddir)/Foam2/.libs/libFOAM.a  \
@@ -91,7 +91,7 @@ MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
     			 $(top_builddir)/MaMar/libKKmc.la \
     			 $(KK2f_Libs)
 MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-
+#-------------------------------------------------------------------------
 #/////////////////////////////////////////////////////////////////////////
 # Local executables witout ROOT persistency
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
