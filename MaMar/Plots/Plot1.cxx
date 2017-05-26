@@ -28,12 +28,13 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
+// current
+//TFile DiskFileA("../workAFB/rmain.root");
 // archive
 TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-// current
-//TFile DiskFileA("../workAFB/rmain.root");
+//
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
@@ -67,9 +68,10 @@ void KKsemMakeHisto(){
   // Here we produce semianalytical plots using KKsem program, No plotting
   //------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
-  cout<<"================ KKsem MakeHisto  BEGIN ============================"<<endl;
+  cout<<"================ KKsemMakeHisto  BEGIN ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  cout<< "KKsemMakeHisto: CMSene  = "<<CMSene<<endl;
  //
   long KF=13; // muon
   long KeyDis, KeyFob;
@@ -87,7 +89,7 @@ void KKsemMakeHisto(){
   KeyFob= -100; // KKsem_BornV, NO EW, WITH integration, OK
   KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //------------------------------------------------------------------------
-//   MuMu  dsigma/dv, unlimited cos(theta)
+  cout<<" MuMu  dsigma/dv, unlimited cos(theta)"<<endl;
 //------------------------------------------------------------------------  
   TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueMain");
   TH1D *hstCtemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
@@ -103,7 +105,7 @@ void KKsemMakeHisto(){
   LibSem.VVplot(vdis_ISR2, KF, chak, KeyDis, KeyFob);
 
 //------------------------------------------------------------------------
-//   MuMu  Sigma(vmax) with limited c=cos(theta)
+  cout<<" MuMu  Sigma(vmax) with limited c=cos(theta)"<<endl;
 //------------------------------------------------------------------------  
   // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
@@ -116,7 +118,7 @@ void KKsemMakeHisto(){
   TH1D *vcum2_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum2_ISR2_FSR2");
   LibSem.VVplot(vcum2_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
   //-------------------------------------------------
-  // and finally AFB(vmax) for limited c=cos(theta)
+  cout<<" finally AFB(vmax) for limited c=cos(theta)"<<endl;
   // does it make sense for ISR*FSR????
   kksem_setcrange_(0, 22.0/25); // forward
   TH1D *afb2v_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afb2v_ISR2_FSR2");
@@ -126,7 +128,7 @@ void KKsemMakeHisto(){
   if(CMSene < 91.0 ) afb2v_ISR2_FSR2->Scale(-1);
 
 //------------------------------------------------------------------------
-//   MuMu  dsigma/dCosTheta, limited v
+  cout<<"  MuMu  dsigma/dCosTheta, limited v "<<endl;
 //------------------------------------------------------------------------  
   kksem_setcrange_(-1.0,1.0); // back to normal
   // ISR only
@@ -147,13 +149,14 @@ void KKsemMakeHisto(){
   LibSem.Cplot(cdisDZ_ISR2, KF, chak, KeyDis, KeyFob, vmin,vmax);
 
   //--------------------------------------------------------------------------
-  // for x-check only, the distribution without Z (for 10GeV only)
+  cout<<"  x-check only, the distribution without Z (for 10GeV only)"<<endl;
   long KeyZet=0;
   kksem_setkeyzet_(KeyZet);
   TH1D *cdis_ISR2_Zoff =(TH1D*)hstCtemplate->Clone("cdis_ISR2_Zoff");
   LibSem.Cplot(cdis_ISR2_Zoff, KF, chak, KeyDis, KeyFob, vmin,vmax);
 
   // ******************** reprocessing plots from KKsem **********************
+  cout<<"  *** reprocessing plots from KKsem ****"<<endl;
   TH1D                  *casyKS_ISR2;
   MakeAFB(cdisKS_ISR2,   casyKS_ISR2);
   casyKS_ISR2->SetName("casyKS_ISR2");

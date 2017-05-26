@@ -31,13 +31,15 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 // current
+//TFile DiskFileA("../workKKMC/histo.root");
+
 //TFile DiskFileA("../workAFB/rmain.root");
+
+TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
-
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileTeX;
@@ -66,6 +68,7 @@ void HistNormalize(){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2") );
+  cout<<"----------------------------- HistNormalize ended -------------------------------"<<endl;
   //
 }
 
@@ -103,7 +106,7 @@ void KKsemMakeHisto(){
   TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
   TH1D *hstCtemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
 //------------------------------------------------------------------------
-//   MuMu  Sigma(vmax) with ulimited c=cos(theta)
+  cout<<"  MuMu  Sigma(vmax) with ulimited c=cos(theta) "<<endl;
 //------------------------------------------------------------------------
 // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
@@ -111,7 +114,7 @@ void KKsemMakeHisto(){
   TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
 //-------------------------------------------------
-//    AFB(vmax) for unlimited c=cos(theta)
+  cout<<"  AFB(vmax) for unlimited c=cos(theta) "<<endl;
 //-------------------------------------------------
   kksem_setcrange_(0, 25.0/25); // forward cos(theta)
   TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
@@ -121,7 +124,7 @@ void KKsemMakeHisto(){
   kksem_setcrange_(-1.0, 1.0); // undoing forward,
   //
   //------------------------------------------------------------------------
-  //   MuMu  dsigma/dv, unlimited cos(theta)
+  cout<<"  MuMu  dsigma/dv, unlimited cos(theta)"<<endl;
   //------------------------------------------------------------------------
   // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
@@ -531,6 +534,12 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+  cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
+  DiskFileA.ls();
+  cout<<"------------------------Histofile.GetListOfKeys-----------------------------"<<endl;
+  DiskFileA.GetListOfKeys()->Print();
+  cout<<"----------------------------------------------------------------------------"<<endl;
+
   LibSem.Initialize(DiskFileA);
 
   DiskFileB.cd();
