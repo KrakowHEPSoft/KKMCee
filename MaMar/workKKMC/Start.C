@@ -18,9 +18,10 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 ///   and fill it with the MC run general parameters
 TString semaf   = "START";
 double nevtot   = 1e10;
-//nevtot = 2e6;
+nevtot = 2e5;
+//nevtot =1000;
 double nevgrp   = 1e5; // 100k
-nevgrp = 1e6;
+//nevgrp = 1e6;
 ///------------------------------------------------------------------
 SemFile.cd();
 TSemaf *Semafor = new TSemaf(semaf, nevtot, nevgrp);
