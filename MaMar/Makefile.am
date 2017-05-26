@@ -82,7 +82,7 @@ MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
     			 $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
     			 $(top_builddir)/MaMar/libKKfm.la \
     			 $(KK2f_Libs)
-MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
+MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 
 MainKKMC_SOURCES = MainKKMC.cxx 
 MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
@@ -90,7 +90,7 @@ MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
     			 $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
     			 $(top_builddir)/MaMar/libKKmc.la \
     			 $(KK2f_Libs)
-MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g
+MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 
 #/////////////////////////////////////////////////////////////////////////
 # Local executables witout ROOT persistency
