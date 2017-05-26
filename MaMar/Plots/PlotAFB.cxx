@@ -521,7 +521,6 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   HistNormalize();     // Renormalization of MC histograms
-  //KKsemMakeHisto();    // prepare histos for plotting
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
   // Template empty canvas  with 2 figures
