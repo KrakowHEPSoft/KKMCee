@@ -6,7 +6,7 @@ SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK workKKMC Plots
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKfm.la libKKmc.la
 CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
-#---------------------------------------------------------------
+#///////////////////////////////////////////////////////////////
 #   ROOT Dictionary 1 file definition
 dict1C = KKfmDict.cxx
 dict1H = KKfmDict.h
@@ -25,10 +25,6 @@ libKKfm_la_SOURCES =  TMCgenFOAM.cxx TRobolFOAM.cxx
 libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
     $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
-#  explicit target in ../
-$(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
-	(cd $(top_builddir)/MCdev/; make)
-#---------------------------------------------------------------
 #///////////////////////////////////////////////////////////////
 #   ROOT Dictionary 2 file definition
 dict2C = KKmcDict.cxx
@@ -48,10 +44,11 @@ libKKmc_la_SOURCES =  TMCgenKKMC.cxx TRobolKKMC.cxx TPartLund.cxx
 libKKmc_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
     $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libKKmc_la_LDFLAGS = -L$(ROOTLIBDIR)
+#///////////////////////////////////////////////////////////////
 #  explicit target in ../
 $(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
 	(cd $(top_builddir)/MCdev/; make)
-##---------------------------------------------------------------
+#///////////////////////////////////////////////////////////////
 
 ########### KK2f MC libraries #############
 $(top_builddir)/KK2f/libKK2f.a:
@@ -166,6 +163,6 @@ workFOKK-stop:
 ###   make workKKMC-start
 workKKMC-start: all
 	(cd ./workKKMC; make start)
-workFOKK-stop:
+workKKMC-stop:
 	(cd ./workKKMC; make stop)
 ##-----------------------------------------------------------------------
