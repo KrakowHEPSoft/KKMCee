@@ -45,7 +45,7 @@ MCgen->Write("MCgen",TObject::kOverwrite);
 ///*****************************************************************
 ///       Create new instance of the MC analysis object
 TRobol *RoboT = new TRobolKKMC("RoboT");  /// base clase only
-RoboT.f_HistNormName = "HST_FOAM_NORMA5";
+RoboT.f_HistNormName = "HST_KKMC_NORMA";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
 GenFile.Write();
