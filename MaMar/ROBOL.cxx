@@ -15,11 +15,11 @@
 //      *************** temporary entries from KKMC ****************
 //      SUBROUTINE KarLud_GetVVxx(vv,x1,x2)
 extern "C" void  karlud_getvvxx_(double&, double&, double&);
-//extern "C" void  pyhepc_(long&);
-//extern "C" void  photos_(long&);
+//extern "C" void  pyhepc_(int&);
+//extern "C" void  photos_(int&);
 //extern "C" void  phoini_();
-//extern "C" void  hepevt_setphotosflagtrue_(long&);
-//extern "C" void  hepevt_getnhep_(long&);
+//extern "C" void  hepevt_setphotosflagtrue_(int&);
+//extern "C" void  hepevt_getnhep_(int&);
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ void ROBOL::KKMC_NORMA()
   // Transfer normalization Record of KKMC to local histogram.
   // For later use in re-normalizing histostograms
   //
-  double XsPrim; long NevPrim;
+  double XsPrim; int NevPrim;
   KKMC_generator->GetPrimaNorma(XsPrim, NevPrim);
   HST_KKMC_NORMA->SetBinContent(0,XsPrim*NevPrim);
   HST_KKMC_NORMA->SetEntries(NevPrim);
@@ -148,7 +148,7 @@ void ROBOL::Production(long &iEvent)
   KKMC_generator->GetFermions(m_pfer1,m_pfer2);
   KKMC_generator->GetNphot(m_Nphot);                  // photon multiplicity
   TLorentzVector VSumPhot;    // By default all components are initialized by zero. 
-  long iphot,iphot1;
+  int iphot,iphot1;
   for(iphot=0;iphot<m_Nphot;iphot++){
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
     VSumPhot+= m_phot[iphot];
@@ -189,12 +189,12 @@ void ROBOL::Production(long &iEvent)
   //********************************************************************
   int TrigMu  = 0;
   // find muons, excluding muons from phi decays!!!
-  long jMu1 =PartFindStable( 13);    // fortran numbering!!!
-  long jMu2 =PartFindStable(-13);    // fortran numbering!!!
+  int jMu1 =PartFindStable( 13);    // fortran numbering!!!
+  int jMu2 =PartFindStable(-13);    // fortran numbering!!!
   m_pMu1  = m_Event[jMu1-1].fMom;    // fortran numbering!!!
   m_pMu2  = m_Event[jMu2-1].fMom;    // fortran numbering!!!
-  long par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
-  long par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
+  int par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
+  int par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
   if( (jMu1*jMu1)  && (par1 == par2) && (par1 == 3) ) TrigMu  = 1; // exclude backgr.
   //**************************************************************
   if( TrigMu && (m_count1<17) ){
@@ -328,7 +328,7 @@ void ROBOL::Finalize()
   hstN_Mff->Add(hstN_Mff, Fact);
   // *********************************************************************
   // **** alternatively HST_KKMC_NORMA is used at later stage (plotting)
-  long   NevPrim = HST_KKMC_NORMA->GetEntries();
+  int   NevPrim = HST_KKMC_NORMA->GetEntries();
   double XsPrima = HST_KKMC_NORMA->GetBinContent(0)/NevPrim;
   cout << "HST_KKMC_NORMA: XsPrima [nb] = "<< XsPrima << " NevPrim= "<< NevPrim <<endl;
   // *********************************************************************
@@ -356,35 +356,35 @@ void ROBOL::PartImport(){
     cout<<"++++ ROBOL::Production: STOP m_Npart= "<<m_Npart<<endl;
     exit(5);
   }
-  for(long j=0; j<m_Npart;j++){
+  for(int j=0; j<m_Npart;j++){
     KKMC_generator->GetPyParticle( j, m_Event[j]);  // import one particle
     //m_Event[j].Print(1);
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-long ROBOL::PartCount(const long flav){
-  long jCount=0;
-  for(long j=0; j<m_Npart;j++)
+int ROBOL::PartCount(const int flav){
+  int jCount=0;
+  for(int j=0; j<m_Npart;j++)
     if(m_Event[j].fFlafor == flav){
       jCount++;
     }
   return jCount;
 }
 ///////////////////////////////////////////////////////////////////////////////
-long ROBOL::PartFindAny(const long flav){
+int ROBOL::PartFindAny(const int flav){
 // fortran numbering!!!
-  long jPosition=0;
-  for(long j=0; j<m_Npart;j++)
+  int jPosition=0;
+  for(int j=0; j<m_Npart;j++)
     if(m_Event[j].fFlafor == flav){
       jPosition=j+1; break;
     }
   return jPosition;
 }
 ///////////////////////////////////////////////////////////////////////////////
-long ROBOL::PartFindStable(const long flav){
+int ROBOL::PartFindStable(const int flav){
 // fortran numbering!!!
-  long jPosition=0;
-  for(long j=0; j<m_Npart;j++)
+  int jPosition=0;
+  for(int j=0; j<m_Npart;j++)
     if((m_Event[j].fStatus  == 1)&&(m_Event[j].fFlafor == flav)){
       jPosition=j+1; break;
     }
@@ -400,7 +400,7 @@ void ROBOL::PyPrint(const int mode){
   cout<<"lser status flavor parent child1 child2";
   cout<<"                Px                Py                Pz               Ene";
   cout<<"              Mass"<<endl;
-  for(long j=0; j<m_Npart;j++){
+  for(int j=0; j<m_Npart;j++){
     m_Event[j].Print(mode);
     if(m_Event[j].fStatus == 1) Sum += m_Event[j].fMom;
   }

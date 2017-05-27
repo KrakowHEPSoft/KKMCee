@@ -14,9 +14,9 @@
 //   COMMON/PYJETS/N,NPAD,K(4000,5),P(4000,5),V(4000,5)
 //--------------------------------------------------------
 typedef struct {
-//    long   n; 
-//    long   npad;
-//    long   k[5][4000];
+//    int   n;
+//    int   npad;
+//    int   k[5][4000];
     int    n; 
     int    npad;
     int    k[5][4000];
@@ -34,10 +34,10 @@ extern CommonPYJETS pyjets_ ;
 //  COMMON/PYDAT1/MSTU(200),PARU(200),MSTJ(200),PARJ(200)
 //------------------------------------------------------------
 typedef struct {
-//    long   mstu[200]; 
+//    int   mstu[200];
     int    mstu[200]; 
     double paru[200];
-//    long   mstj[200];
+//    int   mstj[200];
     int    mstj[200];
     double parj[200];
                 } CommonPYDAT1;
@@ -62,7 +62,7 @@ void KKMC::Initialize(double ypar[])
   //   opening disk fime for fortran part of code
   m_out = ypar[3];
   char *output_file = "./pro.output";
-  long sl2 = strlen(output_file);
+  int sl2 = strlen(output_file);
   kk2f_fort_open_(m_out,output_file,sl2);
 
   //*******************//
@@ -100,15 +100,15 @@ void KKMC::Finalize( double &XsNormPb, double &XsErroPb)
   kk2f_fort_close_(m_out);
 }
 ///////////////////////////////////////////////////////////////////////////////
-long KKMC::GetPyNpart()
+int KKMC::GetPyNpart()
 {
 // provides no. of entries in Lund/Pythia common block
-  long npart = cb_PYjets.n;
+  int npart = cb_PYjets.n;
   //cout<<"KKMC::Make: npart ="<<npart<<endl;
   return npart;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::GetPyParticle( const long j, PartLund &Event)
+void KKMC::GetPyParticle( const int j, PartLund &Event)
 {
 // Export one particle from /PYJETS/
   Event= PartLund(j+1,
@@ -128,7 +128,7 @@ void KKMC::Print1()
   kk2f_print1_(m_out);  
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::PyList(long lev)
+void KKMC::PyList(int lev)
 {
 // print event using pythia
   PyGive("MSTU(11)=16");
@@ -140,7 +140,7 @@ void KKMC::PyList(long lev)
 void KKMC::PyGive(char *directive)
 {
 // set pythia directive
-  long s1;
+  int s1;
   s1 = strlen(directive);
   pygive_(directive, s1);
 }
@@ -191,7 +191,7 @@ void KKMC::GetXsecMC( double &xSecPb,  double &xErrPb)
   kk2f_getxsecmc_(xSecPb, xErrPb);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::GetPrimaNorma(double &XsPrim, long &NevPrim)
+void KKMC::GetPrimaNorma(double &XsPrim, int &NevPrim)
 {
 // get normalization elements NANOBARNS
   int NevPrim1;
@@ -199,30 +199,30 @@ void KKMC::GetPrimaNorma(double &XsPrim, long &NevPrim)
   NevPrim=NevPrim1;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::GetPhoton1(const long iphot, TLorentzVector &phot)
+void KKMC::GetPhoton1(const int iphot, TLorentzVector &phot)
 {
 // get one photon 4-vector from KKMC
   double p1[4];
-  long iphot1=iphot;
+  int iphot1=iphot;
   kk2f_getphoton1_(iphot1, p1);
   phot.SetPxPyPzE(p1[0],p1[1],p1[2],p1[3]);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::GetNphot(long &Nphot)
+void KKMC::GetNphot(int &Nphot)
 {
 // get photon multiplicity from KKMC
   kk2f_getnphot_( Nphot);
 }
 ///////////////////////////////////////////////////////////////////////////////
-double KKMC::GetWtAlter(const long id)
+double KKMC::GetWtAlter(const int id)
 {
   double WtAlter;
-  long id1 =id;
+  int id1 =id;
   kk2f_getwtalter_( id1, WtAlter);
   return WtAlter;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::GetKFfin(long &KF)
+void KKMC::GetKFfin(int &KF)
 {
 // get KF code of final fermion
   hepevt_getkffin_( KF);

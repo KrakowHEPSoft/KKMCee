@@ -16,16 +16,16 @@
 //class ROBOL : public TNamed {
 class ROBOL{
  public:
-  long   m_NevGen;           // event serial number
-  long   m_count1;           // auxiliary event counter (debug)
+  long  m_NevGen;            // event serial number
+  long  m_count1;            // auxiliary event counter (debug)
   double m_xpar[10001];      // complete input of KKMC run
   KKMC   *KKMC_generator;    // MC event generator
   // =============== local mirror of KKMC event =======================
   TLorentzVector m_pbea1,m_pbea2;    // initial beams
   TLorentzVector m_pfer1,m_pfer2;    // final fermions
-  long           m_Nphot;            // photon multiplicity
+  int           m_Nphot;            // photon multiplicity
   TLorentzVector m_phot[100];        // photon 4-momenta
-  long           m_Npart;            // no of particles in Lund/Pythia common
+  int           m_Npart;            // no of particles in Lund/Pythia common
   PartLund m_Event[4000];            // content of /PYJETS/
   TLorentzVector m_pMu1, m_pMu2;     // muon 4-momenta
   // ============== Histograms follow =================================
@@ -82,9 +82,9 @@ class ROBOL{
   void KKMC_NORMA();
   void Finalize();
   void PartImport();
-  long PartCount(  const long);
-  long PartFindAny(const long);
-  long PartFindStable(const long);
+  int PartCount(  const int);
+  int PartFindAny(const int);
+  int PartFindStable(const int);
   void PyPrint(const int );
   void MomPrint( TLorentzVector&);
   void ReaData(char DiskFile[], int imax, double xpar[]);

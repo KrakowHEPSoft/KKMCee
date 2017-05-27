@@ -320,7 +320,7 @@ Double_t KKfoam::Density3(int nDim, Double_t *Xarg)
     m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
 
 // ******** finally Born factor *******
-    long KeyFob;
+    int KeyFob;
     KeyFob=   10; // BornV_Dizet, with EW and without integration ???
     KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
     KeyFob=  -10; // KKsem_BornV, NO EW, NO integration OK!

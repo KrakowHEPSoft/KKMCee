@@ -15,11 +15,11 @@
 //      *************** temporary entries from KKMC ****************
 //      SUBROUTINE KarLud_GetVVxx(vv,x1,x2)
 extern "C" void  karlud_getvvxx_(double&, double&, double&);
-extern "C" void  pyhepc_(long&);
-extern "C" void  photos_(long&);
+extern "C" void  pyhepc_(int&);
+extern "C" void  photos_(int&);
 extern "C" void  phoini_();
-extern "C" void  hepevt_setphotosflagtrue_(long&);
-extern "C" void  hepevt_getnhep_(long&);
+extern "C" void  hepevt_setphotosflagtrue_(int&);
+extern "C" void  hepevt_getnhep_(int&);
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ void RoboFSR::Initialize(long &NevTot)
   double ypar[jmax];
   for(int j=0;j<jmax;j++) ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
   //
-  NevTot = (long)m_xpar[0];                       // NevTot hidden in xpar[0] !!!
+  NevTot = (int)m_xpar[0];                       // NevTot hidden in xpar[0] !!!
   KKMC_generator = new KKMC();
   KKMC_generator->Initialize(ypar);
   cout<<"RoboFSR::Initialize:  NevTot = "<<NevTot<<endl;
@@ -91,7 +91,7 @@ void RoboFSR::KKMC_NORMA()
   // Transfer normalization Record of KKMC to local histogram.
   // For later use in re-normalizing histostograms
   //
-  double XsPrim; long NevPrim;
+  double XsPrim; int NevPrim;
   KKMC_generator->GetPrimaNorma(XsPrim, NevPrim);
   HST_KKMC_NORMA->SetBinContent(0,XsPrim*NevPrim);
   HST_KKMC_NORMA->SetEntries(NevPrim);
@@ -123,7 +123,7 @@ void RoboFSR::Production(long &iEvent)
   TLorentzVector VSumPhot;    // By default all components are initialized by zero.
 
   KKMC_generator->GetNphot(m_Nphot);          // photon multiplicity
-  long iphot,iphot1;
+  int iphot,iphot1;
   for(iphot=0;iphot<m_Nphot;iphot++){
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
     VSumPhot+= m_phot[iphot];
@@ -164,12 +164,12 @@ void RoboFSR::Production(long &iEvent)
   //********************************************************************
   int TrigMu  = 0;
   // find muons, excluding muons from phi decays!!!
-  long jMu1 =PartFindStable( 13);    // fortran numbering!!!
-  long jMu2 =PartFindStable(-13);    // fortran numbering!!!
+  int jMu1 =PartFindStable( 13);    // fortran numbering!!!
+  int jMu2 =PartFindStable(-13);    // fortran numbering!!!
   m_pMu1  = m_Event[jMu1-1].fMom;    // fortran numbering!!!
   m_pMu2  = m_Event[jMu2-1].fMom;    // fortran numbering!!!
-  long par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
-  long par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
+  int par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
+  int par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
   if( (jMu1*jMu1)  && (par1 == par2) && (par1 == 3) ) TrigMu  = 1; // exclude backgr.
   //**************************************************************
   if( TrigMu && (m_count1<17) ){
@@ -292,7 +292,7 @@ void RoboFSR::Finalize()
   hstN_Mff->Add(hstN_Mff, Fact);
   // *********************************************************************
   // **** alternatively HST_KKMC_NORMA is used at later stage (plotting)
-  long   NevPrim = HST_KKMC_NORMA->GetEntries();
+  int   NevPrim = HST_KKMC_NORMA->GetEntries();
   double XsPrima = HST_KKMC_NORMA->GetBinContent(0)/NevPrim;
   cout << "HST_KKMC_NORMA: XsPrima [nb] = "<< XsPrima << " NevPrim= "<< NevPrim <<endl;
   // *********************************************************************
@@ -320,35 +320,35 @@ void RoboFSR::PartImport(){
     cout<<"++++ RoboFSR::Production: STOP m_Npart= "<<m_Npart<<endl;
     exit(5);
   }
-  for(long j=0; j<m_Npart;j++){
+  for(int j=0; j<m_Npart;j++){
     KKMC_generator->GetPyParticle( j, m_Event[j]);  // import one particle
     //m_Event[j].Print(1);
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-long RoboFSR::PartCount(const long flav){
-  long jCount=0;
-  for(long j=0; j<m_Npart;j++)
+int RoboFSR::PartCount(const int flav){
+  int jCount=0;
+  for(int j=0; j<m_Npart;j++)
     if(m_Event[j].fFlafor == flav){
       jCount++;
     }
   return jCount;
 }
 ///////////////////////////////////////////////////////////////////////////////
-long RoboFSR::PartFindAny(const long flav){
+int RoboFSR::PartFindAny(const int flav){
 // fortran numbering!!!
-  long jPosition=0;
-  for(long j=0; j<m_Npart;j++)
+  int jPosition=0;
+  for(int j=0; j<m_Npart;j++)
     if(m_Event[j].fFlafor == flav){
       jPosition=j+1; break;
     }
   return jPosition;
 }
 ///////////////////////////////////////////////////////////////////////////////
-long RoboFSR::PartFindStable(const long flav){
+int RoboFSR::PartFindStable(const int flav){
 // fortran numbering!!!
-  long jPosition=0;
-  for(long j=0; j<m_Npart;j++)
+  int jPosition=0;
+  for(int j=0; j<m_Npart;j++)
     if((m_Event[j].fStatus  == 1)&&(m_Event[j].fFlafor == flav)){
       jPosition=j+1; break;
     }
@@ -364,7 +364,7 @@ void RoboFSR::PyPrint(const int mode){
   cout<<"lser status flavor parent child1 child2";
   cout<<"                Px                Py                Pz               Ene";
   cout<<"              Mass"<<endl;
-  for(long j=0; j<m_Npart;j++){
+  for(int j=0; j<m_Npart;j++){
     m_Event[j].Print(mode);
     if(m_Event[j].fStatus == 1) Sum += m_Event[j].fMom;
   }
