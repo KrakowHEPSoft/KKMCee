@@ -21,17 +21,30 @@ void KKplot::Initialize(TFile &DiskFileA){
   //------------------------------------------------------------------------
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   cout<<"==================================================================="<<endl;
-  cout<<"================ KKsem initialization begin ==========================="<<endl;
+  cout<<"================ KKplot::initialization ==========================="<<endl;
+  int nbin_NORM = HST_KKMC_NORMA->GetNbinsX();
+  cout<< "No fo bins in HST_KKMC_NORMA = "<< nbin_NORM <<endl;
   m_jmax =10000;
+  if( m_jmax != nbin_NORM){
+	  cout<<"KKplot::Initialize: wrong no. of bins in HST_KKMC_NORMA"<<endl;
+	  exit(9);
+  }//
   for(int j=1; j<=m_jmax; j++)
     m_ypar[j-1]=HST_KKMC_NORMA->GetBinContent(j);    // xpar encoded
-  //[[[[[
-
+  //
   m_CMSene  = m_ypar[ 1 -1];
   m_vvmax   = m_ypar[17 -1];
-
-  m_alfinv   = m_ypar[30 -1];     // 1/alphaQED at Q^2=0
-  m_gnanob   = m_ypar[31 -1];     // GeV^2 -> nanobarns
+  m_alfinv  = m_ypar[30 -1];     // 1/alphaQED at Q^2=0
+  m_gnanob  = m_ypar[31 -1];     // GeV^2 -> nanobarns
+  cout<< " m_CMSene = "<<m_CMSene<<endl;
+  cout<< " m_alfinv = ypar[ 30 -1]= " <<  m_alfinv<< endl;
+  cout<< " m_gnanob = ypar[ 31 -1]= " <<  m_gnanob<< endl;
+  int     KFini = m_ypar[400 -1];
+  double     MZ = m_ypar[502 -1];
+  cout<< "    KFini = ypar[400 -1]= " <<  KFini<< endl;
+  cout<< "       MZ = ypar[502 -1]= " <<  MZ << endl;
+//[[[
+  cout<< "  ircdat= ypar[ 74 -1]= " <<  m_ypar[ 74 -1] << endl;
 
   m_pi      = 3.1415926535897932;
   m_ceuler  = 0.57721566;
@@ -50,22 +63,22 @@ void KKplot::Initialize(TFile &DiskFileA){
   cout<<"***********************KKsem::initialize****************************"<<endl;
   for(int j=0;j<30;j++)
     cout<<j+1<<"   "<<m_ypar[j]<<endl;
-  //]]]]]
+  //
   char *output_file = "./kksem.output";
-  long stl2 = strlen(output_file);
-  long mout =16;
+  int stl2 = strlen(output_file);
+  int mout =16;
   kk2f_fort_open_(mout,output_file,stl2);
   kk2f_initialize_(m_ypar);
   kksem_initialize_(m_ypar);
   cout<<"================ KKsem initialization END   ==========================="<<endl;
   cout<<"==================================================================="<<endl;
-  //long kdum; kk2f_getkeyfsr_(kdum); //<-- to avoid linker bug! (if no kk2f_initialize)
+  //int kdum; kk2f_getkeyfsr_(kdum); //<-- to avoid linker bug! (if no kk2f_initialize)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKplot::VVplot( TH1 *hstNew, long KF, char chak[5], long KeyDis, long KeyFob)
+void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
 {
-  long   nbin = hstNew->GetNbinsX();
+  int   nbin = hstNew->GetNbinsX();
   double xmin = hstNew->GetXaxis()->GetXmin();
   double xmax = hstNew->GetXaxis()->GetXmax();
   double Bin[nbin];
@@ -88,13 +101,13 @@ void KKplot::VVplot( TH1 *hstNew, long KF, char chak[5], long KeyDis, long KeyFo
 
 ///////////////////////////////////////////////////////////////////////////////////
 void KKplot::Cplot( TH1 *hstNew,
-		   long KF, char chak[5], long KeyDis, long KeyFob, double vmin, double vmax)
+		   int KF, char chak[5], int KeyDis, int KeyFob, double vmin, double vmax)
 {
-  long   nbc = hstNew->GetNbinsX();
+  int   nbc = hstNew->GetNbinsX();
   double cmin = hstNew->GetXaxis()->GetXmin();
   double cmax = hstNew->GetXaxis()->GetXmax();
   double cBin[nbc];
-  long   nbv = 1;   // only one bin in v needed
+  int   nbv = 1;   // only one bin in v needed
   double vBin[100]; // only one bin in v needed
   //
   kksem_setkffin_(KF); // set m_KFfin in KKsem

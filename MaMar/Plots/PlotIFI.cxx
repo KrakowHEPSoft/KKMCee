@@ -31,12 +31,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 // current
-//TFile DiskFileA("../workKKMC/histo.root");
-
+TFile DiskFileA("../workKKMC/histo.root");
 //TFile DiskFileA("../workAFB/rmain.root");
 
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
-//
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
@@ -87,8 +85,8 @@ void KKsemMakeHisto(){
   //KKplot LibSem;
   //LibSem.Initialize(DiskFileA);
   //
-  long KF=13; // muon
-  long KeyDis, KeyFob;
+  int KF=13; // muon
+  int KeyDis, KeyFob;
   char chak[5];
   //KeyDis = 302;   // ISR O(alf2)
   //KeyDis = 304;   // ISR O(alf3) GribovLL
