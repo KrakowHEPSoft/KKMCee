@@ -114,8 +114,8 @@ void TRobol::Initialize(
   ///
   /// book histogram keeping track of overall normalization
   f_HstFile->cd(); /// to keep h_TMCgen_NORMA in  f_HstFile!!!
-  TH1D *h_TMCgen_NORMA = TH1D_UP(f_HistNormName,"Normalization histo",100,0,100);
-  //TH1D *h_TMCgen_NORMA = new TH1D("h_TMCgen_NORMA","Normalization histo",100,0,100);
+  TH1D *h_TMCgen_NORMA = TH1D_UP(f_HistNormName,"Normalization histo",10000,0,10000);
+  //TH1D *h_TMCgen_NORMA = new TH1D("h_TMCgen_NORMA","Normalization histo",10000,0,10000);
   ///
   /// Read prepared object MC of generator from the disk
   f_GenFile->cd();

@@ -1,5 +1,4 @@
 
-
 SUBDIRS = farming
 
 # ROOT Dictionary file definition
@@ -18,7 +17,7 @@ ROOTCINTHDRS= $(include_HEADERS) $(noinst_HEADERS)
 $(dictC) : $(ROOTCINTHDRS)
 	$(ROOTCINT) -f $(dictC) -c $(INCLUDES) $(ROOTCINTHDRS)
 #---------------------------------------------------------------
-noinst_HEADERS = LinkDef.h
+noinst_HEADERS  = LinkDef.h
 lib_LTLIBRARIES = libMCdev.la
 libMCdev_la_SOURCES = TMCgen.cxx  TSemaf.cxx TRobol.cxx THwtMon.cxx TKfig.cxx
 libMCdev_la_LIBADD = $(top_builddir)/Foam2/libFOAM.la $(ROOTAUXLIBS) \
@@ -27,4 +26,4 @@ libMCdev_la_LDFLAGS = -L$(ROOTLIBDIR)
 #----- explicit target needed for ../ directory
 $(top_builddir)/Foam2/libFOAM.la:
 	(cd ../Foam2; make libFOAM.la)
-
+#---------------------------------------------------------------
