@@ -21,11 +21,11 @@ CLASS=qunlimitted
 	(ln -s ../../.KK2f_defaults ./)
 check_all: .KK2f_defaults
 	(cd ..; make )
-start:  check_all
+start_n: check_all
 	rm -f ./pro.output ./histo.root ./mcgen.root
 	cp ./$(DSET).input ./pro.input
 	$(ROOTEXEC)  -b -q -l ./Start.C
-	time ../${MAIN} &
+start:  start_n
 stop:
 	$(ROOTEXEC)  -b -q -l ../../MCdev/farming/Stop.C
 cont:
