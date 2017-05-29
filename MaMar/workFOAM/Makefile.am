@@ -1,141 +1,88 @@
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
-METASOURCES = AUTO
-
-#-----------------------------------------------------------------------
-#       Template for makefile in production directory demo
-#-----------------------------------------------------------------------
-MAIN=ProdFoam
+#=======================================================================
+# Invokes all kind of scripts which setup (Start.C) and executes MAIN
+#    make start
+#    make stop
+# Seting up input files/scripts and runing on the PC-farm (batch)
+#    make sfarm6
+#    make ssubmit6
+#    make q-sem
+#    make q-nev
+#    make farm-stop
+#    make combine
+#=======================================================================
+MAIN=MainFOAM
 DSET=workFOAM
-CLASS=long
-#-----------------------------------------------------------------------
-SRCLIST= "../ ../../yfslib ../../bornv ../../glibk ../../KK2f"
-#-----------------------------------------------------------------------
-# Interactive:  run start stop and continue
-#-----------------------------------------------------------------------
-../${MAIN}:
-	(cd ..; make ../${MAIN})
-prepare:
-	(ln -s ../../.KK2f_defaults ./.KK2f_defaults )
-	(ln -s ../../dizet          ./dizet )
-#-----------------------------------------------------------------------
-start: 
-	(cp ../iniseed/iniseed.0 ./iniseed	;\
-	 cp ../semaphore.start   ./semaphore	;\
-	 cp ./$(DSET).input ./pro.input		;\
-	 time ../${MAIN}			)&
-#-----------------------------------------------------------------------
-debug:
-	(cp ../iniseed/iniseed.0 ./iniseed	;\
-	 cp ../semaphore.start   ./semaphore	;\
-	 cp ./$(DSET).input ./pro.input		;\
-	 ddd ../${MAIN}			)&
-#-----------------------------------------------------------------------
-backg:
-	(cp ../iniseed/iniseed.0 ./iniseed	;\
-	 cp ../semaphore.start   ./semaphore	;\
-	 cp ./$(DSET).input ./pro.input		;\
-	 time ../${MAIN} > /dev/null	)&
-#-----------------------------------------------------------------------
+## CERN  subCMC=bsub, CLASS= 8nm, 1nh, 1nd, 1nw
+## Local qubCMC=qsub, CLASS= qunlimited
+subCMD=qsub
+CLASS=qunlimitted
+##############
+.KK2f_defaults:
+	(ln -s ../../.KK2f_defaults ./)
+check_all: .KK2f_defaults
+	(cd ..; make )
+start:  check_all
+	rm -f ./pro.output ./histo.root ./mcgen.root
+	cp ./$(DSET).input ./pro.input
+	$(ROOTEXEC)  -b -q -l ./Start.C
+	time ../${MAIN} &
 stop:
-	(cp ../semaphore.stop ./semaphore )&
-#-----------------------------------------------------------------------
+	$(ROOTEXEC)  -b -q -l ../../MCdev/farming/Stop.C
 cont:
-	(cp semaphore  semaphore.bak		;\
-	 cp pro.hst    pro.hst.bak		;\
-	 cp pro.output pro.output.bak		;\
-         time ../${MAIN}			)&
-#-----------------------------------------------------------------------
-start-debug:
-	(cp ../iniseed/iniseed.0 ./iniseed	;\
-	 cp ../semaphore.start   ./semaphore	;\
-	 cp ./$(DSET).input ./pro.input		;\
-	 xldb -I  ${SRCLIST} ../${MAIN}	)&
-#-----------------------------------------------------------------------
-cont-debug:
-	(cp semaphore  semaphore.bak		;\
-	 cp pro.hst    pro.hst.bak		;\
-	 cp pro.output pro.output.bak		;\
-         xldb -I  ${SRCLIST} ../${MAIN}	)&
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#   Batch on farm:  initialize, submit and stop
-#-----------------------------------------------------------------------
-farm6-LSF:
-	(csh ../farm-init "1 2 3 4 5 6" \
-	${MAIN} ${DSET} LSF ${CLASS} )
-farm12-LSF:
-	(csh ../farm-init "1 2 3 4 5 6 7 8 9 10 11 12" \
-	${MAIN} ${DSET} LSF ${CLASS} )
-farm24-LSF:
-	(csh ../farm-init "1 2 3 4 5 6 7 8 9 10 11 12 \
-	      13 14 15 16 17 18 19 20 21 22 23 24 " \
-	${MAIN} ${DSET} LSF ${CLASS} )
-#-----------------------------------------------------------------------
+	time ../${MAIN} &
+debug:  check_all
+	ddd --directory="../" ../../bin/MainPr
+#########################################################################
+####      NEW UNIVERSAL VERSION tested on the local farm
+#########################################################################
+qfarm6:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",6)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+qfarm40:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",40)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+qsubmit6:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",6)' )
+qqsubmitall:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",200)' )
+#########################################################################
+sfarm6:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",6)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+sfarm24:	farm-clean check_all
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",24)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+ssubmit6:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
+ssubmitall:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
+########################################################################
 farm-gtar:
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
 #-----------------------------------------------------------------------
-bsubmit6:
-	(csh ../farm-bsubmit ${DSET} ${CLASS} "1 2 3 4 5 6")
-bsubmit12:
-	(csh ../farm-bsubmit ${DSET} ${CLASS} "1 2 3 4 5 6 7 8 9 10 11 12")
-bsubmit18:
-	(csh ../farm-bsubmit ${DSET} ${CLASS} "1 2 3 4 5 6 7 8 9 10 11 12 \
-	                13 14 15 16 17 18")
-bsubmit24:
-	(csh ../farm-bsubmit ${DSET} ${CLASS} "1 2 3 4 5 6 7 8 9 10 11 12 \
-	                13 14 15 16 17 18 19 20 21 22 23 24 ")
+farm-stop:
+	($(ROOTEXEC)  -b -q -l ../../MCdev/farming/StopFarm.C)
 #-----------------------------------------------------------------------
-stop6:
-	(csh ../farm-stop   ${DSET} "1 2 3 4 5 6 ")
-stop12:
-	(csh ../farm-stop   ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12")
-stop18:
-	(csh ../farm-stop   ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
-	                13 14 15 16 17 18 ")
-stop24:
-	(csh ../farm-stop   ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
-	                13 14 15 16 17 18 19 20 21 22 23 24 ")
-#
-cphst24:
-	(csh ../farm-cphst   ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
-	                13 14 15 16 17 18 19 20 21 22 23 24 ")
-#-----------------------------------------------------------------------
+run2:
+	(cd ./farm/1/; csh ${DSET}.cmd.1)&
+	(cd ./farm/2/; csh ${DSET}.cmd.2)&
 #--------- cobmine (add) results from several subdirectories -----------
 combine:
-	(cd ../../glibk; make combine.exe)
-combine6:  combine
-	(sed -e 's#?.hst#pro.hst#' -e 's#?#6#' ../combine.list \
-	| ../../glibk/combine.exe; more pro.hst)
-combine12:  combine
-	(sed -e 's#?.hst#pro.hst#' -e 's#?#12#' ../combine.list \
-	| ../../glibk/combine.exe; more pro.hst)
-combine18:  combine
-	(sed -e 's#?.hst#pro.hst#' -e 's#?#18#' ../combine.list \
-	| ../../glibk/combine.exe; more pro.hst)
-combine24:  combine
-	(sed -e 's#?.hst#pro.hst#' -e 's#?#24#' ../combine.list \
-	| ../../glibk/combine.exe; more pro.hst)
+#	($(ROOTSYS)/bin/hadd -f ./histo.root ./farm/*/histo.root)
+	(/usr/bin/hadd -f ./histo.root ./farm/*/histo.root)
+	(cp -p ./farm/1/mcgen.root ./)
 #-----------------------------------------------------------------------
 #---- query
-q-semaphore:
-	(ls -altr farm/*/semaphore)
+q-sem:
+	(ls -altr ./farm/*/mcgen.root)
 q-nev:
-	(cat farm/*/semaphore | grep nev)
-q-cont:
-	(cat farm/*/semaphore | grep cont)
+	($(ROOTEXEC)  -b -q -l ../../MCdev/farming/q-nev.C)
 #-----------------------------------------------------------------------
-clean:                                                     
-	(rm -f *.o *.a *~ *.exe core *.err *.out)
-CLEAN:  clean
-	(rm  -R -f farm )
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-# Miscelaneous
-#-----------------------------------------------------------------------
-script-SP:
-	(csh ../farm-script-init "1 2 3 4 5 6 7 8 9 10 11 12 \
-	 13 14 15 16 17 18 19 20 21 22 23 24 " ${MAIN} ${DSET} SP ${CLASS} )
-script-SP850:
-	(csh ../farm-script-init "1 2 3 4 5 6 7 8 9 10 11 12 \
-	 13 14 15 16 17 18 19 20 21 22 23 24 " ${MAIN} ${DSET} SP850 ${CLASS} )
-#-----------------------------------------------------------------------
+farm-clean:
+	(rm  -R -f farm *.bak )
+#========================================================================
+#========================================================================

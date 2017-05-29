@@ -34,10 +34,10 @@ using namespace std;
 TFile DiskFileA("../workAFB/rmain_95GeV.root");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 // current
-//TFile DiskFileF("../workFOAM/histo.root");
+TFile DiskFileF("../workFOAM/histo.root");
 //TFile DiskFileF("../workFOAM/histo_95GeV_241M.root");
 //
-TFile DiskFileF("../workFoam0/rmain.root");
+//TFile DiskFileF("../workFoam0/rmain.root");
 //TFile DiskFileF("../workFoam0rmain_95GeV_64M.root");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");

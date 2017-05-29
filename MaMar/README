@@ -22,7 +22,6 @@ Chains of the user-level analysis programs:
  //////////////////////////////////////////////////////////////////////////
  //    New chains of MC production with ROOT persistency and farming     //
  //////////////////////////////////////////////////////////////////////////
-
 ************************ (MainKKMC) **********************************
  MainKKMC+TMCgenKKMC+TRobolKKMC+workKKMC/Start.C
 ----------------------------------------------------------------
@@ -39,11 +38,10 @@ Chains of the user-level analysis programs:
  -- work directory: ./workFOKK
  -- analysis: ./Plots/PlotFoam1.cxx, exploiting results of (C)
  
+ 
  //////////////////////////////////////////////////////////////////////////
  //    Older chains of MC production NO ROOT persistency nor farming     //
  //////////////////////////////////////////////////////////////////////////
-
-   
  ************************ (Prod0) **************************************
  Prod0+ROBOL+workAFB and ./Plots/Plot1, PlotAFB, PlotAFB2, PlotIFI.cxx
  -----------------------------------------------------------------------
@@ -69,7 +67,7 @@ Chains of the user-level analysis programs:
   
 
 
-************************ (A) ************************
+************************ (Test) ************************
 The original chain (2002) for muon AFB analysis consists of:
 -- main program                ./Test.cxx
 -- histogramming               ./ROBOL.cxx
@@ -84,7 +82,7 @@ Running instructions:
      make test0-stop
      make Plot1
      
-************************ (B1) **********************************
+************************ (ProdZinv) **********************************
 Analysis chain of febr. 2014, (febr 2015), 
 for ee->nu+nu+gamma process (invisible Z width), Paris 2014,
 http://nz42.ifj.edu.pl/_media/user/jadach/main/talks/fcceeparis14.pdf
@@ -98,8 +96,8 @@ Running instructions:
    make workZinv-stop
    make Plot2
    
-============================= (X) ================================
-!!!! Obsolete !!!! in KKMCee branch, mooved to KKMChh
+============================= (ProdFSR) ================================
+!!!!!!!!!!!!! Obsolete !!!! in KKMCee branch, mooved to KKMChh
    ProdFSR+ROBOFSR+workFSR+Plots/PlotFSR.cxx
 Analysis chain as in Jan. 2016 to examine effects 
 of switching on/off QED FSR in p p -> l+ l- (with PDFs).

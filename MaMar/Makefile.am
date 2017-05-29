@@ -2,7 +2,7 @@
 # Automake creates Makefile using all information defined below
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
-SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK workFoam0 workKKMC Plots
+SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFoam0 workKKMC Plots
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKfm.la libKKmc.la
 CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
