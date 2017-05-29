@@ -2,7 +2,7 @@
 # Automake creates Makefile using all information defined below
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
-SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK workKKMC Plots
+SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFOKK workFoam0 workKKMC Plots
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKfm.la libKKmc.la
 CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
@@ -73,7 +73,7 @@ KK2f_Libs= \
 	$(top_builddir)/dizet/libDizet.a
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
-bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam MainFOAM MainKKMC
+bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam0 MainFOAM MainKKMC
 AM_FFLAGS = @MY_F77_FLAGS@
 #-------------------------------------------------------------------------
 MainFOAM_SOURCES = MainFOAM.cxx 
@@ -106,9 +106,9 @@ ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
 ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
 ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-ProdFoam_SOURCES =  ProdFoam.cxx KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
-ProdFoam_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-ProdFoam_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdFoam0_SOURCES =  ProdFoam0.cxx KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
+ProdFoam0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+ProdFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 ########################################################################
 ###                   USER PART
@@ -147,6 +147,12 @@ workFSR-stop:
 	(cd ./workFSR; make stop)
 PlotFSR:
 	(cd Plots; make PlotFSR; ./PlotFSR)
+#-----------------------------------------------------------------------
+###   make workFoam0-start
+workFoam0-start: all
+	(cd ./workFoam0; make start)
+workFoam0-stop:
+	(cd ./workFoam0; make stop)
 #-----------------------------------------------------------------------
 ###   make workFOAM-start
 workFOAM-start: all
