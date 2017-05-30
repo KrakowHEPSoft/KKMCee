@@ -28,7 +28,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DFile;
 
 
-void ReaData(char DiskFile[], int imax, double xpar[])
+void ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //
@@ -97,7 +97,7 @@ ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // numbering as in input!!!
 double ypar[jmax];
 for(int j=0;j<jmax;j++) ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
 // KKMC and KKsem initialization
-char *output_file = "./kksem.output";
+const char *output_file = "./kksem.output";
 long stl2 = strlen(output_file);
 long mout =16;
 kk2f_fort_open_(mout,output_file,stl2);

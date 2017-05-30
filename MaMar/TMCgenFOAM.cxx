@@ -85,9 +85,9 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<<" TMCgen::Initialize: m_CMSene="<<m_CMSene<<endl;
   cout<<" TMCgen::Initialize: m_vvmax="<<m_vvmax<<endl;
 
-  char *output_file = "./kkmc.output";
+  const char *output_file = "./kkmc.output";
   long stl2 = strlen(output_file);
-  long mout =16;
+  int mout = 16;
   kk2f_fort_open_(mout,output_file,stl2);
   kk2f_initialize_(ypar);
 
@@ -450,11 +450,11 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
 	double Ene = m_Mka/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
-	m_p1 = { 0, 0 , Pmb, Ene};  // beam
-	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
 	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
-	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
-	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
 	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
@@ -580,11 +580,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
 	double Ene = m_Mka/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
-	m_p1 = { 0, 0 , Pmb, Ene};  // beam
-	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
 	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
-	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
-	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX
 	double dSigAng;
@@ -630,7 +630,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void TMCgenFOAM::ReaData(char DiskFile[], int imax, double xpar[])
+void TMCgenFOAM::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //
@@ -684,4 +684,7 @@ void TMCgenFOAM::ReaData(char DiskFile[], int imax, double xpar[])
   InputFile.close();
 }
 
-
+void TMCgenFOAM::Vdef(double v[4], const double v1, const double v2, const double v3, const double v4)
+  { // define a 4-vector (avoids initialization warnings)
+       v[0] = v1; v[1] = v2; v[2] = v3; v[3] = v4;
+  } 

@@ -64,7 +64,7 @@ void KKplot::Initialize(TFile &DiskFileA){
   for(int j=0;j<30;j++)
     cout<<j+1<<"   "<<m_ypar[j]<<endl;
   //
-  char *output_file = "./kksem.output";
+  const char *output_file = "./kksem.output";
   int stl2 = strlen(output_file);
   int mout =16;
   kk2f_fort_open_(mout,output_file,stl2);

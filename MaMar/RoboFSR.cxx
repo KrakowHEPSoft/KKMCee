@@ -377,7 +377,7 @@ void RoboFSR::MomPrint( TLorentzVector &Vect){
   for ( int k=0; k < 4 ; k++ )   cout << sw2 << Vect[k];
   cout<<endl;
 }
-void RoboFSR::ReaData(char DiskFile[], int imax, double xpar[])
+void RoboFSR::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //

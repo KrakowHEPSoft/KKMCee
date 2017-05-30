@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------
 //  wrappers to f77 routines in KKMC and KKsem
-extern "C" void kk2f_fort_open_( const long&, char*, long);
-extern "C" void kk2f_fort_close_(const long&);
+extern "C" void kk2f_fort_open_( const int&, const char*, int);
+extern "C" void kk2f_fort_close_(const int&);
 //      SUBROUTINE KK2f_Initialize(xpar)
 extern "C" void kk2f_initialize_(double xpar[]);
 //-----------------------
@@ -127,7 +127,8 @@ class TMCgenFOAM :public TMCgen
   double Density5(int, double *);   ///
   double Density3(int, double *);   ///
   /// methods auxiliary
-  void ReaData(char DiskFile[], int imax, double xpar[]);
+  void ReaData(const char*, int, double[]);
+  void Vdef(double[4], const double, const double, const double, const double);
 ////////////////////////////////////////////////////////////////////////////
   ClassDef(TMCgenFOAM,2); // Monte Carlo generator
 };

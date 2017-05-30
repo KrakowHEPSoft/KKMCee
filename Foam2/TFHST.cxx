@@ -160,7 +160,7 @@ double TFHST::GetBinError(int nb){
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-void TFHST::Print(char *ch){
+void TFHST::Print(const char *ch){
   // do nothing
 }
 

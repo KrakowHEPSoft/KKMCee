@@ -60,11 +60,11 @@ class RoboFoam{
 //-------------------------
  public:
 // Methods
-  void Initialize(long &NevTot);
-  void Production(long &iEvent);
+  void Initialize(long&);
+  void Production(long&);
   void KKMC_NORMA();
   void Finalize();
-  void ReaData(char DiskFile[], int imax, double xpar[]);
+  void ReaData(const char*, int, double[]);
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(RoboFoam,1)
 };

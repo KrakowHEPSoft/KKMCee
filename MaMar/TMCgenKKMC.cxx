@@ -77,7 +77,7 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   //=============================================================
   //   opening disk fime for fortran part of code
   m_out = m_ypar[3];
-  char *output_file = "./pro.output";
+  const char *output_file = "./pro.output";
   int sl2 = strlen(output_file);
   kk2f_fort_open_(m_out,output_file,sl2);
 
@@ -181,7 +181,7 @@ void TMCgenKKMC::PyList(int lev)
 }
 */
 ///////////////////////////////////////////////////////////////////////////////
-void TMCgenKKMC::PyGive(char *directive)
+void TMCgenKKMC::PyGive(const char *directive)
 {
 // set pythia directive
   int s1;
@@ -273,7 +273,7 @@ void TMCgenKKMC::GetKFfin(int &KF)
   hepevt_getkffin_( KF);
 }
 
-void TMCgenKKMC::ReaData(char DiskFile[], int imax, double xpar[])
+void TMCgenKKMC::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //

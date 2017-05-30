@@ -31,7 +31,7 @@ class TFHST{                            // histogram
     double GetEntries(){ return m_Entries; }; // Get no. of entries
     int    GetNbin(){    return m_Nb; };      // Get no. of bin nb
     void Print(void);                  // Prints histogram
-    void Print(char*);
+    void Print(const char*);
     void Reset();                      // Reset bin content
 };
 #endif

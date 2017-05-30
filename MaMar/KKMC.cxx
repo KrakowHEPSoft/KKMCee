@@ -61,7 +61,7 @@ void KKMC::Initialize(double ypar[])
   //=============================================================
   //   opening disk fime for fortran part of code
   m_out = ypar[3];
-  char *output_file = "./pro.output";
+  const char *output_file = "./pro.output";
   int sl2 = strlen(output_file);
   kk2f_fort_open_(m_out,output_file,sl2);
 
@@ -137,7 +137,7 @@ void KKMC::PyList(int lev)
   pylist_(lev);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void KKMC::PyGive(char *directive)
+void KKMC::PyGive(const char *directive)
 {
 // set pythia directive
   int s1;

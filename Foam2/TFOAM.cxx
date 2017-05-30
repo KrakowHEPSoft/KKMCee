@@ -2582,7 +2582,7 @@ void TFOAM::PrintCells(void){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void TFOAM::RootPlot2dim(char *filename){
+void TFOAM::RootPlot2dim(const char *filename){
 // Debugging tool which plots cells as triangles or rectangles
 // in C++ in format readible for root 
   ofstream outfile(filename, ios::out);
@@ -2692,7 +2692,7 @@ void TFOAM::RootPlot2dim(char *filename){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void TFOAM::LaTexPlot2dim(char *filename){
+void TFOAM::LaTexPlot2dim(const char *filename){
 // Debugging tool which plots cells as triangles or rectangles
 // in the LeTeX picture environment. 
   int     icont = 0;

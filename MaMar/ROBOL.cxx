@@ -413,7 +413,7 @@ void ROBOL::MomPrint( TLorentzVector &Vect){
   for ( int k=0; k < 4 ; k++ )   cout << sw2 << Vect[k];
   cout<<endl;
 }
-void ROBOL::ReaData(char DiskFile[], int imax, double xpar[])
+void ROBOL::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //

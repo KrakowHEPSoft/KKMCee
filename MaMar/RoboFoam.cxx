@@ -183,7 +183,7 @@ void RoboFoam::Finalize()
 ///////////////////////////////////////////////////////////////////////////////
 
 
-void RoboFoam::ReaData(char DiskFile[], int imax, double xpar[])
+void RoboFoam::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////
 //    subprogram reading input data file and packing        //
 //    entries into matrix xpar                              //

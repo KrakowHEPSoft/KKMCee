@@ -77,8 +77,8 @@ class ROBOL{
   }
  public:
 // Methods
-  void Initialize(long &NevTot);
-  void Production(long &iEvent);
+  void Initialize(long&);
+  void Production(long&);
   void KKMC_NORMA();
   void Finalize();
   void PartImport();
@@ -87,7 +87,7 @@ class ROBOL{
   int PartFindStable(const int);
   void PyPrint(const int );
   void MomPrint( TLorentzVector&);
-  void ReaData(char DiskFile[], int imax, double xpar[]);
+  void ReaData(const char*, int, double[]);
 ////////////////////////////////////////////////////////////////////////////
 //                      ClassDef(ROBOL,1)
 };

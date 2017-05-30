@@ -352,11 +352,11 @@ Double_t KKfoam::Density3(int nDim, Double_t *Xarg)
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
 	double Ene = m_Mka/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
-	m_p1 = { 0, 0 , Pmb, Ene};  // beam
-	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+        Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
 	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
-	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
-	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX
 	double dSigAng;
@@ -465,11 +465,11 @@ Double_t KKfoam::Density5(int nDim, Double_t *Xarg)
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
 	double Ene = m_Mka/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
-	m_p1 = { 0, 0 , Pmb, Ene};  // beam
-	m_p2 = { 0, 0 ,-Pmb, Ene};  // beam
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
 	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
-	m_p3 = { Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene}; // final
-	m_p4 = {-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene}; // final
+	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
 	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
@@ -510,6 +510,12 @@ Double_t KKfoam::Density5(int nDim, Double_t *Xarg)
 	return Dist;
 }// Density5
 
+// auxilliary 
+
+void KKfoam::Vdef(double v[4], const double v1, const double v2, const double v3, const double v4) 
+{ // safely define 4-dimensional vector (avoids a warning)
+        v[0] = v1; v[1] = v2; v[2] = v3; v[3] = v4;
+}//Vdef
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

@@ -391,11 +391,11 @@ class TFOAM{
   long GetnCalls(void){return m_nCalls;};           // Get total no of function calls
   long GetnEffev(void){return m_nEffev;};           // Get total no of effective wt=1 events
   // Debug
-  void CheckAll(const int);   // Checks corectness of FOAM structure
-  void PrintCells(void);      // Prints all cells
-  void PrintVertices(void);   // Prints all Vertices
-  void LaTexPlot2dim(char*);  // Generating Latex document drawing FOAM
-  void RootPlot2dim(char*);   // Generating c++ code for drawing FOAM
+  void CheckAll(const int);         // Checks corectness of FOAM structure
+  void PrintCells(void);            // Prints all cells
+  void PrintVertices(void);         // Prints all Vertices
+  void LaTexPlot2dim(const char*);  // Generating Latex document drawing FOAM
+  void RootPlot2dim(const char*);   // Generating c++ code for drawing FOAM
   // Inline
  private:
   double sqr( const double x ){ return x*x;};
@@ -403,7 +403,7 @@ class TFOAM{
   double dmin(double x, double y) {  if(x>y) return y; else return x; }
   long silnia(int n){
     long s=n; for(int i=n-1; i>1; i--) s*=i; if(n==0) s=1; return s;} //factorial
-  void StopM(char* message){
+  void StopM(const char* message){
     cout <<"++++ Exit in TFOAM: "<< message << endl; exit(0);}    //Error message
   //////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef ROOT_DEF

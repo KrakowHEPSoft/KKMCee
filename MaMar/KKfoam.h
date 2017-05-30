@@ -32,7 +32,7 @@ using namespace std;
 
 //------------------------------------------------------------
 //  wrappers to f77 routines in KKMC and KKsem
-extern "C" void kk2f_fort_open_( const int&, char*, int);
+extern "C" void kk2f_fort_open_( const int&, const char*, int);
 extern "C" void kk2f_fort_close_(const int&);
 //      SUBROUTINE KK2f_Initialize(xpar)
 extern "C" void kk2f_initialize_(double xpar[]);
@@ -119,7 +119,7 @@ class KKfoam: public TFoamIntegrand{
  public:
   KKfoam(){;}
   ~KKfoam(){;}
-  KKfoam(const char* Name);
+  KKfoam(const char*);
 public:
   // Interfaces to KKsem integration routines using Gauss method
   void Initialize( double ypar[10000]);
@@ -141,6 +141,8 @@ public:
   Double_t Density3(int, Double_t*);
   Double_t Density5(int, Double_t*);
 
+// auxiliary
+  void Vdef(double[4], const double, const double, const double, const double);
 ////////////////////////////////////////////////////////////////////////////
 };// KKfoam
 

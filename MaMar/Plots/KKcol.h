@@ -32,8 +32,8 @@ using namespace std;
 
 //------------------------------------------------------------
 //  wrappers to f77 routines ik KKMC
-extern "C" void kk2f_fort_open_( const long&, char*, long);
-extern "C" void kk2f_fort_close_(const long&);
+extern "C" void kk2f_fort_open_( const int&, const char*, int);
+extern "C" void kk2f_fort_close_(const int&);
 //      SUBROUTINE KKsem_Initialize(xpar_input)
 extern "C" void kksem_initialize_(double xpar[]);
 //      SUBROUTINE KK2f_Initialize(xpar)

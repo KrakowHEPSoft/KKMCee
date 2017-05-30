@@ -25,7 +25,7 @@ extern "C" void kk2f_initialize_(double xpar[]);
 extern "C" void kk2f_make_();
 extern "C" void kk2f_finalize_();
 extern "C" void kk2f_print1_(    const int&);
-extern "C" void kk2f_fort_open_( const int&, char*, int);
+extern "C" void kk2f_fort_open_( const int&, const char*, int);
 extern "C" void kk2f_fort_close_(const int&);
 ///////////////////////////////////////////////////////////////////////////////
 extern "C" void kk2f_getwt_(     double&, double&);
@@ -42,7 +42,7 @@ extern "C" void kk2f_getwtalter_( int&, double&);
 extern "C" void karlud_getfermions_(double [], double []);
 ///////////////////////////////////////////////////////////////////////////////
 //extern "C" void pylist_(const int&);
-extern "C" void pygive_(char *directive, int s1);
+extern "C" void pygive_(const char *directive, int s1);
 extern "C" void hepevt_getkffin_(  int&);
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -135,9 +135,9 @@ class TMCgenKKMC: public TMCgen
 //  double GetWtAlter(int &);
 ///////////////////////////////////////////////////////////////////////////////
 //  void PyList(int);
-  void PyGive(char *directive);
+  void PyGive(const char *directive);
   void GetKFfin(  int &);
-  void ReaData(char DiskFile[], int imax, double xpar[]);
+  void ReaData(const char*, int, double[]);
 ////////////////////////////////////////////////////////////////////////////
     ClassDef(TMCgenKKMC,2); // Monte Carlo generator
 };
