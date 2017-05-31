@@ -26,9 +26,6 @@ using namespace std;
 #include "TH2.h"
 #include "TMath.h"
 
-#include "TRandom3.h"
-#include "TFoam.h"
-#include "TFoamIntegrand.h"
 
 #include "HisNorm.h"
 
@@ -121,8 +118,10 @@ class KKplot{
 public:
   // Interfaces to KKsem integration routines using Gauss method
   void Initialize(TFile&);
+  void Initialize(double[]);
   void VVplot( TH1 *, int , char [], int, int );
   void Cplot(  TH1 *, int , char [], int, int, double, double);
+  void ReaData(const char*, int, double[]);
 
 ////////////////////////////////////////////////////////////////////////////
 };// KKplot

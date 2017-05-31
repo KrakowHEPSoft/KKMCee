@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-//    make Plot1
+//    make Plot1-run
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -29,8 +29,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // current
-TFile DiskFileA("../workKKMC/histo.root");
-//TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workKKMC/histo.root");
+
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
+
+TFile DiskFileA("../workAFB/rmain.root");
 // archive
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
@@ -39,7 +42,7 @@ TFile DiskFileA("../workKKMC/histo.root");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
-KKplot LibSem;
+KKplot LibSem("KKplot");
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -72,6 +75,7 @@ void KKsemMakeHisto(){
   cout<<"================ KKsemMakeHisto  BEGIN ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   cout<< "KKsemMakeHisto: CMSene  = "<<CMSene<<endl;
  //
   long KF=13; // muon
@@ -183,6 +187,7 @@ void ReMakeMChisto(){
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
 
   //****************************************************************************************
   // Pure MC reprocessing part
@@ -288,6 +293,7 @@ void FigScatA()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   //
   TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
@@ -341,8 +347,8 @@ void FigInfo()
   // renormalize histograms in nanobarns
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   //
   TH1D *hst_nPhAll     = (TH1D*)DiskFileA.Get("hst_nPhAll");
   TH1D *hst_nPhVis     = (TH1D*)DiskFileA.Get("hst_nPhVis");
@@ -416,6 +422,7 @@ void FigVtest()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   //
   TH1D *hst_vTrueCeex2 = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
   TH1D *hst_vXGenCeex2 = (TH1D*)DiskFileA.Get("hst_vXGenCeex2");
@@ -589,6 +596,7 @@ void FigVprod()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
   //
   // KKsem
@@ -705,6 +713,7 @@ void FigCprod()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
   //
   // from KKsem

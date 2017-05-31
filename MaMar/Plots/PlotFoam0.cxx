@@ -29,14 +29,20 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
+//  *** KKMC
+//TFile DiskFileA("../workKKMC/histo.root");
 //
+TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
+//TString XparFile="../workKKMC/workKKMC_95GeV.input";
+
 //TFile DiskFileA("../workAFB/rmain.root");
-TFile DiskFileA("../workAFB/rmain_95GeV.root");
+//TFile DiskFileA("../workAFB/rmain_95GeV.root"); // 100M new
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
-// current
-TFile DiskFileF("../workFOAM/histo.root");
-//TFile DiskFileF("../workFOAM/histo_95GeV_241M.root");
-//
+
+//  *** FOAM
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo_95GeV_241M.root");
+//  *** older FOAM
 //TFile DiskFileF("../workFoam0/rmain.root");
 //TFile DiskFileF("../workFoam0rmain_95GeV_64M.root");
 //
@@ -46,7 +52,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //KKabox LibSem;
 
 ///////////////////////////////////////////////////////////////////////////////////
-KKplot LibSem;
+KKplot LibSem("KKplot");
 
 void HistNormalize(){
   //
@@ -130,6 +136,7 @@ void ReMakeMChisto(){
 
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   // Wide range, vmax<1.
   TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
@@ -251,6 +258,7 @@ void FigVdist()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   //
   TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
@@ -360,6 +368,7 @@ void FigAfb()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
 
 
@@ -464,6 +473,7 @@ void FigAfb2()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
 
   TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
@@ -611,6 +621,7 @@ void FigInfo()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   cout<< " FigInfo:  CMSene="<<CMSene<<endl;
 
   TH1D *hst_weight3  = (TH1D*)DiskFileF.Get("hst_weight3"); // Foam3
@@ -657,8 +668,21 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
-  LibSem.Initialize(DiskFileA);
-
+  /////////////////////////////////////////////////////////
+  LibSem.Initialize(DiskFileA);  // for non-farm case
+  /////////////////////////////////////////////////////////
+  // Reading directly KKMC input (farming)
+  /*
+  double xpar[10001];
+  int jmax = 10000;
+  LibSem.ReaData("../../.KK2f_defaults",     jmax, xpar);  // numbering as in input!!!
+  char dname[100];  sprintf(dname,XparFile);
+  LibSem.ReaData(dname, -jmax, xpar);  // jmax<0 for append mode
+  double CMSene  = xpar[ 1];
+  cout<< "////// Main: CMSene = "<<  CMSene  <<endl;
+  LibSem.Initialize(xpar);  // for non-farm case
+  */
+  //////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam

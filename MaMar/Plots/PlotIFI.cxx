@@ -30,11 +30,17 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
-// current
-TFile DiskFileA("../workKKMC/histo.root");
-//TFile DiskFileA("../workAFB/rmain.root");
+// New
+//TFile  DiskFileA("../workKKMC/histo.root");           // KKMC current
 
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
+//TString XparFile="../workKKMC/workKKMC_95GeV.input";  // KKMC input
+
+// Old
+TFile DiskFileA("../workAFB/rmain.root");  // current
+// Archive
+//TFile DiskFileA("../workAFB/rmain_95GeV.root");  // 100M new
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M"); // obsolete??
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
@@ -43,7 +49,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileTeX;
 
 // Interface to KKplot and some extra plotting facilities
-KKplot LibSem;
+KKplot LibSem("KKplot");
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -80,6 +86,7 @@ void KKsemMakeHisto(){
   cout<<"================ KKsem MakeHisto  BEGIN ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
 
   // initialization of KKsem
   //KKplot LibSem;
@@ -145,6 +152,7 @@ void ReMakeMChisto(){
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
 
   //****************************************************************************************
   // Pure MC reprocessing part
@@ -199,6 +207,7 @@ void FigOldBench()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
   //
   // KKsem
@@ -287,6 +296,7 @@ void TabOldBench()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
   //
   // KKsem
@@ -381,6 +391,7 @@ void FigVdist()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   //
   TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
@@ -415,17 +426,17 @@ void FigVdist()
   vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
   vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
-  CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) Black KKMC_CEEX2, Blue FOAM");
+  CaptT->DrawLatex(0.02,0.95, "#sigma(v_{max}) Black KKMC noIFI, Blue KKsem");
   //====================plot2========================
   cFigVdist->cd(2);
   TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
   Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
-  Hst1_ratio->SetMinimum(0.95);
-  Hst1_ratio->SetMaximum(1.10);
+  //Hst1_ratio->SetMinimum(0.95);
+  //Hst1_ratio->SetMaximum(1.10);
   Hst1_ratio->SetLineColor(kBlue);
   Hst1_ratio->DrawCopy("h");
   //
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
+  CaptT->DrawLatex(0.02,0.95,"#sigma(v_{max}); Ratio KKMC/KKsem, noIFI");
   //====================plot3========================
   //                 dsigma/d(v)
   cFigVdist->cd(3);
@@ -436,11 +447,10 @@ void FigVdist()
   Hst3->SetLineColor(kRed); // red
   Hst3->DrawCopy("h");
   //
-  // KKsem ISR+FSR
-  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
-  vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR
+  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta     KKsem ISR+FSR noIFI
+  vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR noIFI
 
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR),  Red KKMC_CEEX2, Blue FOAM");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (IFI off),  Red KKMC noIFI, Magenta KKsem");
   //====================plot4========================
   cFigVdist->cd(4);
 
@@ -451,7 +461,7 @@ void FigVdist()
   Hst3_ratio->SetTitle(0);
   Hst3_ratio->DrawCopy("h");  // black
 
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR ); Ratio KKMC/FOAM");
+  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (IFI off), Ratio KKMC/KKsem noIFI");
   //----------------------------
   cFigVdist->cd();
   //================================================
@@ -465,6 +475,7 @@ void FigAfb()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
 
   TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
@@ -501,7 +512,7 @@ void FigAfb()
   afbv_ISR2_FSR2->SetLineColor(kRed);      // red
   afbv_ISR2_FSR2->DrawCopy("hsame");       // KKsem AFB(vmax) direct. IFI off
   //
-  CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) (ISR+FSR) Black KKMC, Blue Foam, Red KKsem");
+  CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) Black KKMC-IFIoff, Magenta KKMC-IFIon, Red KKsem");
   //====================plot2========================
   cFigAfb->cd(2);
   TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
@@ -518,8 +529,7 @@ void FigAfb()
   Hst1_diff1->SetLineColor(kRed);
   Hst1_diff1->DrawCopy("hsame");
   //
-  //CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
-  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{Foam}_{FB}, (ISR+FSR) ");
+  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{KKsem}_{FB}, blac IFIon, red IFIoff ");
 
   cFigAfb->cd();
   //================================================
@@ -532,22 +542,26 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
-  cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
-  DiskFileA.ls();
-  cout<<"------------------------Histofile.GetListOfKeys-----------------------------"<<endl;
-  DiskFileA.GetListOfKeys()->Print();
-  cout<<"----------------------------------------------------------------------------"<<endl;
-
   LibSem.Initialize(DiskFileA);
-
+/////////////////////////////////////////////////////////////////////////
+// Reading directly KKMC input (farming)
+/*
+  double xpar[10001];
+  int jmax = 10000;
+  LibSem.ReaData("../../.KK2f_defaults",     jmax, xpar);  // numbering as in input!!!
+  char dname[100];  sprintf(dname,XparFile);
+  LibSem.ReaData(dname, -jmax, xpar);  // jmax<0 for append mode
+  LibSem.Initialize(xpar);  // for non-farm case
+*/
+/////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
   // Some comparisons with KKsem
-  FigVdist();  // sigma(v) and sigma(vmax) KKMC/Foam
-  FigAfb();    // AFB(vmax) KKMC/Foam
+  FigVdist();  // sigma(v) and sigma(vmax) KKMC/KKsem
+  FigAfb();    // AFB(vmax) KKMC/KKsem
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
   FigOldBench();
   TabOldBench();

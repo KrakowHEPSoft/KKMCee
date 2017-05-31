@@ -125,7 +125,7 @@ void KKMC::GetPyParticle( const int j, PartLund &Event)
 void KKMC::Print1()
 {
 // print event using KKMC
-  kk2f_print1_(m_out);  
+  kk2f_print1_(m_out);
 }
 ///////////////////////////////////////////////////////////////////////////////
 void KKMC::PyList(int lev)

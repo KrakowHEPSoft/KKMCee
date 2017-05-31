@@ -27,16 +27,16 @@ Chains of the user-level analysis programs:
 ----------------------------------------------------------------
  Analysis of the IFI contribution to AFB near Z in ee->mumu process
  Version customized for running on PC-farm
+    analysis ./Plots/PlotIFI.cxx, PlotAFB.cxx
  
 ************************ (MainFoam) **********************************
- MainFOAM+TMCgenFOAM+TRobolFOAM+workFOKK/Start.C+Plots/PlotFoam1
  MainFOAM+TMCgenFOAM+TRobolFOAM+workFOAM/Start.C+Plots/PlotFoam !!!
 ----------------------------------------------------------------
  Better new version, with possibility of runing on the farm:
  -- FOAM based MC main prog.:  MainFOAM.cxx
     and shared library of TMCgenFOAM.cxx TRobolFOAM.cxx
  -- work directory: ./workFOKK
- -- analysis: ./Plots/PlotFoam1.cxx, exploiting results of (C)
+ -- analysis: ./Plots/PlotFoam0.cxx, to be transformed into PlotFoam.cxx
  
  
  //////////////////////////////////////////////////////////////////////////

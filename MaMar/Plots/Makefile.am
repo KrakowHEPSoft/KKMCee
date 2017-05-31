@@ -1,4 +1,5 @@
-INCLUDES = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) \
+INCLUDES = -I$(top_srcdir)/KKsem  \
+    -I$(top_srcdir)/MaMar $(all_includes) \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
