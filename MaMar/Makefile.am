@@ -160,12 +160,6 @@ workFOAM-start: all
 workFOAM-stop:
 	(cd ./workFOAM; make stop)
 #-----------------------------------------------------------------------
-###   make workFOKK-start
-workFOKK-start: all
-	(cd ./workFOKK; make start)
-workFOKK-stop:
-	(cd ./workFOKK; make stop)
-#-----------------------------------------------------------------------
 ###   make workKKMC-start
 workKKMC-start: all
 	(cd ./workKKMC; make start)

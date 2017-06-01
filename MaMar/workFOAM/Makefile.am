@@ -26,6 +26,7 @@ start_n: check_all
 	cp ./$(DSET).input ./pro.input
 	$(ROOTEXEC)  -b -q -l ./Start.C
 start:  start_n
+	time ../$(MAIN)&
 stop:
 	$(ROOTEXEC)  -b -q -l ../../MCdev/farming/Stop.C
 cont:
