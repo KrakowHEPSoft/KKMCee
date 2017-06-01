@@ -30,9 +30,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //  *** KKMC
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";
 
 //TFile DiskFileA("../workAFB/rmain.root");

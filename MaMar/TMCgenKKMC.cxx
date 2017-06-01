@@ -86,9 +86,10 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   //*******************//
 
   int NevPrim;
-  kk2f_getxsnormpb_( m_XsNormPb, m_XsErroPb);
-  cout<<" TMCgen::Initialize: m_XsNormPb="<<m_XsNormPb<<endl;
-  cout<<" TMCgen::Initialize: m_XsErroPb="<<m_XsErroPb<<endl;
+  //kk2f_getxsnormpb_( m_XsNormPb, m_XsErroPb);  //   To be called AFTER CALL KK2f_Finalize !!!!!!
+  kk2f_getprimanorma_( m_XsNormPb, NevPrim);     //   Primary Xsection for normalization NANOBARNS ????
+  cout<<"/////// TMCgen::Initialize: m_XsNormPb="<<m_XsNormPb<<endl;
+  cout<<"/////// TMCgen::Initialize: m_XsErroPb="<<m_XsErroPb<<endl;
 
 
   //PyGive("MDCY(113,1)=1;");            // allow rho0 decay
@@ -115,7 +116,13 @@ void TMCgenKKMC::Generate()
 {
   f_NevGen++;
   kk2f_make_();
-  f_TMCgen_NORMA->Fill(-1, m_XsNormPb);    // New style
+//  f_TMCgen_NORMA->Fill(-1, m_XsNormPb/1000);    // does not work
+
+  double XsPrimPb; int NevPrim;
+  //KKMC_generator->GetPrimaNorma(XsPrim, NevPrim);
+  kk2f_getprimanorma_( XsPrimPb, NevPrim);     //   Primary Xsection for normalization NANOBARNS
+  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Pb
+  f_TMCgen_NORMA->SetEntries(NevPrim);
 
 }
 ///////////////////////////////////////////////////////////////////////////////

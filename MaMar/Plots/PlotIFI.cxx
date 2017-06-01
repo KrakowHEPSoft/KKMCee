@@ -31,13 +31,13 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 // New
-//TFile  DiskFileA("../workKKMC/histo.root");           // KKMC current
+TFile  DiskFileA("../workKKMC/histo.root");           // KKMC current
 
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";  // KKMC input
 
 // Old
-TFile DiskFileA("../workAFB/rmain.root");  // current
+//TFile DiskFileA("../workAFB/rmain.root");  // current
 // Archive
 //TFile DiskFileA("../workAFB/rmain_95GeV.root");  // 100M new
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M"); // obsolete??

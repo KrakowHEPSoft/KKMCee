@@ -29,11 +29,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // current
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
 
-TFile DiskFileA("../workAFB/rmain.root");
+//TFile DiskFileA("../workAFB/rmain.root");
 // archive
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
