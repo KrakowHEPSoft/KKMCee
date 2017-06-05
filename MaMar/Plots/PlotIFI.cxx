@@ -238,6 +238,9 @@ void FigOldBench()
 
   HTot_rat_Ceex2->SetMinimum(0.975);
   HTot_rat_Ceex2->SetMaximum(1.100);
+  HTot_rat_Ceex2->SetMinimum(1 -0.0010);  // zoom
+  HTot_rat_Ceex2->SetMaximum(1 +0.0010);  // zoom
+
   HTot_rat_Ceex2->SetStats(0);
   HTot_rat_Ceex2->SetTitle(0);
   HTot_rat_Ceex2->DrawCopy("h");
@@ -268,6 +271,9 @@ void FigOldBench()
   HAfb_diff_Ceex2->SetTitle(0);
   HAfb_diff_Ceex2->SetMinimum(-0.02);
   HAfb_diff_Ceex2->SetMaximum( 0.06);
+  HAfb_diff_Ceex2->SetMinimum(-0.0010);  // zoom
+  HAfb_diff_Ceex2->SetMaximum( 0.0010);  // zoom
+
   HAfb_diff_Ceex2->DrawCopy("h");
   //
   TH1D *HAfb_diff_Ceex2n =(TH1D*)HAfb_vTcPR_Ceex2n->Clone("HAfb_diff_Ceex2n");

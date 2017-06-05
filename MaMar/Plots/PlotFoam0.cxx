@@ -30,13 +30,13 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M"); // obsolete
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";
 
 //TFile DiskFileA("../workAFB/rmain.root");
-TFile DiskFileA("../workAFB/rmain_95GeV.root"); // 100M new
+//TFile DiskFileA("../workAFB/rmain_95GeV.root"); // 100M new
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 
 ////  *** FOAM
@@ -74,6 +74,9 @@ void HistNormalize(){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2") );
+
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n") );
   //
 }
 
@@ -179,9 +182,11 @@ void ReMakeMChisto(){
 void ReMakeMChisto2(){
 	//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeMChisto2  BEGIN  ============================"<<endl;
-//////////////////////////////////////////////////////////////////
-  // Pure KKMC reprocessing part
+  cout<<"================ ReMakeMChisto2  BEGIN ============================"<<endl;
+////////////////////////////////////////////////////////////////////
+// Pure KKMC reprocessing part
+// from bigger scattergram and restricted vmax<0.2
+  //////////////////////////////////////////////////////////////////
     cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
 
     TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -316,8 +321,8 @@ void FigVdist()
   //Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
   //Hst1_ratio->Divide(HST_xmax_Ceex2n);  // divide by Foam direct
   Hst1_ratio->Divide(Htot_xmax_Ceex2n);   // divide by Foam scatt.
-  Hst1_ratio->SetMinimum(0.95);
-  Hst1_ratio->SetMaximum(1.10);
+  //Hst1_ratio->SetMinimum(0.95);
+  //Hst1_ratio->SetMaximum(1.10);
   Hst1_ratio->SetLineColor(kBlue);
   Hst1_ratio->DrawCopy("h");
   //
@@ -575,8 +580,14 @@ void FigTech()
 //------------------------------------------------------------------------
   cout<<" ========================= FigTech =========================== "<<endl;
 
-  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
-  TH1D *afbv_ISR2_FSR2     = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");     // KKsem
+// AFB(vmax)
+  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // AFB FOAM scatt.
+  TH1D *afbv_ISR2_FSR2     = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");     // AFB KKsem
+  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n"); // KKMC AFB(vmax) from scat
+// sigma(vmax)
+  TH1D *Htot2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Htot2_xmax_Ceex2n");  // FOAM scatt.
+  TH1D *vcum_ISR2_FSR2     = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem
+  TH1D *HTot2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2n"); // KKMC sigma(vmax) from scat.
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -594,19 +605,44 @@ void FigTech()
   //                AFB(vmax)
   cFigTech->cd(1);
 
+  TH1D *HstTech_ratio =(TH1D*)Htot2_xmax_Ceex2n->Clone("HstTech_ratio");
+  HstTech_ratio->Divide(HstTech_ratio, vcum_ISR2_FSR2); // sigma(xmax), KKsem/Foam IFIoff
+
+  TH1D *HstTech_ratio2 =(TH1D*)HTot2_vTcPR_Ceex2n->Clone("HstTech_ratio2");
+  HstTech_ratio2->Divide(HstTech_ratio2, vcum_ISR2_FSR2); // sigma(xmax), KKMC/Foam IFIoff
+
+  HstTech_ratio->SetStats(0);
+  HstTech_ratio->SetTitle(0);
+
+
+  HstTech_ratio->SetMinimum(1 -0.0005);  // zoom
+  HstTech_ratio->SetMaximum(1 +0.0005);  // zoom
+  HstTech_ratio->SetLineColor(kGreen);
+  HstTech_ratio->DrawCopy("h");
+  HstTech_ratio2->SetLineColor(kBlue);
+  HstTech_ratio2->DrawCopy("hsame");
+
+
+  CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}): FOAM/KKsem(green), KKMC/KKsem");
+
   //====================plot2========================
   cFigTech->cd(2);
 
   TH1D *HstTech_diff =(TH1D*)Hafb2_xmax_Ceex2n->Clone("HstTech_diff");
-  HstTech_diff->Add(HstTech_diff, afbv_ISR2_FSR2,  1.0, -1.0); // KKMC-Foam IFIoff
+  HstTech_diff->Add(HstTech_diff, afbv_ISR2_FSR2,  1.0, -1.0); // AFB, KKMC-Foam IFIoff
+
+  TH1D *HstTech_diff2 =(TH1D*)HAfb2_vTcPR_Ceex2n->Clone("HstTech_diff2");
+  HstTech_diff2->Add(HstTech_diff2, afbv_ISR2_FSR2,  1.0, -1.0); // AFB, KKMC-Foam IFIoff
 
   HstTech_diff->SetStats(0);
   HstTech_diff->SetTitle(0);
   HstTech_diff->SetMinimum(-0.0005);  // zoom
   HstTech_diff->SetMaximum( 0.0005);  // zoom
+  HstTech_diff->SetLineColor(kGreen);
   HstTech_diff->DrawCopy("h");
+  HstTech_diff2->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem");
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem(green), KKMC-KKsem");
 
   cFigTech->cd();
   //================================================
