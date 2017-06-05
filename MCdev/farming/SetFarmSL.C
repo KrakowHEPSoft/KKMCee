@@ -50,12 +50,8 @@ int SetFarmSL(TString dname = "WORK", int nfarm = 6)
 ///----------------------------
          OutFile<< "#!/bin/bash -l   " <<endl;
          OutFile<< "#SBATCH -J "<<DNAME<<"-"<<i <<endl;
-         OutFile<< "#SBATCH -N 1" <<endl;
-         OutFile<< "#SBATCH --ntasks-per-node 1" <<endl;
-         OutFile<< "#SBATCH --mem 1000" <<endl;
-         OutFile<< "#SBATCH -t 48:00:00 " <<endl;
-         OutFile<< "#SBATCH -p ifj" <<endl;
-         OutFile<< "#SBATCH --output='kkmc.out'" <<endl;
+         OutFile<< "#SBATCH -o slurm.%N.%j.out # STDOUT " <<endl;
+         OutFile<< "#SBATCH -e slurm.%N.%j.err # STDERR" <<endl;
 ///----------------------------
          OutFile<< "#######################################" <<endl;
          OutFile<< "cd "<<DIRi<<endl;
