@@ -1,12 +1,11 @@
 ///----------------------------------------------------------------
 /// Sept 2008, replacement for farmqsubmit c-shell
 /// Arguments: qsubCMD = name of the submit command
-///            queue   = name of the queue
 ///            nfarm   = number of jobs
 /// Note: nfarm may be bigger than no. of subdirs ./farm/*/
 ///----------------------------------------------------------------
 #include<iostream.h>
-int SubmFarmS(TString qsubCMD = "qsub", TString queue = "1h", int nfarm = 6)
+int SubmFarmS(TString qsubCMD = "qsub", int nfarm = 6)
 {
 gROOT->Reset();
 gSystem->Load("../../MCdev/.libs/libMCdev.so");
