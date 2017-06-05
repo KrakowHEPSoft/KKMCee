@@ -59,15 +59,13 @@ sfarm24:	farm-clean check_all
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 ssubmit6:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
-ssubmitall:
-	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
 #########################################################################
 ####   version for CC1 cluster
 SLfarm6:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmSL.C("$(DSET)",6)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 SLubmitall:
-	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",200)' )
 ########################################################################
 farm-gtar:
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
