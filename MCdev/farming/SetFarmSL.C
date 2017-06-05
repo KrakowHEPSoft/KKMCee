@@ -2,7 +2,7 @@
 /// This is upgraded version of sept 2008
 ///----------------------------------------------------------------
 #include<iostream.h>
-int SetFarmS(TString dname = "WORK", int nfarm = 6)
+int SetFarmSL(TString dname = "WORK", int nfarm = 6)
 {
 ///_________________________________________________________________
   cout<<"%%% ================== SetFarm ================== %%%%"<<endl;
