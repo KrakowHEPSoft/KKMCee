@@ -30,8 +30,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 //
+TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M"); // obsolete
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";
 
@@ -40,7 +41,8 @@ TFile DiskFileA("../workKKMC/histo.root");
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root_95GeV_36G");
 //TFile DiskFileF("../workFOAM/histo_95GeV_241M.root");
 
 //  *** older FOAM

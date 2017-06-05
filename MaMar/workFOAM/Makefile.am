@@ -49,6 +49,7 @@ qsubmit6:
 qqsubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",200)' )
 #########################################################################
+####   version for SLURM on NZ42 cluster
 sfarm6:	farm-clean check_all
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",6)' ;)
@@ -61,7 +62,14 @@ ssubmit6:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
 ssubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
-########################################################################
+#########################################################################
+####   version for CC1 cluster
+SLfarm6:	farm-clean start_n
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmSL.C("$(DSET)",6)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+SLubmitall:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("sbatch",200)' )
+#########################################################################
 farm-gtar:
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
 #-----------------------------------------------------------------------
