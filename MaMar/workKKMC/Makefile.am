@@ -1,14 +1,11 @@
 #=======================================================================
 # Invokes all kind of scripts which setup (Start.C) and executes MAIN
-#    make start
-#    make stop
-# Seting up input files/scripts and runing on the PC-farm (batch)
-#    make sfarm6
-#    make ssubmit6
-#    make q-sem
-#    make q-nev
-#    make farm-stop
-#    make combine
+#    make start; make stop
+# Seting up input files/scripts and runing on the NZ42 PC-farm
+#    make sfarm6; make ssubmit6; make q-sem; make q-nev
+#    make farm-stop; make combine
+# Farming under SLURM batch system on CC1
+#    make SLfarm6; make SLsubmitall; ...
 #=======================================================================
 MAIN=MainKKMC
 DSET=workKKMC
@@ -36,11 +33,11 @@ debug:  check_all
 #########################################################################
 ####      NEW UNIVERSAL VERSION tested on the local farm
 #########################################################################
-qfarm6:	farm-clean check_all
-	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+####   version for SLURM on NZ42 cluster ####
+qfarm6:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",6)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-qfarm40:	farm-clean check_all
+qfarm40:	farm-clean start_n
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmQ.C("$(DSET)",40)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
@@ -49,8 +46,7 @@ qsubmit6:
 qqsubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmQ.C("$(subCMD)","$(CLASS)",200)' )
 #########################################################################
-sfarm6:	farm-clean check_all
-	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+sfarm6:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",6)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 sfarm24:	farm-clean check_all
@@ -60,11 +56,14 @@ sfarm24:	farm-clean check_all
 ssubmit6:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
 #########################################################################
-####   version for CC1 cluster
+####   version for CC1 cluster ####
 SLfarm6:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmSL.C("$(DSET)",6)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-SLubmitall:
+SLfarm84:	farm-clean start_n
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmSL.C("$(DSET)",86)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+SLsubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",200)' )
 ########################################################################
 farm-gtar:
@@ -72,14 +71,10 @@ farm-gtar:
 #-----------------------------------------------------------------------
 farm-stop:
 	($(ROOTEXEC)  -b -q -l ../../MCdev/farming/StopFarm.C)
-#-----------------------------------------------------------------------
-run2:
-	(cd ./farm/1/; csh ${DSET}.cmd.1)&
-	(cd ./farm/2/; csh ${DSET}.cmd.2)&
 #--------- cobmine (add) results from several subdirectories -----------
 combine:
 #	($(ROOTSYS)/bin/hadd -f ./histo.root ./farm/*/histo.root)
-	(/usr/bin/hadd -f ./histo.root ./farm/*/histo.root)
+	(hadd -f ./histo.root ./farm/*/histo.root)
 	(cp -p ./farm/1/mcgen.root ./)
 #-----------------------------------------------------------------------
 #---- query
