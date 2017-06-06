@@ -20,7 +20,7 @@ TString semaf   = "START";
 double nevtot   = 1e10;
 //nevtot = 2e6;
 double nevgrp   = 2e5; // 200k
-nevgrp = 1e6;
+nevgrp = 5e5;
 ///------------------------------------------------------------------
 SemFile.cd();
 TSemaf *Semafor = new TSemaf(semaf, nevtot, nevgrp);
