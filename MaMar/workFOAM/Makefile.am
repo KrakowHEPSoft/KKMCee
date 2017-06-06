@@ -1,4 +1,4 @@
-#=======================================================================
+#=================================================================================
 # Invokes all kind of scripts which setup (Start.C) and executes MAIN
 #    make start; make stop
 # Seting up input files/scripts and runing on the NZ42 PC-farm
@@ -6,7 +6,8 @@
 #    make farm-stop; make combine
 # Farming under SLURM batch system on CC1
 #    make SLfarm6; make SLsubmitall; ...
-#=======================================================================
+# https://www.rc.fas.harvard.edu/resources/documentation/convenient-slurm-commands/
+#==================================================================================
 MAIN=MainFOAM
 DSET=workFOAM
 ## CERN  subCMC=bsub, CLASS= 8nm, 1nh, 1nd, 1nw
