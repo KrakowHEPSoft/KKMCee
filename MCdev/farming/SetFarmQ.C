@@ -77,7 +77,7 @@ int SetFarmQ(TString dname = "WORK", int nfarm = 6)
          TFile SemFile("./semaf.root","UPDATE","Semafor");
          SemFile.cd();
          CheckSem = (TSemaf*)SemFile.Get("Semafor");       //! read semaphore from the disk
-         CheckSem->m_nevgrp = Nfarm/8 *CheckSem->m_nevgrp; //! increase group no. of MC evts.
+         CheckSem->m_nevgrp = )Nfarm/8.0) *CheckSem->m_nevgrp; //! increase group no. of MC evts.
          cout<<"%%% New m_nevgrp    =  "<< CheckSem->m_nevgrp <<endl;
          CheckSem->Write("Semafor",TObject::kOverwrite);   //! write modified semaphore
          SemFile.Write("",TObject::kOverwrite);
