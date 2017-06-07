@@ -75,7 +75,7 @@ PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 PlotBorn_SOURCES = KKplot.cxx HisNorm.cxx PlotBorn.cxx
 PlotBorn_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotBorn_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotBorn_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran -no-install -g
 
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg

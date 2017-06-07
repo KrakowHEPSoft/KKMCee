@@ -47,6 +47,7 @@ void KKplot::Initialize( double xpar[]){
 //  xpar importent from outside, for multi-procesor MC runs (farming)
 //------------------------------------------------------------------------
   cout<<"================ KKplot::initialization2 ==========================="<<endl;
+  if( m_jmax != 10000) cout<<"++++KKplot::Initialize jmax ="<<m_jmax<<endl;
   if( m_jmax != 10000) exit(9);
   for(int j=1; j<=m_jmax; j++) m_ypar[j-1]= xpar[j];
   //
