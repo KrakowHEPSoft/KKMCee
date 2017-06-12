@@ -172,7 +172,7 @@ void ReMakeMChisto(){
   Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
   //  dsigma/dv unlimited cos(theta)
   TH1D *Hpro_vT_Ceex2n;
-  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2n);
+  ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
   Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
 
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
