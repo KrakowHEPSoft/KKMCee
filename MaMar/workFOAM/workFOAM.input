@@ -27,7 +27,7 @@ BeginX
    17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17        0.002e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17        0.006e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-*   17        0.020e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+   17        0.020e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17        0.200e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 ** New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
