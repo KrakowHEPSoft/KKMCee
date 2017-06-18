@@ -19,6 +19,7 @@ class TRobolFOAM : public TRobol {
   virtual void Initialize(ofstream*, TFile*, TFile*);
   virtual void Hbooker();
   virtual void Production(double &);
+  virtual void Finalize();
 /// data members
   double    m_xmin;          // dummy
   double    m_xmax;          // dummy
@@ -28,6 +29,8 @@ class TRobolFOAM : public TRobol {
 
   TH1D   *HST_xx_Ceex2;          //! no streamer
   TH1D   *HST_xx_Ceex2n;         //! no streamer
+
+  TH1D   *HST_tx_Ceex2n;         //! no streamer
 
   TH2D   *SCA_xc_Ceex2;          //! no streamer
   TH2D   *SCA_xc_Ceex2n;         //! no streamer

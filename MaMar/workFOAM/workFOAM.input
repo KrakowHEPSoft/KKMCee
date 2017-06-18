@@ -7,7 +7,7 @@ BeginX
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0           1000      1k   NEVT = number of events
 *    0        1000000      1M   NEVT = number of events
-    0      100000000      100M NEVT = number of events
+    0      100000000      100M NEVT = NOT USED ANY MORE, see Start.C
 * Center-of-mass energy [GeV]
     1        94.30e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
@@ -25,6 +25,10 @@ BeginX
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17        0.002e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17        0.006e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17        0.020e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*   17        0.200e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 ** New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
 ** which overrules KeyGPS for each type of final fermion

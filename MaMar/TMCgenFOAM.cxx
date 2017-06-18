@@ -156,13 +156,14 @@ void TMCgenFOAM::Finalize()
   ///   Finalize MC  run, final printouts, cleaning etc.
   BXOPE(*f_Out);
   BXTXT(*f_Out,"****************************************");
-  BXTXT(*f_Out,"******     TMCgenFOAM::Finalize     ******");
+  BXTXT(*f_Out,"******     TMCgenFOAM::Finalize   ******");
   BXTXT(*f_Out,"****************************************");
   ///------------------------
-  Double_t MCresult, MCerror;
+  Double_t MCresult, MCerror, MCnorm, Errel;
+  f_FoamI->Finalize( MCnorm, Errel);  //!
   f_FoamI->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
   cout << "**************************************************************"<<endl;
-  cout << "**************** Foam::Finalize  ************************"<<endl;
+  cout << "**************** TMCgenFOAM::Finalize  ***********************"<<endl;
   cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
   cout << "**************************************************************"<<endl;
   ///------------------------
@@ -302,12 +303,17 @@ double TMCgenFOAM::Rho_isr(double svar, double vv){
 double TMCgenFOAM::Rho_fsr(double svar, double uu){
 /// ISR+FSR rho-function
 
+//////// from KKsem_uurho(), keyd=302
+//  sprim  = svar*(1-uu)
+//  bilg   = DLOG(sprim/amfin**2)
+//  betf   = Chf2* 2d0*alf1*(bilg-1d0)
+//  delb   = Chf2* alf1*(0.5d0*bilg -1d0  +pi**2/3d0)
+//  delb   = delb -betf/2 *dlog(1-uu)
+//  gamfac = exp(-ceuler*betf)/KKsem_Gamma(1d0+betf)
+//  ffact  = gamfac*exp(delb)
+////////////////
   double alf1   = m_alfpi;
   double gamf   = gamFSR(svar*(1-uu));
-///
-  /////delb   = Chf2* alf1*(0.5d0*bilg -1d0  +pi**2/3d0)
-  /////delb   = delb -betf/2 *dlog(1-uu)
-  /////double gamfac = exp(-m_ceuler*gamf)/TMath::Gamma(1+gamf);
   double delb   = gamf/4 +alf1*(-0.5  +sqr(m_pi)/3.0)
 		         -gamf/2 *log(1-uu);
   double ffact  = Fyfs(gamf)*exp(delb);
@@ -324,11 +330,11 @@ double TMCgenFOAM::Rho_fsr(double svar, double uu){
     delh = uu*(-1 +uu/2);
     rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
   }else if( m_KeyISR == 2){
-/// second order without NLO part
-    /////dels  = betf/2d0 +betf**2/8d0
-    /////delh  = uu*(-1d0+uu/2d0)
-    /////$        +betf*(-0.5d0*uu-0.25d0*uu*(-1d0+0.5d0*uu)*log(1d0-uu))
-    dels = gamf/2 +sqr(gamf)/8;
+/// from KKsem_uurho(), keyd=302, 2nd ord. without NLO part
+//      dels  = betf/2d0 +betf**2/8d0
+//      delh  = uu*(-1d0+uu/2d0)
+//     $        +betf*(-0.5d0*uu-0.25d0*uu*(-1d0+0.5d0*uu)*log(1d0-uu))
+	dels = gamf/2 +sqr(gamf)/8;
     delh = uu*(-1+uu/2.0)
           +gamf*0.5*( -0.5*uu -0.25*uu*(-1.0 +0.5*uu)*log(1-uu));
     rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
@@ -456,20 +462,20 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-	double dSigAngF,dSigAngF1,dSigAngF2, Misr1,Misr2;
+	double dSig_GPSF,dSig_GPSF1,dSig_GPSF2, Misr1,Misr2;
 	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
 	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
-	gps_bornfoam_( 0,m_KFini,m_KFf,Misr1,m_CosTheta,dSigAngF1);
-	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSigAngF2);
-    dSigAngF = gps_makerhofoam_(1.0);
+	gps_bornfoam_( 0,m_KFini,m_KFf,Misr1,m_CosTheta,dSig_GPSF1);
+	gps_bornfoam_( 1,m_KFini,m_KFf,Misr2,m_CosTheta,dSig_GPSF2);
+    dSig_GPSF = gps_makerhofoam_(1.0);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
     if( m_count <1 && fabs(svar/svar2-1)>0.20 ){  // debug
 //    if( m_count <1000 ){  // debug
     	double Rat;
-    	Rat = dSigAngF1/( dSigAngF2 );
+    	Rat = dSig_GPSF1/( dSig_GPSF2 );
     	cout<<" Density5 debug m_count= "<< m_count<< endl;
-    	cout<<" dSigAngF1    = "<< dSigAngF1;
-    	cout<<" dSigAngF2    = "<< dSigAngF2;
+    	cout<<" dSig_GPSF1    = "<< dSig_GPSF1;
+    	cout<<" dSig_GPSF2    = "<< dSig_GPSF2;
     	cout<<" svar/svar2 = "<< svar/svar2;
     	cout<<" Rat = "<<Rat<<endl;
     } //
@@ -482,7 +488,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
    }
 //   **********  end debug **********
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-	Dist *=  dSigAngF *3.0/8.0 *sig0nb;
+	Dist *=  dSig_GPSF *3.0/8.0 *sig0nb;
 
 //	if( Dist < 0 ){
 //		cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
@@ -530,9 +536,13 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
     if( gamf <0 )       return 0.0;      // just in case
-    m_uu = exp(1.0/gamf *log(rr));       // mapping
+//    m_uu = exp(1.0/gamf *log(rr));       // mapping
+//    Dist *= m_uu/rr/gamf;                // Jacobian
+
+    m_uu = exp(1.0/gamf *log(rr))*m_vvmax; // mapping
+    Dist *= m_uu/rr/gamf;                  // Jacobian
+
     if( m_uu < 1e-200 ) return 0.0;      // temporary fix
-    Dist *= m_uu/rr/gamf;                // Jacobian
 // FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);   // remember take care of m_mbeam!!!
   	if( Rho3 <0 ) return 1e-100;
@@ -546,8 +556,12 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double zz = (1-m_vv)*(1-m_uu);
     m_xx = 1-zz;
     m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
+    //!!!
+    if( m_xx > m_vvmax) return 1e-100;
 
-// ******** finally Born factor *******
+// ******** Born in early version *******
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/*
     long KeyFob;
     KeyFob=   10; // BornV_Dizet, with EW and without integration ???
     KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
@@ -555,23 +569,21 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     KeyFob= -100; // KKsem_BornV, NO EW, WITH integration, OK
     KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //  -----------------
-//	kksem_setkeyfob_( KeyFob );
-
+	kksem_setkeyfob_( KeyFob );
+	double xBorn;
+//	Integrated EEX Born from KKMC
+	kksem_makeborn_( svar2, xBorn);
+	Dist *= xBorn/2.0;
+*/
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	//double xBorn;
-	//Integrated Born from KKMC
-	//kksem_makeborn_( svar2, xBorn);
-	//Dist *= xBorn/2.0;
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-//    In BornV_Differential:
+// In BornV_Differential we see:
 //    CALL BornV_InterpoGSW( ABS(KFf),  svar, CosThe)
 //    Born= BornV_Dizet( 1,m_KFini,KFf, svar, CosThe, eps1,eps2,ta,tb)
 //    Born = 4*pi*alfa**2/(3d0*svar )*BornY  *m_gnanob
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //
 	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
-	double dSig_dCos = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
+	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 
 // ******* effective masses *********
 	m_Mka = sqrt(svar2);   // after ISR
@@ -587,25 +599,25 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX
-	double dSigAng;
+	double dSig_GPS;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
-                                               m_p3,m_fin,  m_p4, -m_fin,   dSigAng);
+                                               m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
 //[[[[[[[
 //    double dSigRef = bornv_dizet_( 1, m_KFini, m_KFf, svar2, 0.0 , 0.0, 0.0, 0.0, 0.0); // at cos(theta)=0
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && m_xx>0.6 ){  // debug
-//    if( m_count <100000 && fabs(dSigAng/dSig_dCos -1) >0.10 ){  // debug
-//    if( m_count <10000 && fabs(dSigAng-dSig_dCos)/dSigRef >0.002 ){  // debug
+//    if( m_count <100000 && fabs(dSig_GPS/dSig_EEX -1) >0.10 ){  // debug
+//    if( m_count <10000 && fabs(dSig_GPS-dSig_EEX)/dSigRef >0.002 ){  // debug
 //    	cout<<" ******************** Density3 debug m_count= "<< m_count<< endl;
-//    	cout<<" (dSigAng-dSig_dCos)/ref  = "<< (dSigAng-dSig_dCos)/dSigRef ;
+//    	cout<<" (dSig_GPS-dSig_EEX)/ref  = "<< (dSig_GPS-dSig_EEX)/dSigRef ;
 //   	  // Born+boxes, WARNING Z-box may be modified for KeyZet=2
-//      double dSigAngF0,dSigAngF1;
-//    	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF0);
-//    	cout<<" dSigAngF/dSig_dCos = "<< dSigAngF/dSig_dCos;
-//    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSigAngF1);
-//      double dSigAngFF = gps_makerhofoam_(1.0);
-//      cout<<" // dSigAngFF: "<< (dSigAngFF-dSig_dCos)/dSigRef;
-//      cout<<"    dSigAngF0: "<< (dSigAngF0-dSig_dCos)/dSigRef;
+//      double dSig_GPSF0,dSig_GPSF1;
+//    	gps_bornfoam_( 0,m_KFini,m_KFf,m_Mka,m_CosTheta,dSig_GPSF0);
+//    	cout<<" dSig_GPSF0/dSig_EEX = "<< dSig_GPSF/dSig_EEX;
+//    	gps_bornfoam_( 1,m_KFini,m_KFf,m_Mka,m_CosTheta,dSig_GPSF1);
+//      double dSig_GPSFR = gps_makerhofoam_(1.0);
+//      cout<<" // dSig_GPSFR: "<< (dSig_GPSFR-dSig_EEX)/dSigRef;
+//      cout<<"    dSig_GPSF0: "<< (dSig_GPSF0-dSig_EEX)/dSigRef;
 //  	  cout<<" m_CosTheta= "<< m_CosTheta;
 //      cout<<" m_Mka= "<< m_Mka;
 ////    	cout<<" m_vv= "<< m_vv;
@@ -614,8 +626,8 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //    } // end debug **********
 //
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-//	Dist *=  dSig_dCos *3.0/8.0 *sig0nb;  // Born of EEX
-	Dist *=  dSigAng   *3.0/8.0 *sig0nb;  // Born of CEEX
+	Dist *=  dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+//	Dist *=  dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
 
 	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
 

@@ -32,8 +32,7 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); // obsolete
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M"); // obsolete
+TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); //
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";
 
 //TFile DiskFileA("../workAFB/rmain.root");
@@ -41,8 +40,8 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workAFB/rmain.root_189GeV_100M"); // obsolete
 
 ////  *** FOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
-TFile DiskFileF("../workFOAM/histo.root_95GeV_36G");
+TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_36G");
 //TFile DiskFileF("../workFOAM/histo_95GeV_241M.root");
 
 //  *** older FOAM
@@ -57,10 +56,50 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 KKplot LibSem("KKplot");
 
+void TestNorm(){
+// testing/debugging normalization
+cout<<"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<endl;
+cout<<"<<<<<<<<<<<<<<<<<<<<<<< TestNorm >>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<endl;
+
+TH1D *HST_FOAM_NORMA3 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA3");
+TH1D *HST_tx_Ceex2n   = (TH1D*)DiskFileF.Get("HST_tx_Ceex2n");  // FOAM testing norm.
+
+//int  NevTot = 4.5e6;
+int NevTot  = HST_FOAM_NORMA3->GetEntries();
+//NevTot = 4.5e6;
+double Xsav = HST_FOAM_NORMA3->GetBinContent(0)/NevTot; // NANOBARNS
+cout<<"TestNorm: Xsav = "<<Xsav<<"  NevTot =  "<< NevTot<<endl;
+// first 3 bins only for vmax=0.006
+double SWT =0;
+double SSWT =0;
+//for( int i=0; i <= 3; i++){ // 3 bins v<0.006
+//for( int i=0; i <= 3; i++){ // 100 bins v<0.200
+for( int i=0; i <= 3; i++){ // 100 bins v<0.020
+  SWT  += HST_tx_Ceex2n->GetBinContent(i);
+  SSWT += sqr(HST_tx_Ceex2n->GetBinError(i));
+}//for
+
+double AWT = SWT/NevTot;
+double Sigma = sqrt(SSWT/NevTot-sqr(AWT));
+double Error = Sigma/sqrt(NevTot);
+double Errel = Error/AWT;
+
+double Sigm0 = sqrt(SSWT/NevTot);       // approximation used in ROOT
+double Erre0 = Sigm0/sqrt(NevTot)/AWT;  // approximation used in ROOT
+
+cout<<" TestNorm:  AWT="<< AWT << endl;
+cout<<" TestNorm:  Errel="<< Errel << endl;
+cout<<" TestNorm:  Erre0="<< Erre0 << " ROOT approx. " <<endl;
+cout<<" TestNorm:  ratio="<< Erre0/Errel<<endl;
+cout<<"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<endl;
+
+}//TestNorm
+
+
 void HistNormalize(){
   //
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
-  DiskFileA.ls("");
+  //DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
@@ -95,21 +134,27 @@ void ReMakeMChisto(){
   TH1D *HST_FOAM_NORMA5 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA5");
 
   TH1D *HST_xx_Ceex2n = (TH1D*)DiskFileF.Get("HST_xx_Ceex2n");  // FOAM
+  TH1D *HST_tx_Ceex2n = (TH1D*)DiskFileF.Get("HST_tx_Ceex2n");  // FOAM testing norm.
   TH2D *SCA_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2n");  // FOAM big range
   TH2D *SCA_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCA_xc_Ceex2");   // FOAM big range
   TH2D *SCT_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2n");  // FOAM small range
   TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2");   // FOAM small range
 
   HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
+  HisNorm1(HST_FOAM_NORMA3, HST_tx_Ceex2n );  // normalizing testing norm.
   HisNorm2(HST_FOAM_NORMA3, SCA_xc_Ceex2n );  // normalizing
   HisNorm2(HST_FOAM_NORMA5, SCA_xc_Ceex2 );   // normalizing
   HisNorm2(HST_FOAM_NORMA3, SCT_xc_Ceex2n );  // normalizing
   HisNorm2(HST_FOAM_NORMA5, SCT_xc_Ceex2 );   // normalizing
 
-  // sigma(vmax) direct histogramming
+  // sigma(vmax) direct histogramming (0,1) range
   TH1D *HST_xmax_Ceex2n;
   MakeCumul(HST_xx_Ceex2n,HST_xmax_Ceex2n);
   HST_xmax_Ceex2n->SetName("HST_xmax_Ceex2n");
+  // sigma(vmax) direct histogramming, (0,0.2) range
+  TH1D *HST_txmax_Ceex2n;
+  MakeCumul(HST_tx_Ceex2n,HST_txmax_Ceex2n);
+  HST_txmax_Ceex2n->SetName("HST_txmax_Ceex2n");
 
   // sigma(vmax) and AFB(vmax) from scattergram vmax<1
   int nbMax=0;   // <--- CosThetaMax = 1.0
@@ -591,6 +636,8 @@ void FigTech()
   TH1D *vcum_ISR2_FSR2     = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem
   TH1D *HTot2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2n"); // KKMC sigma(vmax) from scat.
 
+  TH1D *HST_txmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_txmax_Ceex2n");   // FOAM direct
+
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
@@ -613,16 +660,24 @@ void FigTech()
   TH1D *HstTech_ratio2 =(TH1D*)HTot2_vTcPR_Ceex2n->Clone("HstTech_ratio2");
   HstTech_ratio2->Divide(HstTech_ratio2, vcum_ISR2_FSR2); // sigma(xmax), KKMC/Foam IFIoff
 
+  TH1D *HstTech_ratio3 =(TH1D*)HST_txmax_Ceex2n->Clone("HstTech_ratio3"); // FOAM direct
+  HstTech_ratio3->Divide(HstTech_ratio3, vcum_ISR2_FSR2); // sigma(xmax), KKMC/Foam IFIoff
+
   HstTech_ratio->SetStats(0);
   HstTech_ratio->SetTitle(0);
 
 
   HstTech_ratio->SetMinimum(1 -0.0005);  // zoom
   HstTech_ratio->SetMaximum(1 +0.0005);  // zoom
+  //HstTech_ratio->SetMinimum(1 -0.0050);  // zoom
+  //HstTech_ratio->SetMaximum(1 +0.0050);  // zoom
   HstTech_ratio->SetLineColor(kGreen);
   HstTech_ratio->DrawCopy("h");
   HstTech_ratio2->SetLineColor(kBlue);
   HstTech_ratio2->DrawCopy("hsame");
+
+  //HstTech_ratio3->SetLineColor(kRed); // test of normalization
+  //HstTech_ratio3->DrawCopy("hsame");
 
 
   CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}): FOAM/KKsem(green), KKMC/KKsem");
@@ -723,6 +778,7 @@ int main(int argc, char **argv)
   */
   //////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
+  TestNorm();          // special test of normalizaion
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
   ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam

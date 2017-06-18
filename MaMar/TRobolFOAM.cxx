@@ -50,6 +50,8 @@ void TRobolFOAM::Initialize(
     HST_FOAM_NORMA3->SetBinContent(j,  ((TMCgenFOAM*)f_MCgen)->m_xpar[j]  );    // xpar encoded
     HST_FOAM_NORMA5->SetBinContent(j,  ((TMCgenFOAM*)f_MCgen)->m_xpar[j]  );    // xpar encoded
   }
+  HST_FOAM_NORMA3->SetEntries(0); // Important!!!
+  HST_FOAM_NORMA5->SetEntries(0);
 
   cout<< "****> TRobolFOAM::Initialize: finished"<<endl;
 }///Initialize
@@ -71,11 +73,11 @@ void TRobolFOAM::Hbooker()
     hst_weight3 = TH1D_UP("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
     hst_weight5 = TH1D_UP("hst_weight5" ,  "MC weight",      100, -1.0, 2.0);
 
-    // scatergrams
     int nbv = 50;
     HST_xx_Ceex2  = TH1D_UP("HST_xx_Ceex2" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Ceex2n = TH1D_UP("HST_xx_Ceex2n" ,  "dSig/dv",   nbv, 0.0, 1.0);
     nbv = 50;
+    // scatergrams
     int nbc = 50;
     SCA_xc_Ceex2  = TH2D_UP("SCA_xc_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
     SCA_xc_Ceex2n = TH2D_UP("SCA_xc_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
@@ -89,6 +91,10 @@ void TRobolFOAM::Hbooker()
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
     HST_FOAM_NORMA3 = TH1D_UP("HST_FOAM_NORMA3","Normalization and xpar",jmax,0.0,10000.0);
+
+    // additional histo for testing normalization
+    HST_tx_Ceex2n = TH1D_UP("HST_tx_Ceex2n" ,  "dSig/dv",   100, 0.0, 0.2);
+
 ///////////////////////////////////////////////////////////////////////////////////////////
   BXOPE(*f_Out);
   BXTXT(*f_Out,"========================================");
@@ -126,6 +132,7 @@ void TRobolFOAM::Production(double &iEvent)
   CosTheta = MCgen->m_CosTheta;
   hst_weight3->Fill(wt3,1.0);
   HST_xx_Ceex2n->Fill(xx,wt3);
+  HST_tx_Ceex2n->Fill(xx,wt3);
   SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   ///  Fill in special normalization histogram
@@ -136,3 +143,20 @@ void TRobolFOAM::Production(double &iEvent)
 ///
 }///Production
 
+///______________________________________________________________________________
+void TRobolFOAM::Finalize()
+{
+/////////////////////////////////////////////////////////////
+///------------------------
+  TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
+  MCgen->Finalize();
+
+  Double_t MCresult, MCerror, MCnorm, Errel;
+  MCgen->m_Foam3->Finalize(MCnorm, Errel);  // Additional Foam of the user class
+  MCgen->m_Foam3->GetIntegMC( MCresult, MCerror);  //! get MC integral
+  cout << "**************************************************************"<<endl;
+  cout << "**************** TRobolFOAM::Finalize  ***********************"<<endl;
+  cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
+  cout << "**************************************************************"<<endl;
+
+}

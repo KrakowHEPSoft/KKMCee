@@ -18,6 +18,8 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 ///   and fill it with the MC run general parameters
 TString semaf   = "START";
 double nevtot   = 1e10;
+//nevtot = 4500000;
+//nevtot = 16e6;
 //nevtot = 2e6;
 double nevgrp   = 2e5; // 200k
 nevgrp = 5e5;
@@ -30,7 +32,8 @@ SemFile.Close();
 ///*****************************************************************
 ///       Create new instance of RN generator and initialize it
 GenFile.cd();
-TRandom *RN_gen = new TRandom3();       // Central r.n.gen.
+//TRandom *RN_gen = new TRandom3();       // Central r.n.gen. Mersene
+TRandom *RN_gen = new TRandom1();       // Central r.n.gen. Ranlux
 long    iniseed = 54217137;
 RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
