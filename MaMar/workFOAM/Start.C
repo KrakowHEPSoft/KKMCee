@@ -32,8 +32,8 @@ SemFile.Close();
 ///*****************************************************************
 ///       Create new instance of RN generator and initialize it
 GenFile.cd();
-//TRandom *RN_gen = new TRandom3();       // Central r.n.gen. Mersene
-TRandom *RN_gen = new TRandom1();       // Central r.n.gen. Ranlux
+TRandom *RN_gen = new TRandom3();       // Central r.n.gen. Mersene
+//TRandom *RN_gen = new TRandom1();       // Central r.n.gen. Ranlux
 long    iniseed = 54217137;
 RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
