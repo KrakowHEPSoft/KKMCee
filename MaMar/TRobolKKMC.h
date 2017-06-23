@@ -57,9 +57,10 @@ class TRobolKKMC : public TRobol
   TH2D   *sca_vTcPR_Eex2;      //!
   TH2D   *sca_vXcPR_Ceex2;     //!
   TH2D   *sca_vXcPR_Eex2;      //!
-  //
+  /////////////////////////////////////////////////////////////////////
   TH2D   *sct_vTcPR_Ceex2;    //! vvtrue<02 No sstreamer!!!
   TH2D   *sct_vTcPR_Ceex2n;   //! vvtrue<02 No sstreamer!!!
+  TH2D   *sct_vTcPR_EEX2;     //! vvtrue<02 No sstreamer!!!
   //
   TH2D   *sct_vAcPR_Ceex2;    //! Main CEEX2 KKMC , ISR+FSR+IFI
   TH2D   *sct_vAcPR_Ceex2n;   //! IFI  off
