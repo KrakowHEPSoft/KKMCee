@@ -65,12 +65,16 @@ $(top_builddir)/photos/libPhotos.a:
 	(cd $(top_builddir)/photos/; make)
 $(top_builddir)/dizet/libDizet.a:
 	(cd $(top_builddir)/dizet/; make)
+############### extras ##################
+$(top_builddir)/KKsem/libKKsem.a:
+	(cd $(top_builddir)/KKsem/; make)
 ############################################
 KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a
+	$(top_builddir)/dizet/libDizet.a \
+	$(top_builddir)/KKsem/libKKsem.a
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam0 MainFOAM MainKKMC
