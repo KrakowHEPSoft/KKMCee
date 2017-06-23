@@ -782,14 +782,14 @@
 *////////////////////////////////////////////
 *//    Add soft part integrated by hand    //
 *////////////////////////////////////////////
-      fleps = 1d-7
+      fleps = 1d-17
       CALL KKsem_xxrho2(fleps,dum1,beti,soft,dum2)
       IF( xxmin .EQ. 0d0 ) THEN
          chi   = soft*xxmax**beti + result
       ELSE
          chi   = soft*xxmax**beti -soft*xxmin**beti + result
       ENDIF
-******WRITE(6,"(a,4f20.12)") " KKsem_xxchi2: xxmax,chi= ",xxmax,chi,chi/Born
+      WRITE(6,"(a,4f20.12)") " KKsem_xxchi2: xxmax,chi, chi/Born, result= ",xxmax,chi,chi/Born, result
       END
 
       DOUBLE PRECISION FUNCTION KKsem_xxchi2_fun(rr)
@@ -1508,6 +1508,10 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
       DOUBLE PRECISION    BornV_Differential
       DOUBLE PRECISION    BornV_Dizet
       INTEGER             IsGenerated, KFfin, icont,KeyElw,Mode
+c[[[
+      DOUBLE PRECISION    svar0, Born00, costh0
+      DATA icont /0/
+c]]]
 *     ---------------------------------------------------------
       CALL BornV_GetKeyElw(KeyElw)
       Mode = 1
@@ -1523,7 +1527,19 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
             IF( m_KeyQCD .EQ. 0) CALL BornV_SetQCDcor(0d0)
             Born= BornV_Dizet(Mode,m_KFini, KFfin,   svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
             KKsem_DTheTab = KKsem_DTheTab  + 3d0/8d0 *Born0
-c           write(*,*) "=>KKsem_DTheTab: svar,CosThe,Born0,B0/B=",svar,CosThe,Born0,Born0/Born
+c[[[[[
+            icont = icont +1
+            svar0 = m_CMSene**2
+            IF(icont .LE. 20 .AND. (1 - svar/svar0) .LT. 1d-10 ) THEN
+            WRITE(*,*) "============================= KKsem_DTheTab: icont= ",icont
+c            costh0 =0.9
+c            CALL BornV_InterpoGSW(    ABS(KFfin),  svar0, costh0)
+c            Born00 = BornV_Dizet(Mode,m_KFini, KFfin,   svar0, costh0, 0d0,0d0,0d0,0d0) !
+c            write(*,*) "***> KKsem_DTheTab: 1 - svar/svar0 =", 1 - svar/svar0, " costh0=" ,costh0
+c            write(*,*) "***> KKsem_DTheTab: m_CMSene =", m_CMSene, "  Born00 = ", Born00
+            write(*,*) "=>KKsem_DTheTab: svar,CosThe,Born0,B0/B=",svar,CosThe,Born0,Born0/Born
+            ENDIF
+c]]]]]
          ENDIF
       ENDDO
       END
