@@ -46,6 +46,22 @@ extern "C" void gps_bornfoam_(const long&,   const long&,   const long&,
 extern "C" double gps_makerhofoam_(const double&);
 //------------------------------------------------------------
 
+//-----------------------
+//      SUBROUTINE KKsem_Initialize(xpar_input)
+extern "C" void kksem_initialize_(double xpar[]);
+//      SUBROUTINE KKsem_SetKFfin(KFfin)
+extern "C" void kksem_setkffin_( const int& );
+//      SUBROUTINE KKsem_SetKeyFoB(KeyFoB)
+extern "C" void kksem_setkeyfob_( const int& );
+//      SUBROUTINE KKsem_VVplot_vec(key,chak,nbin,xmin,xmax,yy)
+extern "C" void kksem_vvplot_vec_(const int&, char[5], const int&, const double&, const double&, double[]);
+//      SUBROUTINE KKsem_SetCrange(Cmin,Cmax)
+extern "C" void kksem_setcrange_(const double&, const double&);
+//      SUBROUTINE KKsem_SetKeyZet(KeyZet)
+extern "C" void kksem_setkeyzet_( const int& );
+//      SUBROUTINE KKsem_MakeBorn(svar,Born)
+extern "C" void kksem_makeborn_(const double&, double&);
+
 
 class TMCgenFOAM :public TMCgen
 {
@@ -121,6 +137,7 @@ class TMCgenFOAM :public TMCgen
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
   double Rho_ifi(double, double , double );
+  double Soft_yfs(double );
   void MapIFI1( double, double, double, double &, double &);
   void MapIFI2( double, double, double, double &, double &);
   void MapIFI(  double, double, double, double &, double &);
