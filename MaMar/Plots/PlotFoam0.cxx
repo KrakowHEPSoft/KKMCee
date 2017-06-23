@@ -32,7 +32,8 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); //
+TFile DiskFileA("../workKKMC/histo.root"); //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_2.5G"); //
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";
 
 //TFile DiskFileA("../workAFB/rmain.root");
@@ -53,7 +54,12 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 // Interface to KKabox and some extra plotting facilities
 //KKabox LibSem;
 
+
 ///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+double gCMSene;
+char   gTextEne[100];
 KKplot LibSem("KKplot");
 
 void TestNorm(){
@@ -184,10 +190,11 @@ void ReMakeMChisto(){
 //********************************************************************
 // Pure KKMC reprocessing part
   cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
-
+/*
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
+  */
   // Wide range, vmax<1.
   TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
@@ -308,10 +315,7 @@ void FigVdist()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigVdist =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
+
   //
   TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
@@ -362,6 +366,8 @@ void FigVdist()
   //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
   CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) Black KKMC_CEEX2, Blue FOAM");
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
+
   //====================plot2========================
   cFigVdist->cd(2);
   TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
@@ -407,6 +413,8 @@ void FigVdist()
   Hst3_ratio->DrawCopy("h");  // black
 
   CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR ); Ratio KKMC/FOAM");
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
+
   //----------------------------
   cFigVdist->cd();
   //================================================
@@ -418,12 +426,6 @@ void FigAfb()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigAfb =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
-
 
   TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
@@ -470,7 +472,7 @@ void FigAfb()
   //
   CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IF on}(v_{max}):  KKMC=magenta, Foam=green");
   CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}): KKMC=black,  Foam=blue");
-  CaptT->DrawLatex(0.60,0.75,TextEne);
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
   //====================plot2========================
   cFigAfb->cd(2);
 //  TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
@@ -511,6 +513,7 @@ void FigAfb()
   //
   CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max}): Black KKMC, Magenta=FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
 
   cFigAfb->cd();
   //================================================
@@ -523,11 +526,6 @@ void FigAfb2()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigAfb2 =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
 
   TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
   TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
@@ -574,8 +572,7 @@ void FigAfb2()
   //
   CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IFI on}(v_{max})  KKMC=magenta, Foam=green");
   CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}) KKMC=black,  Foam=blue");
-
-  CaptT->DrawLatex(0.60,0.75,TextEne);
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
   //====================plot2========================
   cFigAfb2->cd(2);
 
@@ -655,30 +652,32 @@ void FigTech()
   cFigTech->cd(1);
 
   TH1D *HstTech_ratio =(TH1D*)Htot2_xmax_Ceex2n->Clone("HstTech_ratio");
-  HstTech_ratio->Divide(HstTech_ratio, vcum_ISR2_FSR2); // sigma(xmax), KKsem/Foam IFIoff
+  HstTech_ratio->Divide(HstTech_ratio, vcum_ISR2_FSR2); // sigma(xmax),   Foam/KKsem IFIoff
 
   TH1D *HstTech_ratio2 =(TH1D*)HTot2_vTcPR_Ceex2n->Clone("HstTech_ratio2");
-  HstTech_ratio2->Divide(HstTech_ratio2, vcum_ISR2_FSR2); // sigma(xmax), KKMC/Foam IFIoff
+  HstTech_ratio2->Divide(HstTech_ratio2, vcum_ISR2_FSR2); // sigma(xmax), KKMC/KKsem IFIoff
 
   TH1D *HstTech_ratio3 =(TH1D*)HST_txmax_Ceex2n->Clone("HstTech_ratio3"); // FOAM direct
-  HstTech_ratio3->Divide(HstTech_ratio3, vcum_ISR2_FSR2); // sigma(xmax), KKMC/Foam IFIoff
+  HstTech_ratio3->Divide(HstTech_ratio3, vcum_ISR2_FSR2); // sigma(xmax), Foam/KKsem IFIoff
 
   HstTech_ratio->SetStats(0);
   HstTech_ratio->SetTitle(0);
 
 
-  HstTech_ratio->SetMinimum(1 -0.0005);  // zoom
-  HstTech_ratio->SetMaximum(1 +0.0005);  // zoom
+  HstTech_ratio->SetMinimum(1 -0.0007);  // zoom
+  HstTech_ratio->SetMaximum(1 +0.0007);  // zoom
   //HstTech_ratio->SetMinimum(1 -0.0050);  // zoom
   //HstTech_ratio->SetMaximum(1 +0.0050);  // zoom
-  HstTech_ratio->SetLineColor(kGreen);
+  //HstTech_ratio->SetMinimum(1 -0.050);  // zoom
+  //HstTech_ratio->SetMaximum(1 +0.050);  // zoom
+  HstTech_ratio->SetLineColor(kGreen);  // Foam/KKsem IFIoff
   HstTech_ratio->DrawCopy("h");
-  HstTech_ratio2->SetLineColor(kBlue);
+
+  HstTech_ratio2->SetLineColor(kBlue);  // KKMC/KKsem IFIoff
   HstTech_ratio2->DrawCopy("hsame");
 
-  //HstTech_ratio3->SetLineColor(kRed); // test of normalization
-  //HstTech_ratio3->DrawCopy("hsame");
-
+  HstTech_ratio3->SetLineColor(kRed);   // testing norm. Foam/KKsem
+  HstTech_ratio3->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}): FOAM/KKsem(green), KKMC/KKsem");
 
@@ -695,11 +694,14 @@ void FigTech()
   HstTech_diff->SetTitle(0);
   HstTech_diff->SetMinimum(-0.0005);  // zoom
   HstTech_diff->SetMaximum( 0.0005);  // zoom
+  //HstTech_diff->SetMinimum(-0.005);  // zoom
+  //HstTech_diff->SetMaximum( 0.005);  // zoom
   HstTech_diff->SetLineColor(kGreen);
   HstTech_diff->DrawCopy("h");
   HstTech_diff2->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem(green), KKMC-KKsem");
+  CaptT->DrawLatex(0.60,0.75,gTextEne);
 
   cFigTech->cd();
   //================================================
@@ -712,11 +714,6 @@ void FigInfo()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigInfo =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  cout<< " FigInfo:  CMSene="<<CMSene<<endl;
 
   TH1D *hst_weight3  = (TH1D*)DiskFileF.Get("hst_weight3"); // Foam3
   TH1D *hst_weight5  = (TH1D*)DiskFileF.Get("hst_weight5"); // Foam5
@@ -739,7 +736,7 @@ void FigInfo()
   // MC v-true direct
   TH1D *Hst1 = hst_weight3;  //  weight of Foam
   //
-  //Hst1->SetStats(0);
+  Hst1->SetStats(0);
   Hst1->SetTitle(0);
   Hst1->DrawCopy("h");
 
@@ -776,6 +773,11 @@ int main(int argc, char **argv)
   cout<< "////// Main: CMSene = "<<  CMSene  <<endl;
   LibSem.Initialize(xpar);  // for non-farm case
   */
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  gCMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  gCMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
+  sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
+
   //////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
   TestNorm();          // special test of normalizaion
