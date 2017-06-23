@@ -631,8 +631,8 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
 /////////////////////////////////////////////////////////////////
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-	Dist *=  dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
-//	Dist *=  dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
+//	Dist *=  dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+	Dist *=  dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
 //[[[
 //	Dist *=  dSig_EEX0  *sig0nb/2.0;  // EEX Born form cosTheta=0  only for 10GeV
 //	Dist *=  sigBornEEX/2.0;          // KKsem integrated over cos(theta), 1//2 compenstes Jacobian
@@ -641,7 +641,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 /////////////////////////////////////////////////////////////////
 //    double dSigRef = bornv_dizet_( 1, m_KFini, m_KFf, svar2, 0.0 , 0.0, 0.0, 0.0, 0.0); // at cos(theta)=0
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
-      if( m_count <10000 ){  // debug
+      if( m_count <1000 ){  // debug
 //      if( m_count <10000 && m_xx<1e-14 ){  // debug
 //    if( m_count <100000 && fabs(dSig_GPS/dSig_EEX -1) >0.10 ){  // debug
 //    if( m_count <10000 && fabs(dSig_GPS-dSig_EEX)/dSigRef >0.002 ){  // debug
