@@ -789,7 +789,7 @@
       ELSE
          chi   = soft*xxmax**beti -soft*xxmin**beti + result
       ENDIF
-      WRITE(6,"(a,4f20.12)") " KKsem_xxchi2: xxmax,chi, chi/Born, result= ",xxmax,chi,chi/Born, result
+****** WRITE(6,"(a,4f20.12)") " KKsem_xxchi2: xxmax,chi, chi/Born, result= ",xxmax,chi,chi/Born, result
       END
 
       DOUBLE PRECISION FUNCTION KKsem_xxchi2_fun(rr)
@@ -1528,17 +1528,17 @@ c]]]
             Born= BornV_Dizet(Mode,m_KFini, KFfin,   svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
             KKsem_DTheTab = KKsem_DTheTab  + 3d0/8d0 *Born0
 c[[[[[
-            icont = icont +1
-            svar0 = m_CMSene**2
-            IF(icont .LE. 20 .AND. (1 - svar/svar0) .LT. 1d-10 ) THEN
-            WRITE(*,*) "============================= KKsem_DTheTab: icont= ",icont
+c            icont = icont +1
+c            svar0 = m_CMSene**2
+c            IF(icont .LE. 20 .AND. (1 - svar/svar0) .LT. 1d-10 ) THEN
+c            WRITE(*,*) "============================= KKsem_DTheTab: icont= ",icont
 c            costh0 =0.9
 c            CALL BornV_InterpoGSW(    ABS(KFfin),  svar0, costh0)
 c            Born00 = BornV_Dizet(Mode,m_KFini, KFfin,   svar0, costh0, 0d0,0d0,0d0,0d0) !
 c            write(*,*) "***> KKsem_DTheTab: 1 - svar/svar0 =", 1 - svar/svar0, " costh0=" ,costh0
 c            write(*,*) "***> KKsem_DTheTab: m_CMSene =", m_CMSene, "  Born00 = ", Born00
-            write(*,*) "=>KKsem_DTheTab: svar,CosThe,Born0,B0/B=",svar,CosThe,Born0,Born0/Born
-            ENDIF
+c            write(*,*) "=>KKsem_DTheTab: svar,CosThe,Born0,B0/B=",svar,CosThe,Born0,Born0/Born
+c            ENDIF
 c]]]]]
          ENDIF
       ENDDO
