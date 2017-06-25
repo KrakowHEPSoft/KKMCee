@@ -37,6 +37,7 @@ class TRobolFOAM : public TRobol {
 
   TH2D   *SCT_xc_Ceex2;          //! no streamer
   TH2D   *SCT_xc_Ceex2n;         //! no streamer
+  TH2D   *SCT_xc_EEX2;           //!
 
   TH1D   *HST_FOAM_NORMA3;       //! no streamer
 ////////////////////////////////////////////////////////////////////////////

@@ -87,6 +87,7 @@ void TRobolFOAM::Hbooker()
     double vmx2= 0.20;
     SCT_xc_Ceex2=  TH2D_UP("SCT_xc_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex2n= TH2D_UP("SCT_xc_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+    SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -135,6 +136,9 @@ void TRobolFOAM::Production(double &iEvent)
   HST_tx_Ceex2n->Fill(xx,wt3);
   SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
+  double WTeex2 = wt3 * MCgen->m_WTmodel[2];
+  SCT_xc_EEX2->Fill(xx,CosTheta,WTeex2);
+
   ///  Fill in special normalization histogram
   double Xnorm = MCgen->m_Xsav3;
   HST_FOAM_NORMA3->Fill(-1, Xnorm);      // Normal*Nevtot, new style
