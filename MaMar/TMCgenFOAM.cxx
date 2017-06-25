@@ -630,9 +630,10 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
 /////////////////////////////////////////////////////////////////
+    double Dist_EEX, Dist_GPS;
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
-//	Dist *=  dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
-	Dist *=  dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
+ 	Dist_EEX =  Dist* dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+	Dist_GPS =  Dist* dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
 //[[[
 //	Dist *=  dSig_EEX0  *sig0nb/2.0;  // EEX Born form cosTheta=0  only for 10GeV
 //	Dist *=  sigBornEEX/2.0;          // KKsem integrated over cos(theta), 1//2 compenstes Jacobian
@@ -641,7 +642,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 /////////////////////////////////////////////////////////////////
 //    double dSigRef = bornv_dizet_( 1, m_KFini, m_KFf, svar2, 0.0 , 0.0, 0.0, 0.0, 0.0); // at cos(theta)=0
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
-      if( m_count <1000 ){  // debug
+      if( m_count <100 ){  // debug
 //      if( m_count <10000 && m_xx<1e-14 ){  // debug
 //    if( m_count <100000 && fabs(dSig_GPS/dSig_EEX -1) >0.10 ){  // debug
 //    if( m_count <10000 && fabs(dSig_GPS-dSig_EEX)/dSigRef >0.002 ){  // debug
@@ -686,9 +687,13 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	cout<<" !!! Estimated Dist  = "<< DistEstim << "   "<< DistEstim2 <<endl;
     	cout<<" !!! gami+gamf  = "<< gami+gamf<< " " <<endl;
     } // end debug **********
-//
-
-	return Dist;
+// Model weights
+    m_WTmodel[2] = 0.0;
+    if( Dist_EEX != 0.0){
+    	m_WTmodel[2] = Dist_GPS/Dist_EEX; // Auxiliary model weight
+    }//
+// principal distribution for FOAM
+	return Dist_EEX; // principal distribution for FOAM
 }// Density3
 
 
