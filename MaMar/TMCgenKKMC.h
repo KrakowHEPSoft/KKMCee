@@ -44,7 +44,10 @@ extern "C" void karlud_getfermions_(double [], double []);
 //extern "C" void pylist_(const int&);
 extern "C" void pygive_(const char *directive, int s1);
 extern "C" void hepevt_getkffin_(  int&);
-//
+//////////////////////////////////////////////////////////////////////////////
+
+extern "C" void pseumar_initialize_( const int&, const int&, const int&);
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /*[[[[
@@ -98,6 +101,11 @@ class TMCgenKKMC: public TMCgen
   double    m_xpar[10001];    //   xpar input/output aprameters of KKMC
   double    m_XsNormPb;       //   normalization
   double    m_XsErroPb;       //   normalization
+  // Seeds for Pseumar r.n. in KKMC
+  int       m_ijkl_new;       // = 54217137;
+  int       m_ntot_new;       // = 0;
+  int       m_ntot2_new;      // = 0;
+
   long      m_out;            //   output unit number
  public:
 //------ header of event_lu constructor -------
