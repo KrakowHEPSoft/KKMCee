@@ -121,6 +121,8 @@ class TMCgenFOAM :public TMCgen
   double m_p2[4];         //!
   double m_p3[4];         //!
   double m_p4[4];         //!
+  // Model Weights
+  double m_WTmodel[100];  //!
   long   m_count;
 ///////////////////////////////////////////////////////////
 /// methods obligatory

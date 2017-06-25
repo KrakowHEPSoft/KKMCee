@@ -30,6 +30,10 @@ TMCgenKKMC::TMCgenKKMC(const char* Name):
 // Physics
   m_NevTot = 0;
   m_EvenCounter = 0;
+// Seeds for Pseumar
+  m_ijkl_new  = 54217137;
+  m_ntot_new  = 0;
+  m_ntot2_new = 0;
 
   cout<< "----> TMCgenKKMC::TMCgenFOAM USER Constructor "<<endl;
 }///TMCgenKKMC
@@ -47,10 +51,6 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<< "----> TMCgenKKMC::Initialize, Entering "<<endl;
   ///	      SETTING UP RANDOM NUMBER GENERATOR
   TMCgen::Initialize(  RNgen, OutFile, h_NORMA);
-
-//////////////////////////////////////////////////////////////////////////////
-//void TMCgenKKMC::Initialize(double ypar[])
-//{
 
   m_NevTot = 0;
   m_EvenCounter = 0;
@@ -81,9 +81,15 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   int sl2 = strlen(output_file);
   kk2f_fort_open_(m_out,output_file,sl2);
 
-  //*******************//
+//*******************//
+  m_ijkl_new = RNgen->GetSeed();
+  cout<<" TMCgen::Initialize: r.n. generator seed  = "<< m_ijkl_new <<endl;
+  pseumar_initialize_(m_ijkl_new, m_ntot_new, m_ntot2_new );
+  cout<<" TMCgen::Initialize: PSEUMAR initialized to "<< m_ijkl_new <<endl;
+  /////////////////////////
   kk2f_initialize_(m_ypar);
-  //*******************//
+  /////////////////////////
+//*******************//
 
   int NevPrim;
   //kk2f_getxsnormpb_( m_XsNormPb, m_XsErroPb);  //   To be called AFTER CALL KK2f_Finalize !!!!!!
@@ -98,7 +104,7 @@ void TMCgenKKMC::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   //PyGive("MSTP(41)=1;");               // allow all resoanace decay (2->1)
   //PyGive("MSTP(41)=0;");               // inhibit all resoanace decay (2->1)
 
-  PyGive("MSTU(21)=1;");               // no stop due to errors !!!!
+  //PyGive("MSTU(21)=1;");               // no stop due to errors !!!!
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
   cout<<" TMCgen::Initialize:  xpar filled into h_NORMA  "<<endl;
