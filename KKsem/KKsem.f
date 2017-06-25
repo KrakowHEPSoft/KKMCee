@@ -1510,7 +1510,7 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
       INTEGER             IsGenerated, KFfin, icont,KeyElw,Mode
 c[[[
       DOUBLE PRECISION    svar0, Born00, costh0
-      DATA icont /0/
+cc      DATA icont /0/
 c]]]
 *     ---------------------------------------------------------
       CALL BornV_GetKeyElw(KeyElw)
