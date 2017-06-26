@@ -111,9 +111,9 @@ void TRobolKKMC::Hbooker()
   double CMSene = m_xpar[1];
   int nbin=1000;
   hst_weight  = new TH1D("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
-  hst_Mff     = new TH1D("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
+  //hst_Mff     = new TH1D("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
   hst_weight->Sumw2();
-  hst_Mff->Sumw2();
+  //hst_Mff->Sumw2();
   hst_nPhAll  = new TH1D("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
   hst_nPhVis  = new TH1D("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
   hst_nPhAll->Sumw2();
@@ -381,7 +381,7 @@ void TRobolKKMC::Production(double &iEvent)
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
   hst_weight->Fill(WtMain);              // histogramming
-  hst_Mff->Fill(Mff,WtMain);             // histogramming
+  //hst_Mff->Fill(Mff,WtMain);             // histogramming
   // debug debug debug debug debug debug debug
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;
@@ -412,6 +412,7 @@ void TRobolKKMC::Finalize()
   cout << " KKMC: xSecNb   [nb] = "<<  xSecNb << "  +-  "<< xErrPb/1000 <<endl;
   // *********************************************************************
   // **** examples of normalizing histogram (will not work on farm)  *****
+  /*
   int      nbt  = hst_Mff->GetNbinsX();
   Double_t tmax = hst_Mff->GetXaxis()->GetXmax();
   Double_t tmin = hst_Mff->GetXaxis()->GetXmin();
@@ -426,6 +427,7 @@ void TRobolKKMC::Finalize()
   TH1D *hstN_Mff =new TH1D("hstN_Mff","dsigma/dQ2 [nb/GeV^2]",nbt,tmin,tmax);
   hstN_Mff->Sumw2();
   hstN_Mff->Add(hstN_Mff, Fact);
+  */
   // *********************************************************************
   // **** alternatively HST_KKMC_NORMA is used at later stage (plotting)
   /*

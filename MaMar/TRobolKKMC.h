@@ -31,7 +31,7 @@ class TRobolKKMC : public TRobol
 //  int           m_Nphot;      //! photon multiplicity
   int            m_Nphot;      //! photon multiplicity
   TLorentzVector m_phot[100];  //! photon 4-momenta
-  int           m_Npart;      //! no of particles in Lund/Pythia common
+  int           m_Npart;       //! no of particles in Lund/Pythia common
   //TPartLund m_Event[4000];     //! content of /PYJETS/
   TLorentzVector m_pMu1;       //! muon 4-momenta
   TLorentzVector m_pMu2;       //! muon 4-momenta
@@ -39,7 +39,7 @@ class TRobolKKMC : public TRobol
   //TH1D   *HST_KKMC_NORMA;    // goes to base class
   //
   TH1D   *hst_weight;          //!  No sstreamer!!!
-  TH1D   *hst_Mff;             //!  No sstreamer!!!
+//  TH1D   *hst_Mff;             //!  No sstreamer!!!
   TH1D   *hst_Q2kloe;          //!  No sstreamer!!!
   TH1D   *hst_nPhAll;          //!  No sstreamer!!!
   TH1D   *hst_nPhVis;          //!  No sstreamer!!!
