@@ -33,15 +33,14 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 //
 //TFile DiskFileA("../workKKMC/histo.root"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_3G"); // this is 61M only
-TFile DiskFileA("../workKKMC/histo.root_95GeV.1G"); //
+TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_3G"); //
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_Foam3GPS_3G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_Foam3GPS_1G");
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
 
-//  *** older FOAM and KKMC progs
+//  ****** older FOAM and KKMC progs ******
 //TFile DiskFileF("../workFoam0/rmain.root");
 //TFile DiskFileF("../workFoam0rmain_95GeV_64M.root");
 //
@@ -733,7 +732,7 @@ void FigTech()
   HstTech_diff4->Add(HstTech_diff4, afbv_ISR2_FSR2,  1.0, -1.0);   // AFB, KKMCeex-KKsem IFIoff
   HstTech_diff4->SetLineColor(kMagenta);
 
-  TH1D *HstTech_diff= HstTech_diff0;
+  TH1D *HstTech_diff= HstTech_diff4;
   HstTech_diff->SetStats(0);
   HstTech_diff->SetTitle(0);
   HstTech_diff->SetMinimum(-0.0005);  // zoom
@@ -741,10 +740,10 @@ void FigTech()
   //HstTech_diff->SetMinimum(-0.005);  // zoom
   //HstTech_diff->SetMaximum( 0.005);  // zoom
 
-  HstTech_diff->DrawCopy("h");
-  HstTech_diff1->DrawCopy("hsame");
-  HstTech_diff4->DrawCopy("hsame");
+  HstTech_diff4->DrawCopy("h");
   HstTech_diff2->DrawCopy("hsame");
+  HstTech_diff0->DrawCopy("hsame");
+  HstTech_diff1->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem(green), KKMC-KKsem");
   CaptT->DrawLatex(0.50,0.75,gTextEne);
