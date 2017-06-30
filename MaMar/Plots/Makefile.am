@@ -98,6 +98,8 @@ PlotAFB-run: PlotAFB
 	./PlotAFB
 PlotFoam0-run: PlotFoam0
 	./PlotFoam0
+PlotBorn-run: PlotBorn
+	./PlotBorn
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI
