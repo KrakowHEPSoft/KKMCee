@@ -171,12 +171,16 @@ cout<<"================ FigBorn3 END   ==========================="<<endl;
 void FigBorn1(){
 cout<<"==========================================================="<<endl;
 cout<<"================ FigBorn1 BEGIN ==========================="<<endl;
+int    nPt  = 200;
 double CosTheta = 0; // for some reason 0 no allowed!!!
 CosTheta = 0.01;
 double Emin = 85;
 double Emax = 95;
-Emin=10;
-int    nPt  = 200;
+Emin=30;
+//
+//Emin=0.250;
+//Emax = 10;
+//
 double CMSene;
 //
 double m_p1[4];         //!
@@ -243,13 +247,14 @@ UpperPad->Draw();
 LowerPad->Draw();
 /////////////////////////////////////////////////////
 UpperPad->cd();
-TH1D *Hst1 = hst_sigEEX;
+TH1D *Hst1 = hst_sigGPS;
 Hst1->SetStats(0);
 //Hst1->SetTitle(0);
 Hst1->SetMinimum(0);
-Hst1->SetLineColor(kRed);
+Hst1->SetLineColor(kRed);       //GPS
 Hst1->DrawCopy("h");
-hst_sigGPS->DrawCopy("hsame");
+hst_sigEEX->SetLineColor(kBlue);
+hst_sigEEX->DrawCopy("hsame");  //EEX
 
 TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
 char TextCos[100]; sprintf(TextCos,"cos#theta =%6.2f ", CosTheta);
@@ -265,8 +270,12 @@ dSigRatio->SetLineColor(kRed);                 // FoamEEX2/KKsem IFIoff
 dSigRatio->GetYaxis()->SetLabelSize(0.08); // default is 0.04
 dSigRatio->GetXaxis()->SetLabelSize(0.08); // default is 0.04
 
-dSigRatio->SetMaximum(1+0.0003);
-dSigRatio->SetMinimum(1-0.0003);
+dSigRatio->SetMaximum(1+0.00003);
+dSigRatio->SetMinimum(1-0.00003);
+//dSigRatio->SetMaximum(1+0.0003);
+//dSigRatio->SetMinimum(1-0.0003);
+//dSigRatio->SetMaximum(1+0.3);
+//dSigRatio->SetMinimum(1-0.3);
 dSigRatio->SetStats(0);
 dSigRatio->SetTitle(0);
 dSigRatio->DrawCopy("h");
