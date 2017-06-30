@@ -1538,6 +1538,10 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Propagators, with s-dependent width
       PropGam =    DCMPLX(  1d0/svarX,  0d0)
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
+* Possibility to switch off Z or gamma, etc.
+      IF(m_KeyZet .LE. 0) PropZet =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//     Primitives formfactor-type for construction of spin amplitudes                     //
 *//     (Ve -Hel1*Ae)*(Vf +Hel1*Af) is expanded because of double-vector f-factor          //
@@ -1743,6 +1747,10 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * Propagators, with s-dependent width
       PropGam =    DCMPLX(  1d0/svarX,  0d0)
       PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
+* Possibility to switch off Z or gamma, etc.
+      IF(m_KeyZet .LE. 0) PropZet =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 * Exponentiate Resonance BigLogs according to Greco et al.
       IF(  m_KeyINT .EQ. 2 ) THEN
           PropZet = PropZet * EXP(m_IntReson)
