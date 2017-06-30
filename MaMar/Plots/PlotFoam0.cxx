@@ -32,13 +32,16 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 //
-//TFile DiskFileA("../workKKMC/histo.root"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_3G"); //
+TFile DiskFileA("../workKKMC/histo.root"); // current
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
-TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_32G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
 
 //  ****** older FOAM and KKMC progs ******
 //TFile DiskFileF("../workFoam0/rmain.root");
@@ -693,10 +696,11 @@ void FigTech()
   HstTech_ratio2->SetLineColor(kBlack);                    // KKMCceexn/KKsem IFIoff
 
   TH1D *HstTech_ratio4 =(TH1D*)HTot2_vTcPR_EEX2->Clone("HstTech_ratio4");
-  HstTech_ratio4->Divide(HstTech_ratio4, vcum_ISR2_FSR2); // sigma(xmax), KKMeex/KKsem IFIoff
+  HstTech_ratio4->Divide(HstTech_ratio4, vcum_ISR2_FSR2); // sigma(xmax), KKMCeex/KKsem IFIoff
   HstTech_ratio4->SetLineColor(kMagenta);                 // KKMCeex/KKsem IFIoff
 
-  TH1D *HstTech_ratio = HstTech_ratio0;  // FoamEEX2/KKsem IFIoff magenta
+  TH1D *HstTech_ratio = HstTech_ratio0;   // FoamEEX2/KKsem IFIoff magenta
+
   HstTech_ratio->SetStats(0);
   HstTech_ratio->SetTitle(0);
   HstTech_ratio->SetMinimum(1 -0.0007);  // zoom
@@ -707,9 +711,14 @@ void FigTech()
   //HstTech_ratio->SetMaximum(1 +0.050);  // zoom
   HstTech_ratio->DrawCopy("h");
   HstTech_ratio1->DrawCopy("hsame");      // FoamGPS/KKsem IFIoff   green
-  //HstTech_ratio3->DrawCopy("hsame");       // testing norm. Foam/KKsem
+  //HstTech_ratio3->DrawCopy("hsame");    // testing norm. Foam/KKsem
   HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
   HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
+
+  TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
+  for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
+  hOne->SetLineColor(kRed);
+  hOne->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}): FOAM/KKsem(green), KKMC/KKsem");
 
@@ -744,6 +753,12 @@ void FigTech()
   HstTech_diff2->DrawCopy("hsame");
   HstTech_diff0->DrawCopy("hsame");
   HstTech_diff1->DrawCopy("hsame");
+
+  TH1D *hZero = (TH1D*)HstTech_diff->Clone("hZero");  // unity line
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
+  hZero->SetLineColor(kRed);
+  hZero->DrawCopy("hsame");
+
 
   CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem(green), KKMC-KKsem");
   CaptT->DrawLatex(0.50,0.75,gTextEne);
@@ -854,7 +869,7 @@ int main(int argc, char **argv)
   FigAfb2();
   FigTech();
 // weight distribution
-  //FigInfo();
+  FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
