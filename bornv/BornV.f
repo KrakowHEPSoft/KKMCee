@@ -998,6 +998,11 @@ c         write(*,'(a,5g22.14)') '    swsq= ', m_swsq
 c      ENDIF
 c]]]]]]]]]]]]]
          ENDIF ! (Mode .EQ. 0)
+* Possibility to switch off Z or gamma, etc.
+      IF(m_KeyZet .LE. 0) propz =  DCMPLX(0d0)
+      IF(m_KeyZet .EQ. 9) propa =  DCMPLX(0d0)
+*      IF(m_KeyZet .EQ.-1) propz =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
+      IF(m_KeyZet .EQ.-1) propz =   1d0/dcmplx(svar -m_MZ**2, m_MZ*m_gammz)
 *////////////////////////////////////////////////////////////////////////
 *//             Additional Spin amplitudes in neutrino case            //
 *////////////////////////////////////////////////////////////////////////
