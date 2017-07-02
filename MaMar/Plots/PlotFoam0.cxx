@@ -35,15 +35,15 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_32G");
-TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
 
 //  ****** older FOAM and KKMC progs ******
 //TFile DiskFileF("../workFoam0/rmain.root");
@@ -64,9 +64,17 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff
 ///////////////////////////////////////////////////////////////////////////////////
-double gCMSene, gNevTot, gNevTot2;
+double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
+//
+//int    gNbMax=45;         // gCosTheta = 45/50=0.90
+//double gCosTheta=0.90;    // to be synchronized with gNbMax
+//
+int    gNbMax=50;         // gCosTheta = 45/50=0.90
+double gCosTheta=1.00;    // to be synchronized with gNbMax
+//
 KKplot LibSem("KKplot");
+///////////////////////////////////////////////////////////////////////////////////
 
 void TestNorm(){
 // testing/debugging normalization
@@ -173,7 +181,7 @@ void ReMakeMChisto(){
   MakeCumul(HST_tx_Ceex2n,HST_txmax_Ceex2n);
   HST_txmax_Ceex2n->SetName("HST_txmax_Ceex2n");
 
-  // sigma(vmax) and AFB(vmax) from scattergram vmax<1
+  // sigma(vmax) and AFB(vmax) from KKfoam, vmax<1, 50 bins in costheta
   int nbMax=0;   // <--- CosThetaMax = 1.0
   TH1D                 *Htot_xmax_Ceex2n, *Hafb_xmax_Ceex2n;
   ProjV( SCA_xc_Ceex2n, Htot_xmax_Ceex2n,  Hafb_xmax_Ceex2n, nbMax);  //!!!!
@@ -185,21 +193,20 @@ void ReMakeMChisto(){
   Htot_xmax_Ceex2->SetName("Htot_xmax_Ceex2");
   Hafb_xmax_Ceex2->SetName("Hafb_xmax_Ceex2");
 
-  // sigma(vmax) and AFB(vmax) from scattergram vmax<0.2
-  nbMax=0;   // <--- CosThetaMax = 1.0
+  // sigma(vmax) and AFB(vmax) from KKfoam scat. vmax<0.2, 100 bins in ctheta
+  //gNbMax=45;           // cosThetaMax = 45/50=0.90 Now global variable
   TH1D                *Htot2_xmax_Ceex2n, *Hafb2_xmax_Ceex2n;
-  ProjV( SCT_xc_Ceex2n, Htot2_xmax_Ceex2n,  Hafb2_xmax_Ceex2n, nbMax);  //!!!!
+  ProjV( SCT_xc_Ceex2n, Htot2_xmax_Ceex2n,  Hafb2_xmax_Ceex2n, gNbMax);  //!!!!
   Htot2_xmax_Ceex2n->SetName("Htot2_xmax_Ceex2n");
   Hafb2_xmax_Ceex2n->SetName("Hafb2_xmax_Ceex2n");
-  nbMax=0;   // <--- CosThetaMax = 1.0
   //
   TH1D                *Htot2_xmax_EEX2, *Hafb2_xmax_EEX2;
-  ProjV( SCT_xc_EEX2, Htot2_xmax_EEX2,  Hafb2_xmax_EEX2, nbMax);  //!!!!
+  ProjV( SCT_xc_EEX2, Htot2_xmax_EEX2,  Hafb2_xmax_EEX2, gNbMax);  //!!!!
   Htot2_xmax_EEX2->SetName("Htot2_xmax_EEX2");
   Hafb2_xmax_EEX2->SetName("Hafb2_xmax_EEX2");
   //
   TH1D                *Htot2_xmax_Ceex2, *Hafb2_xmax_Ceex2;
-  ProjV( SCT_xc_Ceex2, Htot2_xmax_Ceex2,  Hafb2_xmax_Ceex2, nbMax);  //!!!!
+  ProjV( SCT_xc_Ceex2, Htot2_xmax_Ceex2,  Hafb2_xmax_Ceex2, gNbMax);  //!!!!
   Htot2_xmax_Ceex2->SetName("Htot2_xmax_Ceex2");
   Hafb2_xmax_Ceex2->SetName("Hafb2_xmax_Ceex2");
 
@@ -217,19 +224,19 @@ void ReMakeMChisto(){
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
   ///****************************************************************************************
-  /// Distributions of v=vTrue with unlimited c=cos(theta)
-  nbMax=0;   // cosThetaMax = 1.0
+  /// Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
+  nbMax=0;            // cosThetaMax = 1.0
   TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
   ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
   HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
   HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
-  nbMax=0;   // cosThetaMax = 1.0
+  //
   TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
   ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
   HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
   HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
   // IFI off
-  nbMax=0;   // cosThetaMax = 1.0
+  //
   TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
   ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
   HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
@@ -269,22 +276,20 @@ void ReMakeMChisto2(){
     cout<<"ReMakeMChisto2 [2]"<<endl;
     ///****************************************************************************************
     ///****************************************************************************************
-    /// Distributions of v=vTrue<vmax with unlimited c=cos(theta)
-    int nbMax=0;   // cosThetaMax = 1.0
+    /// Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
+    //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
     TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
-    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, nbMax);  //!!!!
+    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, gNbMax);  //!!!!
     HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
     HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
     // IFI off
-    nbMax=0;   // cosThetaMax = 1.0
     TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
-    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, nbMax);  //!!!!
+    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, gNbMax);  //!!!!
     HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
     HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
     // IFI off
-    nbMax=0;   // cosThetaMax = 1.0
     TH1D                    *HTot2_vTcPR_EEX2, *HAfb2_vTcPR_EEX2;
-    ProjV( sct_vTcPR_EEX2, HTot2_vTcPR_EEX2,  HAfb2_vTcPR_EEX2, nbMax);  //!!!!
+    ProjV( sct_vTcPR_EEX2, HTot2_vTcPR_EEX2,  HAfb2_vTcPR_EEX2, gNbMax);  //!!!!
     HTot2_vTcPR_EEX2->SetName("HTot2_vTcPR_EEX2");
     HAfb2_vTcPR_EEX2->SetName("HAfb2_vTcPR_EEX2");
 
@@ -316,17 +321,19 @@ void KKsemMakeHisto(){
 // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
+  //double gCosTheta = 0.9; // now glogal variable
+  kksem_setcrange_(-gCosTheta, gCosTheta); // F+B cos(theta) range
   TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
 //-------------------------------------------------
-//    AFB(vmax) for unlimited c=cos(theta)
+//    AFB(vmax) for limited/unlimited c=cos(theta)
 //-------------------------------------------------
-  kksem_setcrange_(0, 25.0/25); // forward cos(theta)
+  kksem_setcrange_(0, gCosTheta); // forward cos(theta)
   TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
   afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
   afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
-  kksem_setcrange_(-1.0, 1.0); // undoing forward,
+  kksem_setcrange_(-1.0, 1.0); // back to default full range
   //
 
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
@@ -727,8 +734,8 @@ void FigTech()
   HstTech_ratio->DrawCopy("h");
   HstTech_ratio1->DrawCopy("hsame");      // FoamGPS/KKsem IFIoff   green
   //HstTech_ratio3->DrawCopy("hsame");    // testing norm. Foam/KKsem
-  //HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
-  //HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
+  HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
+  HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
