@@ -32,15 +32,17 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 //
-TFile DiskFileA("../workKKMC/histo.root"); // current
+//TFile DiskFileA("../workKKMC/histo.root"); // current
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_32G");
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
 
 //  ****** older FOAM and KKMC progs ******
@@ -663,6 +665,19 @@ void FigTech()
 
   TH1D *HST_txmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_txmax_Ceex2n");   // FOAM direct
 
+  // correcting missing phase space beta factor in EEX Bornv_Dizet
+  double Mmu = 0.105, bin,vv, beta;
+  TH1D *HST_bad = Htot2_xmax_EEX2;
+  int Nbin    = HST_bad->GetNbinsX();
+  double vmax = HST_bad->GetXaxis()->GetXmax();
+  for(int i=1; i <= Nbin ; i++) {
+	  bin= HST_bad->GetBinContent(i);
+	  vv = (i*vmax)/Nbin;
+	  beta = sqrt(1-4*sqr(Mmu/gCMSene)/(1-vv) );
+	  cout<< " vv, beta ="<< vv << "   "<<beta<<endl;
+	  HST_bad->SetBinContent(i, bin*beta);
+  }
+
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
@@ -712,8 +727,8 @@ void FigTech()
   HstTech_ratio->DrawCopy("h");
   HstTech_ratio1->DrawCopy("hsame");      // FoamGPS/KKsem IFIoff   green
   //HstTech_ratio3->DrawCopy("hsame");    // testing norm. Foam/KKsem
-  HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
-  HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
+  //HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
+  //HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
@@ -869,7 +884,7 @@ int main(int argc, char **argv)
   FigAfb2();
   FigTech();
 // weight distribution
-  FigInfo();
+  //igInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
