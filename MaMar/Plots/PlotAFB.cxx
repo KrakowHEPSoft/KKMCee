@@ -102,7 +102,7 @@ void ReMakeMChisto(){
   //  without cutoff on c=cos(thetaPRD)
   int nbMax=0;        // cosThetaMax = 1.0, nno cut
   nbMax=50;           // cosThetaMax = 50/50=1.00
-  nbMax=45./50.;      // cosThetaMax = 45/50=0.90
+  nbMax=45;           // cosThetaMax = 45/50=0.90
   TH1D                    *Hsig_vAcPR_Ceex2, *Hafb_vAcPR_Ceex2;
   ProjV( sct_vAcPR_Ceex2,  Hsig_vAcPR_Ceex2,  Hafb_vAcPR_Ceex2, nbMax);
   Hsig_vAcPR_Ceex2->SetName("Hsig_vAcPR_Ceex2");
