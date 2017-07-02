@@ -31,7 +31,7 @@ using namespace std;
 // Archive
 // Archive
 TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
-TFile DiskFileA2("../test0/rmain.root_88GeV_100M");
+TFile DiskFileA2("../workAFB/rmain.root_88GeV_100M");
 TFile DiskFileA3("../workAFB/rmain.root_91GeV_48M");
 TFile DiskFileA4("../workAFB/rmain.root_10GeV_30M");
 /// Current

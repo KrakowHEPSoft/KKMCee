@@ -29,9 +29,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // current
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
+TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
 
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive
