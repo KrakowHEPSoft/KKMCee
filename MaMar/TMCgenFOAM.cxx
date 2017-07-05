@@ -194,72 +194,75 @@ double TMCgenFOAM::gamIFI( double costhe){
 }
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::MapIFI1( double r, double gam, double eps, double &v, double &dJac){
+void TMCgenFOAM::MapPlus( double r, double gam, double eps, double &v, double &dJac){
 // Maping for POSITIVE gam
-// Input r in (0,1) is random number
+// Input r in (0,1) is uniform random number or FOAM vriable
 // Returned v is distributed according to gam*v^{gam-1}
+  double Reps;
   if( fabs(gam*log(eps)) > m_del){
-	  double eg = exp(gam*log(eps));
-	  if( r< eg ){
-		  v = 0;  dJac=1/eg;
+	  Reps = exp(gam*log(eps));
+	  if( r< Reps ){
+		  v = 0;  dJac=1/Reps;
 	  } else {
 		  v = exp((1/gam)*log(r)); // mapping
 		  dJac = 1/(r*gam/v);      // jacobian
 	  }
   } else {
-	  double eg = 1+gam*log(eps);
-	  if( r< eg ){
-		  v = 0; dJac=1/eg;
+	  Reps = 1+gam*log(eps);
+	  if( r< Reps ){
+		  v = 0; dJac=1/Reps;
 	  } else {
 		  v = exp(-(1/gam)*(1-r)); // mapping
 		  dJac = 1/(gam/v);        // jacobian
 	  }
   }
   if( v<0 || v>1) {
-	  cout<<"STOP in TMCgenFOAM::MapIFI: +++ v = "<<v<<endl;
+	  cout<<"STOP in TMCgenFOAM::MapPlus: +++ v = "<<v<<endl;
 	  exit(11);
   }
 }// MapIFI
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::MapIFI2( double r, double gam, double eps, double &v, double &dJac){
+void TMCgenFOAM::MapMinus( double r, double gam, double eps, double &v, double &dJac){
 // Maping for NEGATIVE gam
-// Input r in (0,1) is random number
+// Input r in (0,1) is uniform random number of FOAM variable
 // Returned v is distributed according to gam*v^{gam-1}
 // dJac is normalization (part of Jacobian) factor
-  double r0, eg;
+  double Rat, Reps, R1;
   if( fabs(gam*log(eps)) > m_del){
-	  eg = exp(gam*log(eps));
-	  r0 =eg/(2*eg-1);
-	  if( r< r0 ){
-		  v = 0; dJac= 1/r0;
+	  Reps = exp(gam*log(eps)); // R(eps)
+	  R1   = 2*Reps-1;          // R(1)
+	  Rat  = Reps/R1;
+	  if( r< Rat ){
+		  v = 0; dJac= 1/Rat;
 	  } else {
-		  v = exp( (1/gam)*log( 2*eg -(2*eg-1)*r ) ); // mapping
-		  dJac = (2*eg-1)/(-gam/v*exp(gam*log(v)));   // jacobian
+		  v    = exp( (1/gam)*log( 2*Reps -R1*r ) ); // mapping
+		  dJac = R1/(-gam/v*exp(gam*log(v)));        // jacobian
 	  }
   } else {
-	  eg = 1+gam*log(eps);
-	  r0 = eg/(2*eg-1);
-	  if( r< r0){
-		  v = 0; dJac= 1/r0;
+	  Reps = 1+gam*log(eps);    // R(eps)
+	  R1   = 2*Reps-1;          // R(1)
+	  Rat  = Reps/R1;
+	  if( r< Rat){
+		  v = 0; dJac= 1/Rat;
 	  } else {
-		  v = exp( (1/gam)*(1-r)*(2*eg-1) ); // mapping
-		  dJac = (2*eg-1)/(-gam/v);          // jacobian
+		  v    = exp( (1/gam)*(1-r)*R1 ); // mapping
+		  dJac = R1/(-gam/v);             // jacobian
 	  }
   }
   if( v<0 || v>1) {
-	  cout<<"STOP in TMCgenFOAM::MapIFI2: +++ v = "<<v<<endl;
+	  cout<<"STOP in TMCgenFOAM::MapMinus: +++ v = "<<v<<endl;
 	  exit(11);
   }
-}// MapIFI2
+}// MapMinus
 
 ///------------------------------------------------------------------------
 void TMCgenFOAM::MapIFI( double r, double gam, double eps, double &v, double &R){
 //// mapping for IFI
 if(gam > 0)
-	MapIFI1( r, gam, eps, v, R);
+	MapPlus( r, gam, eps, v, R);
 else
-    MapIFI2( r, gam, eps, v, R);
+    MapMinus( r, gam, eps, v, R);
 }// MapIFI
 
 

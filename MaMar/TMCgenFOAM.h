@@ -140,8 +140,8 @@ class TMCgenFOAM :public TMCgen
   double Rho_fsr(double, double );
   double Rho_ifi(double, double , double );
   double Soft_yfs(double );
-  void MapIFI1( double, double, double, double &, double &);
-  void MapIFI2( double, double, double, double &, double &);
+  void MapPlus(  double, double, double, double &, double &);
+  void MapMinus( double, double, double, double &, double &);
   void MapIFI(  double, double, double, double &, double &);
   double Density5(int, double *);   ///
   double Density3(int, double *);   ///
