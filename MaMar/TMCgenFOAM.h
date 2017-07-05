@@ -137,9 +137,13 @@ class TMCgenFOAM :public TMCgen
   double gamISR( double );
   double gamFSR( double );
   double gamIFI( double );
+
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
   double Rho_ifi(double, double );
+
+  double RhoIFI(double, double );
+
   double Soft_yfs(double );
   void MapPlus(  double, double, double &, double &);
   void MapMinus( double, double, double &, double &);

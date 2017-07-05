@@ -368,6 +368,22 @@ double TMCgenFOAM::Soft_yfs(double gam){
 
 
 ///--------------------------------------------------------------
+double TMCgenFOAM::RhoIFI(double costhe, double uu){
+/// ISR+FSR rho-function
+  double eps = m_eps;
+  double rho, gami;
+  gami   = gamIFI( costhe );
+  if( uu < eps){
+	rho = exp( log(eps)*gami );
+  } else {
+	rho = gami*exp( log(uu)*(gami-1) );
+  }
+  rho *= Fyfs(gami);
+  return rho;
+}//RhoIFI
+
+
+///--------------------------------------------------------------
 double TMCgenFOAM::Rho_ifi(double costhe, double uu){
 /// ISR+FSR rho-function
   double eps = m_eps;
@@ -389,6 +405,7 @@ double TMCgenFOAM::Rho_ifi(double costhe, double uu){
   rho *= Fyfs(gami);
   return rho;
 }//Rho_ifi
+
 
 
 
@@ -455,8 +472,10 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double R1, R2;
     MapIFI( Xarg[3], gamint, m_r1, R1);           // mapping eps-dependent !!!
     MapIFI( Xarg[4], gamint, m_r2, R2);           // mapping eps-dependent !!!
-    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
-    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
+//    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
+//    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
+    double RhoIFI1 = RhoIFI( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
+    double RhoIFI2 = RhoIFI( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
 //
 //    m_r1 =0;
 //    m_r2 =0;
