@@ -55,7 +55,10 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
   m_kDim    =    5;         // No. of dim. for Foam, =2,3 Machine energy spread OFF/ON
   m_nCells  = 2000;         // No. of cells, optional, default=2000
   m_nSampl  =  200;         // No. of MC evts/cell in exploration, default=200
-  m_del     = 0.0001;       // limit for gamma*ln(eps) in IFI mapping
+//  m_del     = 1e-4;         // limit for |gamma*ln(eps)| in IFI mapping
+  m_del     = 1e-6;         // limit for |gamma*ln(eps)| in IFI mapping $$$
+//  m_eps = 1e-6;             // IR regulator
+  m_eps = 1e-8;             // IR regulator, test $$$
   m_Mode    = 5;
 ///////////////////////////////////////////////////
 // debug
@@ -194,10 +197,11 @@ double TMCgenFOAM::gamIFI( double costhe){
 }
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::MapPlus( double r, double gam, double eps, double &v, double &dJac){
+void TMCgenFOAM::MapPlus( double r, double gam, double &v, double &dJac){
 // Maping for POSITIVE gam
 // Input r in (0,1) is uniform random number or FOAM vriable
 // Returned v is distributed according to gam*v^{gam-1}
+  double eps = m_eps;
   double Reps;
   if( fabs(gam*log(eps)) > m_del){
 	  Reps = exp(gam*log(eps));
@@ -223,11 +227,12 @@ void TMCgenFOAM::MapPlus( double r, double gam, double eps, double &v, double &d
 }// MapIFI
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::MapMinus( double r, double gam, double eps, double &v, double &dJac){
+void TMCgenFOAM::MapMinus( double r, double gam, double &v, double &dJac){
 // Maping for NEGATIVE gam
 // Input r in (0,1) is uniform random number of FOAM variable
 // Returned v is distributed according to gam*v^{gam-1}
 // dJac is normalization (part of Jacobian) factor
+  double eps = m_eps;
   double Rat, Reps, R1;
   if( fabs(gam*log(eps)) > m_del){
 	  Reps = exp(gam*log(eps)); // R(eps)
@@ -257,12 +262,12 @@ void TMCgenFOAM::MapMinus( double r, double gam, double eps, double &v, double &
 }// MapMinus
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::MapIFI( double r, double gam, double eps, double &v, double &R){
+void TMCgenFOAM::MapIFI( double r, double gam, double &v, double &R){
 //// mapping for IFI
 if(gam > 0)
-	MapPlus( r, gam, eps, v, R);
+	MapPlus(  r, gam, v, R);
 else
-    MapMinus( r, gam, eps, v, R);
+    MapMinus( r, gam, v, R);
 }// MapIFI
 
 
@@ -363,8 +368,9 @@ double TMCgenFOAM::Soft_yfs(double gam){
 
 
 ///--------------------------------------------------------------
-double TMCgenFOAM::Rho_ifi(double costhe, double uu, double eps){
+double TMCgenFOAM::Rho_ifi(double costhe, double uu){
 /// ISR+FSR rho-function
+  double eps = m_eps;
   double rho, gami;
   gami   = gamIFI( costhe );
   if( fabs(gami*log(eps)) > m_del){
@@ -443,15 +449,14 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
     Dist *= 2.0*cmax;
 
-    // ******** mapping for IFI variaable *******
-    double eps =1e-6;
+    // ******** mapping for IFI variable *******
     double gamint = gamIFI(m_CosTheta);
 //
     double R1, R2;
-    MapIFI( Xarg[3], gamint, eps, m_r1, R1);     // mapping
-    MapIFI( Xarg[4], gamint, eps, m_r2, R2);     // mapping
-    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1, eps);
-    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2, eps);
+    MapIFI( Xarg[3], gamint, m_r1, R1);           // mapping eps-dependent !!!
+    MapIFI( Xarg[4], gamint, m_r2, R2);           // mapping eps-dependent !!!
+    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
+    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
 //
 //    m_r1 =0;
 //    m_r2 =0;

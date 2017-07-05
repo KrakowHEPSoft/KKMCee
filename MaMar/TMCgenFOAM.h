@@ -102,6 +102,7 @@ class TMCgenFOAM :public TMCgen
   int    m_nSampl;        // No. of MC evts/cell in exploration, default=200
   int    m_kDim;          // =2 for Bremss, =3 for energy spread
   int    m_Mode;          // operation mode for Density
+  double m_eps;           // for mapping
   double m_del;           // for mapping
   double m_vvmax;         // for mapping
 ////////////////////////////////////////////////////////////
@@ -138,11 +139,11 @@ class TMCgenFOAM :public TMCgen
   double gamIFI( double );
   double Rho_isr(double, double );
   double Rho_fsr(double, double );
-  double Rho_ifi(double, double , double );
+  double Rho_ifi(double, double );
   double Soft_yfs(double );
-  void MapPlus(  double, double, double, double &, double &);
-  void MapMinus( double, double, double, double &, double &);
-  void MapIFI(  double, double, double, double &, double &);
+  void MapPlus(  double, double, double &, double &);
+  void MapMinus( double, double, double &, double &);
+  void MapIFI(   double, double, double &, double &);
   double Density5(int, double *);   ///
   double Density3(int, double *);   ///
   /// methods auxiliary

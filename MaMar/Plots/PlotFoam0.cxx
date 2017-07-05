@@ -35,15 +35,15 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root"); // current
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_32G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_15G");
-TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_15G");
 
 //  ****** older FOAM and KKMC progs ******
 //TFile DiskFileF("../workFoam0/rmain.root");
