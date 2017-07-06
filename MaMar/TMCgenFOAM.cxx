@@ -308,46 +308,6 @@ double TMCgenFOAM::RhoISR(double svar, double vv){
 
 
 ///------------------------------------------------------------------------
-/// !!!!!!!!!!!!!!! Obsolete !!!!!!!!!!!!!!!!
-double TMCgenFOAM::Rho_isr(double svar, double vv){
-/// ISR rho-function for ISR
-
-  double alf1   = m_alfpi;
-  double gami   = gamISR(svar);
-  //gami = sqr(m_chini)*2*m_alfpi*( log(svar/sqr(m_beam)) -1);
-///
-  double gamfac = Fyfs(gami);
-  double delb   = gami/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
-  double ffact  = gamfac*exp(delb);
-
-  double rho,dels,delh;
-  if(       m_KeyISR == 0){
-/// zero   order exponentiated
-	dels = 0;
-	delh = 0;
-	rho  = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
-  }else if( m_KeyISR == 1){
-/// first  order
-	dels = gami/2;   /// NLO part =0 as for vector boson???
-    delh = vv*(-1 +vv/2);
-    rho = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
-  }else if( m_KeyISR == 2){
-/// second order without NLO part
-    dels = gami/2 +sqr(gami)/8;
-    delh = vv*(-1+vv/2.0)
-          +gami*0.5*(-0.25*(4.0-6.0*vv+3.0*vv*vv)*log(1-vv)-vv);
-    rho = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
-  }else{
-	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
-	  exit(5);
-  }
-///
-  return rho;
-}//Rho_isr
-
-
-
-///------------------------------------------------------------------------
 double TMCgenFOAM::RhoFSR(double svar, double uu){
 /// ISR+FSR rho-function
 
@@ -398,57 +358,6 @@ double TMCgenFOAM::RhoFSR(double svar, double uu){
 }//RhoFSR
 
 
-
-///------------------------------------------------------------------------
-/// !!!!!!!!!!!!!!!! obsolete !!!!!!!!!!!!!!!!!!
-double TMCgenFOAM::Rho_fsr(double svar, double uu){
-/// ISR+FSR rho-function
-
-//////// from KKsem_uurho(), keyd=302
-//  sprim  = svar*(1-uu)
-//  bilg   = DLOG(sprim/amfin**2)
-//  betf   = Chf2* 2d0*alf1*(bilg-1d0)
-//  delb   = Chf2* alf1*(0.5d0*bilg -1d0  +pi**2/3d0)
-//  delb   = delb -betf/2 *dlog(1-uu)
-//  gamfac = exp(-ceuler*betf)/KKsem_Gamma(1d0+betf)
-//  ffact  = gamfac*exp(delb)
-////////////////
-  double alf1   = m_alfpi;
-  double gamf   = gamFSR(svar*(1-uu));
-  double delb   = gamf/4 +alf1*(-0.5  +sqr(m_pi)/3.0)
-		         -gamf/2 *log(1-uu);
-  double ffact  = Fyfs(gamf)*exp(delb);
-
-  double rho,dels,delh;
-  if(       m_KeyISR == 0){
-/// zero   order exponentiated
-	dels = 0;
-	delh = 0;
-	rho  = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
-  }else if( m_KeyISR == 1){
-/// first  order
-	dels = gamf/2;   /// NLO part =0 as for vector boson???
-    delh = uu*(-1 +uu/2);
-    rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
-  }else if( m_KeyISR == 2){
-/// from KKsem_uurho(), keyd=302, 2nd ord. without NLO part
-//      dels  = betf/2d0 +betf**2/8d0
-//      delh  = uu*(-1d0+uu/2d0)
-//     $        +betf*(-0.5d0*uu-0.25d0*uu*(-1d0+0.5d0*uu)*log(1d0-uu))
-	dels = gamf/2 +sqr(gamf)/8;
-    delh = uu*(-1+uu/2.0)
-          +gamf*0.5*( -0.5*uu -0.25*uu*(-1.0 +0.5*uu)*log(1-uu));
-    rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
-  }else{
-	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl;
-	  exit(5);
-  }
-//
-  //if(rho<0) rho=0;
-  return rho;
-}//Rho_fsr
-
-
 ///------------------------------------------------------------------------
 double TMCgenFOAM::Soft_yfs(double gam){
 /// YFS soft limit coefficient for testing
@@ -474,33 +383,6 @@ double TMCgenFOAM::RhoIFI(double costhe, double uu){
 }//RhoIFI
 
 
-///--------------------------------------------------------------
-// !!!!!!!!!!!!!!!! obsolete !!!!!!!!!!!!!
-double TMCgenFOAM::Rho_ifi(double costhe, double uu){
-/// ISR+FSR rho-function
-  double eps = m_eps;
-  double rho, gami;
-  gami   = gamIFI( costhe );
-  if( fabs(gami*log(eps)) > m_del){
-	  if( uu < eps){
-		  rho = exp( log(eps)*gami );
-	  } else {
-		  rho = gami*exp( log(uu)*(gami-1) );
-	  }
-  } else {
-	  if( uu < eps){
-		  rho = 1+ gami*log(eps);
-	  }  else {
-		  rho = gami/uu;
-	  }
-  }
-  rho *= Fyfs(gami);
-  return rho;
-}//Rho_ifi
-
-
-
-
 ///________________________________________________________________________
 double TMCgenFOAM::Density(int nDim, double *Xarg){
 	//
@@ -520,87 +402,49 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
-//	cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
-
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
 
 // ******** mapping for ISR *******
 	double R= Xarg[0];
-	/*
-	double gamiCR,gami,alfi;
-	double CMSene1= sqrt(svar);
-	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
-	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
-	Dist *= m_vv/R/gami ;                  // Jacobian
-	if( gami < 0 )      return 0.0;    // temporary fix
-    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
-    // ISR photonic distribution
-	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
-	*/
 	double gami = gamISR(svar);
 	double dJac;
 	MapPlus(  R, gami, m_vv, dJac);
 	if( m_vv> m_vvmax) return 1e-200;
 	Dist *= dJac * RhoISR(svar,m_vv);
-
-	//Dist *= Rho2;
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
-
 // ******** mapping for FSR *******
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
-
-    /*
-    m_uu = exp(1.0/gamf *log(rr));     // mapping
-    Dist *= m_uu/rr/gamf;              // Jacobian
-	if( gamf < 0 )      return 0.0;    // temporary fix
-    if( m_uu < 1e-200 ) return 0.0;    // temporary fix
-    // FSR photonic distribution
-  	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
-  	*/
-
-
 	MapPlus(  rr, gamf, m_uu, dJac);
 	if( m_uu> m_vvmax) return 1e-200;
  	double Rho3 = RhoFSR(svar2,m_uu);
  	Dist *= dJac*Rho3;
-
     svarCum *= (1-m_uu);
-
     // ******** mapping for polar angle *******
     double cmax = 0.99999;
     m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
     Dist *= 2.0*cmax;
-
     // ******** mapping for IFI variable *******
     double gamint = gamIFI(m_CosTheta);
-//
     double R1, R2;
     MapIFI( Xarg[3], gamint, m_r1, R1);           // mapping eps-dependent !!!
     MapIFI( Xarg[4], gamint, m_r2, R2);           // mapping eps-dependent !!!
-//    double RhoIFI1 = Rho_ifi( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
-//    double RhoIFI2 = Rho_ifi( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
     double RhoIFI1 = RhoIFI( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
     double RhoIFI2 = RhoIFI( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
-//
-//    m_r1 =0;
-//    m_r2 =0;
     double WT1 = R1 *RhoIFI1;
     double WT2 = R2 *RhoIFI2;
     Dist *= WT1*WT2;
-//
 // ******* MC event *******
     double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
     m_xx = 1-zz;
 //    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
 // effective masses
-	m_Mka = sqrt(svar2);   // after ISR
-
+	m_Mka = sqrt(svar2);   // after ISR obsolete !!!
 // =============== Sigm/dOmega from spin amplitudes ===============
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
-	double Ene = m_Mka/2;
+	double Ene = sqrt(svar2)/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
 	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
 	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
@@ -636,10 +480,6 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
 	Dist *=  dSig_GPSF *3.0/8.0 *sig0nb;
 
-//	if( Dist < 0 ){
-//		cout<< " Density5: Dist= "<< Dist <<endl;  ///%%%
-//	}
-
 	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
 
 	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
@@ -655,87 +495,38 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
-
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
 /////////////////////////////////////////////////////////
 // ******** mapping for ISR *******
-//	double gamiCR,gami,alfi;
-//	double CMSene1= sqrt(svar);
-//	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
-	// cout<<" CMSene1,gami= "<< CMSene1 <<"  "<< gami <<endl;
-	//[[[
 	double gami = gamISR(svar);
-	//]]]
 	double R= Xarg[0];
-
-	/*
-	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
-	Dist *= m_vv/R/gami ;                  // Jacobian
-	if( gami < 0 )      return 0.0;    // temporary fix
-    if( m_vv < 1e-200 ) return 0.0;    // temporary fix
-    // ISR photonic distribution
-	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
-	*/
-
 	double dJac,Rho2,Rho3;
 	MapPlus(  R, gami, m_vv, dJac);
 	if( m_vv> m_vvmax) return 1e-200;
 	Rho2 = RhoISR(svar,m_vv);
 	Dist *= dJac *Rho2;
-
-	//[[[
-	double SoftIni = Soft_yfs(gami);
-	//Rho2 =SoftIni*gami*exp((gami-1)*log(m_vv));
-	//]]]
-	//Dist *= Rho2;
-
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
-//	if( m_count<10000) cout<< " Dist[isr]="<<Dist<<endl;
 ///////////////////////////////////////////////////////
 // ******** mapping for FSR *******
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
-    //[[[[[
-    //gamf =  gamFSR(svar);
-    //]]]]]
-    //if( gamf <0 )       return 0.0;      // just in case
-//    m_uu = exp(1.0/gamf *log(rr));       // mapping
-//    Dist *= m_uu/rr/gamf;                // Jacobian
-
-/*
-    m_uu = exp(1.0/gamf *log(rr))*m_vvmax; // mapping
-    Dist *= m_uu/rr/gamf;                  // Jacobian
-    if( m_uu < 1e-200 ) return 0.0;      // temporary fix
-// FSR photonic distribution
-  	double Rho3 = Rho_fsr(svar2,m_uu);   // remember take care of m_mbeam!!!
-  	//[[[
-   	//Rho3 = Rho_fsr(svar,m_uu);
-  	//Rho3 = SoftFin*gamf*exp((gamf-1)*log(m_uu));
-  	//]]]
-  	if( Rho3 <0 ) return 1e-100;
- */
-
 	MapPlus(  rr, gamf, m_uu, dJac);
 	if( m_uu> m_vvmax) return 1e-200;
  	Rho3 = RhoFSR(svar2,m_uu);
  	Dist *= dJac* Rho3;
-
-
     svarCum *= (1-m_uu);
-//	if( m_count<10000) cout<< " Dist[fsr]="<<Dist<<endl;
 ////////////////////////////////////////////////////////////
 // ******** mapping for polar angle *******
     m_CosTheta = -1.0 + 2.0* Xarg[2];
     Dist *= 2.0;
-
+//
     double zz = (1-m_vv)*(1-m_uu);
     m_xx = 1-zz;
     m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
     //!!!
     if( m_xx > m_vvmax) return 1e-100;
-
 // ******** Born in early version *******
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     long KeyFob =0;
@@ -747,7 +538,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //  -----------------
 	kksem_setkeyfob_( KeyFob );
 	double sigBornEEX, sigBornEEX0;
-//	Integrated EEX Born from KKMC
+//***** Integrated EEX Born from KKMC
 	kksem_makeborn_( svar2, sigBornEEX);
 	kksem_makeborn_( svar,  sigBornEEX0); // svar2<-svar
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -758,18 +549,16 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
 	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
-	//[[[[
+//[[[[
 //	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
 //	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0); // svar2->svar
 	double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar2,       0.0, 0.0, 0.0, 0.0, 0.0);
 //]]]
-
 // ******* effective masses *********
-	m_Mka = sqrt(svar2);   // after ISR
-
+	m_Mka = sqrt(svar2);   // after ISR obsolete
 // =============== Sigm/dOmega from spin amplitudes ===============
 // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
-	double Ene = m_Mka/2;
+	double Ene = sqrt(svar2)/2;
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
 	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
 	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
@@ -786,19 +575,16 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
  	Dist_EEX =  Dist* dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
 	Dist_GPS =  Dist* dSig_GPS   *3.0/8.0 *sig0nb;  // Born of CEEX
-//[[[
-//	Dist *=  dSig_EEX0  *sig0nb/2.0;  // EEX Born form cosTheta=0  only for 10GeV
-//	Dist *=  sigBornEEX/2.0;          // KKsem integrated over cos(theta), 1//2 compenstes Jacobian
-//]]]
 	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
 /////////////////////////////////////////////////////////////////
 //    double dSigRef = bornv_dizet_( 1, m_KFini, m_KFf, svar2, 0.0 , 0.0, 0.0, 0.0, 0.0); // at cos(theta)=0
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
       if( m_count <100 ){  // debug
-//      if( m_count <10000 && m_xx<1e-14 ){  // debug
+//    if( m_count <10000 && m_xx<1e-14 ){  // debug
 //    if( m_count <100000 && fabs(dSig_GPS/dSig_EEX -1) >0.10 ){  // debug
 //    if( m_count <10000 && fabs(dSig_GPS-dSig_EEX)/dSigRef >0.002 ){  // debug
     	cout<<" ******************** Density3 debug m_count= "<< m_count<< "  Dist= " << Dist<< endl;
+        double SoftIni = Soft_yfs(gami);
 //    	cout<<" (dSig_GPS-dSig_EEX)/ref  = "<< (dSig_GPS-dSig_EEX)/dSigRef ;
 //   	  // Born+boxes, WARNING Z-box may be modified for KeyZet=2
 //      double dSig_GPSF0,dSig_GPSF1;
@@ -814,7 +600,6 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	double dSig_EEXc = bornv_dizet_( 1, m_KFini, m_KFf, svar2, CosTheta, 0.0, 0.0, 0.0, 0.0);
     	cout<< "dSig_EEXc = "<< dSig_EEXc <<endl;
     	cout<< "dSig_EEX0 = "<< dSig_EEX0 <<endl;
-
     	cout<< "             Sig_EEX0   = "<< dSig_EEX0 *sig0nb <<endl;
   	    cout<< " From KKsem: sigBornEEX = "<< sigBornEEX <<endl;
  	    cout<< " From KKsem: sigBornEEX0= "<< sigBornEEX0 <<endl;
@@ -840,7 +625,9 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	cout<<" !!! Estimated Dist  = "<< DistEstim << "   "<< DistEstim2 <<endl;
     	cout<<" !!! gami+gamf  = "<< gami+gamf<< " " <<endl;
     } // end debug **********
-// Model weights
+//****************************************
+//          Model weights
+//****************************************
     m_WTmodel[2] = 0.0;
     if( Dist_EEX != 0.0){
     	m_WTmodel[2] = Dist_GPS/Dist_EEX; // Auxiliary model weight

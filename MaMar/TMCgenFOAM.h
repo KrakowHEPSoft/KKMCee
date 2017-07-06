@@ -137,11 +137,6 @@ class TMCgenFOAM :public TMCgen
   double gamISR( double );
   double gamFSR( double );
   double gamIFI( double );
-//[[[[[[[[[[[ to be removed
-  double Rho_isr(double, double );
-  double Rho_fsr(double, double );
-  double Rho_ifi(double, double );
-//]]]]]]]]]]
   double RhoFSR(double, double );
   double RhoISR(double, double );
   double RhoIFI(double, double );
