@@ -224,7 +224,7 @@ void TMCgenFOAM::MapPlus( double r, double gam, double &v, double &dJac){
 	  cout<<"STOP in TMCgenFOAM::MapPlus: +++ v = "<<v<<endl;
 	  exit(11);
   }
-}// MapIFI
+}// MapPlus
 
 ///------------------------------------------------------------------------
 void TMCgenFOAM::MapMinus( double r, double gam, double &v, double &dJac){
@@ -272,6 +272,43 @@ else
 
 
 ///------------------------------------------------------------------------
+double TMCgenFOAM::RhoISR(double svar, double vv){
+/// ISR rho-function for ISR
+  double alf1   = m_alfpi;
+  double gami   = gamISR(svar);
+  double gamfac = Fyfs(gami);
+  double delb   = gami/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
+  double ffact  = gamfac*exp(delb);
+//
+  double rho,dels,delh;
+  if(       m_KeyISR == 0){
+/// zero   order exponentiated
+	dels = 0;
+	delh = 0;
+  }else if( m_KeyISR == 1){
+/// first  order
+	dels = gami/2;   /// NLO part =0 as for vector boson???
+    delh = vv*(-1 +vv/2);
+  }else if( m_KeyISR == 2){
+/// second order without NLO part
+    dels = gami/2 +sqr(gami)/8;
+    delh = vv*(-1+vv/2.0)
+          +gami*0.5*(-0.25*(4.0-6.0*vv+3.0*vv*vv)*log(1-vv)-vv);
+  }else{
+	 cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl; exit(5);
+  }
+  if( vv > m_eps){
+     rho = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
+  }else{
+	 rho = ffact* exp( log(m_eps)*(gami) ) *(1 +dels);
+  }
+  return rho;
+}//Rho_ISR
+
+
+
+///------------------------------------------------------------------------
+/// !!!!!!!!!!!!!!! Obsolete !!!!!!!!!!!!!!!!
 double TMCgenFOAM::Rho_isr(double svar, double vv){
 /// ISR rho-function for ISR
 
@@ -309,7 +346,61 @@ double TMCgenFOAM::Rho_isr(double svar, double vv){
 }//Rho_isr
 
 
+
 ///------------------------------------------------------------------------
+double TMCgenFOAM::RhoFSR(double svar, double uu){
+/// ISR+FSR rho-function
+
+//////// from KKsem_uurho(), keyd=302
+//  sprim  = svar*(1-uu)
+//  bilg   = DLOG(sprim/amfin**2)
+//  betf   = Chf2* 2d0*alf1*(bilg-1d0)
+//  delb   = Chf2* alf1*(0.5d0*bilg -1d0  +pi**2/3d0)
+//  delb   = delb -betf/2 *dlog(1-uu)
+//  gamfac = exp(-ceuler*betf)/KKsem_Gamma(1d0+betf)
+//  ffact  = gamfac*exp(delb)
+////////////////
+  double alf1   = m_alfpi;
+  double gamf   = gamFSR(svar*(1-uu));
+  double delb   = gamf/4 +alf1*(-0.5  +sqr(m_pi)/3.0)
+		         -gamf/2 *log(1-uu);
+  double ffact  = Fyfs(gamf)*exp(delb);
+
+  double rho,dels,delh;
+  if(       m_KeyISR == 0){
+/// zero   order exponentiated
+	dels = 0;
+	delh = 0;
+//	rho  = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
+  }else if( m_KeyISR == 1){
+/// first  order
+	dels = gamf/2;   /// NLO part =0 as for vector boson???
+    delh = uu*(-1 +uu/2);
+//    rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
+  }else if( m_KeyISR == 2){
+/// from KKsem_uurho(), keyd=302, 2nd ord. without NLO part
+//      dels  = betf/2d0 +betf**2/8d0
+//      delh  = uu*(-1d0+uu/2d0)
+//     $        +betf*(-0.5d0*uu-0.25d0*uu*(-1d0+0.5d0*uu)*log(1d0-uu))
+	dels = gamf/2 +sqr(gamf)/8;
+    delh = uu*(-1+uu/2.0)
+          +gamf*0.5*( -0.5*uu -0.25*uu*(-1.0 +0.5*uu)*log(1-uu));
+//    rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
+  }else{
+	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl; exit(5);
+  }
+  if( uu > m_eps) {
+	  rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
+  }else{
+	  rho = ffact*exp( log(uu)*gamf ) *(1 +dels);
+  }
+  return rho;
+}//RhoFSR
+
+
+
+///------------------------------------------------------------------------
+/// !!!!!!!!!!!!!!!! obsolete !!!!!!!!!!!!!!!!!!
 double TMCgenFOAM::Rho_fsr(double svar, double uu){
 /// ISR+FSR rho-function
 
@@ -384,6 +475,7 @@ double TMCgenFOAM::RhoIFI(double costhe, double uu){
 
 
 ///--------------------------------------------------------------
+// !!!!!!!!!!!!!!!! obsolete !!!!!!!!!!!!!
 double TMCgenFOAM::Rho_ifi(double costhe, double uu){
 /// ISR+FSR rho-function
   double eps = m_eps;
@@ -434,18 +526,25 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double svarCum = svar;
 
 // ******** mapping for ISR *******
+	double R= Xarg[0];
+	/*
 	double gamiCR,gami,alfi;
 	double CMSene1= sqrt(svar);
 	bornv_makegami_( CMSene1, gamiCR,gami,alfi);   // from KKMC
-
-	double R= Xarg[0];
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
 	if( gami < 0 )      return 0.0;    // temporary fix
     if( m_vv < 1e-200 ) return 0.0;    // temporary fix
     // ISR photonic distribution
 	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
-	Dist *= Rho2;
+	*/
+	double gami = gamISR(svar);
+	double dJac;
+	MapPlus(  R, gami, m_vv, dJac);
+	if( m_vv> m_vvmax) return 1e-200;
+	Dist *= dJac * RhoISR(svar,m_vv);
+
+	//Dist *= Rho2;
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
 
@@ -560,17 +659,27 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	double gami = gamISR(svar);
 	//]]]
 	double R= Xarg[0];
+
+	/*
 	m_vv = exp(1.0/gami *log(R)) *m_vvmax; // mapping
 	Dist *= m_vv/R/gami ;                  // Jacobian
 	if( gami < 0 )      return 0.0;    // temporary fix
     if( m_vv < 1e-200 ) return 0.0;    // temporary fix
     // ISR photonic distribution
 	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
+	*/
+
+	double dJac;
+	MapPlus(  R, gami, m_vv, dJac);
+	if( m_vv> m_vvmax) return 1e-200;
+	Dist *= dJac * RhoISR(svar,m_vv);
+
 	//[[[
 	double SoftIni = Soft_yfs(gami);
 	//Rho2 =SoftIni*gami*exp((gami-1)*log(m_vv));
 	//]]]
-	Dist *= Rho2;
+	//Dist *= Rho2;
+
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
 //	if( m_count<10000) cout<< " Dist[isr]="<<Dist<<endl;
@@ -581,13 +690,13 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     //[[[[[
     //gamf =  gamFSR(svar);
     //]]]]]
-    if( gamf <0 )       return 0.0;      // just in case
+    //if( gamf <0 )       return 0.0;      // just in case
 //    m_uu = exp(1.0/gamf *log(rr));       // mapping
 //    Dist *= m_uu/rr/gamf;                // Jacobian
 
+
     m_uu = exp(1.0/gamf *log(rr))*m_vvmax; // mapping
     Dist *= m_uu/rr/gamf;                  // Jacobian
-
     if( m_uu < 1e-200 ) return 0.0;      // temporary fix
 // FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);   // remember take care of m_mbeam!!!
@@ -598,6 +707,9 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
   	//]]]
   	if( Rho3 <0 ) return 1e-100;
  	Dist *= Rho3;
+
+
+
     svarCum *= (1-m_uu);
 //	if( m_count<10000) cout<< " Dist[fsr]="<<Dist<<endl;
 ////////////////////////////////////////////////////////////
