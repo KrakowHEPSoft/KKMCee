@@ -392,7 +392,7 @@ double TMCgenFOAM::RhoFSR(double svar, double uu){
   if( uu > m_eps) {
 	  rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
   }else{
-	  rho = ffact*exp( log(uu)*gamf ) *(1 +dels);
+	  rho = ffact*exp( log(m_eps)*gamf ) *(1 +dels);
   }
   return rho;
 }//RhoFSR
@@ -551,17 +551,26 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 // ******** mapping for FSR *******
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
+
+    /*
     m_uu = exp(1.0/gamf *log(rr));     // mapping
     Dist *= m_uu/rr/gamf;              // Jacobian
 	if( gamf < 0 )      return 0.0;    // temporary fix
     if( m_uu < 1e-200 ) return 0.0;    // temporary fix
     // FSR photonic distribution
   	double Rho3 = Rho_fsr(svar2,m_uu);           // remember take care of m_mbeam!!!
-  	Dist *= Rho3;
+  	*/
+
+
+	MapPlus(  rr, gamf, m_uu, dJac);
+	if( m_uu> m_vvmax) return 1e-200;
+ 	double Rho3 = RhoFSR(svar2,m_uu);
+ 	Dist *= dJac*Rho3;
+
     svarCum *= (1-m_uu);
 
     // ******** mapping for polar angle *******
-    double cmax = 0.999;
+    double cmax = 0.99999;
     m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
     Dist *= 2.0*cmax;
 
@@ -669,10 +678,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	double Rho2 = Rho_isr(svar,m_vv);  // remember take care of m_mbeam!!!
 	*/
 
-	double dJac;
+	double dJac,Rho2,Rho3;
 	MapPlus(  R, gami, m_vv, dJac);
 	if( m_vv> m_vvmax) return 1e-200;
-	Dist *= dJac * RhoISR(svar,m_vv);
+	Rho2 = RhoISR(svar,m_vv);
+	Dist *= dJac *Rho2;
 
 	//[[[
 	double SoftIni = Soft_yfs(gami);
@@ -694,7 +704,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //    m_uu = exp(1.0/gamf *log(rr));       // mapping
 //    Dist *= m_uu/rr/gamf;                // Jacobian
 
-
+/*
     m_uu = exp(1.0/gamf *log(rr))*m_vvmax; // mapping
     Dist *= m_uu/rr/gamf;                  // Jacobian
     if( m_uu < 1e-200 ) return 0.0;      // temporary fix
@@ -702,12 +712,15 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
   	double Rho3 = Rho_fsr(svar2,m_uu);   // remember take care of m_mbeam!!!
   	//[[[
    	//Rho3 = Rho_fsr(svar,m_uu);
- 	double SoftFin = Soft_yfs(gamf);
   	//Rho3 = SoftFin*gamf*exp((gamf-1)*log(m_uu));
   	//]]]
   	if( Rho3 <0 ) return 1e-100;
- 	Dist *= Rho3;
+ */
 
+	MapPlus(  rr, gamf, m_uu, dJac);
+	if( m_uu> m_vvmax) return 1e-200;
+ 	Rho3 = RhoFSR(svar2,m_uu);
+ 	Dist *= dJac* Rho3;
 
 
     svarCum *= (1-m_uu);
@@ -810,10 +823,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	cout<<" m_xx= "<< m_xx<<" m_vv= "<< m_vv<<" m_uu= "<< m_uu << "  m_vvmax="<<m_vvmax;
         cout<<endl;
         ///////////// testing soft limit /////////////
+     	double SoftFin = Soft_yfs(gamf);
         gamf =  gamFSR(svar);
-    	double    softISR = Rho_isr(svar,m_vv)  / exp( (gami-1)* log(m_vv))/gami;
+    	double    softISR = RhoISR(svar,m_vv)  / exp( (gami-1)* log(m_vv))/gami;
     	cout<<"  gami="<< gami<<"  softISR = "<< softISR<< " SoftIni= "<<SoftIni<<endl;
-    	double    softFSR = Rho_fsr(svar2,m_uu) / exp( (gamf-1)* log(m_uu))/gamf;
+    	double    softFSR = RhoFSR(svar2,m_uu) / exp( (gamf-1)* log(m_uu))/gamf;
     	cout<<"  gamf="<< gamf<<"  softFSR = "<< softFSR<< " SoftFin= "<<SoftFin;
     	cout<<"  SoftIni* SoftFin = "                <<  SoftIni* SoftFin  <<endl;
     	cout<<"  exp( (gami+gamf) * log(m_vvmax)) = "<<  exp( (gami+gamf) * log(m_vvmax)) <<endl;
