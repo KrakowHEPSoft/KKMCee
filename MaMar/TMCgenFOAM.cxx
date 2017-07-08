@@ -242,26 +242,28 @@ void TMCgenFOAM::MapMinus( double r, double gam, double &v, double &dJac){
 // Returned v is distributed according to gam*v^{gam-1}
 // dJac is normalization (part of Jacobian) factor
   double eps = m_eps;
-  double Rat, Reps, R1;
+  double Rat, Reps, RV, R1;
   if( fabs(gam*log(eps)) > m_del){
 	  Reps = exp(gam*log(eps)); // R(eps)
-	  R1   = 2*Reps-1;          // R(1)
-	  Rat  = Reps/R1;
+//	  R1   = 2*Reps-1;          // R(1)
+	  RV   = 2*Reps-exp(gam*log(m_vvmax)); // R(vmax)
+	  Rat  = Reps/RV;
 	  if( r< Rat ){
 		  v = 0; dJac= 1/Rat;
 	  } else {
-		  v    = exp( (1/gam)*log( 2*Reps -R1*r ) ); // mapping
-		  dJac = R1/(-gam/v*exp(gam*log(v)));        // jacobian
+		  v    = exp( (1/gam)*log( 2*Reps -RV*r ) ); // mapping
+		  dJac = RV/(-gam/v*exp(gam*log(v)));        // jacobian
 	  }
   } else {
-	  Reps = 1+gam*log(eps);    // R(eps)
-	  R1   = 2*Reps-1;          // R(1)
-	  Rat  = Reps/R1;
+	  Reps = 1+gam*log(eps);        // R(eps)
+	  R1   = 1+2*gam*log(eps);      // R(1)
+	  RV   = R1 +gam*log(m_vvmax);  // R(V)
+	  Rat  = Reps/RV;
 	  if( r< Rat){
 		  v = 0; dJac= 1/Rat;
 	  } else {
-		  v    = exp( (1/gam)*(1-r)*R1 ); // mapping
-		  dJac = R1/(-gam/v);             // jacobian
+		  v    = exp( (1/gam)*(R1 -r*RV) ); // mapping
+		  dJac = RV/(-gam/v);               // jacobian
 	  }
   }
   if( v<0 || v>1) {
