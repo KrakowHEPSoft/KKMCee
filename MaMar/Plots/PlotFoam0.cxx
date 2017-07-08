@@ -35,12 +35,14 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
-TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
+TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
+//TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 //
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
