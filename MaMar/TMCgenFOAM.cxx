@@ -202,31 +202,28 @@ void TMCgenFOAM::MapPlus( double r, double gam, double &v, double &dJac){
 // Input r in (0,1) is uniform random number or FOAM vriable
 // Returned v is distributed according to gam*v^{gam-1}
   double eps = m_eps;
-  double Reps,Rat,R1;
+  double Reps,Rat,RV;
   if( fabs(gam*log(eps)) > m_del){
 	  Reps = exp(gam*log(eps));
-//	  R1   = 1;
-	  R1   = exp(gam*log(m_vvmax));
-	  Rat  = Reps/R1;
+	  RV   = exp(gam*log(m_vvmax));
+	  Rat  = Reps/RV;
 	  if( r< Rat ){
 		  v = 0;  dJac=1/Rat;
 	  } else {
 		  v = exp((1/gam)*log(r)); // mapping
 		  v *= m_vvmax;
-//		  dJac = 1/(r*gam/v);      // jacobian
-		  dJac = R1/(gam/v*exp(gam*log(v)));      // jacobian
+		  dJac = RV/(gam/v*exp(gam*log(v)));      // jacobian
 	  }
   } else {
 	  Reps = 1+gam*log(eps);
-//	  R1   = 1;
-	  R1   = 1+gam*log(m_vvmax);
-	  Rat  = Reps/R1;
+	  RV   = 1+gam*log(m_vvmax);
+	  Rat  = Reps/RV;
 	  if( r< Rat ){
 		  v = 0; dJac=1/Rat;
 	  } else {
 		  v = exp(-(1/gam)*(1-r)); // mapping
 		  v *= m_vvmax;
-		  dJac = R1/(gam/v);        // jacobian
+		  dJac = RV/(gam/v);        // jacobian
 	  }
   }
   if( v<0 || v>1) {
@@ -421,7 +418,6 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double gami = gamISR(svar);
 	double dJac;
 	MapPlus(  R, gami, m_vv, dJac);
-//	if( m_vv> m_vvmax) return 1e-200;
 	Dist *= dJac * RhoISR(svar,m_vv);
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
@@ -429,7 +425,6 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
 	MapPlus(  rr, gamf, m_uu, dJac);
-//	if( m_uu> m_vvmax) return 1e-200;
  	double Rho3 = RhoFSR(svar2,m_uu);
  	Dist *= dJac*Rho3;
     svarCum *= (1-m_uu);
@@ -514,7 +509,6 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	double R= Xarg[0];
 	double dJac,Rho2,Rho3;
 	MapPlus(  R, gami, m_vv, dJac);
-//	if( m_vv> m_vvmax) return 1e-200;
 	Rho2 = RhoISR(svar,m_vv);
 	Dist *= dJac *Rho2;
 	svarCum *= (1-m_vv);
@@ -524,7 +518,6 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
 	MapPlus(  rr, gamf, m_uu, dJac);
-//	if( m_uu> m_vvmax) return 1e-200;
  	Rho3 = RhoFSR(svar2,m_uu);
  	Dist *= dJac* Rho3;
     svarCum *= (1-m_uu);
@@ -558,12 +551,16 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //    Born= BornV_Dizet( 1,m_KFini,KFf, svar, CosThe, eps1,eps2,ta,tb)
 //    Born = 4*pi*alfa**2/(3d0*svar )*BornY  *m_gnanob
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	double BetaFin = sqrt(1-4*sqr(m_fin)/svar2 ); // missing phase space factor
+	//
 	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
 	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
+	dSig_EEX *=BetaFin;
 //[[[[
 //	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
 //	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0); // svar2->svar
 	double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar2,       0.0, 0.0, 0.0, 0.0, 0.0);
+	dSig_EEX0 *=BetaFin;
 //]]]
 // ******* effective masses *********
 	m_Mka = sqrt(svar2);   // after ISR obsolete
@@ -609,6 +606,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	double CosTheta = 0.0;
     	bornv_interpogsw_(m_KFf,svar2, CosTheta);
     	double dSig_EEXc = bornv_dizet_( 1, m_KFini, m_KFf, svar2, CosTheta, 0.0, 0.0, 0.0, 0.0);
+    	dSig_EEXc *= BetaFin;
     	cout<< "dSig_EEXc = "<< dSig_EEXc <<endl;
     	cout<< "dSig_EEX0 = "<< dSig_EEX0 <<endl;
     	cout<< "             Sig_EEX0   = "<< dSig_EEX0 *sig0nb <<endl;
