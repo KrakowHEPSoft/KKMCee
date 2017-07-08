@@ -551,16 +551,12 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //    Born= BornV_Dizet( 1,m_KFini,KFf, svar, CosThe, eps1,eps2,ta,tb)
 //    Born = 4*pi*alfa**2/(3d0*svar )*BornY  *m_gnanob
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	double BetaFin = sqrt(1-4*sqr(m_fin)/svar2 ); // missing phase space factor
-	//
 	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
 	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
-	dSig_EEX *=BetaFin;
 //[[[[
 //	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
 //	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0); // svar2->svar
 	double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar2,       0.0, 0.0, 0.0, 0.0, 0.0);
-	dSig_EEX0 *=BetaFin;
 //]]]
 // ******* effective masses *********
 	m_Mka = sqrt(svar2);   // after ISR obsolete
@@ -575,9 +571,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX
+	double BetaFin = sqrt(1-4*sqr(m_fin)/svar2 ); // missing phase space factor
 	double dSig_GPS;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
+    dSig_GPS *= BetaFin;  // missing phase space factor
 /////////////////////////////////////////////////////////////////
     double Dist_EEX, Dist_GPS;
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
@@ -606,7 +604,6 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	double CosTheta = 0.0;
     	bornv_interpogsw_(m_KFf,svar2, CosTheta);
     	double dSig_EEXc = bornv_dizet_( 1, m_KFini, m_KFf, svar2, CosTheta, 0.0, 0.0, 0.0, 0.0);
-    	dSig_EEXc *= BetaFin;
     	cout<< "dSig_EEXc = "<< dSig_EEXc <<endl;
     	cout<< "dSig_EEX0 = "<< dSig_EEX0 <<endl;
     	cout<< "             Sig_EEX0   = "<< dSig_EEX0 *sig0nb <<endl;

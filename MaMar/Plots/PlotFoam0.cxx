@@ -677,7 +677,8 @@ void FigTech()
 
   TH1D *HST_txmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_txmax_Ceex2n");   // FOAM direct
 
-  // correcting missing phase space beta factor in EEX Bornv_Dizet
+  /*
+  // correcting missing phase space beta factor in GPS Born
   double Mmu = 0.105, bin,vv, beta;
   TH1D *HST_bad = Htot2_xmax_EEX2;
   int Nbin    = HST_bad->GetNbinsX();
@@ -688,7 +689,7 @@ void FigTech()
 	  beta = sqrt(1-4*sqr(Mmu/gCMSene)/(1-vv) );
 	  cout<< " vv, beta ="<< vv << "   "<<beta<<endl;
 	  HST_bad->SetBinContent(i, bin*beta);
-  }
+  }*/
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
