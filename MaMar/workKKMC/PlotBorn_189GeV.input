@@ -36,6 +36,8 @@ BeginX
 *     LIST of Final state flavours to be generated randomly according
 *     to QED corrected x-sections, at least one line/item should be present.
 *     (Remember that electron has incomplete M.E. and top might be too heavy.)
+*  401              1      KFfin, d
+*  402              1      KFfin, u
   413              1      KFfin, muon
 ********************************************************************************
 **                   Input for matrix element
@@ -52,6 +54,9 @@ BeginX
   638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
 ********************************************************************************
 *****                Entries 800-999 reserved for Electroweak libraries     ****
+  805          125e0      amh   =xpar(805) Higgs mass, input for Dizet
+  806          173e0      amtop =xpar(806) Top mass,   input for Dizet
+-
 **      DIZET flags NPAR(i)=NPAR(900+i)
 **  901              1  Ihvp  ! =1,2,3  (Jegerlehner/Eidelman, Jegerlehner(1988), Burkhardt etal.)
 **  901              3  Ihvp  ! 3 is the best for low energies
