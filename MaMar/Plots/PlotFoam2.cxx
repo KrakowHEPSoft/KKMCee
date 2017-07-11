@@ -209,46 +209,21 @@ void FigAfb2()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   //====================plot1========================
-  //                AFB(vmax)
   cFigAfb2->cd(1);
-  //gPad->SetLogy(); // !!!!!!
-  TH1D *Hst1 = HAfb2_vTcPR_Ceex2n;         // KKMC AFB(vmax) from scat. IFI off
-  TH1D *Hst2 = HAfb2_vTcPR_Ceex2;          // KKMC AFB(vmax) from scat. IFI on
-  //
-  Hst2->SetStats(0);
-  Hst2->SetTitle(0);
-  Hst2->SetLineColor(kMagenta);            // magenta
-  Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
-  //
-  Hst1->SetLineColor(kBlack);              // black
-  Hst1->DrawCopy("hsame");                 // KKMC AFB(vmax) from scat. IFI off
-  //
-  Hafb2_xmax_Ceex2n->SetLineColor(kBlue);
-  Hafb2_xmax_Ceex2n->DrawCopy("hsame");   // Foam IFI OFF
-  //
-  Hafb2_xmax_Ceex2->SetLineColor(kGreen);
-  Hafb2_xmax_Ceex2->DrawCopy("hsame");    // Foam IFI ON
 
-  //
-  CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IFI on}(v_{max})  KKMC=magenta, Foam=green");
-  CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}) KKMC=black,  Foam=blue");
-  CaptT->DrawLatex(0.60,0.75,gTextEne);
-  //====================plot2========================
-  cFigAfb2->cd(2);
-
-  TH1D *Hst21_diff =(TH1D*)Hst2->Clone("Hst21_diff");
-  Hst21_diff->Add(Hst21_diff, Hst1,  1.0, -1.0); // KKMC_IFI
+  TH1D *Hst21_diff =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("Hst21_diff");
+  Hst21_diff->Add(Hst21_diff, HAfb2_vTcPR_Ceex2n,  1.0, -1.0); // KKMC_IFI
   Hst21_diff->SetLineColor(kBlack);              // blue, KKMC
 
   TH1D *HST21_diff =(TH1D*)Hafb2_xmax_Ceex2->Clone("HST21_diff");
   HST21_diff->Add(HST21_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // FOAMC_IFI
   HST21_diff->SetLineColor(kMagenta);
 
-  TH1D *HstKF_diff =(TH1D*)Hst2->Clone("HstKF_diff");
+  TH1D *HstKF_diff =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("HstKF_diff");
   HstKF_diff->Add(HstKF_diff, Hafb2_xmax_Ceex2,  1.0, -1.0); // KKMC-Foam IFIon
   HstKF_diff->SetLineColor(kGreen);                          // KKMC-Foam IFIon
 
-  TH1D *HstKFn_diff =(TH1D*)Hst1->Clone("HstKFn_diff");
+  TH1D *HstKFn_diff =(TH1D*)HAfb2_vTcPR_Ceex2n->Clone("HstKFn_diff");
   HstKFn_diff->Add(HstKFn_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // KKMC-Foam IFIoff
   HstKFn_diff->SetLineColor(kBlue);                             // KKMC-Foam IFIoff
 
@@ -256,6 +231,8 @@ void FigAfb2()
   HstPL_diff->Add(HstPL_diff, Hafb2_xmax_Ceex2,  1.0, -1.0);    // KKMC-Foam IFIon
   HstPL_diff->SetLineColor(kRed);
 
+  Hst21_diff->SetStats(0);
+  Hst21_diff->SetTitle(0);
   Hst21_diff->SetMinimum(-0.004);  // zoom
   Hst21_diff->SetMaximum( 0.004);  // zoom
   Hst21_diff->DrawCopy("h");
@@ -267,13 +244,28 @@ void FigAfb2()
   HST_PL->DrawCopy("hsame"); // !!!???
 
 // zero line
-  TH1D *hZero = (TH1D*)Hst1->Clone("hZero");  // zero line
+  TH1D *hZero = (TH1D*)HAfb2_vTcPR_Ceex2n->Clone("hZero");  // zero line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
 
   hZero->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max}): Black KKMC, Magenta=FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
+
+  //====================plot2========================
+  //                AFB(vmax)
+  cFigAfb2->cd(2);
+
+  TH1D *HstPL2_diff =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HstPL2_diff");
+  HstPL2_diff->Add(HstPL2_diff, HAfb2_vTcPR_Ceex2 ,  1.0, -1.0);    // KKMC-Foam IFIon
+  HstPL2_diff->SetLineColor(kRed);
+
+  HstPL2_diff->SetMinimum(-0.0004);  // zoom
+  HstPL2_diff->SetMaximum( 0.0004);  // zoom
+
+  HstPL2_diff->DrawCopy("h");
+
+  hZero->DrawCopy("hsame");
 
   cFigAfb2->cd();
   //================================================
