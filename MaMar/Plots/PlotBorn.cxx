@@ -47,11 +47,14 @@ cout<<"================ InitBorn BEGIN ============================"<<endl;
 //////////////////////////////////////////////////////////////
 double   m_xpar[10001];      // complete input of KKMC run
 const int jmax =10000;
-//ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // numbering as in input!!!
-LibSem.ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
-// User input data
+// in the input below only AMH=125e0, AMTOP=173e0 are actualized
+LibSem.ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // AMH AMTOP actualized
+// standard old input file
+//LibSem.ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
+// User input data with AMH AMTOP aclualized
 //LibSem.ReaData("../workKKMC/workKKMC_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
 LibSem.ReaData("../workKKMC/PlotBorn_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
+//*****
 double ypar[jmax];
 for(int j=0;j<jmax;j++) ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
 // KKMC and KKsem initialization
@@ -75,16 +78,40 @@ cout<<"================ InitBorn END   ============================"<<endl;
 void TabBorn(){
 cout<<"==========================================================="<<endl;
 cout<<"================ TabBorn BEGIN ============================"<<endl;
-//  ************* user histograms  *************
+/*
+Zalaczam wersje ktora uzywam do produkowania lookup tables
+dla EW poprawek:
+  .KK2f_defaults
+   BornV.h
+Interesuja mnie bechmarki dla
+   "doubly-deconvoluted" = no ISR/FSR
+line-shape i Afb, with and without box corrections
+    w funkcji sqrt(s), zakres 70 - 150 GeV
+    fixed costheta = 0.0, 0.3, 0.6, 0.9
+    procesy: ee-> mumu, uubar, ddbar
+papier gdzie sa przyklady takich benchmarkow:
+https://arxiv.org/pdf/hep-ph/9902452.pdf
+pozdrawiam
+Ela
+*/
+//  ************************************************************************
+double Emin =  70;  //GeV
+double Emax = 150;  //GeV
+int    nPt  =  40;  // No of. points
+//
 double svar2, sigma,  CosTheta;
 double dSig0, dSig3, dSig6, dSig9;
 int m_KFini = 11;
+//----------------------
 int m_KFf   = 13;
-fprintf(DFile," e+e- --> mu+ mu- \n");
+fprintf(DFile," e+e- --> mu+ mu-,  results from BornV_Dizet \n");
+//----------------------
+//int m_KFf   = 1;
+//fprintf(DFile," e+e- --> d dbar,   results from BornV_Dizet \n");
+//int m_KFf   = 2;
+//fprintf(DFile," e+e- --> u ubar,   results from BornV_Dizet \n");
+//
 fprintf(DFile," d(sigma)/d(cos_theta) [nb], cos_theta = 0.0, 0.3, 0.6, 0.9 \n");
-double Emin = 88;
-double Emax = 94;
-int    nPt  = 10;
 double Ene;
 //
 for( int i=0; i<=nPt; i++ ){
@@ -102,21 +129,25 @@ for( int i=0; i<=nPt; i++ ){
    CosTheta=0.9; bornv_interpogsw_(m_KFf,svar2, CosTheta);
    dSig9 = bornv_dizet_( 1, m_KFini, m_KFf, svar2, CosTheta, 0.0, 0.0, 0.0, 0.0);
    fprintf(DFile,"Ene= %10.5f  dSig_dCos= %12.7f  %12.7f  %12.7f  %12.7f  \n", Ene, dSig0, dSig3, dSig6, dSig9);
-   cout<<"Ene="<<Ene; cout<< "  Sig_dCos= "<< dSig0 <<"  "<< dSig3 <<"  "<< dSig6 <<"  "<< dSig9<<endl;
+//   cout<<"Ene="<<Ene; cout<< "  Sig_dCos= "<< dSig0 <<"  "<< dSig3 <<"  "<< dSig6 <<"  "<< dSig9<<endl;
 }//i
 
 cout<<"==========================================================="<<endl;
 
-long KeyFob;
+double KeyFob;
 KeyFob=   10; // BornV_Dizet, with EW and without integration ???
 KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 kksem_setkeyfob_( KeyFob );
+fprintf(DFile,"****************************************************************** \n");
+fprintf(DFile," Born with EW (BornV_Dizet) With Gauss integration over cos(theta) \n");
 double xBorn;
 for( int i=0; i<=nPt; i++ ){
    Ene = Emin +i*((Emax-Emin)/nPt);
    svar2 = Ene*Ene;
    kksem_makeborn_( svar2, xBorn);
-   cout<< "Ene= "<<Ene<< "xBorn [nb]= "<<xBorn<<endl;
+   //cout<< "*** Ene= "<<Ene<< "  xBorn [nb]= "<<xBorn<<endl;
+   fprintf(DFile,"Ene= %10.5f  sigma [nb] = %12.7f   \n", Ene, xBorn);
 }
 
 //************************************
@@ -149,7 +180,7 @@ for(int ix=1; ix <= nPt; ix++){
    kksem_makeborn_( svar2, xBorn);
    hst_sigma3->SetBinContent(  ix, xBorn );
    hst_sigma3->SetBinError(    ix, 0.0 );
-   cout<< "Ene= "<<Ene<< "xBorn [nb]= "<<xBorn<<endl;
+   cout<< "Ene= "<<Ene<< "  xBorn [nb]= "<<xBorn<<endl;
 }//ix
 //------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
@@ -299,7 +330,7 @@ cout<<"================ FigBorn1 END   ==========================="<<endl;
 int main(int argc, char **argv)
 {
   //++++++++++++++++++++++++++++++++++++++++
-  TApplication theApp("theApp", &argc, argv);
+//  TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   //
   DiskFileB.cd();
@@ -308,8 +339,8 @@ int main(int argc, char **argv)
   //
   TabBorn();
   //
-  FigBorn3();
-  FigBorn1();
+  //FigBorn3();
+  //FigBorn1();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
@@ -317,7 +348,7 @@ int main(int argc, char **argv)
   DiskFileB.Close();
 
   //++++++++++++++++++++++++++++++++++++++++
-  theApp.Run();
+//  theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
 }
 
