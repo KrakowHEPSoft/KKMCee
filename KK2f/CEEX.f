@@ -1642,8 +1642,8 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
       CALL KK2f_GetMasPhot(MasPhot)
-      Mini =  0.510999e-3  ! electron
-      Mfin =  0.105        ! final ferm. muon
+*      Mini =  0.510999e-3  ! electron
+*      Mfin =  0.105        ! final ferm. muon
       Ene = CMSene/2
       DO j = 1,4
         P1(j) = 0d0
