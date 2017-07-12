@@ -77,6 +77,9 @@ extern "C" void gps_bornfoam_(const int&,   const int&,   const int&,
 //      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
 extern "C" double gps_makerhofoam_(const double&);
 
+//      SUBROUTINE GPS_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+extern "C" void gps_afb_ifi_(const int&, const int&, const double& , const double& , const double&);
+
 class KKplot{
 // Interface and extensions to KKsem toolbox
  public:

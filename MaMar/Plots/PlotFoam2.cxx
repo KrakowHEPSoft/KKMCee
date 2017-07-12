@@ -180,7 +180,6 @@ void FigAfb3()
   TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
   TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
 
-
   // A_FB from PLB219,p103 ]]]
   double alfinv  = 137.035989;
   double alfpi   = 1/alfinv/3.1415926535;
@@ -191,7 +190,13 @@ void FigAfb3()
   for(int i=1; i <= Nbin ; i++) {
 	  double vv = (i*vmax)/Nbin;
 	  double afb = alfpi*( 3*vv+log(1-vv/2) ); // only gamma
-	  cout<< " vv, afb ="<< vv << "   "<<afb<<endl;
+
+//      SUBROUTINE GPS_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+      double AfbIFI;
+      double KFi=11; int KFf=13;
+      gps_afb_ifi_(KFi, KFf, gCMSene, vv, AfbIFI);
+
+	  cout<< " vv, afb ="<< vv << "   "<<afb<< "   AfbIFI ="<< AfbIFI <<endl;
 	  HST_PL->SetBinContent(i, afb);
 	  HST_PL->SetBinError(i, 0);
   }// i
