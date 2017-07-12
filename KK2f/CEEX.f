@@ -1302,6 +1302,57 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       END
 
 
+      SUBROUTINE GPS_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//   Formulas (5-7) in Phys.Lett. B219 (989) 103, real emission part only          //
+*//   For testing implementation of IFI                                             //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'GPS.h'
+*
+      INTEGER           KFi,KFf     ! Input
+      DOUBLE PRECISION  CMSene,vv   ! Input
+      DOUBLE PRECISION  AfbIFI      ! Output
+      DOUBLE PRECISION  T3e,Qe, T3f,Qf, dummy
+      INTEGER           NCf,NCe
+      DOUBLE COMPLEX    PropGam,PropZet, Zeta, Eps
+      DOUBLE PRECISION  svarX
+      DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
+      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+      DOUBLE COMPLEX    C0,C1,C2, Agg, AgZ, C_FB
+      DOUBLE COMPLEX    BVR_CDLN
+*=============================================================
+      Eps = DCMPLX(-1.D0,0.D0)
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, dummy, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, dummy, Qf,T3f,NCf)
+
+* Propagators, with s-dependent width
+      SvarX   =    CMSene**2*(1-vv)
+      PropGam =    DCMPLX(  1d0/svarX,  0d0)
+      PropZet =    1d0/DCMPLX(svarX-m_MZ**2, m_GammZ*svarX/m_MZ)
+      Zeta    =    PropGam/PropZet
+
+* Getting Ve,Vf,Ae,Af
+      CALL GPS_EWFFact(KFi,KFf,SvarX,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+      C0 = (Qe*Qf)**2
+      C1 = 2*Qe*Qf*Ve*Vf
+      C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
+
+      Agg = 3d0*vv +DLOG(1d0-0.5d0*vv)
+      AgZ = 3d0*vv
+     $ -Zeta/(Zeta -2d0)* DLOG(1d0-0.5d0*vv)
+     $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta*Zeta +0.5d0*Zeta*Zeta/(Zeta-2d0)  )
+     $           *( BVR_CDLN( -vv +Zeta ,Eps) - BVR_CDLN( Zeta ,Eps) )
+
+      C_FB = (C0 +C1/Zeta/2)*Agg +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ
+
+      AfbIFI = Qe*Qf *1d0/(m_AlfInv*m_pi) * DREAL(C_FB)
+
+      END ! GPS_AfbIFI
+
       SUBROUTINE GPS_Born(KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,AmpBorn)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
