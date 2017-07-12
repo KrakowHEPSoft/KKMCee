@@ -35,15 +35,15 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
-TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 
 
@@ -167,10 +167,10 @@ void ReMakeMChisto2(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigAfb2()
+void FigAfb3()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigAfb2 =========================== "<<endl;
+  cout<<" ========================= FigAfb3 =========================== "<<endl;
 
   TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
   TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
@@ -196,20 +196,16 @@ void FigAfb2()
 	  HST_PL->SetBinError(i, 0);
   }// i
 
-//
-  //*****************************************************************************
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", 70, 350,   1000, 550);
-  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
-  cFigAfb2->SetFillColor(10);
-  ////////////////////////////////////////////////////////////////////////////////
-  cFigAfb2->Divide( 2,  0);
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
-  //====================plot1========================
-  cFigAfb2->cd(1);
+//
+  //*****************************************************************************
+  TCanvas *cFigAfb3a = new TCanvas("cFigAfb3a","FigAfb3a", 70, 70,   600, 600);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  cFigAfb3a->SetFillColor(10);
+  cFigAfb3a->cd();
 
   TH1D *Hst21_diff =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("Hst21_diff");
   Hst21_diff->Add(Hst21_diff, HAfb2_vTcPR_Ceex2n,  1.0, -1.0); // KKMC_IFI
@@ -249,27 +245,34 @@ void FigAfb2()
 
   hZero->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max}): Black KKMC, Magenta=FOAM");
   CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
 
+  //*****************************************************************************
+  TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", 170, 100,   600, 600);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  cFigAfb3b->SetFillColor(10);
+  cFigAfb3b->cd();
   //====================plot2========================
-  //                AFB(vmax)
-  cFigAfb2->cd(2);
 
-  TH1D *HstPL2_diff =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HstPL2_diff");
-  HstPL2_diff->Add(HstPL2_diff, HAfb2_vTcPR_Ceex2 ,  1.0, -1.0);    // KKMC-Foam IFIon
+  TH1D *HstPL2_diff =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("HstPL2_diff");
+  HstPL2_diff->Add(HstPL2_diff, HAfb2_vTcPL_Ceex2 ,  1.0, -1.0);    // KKMC-Foam IFIon
+
   HstPL2_diff->SetLineColor(kRed);
 
   HstPL2_diff->SetMinimum(-0.0004);  // zoom
   HstPL2_diff->SetMaximum( 0.0004);  // zoom
 
+  HstPL2_diff->SetStats(0);
+  HstPL2_diff->SetTitle(0);
   HstPL2_diff->DrawCopy("h");
 
   hZero->DrawCopy("hsame");
+//  CaptT->DrawLatex(0.22,0.95,"A_{FB}(#theta_{PRD})-A_{FB}(#theta_{PL}) ");
+  CaptT->DrawLatex(0.22,0.95,"A_{FB}^{#bullet}-A*_{FB} ");
 
-  cFigAfb2->cd();
+  cFigAfb3b->cd();
   //================================================
-}//FigAfb2
+}//FigAfb3
 
 
 
@@ -315,7 +318,7 @@ int main(int argc, char **argv)
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
   ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam
 //========== PLOTTING ==========
-  FigAfb2();
+  FigAfb3();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
