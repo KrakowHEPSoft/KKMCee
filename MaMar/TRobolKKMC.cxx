@@ -164,10 +164,21 @@ void TRobolKKMC::Hbooker()
   sct_vAcPR_Ceex2n->Sumw2();
   sct_vTcPL_Ceex2= new TH2D("sct_vTcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex2->Sumw2();
+  sct_vTcPL_Ceex2n= new TH2D("sct_vTcPL_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex2n->Sumw2();
   sct_vKcPL_Ceex2= new TH2D("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vKcPL_Ceex2->Sumw2();
   sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vAcPL_Ceex2->Sumw2();
+  // for special AFB^start with costheta PL
+  hst_vT_Ceex2 = new TH1D(  "hst_vT_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2->Sumw2();
+  hst_vT_Ceex2n = new TH1D( "hst_vT_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n->Sumw2();
+  hst_vTcPL_Ceex2 = new TH1D(  "hst_vTcPL_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vTcPL_Ceex2->Sumw2();
+  hst_vTcPL_Ceex2n = new TH1D( "hst_vTcPL_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vTcPL_Ceex2n->Sumw2();
   // for xcheck and h.o ISR
   hst_vACeex2   = new TH1D("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex21F = new TH1D("hst_vACeex21F","dSig/dvTrue ", NBv, 0.000 ,vmx2);
@@ -375,8 +386,14 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vAcPR_Ceex2n->Fill(  vvA, CosPRD,   WtCEEX2n); // IFI  off
   sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL
   sct_vTcPL_Ceex2->Fill(    vv, CosThePL, WtCEEX2);  // vv bare muons
+  sct_vTcPL_Ceex2n->Fill(   vv, CosThePL, WtCEEX2n); // vv bare muons
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
-
+  //-------------------------------
+  // special costheta PL
+  hst_vT_Ceex2->Fill(    vv, WtCEEX2);
+  hst_vTcPL_Ceex2->Fill( vv, WtCEEX2*CosThePL);
+  hst_vT_Ceex2n->Fill(   vv, WtCEEX2n);
+  hst_vTcPL_Ceex2n->Fill(vv, WtCEEX2n*CosThePL);
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
