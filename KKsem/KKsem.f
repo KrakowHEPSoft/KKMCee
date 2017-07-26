@@ -2643,6 +2643,152 @@ c]]]]]
       m_Cmax = Cmax
       END
 
+      SUBROUTINE KKsem_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//   Formulas (5-7) in Phys.Lett. B219 (1989) 103                                   //
+*//   and non-IFI formulas of PRD41 (1990)                                          //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+*      INCLUDE 'GPS.h'
+      INCLUDE "KKsem.h"
+*
+      INTEGER           KFi,KFf     ! Input
+      DOUBLE PRECISION  CMSene,vv   ! Input, vv=vmax
+      DOUBLE PRECISION  AfbIFI      ! Output
+      DOUBLE PRECISION  Pi, T3e,Qe, T3f,Qf, MZ, GammZ
+      INTEGER           NCf,NCe
+      DOUBLE COMPLEX    PropGam,PropZet, Zeta, Eps
+      DOUBLE PRECISION  svar
+      DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
+      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+      DOUBLE COMPLEX    C0,C1,C2,C_FB, C_tot
+      DOUBLE COMPLEX    Agg, AgZ, Agg5, AgZ5
+      DOUBLE COMPLEX    AHZ,AHG,ASZ,ASG
+      DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
+      DOUBLE PRECISION  X_born, X_tot, X_cth
+      DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
+      DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
+      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AFB_PRD
+*=============================================================
+      Pi =3.1415926535897932d0
+      MZ    = m_Zmass    ! from xpar
+      GammZ = m_Zgamma   ! from xpar
+* It is better to import GammZ from BornV, possibly redeined there
+      CALL BornV_GetMZ(    mZ)
+      CALL BornV_GetGammZ( GammZ)
+      Eps = DCMPLX(-1.D0,0.D0)
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+
+* Propagators, with s-dependent width
+      svar    =    CMSene**2
+      PropGam =    DCMPLX(  1d0/svar,  0d0)
+      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*svar/MZ)
+      Zeta    =    PropGam/PropZet
+      LGini   =    DLOG(svar/Mini**2)
+      LGfin   =    DLOG(svar/Mfin**2)
+      zz   = 1d0 - MZ**2/svar
+      gz   = GammZ*MZ/svar
+      zz2  = zz**2 +gz**2
+
+* Getting Ve,Vf,Ae,Af
+      CALL GPS_EWFFact(KFi,KFf,svar,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+      C0 = (Qe*Qf)**2
+      C1 = 2*Qe*Qf*Ve*Vf
+      C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
+      C_tot = C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ! pure Born
+      X_born = DREAL(C_tot)
+***************************************************************
+*     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
+      FD_fin =
+     $     +2d0*(LGini-1d0)*DLOG(vv)
+     $    +(3 -4d0*vv +vv**2)/2d0 * LGini
+     $    +(3 -4d0*vv +vv**2)/2d0 * DLOG(1d0-vv)
+     $    -2d0 +7d0/2d0*vv -3d0/4d0*vv**2 +Pi**3/3d0 -2d0* BVR_dilog(vv)
+      FN_fin = FD_fin -C0* vv**2/2d0
+      WD_ini =
+     $ +C0* 2d0*(LGini-1d0)*( DLOG(vv) +3d0/4d0 -0.5d0*vv -0.5d0*DLOG(1d0-vv) )
+     $ +C0* (-0.5d0 +Pi**2/3d0 )
+     $ +C1*DREAL( 2d0*(LGini-1d0)* 1d0/Zeta *BVR_CDLN( vv*Zeta/(Zeta-vv), Eps)
+     $       +3d0/4d0/Zeta -(1d0-0.5d0*Zeta)*BVR_CDLN( Zeta/(Zeta-vv) ,Eps) -vv/2d0 )
+     $ +C1*DREAL( 1d0/Zeta*(-0.5d0 +Pi**2/3d0 ) )
+     $ +C2* 2d0*(LGini-1d0)*( 1d0/zz2*DLOG(vv) +3d0/4d0/zz2 -vv/2d0
+     $     +(1d0 +(-1.5d0 +zz)*zz2)/zz2*DREAL( BVR_CDLN( Zeta/(Zeta-vv), Eps) )
+     $     +( zz/gz/zz2 +(3d0*zz-zz**2+gz**2-4d0)/2d0/gz)*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
+     $ +C2* 1d0/zz2 *(-0.5d0 +Pi**2/3d0)
+      WN_ini = WD_ini
+     $  -C0*(-vv -DLOG(1d0-vv))
+     $  -C1*DREAL( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
+     $  +C2*(-vv +(1d0-2d0*zz) *DREAL( BVR_CDLN( (Zeta-vv)/Zeta, Eps) )
+     $           +(zz-zz**2+gz**2)/gz*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
+      X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
+      X_cth = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
+      AFB_PRD = X_cth/X_tot
+*********************************************
+* Formula directly from PL219B
+* Entire formula omitting -5*ln(k_1)
+      Agg =
+     $     +65d0/36d0 +DCMPLX(0d0,-2d0/3d0*Pi)
+     $     -5D0*DLOG(vv)
+     $     +3d0*vv +DLOG(1d0-0.5d0*vv)
+      AgZ =
+     $ +31d0/9d0*Zeta -9d0*Zeta**2+ 4d0*Zeta*Zeta**2
+     $ -( 5d0/2d0 -11d0/2d0*Zeta +9d0*Zeta**2 -4d0*Zeta*Zeta**2 -0.5*Zeta**2/(Zeta-2d0) )
+     $                                                *BVR_CDLN( 1d0-Zeta,Eps)
+     $ +(11d0/6d0 -Zeta -0.5d0*Zeta/(Zeta-2d0) )*Zeta *BVR_CDLN(   -Zeta ,Eps)
+     $ +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2 *( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
+      AgZ = AgZ
+     $ -5D0*DLOG(vv)
+     $ +3d0*Zeta*vv
+     $ -Zeta/(Zeta -2d0)* DLOG(1d0-0.5d0*vv)
+     $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0)  )   ! wersja ZW, PLB
+     $                             *BVR_CDLN( ( vv -Zeta)/(1-Zeta) ,Eps) ! wersja ZW, PLB
+      C_FB = (C0 +C1/Zeta/2d0)*Agg +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ
+*      AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_born
+      AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_tot
+*********************************************
+* Formulas from notes
+      ASG =  +65d0/36d0 +DCMPLX( 0d0, -2d0*Pi/3d0 )
+      AHG =
+     $       -5D0*DLOG(vv)
+     $       +3d0*vv +DLOG(1d0-0.5d0*vv)
+      ASZ = +31d0/9d0*Zeta -9d0*Zeta**2 +4d0*Zeta*Zeta**2
+     $  -(15d0/2d0 -13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN( 1d0-Zeta ,Eps)
+     $                     +( 5d0 -17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN( -Zeta ,Eps)
+     $   +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2 *( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
+      AHZ =
+     $      -5D0*DLOG(vv)
+     $              +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
+**     $                                   +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
+**     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
+*     $  +( 5d0 -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
+     $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
+      AfbIFI2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
+     $         +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
+      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
+***********************************
+      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
+***********************************
+*********************************************
+* k_1-dependent part only omitting -5*ln(k_1)
+      Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
+      AgZ5 = 3d0*Zeta*vv
+     $ -Zeta/(Zeta -2d0)* DLOG(1d0-0.5d0*vv)
+     $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta*Zeta +0.5d0*Zeta*Zeta/(Zeta-2d0)  )
+     $               *BVR_CDLN( (-vv +Zeta)/Zeta ,Eps)
+      AfbIFI5 = (C0 +C1/DCONJG(Zeta)/2)*Agg5 +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ5
+      AfbIFI5 = AfbIFI5 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
+*********************************************
+      AfbIFI = AfbIFI1 ! formula of PLB
+*      AfbIFI = AfbIFI2 ! formula from notes
+
+      END ! KKsem_AfbIFI
+
+
+
 *////////////////////////////////////////////////////////////////////////
 *//                                                                    //
 *//   End of Class SemaLIB                                             //
