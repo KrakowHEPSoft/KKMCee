@@ -52,6 +52,8 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
+//      SUBROUTINE KKsem_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+extern "C" void kksem_afb_ifi_(const int&, const int&, const double& , const double& , const double&);
 //---------------------------------
 //      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
 extern "C" double bornv_sig0nb_(const double&);
@@ -65,15 +67,16 @@ extern "C" double bornv_interpogsw_( const int&,  const double&, const double&);
 //      DOUBLE PRECISION FUNCTION BornV_Dizet(Mode,KFi,KFf,svar,CosThe,eps1,eps2,ta,tb)
 extern "C" double bornv_dizet_(const int&, const int&, const int&,
 		const double&, const double&, const double&, const double&, const double&, const double& );
+//      SUBROUTINE BornV_GetGammZ(GammZ)
+extern "C" void bornv_getgammz( const double& );
+//      SUBROUTINE BornV_GetMZ(MZ)
+extern "C" void bornv_getmz( const double& );
 //------------------------------------------------------------
 //      SUBROUTINE GPS_BornF(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
 extern "C" void gps_bornf_(const int&, const int&, double[], const double&,
 		    double[], const double&, double[], const double&, double[], const double&, double[], const double&,
 		    const double&);
 //------------------------------------------------------------
-//      SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Xborn)
-extern "C" void gps_bornfoam_(const int&,   const int&,   const int&,
-		                      const double&, const double&, const double&);
 //      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
 extern "C" double gps_makerhofoam_(const double&);
 
