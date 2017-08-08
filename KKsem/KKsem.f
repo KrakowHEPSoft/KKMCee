@@ -2755,7 +2755,7 @@ c]]]]]
 *      AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_born
       AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_tot
 *********************************************
-* Formulas from notes
+* Formulas for IFI from notes
       ASG =  +65d0/36d0 +DCMPLX( 0d0, -2d0*Pi/3d0 )
       AHG =
      $       -5D0*DLOG(vv)

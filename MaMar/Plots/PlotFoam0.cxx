@@ -414,7 +414,7 @@ void FigVdist()
   //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
   //vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
   //
-  CaptT->DrawLatex(0.02,0.95, "d#sigma/dv(ISR+FSR) Black KKMC_CEEX2, Blue FOAM");
+  CaptT->DrawLatex(0.02,0.95, "#sigma(v_{max}) ISR+FSR, Black KKMC_CEEX2, Blue FOAM");
   CaptT->DrawLatex(0.60,0.75,gTextEne);
 
   //====================plot2========================
@@ -428,7 +428,7 @@ void FigVdist()
   Hst1_ratio->SetLineColor(kBlue);
   Hst1_ratio->DrawCopy("h");
   //
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv(ISR+FSR); Ratio KKMC/FOAM");
+  CaptT->DrawLatex(0.02,0.95,"#sigma(v_{max}) ISR+FSR, Ratio KKMC/FOAM");
   //====================plot3========================
   //                 dsigma/d(v)
   cFigVdist->cd(3);
@@ -505,8 +505,8 @@ void FigAfb()
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
-//  Hst2->SetMinimum(-0.02);  // 10GeV
-//  Hst2->SetMaximum( 0.08);  // 10GeV
+  Hst2->SetMinimum(-0.02);  // 10GeV
+  Hst2->SetMaximum( 0.08);  // 10GeV
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
   //
