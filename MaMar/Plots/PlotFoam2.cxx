@@ -34,14 +34,14 @@ using namespace std;
 //
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
-TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
-TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
@@ -182,13 +182,13 @@ void FigAfb3()
 
   double alfinv  = 137.035989;
   double alfpi   = 1/alfinv/3.1415926535897932;
-  TH1D *HST_PL =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PL");
-  HST_PL->SetLineColor(kMagenta);
   //
   TH1D *HST_PLBZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBZ");
   LibSem.Ord1Afb(HST_PLBZ,100);
   HST_PLBZ->SetLineColor(kCyan);
   //
+  TH1D *HST_PL =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PL");
+  HST_PL->SetLineColor(kViolet);
   int Nbin    = HST_PL->GetNbinsX();
   double vmax = HST_PL->GetXaxis()->GetXmax();
   for(int i=1; i <= Nbin ; i++) {
@@ -235,8 +235,8 @@ void FigAfb3()
   Hst21_diff->SetTitle(0);
   Hst21_diff->SetMinimum(-0.004);  // zoom
   Hst21_diff->SetMaximum( 0.004);  // zoom
-  Hst21_diff->SetMinimum(-0.02);   // zoom
-  Hst21_diff->SetMaximum( 0.02);   // zoom
+//  Hst21_diff->SetMinimum(-0.02);   // zoom
+//  Hst21_diff->SetMaximum( 0.02);   // zoom
   Hst21_diff->DrawCopy("h");
   HST21_diff->DrawCopy("hsame");
   HstPL_diff->DrawCopy("hsame"); //!!! cosThetaPL !!!

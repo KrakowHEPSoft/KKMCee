@@ -40,11 +40,11 @@ TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
-TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 //
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_32G");
