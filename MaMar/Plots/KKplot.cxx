@@ -119,6 +119,26 @@ void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
 }// KKplot::VVplot
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void KKplot::Ord1Afb( TH1 *hstNew, int KeyDis)
+// AFB(vmax)
+{
+  int    nbin = hstNew->GetNbinsX();
+  double vmin = hstNew->GetXaxis()->GetXmin();
+  double vmax = hstNew->GetXaxis()->GetXmax();
+  double vv, AfbIFI;
+  //
+  hstNew->Reset();
+  for(int ib=1; ib <= nbin ; ib++) {
+    vv = vmin + (ib*(vmax-vmin))/nbin;  // RHS of the bin
+	kksem_afb_ifi_(m_KFini, m_KFf, m_CMSene, vv, AfbIFI);
+    cout<<"KKplot::Ord1Afb: ib= "<<ib<<"  AfbIFI =  "<<AfbIFI<<endl;
+    hstNew->SetBinContent(ib, AfbIFI);
+    hstNew->SetBinError(  ib, 0.0);
+  }
+}// KKplot::Ord1Afb
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void KKplot::Cplot( TH1 *hstNew,

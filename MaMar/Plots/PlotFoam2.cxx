@@ -184,10 +184,11 @@ void FigAfb3()
   double alfpi   = 1/alfinv/3.1415926535897932;
   TH1D *HST_PL =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PL");
   HST_PL->SetLineColor(kMagenta);
-//[[[[[
-  TH1D *HST_PLZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLZ");
-  HST_PLZ->SetLineColor(kRed);
-//]]]]
+  //
+  TH1D *HST_PLBZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBZ");
+  LibSem.Ord1Afb(HST_PLBZ,100);
+  HST_PLBZ->SetLineColor(kCyan);
+  //
   int Nbin    = HST_PL->GetNbinsX();
   double vmax = HST_PL->GetXaxis()->GetXmax();
   for(int i=1; i <= Nbin ; i++) {
@@ -197,14 +198,6 @@ void FigAfb3()
       double KFi=11; int KFf=13;
 	  HST_PL->SetBinContent(i, afb);
 	  HST_PL->SetBinError(i, 0);
-//[[[[
-	  // A_FB from PLB219,p103 ]]]
-      double AfbIFI;
-	  kksem_afb_ifi_(KFi, KFf, gCMSene, vv, AfbIFI);
-	  cout<< "\\\\\kksem_afb_ifi: vv, afb ="<< vv << "   "<<afb<< "   AfbIFI ="<< AfbIFI <<endl;
-	  HST_PLZ->SetBinContent(i, AfbIFI);
-	  HST_PLZ->SetBinError(i, 0);
-//]]]]
   }// i
 
   //////////////////////////////////////////////
@@ -242,16 +235,16 @@ void FigAfb3()
   Hst21_diff->SetTitle(0);
   Hst21_diff->SetMinimum(-0.004);  // zoom
   Hst21_diff->SetMaximum( 0.004);  // zoom
-  Hst21_diff->SetMinimum(-0.04);  // zoom
-  Hst21_diff->SetMaximum( 0.04);  // zoom
+  Hst21_diff->SetMinimum(-0.02);   // zoom
+  Hst21_diff->SetMaximum( 0.02);   // zoom
   Hst21_diff->DrawCopy("h");
   HST21_diff->DrawCopy("hsame");
   HstPL_diff->DrawCopy("hsame"); //!!! cosThetaPL !!!
   HstKF_diff->DrawCopy("hsame");
   HstKFn_diff->DrawCopy("hsame");
   // extras
-  HST_PL->DrawCopy("hsame"); // !!!???
-  HST_PLZ->DrawCopy("hsame"); // !!!???
+  HST_PL->DrawCopy("hsame");   // !!!???
+  HST_PLBZ->DrawCopy("hsame"); // !!!???
 
 // zero line
   TH1D *hZero = (TH1D*)HAfb2_vTcPR_Ceex2n->Clone("hZero");  // zero line

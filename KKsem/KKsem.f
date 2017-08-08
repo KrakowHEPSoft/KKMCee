@@ -2651,7 +2651,6 @@ c]]]]]
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-*      INCLUDE 'GPS.h'
       INCLUDE "KKsem.h"
 *
       INTEGER           KFi,KFf     ! Input
@@ -2663,11 +2662,13 @@ c]]]]]
       DOUBLE PRECISION  svar
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
       DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
-      DOUBLE COMPLEX    C0,C1,C2,C_FB, C_tot
+      DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
+      DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2
+      DOUBLE COMPLEX    C_FB
       DOUBLE COMPLEX    Agg, AgZ, Agg5, AgZ5
       DOUBLE COMPLEX    AHZ,AHG,ASZ,ASG
       DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
-      DOUBLE PRECISION  X_born, X_tot, X_cth
+      DOUBLE PRECISION  X_born, X_tot, Y_tot
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
       DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AFB_PRD
@@ -2686,7 +2687,8 @@ c]]]]]
 * Propagators, with s-dependent width
       svar    =    CMSene**2
       PropGam =    DCMPLX(  1d0/svar,  0d0)
-      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*svar/MZ)
+      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*svar/MZ)  ! s-dependent width
+      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*MZ)       ! constant width
       Zeta    =    PropGam/PropZet
       LGini   =    DLOG(svar/Mini**2)
       LGfin   =    DLOG(svar/Mfin**2)
@@ -2699,8 +2701,10 @@ c]]]]]
       C0 = (Qe*Qf)**2
       C1 = 2*Qe*Qf*Ve*Vf
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
-      C_tot = C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ! pure Born
-      X_born = DREAL(C_tot)
+      D0 = 0d0
+      D1 = 2*Qe*Qf*Ae*Af
+      D2 = 4*Ve*Ae*Vf*Af**2
+      X_born = DREAL(C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
 ***************************************************************
 *     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
       FD_fin =
@@ -2708,28 +2712,29 @@ c]]]]]
      $    +(3 -4d0*vv +vv**2)/2d0 * LGini
      $    +(3 -4d0*vv +vv**2)/2d0 * DLOG(1d0-vv)
      $    -2d0 +7d0/2d0*vv -3d0/4d0*vv**2 +Pi**3/3d0 -2d0* BVR_dilog(vv)
-      FN_fin = FD_fin -C0* vv**2/2d0
-      WD_ini =
-     $ +C0* 2d0*(LGini-1d0)*( DLOG(vv) +3d0/4d0 -0.5d0*vv -0.5d0*DLOG(1d0-vv) )
-     $ +C0* (-0.5d0 +Pi**2/3d0 )
-     $ +C1*DREAL( 2d0*(LGini-1d0)* 1d0/Zeta *BVR_CDLN( vv*Zeta/(Zeta-vv), Eps)
-     $       +3d0/4d0/Zeta -(1d0-0.5d0*Zeta)*BVR_CDLN( Zeta/(Zeta-vv) ,Eps) -vv/2d0 )
-     $ +C1*DREAL( 1d0/Zeta*(-0.5d0 +Pi**2/3d0 ) )
-     $ +C2* 2d0*(LGini-1d0)*( 1d0/zz2*DLOG(vv) +3d0/4d0/zz2 -vv/2d0
-     $     +(1d0 +(-1.5d0 +zz)*zz2)/zz2*DREAL( BVR_CDLN( Zeta/(Zeta-vv), Eps) )
-     $     +( zz/gz/zz2 +(3d0*zz-zz**2+gz**2-4d0)/2d0/gz)*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
-     $ +C2* 1d0/zz2 *(-0.5d0 +Pi**2/3d0)
-      WN_ini = WD_ini
-     $  -C0*(-vv -DLOG(1d0-vv))
-     $  -C1*DREAL( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
-     $  +C2*(-vv +(1d0-2d0*zz) *DREAL( BVR_CDLN( (Zeta-vv)/Zeta, Eps) )
+      FN_fin = FD_fin -vv**2/2d0
+      X0=
+     $   +2d0*(LGini-1d0)*( DLOG(vv) +3d0/4d0 -0.5d0*vv -0.5d0*DLOG(1d0-vv) )
+     $   +(-0.5d0 +Pi**2/3d0 )
+     $   +DREAL( 2d0*(LGini-1d0)* 1d0/Zeta *BVR_CDLN( vv*Zeta/(Zeta-vv), Eps)
+     $         +3d0/4d0/Zeta -(1d0-0.5d0*Zeta)*BVR_CDLN( Zeta/(Zeta-vv) ,Eps) -vv/2d0 )
+      X1=
+     $   +DREAL( 1d0/Zeta*(-0.5d0 +Pi**2/3d0 ) )
+     $   +2d0*(LGini-1d0)*( 1d0/zz2*DLOG(vv) +3d0/4d0/zz2 -vv/2d0
+     $       +(1d0 +(-1.5d0 +zz)*zz2)/zz2*DREAL( BVR_CDLN( Zeta/(Zeta-vv), Eps) )
+     $       +( zz/gz/zz2 +(3d0*zz-zz**2+gz**2-4d0)/2d0/gz)*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
+      X2= +1d0/zz2 *(-0.5d0 +Pi**2/3d0)
+      Y0= -(-vv -DLOG(1d0-vv))
+      Y1= -DREAL( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
+      Y2= +(-vv +(1d0-2d0*zz) *DREAL( BVR_CDLN( (Zeta-vv)/Zeta, Eps) )
      $           +(zz-zz**2+gz**2)/gz*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
+      WD_ini = DREAL( C0*X0 +C1*X1 +C2*X2)
+      WN_ini = DREAL( D0*X0 +D1*X1 +D2*X2) + DREAL( D0*Y0 +D1*Y1 +D2*Y2)
       X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
-      X_cth = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
-      AFB_PRD = X_cth/X_tot
+      Y_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
+      AFB_PRD = (3d0/4d0)* Y_tot/X_tot
 *********************************************
-* Formula directly from PL219B
-* Entire formula omitting -5*ln(k_1)
+* Formula for IFI contrib. directly from PL219B
       Agg =
      $     +65d0/36d0 +DCMPLX(0d0,-2d0/3d0*Pi)
      $     -5D0*DLOG(vv)
@@ -2768,7 +2773,8 @@ c]]]]]
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
       AfbIFI2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
      $         +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
-      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
+*      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
+      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_tot
 ***********************************
       WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
