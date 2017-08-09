@@ -233,7 +233,7 @@ void ReMakeMChisto(){
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  */
+*/
   // Wide range, vmax<1.
   TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
@@ -265,6 +265,21 @@ void ReMakeMChisto(){
   TH1D *Hpro_vT_Ceex2n;
   ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
   Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
+  ///****************************************************************************************
+  // More Wide range, vmax<1.
+  TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
+  TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
+  TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
+  //
+  TH1D                    *HTot_vTcPL_Ceex2, *HAfb_vTcPL_Ceex2;
+  ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2, nbMax);  //!!!!
+  HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
+  HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
+  //
+  TH1D                    *HTot_vTcPL_Ceex2n, *HAfb_vTcPL_Ceex2n;
+  ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
+  HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
+  HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
 
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -484,6 +499,9 @@ void FigAfb()
 
   TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
   TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
+  //
+  TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC
+  TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n"); // KKMC
 
 //  TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
 
@@ -511,8 +529,11 @@ void FigAfb()
   cFigAfb->cd(1);
   //gPad->SetLogy(); // !!!!!!
   // MC v-true direct
-  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
-  TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
+  //TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
+  //TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
+  //
+  TH1D *Hst1 = HAfb_vTcPL_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
+  TH1D *Hst2 = HAfb_vTcPL_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
   //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
