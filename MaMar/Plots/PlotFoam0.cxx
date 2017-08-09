@@ -64,7 +64,6 @@ TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 
 // Interface to KKabox and some extra plotting facilities
-//KKabox LibSem;
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -484,6 +483,11 @@ void FigAfb()
   TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // FOAM scatt.
   TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // FOAM scatt.
  //
+
+  TH1D *HST_PLBZ =(TH1D*)HAfb_vTcPR_Ceex2->Clone("HST_PLBZ");
+  LibSem.Ord1Afb(HST_PLBZ,100);
+  HST_PLBZ->SetLineColor(kCyan);
+//
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 20, 300,   1000, 550);
@@ -518,6 +522,14 @@ void FigAfb()
   //
   Hafb_xmax_Ceex2n->SetLineColor(kBlue);   // blue FOAM IFI off
   Hafb_xmax_Ceex2n->DrawCopy("hsame");     // Foam AFB(vmax) scatt.
+  //
+  HST_PLBZ->DrawCopy("hsame");             // analytical formula
+  //
+  // zero line
+  TH1D *hZero0 = (TH1D*)Hst2->Clone("hZero0");  // zero line
+  hZero0->SetLineColor(kBlack);
+  for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
+  hZero0->DrawCopy("hsame");
   //
   CaptT->DrawLatex(0.12,0.95, "A_{FB}^{IF on}(v_{max}):  KKMC=magenta, Foam=green");
   CaptT->DrawLatex(0.12,0.85, "A_{FB}^{IFI off}(v_{max}): KKMC=black,  Foam=blue");
@@ -942,8 +954,8 @@ int main(int argc, char **argv)
   //DiskFileA.ls();
   //cout<<"------------------------------F.ls----------------------------------"<<endl;
   //DiskFileF.ls();
-  //cout<<"------------------------A.GetListOfKeys-----------------------------"<<endl;
-  //DiskFileA.GetListOfKeys()->Print();
+  cout<<"------------------------A.GetListOfKeys-----------------------------"<<endl;
+  DiskFileA.GetListOfKeys()->Print();
   cout<<"------------------------F.GetListOfKeys-----------------------------"<<endl;
   DiskFileF.GetListOfKeys()->Print();
   //

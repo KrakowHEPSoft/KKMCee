@@ -180,13 +180,12 @@ void FigAfb3()
   TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
   TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
 
-  double alfinv  = 137.035989;
-  double alfpi   = 1/alfinv/3.1415926535897932;
-  //
   TH1D *HST_PLBZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBZ");
   LibSem.Ord1Afb(HST_PLBZ,100);
   HST_PLBZ->SetLineColor(kCyan);
   //
+  double alfinv  = 137.035989;
+  double alfpi   = 1/alfinv/3.1415926535897932;
   TH1D *HST_PL =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PL");
   HST_PL->SetLineColor(kViolet);
   int Nbin    = HST_PL->GetNbinsX();

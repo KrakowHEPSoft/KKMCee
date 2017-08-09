@@ -2664,14 +2664,15 @@ c]]]]]
       DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
       DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2
-      DOUBLE COMPLEX    C_FB
+      DOUBLE COMPLEX    C_FB, C_FB2
       DOUBLE COMPLEX    Agg, AgZ, Agg5, AgZ5
       DOUBLE COMPLEX    AHZ,AHG,ASZ,ASG
       DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
-      DOUBLE PRECISION  X_born, X_tot, Y_tot
+      DOUBLE PRECISION  X_born, Y_born, X_tot, Y_tot, Y_ifi, Y_ifi2
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
-      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AFB_PRD
+      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AFB_PRD, AFB_PRD_PL
+      DOUBLE PRECISION  vvmax, AFBborn
 *=============================================================
       Pi =3.1415926535897932d0
       MZ    = m_Zmass    ! from xpar
@@ -2695,6 +2696,8 @@ c]]]]]
       zz   = 1d0 - MZ**2/svar
       gz   = GammZ*MZ/svar
       zz2  = zz**2 +gz**2
+      vvmax = 1d0-Mfin**2/svar
+      IF( vv .GT. 0.99*vvmax ) vv = 0.99*vvmax
 
 * Getting Ve,Vf,Ae,Af
       CALL GPS_EWFFact(KFi,KFf,svar,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
@@ -2704,7 +2707,9 @@ c]]]]]
       D0 = 0d0
       D1 = 2*Qe*Qf*Ae*Af
       D2 = 4*Ve*Ae*Vf*Af**2
-      X_born = DREAL(C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
+      X_born  =  DREAL(C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
+      Y_Born  =  DREAL(D0 +D1/Zeta +D2/Zeta/DCONJG(Zeta) )
+      AFBborn = 3d0/4d0* Y_Born/X_born
 ***************************************************************
 *     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
       FD_fin =
@@ -2731,7 +2736,7 @@ c]]]]]
       WD_ini = DREAL( C0*X0 +C1*X1 +C2*X2)
       WN_ini = DREAL( D0*X0 +D1*X1 +D2*X2) + DREAL( D0*Y0 +D1*Y1 +D2*Y2)
       X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
-      Y_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
+      Y_tot = Y_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
       AFB_PRD = (3d0/4d0)* Y_tot/X_tot
 *********************************************
 * Formula for IFI contrib. directly from PL219B
@@ -2752,8 +2757,9 @@ c]]]]]
      $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0)  )   ! wersja ZW, PLB
      $                             *BVR_CDLN( ( vv -Zeta)/(1-Zeta) ,Eps) ! wersja ZW, PLB
       C_FB = (C0 +C1/Zeta/2d0)*Agg +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ
-*      AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_born
-      AfbIFI1 = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB) / X_tot
+      Y_ifi = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB)
+*      AfbIFI1 = (3d0/4d0)* Y_ifi / X_born
+      AfbIFI1 = (3d0/4d0)* Y_ifi / X_tot
 *********************************************
 * Formulas for IFI from notes
       ASG =  +65d0/36d0 +DCMPLX( 0d0, -2d0*Pi/3d0 )
@@ -2771,13 +2777,15 @@ c]]]]]
 **     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
 *     $  +( 5d0 -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-      AfbIFI2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
+      C_FB2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
      $         +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
-*      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
-      AfbIFI2 = AfbIFI2 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_tot
+      Y_ifi2 = DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
+*      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
+      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
 ***********************************
       WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
+      AFB_PRD_PL = (3d0/4d0)* (Y_tot+Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
 * k_1-dependent part only omitting -5*ln(k_1)
       Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
@@ -2788,9 +2796,11 @@ c]]]]]
       AfbIFI5 = (C0 +C1/DCONJG(Zeta)/2)*Agg5 +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ5
       AfbIFI5 = AfbIFI5 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
 *********************************************
-      AfbIFI = AfbIFI1 ! formula of PLB
+*      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes
-
+*      AfbIFI = AFBborn ! just Born for calibration
+*      AfbIFI = AFB_PRD
+      AfbIFI = AFB_PRD_PL
       END ! KKsem_AfbIFI
 
 
