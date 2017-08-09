@@ -137,11 +137,17 @@ void TRobolKKMC::Hbooker()
   hst_CosPREex2= new TH1D("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
   hst_CosPREex2->Sumw2();
   // scatergrams
-  sca_vTcPR_Ceex2= new TH2D("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Eex2 = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex2  = new TH2D("sca_vTcPL_Ceex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex2n = new TH2D("sca_vTcPL_Ceex2n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Eex2   = new TH2D("sca_vTcPL_Eex2",     "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex2->Sumw2();
+  sca_vTcPL_Ceex2n->Sumw2();
+  sca_vTcPL_Eex2->Sumw2();
+  sca_vTcPR_Ceex2 = new TH2D("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2n= new TH2D("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Eex2  = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Ceex2->Sumw2();
   sca_vTcPR_Eex2->Sumw2();
-  sca_vTcPR_Ceex2n= new TH2D("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Ceex2n->Sumw2();
   sca_vXcPR_Ceex2= new TH2D("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
@@ -372,16 +378,21 @@ void TRobolKKMC::Production(double &iEvent)
   hst_CosPREex2->Fill(  CosPRD, WtEEX2);
   // big scatergrams
   sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
-  sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
-  sca_vXcPR_Ceex2->Fill(  vvK, CosPRD, WtCEEX2);
-  sca_vXcPR_Eex2->Fill(   vvK, CosPRD, WtEEX2);
-  // IFI off
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
+  sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
+
+  sca_vTcPL_Ceex2->Fill(   vv, CosThePL, WtCEEX2);
+  sca_vTcPL_Ceex2n->Fill(  vv, CosThePL, WtCEEX2n); // true v, IFI off
+  sca_vTcPL_Eex2->Fill(    vv, CosThePL,  WtEEX2);   // true v, IFI off
+
+  sca_vXcPR_Ceex2->Fill(   vvK, CosPRD, WtCEEX2);
+  sca_vXcPR_Eex2->Fill(    vvK, CosPRD, WtEEX2);
   //-------------------------------------------
-  // New very BIG scaterplots
+  // New very BIG scaterplots, restricted vv range
   sct_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);  // true v, IFI on
   sct_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   sct_vTcPR_EEX2->Fill(    vv, CosPRD, WtEEX2);   // true v, IFI off
+
   sct_vAcPR_Ceex2->Fill(   vvA, CosPRD,   WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   sct_vAcPR_Ceex2n->Fill(  vvA, CosPRD,   WtCEEX2n); // IFI  off
   sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL

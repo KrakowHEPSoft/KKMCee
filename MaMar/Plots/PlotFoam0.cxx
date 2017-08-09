@@ -30,12 +30,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 //
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
@@ -140,10 +140,17 @@ void HistNormalize(){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2") );
-
+  //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2") );
+  //
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2") );
+  //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n") );
 
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
 

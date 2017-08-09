@@ -55,8 +55,13 @@ class TRobolKKMC : public TRobol
   TH2D   *sca_vTcPR_Ceex2;     //!  No sstreamer!!!
   TH2D   *sca_vTcPR_Ceex2n;    //!  No sstreamer!!!
   TH2D   *sca_vTcPR_Eex2;      //!
+
   TH2D   *sca_vXcPR_Ceex2;     //!
   TH2D   *sca_vXcPR_Eex2;      //!
+
+  TH2D   *sca_vTcPL_Ceex2;     //!  No sstreamer!!!
+  TH2D   *sca_vTcPL_Ceex2n;    //!  No sstreamer!!!
+  TH2D   *sca_vTcPL_Eex2;      //!
   /////////////////////////////////////////////////////////////////////
   TH2D   *sct_vTcPR_Ceex2;    //! vvtrue<02 No sstreamer!!!
   TH2D   *sct_vTcPR_Ceex2n;   //! vvtrue<02 No sstreamer!!!
