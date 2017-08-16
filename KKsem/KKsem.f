@@ -2643,7 +2643,7 @@ c]]]]]
       m_Cmax = Cmax
       END
 
-      SUBROUTINE KKsem_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,AfbIFI)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//   Formulas (5-7) in Phys.Lett. B219 (1989) 103                                   //
@@ -2653,33 +2653,34 @@ c]]]]]
       IMPLICIT NONE
       INCLUDE "KKsem.h"
 *
-      INTEGER           KFi,KFf     ! Input
+      INTEGER           KeyDist, KFi,KFf     ! Input
       DOUBLE PRECISION  CMSene,vv   ! Input, vv=vmax
       DOUBLE PRECISION  AfbIFI      ! Output
       DOUBLE PRECISION  Pi, T3e,Qe, T3f,Qf, MZ, GammZ
       INTEGER           NCf,NCe
-      DOUBLE COMPLEX    PropGam,PropZet, Zeta, Eps
+      DOUBLE COMPLEX    Zeta, Eps
       DOUBLE PRECISION  svar
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
       DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
       DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2
       DOUBLE COMPLEX    C_FB, C_FB2
-      DOUBLE COMPLEX    Agg, AgZ, Agg5, AgZ5
       DOUBLE COMPLEX    AHZ,AHG,ASZ,ASG
       DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
       DOUBLE PRECISION  X_born, Y_born, X_tot, Y_tot, Y_ifi, Y_ifi2
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
-      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AFB_PRD, AFB_PRD_PL
+      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI4, AfbIFI5, AFB_PRD, AFB_PRD_PL
       DOUBLE PRECISION  vvmax, AFBborn
+      DOUBLE COMPLEX    Agg, AgZ, Agg5, AHZ5, C_FB4, C_FB5
 *=============================================================
       Pi =3.1415926535897932d0
-      MZ    = m_Zmass    ! from xpar
-      GammZ = m_Zgamma   ! from xpar
+*      MZ    = m_Zmass     ! from xpar
+*      GammZ = m_Zgamma    ! from xpar
 * It is better to import GammZ from BornV, possibly redeined there
       CALL BornV_GetMZ(    mZ)
       CALL BornV_GetGammZ( GammZ)
+*     MZ    = mZ*100d0         ! sending MZ to infinity, doesnt work?
       Eps = DCMPLX(-1.D0,0.D0)
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
@@ -2687,20 +2688,21 @@ c]]]]]
 
 * Propagators, with s-dependent width
       svar    =    CMSene**2
-      PropGam =    DCMPLX(  1d0/svar,  0d0)
-      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*svar/MZ)  ! s-dependent width
-      PropZet =    1d0/DCMPLX(svar-MZ**2, GammZ*MZ)       ! constant width
-      Zeta    =    PropGam/PropZet
       LGini   =    DLOG(svar/Mini**2)
       LGfin   =    DLOG(svar/Mfin**2)
       zz   = 1d0 - MZ**2/svar
       gz   = GammZ*MZ/svar
+      Zeta =    DCMPLX(zz,gz)
       zz2  = zz**2 +gz**2
       vvmax = 1d0-Mfin**2/svar
       IF( vv .GT. 0.99*vvmax ) vv = 0.99*vvmax
 
 * Getting Ve,Vf,Ae,Af
       CALL GPS_EWFFact(KFi,KFf,svar,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+*      Ve =0d0
+*      Ae =0d0
+*      Vf =0d0
+*      Af =0d0
       C0 = (Qe*Qf)**2
       C1 = 2*Qe*Qf*Ve*Vf
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
@@ -2778,29 +2780,42 @@ c]]]]]
 *     $  +( 5d0 -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
       C_FB2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
-     $         +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
+     $       +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
       Y_ifi2 = DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
 ***********************************
-      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
+*      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
-      AFB_PRD_PL = (3d0/4d0)* (Y_tot+Y_ifi)/X_tot  ! Xtot lacks IFI!!!
+      AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/2d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
-* k_1-dependent part only omitting -5*ln(k_1)
+* k_1-dependent part only omitting ln(k_1)
       Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
-      AgZ5 = 3d0*Zeta*vv
-     $ -Zeta/(Zeta -2d0)* DLOG(1d0-0.5d0*vv)
-     $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta*Zeta +0.5d0*Zeta*Zeta/(Zeta-2d0)  )
-     $               *BVR_CDLN( (-vv +Zeta)/Zeta ,Eps)
-      AfbIFI5 = (C0 +C1/DCONJG(Zeta)/2)*Agg5 +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ5
-      AfbIFI5 = AfbIFI5 *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born
+      AHZ5 =
+     $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
+     $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
+***      C_FB4 = (C0 +0.5d0*C1/Zeta)*Agg5                                    ! gamma only
+      AfbIFI4 = (3d0/2d0)* DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
+      AfbIFI4 = (3d0/2d0)*Agg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
+      C_FB5 = (C0 +0.5d0*C1/Zeta)*Agg5
+     $       +(    0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AHZ5
+      AfbIFI5 = (3d0/2d0)* DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
 *********************************************
 *      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes
-*      AfbIFI = AFBborn ! just Born for calibration
-*      AfbIFI = AFB_PRD
-      AfbIFI = AFB_PRD_PL
+      IF(      KeyDist .EQ. 1 ) THEN
+         AfbIFI = AFBborn       ! just Born for calibration
+      ELSE IF( KeyDist .EQ. 100 ) THEN
+         AfbIFI = AFB_PRD_PL    ! PRD aand PL combined
+      ELSE IF( KeyDist .EQ. 101 ) THEN
+         AfbIFI = AFB_PRD       ! only PRD
+      ELSE IF( KeyDist .EQ. 104 ) THEN
+         AfbIFI = AfbIFI4       ! testing IFi gaamma only
+      ELSE IF( KeyDist .EQ. 105 ) THEN
+         AfbIFI = AfbIFI5       ! testing
+      ELSE
+         AfbIFI = 0d0
+      ENDIF
       END ! KKsem_AfbIFI
 
 
