@@ -34,7 +34,7 @@ void KKplot::Initialize(TFile &DiskFileA){
   double xpar[10001];
   for(int j=1; j<=m_jmax; j++) xpar[j]=HST_KKMC_NORMA->GetBinContent(j);
   // The trick to find out no. of processors in farm
-  int Nfarm = xpar[501];  // normally xpar[501]=1
+  int Nfarm = xpar[511];  // normally xpar[511]=1
   cout<< "//////////  Nfarm = "<< Nfarm <<endl;
   for(int j=1; j<=m_jmax; j++) xpar[j] = xpar[j]/Nfarm;
   //-------------------
@@ -128,11 +128,12 @@ void KKplot::Ord1Afb( TH1 *hstNew, int KeyDis)
   double vmax = hstNew->GetXaxis()->GetXmax();
   double vv, AfbIFI;
   //
+  cout<<"KKplot::Ord1Afb: KeyDis =  " <<KeyDis<<endl;
   hstNew->Reset();
   for(int ib=1; ib <= nbin ; ib++) {
     vv = vmin + (ib*(vmax-vmin))/nbin;  // RHS of the bin
-	kksem_afb_ifi_(m_KFini, m_KFf, m_CMSene, vv, AfbIFI);
-    cout<<"KKplot::Ord1Afb: ib= "<<ib<<"  AfbIFI =  "<<AfbIFI<<endl;
+	kksem_afb_calc_( KeyDis, m_KFini, m_KFf, m_CMSene, vv, AfbIFI);
+    cout<<"KKplot::Ord1Afb: ib= "<<ib<<"   vv="<<vv<<"  AfbIFI =  "<<AfbIFI<<endl;
     hstNew->SetBinContent(ib, AfbIFI);
     hstNew->SetBinError(  ib, 0.0);
   }
