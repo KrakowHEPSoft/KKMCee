@@ -53,7 +53,7 @@ extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
 //      SUBROUTINE KKsem_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
-extern "C" void kksem_afb_ifi_(const int&, const int&, const double& , const double& , const double&);
+extern "C" void kksem_afb_calc_(const int&, const int&, const int&, const double& , const double& , const double&);
 //---------------------------------
 //      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
 extern "C" double bornv_sig0nb_(const double&);
@@ -79,9 +79,6 @@ extern "C" void gps_bornf_(const int&, const int&, double[], const double&,
 //------------------------------------------------------------
 //      DOUBLE PRECISION  FUNCTION GPS_MakeRhoFoam(XNorm)
 extern "C" double gps_makerhofoam_(const double&);
-
-//      SUBROUTINE GPS_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
-extern "C" void gps_afb_ifi_(const int&, const int&, const double& , const double& , const double&);
 
 class KKplot{
 // Interface and extensions to KKsem toolbox

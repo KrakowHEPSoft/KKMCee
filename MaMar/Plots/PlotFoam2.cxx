@@ -31,11 +31,13 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
-//
+// August2017 runs
+TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
+// July2017 runs
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
@@ -193,7 +195,7 @@ void FigAfb3()
   for(int i=1; i <= Nbin ; i++) {
 	  double vv = (i*vmax)/Nbin;
 	  // A_FB from PLB219,p103, pure gamma exch.
-	  double afb = alfpi*( 3*vv+log(1-vv/2) ); // only gamma
+	  double afb = 3d0/2d0* alfpi*( 3*vv+log(1-vv/2) ); // only gamma
       double KFi=11; int KFf=13;
 	  HST_PL->SetBinContent(i, afb);
 	  HST_PL->SetBinError(i, 0);
