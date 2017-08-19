@@ -107,8 +107,13 @@ class TMCgenFOAM :public TMCgen
   double m_vvmax;         // for mapping
 ////////////////////////////////////////////////////////////
 // Additional Foam object for ISR+FSR without IFI
+  int     m_IsFoam5;       //  ON/OFF switch
+  int     m_IsFoam3;       //  ON/OFF switch
+  int     m_IsFoam1;       //  ON/OFF switch
   double  m_Xsav3;        //  normalization
+  double  m_Xsav1;        //  normalization
   TFOAM  *m_Foam3;        //  Additional Foam object
+  TFOAM  *m_Foam1;        //  Additional Foam object
 //******** MC EVENT ********
   double m_CosTheta;      //! no streamer!!!
   double m_vv;            //! ISR

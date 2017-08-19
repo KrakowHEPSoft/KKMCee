@@ -110,10 +110,13 @@ void TRobolFOAM::Production(double &iEvent)
 {
 /////////////////////////////////////////////////////////////
   double wt3, wt5, xx, CosTheta;
-/// MC generation in base class, ISR+FSR+IFI event
   TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
+
+/////////////////////////////////////////////////////////////
+if( MCgen->m_IsFoam5 == 1) {
+  /// MC generation in base class, ISR+FSR+IFI event
   MCgen->m_Mode = -5;
-  TRobol::Production(iEvent);  // It invokes TMCgen->TMCgenFOAM
+  TRobol::Production(iEvent);  // It invokes MCgen->Generale
   /// filling in histos
   MCgen->f_FoamI->GetMCwt(wt5);
   xx  = MCgen->m_xx;
@@ -122,8 +125,10 @@ void TRobolFOAM::Production(double &iEvent)
   SCA_xc_Ceex2->Fill(xx,CosTheta,wt5);
   SCT_xc_Ceex2->Fill(xx,CosTheta,wt5);
 //???  HST_FOAM_NORMA5->Fill(-1.0,m_Xsav5);  // fill normalization into underflow
+}// m_IsFoam
 
-  /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+if( MCgen->m_IsFoam3 == 1) {
   /// MC generation in user class, ISR+FSR no IFI
   MCgen->m_Mode = -3;
   MCgen->m_Foam3->MakeEvent();         // Additional Foam of the user class
@@ -138,12 +143,18 @@ void TRobolFOAM::Production(double &iEvent)
   SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   double WTeex2 = wt3 * MCgen->m_WTmodel[2];
   SCT_xc_EEX2->Fill(xx,CosTheta,WTeex2);
-
   ///  Fill in special normalization histogram
   double Xnorm = MCgen->m_Xsav3;
   HST_FOAM_NORMA3->Fill(-1, Xnorm);      // Normal*Nevtot, new style
   //HST_FOAM_NORMA3->Fill(0.5, Xnorm);
   //HST_FOAM_NORMA3->Fill(1.5, Xnorm);      // Normal*Nevtot
+}// m_IsFoam
+/////////////////////////////////////////////////////////////
+if( MCgen->m_IsFoam1 == 1) {
+  /// MC generation in user class, ISR+FSR 1st Order
+  ;
+}// m_IsFoam
+
 ///
 }///Production
 
@@ -152,15 +163,23 @@ void TRobolFOAM::Finalize()
 {
 /////////////////////////////////////////////////////////////
 ///------------------------
-  TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
-  MCgen->Finalize();
 
   Double_t MCresult, MCerror, MCnorm, Errel;
-  MCgen->m_Foam3->Finalize(MCnorm, Errel);  // Additional Foam of the user class
-  MCgen->m_Foam3->GetIntegMC( MCresult, MCerror);  //! get MC integral
+  TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
   cout << "**************************************************************"<<endl;
   cout << "**************** TRobolFOAM::Finalize  ***********************"<<endl;
-  cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
-  cout << "**************************************************************"<<endl;
+  if( MCgen->m_IsFoam5 == 1) {
+    MCgen->Finalize();
+  }// m_IsFoam
+  if( MCgen->m_IsFoam3 == 1) {
+    MCgen->m_Foam3->Finalize(MCnorm, Errel);  // Additional Foam of the user class
+    MCgen->m_Foam3->GetIntegMC( MCresult, MCerror);  //! get MC integral
+  }// m_IsFoam
+  if( MCgen->m_IsFoam1 == 1) {
+    MCgen->m_Foam1->Finalize(MCnorm, Errel);  // Additional Foam of the user class
+    MCgen->m_Foam1->GetIntegMC( MCresult, MCerror);  //! get MC integral
+    cout << "Directly from m_Foam1: MCresult= " << MCresult << " +- "<<MCerror <<endl;
+ }// m_IsFoam
+   cout << "**************************************************************"<<endl;
 
 }

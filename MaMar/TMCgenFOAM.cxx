@@ -13,6 +13,7 @@ TMCgenFOAM::TMCgenFOAM():
   /// This constructor is for ROOT streamers ONLY
   cout<< "----> TMCgenFOAM Default Constructor (for ROOT only) "<<endl;
   m_Foam3 = NULL;
+  m_Foam1 = NULL;
 }
 
 ///______________________________________________________________________________________
@@ -29,6 +30,10 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
 //! all defaults defined here can be changed by the user
 //! before calling TMCgen::Initialize
   m_Foam3 = NULL;
+  m_Foam1 = NULL;
+  m_IsFoam5 = 1;   // Foam5 ON
+  m_IsFoam3 = 1;   // Foam3 ON
+  m_IsFoam1 = 0;   // Foam1 OFF
 ///////////////////////////////////////////////////
 // Physics
   m_gnanob  = 389.37966e3;
@@ -96,10 +101,12 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   kk2f_initialize_(ypar);
   kksem_initialize_(ypar);
 
+  double errel;
   /////////////////////////////////////////////////////////
   if(f_IsInitialized == 0)
   {
   /// ******  SETTING UP FOAM of base class  *****
+  if( m_IsFoam5 == 1 ){
   f_FoamI   = new TFOAM("FoamI");   // new instance of MC generator FOAM
   m_kDim    = 5;
   m_nCells  =  10000;
@@ -111,8 +118,11 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   f_FoamI->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
   m_Mode    = 5;
   f_FoamI->Initialize( f_RNgen, this);     // Initialize FOAM
+  f_FoamI->GetIntNorm(m_Xnorm,errel);   // universal normalization
+  }// m_IsFoam5
   //////////////////////////////////////////////////////////////
   /// ******  SETTING UP additional FOAM of the user class *****
+  if( m_IsFoam3 == 1 ){
   m_Foam3   = new TFOAM("Foam3");   // new instance of MC generator FOAM
   m_kDim    = 3;
   m_Foam3->SetkDim(m_kDim);         // No. of dims. Obligatory!
@@ -123,10 +133,24 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_Mode    = 3;
   m_count =0;
   m_Foam3->Initialize( f_RNgen, this);     // Initialize FOAM
-  //////////////////////////////////////////////////////////////
-  double errel;
-  f_FoamI->GetIntNorm(m_Xnorm,errel);   // universal normalization
   m_Foam3->GetIntNorm(m_Xsav3,errel);
+  }// m_IsFoam3
+  //////////////////////////////////////////////////////////////
+  /// ******  SETTING UP additional FOAM of the user class *****
+  if( m_IsFoam1 == 1 ){
+  m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
+  m_kDim    = 1;
+  m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
+  m_Foam1->SetnCells(5000);         // No. of cells, optional, default=2000
+  m_Foam1->SetnSampl(20000);        // No. of MC evts/cell in exploration, default=200
+  m_Foam1->SetnBin(        16);     // No. of bins default 8
+  m_Foam1->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+  m_Mode    = 1;
+  m_count =0;
+  m_Foam1->Initialize( f_RNgen, this);     // Initialize FOAM
+  m_Foam1->GetIntNorm(m_Xsav1,errel);
+  }// m_IsFoam1
+  //////////////////////////////////////////////////////////////
   //screen output
   BXOPE(*f_Out);
   BXTXT(*f_Out,"========================================");
@@ -143,14 +167,13 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 void TMCgenFOAM::Generate()
 {
   f_NevGen++;
-  m_Mode = -5;
-  f_FoamI->MakeEvent();         // Foam of base class
-  m_WT   = f_FoamI->GetMCwt();  // get weight
 
-  ///  Fill special normalization histogram f_TMCgen_NORMA
-  f_TMCgen_NORMA->Fill(-1, m_Xnorm);    // New style
-//  f_TMCgen_NORMA->Fill(0.5, m_Xnorm);   // 1-st bin = Normal*Nevtot
-//  f_TMCgen_NORMA->Fill(1.5, 1);         // 2-nd bin = Nevtot
+  if( m_IsFoam5 == 1){
+    m_Mode = -5;
+    f_FoamI->MakeEvent();         // Foam of base class
+    m_WT   = f_FoamI->GetMCwt();  // get weight
+    f_TMCgen_NORMA->Fill(-1, m_Xnorm);    // New style
+  }//
 
 }//! Generate
 
@@ -164,13 +187,15 @@ void TMCgenFOAM::Finalize()
   BXTXT(*f_Out,"******     TMCgenFOAM::Finalize   ******");
   BXTXT(*f_Out,"****************************************");
   ///------------------------
-  Double_t MCresult, MCerror, MCnorm, Errel;
-  f_FoamI->Finalize( MCnorm, Errel);  //!
-  f_FoamI->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
-  cout << "**************************************************************"<<endl;
-  cout << "**************** TMCgenFOAM::Finalize  ***********************"<<endl;
-  cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
-  cout << "**************************************************************"<<endl;
+  if( m_IsFoam5 == 1){
+    Double_t MCresult, MCerror, MCnorm, Errel;
+    f_FoamI->Finalize( MCnorm, Errel);  //!
+    f_FoamI->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
+    cout << "**************************************************************"<<endl;
+    cout << "**************** TMCgenFOAM::Finalize  ***********************"<<endl;
+    cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
+    cout << "**************************************************************"<<endl;
+  }// m_IsFoam5
   ///------------------------
 }//!Finalize
 
