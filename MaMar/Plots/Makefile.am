@@ -3,7 +3,7 @@ INCLUDES = -I$(top_srcdir)/KKsem  \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam2 PlotBorn
+bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2 PlotBorn
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -73,6 +73,10 @@ PlotFoam0_SOURCES = KKplot.cxx HisNorm.cxx PlotFoam0.cxx
 PlotFoam0_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
+PlotFoam1_SOURCES = KKplot.cxx HisNorm.cxx PlotFoam1.cxx
+PlotFoam1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
+PlotFoam1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
 PlotFoam2_SOURCES = KKplot.cxx HisNorm.cxx PlotFoam2.cxx
 PlotFoam2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFoam2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
@@ -102,6 +106,8 @@ PlotAFB-run: PlotAFB
 	./PlotAFB
 PlotFoam0-run: PlotFoam0
 	./PlotFoam0
+PlotFoam1-run: PlotFoam1
+	./PlotFoam1
 PlotFoam2-run: PlotFoam2
 	./PlotFoam2
 PlotBorn-run: PlotBorn
