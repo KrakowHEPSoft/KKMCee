@@ -141,8 +141,8 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
   m_kDim    = 1;
   m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
-  m_Foam1->SetnCells(5000);         // No. of cells, optional, default=2000
-  m_Foam1->SetnSampl(20000);        // No. of MC evts/cell in exploration, default=200
+  m_Foam1->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+  m_Foam1->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
   m_Foam1->SetnBin(        16);     // No. of bins default 8
   m_Foam1->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
   m_Mode    = 1;
@@ -305,6 +305,36 @@ else
 
 
 ///------------------------------------------------------------------------
+double TMCgenFOAM::RhoISR1(double svar, double vv){
+/// First order ISR rho-function for ISR
+  double gami   = gamISR(svar);
+  double dels   = 3.0/4.0*gami +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
+  double rho;
+  if( vv > m_eps){
+     rho = gami *(1 +sqr(1-vv))/(2*vv);
+  }else{
+	 rho = 1.0 + log(m_eps)*(gami) +dels;
+  }
+  return rho;
+}//Rho_ISR1
+
+
+///------------------------------------------------------------------------
+double TMCgenFOAM::RhoFSR1(double svar, double vv){
+/// First order ISR rho-function for ISR
+  double gamf   = gamFSR(svar*(1.0-vv));
+  double dels   = 3.0/4.0*gamf +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
+  double rho;
+  if( vv > m_eps){
+     rho = gamf *(1 +sqr(1-vv))/(2*vv);
+  }else{
+	 rho = 1.0 + log(m_eps)*(gamf) +dels;
+  }
+  return rho;
+}//Rho_FSR1
+
+
+///------------------------------------------------------------------------
 double TMCgenFOAM::RhoISR(double svar, double vv){
 /// ISR rho-function for ISR
   double alf1   = m_alfpi;
@@ -423,6 +453,8 @@ double TMCgenFOAM::Density(int nDim, double *Xarg){
 	    return Density5(nDim, Xarg);
 	} else if( abs(m_Mode) == 3 ){
 		return Density3(nDim, Xarg);
+	} else if( abs(m_Mode) == 1 ){
+		return Density1(nDim, Xarg);
 	} else {
 		cout<<" TMCgenFOAM::Density: wrong Mode ="<<m_Mode<<endl;
 		exit(-9);
@@ -667,6 +699,43 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	return Dist_EEX; // principal distribution for FOAM
 }// Density3
 
+///////////////////////////////////////////////////////////////
+Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
+	m_count++;  // counter for debug
+	//
+	Double_t Dist=1;
+	double svar = sqr(m_CMSene);
+	double svarCum = svar;
+/////////////////////////////////////////////////////////
+// ******** mapping for ISR *******
+	double gami   = gamISR(svar);
+    double gamf0  = gamFSR(svar);
+	double R= Xarg[0];
+	double dJac,RhoI,RhoF,Rho;
+	MapPlus(  R, gami+gamf0, m_vv, dJac); // with m_eps IR cut-off
+	Dist *= dJac;
+	//
+	RhoI = RhoISR1(svar,m_vv);
+	RhoF = RhoFSR1(svar,m_vv);
+	// Additive combination of RhoI and RhoF
+	if( m_vv > m_eps){
+	     Rho = RhoI + RhoF;            // hard
+	}else{
+		 Rho = 1 +(RhoI-1) +(RhoI-1);  // soft
+	}//
+	Dist *= Rho;
+	double xBorn;
+//  Born((1-v)*s) provided by KKsem
+//  SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
+	kksem_ord1_(0,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);
+	Dist *= xBorn;
+
+	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+
+	return Dist;
+	////////////////////////////////////////////////////////////
+}// Density1
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

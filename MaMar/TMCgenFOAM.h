@@ -61,6 +61,8 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
+//      SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
+extern "C" void kksem_ord1_(const int&, const int&, const int&, const double&, const double&, const double&);
 
 
 class TMCgenFOAM :public TMCgen
@@ -145,6 +147,8 @@ class TMCgenFOAM :public TMCgen
   double RhoFSR(double, double );
   double RhoISR(double, double );
   double RhoIFI(double, double );
+  double RhoFSR1(double, double );
+  double RhoISR1(double, double );
 
   double Soft_yfs(double );
   void MapPlus(  double, double, double &, double &);
@@ -152,6 +156,7 @@ class TMCgenFOAM :public TMCgen
   void MapIFI(   double, double, double &, double &);
   double Density5(int, double *);   ///
   double Density3(int, double *);   ///
+  double Density1(int, double *);   ///
   /// methods auxiliary
   void ReaData(const char*, int, double[]);
   void Vdef(double[4], const double, const double, const double, const double);

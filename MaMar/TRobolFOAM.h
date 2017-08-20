@@ -24,8 +24,12 @@ class TRobolFOAM : public TRobol {
   double    m_xmin;          // dummy
   double    m_xmax;          // dummy
 /// ============== Histograms follow =================================
+  TH1D   *hst_weight1;           //! no streamer
   TH1D   *hst_weight3;           //! no streamer
   TH1D   *hst_weight5;           //! no streamer
+
+  TH1D   *HST_xx_Ord1;          //! no streamer
+  TH1D   *HST_xc_Ord1;          //! no streamer
 
   TH1D   *HST_xx_Ceex2;          //! no streamer
   TH1D   *HST_xx_Ceex2n;         //! no streamer
@@ -40,6 +44,7 @@ class TRobolFOAM : public TRobol {
   TH2D   *SCT_xc_EEX2;           //!
 
   TH1D   *HST_FOAM_NORMA3;       //! no streamer
+  TH1D   *HST_FOAM_NORMA1;       //! no streamer
 ////////////////////////////////////////////////////////////////////////////
   ClassDef(TRobolFOAM,2); // Monte Carlo generator
 };

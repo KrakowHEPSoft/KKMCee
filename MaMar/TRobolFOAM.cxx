@@ -44,15 +44,21 @@ void TRobolFOAM::Initialize(
   /// Book histograms or read them from the disk
   Hbooker();
   //  dumping KKMC info into normalization histo
-  TH1D *HST_FOAM_NORMA5 = (TH1D*)HstFile->Get("HST_FOAM_NORMA5");
-  int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
-  for(int j=1; j<=jmax; j++) {
-    HST_FOAM_NORMA3->SetBinContent(j,  ((TMCgenFOAM*)f_MCgen)->m_xpar[j]  );    // xpar encoded
-    HST_FOAM_NORMA5->SetBinContent(j,  ((TMCgenFOAM*)f_MCgen)->m_xpar[j]  );    // xpar encoded
+  TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
+  int jmax = MCgen->m_jmax;
+  if( MCgen->m_IsFoam5 == 1) {
+    TH1D *HST_FOAM_NORMA5 = (TH1D*)HstFile->Get("HST_FOAM_NORMA5");
+    for(int j=1; j<=jmax; j++) HST_FOAM_NORMA5->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
+    HST_FOAM_NORMA5->SetEntries(0);
   }
-  HST_FOAM_NORMA3->SetEntries(0); // Important!!!
-  HST_FOAM_NORMA5->SetEntries(0);
-
+  if( MCgen->m_IsFoam3 == 1) {
+    for(int j=1; j<=jmax; j++) HST_FOAM_NORMA3->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
+    HST_FOAM_NORMA3->SetEntries(0); // Important!!!
+  }
+  if( MCgen->m_IsFoam1 == 1) {
+    for(int j=1; j<=jmax; j++) HST_FOAM_NORMA1->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
+    HST_FOAM_NORMA1->SetEntries(0);
+  }
   cout<< "****> TRobolFOAM::Initialize: finished"<<endl;
 }///Initialize
 
@@ -70,10 +76,15 @@ void TRobolFOAM::Hbooker()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  ************* user histograms  *************
-    hst_weight3 = TH1D_UP("hst_weight3" ,  "MC weight",      100, -1.0, 2.0);
-    hst_weight5 = TH1D_UP("hst_weight5" ,  "MC weight",      100, -1.0, 2.0);
+    hst_weight1 = TH1D_UP("hst_weight1" ,  "MC weight",      100, -1.5, 2.0);
+    hst_weight3 = TH1D_UP("hst_weight3" ,  "MC weight",      100, -1.5, 2.0);
+    hst_weight5 = TH1D_UP("hst_weight5" ,  "MC weight",      100, -1.5, 2.0);
 
     int nbv = 50;
+
+    HST_xx_Ord1   = TH1D_UP("HST_xx_Ord1" ,   "dSig/dv",   nbv, 0.0, 1.0);
+    HST_xc_Ord1   = TH1D_UP("HST_xc_Ord1" ,   "dSig/dv",   nbv, 0.0, 1.0);
+
     HST_xx_Ceex2  = TH1D_UP("HST_xx_Ceex2" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Ceex2n = TH1D_UP("HST_xx_Ceex2n" ,  "dSig/dv",   nbv, 0.0, 1.0);
     nbv = 50;
@@ -92,6 +103,7 @@ void TRobolFOAM::Hbooker()
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
     HST_FOAM_NORMA3 = TH1D_UP("HST_FOAM_NORMA3","Normalization and xpar",jmax,0.0,10000.0);
+    HST_FOAM_NORMA1 = TH1D_UP("HST_FOAM_NORMA1","Normalization and xpar",jmax,0.0,10000.0);
 
     // additional histo for testing normalization
     HST_tx_Ceex2n = TH1D_UP("HST_tx_Ceex2n" ,  "dSig/dv",   100, 0.0, 0.2);
@@ -109,7 +121,7 @@ void TRobolFOAM::Hbooker()
 void TRobolFOAM::Production(double &iEvent)
 {
 /////////////////////////////////////////////////////////////
-  double wt3, wt5, xx, CosTheta;
+  double wt1, wt3, wt5, xx, CosTheta;
   TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
 
 /////////////////////////////////////////////////////////////
@@ -124,7 +136,6 @@ if( MCgen->m_IsFoam5 == 1) {
   hst_weight5->Fill(wt5,1.0);
   SCA_xc_Ceex2->Fill(xx,CosTheta,wt5);
   SCT_xc_Ceex2->Fill(xx,CosTheta,wt5);
-//???  HST_FOAM_NORMA5->Fill(-1.0,m_Xsav5);  // fill normalization into underflow
 }// m_IsFoam
 
 /////////////////////////////////////////////////////////////
@@ -144,15 +155,25 @@ if( MCgen->m_IsFoam3 == 1) {
   double WTeex2 = wt3 * MCgen->m_WTmodel[2];
   SCT_xc_EEX2->Fill(xx,CosTheta,WTeex2);
   ///  Fill in special normalization histogram
-  double Xnorm = MCgen->m_Xsav3;
-  HST_FOAM_NORMA3->Fill(-1, Xnorm);      // Normal*Nevtot, new style
-  //HST_FOAM_NORMA3->Fill(0.5, Xnorm);
-  //HST_FOAM_NORMA3->Fill(1.5, Xnorm);      // Normal*Nevtot
+  double Xnorm3 = MCgen->m_Xsav3;
+  HST_FOAM_NORMA3->Fill(-1, Xnorm3);      // Normal*Nevtot, new style
 }// m_IsFoam
 /////////////////////////////////////////////////////////////
 if( MCgen->m_IsFoam1 == 1) {
-  /// MC generation in user class, ISR+FSR 1st Order
-  ;
+/// MC generation in user class, ISR+FSR 1st Order
+  MCgen->m_Mode = -1;
+  MCgen->m_Foam1->MakeEvent();         // Additional Foam of the user class
+  // filling in histos
+  MCgen->m_Foam1->GetMCwt(wt1);
+  hst_weight1->Fill(wt1,1.0);
+
+  xx  = MCgen->m_vv;
+  HST_xx_Ord1->Fill(xx,wt1);
+//  HST_xc_Ord1->Fill(xx,wt1c);
+
+  double Xnorm1 = MCgen->m_Xsav1;
+  HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style
+
 }// m_IsFoam
 
 ///

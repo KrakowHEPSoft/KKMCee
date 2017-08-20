@@ -19,7 +19,7 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 TString semaf   = "START";
 double nevtot   = 1e10;
 //nevtot = 4500000;
-nevtot = 16e6;
+nevtot = 10e6;
 //nevtot = 3e5;
 double nevgrp   = 2e5; // 200k
 nevgrp = 5e5;
@@ -46,7 +46,7 @@ MCgen->m_nCells  = 10000;
 MCgen->m_IsFoam5 = 0;   // Foam5 OFF
 MCgen->m_IsFoam3 = 0;   // Foam3 OFF
 MCgen->m_IsFoam1 = 1;   // Foam1 ON
-MCgen->m_eps  =   1e-3; // IR regulator
+MCgen->m_eps  =   1e-5; // IR regulator
 //####################################################
 MCgen->ls();
 MCgen->Write("MCgen",TObject::kOverwrite);
