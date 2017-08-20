@@ -2643,10 +2643,62 @@ c]]]]]
       m_Cmax = Cmax
       END
 
+
+      SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//   Elements for the 1st order calculations                                       //
+*//   Work in progress !!!                                                          //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE "KKsem.h"
+*
+      INTEGER           KeyDist, KFi,KFf     ! Input
+      DOUBLE PRECISION  CMSene,vv   ! Input, vv=vmax
+      DOUBLE PRECISION  Result      ! Output
+      DOUBLE PRECISION  Pi, Mini, Qe,T3e, Mfin, Qf,T3f, mZ, GammZ
+      INTEGER           NCf,NCe
+      DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
+      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born
+      DOUBLE COMPLEX    Zeta
+      DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
+      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+*=============================================================
+      Pi =3.1415926535897932d0
+      CALL BornV_GetMZ(    mZ)
+      CALL BornV_GetGammZ( GammZ)
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+* Propagators, with s-dependent width
+      svar =    CMSene**2
+      zz   = 1d0 - MZ**2/svar
+      gz   = GammZ*MZ/svar
+      Zeta =    DCMPLX(zz,gz)
+* Getting Ve,Vf,Ae,Af
+      costhe = 0d0
+      CALL GPS_EWFFact(KFi,KFf,svar,costhe ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+      sig0 = 4d0/3d0 *(1/m_AlfInv) *Pi**2 / svar
+****************
+      C0 = (Qe*Qf)**2
+      C1 = 2*Qe*Qf*Ve*Vf
+      C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
+      D0 = 0d0
+      D1 = 2*Qe*Qf*Ae*Af
+      D2 = 4*Ve*Ae*Vf*Af**2
+      X_born=  DREAL(C0/(1-vv)**2 +C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ) ! pure Born at svar*(1-v)
+      X_born=  X_born*(1-vv)
+
+      Result = X_born * sig0
+
+      END
+
+
       SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,AfbIFI)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
-*//   Formulas (5-7) in Phys.Lett. B219 (1989) 103                                   //
+*//   Formulas (5-7) in Phys.Lett. B219 (1989) 103                                  //
 *//   and non-IFI formulas of PRD41 (1990)                                          //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
