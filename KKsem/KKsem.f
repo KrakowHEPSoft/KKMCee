@@ -1588,6 +1588,13 @@ c]]]]]
       INTEGER  KeyZet,HadMin,KFbeam,KeyRes
       INTEGER  i,ke,KFfin,ncf,kf,IsGenerated,iKF
       INTEGER  KeyWidFix
+      INTEGER  icont, iflag
+      DATA     icont /0/
+      icont = icont+1
+      iflag = 0
+*      if( icont .LE.  20 ) iflag=1
+*      if( icont .LE.  200  .and. DSQRT(svar) .GT. m_CMSene -0.02e0 ) iflag=1
+*      if( iflag .eq. 1) write(*,*) "********************** KKsem_BornV, icont, cmsene =",icont, DSQRT(svar)
 *--------------------------------------------------------------------
       s = svar
       t =-svar*(1d0-costhe)/2d0
@@ -1664,6 +1671,15 @@ c]]]]]
             ff0= qe**2*qf**2 +2*ReChiZ*qe*qf*Ve*Vf +SqChiZ*xe*xf
             ff1=             +2*ReChiZ*qe*qf*Ae*Af +SqChiZ*ye*yf
             BornS    = (1d0+ costhe**2)*ff0 +2d0*costhe*ff1
+*[[[[[[[[[[[[[[
+*            if( iflag .eq. 1) THEN
+*              write(*,*) "|||| Qe,Qf, T3e,T3f  = ", Qe,Qf,T3e,T3f
+*              write(*,*) "|||| Ve,Vf, Ae,Af  = ", Ve*DSQRT(RaZ), Vf*DSQRT(RaZ), Ae*DSQRT(RaZ),Af*DSQRT(RaZ)
+*              write(*,*) "|||| ff0, ff1, ff1/ff0, sw2 = ", ff0, ff1, ff1/ff0, sw2
+*              write(*,*) "|||| c0, c1,c2 = ", qe**2*qf**2, 2*qe*qf*Ve*Vf*RaZ, xe*xf*RaZ**2
+*              write(*,*) "|||| d0, d1,d2 = ",         0d0, 2*qe*qf*Ae*Af*RaZ, ye*yf*RaZ**2
+*            ENDIF
+*]]]]]]]]]]]]]]
 *     Electron neutrino, t-chanel W-exchange
             ReChiW=      s/(-t+MW2)    *RaW
             SqChiW=   s**2/(-t+MW2)**2 *RaW**2
@@ -2677,7 +2693,7 @@ c]]]]]
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
-      IF( icont .LE. 3) write(*,*) "/////// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
+*      IF( icont .LE. 3) write(*,*) "////KKsem_Ord1/// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
       Sw2  = m_sinw2                       ! from xpar
 * Propagators, with s-dependent width
       svar =    CMSene**2
@@ -2697,7 +2713,7 @@ c]]]]]
       Ae=  2*T3e /deno
       Vf =  (2*T3f -4*Qf*Sw2)/deno
       Af =  2*T3f /deno
-      IF( icont .LE. 3) write(*,*) "/////// Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
+*      IF( icont .LE. 3) write(*,*) "/////// Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
 ****************
 *      Ve =0d0
 *      Ae =0d0
@@ -2709,7 +2725,7 @@ c]]]]]
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
       D0 = 0d0
       D1 = 2*Qe*Qf*Ae*Af
-      D2 = 4*Ve*Ae*Vf*Af**2
+      D2 = 4*Ve*Ae*Vf*Af
 ******* Gmu scheme, close to EW of Dizet near Z ************
       RaZ  = (16D0*Sw2*(1d0-Sw2))* (m_GFermi *mZ**2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi)
       Raz  = 1d0   ! alpha scheme
@@ -2773,6 +2789,7 @@ c]]]]]
       DOUBLE PRECISION  sig0, sig_PRD
       INTEGER    icont
       DATA icont /0/
+      icont = icont+1
 *=============================================================
       Pi =3.1415926535897932d0
 * It is better to import GammZ from BornV, possibly redeined there
@@ -2784,7 +2801,7 @@ c]]]]]
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
-      IF( icont .LE. 3) write(*,*) "/////// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
+*      IF( icont .LE. 10) write(*,*) "////KKsem_Afb_Calc/// icont,Qe,T3e,Qf,T3f=", icont,Qe,T3e,Qf,T3f
 * Propagators, with s-dependent width
       svar    =    CMSene**2
       LGini   =    DLOG(svar/Mini**2)
@@ -2805,7 +2822,7 @@ c]]]]]
       Ae=  2*T3e /deno
       Vf =  (2*T3f -4*Qf*Sw2)/deno
       Af =  2*T3f /deno
-      IF( icont .LE. 3) write(*,*) "\\\\\\\ Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
+*      IF( icont .LE. 10) write(*,*) "||||KKsem_Afb_Calc||| Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
 ****************
 *      Ve =0d0
 *      Ae =0d0
@@ -2817,10 +2834,11 @@ c]]]]]
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
       D0 = 0d0
       D1 = 2*Qe*Qf*Ae*Af
-      D2 = 4*Ve*Ae*Vf*Af**2
+      D2 = 4*Ve*Ae*Vf*Af
       X_born  =  DREAL(C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
       Y_Born  =  DREAL(D0 +D1/Zeta +D2/Zeta/DCONJG(Zeta) )
       AFBborn = 3d0/4d0* Y_Born/X_born
+*      IF( icont .LE. 10) write(*,*) "||||KKsem_Afb_Calc||| c1,c2,d1,d2, Y/X=", c1,c2, d1,d2, Y_Born/X_born
 ***************************************************************
 *     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
       FD_fin =
