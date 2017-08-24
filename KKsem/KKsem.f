@@ -2648,6 +2648,7 @@ c]]]]]
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//   Elements for the 1st order calculations                                       //
+*//   to be used in the integrand in TMCgenFOAM
 *//   Work in progress !!!                                                          //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
@@ -2660,26 +2661,48 @@ c]]]]]
       DOUBLE PRECISION  Pi, Mini, Qe,T3e, Mfin, Qf,T3f, mZ, GammZ
       INTEGER           NCf,NCe
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
-      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born
-      DOUBLE COMPLEX    Zeta
+      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born
+      DOUBLE COMPLEX    Zeta, C_born, D_born
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
-      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+***      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+      DOUBLE PRECISION  Ve,Vf,Ae,Af
+      DOUBLE PRECISION  KKsem_BornV, Sw2, RaZ, deno
+      INTEGER    icont
+      DATA icont /0/
 *=============================================================
+      icont =  icont +1
       Pi =3.1415926535897932d0
       CALL BornV_GetMZ(    mZ)
       CALL BornV_GetGammZ( GammZ)
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+      IF( icont .LE. 3) write(*,*) "/////// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
+      Sw2  = m_sinw2                       ! from xpar
 * Propagators, with s-dependent width
       svar =    CMSene**2
       zz   = 1d0 - MZ**2/svar
       gz   = GammZ*MZ/svar
       Zeta =    DCMPLX(zz,gz)
-* Getting Ve,Vf,Ae,Af
-      costhe = 0d0
-      CALL GPS_EWFFact(KFi,KFf,svar,costhe ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
-      sig0 = 4d0/3d0 *(1/m_AlfInv) *Pi**2 / svar
+*[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+* Calculating Ve,Vf,Ae,Af
+* Using them directly leads to unspecified implementation of EW corrections
+* This is why we switch to Gmu or alpha scheme
+*      costhe = 0d0
+*      CALL GPS_EWFFact(KFi,KFf,svar,costhe ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+*      WRITE(*,*) "from GPS: Ve,Vf,Ae,Af=", dreal(Ve),dreal(Vf),dreal(Ae),dreal(Af)
+*]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
+      Ve=  (2*T3e -4*Qe*Sw2)/deno
+      Ae=  2*T3e /deno
+      Vf =  (2*T3f -4*Qf*Sw2)/deno
+      Af =  2*T3f /deno
+      IF( icont .LE. 3) write(*,*) "/////// Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
+****************
+*      Ve =0d0
+*      Ae =0d0
+*      Vf =0d0
+*      Af =0d0
 ****************
       C0 = (Qe*Qf)**2
       C1 = 2*Qe*Qf*Ve*Vf
@@ -2687,15 +2710,35 @@ c]]]]]
       D0 = 0d0
       D1 = 2*Qe*Qf*Ae*Af
       D2 = 4*Ve*Ae*Vf*Af**2
-      X_born=  DREAL(C0/(1-vv)**2 +C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ) ! pure Born at svar*(1-v)
-      X_born=  X_born*(1-vv)
+******* Gmu scheme, close to EW of Dizet near Z ************
+      RaZ  = (16D0*Sw2*(1d0-Sw2))* (m_GFermi *mZ**2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi)
+      Raz  = 1d0   ! alpha scheme
+      C1 = C1 *RaZ
+      C2 = C2 *RaZ**2
+      D1 = D1 *RaZ
+      D2 = D2 *RaZ**2
+*****************************************************
+      sig0 = 4*Pi*(1/m_AlfInv)**2/(3d0*svar )*m_gnanob
+      C_born=  C0/(1-vv)**2 +C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ! pure Born at svar*(1-v)
+      D_born=               +D1/(Zeta-vv)/(1-vv) +D2/(Zeta-vv)/DCONJG(Zeta-vv) ! sigma^*   at svar*(1-v)
+      X_born=  DREAL(C_born)*(1-vv)* sig0
+      Y_born=  DREAL(D_born)*(1-vv)* sig0
 
-      Result = X_born * sig0
-
+      IF(      KeyDist .EQ. 0 ) THEN
+         Result = sig0             ! pointlike xsection [nb]
+      ELSE IF( KeyDist .EQ. 1 ) THEN
+         Result = X_born          ! Born xsection [nb]
+      ELSE IF( KeyDist .EQ. 2 ) THEN
+         Result = Y_born          ! Sigma^star [nb]
+      ELSE IF( KeyDist .EQ. 501 ) THEN
+         Result = KKsem_BornV(svar,0d0)  * sig0  ! testing Born xsection [nb]
+      ELSE
+         Result = 0
+      ENDIF
       END
 
 
-      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,AfbIFI)
+      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//   Formulas (5-7) in Phys.Lett. B219 (1989) 103                                  //
@@ -2707,13 +2750,14 @@ c]]]]]
 *
       INTEGER           KeyDist, KFi,KFf     ! Input
       DOUBLE PRECISION  CMSene,vv   ! Input, vv=vmax
-      DOUBLE PRECISION  AfbIFI      ! Output
+      DOUBLE PRECISION  Result      ! Output
       DOUBLE PRECISION  Pi, T3e,Qe, T3f,Qf, MZ, GammZ
       INTEGER           NCf,NCe
       DOUBLE COMPLEX    Zeta, Eps
       DOUBLE PRECISION  svar
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
-      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+***      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
+      DOUBLE PRECISION  Ve,Vf,Ae,Af
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
       DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2
       DOUBLE COMPLEX    C_FB, C_FB2
@@ -2725,19 +2769,22 @@ c]]]]]
       DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI4, AfbIFI5, AFB_PRD, AFB_PRD_PL
       DOUBLE PRECISION  vvmax, AFBborn
       DOUBLE COMPLEX    Agg, AgZ, Agg5, AHZ5, C_FB4, C_FB5
+      DOUBLE PRECISION  Sw2, RaZ, deno
+      DOUBLE PRECISION  sig0, sig_PRD
+      INTEGER    icont
+      DATA icont /0/
 *=============================================================
       Pi =3.1415926535897932d0
-*      MZ    = m_Zmass     ! from xpar
-*      GammZ = m_Zgamma    ! from xpar
 * It is better to import GammZ from BornV, possibly redeined there
       CALL BornV_GetMZ(    mZ)
       CALL BornV_GetGammZ( GammZ)
+      Sw2  = m_sinw2                       ! from xpar
 *     MZ    = mZ*100d0         ! sending MZ to infinity, doesnt work?
       Eps = DCMPLX(-1.D0,0.D0)
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
-
+      IF( icont .LE. 3) write(*,*) "/////// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
 * Propagators, with s-dependent width
       svar    =    CMSene**2
       LGini   =    DLOG(svar/Mini**2)
@@ -2747,14 +2794,24 @@ c]]]]]
       Zeta =    DCMPLX(zz,gz)
       zz2  = zz**2 +gz**2
       vvmax = 1d0-Mfin**2/svar
+      sig0 = 4*Pi*(1/m_AlfInv)**2/(3d0*svar )*m_gnanob
       IF( vv .GT. 0.99*vvmax ) vv = 0.99*vvmax
-
+*[[[[[[[[[[[[[[[[[[[[[[
 * Getting Ve,Vf,Ae,Af
-      CALL GPS_EWFFact(KFi,KFf,svar,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+*      CALL GPS_EWFFact(KFi,KFf,svar,0d0 ,Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi,RsqV,RsqA) !
+*]]]]]]]]]]]]]]]]]]]]]
+      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
+      Ve=  (2*T3e -4*Qe*Sw2)/deno
+      Ae=  2*T3e /deno
+      Vf =  (2*T3f -4*Qf*Sw2)/deno
+      Af =  2*T3f /deno
+      IF( icont .LE. 3) write(*,*) "\\\\\\\ Sw2, Ve,Vf,Ae,Af =", Sw2, Ve,Vf,Ae,Af
+****************
 *      Ve =0d0
 *      Ae =0d0
 *      Vf =0d0
 *      Af =0d0
+****************
       C0 = (Qe*Qf)**2
       C1 = 2*Qe*Qf*Ve*Vf
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
@@ -2767,30 +2824,32 @@ c]]]]]
 ***************************************************************
 *     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
       FD_fin =
-     $     +2d0*(LGini-1d0)*DLOG(vv)
-     $    +(3 -4d0*vv +vv**2)/2d0 * LGini
+     $    +2d0*(LGfin-1d0)*DLOG(vv)
+     $    +2d0*(3d0/4 -vv +vv**2/4)* LGfin
      $    +(3 -4d0*vv +vv**2)/2d0 * DLOG(1d0-vv)
      $    -2d0 +7d0/2d0*vv -3d0/4d0*vv**2 +Pi**3/3d0 -2d0* BVR_dilog(vv)
       FN_fin = FD_fin -vv**2/2d0
       X0=
      $   +2d0*(LGini-1d0)*( DLOG(vv) +3d0/4d0 -0.5d0*vv -0.5d0*DLOG(1d0-vv) )
      $   +(-0.5d0 +Pi**2/3d0 )
-     $   +DREAL( 2d0*(LGini-1d0)* 1d0/Zeta *BVR_CDLN( vv*Zeta/(Zeta-vv), Eps)
-     $         +3d0/4d0/Zeta -(1d0-0.5d0*Zeta)*BVR_CDLN( Zeta/(Zeta-vv) ,Eps) -vv/2d0 )
       X1=
-     $   +DREAL( 1d0/Zeta*(-0.5d0 +Pi**2/3d0 ) )
+     $   + 2d0*(LGini-1d0)*( 1d0/Zeta *BVR_CDLN( vv*Zeta/(Zeta-vv), Eps)
+     $         +3d0/4d0/Zeta -(1d0-0.5d0*Zeta)*BVR_CDLN( Zeta/(Zeta-vv) ,Eps) -vv/2d0)
+     $   +1d0/Zeta*(-0.5d0 +Pi**2/3d0 )
+      X2=
      $   +2d0*(LGini-1d0)*( 1d0/zz2*DLOG(vv) +3d0/4d0/zz2 -vv/2d0
-     $       +(1d0 +(-1.5d0 +zz)*zz2)/zz2*DREAL( BVR_CDLN( Zeta/(Zeta-vv), Eps) )
-     $       +( zz/gz/zz2 +(3d0*zz-zz**2+gz**2-4d0)/2d0/gz)*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
-      X2= +1d0/zz2 *(-0.5d0 +Pi**2/3d0)
-      Y0= -(-vv -DLOG(1d0-vv))
-      Y1= -DREAL( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
-      Y2= +(-vv +(1d0-2d0*zz) *DREAL( BVR_CDLN( (Zeta-vv)/Zeta, Eps) )
+     $       +(1d0 +(-1.5d0 +zz)*zz2)/zz2*BVR_CDLN( Zeta/(Zeta-vv), Eps)
+     $       +(zz/gz/zz2 +(3d0*zz-zz**2+gz**2-4d0)/2d0/gz)*(DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
+     $   +1d0/zz2 *(-0.5d0 +Pi**2/3d0)
+      Y0= -( -vv -DLOG(1d0-vv))
+      Y1= -( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
+      Y2= -( -vv +(1d0-2d0*zz) *BVR_CDLN( (Zeta-vv)/Zeta, Eps)
      $           +(zz-zz**2+gz**2)/gz*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
       WD_ini = DREAL( C0*X0 +C1*X1 +C2*X2)
       WN_ini = DREAL( D0*X0 +D1*X1 +D2*X2) + DREAL( D0*Y0 +D1*Y1 +D2*Y2)
       X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
       Y_tot = Y_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
+      sig_PRD = X_tot*sig0
       AFB_PRD = (3d0/4d0)* Y_tot/X_tot
 *********************************************
 * Formula for IFI contrib. directly from PL219B
@@ -2856,17 +2915,19 @@ c]]]]]
 *      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes
       IF(      KeyDist .EQ. 1 ) THEN
-         AfbIFI = AFBborn       ! just Born for calibration
+         Result = AFBborn       ! just Born for calibration
       ELSE IF( KeyDist .EQ. 100 ) THEN
-         AfbIFI = AFB_PRD_PL    ! PRD aand PL combined
+         Result = AFB_PRD_PL    ! PRD and PL combined
       ELSE IF( KeyDist .EQ. 101 ) THEN
-         AfbIFI = AFB_PRD       ! only PRD
+         Result = AFB_PRD       ! only PRD
       ELSE IF( KeyDist .EQ. 104 ) THEN
-         AfbIFI = AfbIFI4       ! testing IFi gaamma only
+         Result = AfbIFI4       ! testing IFi gamma only
       ELSE IF( KeyDist .EQ. 105 ) THEN
-         AfbIFI = AfbIFI5       ! testing
+         Result = AfbIFI5       ! testing
+      ELSE IF( KeyDist .EQ. 301 ) THEN
+         Result = sig_PRD       ! sigma [nb] of PRD
       ELSE
-         AfbIFI = 0d0
+         Result = 0d0
       ENDIF
       END ! KKsem_AfbIFI
 

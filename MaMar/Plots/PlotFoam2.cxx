@@ -186,7 +186,7 @@ void FigAfb3()
   TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
 
   TH1D *HST_PLBZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBZ");
-  LibSem.Ord1Afb(HST_PLBZ,100);
+  LibSem.Ord1fill(HST_PLBZ,100);
   HST_PLBZ->SetLineColor(kCyan);
   //
   double alfinv  = 137.035989;

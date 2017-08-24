@@ -43,11 +43,11 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 //
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_35G");
@@ -125,9 +125,9 @@ cout<<"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<endl;
 }//TestNorm
 
 
-void HistNormalize(){
+void HistNormKKMC(){
   //
-  cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
+  cout<<"----------------------------- HistNormKKMC ------------------------------------"<<endl;
   //DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
@@ -163,10 +163,119 @@ void HistNormalize(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void ReMakeMChisto(){
+void ReMakeKKMC(){
 	//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
+  cout<<"================ ReMakeKKMC  BEGIN ============================"<<endl;
+////////////////////////////////////////////////////////////////////
+// Pure KKMC reprocessing part
+// from bigger scattergram and restricted vmax<0.2
+//////////////////////////////////////////////////////////////////
+    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
+
+    TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+
+   // Wide range, vmax<1.
+    TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
+    TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
+    TH2D *sct_vTcPR_EEX2   = (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2");
+    TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
+    TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
+    cout<<"ReMakeKKMC [2]"<<endl;
+    //****************************************************************************************
+    // Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
+    //****************************************************************************************
+    //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
+    // IFI on
+    TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
+    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, gNbMax);  //!!!!
+    HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
+    HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
+    // IFI off
+    TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
+    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, gNbMax);  //!!!!
+    HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
+    HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
+    // IFI off
+    TH1D                    *HTot2_vTcPR_EEX2, *HAfb2_vTcPR_EEX2;
+    ProjV( sct_vTcPR_EEX2, HTot2_vTcPR_EEX2,  HAfb2_vTcPR_EEX2, gNbMax);  //!!!!
+    HTot2_vTcPR_EEX2->SetName("HTot2_vTcPR_EEX2");
+    HAfb2_vTcPR_EEX2->SetName("HAfb2_vTcPR_EEX2");
+    // IFI on
+    TH1D                    *HTot2_vTcPL_Ceex2, *HAfb2_vTcPL_Ceex2;
+    ProjV( sct_vTcPL_Ceex2,  HTot2_vTcPL_Ceex2,  HAfb2_vTcPL_Ceex2, gNbMax);  //!!!!
+    HTot2_vTcPL_Ceex2->SetName("HTot2_vTcPL_Ceex2");
+    HAfb2_vTcPL_Ceex2->SetName("HAfb2_vTcPL_Ceex2");
+    // IFI off
+    TH1D                    *HTot2_vTcPL_Ceex2n, *HAfb2_vTcPL_Ceex2n;
+    ProjV( sct_vTcPL_Ceex2n, HTot2_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, gNbMax);  //!!!!
+    HTot2_vTcPL_Ceex2n->SetName("HTot2_vTcPL_Ceex2n");
+    HAfb2_vTcPL_Ceex2n->SetName("HAfb2_vTcPL_Ceex2n");
+
+  ///****************************************************************************************
+  // Pure KKMC reprocessing part
+    int nbMax;
+    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
+    // Wide range, vmax<1.
+    TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
+    TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
+    TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
+    //****************************************************************************************
+    // Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
+    //****************************************************************************************
+    nbMax=0;            // cosThetaMax = 1.0
+    TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
+    ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
+    HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
+    HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
+    //
+    TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
+    ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
+    HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
+    HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
+    // IFI off
+    TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
+    ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
+    HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
+    HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
+    ///****************************************************************************************
+    // More Wide range, vmax<1.
+    TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
+    TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
+    TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
+    //
+    TH1D                    *HTot_vTcPL_Ceex2, *HAfb_vTcPL_Ceex2;
+    ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2, nbMax);  //!!!!
+    HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
+    HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
+    //
+    TH1D                    *HTot_vTcPL_Ceex2n, *HAfb_vTcPL_Ceex2n;
+    ProjV( sca_vTcPL_Ceex2n,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
+    HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
+    HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
+
+    //****************************************************************************************
+    //  dsigma/dv unlimited cos(theta)
+    //****************************************************************************************
+    TH1D *Hpro_vT_Ceex2;
+    ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
+    Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
+    //  dsigma/dv unlimited cos(theta)
+    TH1D *Hpro_vT_Ceex2n;
+    ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
+    Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
+
+  cout<<"================ ReMakeKKMC ENDs  ============================="<<endl;
+  cout<<"==================================================================="<<endl;
+}//ReMakeKKMC
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void ReMakeFoam35(){
+	//------------------------------------------------------------------------
+  cout<<"==================================================================="<<endl;
+  cout<<"================ ReMakeFoam35  BEGIN  ============================"<<endl;
 //////////////////////////////////////////////////////////////////
   cout<<"  Renormalizing  and reprocessing histograms from FOAM"<<endl;
 
@@ -229,124 +338,10 @@ void ReMakeMChisto(){
   Htot2_xmax_Ceex2->SetName("Htot2_xmax_Ceex2");
   Hafb2_xmax_Ceex2->SetName("Hafb2_xmax_Ceex2");
 
-  ////////////////////////////////////////////////////////////////////
-//********************************************************************
-// Pure KKMC reprocessing part
-  cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
-/*
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  double CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene        /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-*/
-  // Wide range, vmax<1.
-  TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
-  TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
-  TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
-  ///****************************************************************************************
-  /// Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
-  nbMax=0;            // cosThetaMax = 1.0
-  TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
-  ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
-  HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
-  HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
-  //
-  TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
-  ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
-  HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
-  HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
-  // IFI off
-  //
-  TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
-  ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
-  HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
-  HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
-  ///****************************************************************************************
-  //  dsigma/dv unlimited cos(theta)
-  TH1D *Hpro_vT_Ceex2;
-  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
-  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
-  //  dsigma/dv unlimited cos(theta)
-  TH1D *Hpro_vT_Ceex2n;
-  ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
-  Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
-  ///****************************************************************************************
-  // More Wide range, vmax<1.
-  TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
-  TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
-  TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
-  //
-  TH1D                    *HTot_vTcPL_Ceex2, *HAfb_vTcPL_Ceex2;
-  ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2, nbMax);  //!!!!
-  HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
-  HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
-  //
-  TH1D                    *HTot_vTcPL_Ceex2n, *HAfb_vTcPL_Ceex2n;
-  ProjV( sca_vTcPL_Ceex2n,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
-  HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
-  HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
 
-  cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
+  cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
-}//RemakeMChisto
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void ReMakeMChisto2(){
-	//------------------------------------------------------------------------
-  cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeMChisto2  BEGIN ============================"<<endl;
-////////////////////////////////////////////////////////////////////
-// Pure KKMC reprocessing part
-// from bigger scattergram and restricted vmax<0.2
-  //////////////////////////////////////////////////////////////////
-    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
-
-    TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-    cout<<"ReMakeMChisto2 [1]"<<endl;
-   // Wide range, vmax<1.
-    TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
-    TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
-    TH2D *sct_vTcPR_EEX2   = (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2");
-    TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
-    TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
-    cout<<"ReMakeMChisto2 [2]"<<endl;
-    ///****************************************************************************************
-    ///****************************************************************************************
-    /// Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
-    //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
-    // IFI on
-    TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
-    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, gNbMax);  //!!!!
-    HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
-    HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
-    // IFI off
-    TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
-    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, gNbMax);  //!!!!
-    HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
-    HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
-    // IFI off
-    TH1D                    *HTot2_vTcPR_EEX2, *HAfb2_vTcPR_EEX2;
-    ProjV( sct_vTcPR_EEX2, HTot2_vTcPR_EEX2,  HAfb2_vTcPR_EEX2, gNbMax);  //!!!!
-    HTot2_vTcPR_EEX2->SetName("HTot2_vTcPR_EEX2");
-    HAfb2_vTcPR_EEX2->SetName("HAfb2_vTcPR_EEX2");
-    // IFI on
-    TH1D                    *HTot2_vTcPL_Ceex2, *HAfb2_vTcPL_Ceex2;
-    ProjV( sct_vTcPL_Ceex2,  HTot2_vTcPL_Ceex2,  HAfb2_vTcPL_Ceex2, gNbMax);  //!!!!
-    HTot2_vTcPL_Ceex2->SetName("HTot2_vTcPL_Ceex2");
-    HAfb2_vTcPL_Ceex2->SetName("HAfb2_vTcPL_Ceex2");
-    // IFI off
-    TH1D                    *HTot2_vTcPL_Ceex2n, *HAfb2_vTcPL_Ceex2n;
-    ProjV( sct_vTcPL_Ceex2n, HTot2_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, gNbMax);  //!!!!
-    HTot2_vTcPL_Ceex2n->SetName("HTot2_vTcPL_Ceex2n");
-    HAfb2_vTcPL_Ceex2n->SetName("HAfb2_vTcPL_Ceex2n");
-
-
-    ///****************************************************************************************
-
-  cout<<"================ ReMakeMChisto2 ENDs  ============================="<<endl;
-  cout<<"==================================================================="<<endl;
-}//RemakeMChisto2
-
+}//ReMakeFoam35
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -395,15 +390,13 @@ void FigVdist()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigVdist =========================== "<<endl;
-
-  //
-  TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
-  //
+ //
   TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
+  TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
   //
   TH1D *HST_xx_Ceex2n     = (TH1D*)DiskFileF.Get("HST_xx_Ceex2n");      // Foam dsigma/d(v) direct
   TH1D *HST_xmax_Ceex2n   = (TH1D*)DiskFileB.Get("HST_xmax_Ceex2n");    // Foam sigma(vmax) direct
-  //
+    //
   TH1D *Htot_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Htot_xmax_Ceex2n");    //Foam sigma(vmax) scatt.ISR+FSR
   TH1D *Htot_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Htot_xmax_Ceex2");     //Foam sigma(vmax) scatt.ISR+FSR+IFI
   //
@@ -519,11 +512,11 @@ void FigAfb()
   TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // FOAM scatt.
  //
   TH1D *HST_PLBZ =(TH1D*)HAfb_vTcPR_Ceex2->Clone("HST_PLBZ");
-  LibSem.Ord1Afb(HST_PLBZ,100);
+  LibSem.Ord1fill(HST_PLBZ,100);
   HST_PLBZ->SetLineColor(kCyan);
   //
   TH1D *HST_IFI5 =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_IFI5");
-  LibSem.Ord1Afb(HST_IFI5,105);
+  LibSem.Ord1fill(HST_IFI5,105);
   HST_IFI5->SetLineColor(kCyan);
  //
 
@@ -648,7 +641,7 @@ void FigAfb2()
 
 
   TH1D *HST_PLBZ2 =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("HST_PLBZ2");
-  LibSem.Ord1Afb(HST_PLBZ2,101);
+  LibSem.Ord1fill(HST_PLBZ2,101);
   HST_PLBZ2->SetLineColor(kCyan);
 /*
   // A_FB from PLB219,p103 ]]]
@@ -668,7 +661,7 @@ void FigAfb2()
 */
   //
    TH1D *HST_IFI4 =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_IFI4");
-   LibSem.Ord1Afb(HST_IFI4,105);
+   LibSem.Ord1fill(HST_IFI4,105);
    HST_IFI4->SetLineColor(kCyan);
  //
 
@@ -1005,9 +998,9 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
   TestNorm();          // special test of normalizaion
-  HistNormalize();     // Renormalization of MC histograms
-  ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
-  ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam
+  HistNormKKMC();      // Renormalization of MC histograms
+  ReMakeFoam35();      // reprocessing MC histos from KKC and Foam
+  ReMakeKKMC();        // reprocessing MC histos from KKC and Foam
   KKsemMakeHisto();    // prepare histos from KKsem
 //========== PLOTTING ==========
 // vmax=1

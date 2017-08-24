@@ -125,7 +125,7 @@ public:
   void VVplot( TH1 *, int , char [], int, int );
   void Cplot(  TH1 *, int , char [], int, int, double, double);
   void ReaData(const char*, int, double[]);
-  void Ord1Afb( TH1*, int );
+  void Ord1fill( TH1*, int );
 
 ////////////////////////////////////////////////////////////////////////////
 };// KKplot

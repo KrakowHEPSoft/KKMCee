@@ -29,7 +29,7 @@ class TRobolFOAM : public TRobol {
   TH1D   *hst_weight5;           //! no streamer
 
   TH1D   *HST_xx_Ord1;          //! no streamer
-  TH1D   *HST_xc_Ord1;          //! no streamer
+  TH1D   *HST_xx_Crd1;          //! no streamer
 
   TH1D   *HST_xx_Ceex2;          //! no streamer
   TH1D   *HST_xx_Ceex2n;         //! no streamer

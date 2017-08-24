@@ -44,11 +44,11 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
   m_amel    = 0.510999e-3;
 //
   m_beam    = 0.510999e-3;  // electron
-  m_chini   = 1.0;          // electron
+  m_chini   =-1.0;          // electron
 //
 //  m_fin     = 0.105;      // WRONG by 0.7 MeV !!!! costed 1 week to find it out !!!
   m_fin     = 0.1056583;    // final ferm. muon mass
-  m_chfin   = 1.0;          // final ferm. muon charge
+  m_chfin   =-1.0;          // final ferm. muon charge
 //
   m_KFini   = 11;           // electron
   m_KFf     = 13;           // muon
@@ -138,6 +138,26 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   //////////////////////////////////////////////////////////////
   /// ******  SETTING UP additional FOAM of the user class *****
   if( m_IsFoam1 == 1 ){
+	 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+	    // checking EW implementation in Born xsection
+        // SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
+	    double xBorn,xBorn1;
+	    kksem_ord1_(  1,m_KFini, m_KFf, m_CMSene, 0e0, xBorn);  // Born [nb]
+	    kksem_ord1_(501,m_KFini, m_KFf, m_CMSene, 0e0, xBorn1);  // Born [nb]
+	    cout<< "|||| xBorn   Gmu scheme = "<< xBorn  << endl;
+	    cout<< "|||| xBorn alpha scheme = "<< xBorn1 << "   "<< xBorn1/xBorn <<endl;
+	    double AfbBorn;
+	    kksem_afb_calc_(  1,m_KFini, m_KFf, m_CMSene, 0e0, AfbBorn);  // AFB
+	    cout<< "**** KKsem_Afb_Calc AFB = "<< AfbBorn <<endl;
+	    double svar = sqr(m_CMSene);
+	    bornv_interpogsw_(m_KFf,svar, 0.0);
+	    double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar,  0.0, 0.0, 0.0, 0.0, 0.0);
+	    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
+	    //double sig_EEX =  dSig_EEX0   *3.0/8.0 *sig0nb;  // Born of EEX
+	    double sig_EEX =  dSig_EEX0   *sig0nb;  // Born of EEX
+	    cout<< "|||| Born Dizet   = "<< sig_EEX << "   "<< sig_EEX/xBorn <<endl;
+	    //exit(-5);
+	 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
   m_kDim    = 1;
   m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
@@ -154,7 +174,7 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   //screen output
   BXOPE(*f_Out);
   BXTXT(*f_Out,"========================================");
-  BXTXT(*f_Out,"======   TMCgenFOAM::Initialize     ======");
+  BXTXT(*f_Out,"======   TMCgenFOAM::Initialize   ======");
   BXTXT(*f_Out,"========================================");
   BXTXT(*f_Out,"========================================");
   f_IsInitialized = 1;  /// re-initialization inhibited
@@ -305,32 +325,32 @@ else
 
 
 ///------------------------------------------------------------------------
-double TMCgenFOAM::RhoISR1(double svar, double vv){
+void TMCgenFOAM::GetRhoISR1(double svar, double vv, double &rho, double &rho2){
 /// First order ISR rho-function for ISR
   double gami   = gamISR(svar);
   double dels   = 3.0/4.0*gami +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
-  double rho;
   if( vv > m_eps){
-     rho = gami *(1 +sqr(1-vv))/(2*vv);
+     rho  = gami *(1 +sqr(1-vv))/(2*vv);
+     rho2 = rho -sqr(m_chini)*m_alfpi *vv;
   }else{
 	 rho = 1.0 + log(m_eps)*(gami) +dels;
+	 rho2 = rho;
   }
-  return rho;
 }//Rho_ISR1
 
 
 ///------------------------------------------------------------------------
-double TMCgenFOAM::RhoFSR1(double svar, double vv){
+void TMCgenFOAM::GetRhoFSR1(double svar, double vv, double &rho, double &rho2){
 /// First order ISR rho-function for ISR
   double gamf   = gamFSR(svar*(1.0-vv));
   double dels   = 3.0/4.0*gamf +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
-  double rho;
   if( vv > m_eps){
-     rho = gamf *(1 +sqr(1-vv))/(2*vv);
-  }else{
+     rho  = gamf *(1 +sqr(1-vv))/(2*vv);
+     rho2 = rho -sqr(m_chfin)*m_alfpi *vv;
+ }else{
 	 rho = 1.0 + log(m_eps)*(gamf) +dels;
+	 rho2 = rho;
   }
-  return rho;
 }//Rho_FSR1
 
 
@@ -704,7 +724,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 { // density distribution for Foam
 	m_count++;  // counter for debug
 	//
-	Double_t Dist=1;
+	Double_t Dist, xDist, yDist;
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
 /////////////////////////////////////////////////////////
@@ -712,27 +732,42 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	double gami   = gamISR(svar);
     double gamf0  = gamFSR(svar);
 	double R= Xarg[0];
-	double dJac,RhoI,RhoF,Rho;
-	MapPlus(  R, gami+gamf0, m_vv, dJac); // with m_eps IR cut-off
-	Dist *= dJac;
-	//
-	RhoI = RhoISR1(svar,m_vv);
-	RhoF = RhoFSR1(svar,m_vv);
-	// Additive combination of RhoI and RhoF
-	if( m_vv > m_eps){
-	     Rho = RhoI + RhoF;            // hard
-	}else{
-		 Rho = 1 +(RhoI-1) +(RhoI-1);  // soft
-	}//
-	Dist *= Rho;
-	double xBorn;
-//  Born((1-v)*s) provided by KKsem
+	double dJac,gamm;
+	gamm = gami+gamf0;
+	MapPlus(  R, gamm, m_vv, dJac); // with m_eps IR cut-off
+//[[[
+//	m_vv = R *m_vvmax; dJac = m_vvmax;
+//]]]
+	double xRhoI, xRhoF, yRhoI, yRhoF;
+	GetRhoISR1(svar,m_vv,xRhoI, yRhoI);
+	GetRhoFSR1(svar,m_vv,xRhoF, yRhoF);
+//
+	double xBorn, xBorn0, yBorn, yBorn0;
+//  x_Born((1-v)*s) and x_Born(s) provided by KKsem
 //  SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
-	kksem_ord1_(0,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);
-	Dist *= xBorn;
+	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);  // Born [nb]
+	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0); // Born [nb]
+//  sigma^star Born provided by KKsem
+	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // sigma^* [nb]
+	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // sigma^* [nb]
 
+// Additive combination of RhoI and RhoF (ISR+FSR)
+	if( m_vv > m_eps){
+	     xDist = xRhoI*xBorn + xRhoF*xBorn0;            // hard sig
+	     yDist = yRhoI*yBorn + yRhoF*yBorn0;            // hard sig^*
+	}else{
+		 xDist = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0 ;    // soft+virt
+		 yDist = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0 ;    // soft+virt
+		 //dJac *= 1/m_eps;
+	}//
+	// model WT for AFB without IFI
+    m_WTmodel[10] = 0.0;
+    if( xDist != 0.0){
+    	m_WTmodel[10] = yDist/xDist; // WT for AFB without IFI
+    }//
+//************  principal distribution for FOAM
+	Dist = xDist* dJac;
 	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
-
 	return Dist;
 	////////////////////////////////////////////////////////////
 }// Density1
