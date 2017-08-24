@@ -33,9 +33,9 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
+TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
-TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
@@ -266,10 +266,13 @@ void FigVV()
   TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
   TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
 
+  cout<<"FigVV calculating PRD xsection "<<endl;
 
   TH1D *HST_SigPRD =(TH1D*)vcum_ISR2_FSR2->Clone("HST_SigPRD");
   LibSem.Ord1fill(HST_SigPRD,301);
   HST_SigPRD->SetLineColor(kCyan);
+
+  cout<<"FigVV calculating PRD xsection END "<<endl;
 
 
   //*****************************************************************************
@@ -348,6 +351,7 @@ void FigVV()
 
   //----------------------------
   cFigVV->cd();
+  cout<<" ========================= FigVV end======================== "<<endl;
   //================================================
 }//FigVV
 
@@ -393,14 +397,14 @@ void FigAfb()
   //Hst2->SetMinimum(-0.02); // 10GeV
   //Hst2->SetMaximum(+0.01); // 10GeV
 
-  //Hst2->SetMinimum(-0.02); // 95GeV
+  //Hst2->SetMinimum( 0.15); // 95GeV
   //Hst2->SetMaximum(+0.30); // 95GeV
 
-  //Hst2->SetMinimum(-0.40); // 88GeV
-  //Hst2->SetMaximum(-0.20); // 88GeV
+  Hst2->SetMinimum(-0.35); // 88GeV
+  Hst2->SetMaximum(-0.25); // 88GeV
 
-  Hst2->SetMinimum(-0.055); // 91GeV
-  Hst2->SetMaximum(+0.025); // 91GeV
+  //Hst2->SetMinimum(-0.055); // 91GeV
+  //Hst2->SetMaximum(+0.025); // 91GeV
 
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC  IFI on AFB(vmax) from scat.
@@ -435,11 +439,11 @@ void FigAfb()
   //Hst2_diff1->SetMinimum(-0.010);  // 95GeV
   //Hst2_diff1->SetMaximum( 0.025);  // 95GeV
 
-  //Hst2_diff1->SetMinimum(-0.010);  // 88GeV
-  //Hst2_diff1->SetMaximum( 0.025);  // 88GeV
+  Hst2_diff1->SetMinimum(-0.010);  // 88GeV
+  Hst2_diff1->SetMaximum( 0.025);  // 88GeV
 
-  Hst2_diff1->SetMinimum(-0.025);  // 91GeV
-  Hst2_diff1->SetMaximum( 0.025);  // 91GeV
+  //Hst2_diff1->SetMinimum(-0.025);  // 91GeV
+  //Hst2_diff1->SetMaximum( 0.025);  // 91GeV
 
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");
