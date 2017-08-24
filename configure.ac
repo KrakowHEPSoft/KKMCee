@@ -51,7 +51,7 @@ MCdev/Makefile MCdev/farming/Makefile \
 ffbench/Makefile ffbench/Plots/Makefile \
 MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile \
                MaMar/workZinv/Makefile MaMar/workFSR/Makefile \
-               MaMar/workFOAM/Makefile MaMar/workFoam0/Makefile  MaMar/workFoam1/Makefile \
+               MaMar/workFOAM/Makefile MaMar/workFoam0/Makefile  MaMar/workFOAM1/Makefile \
                MaMar/workKKMC/Makefile \
                yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
 RHadr/Makefile RHadr/Plots/Makefile \
