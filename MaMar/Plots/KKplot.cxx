@@ -112,7 +112,7 @@ void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
   //
   hstNew->Reset();
   for(int ib=0;ib<nbin;ib++){
-    cout<<"KKplot::VVplot: ib= "<<ib<<"  Bin(ib) =  "<<Bin[ib]<<endl;
+    //cout<<"KKplot::VVplot: ib= "<<ib<<"  Bin(ib) =  "<<Bin[ib]<<endl;
     hstNew->SetBinContent(ib+1, Bin[ib]);
     hstNew->SetBinError(  ib+1, 0.0);
   }
@@ -126,15 +126,15 @@ void KKplot::Ord1fill( TH1 *hstNew, int KeyDis)
   int    nbin = hstNew->GetNbinsX();
   double vmin = hstNew->GetXaxis()->GetXmin();
   double vmax = hstNew->GetXaxis()->GetXmax();
-  double vv, AfbIFI;
+  double vv, Result;
   //
-  cout<<"KKplot::Ord1fill: KeyDis =  " <<KeyDis<<endl;
   hstNew->Reset();
+ // for(int ib=1; ib <= nbin ; ib++) {
   for(int ib=1; ib <= nbin ; ib++) {
     vv = vmin + (ib*(vmax-vmin))/nbin;  // RHS of the bin
-	kksem_afb_calc_( KeyDis, m_KFini, m_KFf, m_CMSene, vv, AfbIFI);
-    cout<<"KKplot::Ord1fill: ib= "<<ib<<"   vv="<<vv<<"  AfbIFI =  "<<AfbIFI<<endl;
-    hstNew->SetBinContent(ib, AfbIFI);
+	kksem_afb_calc_( KeyDis, m_KFini, m_KFf, m_CMSene, vv, Result);
+    if(ib <4) cout<<"KKplot::Ord1fill: KeyDis,ib= "<<KeyDis<<", "<<ib<<"   vv="<<vv<<"  Result =  "<<Result<<endl;
+    hstNew->SetBinContent(ib, Result);
     hstNew->SetBinError(  ib, 0.0);
   }
 }// KKplot::Ord1fill
