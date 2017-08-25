@@ -336,7 +336,7 @@ void TMCgenFOAM::GetRhoISR1(double svar, double vv, double &rho, double &rho2){
 	 rho = 1.0 + log(m_eps)*(gami) +dels;
 	 rho2 = rho;
   }
-}//Rho_ISR1
+}//GetRhoISR1
 
 
 ///------------------------------------------------------------------------
@@ -350,6 +350,20 @@ void TMCgenFOAM::GetRhoFSR1(double svar, double vv, double &rho, double &rho2){
  }else{
 	 rho = 1.0 + log(m_eps)*(gamf) +dels;
 	 rho2 = rho;
+  }
+}//GetRhoFSR1
+
+
+///------------------------------------------------------------------------
+void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rho, double &rho2){
+/// First order ISR rho-function for ISR
+  double dalfpi   = 2*m_alfpi*m_chfin*m_chini;
+  if( vv > m_eps){
+     rho  = dalfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
+     rho2 = dalfpi *(-1)*(1-vv)/(2-vv)/(2*vv);
+ }else{
+	 rho  = dalfpi*3.0*log(1/m_eps);
+	 rho2 = dalfpi*5.0/2.0*log(1/m_eps);
   }
 }//Rho_FSR1
 
@@ -724,7 +738,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 { // density distribution for Foam
 	m_count++;  // counter for debug
 	//
-	Double_t Dist, xDist, yDist;
+	Double_t Dist, xDist, yDist, xDist1, yDist1;
 	double svar = sqr(m_CMSene);
 	double svarCum = svar;
 /////////////////////////////////////////////////////////
@@ -738,9 +752,11 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //[[[
 //	m_vv = R *m_vvmax; dJac = m_vvmax;
 //]]]
-	double xRhoI, xRhoF, yRhoI, yRhoF;
-	GetRhoISR1(svar,m_vv,xRhoI, yRhoI);
-	GetRhoFSR1(svar,m_vv,xRhoF, yRhoF);
+	double xRhoI, xRhoF, xRhoIFI;
+	double yRhoI, yRhoF, yRhoIFI;
+	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);
+	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);
+	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);
 //
 	double xBorn, xBorn0, yBorn, yBorn0;
 //  x_Born((1-v)*s) and x_Born(s) provided by KKsem
@@ -752,18 +768,24 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // sigma^* [nb]
 
 // Additive combination of RhoI and RhoF (ISR+FSR)
-	if( m_vv > m_eps){
-	     xDist = xRhoI*xBorn + xRhoF*xBorn0;            // hard sig
-	     yDist = yRhoI*yBorn + yRhoF*yBorn0;            // hard sig^*
-	}else{
-		 xDist = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0 ;    // soft+virt
-		 yDist = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0 ;    // soft+virt
+	if( m_vv > m_eps){     // HARD
+	     xDist  = xRhoI*xBorn + xRhoF*xBorn0;    // ISR+FSR sig
+	     yDist  = yRhoI*yBorn + yRhoF*yBorn0;    // ISR+FSR sig^*
+	     xDist1 = xDist + xRhoIFI*yBorn;         // ISR+FSR+IFI sig
+	     yDist1 = yDist + yRhoIFI*xBorn;         // ISR+FSR+IFI sig
+	}else{                //  SOFT+VIRT
+		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig
+		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR sig^*
+	     xDist1 = xDist + xRhoIFI*yBorn;              // ISR+FSR+IFI sig
+	     yDist1 = yDist + yRhoIFI*xBorn;              // ISR+FSR+IFI sig
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI
     m_WTmodel[10] = 0.0;
     if( xDist != 0.0){
-    	m_WTmodel[10] = yDist/xDist; // WT for AFB without IFI
+    	m_WTmodel[10] = yDist /xDist;  // WT for AFB without IFI
+    	m_WTmodel[11] = xDist1/xDist;  // WT for sig with IFI on
+    	m_WTmodel[12] = yDist1/xDist;  // WT for AFB with IFI on
     }//
 //************  principal distribution for FOAM
 	Dist = xDist* dJac;

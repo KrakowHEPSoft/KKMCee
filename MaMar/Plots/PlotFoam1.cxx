@@ -157,26 +157,26 @@ void ReMakeFoam1(){
 
   TH1D *HST_FOAM_NORMA1 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA1");
 
-  TH1D *HST_xx_Ord1 = (TH1D*)DiskFileF.Get("HST_xx_Ord1");  // FOAM
-  TH1D *HST_xx_Crd1 = (TH1D*)DiskFileF.Get("HST_xx_Crd1");  // FOAM
+  TH1D *HST_xx_Ord1n = (TH1D*)DiskFileF.Get("HST_xx_Ord1n");  // FOAM
+  TH1D *HST_xx_Crd1n = (TH1D*)DiskFileF.Get("HST_xx_Crd1n");  // FOAM
 
-  HisNorm1(HST_FOAM_NORMA1, HST_xx_Ord1 );  // normalizing
-  HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1 );  // normalizing
+  HisNorm1(HST_FOAM_NORMA1, HST_xx_Ord1n );  // normalizing
+  HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1n );  // normalizing
 
   // sigma(vmax) direct histogramming, (0,1) range
-  TH1D *HST_xxcum_Ord1;
-  MakeCumul(HST_xx_Ord1,HST_xxcum_Ord1);
-  HST_xxcum_Ord1->SetName("HST_xxcum_Ord1");
+  TH1D *HST_xxcum_Ord1n;
+  MakeCumul(HST_xx_Ord1n,HST_xxcum_Ord1n);
+  HST_xxcum_Ord1n->SetName("HST_xxcum_Ord1n");
   // sigma^*(vmax) direct histogramming, (0,1) range
 
-  TH1D *HST_xxcum_Crd1;
-  MakeCumul(HST_xx_Crd1,HST_xxcum_Crd1);
-  HST_xxcum_Crd1->SetName("HST_xxcum_Crd1");
+  TH1D *HST_xxcum_Crd1n;
+  MakeCumul(HST_xx_Crd1n,HST_xxcum_Crd1n);
+  HST_xxcum_Crd1n->SetName("HST_xxcum_Crd1n");
 
 
-  TH1D *HST_xxAfb_Ord1 = (TH1D*)HST_xxcum_Crd1->Clone("HST_xxAfb_Ord1");
-  HST_xxAfb_Ord1->Divide(HST_xxcum_Ord1);
-  HST_xxAfb_Ord1->Scale(3.0/4.0);
+  TH1D *HST_xxAfb_Ord1n = (TH1D*)HST_xxcum_Crd1n->Clone("HST_xxAfb_Ord1n");
+  HST_xxAfb_Ord1n->Divide(HST_xxcum_Ord1n);
+  HST_xxAfb_Ord1n->Scale(3.0/4.0);
 
 
   cout<<"================ ReMakeFoam1 ENDs     ============================="<<endl;
@@ -259,9 +259,10 @@ void FigVV()
  //
   TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
   TH1D *HTot_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2n");  // KKMC sigma(vmax) from scat.
+  TH1D *HTot_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2");  // KKMC sigma(vmax) from scat.
   //HST_xx_Ord1
-  TH1D *HST_xx_Ord1      = (TH1D*)DiskFileF.Get("HST_xx_Ord1");         // Foam1
-  TH1D *HST_xxcum_Ord1   = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1");      // Foam1
+  TH1D *HST_xx_Ord1n      = (TH1D*)DiskFileF.Get("HST_xx_Ord1n");        // Foam1
+  TH1D *HST_xxcum_Ord1n   = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1n");      // Foam1
   //
   TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
   TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
@@ -291,7 +292,7 @@ void FigVV()
   //                 dsigma/d(v)
   cFigVV->cd(1);
   gPad->SetLogy(); // !!!!!!
-  TH1D *Hst1 = HST_xx_Ord1;
+  TH1D *Hst1 = HST_xx_Ord1n;
   Hst1->SetStats(0);
   Hst1->SetTitle(0);
   Hst1->DrawCopy("h");
@@ -302,13 +303,13 @@ void FigVV()
   vdis_ISR2_FSR2->SetLineColor(kGreen);  //
   vdis_ISR2_FSR2->DrawCopy("hsame");     // KKsem
   //
-  HST_xx_Ord1->SetLineColor(kBlue);
-  HST_xx_Ord1->DrawCopy("hsame");        // TMCgenFoam1
+  HST_xx_Ord1n->SetLineColor(kBlue);
+  HST_xx_Ord1n->DrawCopy("hsame");        // TMCgenFoam1
 
   //====================plot2========================
   cFigVV->cd(2);
 
-  TH1D *Hst1_ratio =(TH1D*)HST_xx_Ord1->Clone("Hst1_ratio");
+  TH1D *Hst1_ratio =(TH1D*)HST_xx_Ord1n->Clone("Hst1_ratio");
   Hst1_ratio->Divide(Hpro_vT_Ceex2n);
 
   Hst1_ratio->SetStats(0);
@@ -320,7 +321,7 @@ void FigVV()
   //                 sigma(vmax)
   cFigVV->cd(3);
 
-  TH1D *Hst3 = HST_xxcum_Ord1;
+  TH1D *Hst3 = HTot_vTcPL_Ceex2n;
   Hst3->SetStats(0);
   Hst3->SetTitle(0);
   Hst3->SetMinimum(0);
@@ -329,11 +330,14 @@ void FigVV()
   HTot_vTcPL_Ceex2n->SetLineColor(kRed);   // red
   HTot_vTcPL_Ceex2n->DrawCopy("hsame");    // KKMC dsigma/dv from scat.
 
+  HTot_vTcPL_Ceex2->SetLineColor(kBlack);   // red
+  HTot_vTcPL_Ceex2->DrawCopy("hsame");    // KKMC dsigma/dv from scat.
+
   vcum_ISR2_FSR2->SetLineColor(kGreen);    //
   vcum_ISR2_FSR2->DrawCopy("hsame");       // KKsem
 
-  HST_xxcum_Ord1->SetLineColor(kBlue);     //
-  HST_xxcum_Ord1->DrawCopy("hsame");       // TMCgenFoam1
+  HST_xxcum_Ord1n->SetLineColor(kBlue);     //
+  HST_xxcum_Ord1n->DrawCopy("hsame");       // TMCgenFoam1
 
   HST_SigPRD->DrawCopy("hsame");
 
@@ -341,7 +345,7 @@ void FigVV()
   cFigVV->cd(4);
 
   TH1D *Hst3_ratio =(TH1D*)HST_SigPRD->Clone("Hst3_ratio");
-  Hst3_ratio->Divide(HST_xxcum_Ord1);  // direct
+  Hst3_ratio->Divide(HST_xxcum_Ord1n);  // direct
 
   Hst3_ratio->SetStats(0);
   Hst3_ratio->SetTitle(0);
@@ -364,7 +368,7 @@ void FigAfb()
   TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC
   TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n"); // KKMC
 
-  TH1D *HST_xxAfb_Ord1    = (TH1D*)DiskFileB.Get("HST_xxAfb_Ord1");    // FOAM
+  TH1D *HST_xxAfb_Ord1n    = (TH1D*)DiskFileB.Get("HST_xxAfb_Ord1n");    // FOAM
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
 
@@ -414,8 +418,8 @@ void FigAfb()
   Hst1->SetLineColor(kBlack);              // black
   Hst1->DrawCopy("hsame");                 // KKMC IFI off AFB(vmax) from scat.
 
-  HST_xxAfb_Ord1->SetLineColor(kCyan);
-  HST_xxAfb_Ord1->DrawCopy("hsame");        // cyan, Foam1 MC
+  HST_xxAfb_Ord1n->SetLineColor(kCyan);
+  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC
 
   HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula
 
@@ -429,7 +433,7 @@ void FigAfb()
   Hst2_diff1->Add(Hst2_diff1, Hst1,    1.0, -1.0); // KKMC_IFI   minus KKMC  noIFI black
   Hst2_diff1->SetLineColor(kBlack);
 
-  TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1->Clone("HstPRD_diff");
+  TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1n->Clone("HstPRD_diff");
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
   HstPRD_diff->SetLineColor(kCyan);
 
@@ -467,9 +471,7 @@ void FigInfo()
   cout<<" ========================= FigInfo =========================== "<<endl;
 
   TH1D *hst_weight1  = (TH1D*)DiskFileF.Get("hst_weight1"); // Foam3
-
-  TH1D *HST_xx_Ord1  = (TH1D*)DiskFileF.Get("HST_xx_Ord1");
- //
+//
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 140, 500,   1000, 550);
@@ -497,11 +499,9 @@ void FigInfo()
   cFigInfo->cd(2);
   gPad->SetLogy(); // !!!!!!
 
-  TH1D *Hst2 = HST_xx_Ord1;  //  weight of Foam
-
   //Hst2->SetStats(0);
   //Hst2->SetTitle(0);
-  Hst2->DrawCopy("h");
+  //Hst2->DrawCopy("h");
 
   cFigInfo->cd();
   //================================================

@@ -82,6 +82,8 @@ void TRobolFOAM::Hbooker()
 
     int nbv = 50;
 
+    HST_xx_Ord1n  = TH1D_UP("HST_xx_Ord1n" ,  "dSig/dv",    nbv, 0.0, 1.0);
+    HST_xx_Crd1n  = TH1D_UP("HST_xx_Crd1n" ,  "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Ord1   = TH1D_UP("HST_xx_Ord1" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Crd1   = TH1D_UP("HST_xx_Crd1" ,   "dSig/dv",   nbv, 0.0, 1.0);
 
@@ -166,11 +168,12 @@ if( MCgen->m_IsFoam1 == 1) {
   // filling in histos
   MCgen->m_Foam1->GetMCwt(wt1);
   hst_weight1->Fill(wt1,1.0);
-  double WTstar = wt1 * MCgen->m_WTmodel[10];
-
+  //
   xx  = MCgen->m_vv;
-  HST_xx_Ord1->Fill(xx,wt1);
-  HST_xx_Crd1->Fill(xx,WTstar);
+  HST_xx_Ord1n->Fill(xx, wt1);
+  HST_xx_Crd1n->Fill(xx, wt1 * MCgen->m_WTmodel[10] );
+  HST_xx_Ord1->Fill( xx, wt1 * MCgen->m_WTmodel[11] );
+  HST_xx_Crd1->Fill( xx, wt1 * MCgen->m_WTmodel[12] );
 
   double Xnorm1 = MCgen->m_Xsav1;
   HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style
