@@ -2678,16 +2678,20 @@ c]]]]]
       INTEGER           NCf,NCe
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
       DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born
-      DOUBLE COMPLEX    Zeta, C_born, D_born
+      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
 ***      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
       DOUBLE PRECISION  Ve,Vf,Ae,Af
       DOUBLE PRECISION  KKsem_BornV, Sw2, RaZ, deno
+      DOUBLE PRECISION  X_virt,  Y_virt
+      DOUBLE COMPLEX    X_virtC, Y_virtC
+      DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
       INTEGER    icont
       DATA icont /0/
 *=============================================================
       icont =  icont +1
       Pi =3.1415926535897932d0
+      Eps = DCMPLX(-1.D0,0.D0)
       CALL BornV_GetMZ(    mZ)
       CALL BornV_GetGammZ( GammZ)
 * Get charges, izospin, color
@@ -2739,13 +2743,33 @@ c]]]]]
       D_born=               +D1/(Zeta-vv)/(1-vv) +D2/(Zeta-vv)/DCONJG(Zeta-vv) ! sigma^*   at svar*(1-v)
       X_born=  DREAL(C_born)*(1-vv)* sig0
       Y_born=  DREAL(D_born)*(1-vv)* sig0
-
+*****************************************************
+      X_virtC =                          ( -0.5d0 ) *(    D1/2d0/DCONJG(Zeta) )  ! gamma part
+      Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +C1/2d0/DCONJG(Zeta) )  ! gamma part
+*     Z part
+*[[[[[[[
+*      X_virtC = X_virtC
+*     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
+*     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
+*      Y_virtC = Y_virtC
+*     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
+*     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
+*     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
+*     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
+*     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
+*]]]]]]
+      X_virt  = 3d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(X_virtC)* sig0
+      Y_virt  = 2d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(Y_virtC)* sig0
       IF(      KeyDist .EQ. 0 ) THEN
          Result = sig0             ! pointlike xsection [nb]
       ELSE IF( KeyDist .EQ. 1 ) THEN
          Result = X_born          ! Born xsection [nb]
       ELSE IF( KeyDist .EQ. 2 ) THEN
          Result = Y_born          ! Sigma^star [nb]
+      ELSE IF( KeyDist .EQ. 10 ) THEN
+         Result = X_virt          ! virt for Sigma
+      ELSE IF( KeyDist .EQ. 20 ) THEN
+         Result = Y_virt          ! virt for Sigma
       ELSE IF( KeyDist .EQ. 501 ) THEN
          Result = KKsem_BornV(svar,0d0)  * sig0  ! testing Born xsection [nb]
       ELSE
