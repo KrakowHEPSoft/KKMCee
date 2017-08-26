@@ -32,8 +32,8 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
-TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
@@ -157,32 +157,49 @@ void ReMakeFoam1(){
 
   TH1D *HST_FOAM_NORMA1 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA1");
 
+  TH1D *HST_xx_Ord1  = (TH1D*)DiskFileF.Get("HST_xx_Ord1");  // FOAM
+  TH1D *HST_xx_Crd1  = (TH1D*)DiskFileF.Get("HST_xx_Crd1");  // FOAM
   TH1D *HST_xx_Ord1n = (TH1D*)DiskFileF.Get("HST_xx_Ord1n");  // FOAM
   TH1D *HST_xx_Crd1n = (TH1D*)DiskFileF.Get("HST_xx_Crd1n");  // FOAM
 
+  HisNorm1(HST_FOAM_NORMA1, HST_xx_Ord1 );   // normalizing
+  HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1 );   // normalizing
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Ord1n );  // normalizing
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1n );  // normalizing
 
+  //---------------------------------------------------
   // sigma(vmax) direct histogramming, (0,1) range
+  TH1D *HST_xxcum_Ord1;
+  MakeCumul(HST_xx_Ord1,HST_xxcum_Ord1);
+  HST_xxcum_Ord1->SetName("HST_xxcum_Ord1");
+
   TH1D *HST_xxcum_Ord1n;
   MakeCumul(HST_xx_Ord1n,HST_xxcum_Ord1n);
   HST_xxcum_Ord1n->SetName("HST_xxcum_Ord1n");
+
+  //---------------------------------------------------
   // sigma^*(vmax) direct histogramming, (0,1) range
+  TH1D *HST_xxcum_Crd1;
+  MakeCumul(HST_xx_Crd1,HST_xxcum_Crd1);
+  HST_xxcum_Crd1->SetName("HST_xxcum_Crd1");
 
   TH1D *HST_xxcum_Crd1n;
   MakeCumul(HST_xx_Crd1n,HST_xxcum_Crd1n);
   HST_xxcum_Crd1n->SetName("HST_xxcum_Crd1n");
 
+  //---------------------------------------------------
+  //  and finally AFB from ratio sigma^*(vmax)/sigma(vmax)
+  TH1D *HST_xxAfb_Ord1 = (TH1D*)HST_xxcum_Crd1->Clone("HST_xxAfb_Ord1");
+  HST_xxAfb_Ord1->Divide(HST_xxcum_Ord1);
+  HST_xxAfb_Ord1->Scale(3.0/4.0);
 
   TH1D *HST_xxAfb_Ord1n = (TH1D*)HST_xxcum_Crd1n->Clone("HST_xxAfb_Ord1n");
   HST_xxAfb_Ord1n->Divide(HST_xxcum_Ord1n);
   HST_xxAfb_Ord1n->Scale(3.0/4.0);
 
-
   cout<<"================ ReMakeFoam1 ENDs     ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//ReMakeFoam1
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -261,6 +278,8 @@ void FigVV()
   TH1D *HTot_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2n");  // KKMC sigma(vmax) from scat.
   TH1D *HTot_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2");  // KKMC sigma(vmax) from scat.
   //HST_xx_Ord1
+  TH1D *HST_xx_Ord1       = (TH1D*)DiskFileF.Get("HST_xx_Ord1");        // Foam1
+  TH1D *HST_xxcum_Ord1    = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1");      // Foam1
   TH1D *HST_xx_Ord1n      = (TH1D*)DiskFileF.Get("HST_xx_Ord1n");        // Foam1
   TH1D *HST_xxcum_Ord1n   = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1n");      // Foam1
   //
@@ -304,7 +323,10 @@ void FigVV()
   vdis_ISR2_FSR2->DrawCopy("hsame");     // KKsem
   //
   HST_xx_Ord1n->SetLineColor(kBlue);
-  HST_xx_Ord1n->DrawCopy("hsame");        // TMCgenFoam1
+  HST_xx_Ord1n->DrawCopy("hsame");        // TMCgenFoam1, IFI off
+  //
+  HST_xx_Ord1->SetLineColor(kYellow);
+  HST_xx_Ord1->DrawCopy("hsame");         // TMCgenFoam1, IFI on
 
   //====================plot2========================
   cFigVV->cd(2);
@@ -339,6 +361,9 @@ void FigVV()
   HST_xxcum_Ord1n->SetLineColor(kBlue);     //
   HST_xxcum_Ord1n->DrawCopy("hsame");       // TMCgenFoam1
 
+  HST_xxcum_Ord1->SetLineColor(kYellow);     //
+  HST_xxcum_Ord1->DrawCopy("hsame");       // TMCgenFoam1
+
   HST_SigPRD->DrawCopy("hsame");
 
   //====================plot4========================
@@ -368,7 +393,8 @@ void FigAfb()
   TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC
   TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n"); // KKMC
 
-  TH1D *HST_xxAfb_Ord1n    = (TH1D*)DiskFileB.Get("HST_xxAfb_Ord1n");    // FOAM
+  TH1D *HST_xxAfb_Ord1     = (TH1D*)DiskFileB.Get("HST_xxAfb_Ord1");   // FOAM1 IFI on
+  TH1D *HST_xxAfb_Ord1n    = (TH1D*)DiskFileB.Get("HST_xxAfb_Ord1n");  // FOAM1 IFI off
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
 
@@ -395,17 +421,18 @@ void FigAfb()
   TH1D *Hst1 = HAfb_vTcPL_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
   TH1D *Hst2 = HAfb_vTcPL_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
   //
+
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
 
-  //Hst2->SetMinimum(-0.02); // 10GeV
-  //Hst2->SetMaximum(+0.01); // 10GeV
+  Hst2->SetMinimum(-0.02); // 10GeV
+  Hst2->SetMaximum(+0.06); // 10GeV
 
   //Hst2->SetMinimum( 0.15); // 95GeV
   //Hst2->SetMaximum(+0.30); // 95GeV
 
-  Hst2->SetMinimum(-0.35); // 88GeV
-  Hst2->SetMaximum(-0.25); // 88GeV
+  //Hst2->SetMinimum(-0.32); // 88GeV
+  //Hst2->SetMaximum(-0.20); // 88GeV
 
   //Hst2->SetMinimum(-0.055); // 91GeV
   //Hst2->SetMaximum(+0.025); // 91GeV
@@ -419,7 +446,10 @@ void FigAfb()
   Hst1->DrawCopy("hsame");                 // KKMC IFI off AFB(vmax) from scat.
 
   HST_xxAfb_Ord1n->SetLineColor(kCyan);
-  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC
+  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
+
+  HST_xxAfb_Ord1->SetLineColor(kYellow);
+  HST_xxAfb_Ord1->DrawCopy("hsame");         // Yellow, Foam1 MC IFI on
 
   HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula
 
@@ -437,14 +467,14 @@ void FigAfb()
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
   HstPRD_diff->SetLineColor(kCyan);
 
-  //Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
-  //Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
+  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
+  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
 
   //Hst2_diff1->SetMinimum(-0.010);  // 95GeV
   //Hst2_diff1->SetMaximum( 0.025);  // 95GeV
 
-  Hst2_diff1->SetMinimum(-0.010);  // 88GeV
-  Hst2_diff1->SetMaximum( 0.025);  // 88GeV
+  //Hst2_diff1->SetMinimum(-0.010);  // 88GeV
+  //Hst2_diff1->SetMaximum( 0.025);  // 88GeV
 
   //Hst2_diff1->SetMinimum(-0.025);  // 91GeV
   //Hst2_diff1->SetMaximum( 0.025);  // 91GeV
@@ -550,7 +580,7 @@ int main(int argc, char **argv)
   FigVV();     // sigma(v) and sigma(vmax) KKMC/Foam
   FigAfb();    // AFB(vmax) KKMC/Foam
 // weight distribution
-  FigInfo();
+//  FigInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
