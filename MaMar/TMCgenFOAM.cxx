@@ -360,7 +360,7 @@ void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rho, double &rho2){
   double dalfpi   = 2*m_alfpi*m_chfin*m_chini;
   if( vv > m_eps){
      rho  = dalfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
-     rho2 = dalfpi *(-1)*(1-vv)/(2-vv)/(2*vv);
+     rho2 = dalfpi *(-1)*(1-vv)/(2-vv)/(2*vv)*(10*(1-vv)+3*vv*vv);
  }else{
 	 rho  = dalfpi*3.0*log(1/m_eps);
 	 rho2 = dalfpi*5.0/2.0*log(1/m_eps);
@@ -766,6 +766,11 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //  sigma^star Born provided by KKsem
 	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // sigma^* [nb]
 	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // sigma^* [nb]
+	double xVirt, yVirt;
+	kksem_ord1_(10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
+	kksem_ord1_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for sigma^*
+//[[[[[
+//	xVirt=0; yVirt=0;
 
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD
@@ -776,8 +781,8 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	}else{                //  SOFT+VIRT
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig
 		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR sig^*
-	     xDist1 = xDist + xRhoIFI*yBorn;              // ISR+FSR+IFI sig
-	     yDist1 = yDist + yRhoIFI*xBorn;              // ISR+FSR+IFI sig
+	     xDist1 = xDist + xRhoIFI*yBorn +xVirt;       // ISR+FSR+IFI sig
+	     yDist1 = yDist + yRhoIFI*xBorn +2*yVirt;       // ISR+FSR+IFI sig^*
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI
