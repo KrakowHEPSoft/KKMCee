@@ -32,10 +32,10 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
-TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
-//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
@@ -425,8 +425,8 @@ void FigAfb()
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
 
-  Hst2->SetMinimum(-0.02); // 10GeV
-  Hst2->SetMaximum(+0.06); // 10GeV
+  //Hst2->SetMinimum(-0.02); // 10GeV
+  //Hst2->SetMaximum(+0.06); // 10GeV
 
   //Hst2->SetMinimum( 0.15); // 95GeV
   //Hst2->SetMaximum(+0.30); // 95GeV
@@ -434,8 +434,8 @@ void FigAfb()
   //Hst2->SetMinimum(-0.32); // 88GeV
   //Hst2->SetMaximum(-0.20); // 88GeV
 
-  //Hst2->SetMinimum(-0.055); // 91GeV
-  //Hst2->SetMaximum(+0.025); // 91GeV
+  Hst2->SetMinimum(-0.055); // 91GeV
+  Hst2->SetMaximum(+0.025); // 91GeV
 
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC  IFI on AFB(vmax) from scat.
@@ -467,8 +467,8 @@ void FigAfb()
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
   HstPRD_diff->SetLineColor(kCyan);
 
-  Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
-  Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
+  //Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
+  //Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
 
   //Hst2_diff1->SetMinimum(-0.010);  // 95GeV
   //Hst2_diff1->SetMaximum( 0.025);  // 95GeV
@@ -476,8 +476,8 @@ void FigAfb()
   //Hst2_diff1->SetMinimum(-0.010);  // 88GeV
   //Hst2_diff1->SetMaximum( 0.025);  // 88GeV
 
-  //Hst2_diff1->SetMinimum(-0.025);  // 91GeV
-  //Hst2_diff1->SetMaximum( 0.025);  // 91GeV
+  Hst2_diff1->SetMinimum(-0.025);  // 91GeV
+  Hst2_diff1->SetMaximum( 0.025);  // 91GeV
 
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");

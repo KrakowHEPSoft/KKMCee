@@ -2748,15 +2748,15 @@ c]]]]]
       Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +C1/2d0/DCONJG(Zeta) )  ! gamma part
 *     Z part
 *[[[[[[[
-*      X_virtC = X_virtC
-*     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
-*     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
-*      Y_virtC = Y_virtC
-*     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
-*     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
-*     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
-*     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
-*     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
+      X_virtC = X_virtC
+     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
+     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
+      Y_virtC = Y_virtC
+     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
+     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
+     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
+     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
+     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
 *]]]]]]
       X_virt  = 3d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(X_virtC)* sig0
       Y_virt  = 2d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(Y_virtC)* sig0
@@ -2938,7 +2938,7 @@ c]]]]]
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
 ***********************************
-*      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
+      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
       AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/2d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
