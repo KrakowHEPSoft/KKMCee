@@ -2748,18 +2748,18 @@ c]]]]]
       Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +C1/2d0/DCONJG(Zeta) )  ! gamma part
 *     Z part
 *[[[[[[[
-      X_virtC = X_virtC
-     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
-     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
-      Y_virtC = Y_virtC
-     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
-     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
-     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
-     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
-     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
+*      X_virtC = X_virtC
+*     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
+*     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
+*      Y_virtC = Y_virtC
+*     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
+*     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
+*     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
+*     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
+*     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
 *]]]]]]
       X_virt  = 3d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(X_virtC)* sig0
-      Y_virt  = 2d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(Y_virtC)* sig0
+      Y_virt  = 2d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(Y_virtC)* sig0 ! coeff. 2 is ok
       IF(      KeyDist .EQ. 0 ) THEN
          Result = sig0             ! pointlike xsection [nb]
       ELSE IF( KeyDist .EQ. 1 ) THEN
@@ -2912,7 +2912,7 @@ c]]]]]
      $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0)  )   ! wersja ZW, PLB
      $                             *BVR_CDLN( ( vv -Zeta)/(1-Zeta) ,Eps) ! wersja ZW, PLB
       C_FB = (C0 +C1/Zeta/2d0)*Agg +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ
-      Y_ifi = Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB)
+      Y_ifi = 2d0*Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB)
 *      AfbIFI1 = (3d0/4d0)* Y_ifi / X_born
       AfbIFI1 = (3d0/4d0)* Y_ifi / X_tot
 *********************************************
@@ -2934,15 +2934,16 @@ c]]]]]
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
       C_FB2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
      $       +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
-      Y_ifi2 = DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
+      Y_ifi2 = 2d0*DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
 ***********************************
       WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
-      AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/2d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
+      AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/4d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
 * k_1-dependent part only omitting ln(k_1)
+* Under construction!!!!
       Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
       AHZ5 =
      $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)

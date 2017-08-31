@@ -160,6 +160,7 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 	 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
   m_kDim    = 1;
+  m_kDim    = 2;
   m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
   m_Foam1->SetnCells(m_nCells);     // No. of cells, optional, default=2000
   m_Foam1->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
@@ -326,7 +327,7 @@ else
 
 ///------------------------------------------------------------------------
 void TMCgenFOAM::GetRhoISR1(double svar, double vv, double &rho, double &rho2){
-/// First order ISR rho-function for ISR
+/// First order rho-function dsigma/dv for ISR
   double gami   = gamISR(svar);
   double dels   = 3.0/4.0*gami +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
   if( vv > m_eps){
@@ -341,7 +342,7 @@ void TMCgenFOAM::GetRhoISR1(double svar, double vv, double &rho, double &rho2){
 
 ///------------------------------------------------------------------------
 void TMCgenFOAM::GetRhoFSR1(double svar, double vv, double &rho, double &rho2){
-/// First order ISR rho-function for ISR
+/// First order rho-function dsigma/dv for FSR
   double gamf   = gamFSR(svar*(1.0-vv));
   double dels   = 3.0/4.0*gamf +m_alfpi*(-0.5  +sqr(m_pi)/3.0) ;
   if( vv > m_eps){
@@ -356,15 +357,32 @@ void TMCgenFOAM::GetRhoFSR1(double svar, double vv, double &rho, double &rho2){
 
 ///------------------------------------------------------------------------
 void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rho, double &rho2){
-/// First order ISR rho-function for ISR
-  double dalfpi   = 2*m_alfpi*m_chfin*m_chini;
+/// First order IFI rho-function dsigma/dv for IFI
+  double alfpi   = m_alfpi*m_chfin*m_chini;
   if( vv > m_eps){
-     rho  = dalfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
-     rho2 = dalfpi *(-1)*(1-vv)/(2-vv)/(2*vv)*(10*(1-vv)+3*vv*vv);
+     rho  = 2*alfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
+     rho2 = 2*alfpi *(-1)*(1-vv)/(2-vv)/vv*(10*(1-vv)+3*vv*vv);
  }else{
-	 rho  = dalfpi*3.0*log(1/m_eps);
-	 rho2 = dalfpi*5.0/2.0*log(1/m_eps);
+	 rho  = 2*alfpi*3.0*log(1/m_eps);
+	 rho2 = 2*alfpi*5.0*log(1/m_eps);
   }
+}//GetRhoIFI1
+
+
+///------------------------------------------------------------------------
+void TMCgenFOAM::GetRhoIFI1c(double svar, double c, double &rho){
+/// First order dsigma/dc and c*dsigma/dc at v=0 for IFI in units of sig0
+  double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob; // Born Pointlike [nb]
+  double alfpi   = m_alfpi*m_chfin*m_chini;
+  double cp = (1+c)/2e0;
+  double cm = (1-c)/2e0;
+  double Rho  =
+		  4*(1+sqr(c))*log(cm/cp)*log(m_eps)
+		  +(1+sqr(c))*( sqr(log(cm)) -sqr(log(cp))
+                       -2*bvr_dilog_(cm) +2*bvr_dilog_(cp) )
+		+2*cp*log(cm)   -2*cm*log(cp)
+        -c*sqr(log(cm)) -c*sqr(log(cp)) ;
+  rho = Rho* 3e0/8e0 *alfpi*sig0nb;
 }//Rho_FSR1
 
 
@@ -752,37 +770,48 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //[[[
 //	m_vv = R *m_vvmax; dJac = m_vvmax;
 //]]]
+	double c= (2*Xarg[1]-1)*0.99999999;
+
 	double xRhoI, xRhoF, xRhoIFI;
 	double yRhoI, yRhoF, yRhoIFI;
 	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);
 	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);
 	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);
+	double xRhoIFIc;
+	GetRhoIFI1c(svar, c, xRhoIFIc);
 //
-	double xBorn, xBorn0, yBorn, yBorn0;
+	double xBorn00,xBorn, xBorn0, yBorn, yBorn0;
 //  x_Born((1-v)*s) and x_Born(s) provided by KKsem
 //  SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
 	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);  // Born [nb]
 	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0); // Born [nb]
 //  sigma^star Born provided by KKsem
-	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // sigma^* [nb]
-	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // sigma^* [nb]
+	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // 2*sigma^* [nb]
+	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // 2*sigma^* [nb]
 	double xVirt, yVirt;
 	kksem_ord1_(10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
-	kksem_ord1_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for sigma^*
+	kksem_ord1_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for 2*sigma^*
 //[[[[[
 //	xVirt=0; yVirt=0;
 
 // Additive combination of RhoI and RhoF (ISR+FSR)
-	if( m_vv > m_eps){     // HARD
+	if( m_vv > m_eps){     // HARD part, integrated over c
 	     xDist  = xRhoI*xBorn + xRhoF*xBorn0;    // ISR+FSR sig
-	     yDist  = yRhoI*yBorn + yRhoF*yBorn0;    // ISR+FSR sig^*
+	     yDist  = yRhoI*yBorn + yRhoF*yBorn0;    // ISR+FSR <2c>sig
 	     xDist1 = xDist + xRhoIFI*yBorn;         // ISR+FSR+IFI sig
-	     yDist1 = yDist + yRhoIFI*xBorn;         // ISR+FSR+IFI sig
+	     yDist1 = yDist + yRhoIFI*xBorn;         // ISR+FSR+IFI <2c>sig
 	}else{                //  SOFT+VIRT
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig
-		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR sig^*
-	     xDist1 = xDist + xRhoIFI*yBorn +xVirt;       // ISR+FSR+IFI sig
-	     yDist1 = yDist + yRhoIFI*xBorn +2*yVirt;       // ISR+FSR+IFI sig^*
+		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig
+// version with fully analytical c-integration (PLB219), does not work
+//	     xDist1 = xDist + xRhoIFI*yBorn +xVirt;       // ISR+FSR+IFI sig
+//	     yDist1 = yDist + yRhoIFI*xBorn +yVirt;       // ISR+FSR+IFI <2c>sig
+// version with partial analytical integration over c of IR part
+//	     xDist1 = xDist + xRhoIFI*yBorn         +2*xRhoIFIc;   // ISR+FSR+IFI sig
+//	     yDist1 = yDist + yRhoIFI*xBorn   +2*(2*c)*xRhoIFIc;   // ISR+FSR+IFI <2c>sig
+// version with MC integration over c of IR part and the rest
+	     xDist1 = xDist          +2*xRhoIFIc;  // ISR+FSR+IFI sig, 2=jacobian=d(c)/d(r)
+	     yDist1 = yDist    +2*(2*c)*xRhoIFIc;  // ISR+FSR+IFI <2c>sig
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI

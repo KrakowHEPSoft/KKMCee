@@ -66,6 +66,9 @@ extern "C" void kksem_ord1_(const int&, const int&, const int&, const double&, c
 //      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
 extern "C" void kksem_afb_calc_(const int&, const int&, const int&, const double&, const double&, const double&);
 
+//      DOUBLE PRECISION FUNCTION BVR_Dilog(x)
+extern "C" double bvr_dilog_(const double&);
+
 
 class TMCgenFOAM :public TMCgen
 {
@@ -152,6 +155,7 @@ class TMCgenFOAM :public TMCgen
   void GetRhoFSR1(double, double, double&, double& );
   void GetRhoISR1(double, double, double&, double& );
   void GetRhoIFI1(double, double, double&, double& );
+  void GetRhoIFI1c(double, double, double& );
 
   double Soft_yfs(double );
   void MapPlus(  double, double, double &, double &);
