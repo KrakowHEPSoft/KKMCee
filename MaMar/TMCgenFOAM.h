@@ -62,7 +62,10 @@ extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
 //      SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
-extern "C" void kksem_ord1_(const int&, const int&, const int&, const double&, const double&, const double&);
+extern "C" void kksem_ord1v_(const int&, const int&, const int&, const double&, const double&, const double&);
+//      SUBROUTINE kksem_ord1c(KeyDist,KFi,KFf,CMSene,cc,reps,Result)
+extern "C" void kksem_ord1c_(const int&, const int&, const int&,
+		                     const double&, const double&, const double&, const double&);
 //      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
 extern "C" void kksem_afb_calc_(const int&, const int&, const int&, const double&, const double&, const double&);
 

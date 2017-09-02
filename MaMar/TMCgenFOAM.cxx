@@ -142,8 +142,8 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 	    // checking EW implementation in Born xsection
         // SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
 	    double xBorn,xBorn1;
-	    kksem_ord1_(  1,m_KFini, m_KFf, m_CMSene, 0e0, xBorn);  // Born [nb]
-	    kksem_ord1_(501,m_KFini, m_KFf, m_CMSene, 0e0, xBorn1);  // Born [nb]
+	    kksem_ord1v_(  1,m_KFini, m_KFf, m_CMSene, 0e0, xBorn);  // Born [nb]
+	    kksem_ord1v_(501,m_KFini, m_KFf, m_CMSene, 0e0, xBorn1);  // Born [nb]
 	    cout<< "|||| xBorn   Gmu scheme = "<< xBorn  << endl;
 	    cout<< "|||| xBorn alpha scheme = "<< xBorn1 << "   "<< xBorn1/xBorn <<endl;
 	    double AfbBorn;
@@ -370,19 +370,39 @@ void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rho, double &rho2){
 
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::GetRhoIFI1c(double svar, double c, double &rho){
-/// First order dsigma/dc and c*dsigma/dc at v=0 for IFI in units of sig0
-  double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob; // Born Pointlike [nb]
+void TMCgenFOAM::GetRhoIFI1c(double svar, double cc, double &rho){
+
+// !!!!!!!!!!!! svar seems obsolete
+//
+// First order dsigma/dc at v=0 for IFI [nb]
+//
+  double sig0nb  = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob; // Born Pointlike [nb]
   double alfpi   = m_alfpi*m_chfin*m_chini;
-  double cp = (1+c)/2e0;
-  double cm = (1-c)/2e0;
-  double Rho  =
-		  4*(1+sqr(c))*log(cm/cp)*log(m_eps)
-		  +(1+sqr(c))*( sqr(log(cm)) -sqr(log(cp))
+
+//SUBROUTINE kksem_ord1c(KeyDist,KFi,KFf,CMSene,cc,reps,Result)
+  double RhoBoxy;
+  kksem_ord1c_(0,m_KFini, m_KFf, m_CMSene, cc, m_eps, RhoBoxy);
+//
+
+//*******************************************
+// gamma-gamma Box plus soft real interference
+  double cp = (1+cc)/2e0;
+  double cm = (1-cc)/2e0;
+  double RhoGG  =
+		  4*(1+sqr(cc))*log(cm/cp)*log(m_eps)
+		   +(1+sqr(cc))*( sqr(log(cm)) -sqr(log(cp))
                        -2*bvr_dilog_(cm) +2*bvr_dilog_(cp) )
-		+2*cp*log(cm)   -2*cm*log(cp)
-        -c*sqr(log(cm)) -c*sqr(log(cp)) ;
-  rho = Rho* 3e0/8e0 *alfpi*sig0nb;
+		+2*cp*log(cm)     -2*cm*log(cp)
+        -cc*sqr(log(cm)) -cc*sqr(log(cp)) ;
+//  rho = RhoGG *alfpi* 3e0/8e0*sig0nb;  // gamma-gamm box only
+  //********************************************
+// gamma-gamma nad gamma-Z boxes plus soft real interference
+  rho = RhoBoxy *alfpi* 3e0/8e0*sig0nb;
+
+  if(m_count <200 ){
+	  cout<<"GetRhoIFI1c: cc="<< cc<< " RhoG="<<RhoGG <<"  RhoBoxy="<< RhoBoxy<< "  rat="<< RhoBoxy/RhoGG<<endl;
+  }
+
 }//Rho_FSR1
 
 
@@ -758,7 +778,6 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	//
 	Double_t Dist, xDist, yDist, xDist1, yDist1;
 	double svar = sqr(m_CMSene);
-	double svarCum = svar;
 /////////////////////////////////////////////////////////
 // ******** mapping for ISR *******
 	double gami   = gamISR(svar);
@@ -770,29 +789,34 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //[[[
 //	m_vv = R *m_vvmax; dJac = m_vvmax;
 //]]]
-	double c= (2*Xarg[1]-1)*0.99999999;
+	double cc= (2*Xarg[1]-1)*0.99999999;
 
 	double xRhoI, xRhoF, xRhoIFI;
 	double yRhoI, yRhoF, yRhoIFI;
 	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);
 	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);
 	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);
-	double xRhoIFIc;
-	GetRhoIFI1c(svar, c, xRhoIFIc);
-//
+
+//*****************************************
+//  Born convolution with ISR and FSR
 	double xBorn00,xBorn, xBorn0, yBorn, yBorn0;
 //  x_Born((1-v)*s) and x_Born(s) provided by KKsem
-//  SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
-	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);  // Born [nb]
-	kksem_ord1_(1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0); // Born [nb]
+//  SUBROUTINE KKsem_Ord1v(KeyDist,KFi,KFf,CMSene,vv,Result)
+	kksem_ord1v_(1,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);  // Born [nb]
+	kksem_ord1v_(1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0); // Born [nb]
 //  sigma^star Born provided by KKsem
-	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // 2*sigma^* [nb]
-	kksem_ord1_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // 2*sigma^* [nb]
+	kksem_ord1v_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // 2*sigma^* [nb]
+	kksem_ord1v_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // 2*sigma^* [nb]
+
+//  Virtual+soft contributions integrated analyticaly over cos(theta)
 	double xVirt, yVirt;
-	kksem_ord1_(10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
-	kksem_ord1_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for 2*sigma^*
-//[[[[[
-//	xVirt=0; yVirt=0;
+	kksem_ord1v_(10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
+	kksem_ord1v_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for 2*sigma^*
+
+//***************************************************************
+//  Virtual+soft contributions with cos(theta) dependence
+    double xRhoIFIc;
+    GetRhoIFI1c(svar, cc, xRhoIFIc);
 
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD part, integrated over c
@@ -811,7 +835,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //	     yDist1 = yDist + yRhoIFI*xBorn   +2*(2*c)*xRhoIFIc;   // ISR+FSR+IFI <2c>sig
 // version with MC integration over c of IR part and the rest
 	     xDist1 = xDist          +2*xRhoIFIc;  // ISR+FSR+IFI sig, 2=jacobian=d(c)/d(r)
-	     yDist1 = yDist    +2*(2*c)*xRhoIFIc;  // ISR+FSR+IFI <2c>sig
+	     yDist1 = yDist   +2*(2*cc)*xRhoIFIc;  // ISR+FSR+IFI <2c>sig
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI

@@ -1676,8 +1676,8 @@ c]]]]]
 *              write(*,*) "|||| Qe,Qf, T3e,T3f  = ", Qe,Qf,T3e,T3f
 *              write(*,*) "|||| Ve,Vf, Ae,Af  = ", Ve*DSQRT(RaZ), Vf*DSQRT(RaZ), Ae*DSQRT(RaZ),Af*DSQRT(RaZ)
 *              write(*,*) "|||| ff0, ff1, ff1/ff0, sw2 = ", ff0, ff1, ff1/ff0, sw2
-*              write(*,*) "|||| c0, c1,c2 = ", qe**2*qf**2, 2*qe*qf*Ve*Vf*RaZ, xe*xf*RaZ**2
-*              write(*,*) "|||| d0, d1,d2 = ",         0d0, 2*qe*qf*Ae*Af*RaZ, ye*yf*RaZ**2
+*              write(*,*) "|||| c0, c1,c2 = ", qe**2*qf**2, qe*qf*Ve*Vf*RaZ, xe*xf*RaZ**2
+*              write(*,*) "|||| d0, d1,d2 = ",         0d0, qe*qf*Ae*Af*RaZ, ye*yf*RaZ**2
 *            ENDIF
 *]]]]]]]]]]]]]]
 *     Electron neutrino, t-chanel W-exchange
@@ -2660,7 +2660,103 @@ c]]]]]
       END
 
 
-      SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
+
+      SUBROUTINE kksem_ord1c(KeyDist,KFi,KFf,CMSene,cc,reps,Result)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//   Elements for the 1st order calculations                                       //
+*//   to be used in the integrand in TMCgenFOAM
+*//   Work in progress !!!                                                          //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE "KKsem.h"
+*
+      INTEGER           KeyDist, KFi,KFf     ! Input
+      DOUBLE PRECISION  CMSene,reps,cc   ! Input, vv=vmax
+      DOUBLE PRECISION  Result      ! Output
+      INTEGER           NCf,NCe
+      DOUBLE PRECISION  Mini, Qe,T3e, Mfin, Qf,T3f, mZ, GammZ
+      DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
+      DOUBLE PRECISION  svar,zz,Sw2,gz,deno
+      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born
+
+      DOUBLE PRECISION  Ve,Vf,Ae,Af
+***      DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
+      DOUBLE COMPLEX    BVR_CBoxGG,BVR_CBoxGZ
+      DOUBLE PRECISION  MasPhot,s,t,u,cp,cm, delGG, delGZ, Rsoft, dsigG, dsigZ
+      DOUBLE COMPLEX    Fgg1,FgZ1,Fgg2,FgZ2, CboxGG, CboxGZ
+      DOUBLE PRECISION  KKsem_Dilog
+      INTEGER    icont
+      DATA icont /0/
+*=============================================================
+      icont =  icont +1
+      MasPhot = 1d-99
+****************
+      CALL BornV_GetMZ(    mZ)
+      CALL BornV_GetGammZ( GammZ)
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+*      IF( icont .LE. 3) write(*,*) "////kksem_ord1v/// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
+      Sw2  = m_sinw2                       ! from xpar
+* Propagators, with s-dependent width
+      svar =    CMSene**2
+      zz   = 1d0 - MZ**2/svar
+      gz   = GammZ*MZ/svar
+      Zeta =    DCMPLX(zz,gz)
+****************
+      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
+      Ve=  (2*T3e -4*Qe*Sw2)/deno
+      Ae=  2*T3e /deno
+      Vf =  (2*T3f -4*Qf*Sw2)/deno
+      Af =  2*T3f /deno
+****************
+      C0 = (Qe*Qf)**2
+      C1 = Qe*Qf*Ve*Vf
+      C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
+      D0 = 0d0
+      D1 = Qe*Qf*Ae*Af
+      D2 = 4*Ve*Ae*Vf*Af
+****************
+      cp = (1d0+cc)/2d0
+      cm = (1d0-cc)/2d0
+      s = svar
+      t = -svar*cm
+      u = -svar*cp
+      Fgg1= 2d0*cp**2*BVR_CBoxGG(MasPhot,s,t,u)
+      Fgg2= 2d0*cm**2*BVR_CBoxGG(MasPhot,s,u,t)
+      FgZ1= 2d0*cp**2*BVR_CBoxGZ(MasPhot,mZ,GammZ,s,t,u)/Zeta
+      FgZ2= 2d0*cm**2*BVR_CBoxGZ(MasPhot,mZ,GammZ,s,u,t)/Zeta
+******
+      CboxGG = (C0+ C1/DCONJG(Zeta) )*( Fgg1 -Fgg2 )       +D1/DCONJG(Zeta) * ( Fgg1 +Fgg2)
+      CboxGZ = (C1+ C2/DCONJG(Zeta) )*( FgZ1 -FgZ2 ) + (D1 +D2/DCONJG(Zeta))* ( FgZ1 +FgZ2)
+******
+****** Born dsigma/dcos(theta) split into two parts
+      dsigG  =  (1+cc**2)* DREAL( C0 +C1/DCONJG(Zeta) )
+     $            +2d0*cc* DREAL(     D1/DCONJG(Zeta) )
+      dsigZ  =  (1+cc**2)* DREAL(     C1/DCONJG(Zeta)+C2/DCONJG(Zeta)/Zeta )
+     $            +2d0*cc* DREAL(     D1/DCONJG(Zeta)+D2/DCONJG(Zeta)/Zeta )
+****** Real soft photon IFI term only, regularized with photon mass
+      RSoft = 4d0*DLOG(cm/cp)*DLOG(CMSene*reps/MasPhot)
+     $       +DLOG(cm)**2 -DLOG(cp)**2 +2d0*KKsem_Dilog(cp) -2d0*KKsem_Dilog(cm)
+
+      delGG = 2d0*DREAL(CboxGG) +Rsoft*dsigG
+      delGZ = 2d0*DREAL(CboxGZ) +Rsoft*dsigZ
+************************************** debug
+*      IF( icont .LE. 200) THEN
+*        WRITE(*,*) "********************** kksem_ord1c:  icont =",icont
+*        WRITE(*,*) " MasPhot,s,t,u=", MasPhot,s,t,u
+*        WRITE(*,*) "  Fgg1 =",Fgg1, "   Fgg2 =",Fgg2
+*        WRITE(*,*) "  Rsoft =",Rsoft
+*      ENDIF
+**************************************
+      Result = delGG+delGZ
+**      Result = delGG  ! gamma-gamma box only
+      END
+
+
+      SUBROUTINE kksem_ord1v(KeyDist,KFi,KFf,CMSene,vv,Result)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//   Elements for the 1st order calculations                                       //
@@ -2697,7 +2793,7 @@ c]]]]]
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
-*      IF( icont .LE. 3) write(*,*) "////KKsem_Ord1/// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
+*      IF( icont .LE. 3) write(*,*) "////kksem_ord1v/// Qe,T3e,Qf,T3f=", Qe,T3e,Qf,T3f
       Sw2  = m_sinw2                       ! from xpar
 * Propagators, with s-dependent width
       svar =    CMSene**2
@@ -2725,10 +2821,10 @@ c]]]]]
 *      Af =0d0
 ****************
       C0 = (Qe*Qf)**2
-      C1 = 2*Qe*Qf*Ve*Vf
+      C1 = Qe*Qf*Ve*Vf
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
       D0 = 0d0
-      D1 = 2*Qe*Qf*Ae*Af
+      D1 = Qe*Qf*Ae*Af
       D2 = 4*Ve*Ae*Vf*Af
 ******* Gmu scheme, close to EW of Dizet near Z ************
       RaZ  = (16D0*Sw2*(1d0-Sw2))* (m_GFermi *mZ**2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi)
@@ -2739,24 +2835,24 @@ c]]]]]
       D2 = D2 *RaZ**2
 *****************************************************
       sig0 = 4*Pi*(1/m_AlfInv)**2/(3d0*svar )*m_gnanob
-      C_born=  C0/(1-vv)**2 +C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ! pure Born at svar*(1-v)
-      D_born=               +D1/(Zeta-vv)/(1-vv) +D2/(Zeta-vv)/DCONJG(Zeta-vv) ! sigma^*   at svar*(1-v)
+      C_born=  C0/(1-vv)**2 +2d0*C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ! pure Born at svar*(1-v)
+      D_born=               +2d0*D1/(Zeta-vv)/(1-vv) +D2/(Zeta-vv)/DCONJG(Zeta-vv) ! sigma^*   at svar*(1-v)
       X_born=  DREAL(C_born)*(1-vv)* sig0
       Y_born=  DREAL(D_born)*(1-vv)* sig0
 *****************************************************
-      X_virtC =                          ( -0.5d0 ) *(    D1/2d0/DCONJG(Zeta) )  ! gamma part
-      Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +C1/2d0/DCONJG(Zeta) )  ! gamma part
+      X_virtC =                          ( -0.5d0 ) *(    2d0*D1/DCONJG(Zeta) )  ! gamma part
+      Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +2d0*C1/DCONJG(Zeta) )  ! gamma part
 *     Z part
 *[[[[[[[
 *      X_virtC = X_virtC
 *     *   +( -DLOG(CDABS(1d0-Zeta)) -Zeta +(1-Zeta)*(2-Zeta)*BVR_CDLN( -Zeta/(1-Zeta) ,Eps)  )
-*     *   *( D1/2d0/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
+*     *   *( 2d0*D1/DCONJG(Zeta) + D2/DCONJG(Zeta)/Zeta )
 *      Y_virtC = Y_virtC
 *     *  +( 31d0/9d0*Zeta -9d0*Zeta**2 -4d0*Zeta*Zeta**2
 *     *     -( 15d0/2d0-13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN((1-Zeta) ,Eps)
 *     *     +( 5d0-17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN(-Zeta ,Eps)
 *     *     +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2*( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
-*     *  )*( C1/2d0/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
+*     *  )*( 2d0*C1/DCONJG(Zeta) + C2/DCONJG(Zeta)/Zeta )
 *]]]]]]
       X_virt  = 3d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(X_virtC)* sig0
       Y_virt  = 2d0*Qe*Qf *(1/m_AlfInv)/Pi * DREAL(Y_virtC)* sig0 ! coeff. 2 is ok
@@ -2854,13 +2950,13 @@ c]]]]]
 *      Af =0d0
 ****************
       C0 = (Qe*Qf)**2
-      C1 = 2*Qe*Qf*Ve*Vf
+      C1 = Qe*Qf*Ve*Vf
       C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
       D0 = 0d0
-      D1 = 2*Qe*Qf*Ae*Af
+      D1 = Qe*Qf*Ae*Af
       D2 = 4*Ve*Ae*Vf*Af
-      X_born  =  DREAL(C0 +C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
-      Y_Born  =  DREAL(D0 +D1/Zeta +D2/Zeta/DCONJG(Zeta) )
+      X_born  =  DREAL(C0 +2d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
+      Y_Born  =  DREAL(D0 +2d0*D1/Zeta +D2/Zeta/DCONJG(Zeta) )
       AFBborn = 3d0/4d0* Y_Born/X_born
 *      IF( icont .LE. 10) write(*,*) "||||KKsem_Afb_Calc||| c1,c2,d1,d2, Y/X=", c1,c2, d1,d2, Y_Born/X_born
 ***************************************************************
@@ -2887,8 +2983,8 @@ c]]]]]
       Y1= -( -vv +Zeta* BVR_CDLN( Zeta/(Zeta-vv), Eps) )
       Y2= -( -vv +(1d0-2d0*zz) *BVR_CDLN( (Zeta-vv)/Zeta, Eps)
      $           +(zz-zz**2+gz**2)/gz*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
-      WD_ini = DREAL( C0*X0 +C1*X1 +C2*X2)
-      WN_ini = DREAL( D0*X0 +D1*X1 +D2*X2) + DREAL( D0*Y0 +D1*Y1 +D2*Y2)
+      WD_ini = DREAL( C0*X0 +2d0*C1*X1 +C2*X2)
+      WN_ini = DREAL( D0*X0 +2d0*D1*X1 +D2*X2) + DREAL( D0*Y0 +2d0*D1*Y1 +D2*Y2)
       X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
       Y_tot = Y_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
       sig_PRD = X_tot*sig0
@@ -2911,7 +3007,7 @@ c]]]]]
      $ -Zeta/(Zeta -2d0)* DLOG(1d0-0.5d0*vv)
      $ +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0)  )   ! wersja ZW, PLB
      $                             *BVR_CDLN( ( vv -Zeta)/(1-Zeta) ,Eps) ! wersja ZW, PLB
-      C_FB = (C0 +C1/Zeta/2d0)*Agg +( C1/Zeta/2 +C2/Zeta/DCONJG(Zeta) )*AgZ
+      C_FB = (C0 +C1/Zeta)*Agg +( C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AgZ
       Y_ifi = 2d0*Qe*Qf *1d0/(m_AlfInv*Pi) * DREAL(C_FB)
 *      AfbIFI1 = (3d0/4d0)* Y_ifi / X_born
       AfbIFI1 = (3d0/4d0)* Y_ifi / X_tot
@@ -2932,8 +3028,8 @@ c]]]]]
 **     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
 *     $  +( 5d0 -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-      C_FB2 = (ASG+AHG) *( C0 +0.5d0*C1/Zeta )
-     $       +(ASZ+AHZ) *(     0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )
+      C_FB2 = (ASG+AHG) *( C0 +C1/Zeta )
+     $       +(ASZ+AHZ) *(     C1/Zeta +C2/Zeta/DCONJG(Zeta) )
       Y_ifi2 = 2d0*DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
@@ -2948,11 +3044,11 @@ c]]]]]
       AHZ5 =
      $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
      $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-***      C_FB4 = (C0 +0.5d0*C1/Zeta)*Agg5                                    ! gamma only
+***      C_FB4 = (C0 +C1/Zeta)*Agg5                                    ! gamma only
       AfbIFI4 = (3d0/2d0)* DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
       AfbIFI4 = (3d0/2d0)*Agg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
-      C_FB5 = (C0 +0.5d0*C1/Zeta)*Agg5
-     $       +(    0.5d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AHZ5
+      C_FB5 = (C0 +C1/Zeta)*Agg5
+     $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AHZ5
       AfbIFI5 = (3d0/2d0)* DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
 *********************************************
 *      AfbIFI = AfbIFI1 ! formula of PLB
