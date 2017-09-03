@@ -833,6 +833,8 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 // version with partial analytical integration over c of IR part
 //	     xDist1 = xDist + xRhoIFI*yBorn         +2*xRhoIFIc;   // ISR+FSR+IFI sig
 //	     yDist1 = yDist + yRhoIFI*xBorn   +2*(2*c)*xRhoIFIc;   // ISR+FSR+IFI <2c>sig
+//	     xDist1 = xDist + xRhoIFI*yBorn;   // ISR+FSR+IFI sig
+//	     yDist1 = yDist + yRhoIFI*xBorn;   // ISR+FSR+IFI <2c>sig
 // version with MC integration over c of IR part and the rest
 	     xDist1 = xDist          +2*xRhoIFIc;  // ISR+FSR+IFI sig, 2=jacobian=d(c)/d(r)
 	     yDist1 = yDist   +2*(2*cc)*xRhoIFIc;  // ISR+FSR+IFI <2c>sig

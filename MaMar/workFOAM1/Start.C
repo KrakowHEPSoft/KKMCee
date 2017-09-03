@@ -46,7 +46,7 @@ MCgen->m_nCells  = 10000;
 MCgen->m_IsFoam5 = 0;   // Foam5 OFF
 MCgen->m_IsFoam3 = 0;   // Foam3 OFF
 MCgen->m_IsFoam1 = 1;   // Foam1 ON
-MCgen->m_eps  =   1e-4; // IR regulator
+MCgen->m_eps  =   1e-3; // IR regulator
 MCgen->m_eps  =   1e-5; // IR regulator
 //MCgen->m_eps  =   0.02; // IR regulator, good for 10GeV
 //##########################################################
