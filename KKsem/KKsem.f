@@ -2773,8 +2773,8 @@ c]]]]]
       DOUBLE PRECISION  Pi, Mini, Qe,T3e, Mfin, Qf,T3f, mZ, GammZ
       INTEGER           NCf,NCe
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
-      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born
-      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born
+      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born, X2_born, Y2_born
+      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born, C2_born, D2_born
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
 ***      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
       DOUBLE PRECISION  Ve,Vf,Ae,Af
@@ -2834,11 +2834,18 @@ c]]]]]
       D1 = D1 *RaZ
       D2 = D2 *RaZ**2
 *****************************************************
+****** this is for ISR
       sig0 = 4*Pi*(1/m_AlfInv)**2/(3d0*svar )*m_gnanob
       C_born=  C0/(1-vv)**2 +2d0*C1/(Zeta-vv)/(1-vv) +C2/(Zeta-vv)/DCONJG(Zeta-vv) ! pure Born at svar*(1-v)
       D_born=               +2d0*D1/(Zeta-vv)/(1-vv) +D2/(Zeta-vv)/DCONJG(Zeta-vv) ! sigma^*   at svar*(1-v)
       X_born=  DREAL(C_born)*(1-vv)* sig0
       Y_born=  DREAL(D_born)*(1-vv)* sig0
+*****************************************************
+****** this is for IFI
+      C2_born=  C0/(1-vv) +C1/(Zeta-vv) +C1/(Zeta)/(1-vv) +C2/(Zeta)/DCONJG(Zeta-vv)
+      D2_born=            +D1/(Zeta-vv) +D1/(Zeta)/(1-vv) +D2/(Zeta)/DCONJG(Zeta-vv)
+      X2_born=  DREAL(C2_born)*(1-vv)* sig0
+      Y2_born=  DREAL(D2_born)*(1-vv)* sig0
 *****************************************************
       X_virtC =                          ( -0.5d0 ) *(    2d0*D1/DCONJG(Zeta) )  ! gamma part
       Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +2d0*C1/DCONJG(Zeta) )  ! gamma part
@@ -2862,6 +2869,10 @@ c]]]]]
          Result = X_born          ! Born xsection [nb]
       ELSE IF( KeyDist .EQ. 2 ) THEN
          Result = Y_born          ! Sigma^star [nb]
+      ELSE IF( KeyDist .EQ. 101 ) THEN
+         Result = X2_born          ! Born xsection [nb]
+      ELSE IF( KeyDist .EQ. 102 ) THEN
+         Result = Y2_born          ! Sigma^star [nb]
       ELSE IF( KeyDist .EQ. 10 ) THEN
          Result = X_virt          ! virt for Sigma
       ELSE IF( KeyDist .EQ. 20 ) THEN

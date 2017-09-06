@@ -159,7 +159,6 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 	    //exit(-5);
 	 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
-  m_kDim    = 1;
   m_kDim    = 2;
   m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
   m_Foam1->SetnCells(m_nCells);     // No. of cells, optional, default=2000
@@ -356,17 +355,31 @@ void TMCgenFOAM::GetRhoFSR1(double svar, double vv, double &rho, double &rho2){
 
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rho, double &rho2){
-/// First order IFI rho-function dsigma/dv for IFI
+void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rhov, double &rhoc){
+/// First order functions dsigma/dv and <2c>dsigma/dv for IFI
   double alfpi   = m_alfpi*m_chfin*m_chini;
   if( vv > m_eps){
-     rho  = 2*alfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
-     rho2 = 2*alfpi *(-1)*(1-vv)/(2-vv)/vv*(10*(1-vv)+3*vv*vv);
+     rhov  = 2*alfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
+     rhoc  = 2*alfpi *(-1)*(1-vv)/(2-vv)/vv*(10*(1-vv)+3*vv*vv);
  }else{
-	 rho  = 2*alfpi*3.0*log(1/m_eps);
-	 rho2 = 2*alfpi*5.0*log(1/m_eps);
+	 rhov  = 2*alfpi*3.0*log(1/m_eps);
+	 rhoc  = 2*alfpi*5.0*log(1/m_eps);
   }
 }//GetRhoIFI1
+
+
+///------------------------------------------------------------------------
+void TMCgenFOAM::GetRhoIFI0(double svar, double vv, double &rhov, double &rhoc){
+/// Pure IR part, dsigma/dv and <2c>dsigma/dv for IFI
+  double alfpi   = m_alfpi*m_chfin*m_chini;
+  if( vv > m_eps){
+     rhov  = 2*alfpi * (-3.0)/vv;
+     rhoc  = 2*alfpi * (-5.0)/vv;
+ }else{
+	 rhov  = 2*alfpi*3.0*log(1/m_eps);
+	 rhoc  = 2*alfpi*5.0*log(1/m_eps);
+  }
+}//GetRhoIFI0
 
 
 ///------------------------------------------------------------------------
@@ -790,62 +803,70 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //	m_vv = R *m_vvmax; dJac = m_vvmax;
 //]]]
 	double cc= (2*Xarg[1]-1)*0.99999999;
-
-	double xRhoI, xRhoF, xRhoIFI;
-	double yRhoI, yRhoF, yRhoIFI;
-	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);
-	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);
-	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);
-
+//*****************************************
+	double xRhoI, xRhoF, xRhoIFI, xRhoIFI0;
+	double yRhoI, yRhoF, yRhoIFI, yRhoIFI0;
+	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);     // ISR complete 1st ord
+	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);     // FSR complete 1st ord
+	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);   // IFI 1st order without virt. cors.
+	GetRhoIFI0(svar, m_vv, xRhoIFI0,yRhoIFI0);  // IFI pure IR in hard part
 //*****************************************
 //  Born convolution with ISR and FSR
-	double xBorn00,xBorn, xBorn0, yBorn, yBorn0;
+	double xBorn00,xBornv, xBorn0, xBornv2, yBornv, yBorn0, yBornv2;
 //  x_Born((1-v)*s) and x_Born(s) provided by KKsem
 //  SUBROUTINE KKsem_Ord1v(KeyDist,KFi,KFf,CMSene,vv,Result)
-	kksem_ord1v_(1,m_KFini, m_KFf, m_CMSene, m_vv, xBorn);  // Born [nb]
-	kksem_ord1v_(1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0); // Born [nb]
-//  sigma^star Born provided by KKsem
-	kksem_ord1v_(2,m_KFini, m_KFf, m_CMSene, m_vv, yBorn);  // 2*sigma^* [nb]
-	kksem_ord1v_(2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0); // 2*sigma^* [nb]
-
-//  Virtual+soft contributions integrated analyticaly over cos(theta)
+	kksem_ord1v_(  1,m_KFini, m_KFf, m_CMSene, m_vv, xBornv);   // Born [nb]
+	kksem_ord1v_(101,m_KFini, m_KFf, m_CMSene, m_vv, xBornv2);  // Born [nb]
+	kksem_ord1v_(  1,m_KFini, m_KFf, m_CMSene,  0e0, xBorn0);   // Born [nb]
+//  sigmaBorn<2c> provided by KKsem
+	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene, m_vv, yBornv);   // sigma<2c> [nb]
+	kksem_ord1v_(102,m_KFini, m_KFf, m_CMSene, m_vv, yBornv2);  // sigma<2c> [nb]
+	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0);   // sigma<2c> [nb]
+//*******************************************************************
+//  Virtual+soft IFI contributions (vv=0) integrated analyticaly over cos(theta)
 	double xVirt, yVirt;
-	kksem_ord1v_(10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
-	kksem_ord1v_(20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for 2*sigma^*
-
-//***************************************************************
-//  Virtual+soft contributions with cos(theta) dependence
+	kksem_ord1v_( 10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
+	kksem_ord1v_( 20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for sigma<2c>
+//*******************************************************************
+//  Virtual+soft contributions at vv=0 with live cos(theta) dependence
     double xRhoIFIc;
     GetRhoIFI1c(svar, cc, xRhoIFIc);
-
+//*******************************************************************
+    double yDist0=0;
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD part, integrated over c
-	     xDist  = xRhoI*xBorn + xRhoF*xBorn0;    // ISR+FSR sig
-	     yDist  = yRhoI*yBorn + yRhoF*yBorn0;    // ISR+FSR <2c>sig
-	     xDist1 = xDist + xRhoIFI*yBorn;         // ISR+FSR+IFI sig
-	     yDist1 = yDist + yRhoIFI*xBorn;         // ISR+FSR+IFI <2c>sig
+	     xDist  = xRhoI*xBornv + xRhoF*xBorn0;    // ISR+FSR dsig/dv
+	     yDist  = yRhoI*yBornv + yRhoF*yBorn0;    // ISR+FSR <2c>dsig/dv
+	     xDist1 = xDist + xRhoIFI*yBornv2;         // ISR+FSR+IFI dsig/dv
+	     yDist1 = yDist + yRhoIFI*xBornv2;         // ISR+FSR+IFI <2c>dsig/dv
+	     yDist0 = (yRhoIFI - yRhoIFI0)*xBornv2;   // IFI non-IR hard part
 	}else{                //  SOFT+VIRT
-		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig
-		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig
+		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig0
+		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig0
 // version with fully analytical c-integration (PLB219), does not work
-//	     xDist1 = xDist + xRhoIFI*yBorn +xVirt;       // ISR+FSR+IFI sig
-//	     yDist1 = yDist + yRhoIFI*xBorn +yVirt;       // ISR+FSR+IFI <2c>sig
+//	     xDist1 = xDist + xRhoIFI*yBorn +xVirt;       // ISR+FSR+IFI sig0
+//	     yDist1 = yDist + yRhoIFI*xBorn +yVirt;       // ISR+FSR+IFI <2c>sig0
 // version with partial analytical integration over c of IR part
-//	     xDist1 = xDist + xRhoIFI*yBorn         +2*xRhoIFIc;   // ISR+FSR+IFI sig
-//	     yDist1 = yDist + yRhoIFI*xBorn   +2*(2*c)*xRhoIFIc;   // ISR+FSR+IFI <2c>sig
-//	     xDist1 = xDist + xRhoIFI*yBorn;   // ISR+FSR+IFI sig
-//	     yDist1 = yDist + yRhoIFI*xBorn;   // ISR+FSR+IFI <2c>sig
+//	     xDist1 = xDist + xRhoIFI*yBorn         +2*xRhoIFIc;   // ISR+FSR+IFI sig0
+//	     yDist1 = yDist + yRhoIFI*xBorn   +2*(2*c)*xRhoIFIc;   // ISR+FSR+IFI <2c>sig0
+//	     xDist1 = xDist + xRhoIFI*yBorn;   // ISR+FSR+IFI sig0
+//	     yDist1 = yDist + yRhoIFI*xBorn;   // ISR+FSR+IFI <2c>sig0
 // version with MC integration over c of IR part and the rest
-	     xDist1 = xDist          +2*xRhoIFIc;  // ISR+FSR+IFI sig, 2=jacobian=d(c)/d(r)
-	     yDist1 = yDist   +2*(2*cc)*xRhoIFIc;  // ISR+FSR+IFI <2c>sig
+	     xDist1 = xDist          +2*xRhoIFIc;    // ISR+FSR+IFI 0sig: 2=jacob=d(c)/d(r)
+	     yDist1 = yDist   +2*(2*cc)*xRhoIFIc;    // ISR+FSR+IFI <2c>0sig
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI
     m_WTmodel[10] = 0.0;
+    m_WTmodel[11] = 0.0;
+    m_WTmodel[12] = 0.0;
+    m_WTmodel[22] = 0.0;
+// Final weight is typicaly yDist1/xDist*xDist/fabs(xDist)= yDist/fabs(xDist) !
     if( xDist != 0.0){
     	m_WTmodel[10] = yDist /xDist;  // WT for AFB without IFI
     	m_WTmodel[11] = xDist1/xDist;  // WT for sig with IFI on
     	m_WTmodel[12] = yDist1/xDist;  // WT for AFB with IFI on
+    	m_WTmodel[22] = yDist0/xDist;  // WT for AFB with IFI, non-IR hard part
     }//
 //************  principal distribution for FOAM
 	Dist = xDist* dJac;

@@ -32,6 +32,7 @@ class TRobolFOAM : public TRobol {
   TH1D   *HST_xx_Crd1n;          //! no streamer
   TH1D   *HST_xx_Ord1;           //! no streamer
   TH1D   *HST_xx_Crd1;           //! no streamer
+  TH1D   *HST_xx_Hrd1;           //! no streamer
 
   TH1D   *HST_xx_Ceex2;          //! no streamer
   TH1D   *HST_xx_Ceex2n;         //! no streamer
