@@ -369,18 +369,16 @@ void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rhov, double &rhoc){
 
 
 ///------------------------------------------------------------------------
-void TMCgenFOAM::GetRhoIFI1c(double svar, double cc, double &rho){
-
-// !!!!!!!!!!!! svar seems obsolete
-//
+void TMCgenFOAM::GetRhoIFI1c(int KeyDist, double cc, double &rho){
 // First order dsigma/dc at v=0 for IFI [nb]
 //
+  double svar = sqr(m_CMSene);
   double sig0nb  = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob; // Born Pointlike [nb]
   double alfpi   = m_alfpi*m_chfin*m_chini;
 
 //SUBROUTINE kksem_ord1c(KeyDist,KFi,KFf,CMSene,cc,reps,Result)
-  double RhoBoxy;
-  kksem_ord1c_(0,m_KFini, m_KFf, m_CMSene, cc, m_eps, RhoBoxy);
+  double RhoSoft;
+  kksem_ord1c_(KeyDist,m_KFini, m_KFf, m_CMSene, cc, m_eps, RhoSoft);
 //
 
 //*******************************************
@@ -393,13 +391,13 @@ void TMCgenFOAM::GetRhoIFI1c(double svar, double cc, double &rho){
                        -2*bvr_dilog_(cm) +2*bvr_dilog_(cp) )
 		+2*cp*log(cm)     -2*cm*log(cp)
         -cc*sqr(log(cm)) -cc*sqr(log(cp)) ;
-//  rho = RhoGG *alfpi* 3e0/8e0*sig0nb;  // gamma-gamm box only
-  //********************************************
+// rho = RhoGG *alfpi* 3e0/8e0*sig0nb;  // gamma-gamm box only
 // gamma-gamma nad gamma-Z boxes plus soft real interference
-  rho = RhoBoxy *alfpi* 3e0/8e0*sig0nb;
+  rho = RhoSoft *alfpi* 3e0/8e0*sig0nb;
+//********************************************
 
   if(m_count <200 ){
-	  cout<<"GetRhoIFI1c: cc="<< cc<< " RhoG="<<RhoGG <<"  RhoBoxy="<< RhoBoxy<< "  rat="<< RhoBoxy/RhoGG<<endl;
+	  cout<<"GetRhoIFI1c: cc="<< cc<< " RhoG="<<RhoGG <<"  RhoSoft="<< RhoSoft<< "  rat="<< RhoSoft/RhoGG<<endl;
   }
 
 }//Rho_FSR1
@@ -820,16 +818,16 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //*******************************************************************
 //  Virtual+soft contributions at vv=0 with live cos(theta) dependence
     double xRhoIFIc;
-    GetRhoIFI1c(svar, cc, xRhoIFIc);
+    GetRhoIFI1c(1, cc, xRhoIFIc);
 //*******************************************************************
-    double yDist0=0;
+    double yDist2=0, yDist5=0;
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD part, integrated over c
 	     xDist  = xRhoI*xBornv + xRhoF*xBorn0;    // ISR+FSR dsig/dv
 	     yDist  = yRhoI*yBornv + yRhoF*yBorn0;    // ISR+FSR <2c>dsig/dv
-	     xDist1 = xDist + xRhoIFI*yBornv2;         // ISR+FSR+IFI dsig/dv
-	     yDist1 = yDist + yRhoIFI*xBornv2;         // ISR+FSR+IFI <2c>dsig/dv
-	     yDist0 = yRhoIFI*xBornv2 - xIRv2;   // IFI non-IR hard part
+	     xDist1 = xDist + xRhoIFI*yBornv2;        // ISR+FSR+IFI dsig/dv
+	     yDist1 = yDist + yRhoIFI*xBornv2;        // ISR+FSR+IFI <2c>dsig/dv
+	     yDist2 =         yRhoIFI*xBornv2 -xIRv2; // IFI hard part with IR subtracted
 	}else{                //  SOFT+VIRT
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig0
 		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig0
@@ -842,8 +840,8 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //	     xDist1 = xDist + xRhoIFI*yBorn;   // ISR+FSR+IFI sig0
 //	     yDist1 = yDist + yRhoIFI*xBorn;   // ISR+FSR+IFI <2c>sig0
 // version with MC integration over c of IR part and the rest
-	     xDist1 = xDist          +2*xRhoIFIc;    // ISR+FSR+IFI 0sig: 2=jacob=d(c)/d(r)
-	     yDist1 = yDist   +2*(2*cc)*xRhoIFIc;    // ISR+FSR+IFI <2c>0sig
+	     xDist1 = xDist        +2*xRhoIFIc;    // ISR+FSR+IFI 0sig: 2=jacob=d(c)/d(r)
+	     yDist1 = yDist +(2*cc)*2*xRhoIFIc;    // ISR+FSR+IFI <2c>0sig
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI
@@ -856,7 +854,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
     	m_WTmodel[10] = yDist /xDist;  // WT for AFB without IFI
     	m_WTmodel[11] = xDist1/xDist;  // WT for sig with IFI on
     	m_WTmodel[12] = yDist1/xDist;  // WT for AFB with IFI on
-    	m_WTmodel[22] = yDist0/xDist;  // WT for AFB with IFI, non-IR hard part
+    	m_WTmodel[22] = yDist2/xDist;  // WT for AFB with IFI, non-IR hard part
     }//
 //************  principal distribution for FOAM
 	Dist = xDist* dJac;

@@ -2751,8 +2751,11 @@ c]]]]]
 *        WRITE(*,*) "  Rsoft =",Rsoft
 *      ENDIF
 **************************************
-      Result = delGG+delGZ
-**      Result = delGG  ! gamma-gamma box only
+      IF( KeyDist .EQ. 1 ) THEN
+         Result = delGG+delGZ
+      ELSE
+         Result = 0
+      ENDIF
       END
 
 
@@ -2917,14 +2920,14 @@ c]]]]]
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
       DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2
       DOUBLE COMPLEX    C_FB, C_FB2
-      DOUBLE COMPLEX    AHZ,AHG,ASZ,ASG
+      DOUBLE COMPLEX    AHarZ,AHarG,ASofZ,ASofG
       DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
       DOUBLE PRECISION  X_born, Y_born, X_tot, Y_tot, Y_ifi, Y_ifi2
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
       DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI4, AfbIFI5, AFB_PRD, AFB_PRD_PL
       DOUBLE PRECISION  vvmax, AFBborn
-      DOUBLE COMPLEX    Agg, AgZ, Agg5, AHZ5, C_FB4, C_FB5
+      DOUBLE COMPLEX    Agg, AgZ, Hgg5, HgZ5, C_FB4, C_FB5
       DOUBLE PRECISION  Sw2, RaZ, deno
       DOUBLE PRECISION  sig0, sig_PRD
       INTEGER    icont
@@ -3033,23 +3036,21 @@ c]]]]]
       AfbIFI1 = (3d0/4d0)* Y_ifi / X_tot
 *********************************************
 * Formulas for IFI from notes
-      ASG =  +65d0/36d0 +DCMPLX( 0d0, -2d0*Pi/3d0 )
-      AHG =
-     $       -5D0*DLOG(vv)
-     $       +3d0*vv +DLOG(1d0-0.5d0*vv)
-      ASZ = +31d0/9d0*Zeta -9d0*Zeta**2 +4d0*Zeta*Zeta**2
+      ASofG =  +65d0/36d0 +DCMPLX( 0d0, -2d0*Pi/3d0 )
+      AHarG =
+     $       -5D0*DLOG(vv) +3d0*vv +DLOG(1d0-0.5d0*vv)
+      ASofZ = +31d0/9d0*Zeta -9d0*Zeta**2 +4d0*Zeta*Zeta**2
      $  -(15d0/2d0 -13d0*Zeta +12d0*Zeta**2 -4d0*Zeta*Zeta**2)*BVR_CDLN( 1d0-Zeta ,Eps)
      $                     +( 5d0 -17d0/3d0*Zeta +2d0*Zeta**2)*BVR_CDLN( -Zeta ,Eps)
      $   +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2 *( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
-      AHZ =
-     $      -5D0*DLOG(vv)
-     $      +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)
+      AHarZ =
+     $      -5D0*DLOG(vv) +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)
 *     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)           ! wersja SJ, incorrect???
 *     $  +( -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
      $  +( -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
      $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
-      C_FB2 = (ASG+AHG) *( C0 +C1/Zeta )
-     $       +(ASZ+AHZ) *(     C1/Zeta +C2/Zeta/DCONJG(Zeta) )
+      C_FB2 = (ASofG+AHarG) *( C0 +C1/Zeta )
+     $       +(ASofZ+AHarZ) *(     C1/Zeta +C2/Zeta/DCONJG(Zeta) )
       Y_ifi2 = 2d0*DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
@@ -3058,23 +3059,19 @@ c]]]]]
 ***********************************
       AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/4d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
-* k_1-dependent part only omitting IR part like  ln(k_1) and ln((v-Zeta)/(-Zeta))
-* Under construction!!!!
-      Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
-      AHZ5 =
-**     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)           ! wersja SJ, incorrect???
-     $  +( -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-     $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
-*[[[[[[[[[[ pure gamma-gamma
-      C_FB4   = (C0 +C1/Zeta)*Agg5
-      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
-      AfbIFI4 = (3d0/4d0)*2d0*Agg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
-*]]]]]]]]]]
-      C_FB5 = (C0 +C1/Zeta)*Agg5
-     $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AHZ5
+* IFI hard component with IR subtraction
+      Hgg5 = AHarG -( -5D0*DLOG(vv)  )
+      HgZ5 = AHarZ -( -5D0*DLOG(vv) +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps) )
+      C_FB5 = (C0 +C1/Zeta)*Hgg5
+     $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*HgZ5
       AfbIFI5 = (3d0/4d0)*2*DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi)
 ***      AfbIFI5 = AfbIFI5 /X_born
       AfbIFI5 = AfbIFI5 /X_tot ! Xtot lacks IFI!!!
+*[[[[[[[[[[ debug: pure gamma-gamma
+      C_FB4   = (C0 +C1/Zeta)*Hgg5
+      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
+**    AfbIFI4 = (3d0/4d0)*2d0*Hgg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
+*]]]]]]]]]]
 *********************************************
 *      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes

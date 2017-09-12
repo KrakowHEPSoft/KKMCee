@@ -34,8 +34,8 @@ using namespace std;
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
-TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
