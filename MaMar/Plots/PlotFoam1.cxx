@@ -34,8 +34,8 @@ using namespace std;
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
-//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
@@ -425,6 +425,12 @@ void FigAfb()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   float ycapt = 0.90;
+
+  // zero line
+  TH1D *hZero0 = (TH1D*)HST_xxAfb_Ord1->Clone("hZero0");  // zero line
+  hZero0->SetLineColor(kBlack);
+  for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
+
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 20, 300,   1000, 550);
@@ -506,6 +512,10 @@ void FigAfb()
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
   HstPRD_diff->SetLineColor(kCyan);
 
+  TH1D *Hst_Foam1_diff =(TH1D*)HST_xxAfb_Ord1->Clone("Hst_Foam1_diff");
+  Hst_Foam1_diff->Add(Hst_Foam1_diff, HST_xxAfb_Ord1n,    1.0, -1.0); //
+  Hst_Foam1_diff->SetLineColor(kRed);
+
   if( fabs(gCMSene -10.0) < 1.0) {
     Hst2_diff1->SetMinimum(-0.02);   // 189GeV, 10GeV
     Hst2_diff1->SetMaximum( 0.06);   // 189GeV, 10GeV
@@ -516,8 +526,8 @@ void FigAfb()
     Hst2_diff1->SetMinimum(-0.010);  // 88GeV
     Hst2_diff1->SetMaximum( 0.025);  // 88GeV
   }else if( fabs(gCMSene -91.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.005);  // 91GeV
-    Hst2_diff1->SetMaximum( 0.015);  // 91GeV
+    Hst2_diff1->SetMinimum(-0.002);  // 91GeV
+    Hst2_diff1->SetMaximum( 0.006);  // 91GeV
   }
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");
@@ -530,6 +540,9 @@ void FigAfb()
 
   HST_AfbPRDhard->DrawCopy("hsame");  // Blue
 
+  Hst_Foam1_diff->DrawCopy("hsame");  // Red
+
+  hZero0->DrawCopy("hsame");
 
   ycapt = 0.90;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
@@ -537,6 +550,9 @@ void FigAfb()
 
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
+
+  CaptT->SetTextColor(kRed); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "Foam1_IFIon - Foam1_IFIoff ");
 
   CaptT->SetTextColor(kCyan); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD43 ");
