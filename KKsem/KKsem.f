@@ -2773,8 +2773,8 @@ c]]]]]
       DOUBLE PRECISION  Pi, Mini, Qe,T3e, Mfin, Qf,T3f, mZ, GammZ
       INTEGER           NCf,NCe
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
-      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born, X2_born, Y2_born
-      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born, C2_born, D2_born
+      DOUBLE PRECISION  svar,zz,gz, sig0, costhe, X_born, Y_born, X2_born, Y2_born, X2_IR, Y2_IR
+      DOUBLE COMPLEX    Eps,Zeta, C_born, D_born, C2_born, D2_born, C2_IR, D2_IR
       DOUBLE PRECISION  RsqV,RsqA ! QCD corrs.
 ***      DOUBLE COMPLEX    Ve,Vf,Ae,Af,VVcor,GamVPi,ZetVPi ! Z couplings
       DOUBLE PRECISION  Ve,Vf,Ae,Af
@@ -2841,11 +2841,16 @@ c]]]]]
       X_born=  DREAL(C_born)*(1-vv)* sig0
       Y_born=  DREAL(D_born)*(1-vv)* sig0
 *****************************************************
-****** this is for IFI
-      C2_born=  C0/(1-vv) +C1/(Zeta-vv) +C1/(Zeta)/(1-vv) +C2/(Zeta)/DCONJG(Zeta-vv)
-      D2_born=            +D1/(Zeta-vv) +D1/(Zeta)/(1-vv) +D2/(Zeta)/DCONJG(Zeta-vv)
+****** this is for IFI real part
+      C2_born=  C0/(1-vv) +C1/(Zeta)/(1-vv) +C1/(Zeta-vv) +C2/(Zeta)/DCONJG(Zeta-vv)
+      D2_born=            +D1/(Zeta)/(1-vv) +D1/(Zeta-vv) +D2/(Zeta)/DCONJG(Zeta-vv)
       X2_born=  DREAL(C2_born)*(1-vv)* sig0
       Y2_born=  DREAL(D2_born)*(1-vv)* sig0
+***   this is IR part of real emission IFI
+      C2_IR=  (C0 +C1/(Zeta))/vv +(C1 +C2/(Zeta))/DCONJG(Zeta-vv)/vv
+      D2_IR=  (   +D1/(Zeta))/vv +(D1 +D2/(Zeta))/DCONJG(Zeta-vv)/vv
+      X2_IR=  (-10d0)*DREAL(C2_IR)* sig0 *Qe*Qf *1d0/(m_AlfInv*Pi)
+      Y2_IR=   (-6d0)*DREAL(D2_IR)* sig0 *Qe*Qf *1d0/(m_AlfInv*Pi)
 *****************************************************
       X_virtC =                          ( -0.5d0 ) *(    2d0*D1/DCONJG(Zeta) )  ! gamma part
       Y_virtC = ( DCMPLX(65d0/36d0, 2d0/3d0*m_pi) ) *(C0 +2d0*C1/DCONJG(Zeta) )  ! gamma part
@@ -2873,6 +2878,10 @@ c]]]]]
          Result = X2_born          ! Born xsection [nb]
       ELSE IF( KeyDist .EQ. 102 ) THEN
          Result = Y2_born          ! Sigma^star [nb]
+      ELSE IF( KeyDist .EQ. 111 ) THEN
+         Result = X2_IR          ! Born xsection [nb]
+      ELSE IF( KeyDist .EQ. 112 ) THEN
+         Result = Y2_IR          ! Sigma^star [nb]
       ELSE IF( KeyDist .EQ. 10 ) THEN
          Result = X_virt          ! virt for Sigma
       ELSE IF( KeyDist .EQ. 20 ) THEN
@@ -3034,11 +3043,11 @@ c]]]]]
      $   +4d0*Zeta*(1d0-Zeta)*(1d0-Zeta)**2 *( BVR_Spence( -Zeta/(1d0-Zeta), Eps)-1d0/6d0*Pi**2 )
       AHZ =
      $      -5D0*DLOG(vv)
-     $              +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
-**     $                                   +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
-**     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)      ! wersja SJ
-*     $  +( 5d0 -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
-     $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
+     $      +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)
+*     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)           ! wersja SJ, incorrect???
+*     $  +( -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
+     $  +( -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
+     $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
       C_FB2 = (ASG+AHG) *( C0 +C1/Zeta )
      $       +(ASZ+AHZ) *(     C1/Zeta +C2/Zeta/DCONJG(Zeta) )
       Y_ifi2 = 2d0*DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
@@ -3049,18 +3058,23 @@ c]]]]]
 ***********************************
       AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/4d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
-* k_1-dependent part only omitting ln(k_1)
+* k_1-dependent part only omitting IR part like  ln(k_1) and ln((v-Zeta)/(-Zeta))
 * Under construction!!!!
       Agg5 = 3d0*vv +DLOG(1d0-0.5d0*vv)
       AHZ5 =
+**     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)           ! wersja SJ, incorrect???
+     $  +( -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
      $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
-     $  +( 5d0 -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-***      C_FB4 = (C0 +C1/Zeta)*Agg5                                    ! gamma only
-      AfbIFI4 = (3d0/2d0)* DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
-      AfbIFI4 = (3d0/2d0)*Agg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
+*[[[[[[[[[[ pure gamma-gamma
+      C_FB4   = (C0 +C1/Zeta)*Agg5
+      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
+      AfbIFI4 = (3d0/4d0)*2d0*Agg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
+*]]]]]]]]]]
       C_FB5 = (C0 +C1/Zeta)*Agg5
      $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*AHZ5
-      AfbIFI5 = (3d0/2d0)* DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
+      AfbIFI5 = (3d0/4d0)*2*DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi)
+***      AfbIFI5 = AfbIFI5 /X_born
+      AfbIFI5 = AfbIFI5 /X_tot ! Xtot lacks IFI!!!
 *********************************************
 *      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes

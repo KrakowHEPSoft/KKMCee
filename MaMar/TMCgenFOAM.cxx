@@ -359,27 +359,13 @@ void TMCgenFOAM::GetRhoIFI1(double svar, double vv, double &rhov, double &rhoc){
 /// First order functions dsigma/dv and <2c>dsigma/dv for IFI
   double alfpi   = m_alfpi*m_chfin*m_chini;
   if( vv > m_eps){
-     rhov  = 2*alfpi *(-3)*(1-vv)*(2-vv)/(2*vv);
-     rhoc  = 2*alfpi *(-1)*(1-vv)/(2-vv)/vv*(10*(1-vv)+3*vv*vv);
+     rhov  = 2*alfpi *(-3)*(2-vv)/(2*vv);
+     rhoc  = 2*alfpi *(-1)/(2-vv)/vv*(10*(1-vv)+3*vv*vv);
  }else{
 	 rhov  = 2*alfpi*3.0*log(1/m_eps);
 	 rhoc  = 2*alfpi*5.0*log(1/m_eps);
   }
 }//GetRhoIFI1
-
-
-///------------------------------------------------------------------------
-void TMCgenFOAM::GetRhoIFI0(double svar, double vv, double &rhov, double &rhoc){
-/// Pure IR part, dsigma/dv and <2c>dsigma/dv for IFI
-  double alfpi   = m_alfpi*m_chfin*m_chini;
-  if( vv > m_eps){
-     rhov  = 2*alfpi * (-3.0)/vv;
-     rhoc  = 2*alfpi * (-5.0)/vv;
- }else{
-	 rhov  = 2*alfpi*3.0*log(1/m_eps);
-	 rhoc  = 2*alfpi*5.0*log(1/m_eps);
-  }
-}//GetRhoIFI0
 
 
 ///------------------------------------------------------------------------
@@ -804,12 +790,11 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //]]]
 	double cc= (2*Xarg[1]-1)*0.99999999;
 //*****************************************
-	double xRhoI, xRhoF, xRhoIFI, xRhoIFI0;
-	double yRhoI, yRhoF, yRhoIFI, yRhoIFI0;
+	double xRhoI, xRhoF, xRhoIFI;
+	double yRhoI, yRhoF, yRhoIFI;
 	GetRhoISR1(svar, m_vv, xRhoI,   yRhoI);     // ISR complete 1st ord
 	GetRhoFSR1(svar, m_vv, xRhoF,   yRhoF);     // FSR complete 1st ord
 	GetRhoIFI1(svar, m_vv, xRhoIFI, yRhoIFI);   // IFI 1st order without virt. cors.
-	GetRhoIFI0(svar, m_vv, xRhoIFI0,yRhoIFI0);  // IFI pure IR in hard part
 //*****************************************
 //  Born convolution with ISR and FSR
 	double xBorn00,xBornv, xBorn0, xBornv2, yBornv, yBorn0, yBornv2;
@@ -822,7 +807,12 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene, m_vv, yBornv);   // sigma<2c> [nb]
 	kksem_ord1v_(102,m_KFini, m_KFf, m_CMSene, m_vv, yBornv2);  // sigma<2c> [nb]
 	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0);   // sigma<2c> [nb]
-//*******************************************************************
+//
+	double xIRv2, yIRv2;
+	kksem_ord1v_(111,m_KFini, m_KFf, m_CMSene, m_vv, xIRv2);    // Born [nb]
+	kksem_ord1v_(112,m_KFini, m_KFf, m_CMSene, m_vv, yIRv2);    // sigma<2c> [nb]
+
+	//*******************************************************************
 //  Virtual+soft IFI contributions (vv=0) integrated analyticaly over cos(theta)
 	double xVirt, yVirt;
 	kksem_ord1v_( 10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
@@ -839,7 +829,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	     yDist  = yRhoI*yBornv + yRhoF*yBorn0;    // ISR+FSR <2c>dsig/dv
 	     xDist1 = xDist + xRhoIFI*yBornv2;         // ISR+FSR+IFI dsig/dv
 	     yDist1 = yDist + yRhoIFI*xBornv2;         // ISR+FSR+IFI <2c>dsig/dv
-	     yDist0 = (yRhoIFI - yRhoIFI0)*xBornv2;   // IFI non-IR hard part
+	     yDist0 = yRhoIFI*xBornv2 - xIRv2;   // IFI non-IR hard part
 	}else{                //  SOFT+VIRT
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig0
 		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig0

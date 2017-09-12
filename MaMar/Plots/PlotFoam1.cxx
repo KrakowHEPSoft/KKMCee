@@ -34,8 +34,8 @@ using namespace std;
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
-TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
@@ -415,6 +415,16 @@ void FigAfb()
   HST_AfbPRD->SetLineColor(kRed);
 
 
+  TH1D *HST_AfbPRDhard =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPRDhard");
+  LibSem.Ord1fill(HST_AfbPRDhard,105);
+  HST_AfbPRDhard->SetLineColor(kBlue);
+
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  float ycapt = 0.90;
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 20, 300,   1000, 550);
@@ -422,10 +432,6 @@ void FigAfb()
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfb->Divide( 2,  0);
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.035);
   //
   //====================plot1========================
   cFigAfb->cd(1); // AFB(vmax)
@@ -437,15 +443,16 @@ void FigAfb()
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
 
-  //Hst2->SetMinimum(-0.02); // 10GeV
-  //Hst2->SetMaximum(+0.06); // 10GeV
-  if( fabs(gCMSene -95.0) < 1.0) {
+  if( fabs(gCMSene -10.0) < 1.0) {
+    Hst2->SetMinimum(-0.02); // 10GeV
+    Hst2->SetMaximum(+0.06); // 10GeV
+  }else if( fabs(gCMSene -95.0) < 1.0) {
     Hst2->SetMinimum( 0.15); // 95GeV
     Hst2->SetMaximum(+0.30); // 95GeV
-  }
-  //Hst2->SetMinimum(-0.32); // 88GeV
-  //Hst2->SetMaximum(-0.20); // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) {
+  } else if( fabs(gCMSene -88.0) < 1.0) {
+    Hst2->SetMinimum(-0.32); // 88GeV
+    Hst2->SetMaximum(-0.20); // 88GeV
+  } else if( fabs(gCMSene -91.0) < 1.0) {
     Hst2->SetMinimum(-0.000); // 91GeV
     Hst2->SetMaximum(+0.025); // 91GeV
   }
@@ -460,13 +467,33 @@ void FigAfb()
   HST_xxAfb_Ord1n->SetLineColor(kCyan);
   HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
 
-  HST_xxAfb_Ord1->SetLineColor(kYellow);
-  HST_xxAfb_Ord1->DrawCopy("hsame");         // Yellow, Foam1 MC IFI on
+  HST_xxAfb_Ord1->SetLineColor(46);
+  HST_xxAfb_Ord1->DrawCopy("hsame");         // Brown, Foam1 MC IFI on
 
+  HST_AfbPRD->SetLineColor(kRed);
   HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula
 
   afbv_ISR2_FSR2->SetLineColor(kBlue);
   afbv_ISR2_FSR2->DrawCopy("hsame");        // KKsem
+
+  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "KKMC  IFI on ");
+
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "KKMC  IFI off ");
+
+  CaptT->SetTextColor(kBlue); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "KKsem  IFI off ");
+
+  CaptT->SetTextColor(kCyan); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "Foam1  IFI off ");
+
+  CaptT->SetTextColor(46); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "Foam1  IFI on ");
+
+  CaptT->SetTextColor(kRed); ycapt += -0.04;
+  CaptT->DrawLatex(0.60,ycapt, "PRD41  IFI off");
+
 
   //====================plot2========================
   cFigAfb->cd(2);
@@ -479,15 +506,16 @@ void FigAfb()
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
   HstPRD_diff->SetLineColor(kCyan);
 
-  //Hst2_diff1->SetMinimum(-0.02);  // 189GeV, 10GeV
-  //Hst2_diff1->SetMaximum( 0.06);  // 189GeV, 10GeV
-  if( fabs(gCMSene -95.0) < 1.0) {
+  if( fabs(gCMSene -10.0) < 1.0) {
+    Hst2_diff1->SetMinimum(-0.02);   // 189GeV, 10GeV
+    Hst2_diff1->SetMaximum( 0.06);   // 189GeV, 10GeV
+  }else if( fabs(gCMSene -95.0) < 1.0) {
     Hst2_diff1->SetMinimum(-0.004);  // 95GeV
     Hst2_diff1->SetMaximum( 0.004);  // 95GeV
-  }
-  //Hst2_diff1->SetMinimum(-0.010);  // 88GeV
-  //Hst2_diff1->SetMaximum( 0.025);  // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) {
+  } else if( fabs(gCMSene -88.0) < 1.0) {
+    Hst2_diff1->SetMinimum(-0.010);  // 88GeV
+    Hst2_diff1->SetMaximum( 0.025);  // 88GeV
+  }else if( fabs(gCMSene -91.0) < 1.0) {
     Hst2_diff1->SetMinimum(-0.005);  // 91GeV
     Hst2_diff1->SetMaximum( 0.015);  // 91GeV
   }
@@ -497,9 +525,27 @@ void FigAfb()
   HstPRD_diff->DrawCopy("hsame");
 
   HST_xxAfb_Hrd1->SetLineColor(kYellow);
+  HST_xxAfb_Hrd1->SetLineColor(46);  // Brown
   HST_xxAfb_Hrd1->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.60,0.75,gTextEne);
+  HST_AfbPRDhard->DrawCopy("hsame");  // Blue
+
+
+  ycapt = 0.90;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
+
+  CaptT->SetTextColor(kCyan); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD43 ");
+
+  CaptT->SetTextColor(46); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
+
+  CaptT->SetTextColor(kBlue); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "PLB: non-IR IFI hard ");
 
   cFigAfb->cd();
   //================================================
