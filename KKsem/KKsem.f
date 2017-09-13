@@ -2683,10 +2683,11 @@ c]]]]]
 
       DOUBLE PRECISION  Ve,Vf,Ae,Af
 ***      DOUBLE COMPLEX    BVR_CDLN,BVR_Spence,BVR_dilog
-      DOUBLE COMPLEX    BVR_CBoxGG,BVR_CBoxGZ
-      DOUBLE PRECISION  MasPhot,s,t,u,cp,cm, delGG, delGZ, Rsoft, dsigG, dsigZ
-      DOUBLE COMPLEX    Fgg1,FgZ1,Fgg2,FgZ2, CboxGG, CboxGZ
+      DOUBLE COMPLEX    BVR_CBoxGG, BVR_CBoxGZ, BVR_CDLN
+      DOUBLE PRECISION  MasPhot,s,t,u,cp,cm, delGG, delGZ, Rsoft, dsigG, dsigZ, delIR, delIR2
+      DOUBLE COMPLEX    Fgg1,FgZ1,FgZ1p,Fgg2,FgZ2,FgZ2p, CboxGG, CboxGZ, CboxGZp, MZ2,SS
       DOUBLE PRECISION  KKsem_Dilog
+      DOUBLE PRECISION  dPole, dPole2
       INTEGER    icont
       DATA icont /0/
 *=============================================================
@@ -2724,14 +2725,20 @@ c]]]]]
       s = svar
       t = -svar*cm
       u = -svar*cp
-      Fgg1= 2d0*cp**2*BVR_CBoxGG(MasPhot,s,t,u)
-      Fgg2= 2d0*cm**2*BVR_CBoxGG(MasPhot,s,u,t)
-      FgZ1= 2d0*cp**2*BVR_CBoxGZ(MasPhot,mZ,GammZ,s,t,u)/Zeta
-      FgZ2= 2d0*cm**2*BVR_CBoxGZ(MasPhot,mZ,GammZ,s,u,t)/Zeta
+      Fgg1= 2d0*cp**2 *BVR_CBoxGG(MasPhot,s,t,u)
+      Fgg2= 2d0*cm**2 *BVR_CBoxGG(MasPhot,s,u,t)
+      FgZ1= 2d0*cp**2 *BVR_CBoxGZ(MasPhot,mZ,GammZ,s,t,u)/Zeta
+      FgZ2= 2d0*cm**2 *BVR_CBoxGZ(MasPhot,mZ,GammZ,s,u,t)/Zeta
+****** Pole part
+      Eps  = DCMPLX(-1.D0,0.D0)
+      MZ2  = DCMPLX(mZ**2, -mZ*GammZ)
+      SS   = DCMPLX(s,0d0)
+      FgZ1p= -4d0*cp**2 *DLOG(t/u) *BVR_CDLN( ((MZ2-SS)/MZ2 ) ,Eps)/Zeta
+      FgZ2p= -4d0*cm**2 *DLOG(u/t) *BVR_CDLN( ((MZ2-SS)/MZ2 ) ,Eps)/Zeta
 ******
       CboxGG = (C0+ C1/DCONJG(Zeta) )*( Fgg1 -Fgg2 )       +D1/DCONJG(Zeta) * ( Fgg1 +Fgg2)
       CboxGZ = (C1+ C2/DCONJG(Zeta) )*( FgZ1 -FgZ2 ) + (D1 +D2/DCONJG(Zeta))* ( FgZ1 +FgZ2)
-******
+      CboxGZp= (C1+ C2/DCONJG(Zeta) )*( FgZ1p-FgZ2p) + (D1 +D2/DCONJG(Zeta))* ( FgZ1p+FgZ2p)
 ****** Born dsigma/dcos(theta) split into two parts
       dsigG  =  (1+cc**2)* DREAL( C0 +C1/DCONJG(Zeta) )
      $            +2d0*cc* DREAL(     D1/DCONJG(Zeta) )
@@ -2743,16 +2750,26 @@ c]]]]]
 
       delGG = 2d0*DREAL(CboxGG) +Rsoft*dsigG
       delGZ = 2d0*DREAL(CboxGZ) +Rsoft*dsigZ
+******  term for IR subtraction with Z-pole part of gZ box included
+      dPole = +2d0*DREAL(CboxGZp)
+      delIR = (dsigG+dsigZ)*4d0*DLOG(cm/cp)*DLOG(reps) +dPole
+* in the simplified version below DREAL is take twice
+      dPole2  = +4d0*DLOG(cm/cp)*  DREAL(BVR_CDLN( 1d0-1d0/Zeta ,Eps)) *dsigZ
+      delIR2  = (dsigG+dsigZ)*4d0*DLOG(cm/cp)*DLOG(reps) +dPole2
 ************************************** debug
-*      IF( icont .LE. 200) THEN
-*        WRITE(*,*) "********************** kksem_ord1c:  icont =",icont
+      IF( icont .LE. 200) THEN
+        WRITE(*,*) "********************** kksem_ord1c:  icont =",icont
 *        WRITE(*,*) " MasPhot,s,t,u=", MasPhot,s,t,u
 *        WRITE(*,*) "  Fgg1 =",Fgg1, "   Fgg2 =",Fgg2
 *        WRITE(*,*) "  Rsoft =",Rsoft
-*      ENDIF
+      WRITE(*,*)   BVR_CDLN(  1d0-1d0/Zeta ,Eps)/BVR_CDLN( ((MZ2-SS)/MZ2 ),Eps)
+      WRITE(*,*)   dPole, dPole2, dPole/dPole2
+      ENDIF
 **************************************
       IF( KeyDist .EQ. 1 ) THEN
          Result = delGG+delGZ
+      ELSE IF( KeyDist .EQ. 111 ) THEN
+         Result = delIR2
       ELSE
          Result = 0
       ENDIF
@@ -2930,6 +2947,8 @@ c]]]]]
       DOUBLE COMPLEX    Agg, AgZ, Hgg5, HgZ5, C_FB4, C_FB5
       DOUBLE PRECISION  Sw2, RaZ, deno
       DOUBLE PRECISION  sig0, sig_PRD
+      DOUBLE PRECISION  AfbIFI6
+      DOUBLE COMPLEX    Sgg6,SgZ6,C_FB6
       INTEGER    icont
       DATA icont /0/
       icont = icont+1
@@ -3068,11 +3087,19 @@ c]]]]]
 ***      AfbIFI5 = AfbIFI5 /X_born
       AfbIFI5 = AfbIFI5 /X_tot ! Xtot lacks IFI!!!
 *[[[[[[[[[[ debug: pure gamma-gamma
-      C_FB4   = (C0 +C1/Zeta)*Hgg5
-      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
+**      C_FB4   = (C0 +C1/Zeta)*Hgg5
+**      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
 **    AfbIFI4 = (3d0/4d0)*2d0*Hgg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
 *]]]]]]]]]]
-*********************************************
+**********************************************
+* IFI soft component with IR subtraction
+      Sgg6 = ASofG
+      SgZ6 = ASofZ +5d0*BVR_CDLN( 1d0-1d0/Zeta ,Eps)
+      C_FB6 = (C0 +C1/Zeta)*Sgg6
+     $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*SgZ6
+      AfbIFI6 = (3d0/4d0)*2*DREAL(C_FB6) *Qe*Qf *1d0/(m_AlfInv*Pi)
+      AfbIFI6 = AfbIFI6/X_tot ! Xtot lacks IFI!!!
+********************************************
 *      AfbIFI = AfbIFI1 ! formula of PLB
 *      AfbIFI = AfbIFI2 ! formula from notes
       IF(      KeyDist .EQ. 1 ) THEN
@@ -3081,10 +3108,12 @@ c]]]]]
          Result = AFB_PRD_PL    ! PRD and PL combined
       ELSE IF( KeyDist .EQ. 101 ) THEN
          Result = AFB_PRD       ! only PRD
-      ELSE IF( KeyDist .EQ. 104 ) THEN
-         Result = AfbIFI4       ! testing IFi gamma only
+**      ELSE IF( KeyDist .EQ. 104 ) THEN
+**         Result = AfbIFI4       ! testing IFi gamma only
       ELSE IF( KeyDist .EQ. 105 ) THEN
-         Result = AfbIFI5       ! testing
+         Result = AfbIFI5       ! testing hard IFI
+      ELSE IF( KeyDist .EQ. 106 ) THEN
+         Result = AfbIFI6       ! testing soft IFI
       ELSE IF( KeyDist .EQ. 301 ) THEN
          Result = sig_PRD       ! sigma [nb] of PRD
       ELSE
