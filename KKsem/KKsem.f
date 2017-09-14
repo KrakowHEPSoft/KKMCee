@@ -2942,9 +2942,9 @@ c]]]]]
       DOUBLE PRECISION  X_born, Y_born, X_tot, Y_tot, Y_ifi, Y_ifi2
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
-      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI4, AfbIFI5, AFB_PRD, AFB_PRD_PL
+      DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AfbIFI56, AFB_PRD, AFB_PRD_PL, AFB_PRD_PL2
       DOUBLE PRECISION  vvmax, AFBborn
-      DOUBLE COMPLEX    Agg, AgZ, Hgg5, HgZ5, C_FB4, C_FB5
+      DOUBLE COMPLEX    Agg, AgZ, Hgg5, HgZ5, C_FB4, C_FB5, C_FB56
       DOUBLE PRECISION  Sw2, RaZ, deno
       DOUBLE PRECISION  sig0, sig_PRD
       DOUBLE PRECISION  AfbIFI6
@@ -3065,9 +3065,8 @@ c]]]]]
       AHarZ =
      $      -5D0*DLOG(vv) +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps)
 *     $  +Zeta*( 1d0/(Zeta-2d0) +3d0*Zeta-7d0)*BVR_CDLN( 1d0-vv/Zeta ,Eps)           ! wersja SJ, incorrect???
-*     $  +( -7d0*Zeta +3d0*Zeta**2 +Zeta/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja SJ, incorrect???
      $  +( -15d0/2d0*Zeta +3d0*Zeta**2 +0.5d0*Zeta**2/(Zeta-2d0))*BVR_CDLN( -(vv-Zeta)/Zeta ,Eps) ! wersja PL/ZW
-     $  +3*Zeta*vv -Zeta/(Zeta-2)*BVR_CDLN( 1-vv/2 ,Eps)
+     $  +3*Zeta*vv -Zeta/(Zeta-2)*DLOG( 1-vv/2)
       C_FB2 = (ASofG+AHarG) *( C0 +C1/Zeta )
      $       +(ASofZ+AHarZ) *(     C1/Zeta +C2/Zeta/DCONJG(Zeta) )
       Y_ifi2 = 2d0*DREAL(C_FB2) *Qe*Qf *1d0/(m_AlfInv*Pi)
@@ -3086,34 +3085,39 @@ c]]]]]
       AfbIFI5 = (3d0/4d0)*2*DREAL(C_FB5) *Qe*Qf *1d0/(m_AlfInv*Pi)
 ***      AfbIFI5 = AfbIFI5 /X_born
       AfbIFI5 = AfbIFI5 /X_tot ! Xtot lacks IFI!!!
-*[[[[[[[[[[ debug: pure gamma-gamma
-**      C_FB4   = (C0 +C1/Zeta)*Hgg5
-**      AfbIFI4 = (3d0/4d0)*2d0*DREAL(C_FB4) *Qe*Qf *1d0/(m_AlfInv*Pi) / X_born ! Xtot lacks IFI!!!
-**    AfbIFI4 = (3d0/4d0)*2d0*Hgg5 *Qe*Qf *1d0/(m_AlfInv*Pi)  ! debug
-*]]]]]]]]]]
 **********************************************
 * IFI soft component with IR subtraction
       Sgg6 = ASofG
-      SgZ6 = ASofZ +5d0*BVR_CDLN( 1d0-1d0/Zeta ,Eps)
+      SgZ6 = ASofZ -(-5d0*BVR_CDLN( 1d0-1d0/Zeta ,Eps))
       C_FB6 = (C0 +C1/Zeta)*Sgg6
      $       +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) )*SgZ6
       AfbIFI6 = (3d0/4d0)*2*DREAL(C_FB6) *Qe*Qf *1d0/(m_AlfInv*Pi)
       AfbIFI6 = AfbIFI6/X_tot ! Xtot lacks IFI!!!
 ********************************************
-*      AfbIFI = AfbIFI1 ! formula of PLB
-*      AfbIFI = AfbIFI2 ! formula from notes
+*******  Xcheck: undoing subtractions
+      C_FB56 = C_FB5 + C_FB6
+     $ +(C0 +C1/Zeta) *( 0d0 )
+     $ +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) ) *( -5d0*BVR_CDLN( 1d0-1d0/Zeta ,Eps) )
+     $ +(C0 +C1/Zeta) *( -5D0*DLOG(vv)  )
+     $ +(    C1/Zeta +C2/Zeta/DCONJG(Zeta) ) *( -5D0*DLOG(vv) +5d0*BVR_CDLN( 1d0-vv/Zeta ,Eps))
+      AfbIFI56 = (3d0/4d0)*2*DREAL(C_FB56) *Qe*Qf *1d0/(m_AlfInv*Pi)
+      AFB_PRD_PL2 =  ( (3d0/4d0)*Y_tot+ AfbIFI56)/X_tot  ! Xtot lacks IFI!!!
+      AfbIFI56 = AfbIFI56/X_tot
+********************************************
       IF(      KeyDist .EQ. 1 ) THEN
          Result = AFBborn       ! just Born for calibration
       ELSE IF( KeyDist .EQ. 100 ) THEN
          Result = AFB_PRD_PL    ! PRD and PL combined
+***         Result = AFB_PRD_PL2 !!!! Xcheck
       ELSE IF( KeyDist .EQ. 101 ) THEN
-         Result = AFB_PRD       ! only PRD
-**      ELSE IF( KeyDist .EQ. 104 ) THEN
-**         Result = AfbIFI4       ! testing IFi gamma only
+         Result = AFB_PRD       ! only PRD, no IFI
+      ELSE IF( KeyDist .EQ. 102 ) THEN
+         Result = AfbIFI2       ! only IFI according to PLB
+***         Result = AfbIFI56      !!!!! Xcheck
       ELSE IF( KeyDist .EQ. 105 ) THEN
-         Result = AfbIFI5       ! testing hard IFI
+         Result = AfbIFI5       ! testing hard IFI, PLB
       ELSE IF( KeyDist .EQ. 106 ) THEN
-         Result = AfbIFI6       ! testing soft IFI
+         Result = AfbIFI6       ! testing soft IFI, PLB
       ELSE IF( KeyDist .EQ. 301 ) THEN
          Result = sig_PRD       ! sigma [nb] of PRD
       ELSE
