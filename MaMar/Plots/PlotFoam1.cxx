@@ -164,6 +164,7 @@ void ReMakeFoam1(){
   TH1D *HST_xx_Crd1n = (TH1D*)DiskFileF.Get("HST_xx_Crd1n");  // FOAM
   TH1D *HST_xx_Hrd1  = (TH1D*)DiskFileF.Get("HST_xx_Hrd1");  // FOAM
   TH1D *HST_xx_Srd1  = (TH1D*)DiskFileF.Get("HST_xx_Srd1");  // FOAM
+  TH1D *HST_xx_Ird1  = (TH1D*)DiskFileF.Get("HST_xx_Ird1");  // FOAM
 
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Ord1 );   // normalizing
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1 );   // normalizing
@@ -171,6 +172,7 @@ void ReMakeFoam1(){
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Crd1n );  // normalizing
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Hrd1 );   // normalizing
   HisNorm1(HST_FOAM_NORMA1, HST_xx_Srd1 );   // normalizing
+  HisNorm1(HST_FOAM_NORMA1, HST_xx_Ird1 );   // normalizing
 
   //---------------------------------------------------
   // sigma(vmax) direct histogramming, (0,1) range
@@ -200,11 +202,19 @@ void ReMakeFoam1(){
   MakeCumul(HST_xx_Srd1,HST_xxcum_Srd1);
   HST_xxcum_Srd1->SetName("HST_xxcum_Srd1");
 
+  TH1D *HST_xxcum_Ird1;
+  MakeCumul(HST_xx_Ird1,HST_xxcum_Ird1);
+  HST_xxcum_Ird1->SetName("HST_xxcum_Ird1");
+
   //---------------------------------------------------
   //  and finally AFB from ratio sigma^*(vmax)/sigma(vmax)
   TH1D *HST_xxAfb_Ord1 = (TH1D*)HST_xxcum_Crd1->Clone("HST_xxAfb_Ord1");
-  HST_xxAfb_Ord1->Divide(HST_xxcum_Ord1);
+  HST_xxAfb_Ord1->Divide(HST_xxcum_Ord1n);   // <-- divided by NO IFI !!!!
   HST_xxAfb_Ord1->Scale(3.0/4.0);
+
+  TH1D *HST_xxAfb_Ord1n = (TH1D*)HST_xxcum_Crd1n->Clone("HST_xxAfb_Ord1n");
+  HST_xxAfb_Ord1n->Divide(HST_xxcum_Ord1n);
+  HST_xxAfb_Ord1n->Scale(3.0/4.0);
 
   TH1D *HST_xxAfb_Hrd1 = (TH1D*)HST_xxcum_Hrd1->Clone("HST_xxAfb_Hrd1");
   HST_xxAfb_Hrd1->Divide(HST_xxcum_Ord1n);
@@ -214,9 +224,9 @@ void ReMakeFoam1(){
   HST_xxAfb_Srd1->Divide(HST_xxcum_Ord1n);
   HST_xxAfb_Srd1->Scale(3.0/4.0);
 
-  TH1D *HST_xxAfb_Ord1n = (TH1D*)HST_xxcum_Crd1n->Clone("HST_xxAfb_Ord1n");
-  HST_xxAfb_Ord1n->Divide(HST_xxcum_Ord1n);
-  HST_xxAfb_Ord1n->Scale(3.0/4.0);
+  TH1D *HST_xxAfb_Ird1 = (TH1D*)HST_xxcum_Ird1->Clone("HST_xxAfb_Ird1");
+  HST_xxAfb_Ird1->Divide(HST_xxcum_Ord1n);
+  HST_xxAfb_Ird1->Scale(3.0/4.0);
 
   cout<<"================ ReMakeFoam1 ENDs     ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -419,6 +429,7 @@ void FigAfb()
 
   TH1D *HST_xxAfb_Hrd1     = (TH1D*)DiskFileB.Get("HST_xxAfb_Hrd1");   // FOAM1 IFI hard non-IR
   TH1D *HST_xxAfb_Srd1     = (TH1D*)DiskFileB.Get("HST_xxAfb_Srd1");   // FOAM1 IFI soft non-IR
+  TH1D *HST_xxAfb_Ird1     = (TH1D*)DiskFileB.Get("HST_xxAfb_Ird1");   // FOAM1 IFI alone
 
   TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
 
@@ -432,7 +443,7 @@ void FigAfb()
 
   TH1D *HST_AfbPL =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPL");
   LibSem.Ord1fill(HST_AfbPL,102);
-  HST_AfbPL->SetLineColor(kGreen);
+  HST_AfbPL->SetLineColor(kMagenta);
 
   TH1D *HST_AfbPLhard =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPLhard");
   LibSem.Ord1fill(HST_AfbPLhard,105);
@@ -497,13 +508,13 @@ void FigAfb()
   HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
 
   HST_xxAfb_Ord1->SetLineColor(kPine);
-  HST_xxAfb_Ord1->DrawCopy("hsame");         // Brown, Foam1 MC IFI on
+//  HST_xxAfb_Ord1->DrawCopy("hsame");       // Pine, Foam1 MC IFI on
 
   HST_AfbPRD->SetLineColor(kRed);
-  HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula
+  HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula, IFI off
 
   HST_AfbPRD_PL->SetLineColor(kGold);
-  HST_AfbPRD_PL->DrawCopy("hsame");            // red, PRD41+PL219 formula
+//  HST_AfbPRD_PL->DrawCopy("hsame");        // red, PRD41+PL219 IFI on
 
   afbv_ISR2_FSR2->SetLineColor(kBlue);
 //  afbv_ISR2_FSR2->DrawCopy("hsame");        // KKsem
@@ -573,13 +584,16 @@ void FigAfb()
   HST_xxAfb_Srd1->SetLineColor(71);  // PineGreen
   HST_xxAfb_Srd1->DrawCopy("hsame");
 
+  HST_xxAfb_Ird1->SetLineColor(kRed);  // Red
+  HST_xxAfb_Ird1->DrawCopy("hsame");
+
   HST_AfbPLhard->DrawCopy("hsame");  // Blue
 
   HST_AfbPLsoft->DrawCopy("hsame");  // Gold
 
-  HST_AfbPL->DrawCopy("hsame");     // Green
+  HST_AfbPL->DrawCopy("hsame");     // Magenta
 
-  Hst_Foam1_diff->DrawCopy("hsame");  // Red
+//  Hst_Foam1_diff->DrawCopy("hsame");  // Red
 
   hZero0->DrawCopy("hsame");
 
@@ -591,7 +605,7 @@ void FigAfb()
   CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
 
   CaptT->SetTextColor(kRed); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1_IFIon - Foam1_IFIoff ");
+  CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI only");
 
   CaptT->SetTextColor(kCyan); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD43 ");
@@ -599,7 +613,7 @@ void FigAfb()
   CaptT->SetTextColor(kPine); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
 
-  CaptT->SetTextColor(kGreen); ycapt += -0.04;
+  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "PLB219: IFI only ");
 
   CaptT->SetTextColor(kBlue); ycapt += -0.04;

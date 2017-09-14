@@ -88,6 +88,7 @@ void TRobolFOAM::Hbooker()
     HST_xx_Crd1   = TH1D_UP("HST_xx_Crd1" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Hrd1   = TH1D_UP("HST_xx_Hrd1" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Srd1   = TH1D_UP("HST_xx_Srd1" ,   "dSig/dv",   nbv, 0.0, 1.0);
+    HST_xx_Ird1   = TH1D_UP("HST_xx_Ird1" ,   "dSig/dv",   nbv, 0.0, 1.0);
 
     HST_xx_Ceex2  = TH1D_UP("HST_xx_Ceex2" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Ceex2n = TH1D_UP("HST_xx_Ceex2n" ,  "dSig/dv",   nbv, 0.0, 1.0);
@@ -177,7 +178,8 @@ if( MCgen->m_IsFoam1 == 1) {
   HST_xx_Ord1->Fill( xx, wt1 * MCgen->m_WTmodel[11] );
   HST_xx_Crd1->Fill( xx, wt1 * MCgen->m_WTmodel[12] );
   HST_xx_Hrd1->Fill( xx, wt1 * MCgen->m_WTmodel[22] );
-  HST_xx_Srd1->Fill( xx, wt1 * MCgen->m_WTmodel[25] );
+  HST_xx_Srd1->Fill( xx, wt1 * MCgen->m_WTmodel[23] );
+  HST_xx_Ird1->Fill( xx, wt1 * MCgen->m_WTmodel[24] );
 
   double Xnorm1 = MCgen->m_Xsav1;
   HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style

@@ -805,13 +805,8 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene, m_vv, yBornv);   // sigma<2c> [nb]
 	kksem_ord1v_(102,m_KFini, m_KFf, m_CMSene, m_vv, yBornv2);  // sigma<2c> [nb]
 	kksem_ord1v_(  2,m_KFini, m_KFf, m_CMSene,  0e0, yBorn0);   // sigma<2c> [nb]
-//
-	double xIRv2, yIRv2;
-	kksem_ord1v_(111,m_KFini, m_KFf, m_CMSene, m_vv, xIRv2);    // Born [nb]
-	kksem_ord1v_(112,m_KFini, m_KFf, m_CMSene, m_vv, yIRv2);    // sigma<2c> [nb]
-
-	//*******************************************************************
-//  Virtual+soft IFI contributions (vv=0) integrated analyticaly over cos(theta)
+//*******************************************************************
+//  Virtual+soft IFI contributions (at v=0) integrated analyticaly over cos(theta)
 	double xVirt, yVirt;
 	kksem_ord1v_( 10,m_KFini, m_KFf, m_CMSene,  0e0, xVirt);  // virt+soft for sigma
 	kksem_ord1v_( 20,m_KFini, m_KFf, m_CMSene,  0e0, yVirt);  // virt+soft for sigma<2c>
@@ -819,9 +814,13 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 //  Virtual+soft contributions at vv=0 with live cos(theta) dependence
     double xRhoIFIc,xRhoIFIcIR;
     GetRhoIFI1c(  1, cc, xRhoIFIc);
-    GetRhoIFI1c(111, cc, xRhoIFIcIR);
+    GetRhoIFI1c(111, cc, xRhoIFIcIR);  // IR subtraction term
 //*******************************************************************
-    double yDist2=0, yDist5=0;
+    double xIRv2, yIRv2;   // IR subtraction term
+    kksem_ord1v_(111,m_KFini, m_KFf, m_CMSene, m_vv, xIRv2);    // Born [nb]
+    kksem_ord1v_(112,m_KFini, m_KFf, m_CMSene, m_vv, yIRv2);    // sigma<2c> [nb]
+//*******************************************************************
+    double yDist2=0, yDist3=0, yDist4=0;
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD part, integrated over c
 	     xDist  = xRhoI*xBornv + xRhoF*xBorn0;    // ISR+FSR dsig/dv
@@ -829,6 +828,7 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	     xDist1 = xDist + xRhoIFI*yBornv2;        // ISR+FSR+IFI dsig/dv
 	     yDist1 = yDist + yRhoIFI*xBornv2;        // ISR+FSR+IFI <2c>dsig/dv
 	     yDist2 =         yRhoIFI*xBornv2 -xIRv2; // IFI hard part with IR subtracted
+	     yDist4 =         yRhoIFI*xBornv2;        // IFI alone
 	}else{                //  SOFT+VIRT
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig0
 		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig0
@@ -843,22 +843,20 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 // version with MC integration over c of IR part and the rest
 	     xDist1 = xDist        +2*xRhoIFIc;    // ISR+FSR+IFI 0sig: 2=jacob=d(c)/d(r)
 	     yDist1 = yDist +(2*cc)*2*xRhoIFIc;    // ISR+FSR+IFI <2c>0sig
-	     yDist5 =        (2*cc)*2*(xRhoIFIc -xRhoIFIcIR); // qith IR subtraction
+	     yDist3 =        (2*cc)*2*(xRhoIFIc -xRhoIFIcIR); // with IR subtraction
+	     yDist4 =        (2*cc)*2*xRhoIFIc;    // IFI alone
 		 //dJac *= 1/m_eps;
 	}//
 	// model WT for AFB without IFI
-    m_WTmodel[10] = 0.0;
-    m_WTmodel[11] = 0.0;
-    m_WTmodel[12] = 0.0;
-    m_WTmodel[22] = 0.0;
-    m_WTmodel[25] = 0.0;
+	for(int i=0; i<100; i++) m_WTmodel[i] = 0.0;
 // Final weight is typicaly yDist1/xDist*xDist/fabs(xDist)= yDist/fabs(xDist) !
     if( xDist != 0.0){
     	m_WTmodel[10] = yDist /xDist;  // WT for AFB without IFI
     	m_WTmodel[11] = xDist1/xDist;  // WT for sig with IFI on
     	m_WTmodel[12] = yDist1/xDist;  // WT for AFB with IFI on
     	m_WTmodel[22] = yDist2/xDist;  // WT for AFB with IFI, non-IR hard part
-    	m_WTmodel[25] = yDist5/xDist;  // WT for AFB with IFI, non-IR hard part
+    	m_WTmodel[23] = yDist3/xDist;  // WT for AFB with IFI, non-IR soft part
+    	m_WTmodel[24] = yDist4/xDist;  // WT for AFB from IFI alone
     }//
 //************  principal distribution for FOAM
 	Dist = xDist* dJac;
