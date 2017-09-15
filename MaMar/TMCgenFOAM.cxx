@@ -823,6 +823,10 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
     double yDist2=0, yDist3=0, yDist4=0;
 // Additive combination of RhoI and RhoF (ISR+FSR)
 	if( m_vv > m_eps){     // HARD part, integrated over c
+		 //[[[[[[[[[[[[
+		 //xRhoF=0;yRhoF=0;    // FSR off
+		 //xRhoI=0;yRhoI=0;    // ISR off
+		 //]]]]]]]]]]]
 	     xDist  = xRhoI*xBornv + xRhoF*xBorn0;    // ISR+FSR dsig/dv
 	     yDist  = yRhoI*yBornv + yRhoF*yBorn0;    // ISR+FSR <2c>dsig/dv
 	     xDist1 = xDist + xRhoIFI*yBornv2;        // ISR+FSR+IFI dsig/dv
@@ -830,6 +834,10 @@ Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 	     yDist2 =         yRhoIFI*xBornv2 -xIRv2; // IFI hard part with IR subtracted
 	     yDist4 =         yRhoIFI*xBornv2;        // IFI alone
 	}else{                //  SOFT+VIRT
+		 //[[[[[[[[[[[[
+		 //xRhoF=1;yRhoF=1;   // FSR off
+		 //xRhoI=1;yRhoI=1;   // ISR off
+		 //]]]]]]]]]]]
 		 xDist  = (1 +(xRhoI-1) +(xRhoF-1) )*xBorn0;  // ISR+FSR sig0
 		 yDist  = (1 +(yRhoI-1) +(yRhoF-1) )*yBorn0;  // ISR+FSR <2c>sig0
 // version with fully analytical c-integration (PLB219), does not work

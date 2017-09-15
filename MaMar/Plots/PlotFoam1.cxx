@@ -306,38 +306,23 @@ void FigVV()
   cout<<" ========================= FigVV =========================== "<<endl;
  //
   TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
-  TH1D *HTot_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2n");  // KKMC sigma(vmax) from scat.
-  TH1D *HTot_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2");  // KKMC sigma(vmax) from scat.
   //HST_xx_Ord1
   TH1D *HST_xx_Ord1       = (TH1D*)DiskFileF.Get("HST_xx_Ord1");        // Foam1
-  TH1D *HST_xxcum_Ord1    = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1");      // Foam1
   TH1D *HST_xx_Ord1n      = (TH1D*)DiskFileF.Get("HST_xx_Ord1n");        // Foam1
-  TH1D *HST_xxcum_Ord1n   = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1n");      // Foam1
   //
   TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
-  TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
 
-  cout<<"FigVV calculating PRD xsection "<<endl;
-
-  TH1D *HST_SigPRD =(TH1D*)vcum_ISR2_FSR2->Clone("HST_SigPRD");
-  LibSem.Ord1fill(HST_SigPRD,301);
-  HST_SigPRD->SetLineColor(kCyan);
-
-  cout<<"FigVV calculating PRD xsection END "<<endl;
-
-
-  //*****************************************************************************
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVV = new TCanvas("cFigVV","FigVV", 50, 50,    1000, 800);
-  //                            Name    Title   xoff,yoff, WidPix,HeiPix
-  cFigVV->SetFillColor(10);
-  ////////////////////////////////////////////////////////////////////////////////
-  cFigVV->Divide( 2,  2);
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVV = new TCanvas("cFigVV","FigVV", 50, 50,    1000, 550);
+  //                            Name    Title   xoff,yoff, WidPix,HeiPix
+  cFigVV->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigVV->Divide( 2,  1);
   //====================plot1========================
   //                 dsigma/d(v)
   cFigVV->cd(1);
@@ -370,50 +355,129 @@ void FigVV()
   Hst1_ratio->SetMinimum(0);
   Hst1_ratio->SetMaximum(2);
   Hst1_ratio->DrawCopy("h");
-  //====================plot3========================
-  //                 sigma(vmax)
-  cFigVV->cd(3);
-
-  TH1D *Hst3 = HTot_vTcPL_Ceex2n;
-  Hst3->SetStats(0);
-  Hst3->SetTitle(0);
-  Hst3->SetMinimum(0);
-  Hst3->DrawCopy("h");
-
-  HTot_vTcPL_Ceex2n->SetLineColor(kRed);   // red
-  HTot_vTcPL_Ceex2n->DrawCopy("hsame");    // KKMC dsigma/dv from scat.
-
-  HTot_vTcPL_Ceex2->SetLineColor(kBlack);   // red
-  HTot_vTcPL_Ceex2->DrawCopy("hsame");    // KKMC dsigma/dv from scat.
-
-  vcum_ISR2_FSR2->SetLineColor(kGreen);    //
-  vcum_ISR2_FSR2->DrawCopy("hsame");       // KKsem
-
-  HST_xxcum_Ord1n->SetLineColor(kBlue);     //
-  HST_xxcum_Ord1n->DrawCopy("hsame");       // TMCgenFoam1
-
-  HST_xxcum_Ord1->SetLineColor(kYellow);     //
-  HST_xxcum_Ord1->DrawCopy("hsame");       // TMCgenFoam1
-
-  HST_SigPRD->DrawCopy("hsame");
-
-  //====================plot4========================
-  cFigVV->cd(4);
-
-  TH1D *Hst3_ratio =(TH1D*)HST_SigPRD->Clone("Hst3_ratio");
-  Hst3_ratio->Divide(HST_xxcum_Ord1n);  // direct
-
-  Hst3_ratio->SetStats(0);
-  Hst3_ratio->SetTitle(0);
-  Hst3_ratio->SetMinimum(0);
-//  Hst3_ratio->SetMaximum(2);
-  Hst3_ratio->DrawCopy("h");
-
-  //----------------------------
-  cFigVV->cd();
   cout<<" ========================= FigVV end======================== "<<endl;
   //================================================
 }//FigVV
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigVcum()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigVcum =========================== "<<endl;
+ //
+  TH1D *HTot_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2n");  // KKMC sigma(vmax) from scat.
+  TH1D *HTot_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPL_Ceex2");  // KKMC sigma(vmax) from scat.
+
+  TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
+
+  TH1D *HST_xxcum_Ord1    = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1");      // Foam1
+  TH1D *HST_xxcum_Ord1n   = (TH1D*)DiskFileB.Get("HST_xxcum_Ord1n");      // Foam1
+
+  cout<<"FigVcum calculating PRD xsection "<<endl;
+
+  TH1D *HST_SigPRD =(TH1D*)vcum_ISR2_FSR2->Clone("HST_SigPRD");
+  LibSem.Ord1fill(HST_SigPRD,301);
+  HST_SigPRD->SetLineColor(kCyan);
+
+  cout<<"FigVcum calculating PRD xsection END "<<endl;
+
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVcum = new TCanvas("cFigVcum","FigVcum", 100, 100,    1000, 550);
+  //                            Name    Title   xoff,yoff, WidPix,HeiPix
+  cFigVcum->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigVcum->Divide( 2,  1);
+
+  //====================plot1========================
+  //                 sigma(vmax)
+    cFigVcum->cd(1);
+
+    TH1D *Hst3 = HTot_vTcPL_Ceex2n;
+    Hst3->SetStats(0);
+    Hst3->SetTitle(0);
+
+    Hst3->SetMinimum(0.32);     // 95GeV
+    Hst3->SetMaximum(0.41);    // 95GeV
+
+    Hst3->DrawCopy("h");                     // TO BE REPEATED BELOW
+
+    HTot_vTcPL_Ceex2n->SetLineColor(kRed);   // red
+    HTot_vTcPL_Ceex2n->DrawCopy("hsame");    // KKMC  IFI OFF
+
+    HTot_vTcPL_Ceex2->SetLineColor(kBlack);  // black
+    HTot_vTcPL_Ceex2->DrawCopy("hsame");     // KKMC  IFI on
+
+    vcum_ISR2_FSR2->SetLineColor(kGreen);    // Green
+    vcum_ISR2_FSR2->DrawCopy("hsame");       // KKsem IFI OFF
+
+    HST_xxcum_Ord1n->SetLineColor(kBlue);     // blue
+    HST_xxcum_Ord1n->DrawCopy("hsame");       // Foam1 IFI off
+
+    HST_xxcum_Ord1->SetLineColor(kGold);     // Gold
+    HST_xxcum_Ord1->DrawCopy("hsame");       // Foam1 IFI on
+
+    HST_SigPRD->SetLineColor(kMagenta);     // Magenta
+    HST_SigPRD->DrawCopy("hsame");          // PRD41 IFI off
+
+    float ycapt = 0.50;
+    CaptT->SetTextColor(kBlack); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt,gTextEne);
+
+    CaptT->SetTextColor(kRed); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI off ");
+
+    CaptT->SetTextColor(kBlack); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI on ");
+
+    CaptT->SetTextColor(kGreen); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "KKsem  IFI off ");
+
+    CaptT->SetTextColor(kBlue); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI off ");
+
+    CaptT->SetTextColor(kGold); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI on ");
+
+    CaptT->SetTextColor(kMagenta); ycapt += -0.04;
+    CaptT->DrawLatex(0.50,ycapt, "PRD41 IFI off ");
+
+    //====================plot1========================
+    cFigVcum->cd(2);
+
+    TH1D *Hst3_ratio =(TH1D*)HST_xxcum_Ord1n->Clone("Hst3_ratio");
+    Hst3_ratio->Divide(HST_SigPRD);  // direct
+
+    Hst3_ratio->SetStats(0);
+    Hst3_ratio->SetTitle(0);
+
+    Hst3_ratio->SetMinimum(1-0.02);  //  95GeV
+    Hst3_ratio->SetMaximum(1+0.02);  //  95GeV
+
+    Hst3_ratio->SetLineColor(kBlue);
+    Hst3_ratio->DrawCopy("h");
+
+    ycapt = 0.90;
+    CaptT->SetTextColor(kBlack); ycapt += -0.04;
+    CaptT->DrawLatex(0.40,ycapt,gTextEne);
+
+    CaptT->SetTextColor(kBlue); ycapt += -0.04;
+    CaptT->DrawLatex(0.40,ycapt, "Foam1/PRD41,  IFI off ");
+
+    //----------------------------
+    cFigVcum->cd();
+
+  cout<<" ========================= FigVcum end======================== "<<endl;
+  //================================================
+}//FigVcum
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigAfb()
@@ -467,7 +531,7 @@ void FigAfb()
 
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 20, 300,   1000, 550);
+  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 150, 150,   1000, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -591,7 +655,7 @@ void FigAfb()
 
   HST_AfbPLsoft->DrawCopy("hsame");  // Gold
 
-  HST_AfbPL->DrawCopy("hsame");     // Magenta
+  HST_AfbPL->DrawCopy("hsame");      // Magenta
 
 //  Hst_Foam1_diff->DrawCopy("hsame");  // Red
 
@@ -608,7 +672,7 @@ void FigAfb()
   CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI only");
 
   CaptT->SetTextColor(kCyan); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD43 ");
+  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD41 ");
 
   CaptT->SetTextColor(kPine); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
@@ -643,7 +707,7 @@ void FigInfo()
 //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 140, 500,   1000, 550);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 200, 200,   1000, 550);
   //                            Name    Title                     xoff,yoff, WidPix,HeiPix
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
@@ -716,7 +780,8 @@ int main(int argc, char **argv)
   KKsemMakeHisto();   // prepare histos from KKsem
 //========== PLOTTING ==========
 // vmax=1
-  FigVV();     // sigma(v) and sigma(vmax) KKMC/Foam
+  FigVV();     // dsigma/dv KKMC/Foam
+  FigVcum();   // sigma(vmax) KKMC/Foam
   FigAfb();    // AFB(vmax) KKMC/Foam
 // weight distribution
   FigInfo();

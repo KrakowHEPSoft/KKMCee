@@ -3007,8 +3007,12 @@ c]]]]]
      $    +2d0*(LGfin-1d0)*DLOG(vv)
      $    +2d0*(3d0/4 -vv +vv**2/4)* LGfin
      $    +(3 -4d0*vv +vv**2)/2d0 * DLOG(1d0-vv)
-     $    -2d0 +7d0/2d0*vv -3d0/4d0*vv**2 +Pi**3/3d0 -2d0* BVR_dilog(vv)
+     $    -2d0 +7d0/2d0*vv -3d0/4d0*vv**2 +Pi**2/3d0 -2d0* BVR_dilog(vv)
       FN_fin = FD_fin -vv**2/2d0
+*[[[[[[[[[[[
+*      FD_fin = 0d0 ! FSR off
+*      FN_fin = 0d0 ! FSR off
+*]]]]]]]]]]]
       X0=
      $   +2d0*(LGini-1d0)*( DLOG(vv) +3d0/4d0 -0.5d0*vv -0.5d0*DLOG(1d0-vv) )
      $   +(-0.5d0 +Pi**2/3d0 )
@@ -3027,6 +3031,10 @@ c]]]]]
      $           +(zz-zz**2+gz**2)/gz*( DATAN((vv-zz)/gz) -DATAN(-zz/gz) ) )
       WD_ini = DREAL( C0*X0 +2d0*C1*X1 +C2*X2)
       WN_ini = DREAL( D0*X0 +2d0*D1*X1 +D2*X2) + DREAL( D0*Y0 +2d0*D1*Y1 +D2*Y2)
+*[[[[[[[[[[[[[
+*      WD_ini=0  ! ISR off
+*      WN_ini=0  ! ISR off
+*]]]]]]]]]]]]]
       X_tot = X_born *(1d0 + 1d0/(m_AlfInv*Pi) *FD_fin ) + 1d0/(m_AlfInv*Pi) *WD_ini
       Y_tot = Y_born *(1d0 + 1d0/(m_AlfInv*Pi) *FN_fin ) + 1d0/(m_AlfInv*Pi) *WN_ini
       sig_PRD = X_tot*sig0
