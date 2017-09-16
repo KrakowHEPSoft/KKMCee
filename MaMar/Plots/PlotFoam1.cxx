@@ -404,8 +404,11 @@ void FigVcum()
     Hst3->SetStats(0);
     Hst3->SetTitle(0);
 
-    Hst3->SetMinimum(0.32);     // 95GeV
+    Hst3->SetMinimum(0.32);    // 95GeV
     Hst3->SetMaximum(0.41);    // 95GeV
+
+//    Hst3->SetMinimum(0.14);    // 88GeV
+//    Hst3->SetMaximum(0.20);    // 88GeV
 
     Hst3->DrawCopy("h");                     // TO BE REPEATED BELOW
 
@@ -628,8 +631,8 @@ void FigAfb()
     Hst2_diff1->SetMinimum(-0.02);   // 189GeV, 10GeV
     Hst2_diff1->SetMaximum( 0.06);   // 189GeV, 10GeV
   }else if( fabs(gCMSene -95.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.004);  // 95GeV
-    Hst2_diff1->SetMaximum( 0.004);  // 95GeV
+    Hst2_diff1->SetMinimum(-0.006);  // 95GeV
+    Hst2_diff1->SetMaximum( 0.006);  // 95GeV
   } else if( fabs(gCMSene -88.0) < 1.0) {
     Hst2_diff1->SetMinimum(-0.010);  // 88GeV
     Hst2_diff1->SetMaximum( 0.025);  // 88GeV
