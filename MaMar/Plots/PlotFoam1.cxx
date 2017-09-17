@@ -360,6 +360,20 @@ void FigVV()
 }//FigVV
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame(TH1D *HST, double &ycapt, Int_t kolor, TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  //double yy=ycapt;
+  CaptT->DrawLatex(0.40,ycapt, opis);
+}// PlotSame
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVcum()
@@ -395,88 +409,44 @@ void FigVcum()
   cFigVcum->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVcum->Divide( 2,  1);
-
   //====================plot1========================
   //                 sigma(vmax)
     cFigVcum->cd(1);
-
     TH1D *Hst3 = HTot_vTcPL_Ceex2n;
     Hst3->SetStats(0);
     Hst3->SetTitle(0);
-
-    Hst3->SetMinimum(0.32);    // 95GeV
-    Hst3->SetMaximum(0.41);    // 95GeV
-
-//    Hst3->SetMinimum(0.14);    // 88GeV
-//    Hst3->SetMaximum(0.20);    // 88GeV
-
+    Hst3->GetXaxis()->SetTitle("v_{max}");
+    Hst3->SetMinimum(0.32); Hst3->SetMaximum(0.41);    // 95GeV
+    if( fabs(gCMSene-88)<1.0 ) {Hst3->SetMinimum(0.14); Hst3->SetMaximum(0.20);} // 88GeV
     Hst3->DrawCopy("h");                     // TO BE REPEATED BELOW
-
-    HTot_vTcPL_Ceex2n->SetLineColor(kRed);   // red
-    HTot_vTcPL_Ceex2n->DrawCopy("hsame");    // KKMC  IFI OFF
-
-    HTot_vTcPL_Ceex2->SetLineColor(kBlack);  // black
-    HTot_vTcPL_Ceex2->DrawCopy("hsame");     // KKMC  IFI on
-
-    vcum_ISR2_FSR2->SetLineColor(kGreen);    // Green
-    vcum_ISR2_FSR2->DrawCopy("hsame");       // KKsem IFI OFF
-
-    HST_xxcum_Ord1n->SetLineColor(kBlue);     // blue
-    HST_xxcum_Ord1n->DrawCopy("hsame");       // Foam1 IFI off
-
-    HST_xxcum_Ord1->SetLineColor(kGold);     // Gold
-    HST_xxcum_Ord1->DrawCopy("hsame");       // Foam1 IFI on
-
-    HST_SigPRD->SetLineColor(kMagenta);     // Magenta
-    HST_SigPRD->DrawCopy("hsame");          // PRD41 IFI off
-
-    float ycapt = 0.50;
+    CaptT->DrawLatex(0.06,0.95, "#sigma(v_{max}) ");
+    double ycapt = 0.50;
     CaptT->SetTextColor(kBlack); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt,gTextEne);
-
-    CaptT->SetTextColor(kRed); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI off ");
-
-    CaptT->SetTextColor(kBlack); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI on ");
-
-    CaptT->SetTextColor(kGreen); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "KKsem  IFI off ");
-
-    CaptT->SetTextColor(kBlue); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI off ");
-
-    CaptT->SetTextColor(kGold); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI on ");
-
-    CaptT->SetTextColor(kMagenta); ycapt += -0.04;
-    CaptT->DrawLatex(0.50,ycapt, "PRD41 IFI off ");
-
+    CaptT->DrawLatex(0.40,ycapt,gTextEne);
+    PlotSame(HTot_vTcPL_Ceex2n, ycapt, kRed,    "KKMC   IFI off ");
+    PlotSame(HTot_vTcPL_Ceex2,  ycapt, kBlack,  "KKMC   IFI on ");
+    PlotSame(vcum_ISR2_FSR2,    ycapt, kGreen,  "KKsem  IFI off ");
+    PlotSame(HST_xxcum_Ord1n,   ycapt, kBlue,   "Foam1  IFI off ");
+    PlotSame(HST_xxcum_Ord1,    ycapt, kGold,   "Foam1  IFI on ");
+    PlotSame(HST_SigPRD,        ycapt, kMagenta,"PRD41  IFI off ");
     //====================plot1========================
     cFigVcum->cd(2);
-
     TH1D *Hst3_ratio =(TH1D*)HST_xxcum_Ord1n->Clone("Hst3_ratio");
     Hst3_ratio->Divide(HST_SigPRD);  // direct
-
     Hst3_ratio->SetStats(0);
     Hst3_ratio->SetTitle(0);
-
-    Hst3_ratio->SetMinimum(1-0.02);  //  95GeV
-    Hst3_ratio->SetMaximum(1+0.02);  //  95GeV
-
-    Hst3_ratio->SetLineColor(kBlue);
+    Hst3_ratio->GetXaxis()->SetTitle("v_{max}");
+    Hst3_ratio->SetMinimum(1-0.02); Hst3_ratio->SetMaximum(1+0.02);  //  95GeV
     Hst3_ratio->DrawCopy("h");
+    CaptT->DrawLatex(0.06,0.95, " Ratio ");
 
     ycapt = 0.90;
     CaptT->SetTextColor(kBlack); ycapt += -0.04;
     CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
-    CaptT->SetTextColor(kBlue); ycapt += -0.04;
-    CaptT->DrawLatex(0.40,ycapt, "Foam1/PRD41,  IFI off ");
+    PlotSame(Hst3_ratio,   ycapt, kBlue,"Foam1/PRD41,  IFI off ");
 
-    //----------------------------
     cFigVcum->cd();
-
   cout<<" ========================= FigVcum end======================== "<<endl;
   //================================================
 }//FigVcum
@@ -485,7 +455,6 @@ void FigVcum()
 ///////////////////////////////////////////////////////////////////////////////////
 void FigAfb()
 {
-//------------------------------------------------------------------------
   cout<<" ========================= FigAfb =========================== "<<endl;
   //
   TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC
@@ -517,13 +486,11 @@ void FigAfb()
   TH1D *HST_AfbPLsoft =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPLsoft");
   LibSem.Ord1fill(HST_AfbPLsoft,106);
 
-
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
-  float ycapt = 0.90;
-
+  double ycapt = 0.90;
   // zero line
   TH1D *hZero0 = (TH1D*)HST_xxAfb_Ord1->Clone("hZero0");  // zero line
   hZero0->SetLineColor(kBlack);
@@ -536,155 +503,58 @@ void FigAfb()
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfb->Divide( 2,  0);
-  //
   //====================plot1========================
   cFigAfb->cd(1); // AFB(vmax)
-  //
-  TH1D *Hst1 = HAfb_vTcPL_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
   TH1D *Hst2 = HAfb_vTcPL_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
-  //
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
   Hst2->GetXaxis()->SetTitle("v_{max}");
-
-  if( fabs(gCMSene -10.0) < 1.0) {
-    Hst2->SetMinimum(-0.02); // 10GeV
-    Hst2->SetMaximum(+0.06); // 10GeV
-  }else if( fabs(gCMSene -95.0) < 1.0) {
-    Hst2->SetMinimum( 0.15); // 95GeV
-    Hst2->SetMaximum(+0.20); // 95GeV
-  } else if( fabs(gCMSene -88.0) < 1.0) {
-    Hst2->SetMinimum(-0.32); // 88GeV
-    Hst2->SetMaximum(-0.20); // 88GeV
-  } else if( fabs(gCMSene -91.0) < 1.0) {
-    Hst2->SetMinimum(-0.000); // 91GeV
-    Hst2->SetMaximum(+0.025); // 91GeV
-  }
-  Hst2->SetLineColor(kMagenta);            // magenta
-  Hst2->DrawCopy("h");                     // KKMC  IFI on AFB(vmax) from scat.
-
+  if( fabs(gCMSene -10.0) < 1.0) { Hst2->SetMinimum(-0.02); Hst2->SetMaximum(+0.06);} // 10GeV
+  if( fabs(gCMSene -95.0) < 1.0) { Hst2->SetMinimum( 0.15); Hst2->SetMaximum(+0.20);} // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { Hst2->SetMinimum(-0.32); Hst2->SetMaximum(-0.20);} // 88GeV
+  if( fabs(gCMSene -91.0) < 1.0) { Hst2->SetMinimum(-0.000); Hst2->SetMaximum(+0.025);} // 91GeV
+  Hst2->DrawCopy("h");                     // to be repeated below
   CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
-  ycapt = 0.90;
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt,gTextEne);
-  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI on ");
-//
-  Hst1->SetLineColor(kBlack);                // black
-  Hst1->DrawCopy("hsame");                   // KKMC IFI off AFB(vmax) from scat.
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI off ");
-//
-  HST_xxAfb_Ord1n->SetLineColor(kCyan);
-  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
-  CaptT->SetTextColor(kCyan); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI off ");
-//
-  HST_xxAfb_Ord1->SetLineColor(kBrune);
-  HST_xxAfb_Ord1->DrawCopy("hsame");       // Pine, Foam1 MC IFI on
-  CaptT->SetTextColor(kBrune); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI on ");
-//
-  HST_AfbPRD->SetLineColor(kRed);
-  HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula, IFI off
-  CaptT->SetTextColor(kRed); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "PRD41  IFI off");
-//
-  HST_AfbPRD_PL->SetLineColor(kGold);
-  HST_AfbPRD_PL->DrawCopy("hsame");        // red, PRD41+PL219 IFI on
-  CaptT->SetTextColor(kGold); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "PRD41+PLB219  IFIon");
-//
-  afbv_ISR2_FSR2->SetLineColor(kBlue);
-  afbv_ISR2_FSR2->DrawCopy("hsame");        // KKsem
-  CaptT->SetTextColor(kBlue); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "KKsem  IFI off ");
-
-  //====================plot2========================
-  cFigAfb->cd(2);
-
-  TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
-  Hst2_diff1->Add(Hst2_diff1, Hst1,    1.0, -1.0); // KKMC_IFI   minus KKMC  noIFI black
-  Hst2_diff1->SetLineColor(kBlack);
-
-  TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1n->Clone("HstPRD_diff");
-  HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
-
-  TH1D *Hst_Foam1_diff =(TH1D*)HST_xxAfb_Ord1->Clone("Hst_Foam1_diff");
-  Hst_Foam1_diff->Add(Hst_Foam1_diff, HST_xxAfb_Ord1n,    1.0, -1.0); //
-  Hst_Foam1_diff->SetLineColor(kRed);
-
-  if( fabs(gCMSene -10.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.02);   // 189GeV, 10GeV
-    Hst2_diff1->SetMaximum( 0.06);   // 189GeV, 10GeV
-  }else if( fabs(gCMSene -95.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.006);  // 95GeV
-    Hst2_diff1->SetMaximum( 0.006);  // 95GeV
-  } else if( fabs(gCMSene -88.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.010);  // 88GeV
-    Hst2_diff1->SetMaximum( 0.025);  // 88GeV
-  }else if( fabs(gCMSene -91.0) < 1.0) {
-    Hst2_diff1->SetMinimum(-0.002);  // 91GeV
-    Hst2_diff1->SetMaximum( 0.006);  // 91GeV
-  }
-  Hst2_diff1->SetLineColor(kBlack);
-  Hst2_diff1->DrawCopy("h");
-
   ycapt = 0.90;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
+  PlotSame(Hst2,               ycapt, kMagenta,  "KKMC  IFI on ");
+  PlotSame(HAfb_vTcPL_Ceex2n,  ycapt, kBlack,   "KKMC  IFI off ");
+  PlotSame(HST_xxAfb_Ord1n,    ycapt, kCyan,    "Foam1  IFI off ");
+  PlotSame(HST_xxAfb_Ord1,     ycapt, kBrune,   "Foam1  IFI on ");
+  PlotSame(HST_AfbPRD,         ycapt, kRed,     "PRD41  IFI off ");
+  PlotSame(HST_AfbPRD_PL,      ycapt, kGold,    "PRD41+PLB219  IFIon ");
+  PlotSame(afbv_ISR2_FSR2,     ycapt, kBlue,    "KKsem  IFI off ");
+  //====================plot2========================
+  cFigAfb->cd(2);
+  TH1D *Hd21 =(TH1D*)HAfb_vTcPL_Ceex2->Clone("Hd21");
+  Hd21->Add(Hd21, HAfb_vTcPL_Ceex2n,    1.0, -1.0);        // KKMC_IFI   minus KKMC  noIFI black
+  TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1n->Clone("HstPRD_diff");
+  HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
+  TH1D *Hst_Foam1_diff =(TH1D*)HST_xxAfb_Ord1->Clone("Hst_Foam1_diff");
+  Hst_Foam1_diff->Add(Hst_Foam1_diff, HST_xxAfb_Ord1n,    1.0, -1.0); //
+  Hst_Foam1_diff->SetLineColor(kRed);
+  if( fabs(gCMSene -10.0) < 1.0) { Hd21->SetMinimum(-0.02); Hd21->SetMaximum( 0.06); }  // 189GeV, 10GeV
+  if( fabs(gCMSene -95.0) < 1.0) { Hd21->SetMinimum(-0.006);Hd21->SetMaximum( 0.006);}  // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { Hd21->SetMinimum(-0.010);Hd21->SetMaximum( 0.025);}  // 88GeV
+  if( fabs(gCMSene -91.0) < 1.0) { Hd21->SetMinimum(-0.002);Hd21->SetMaximum( 0.006);}  // 91GeV
+  Hd21->DrawCopy("h");          // to be repeated below
   CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
-
-  HstPRD_diff->SetLineColor(kCyan);
-  HstPRD_diff->DrawCopy("hsame");
-  CaptT->SetTextColor(kCyan); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD41 ");
-
-  HST_xxAfb_Hrd1->SetLineColor(kBrune);  // PineGreen
-  HST_xxAfb_Hrd1->DrawCopy("hsame");
-  CaptT->SetTextColor(kBrune); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
-
-  HST_AfbPLhard->SetLineColor(kBlue);
-  HST_AfbPLhard->DrawCopy("hsame");  // Blue
-  CaptT->SetTextColor(kBlue); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219: non-IR IFI hard ");
-
-  HST_xxAfb_Srd1->SetLineColor(kPine);  // PineGreen
-  HST_xxAfb_Srd1->DrawCopy("hsame");
-  CaptT->SetTextColor(kPine); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI soft ");
-
-  HST_AfbPLsoft->SetLineColor(kGold);
-  HST_AfbPLsoft->DrawCopy("hsame");  // Gold
-  CaptT->SetTextColor(kGold); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219: non-IR IFI soft");
-
-  HST_xxAfb_Ird1->SetLineColor(kRed);  // Red
-  HST_xxAfb_Ird1->DrawCopy("hsame");
-  CaptT->SetTextColor(kRed); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI only");
-
-  HST_AfbPL->SetLineColor(kMagenta);
-  HST_AfbPL->DrawCopy("hsame");      // Magenta
-  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219: IFI only ");
-
-//  Hst_Foam1_diff->DrawCopy("hsame");  // Red
-
+  ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  PlotSame(Hd21,           ycapt, kBlack,    "KKMC_IFIon - KKMC_IFIoff ");
+  PlotSame(HstPRD_diff,    ycapt, kCyan,     "IFI off: Foam1-PRD41 ");
+  PlotSame(HST_xxAfb_Hrd1, ycapt, kBrune,    "Foam1:  non-IR IFI hard  ");
+  PlotSame(HST_AfbPLhard,  ycapt, kBlue,     "PLB219: non-IR IFI hard ");
+  PlotSame(HST_xxAfb_Srd1, ycapt, kPine,     "Foam1:  non-IR IFI soft");
+  PlotSame(HST_AfbPLsoft,  ycapt, kGold,     "PLB219: non-IR IFI soft");
+  PlotSame(HST_xxAfb_Ird1, ycapt, kRed,      "Foam1:  IFI only ");
+//  PlotSame(Hst_Foam1_diff, ycapt, kRed,      "Foam1:  IFI only "); // stat. error to big
+  PlotSame(HST_AfbPL,      ycapt, kMagenta , "PLB219: IFI only ");
   hZero0->DrawCopy("hsame");
-
-
-
-
-
   cFigAfb->cd();
-  //================================================
-
   cout<<" ========================= FigAfb end======================== "<<endl;
-
 }//FigAfb
 
 
