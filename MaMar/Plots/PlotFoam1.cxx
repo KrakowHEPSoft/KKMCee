@@ -47,7 +47,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
-int  kGold=92, kPine=46;
+int  kGold=92, kBrune=46, kPine=71;
 //
 //int    gNbMax=50;         // gCosTheta = 45/50=0.90
 //double gCosTheta=1.00;    // to be synchronized with gNbMax
@@ -136,7 +136,7 @@ void ReMakeKKMC(){
     HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
     HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
     //
-    TH1D                    *HTot_vTcPL_Ceex2n, *HAfb_vTcPL_Ceex2n;
+    TH1D                    *HTot_vTcPL_Ceex2n,  *HAfb_vTcPL_Ceex2n;
     ProjV( sca_vTcPL_Ceex2n,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
     HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
     HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
@@ -510,15 +510,12 @@ void FigAfb()
 
   TH1D *HST_AfbPL =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPL");
   LibSem.Ord1fill(HST_AfbPL,102);
-  HST_AfbPL->SetLineColor(kMagenta);
 
   TH1D *HST_AfbPLhard =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPLhard");
   LibSem.Ord1fill(HST_AfbPLhard,105);
-  HST_AfbPLhard->SetLineColor(kBlue);
 
   TH1D *HST_AfbPLsoft =(TH1D*)HAfb_vTcPL_Ceex2->Clone("HST_AfbPLsoft");
   LibSem.Ord1fill(HST_AfbPLsoft,106);
-  HST_AfbPLsoft->SetLineColor(kGold);
 
 
   //////////////////////////////////////////////
@@ -546,9 +543,9 @@ void FigAfb()
   TH1D *Hst1 = HAfb_vTcPL_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
   TH1D *Hst2 = HAfb_vTcPL_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
   //
-
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
+  Hst2->GetXaxis()->SetTitle("v_{max}");
 
   if( fabs(gCMSene -10.0) < 1.0) {
     Hst2->SetMinimum(-0.02); // 10GeV
@@ -565,52 +562,43 @@ void FigAfb()
   }
   Hst2->SetLineColor(kMagenta);            // magenta
   Hst2->DrawCopy("h");                     // KKMC  IFI on AFB(vmax) from scat.
-  //
-  //hZero0->DrawCopy("hsame");               // zero line
-  //
-  Hst1->SetLineColor(kBlack);              // black
-//  Hst1->DrawCopy("hsame");                 // KKMC IFI off AFB(vmax) from scat.
 
-  HST_xxAfb_Ord1n->SetLineColor(kCyan);
-  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
-
-  HST_xxAfb_Ord1->SetLineColor(kPine);
-//  HST_xxAfb_Ord1->DrawCopy("hsame");       // Pine, Foam1 MC IFI on
-
-  HST_AfbPRD->SetLineColor(kRed);
-  HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula, IFI off
-
-  HST_AfbPRD_PL->SetLineColor(kGold);
-//  HST_AfbPRD_PL->DrawCopy("hsame");        // red, PRD41+PL219 IFI on
-
-  afbv_ISR2_FSR2->SetLineColor(kBlue);
-//  afbv_ISR2_FSR2->DrawCopy("hsame");        // KKsem
-
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
   ycapt = 0.90;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt,gTextEne);
-
   CaptT->SetTextColor(kMagenta); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI on ");
-
+//
+  Hst1->SetLineColor(kBlack);                // black
+  Hst1->DrawCopy("hsame");                   // KKMC IFI off AFB(vmax) from scat.
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "KKMC  IFI off ");
-
-  CaptT->SetTextColor(kBlue); ycapt += -0.04;
-  CaptT->DrawLatex(0.50,ycapt, "KKsem  IFI off ");
-
+//
+  HST_xxAfb_Ord1n->SetLineColor(kCyan);
+  HST_xxAfb_Ord1n->DrawCopy("hsame");        // cyan, Foam1 MC IFI off
   CaptT->SetTextColor(kCyan); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI off ");
-
-  CaptT->SetTextColor(46); ycapt += -0.04;
+//
+  HST_xxAfb_Ord1->SetLineColor(kBrune);
+  HST_xxAfb_Ord1->DrawCopy("hsame");       // Pine, Foam1 MC IFI on
+  CaptT->SetTextColor(kBrune); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "Foam1  IFI on ");
-
+//
+  HST_AfbPRD->SetLineColor(kRed);
+  HST_AfbPRD->DrawCopy("hsame");            // red, PRD41 formula, IFI off
   CaptT->SetTextColor(kRed); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "PRD41  IFI off");
-
+//
+  HST_AfbPRD_PL->SetLineColor(kGold);
+  HST_AfbPRD_PL->DrawCopy("hsame");        // red, PRD41+PL219 IFI on
   CaptT->SetTextColor(kGold); ycapt += -0.04;
   CaptT->DrawLatex(0.50,ycapt, "PRD41+PLB219  IFIon");
-
+//
+  afbv_ISR2_FSR2->SetLineColor(kBlue);
+  afbv_ISR2_FSR2->DrawCopy("hsame");        // KKsem
+  CaptT->SetTextColor(kBlue); ycapt += -0.04;
+  CaptT->DrawLatex(0.50,ycapt, "KKsem  IFI off ");
 
   //====================plot2========================
   cFigAfb->cd(2);
@@ -621,7 +609,6 @@ void FigAfb()
 
   TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1n->Clone("HstPRD_diff");
   HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
-  HstPRD_diff->SetLineColor(kCyan);
 
   TH1D *Hst_Foam1_diff =(TH1D*)HST_xxAfb_Ord1->Clone("Hst_Foam1_diff");
   Hst_Foam1_diff->Add(Hst_Foam1_diff, HST_xxAfb_Ord1n,    1.0, -1.0); //
@@ -643,54 +630,55 @@ void FigAfb()
   Hst2_diff1->SetLineColor(kBlack);
   Hst2_diff1->DrawCopy("h");
 
+  ycapt = 0.90;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+
+  HstPRD_diff->SetLineColor(kCyan);
   HstPRD_diff->DrawCopy("hsame");
+  CaptT->SetTextColor(kCyan); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD41 ");
 
-  HST_xxAfb_Hrd1->SetLineColor(46);  // Brown
+  HST_xxAfb_Hrd1->SetLineColor(kBrune);  // PineGreen
   HST_xxAfb_Hrd1->DrawCopy("hsame");
+  CaptT->SetTextColor(kBrune); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
 
-  HST_xxAfb_Srd1->SetLineColor(71);  // PineGreen
+  HST_AfbPLhard->SetLineColor(kBlue);
+  HST_AfbPLhard->DrawCopy("hsame");  // Blue
+  CaptT->SetTextColor(kBlue); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "PLB219: non-IR IFI hard ");
+
+  HST_xxAfb_Srd1->SetLineColor(kPine);  // PineGreen
   HST_xxAfb_Srd1->DrawCopy("hsame");
+  CaptT->SetTextColor(kPine); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI soft ");
+
+  HST_AfbPLsoft->SetLineColor(kGold);
+  HST_AfbPLsoft->DrawCopy("hsame");  // Gold
+  CaptT->SetTextColor(kGold); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "PLB219: non-IR IFI soft");
 
   HST_xxAfb_Ird1->SetLineColor(kRed);  // Red
   HST_xxAfb_Ird1->DrawCopy("hsame");
+  CaptT->SetTextColor(kRed); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI only");
 
-  HST_AfbPLhard->DrawCopy("hsame");  // Blue
-
-  HST_AfbPLsoft->DrawCopy("hsame");  // Gold
-
+  HST_AfbPL->SetLineColor(kMagenta);
   HST_AfbPL->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt, "PLB219: IFI only ");
 
 //  Hst_Foam1_diff->DrawCopy("hsame");  // Red
 
   hZero0->DrawCopy("hsame");
 
-  ycapt = 0.90;
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "KKMC_IFIon - KKMC_IFIoff ");
 
-  CaptT->SetTextColor(kRed); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI only");
 
-  CaptT->SetTextColor(kCyan); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "IFI off: Foam1-PRD41 ");
-
-  CaptT->SetTextColor(kPine); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: non-IR IFI hard ");
-
-  CaptT->SetTextColor(kMagenta); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219: IFI only ");
-
-  CaptT->SetTextColor(kBlue); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219: non-IR IFI hard ");
-
-  CaptT->SetTextColor(kGold); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "PLB219:   IFI soft, IR subt. ");
-
-  CaptT->SetTextColor(71); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt, "Foam1: IFI soft, IR subt. ");
 
   cFigAfb->cd();
   //================================================
