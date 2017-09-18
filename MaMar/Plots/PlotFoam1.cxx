@@ -374,6 +374,14 @@ void PlotSame(TH1D *HST, double &ycapt, Int_t kolor, TString opis)
   CaptT->DrawLatex(0.40,ycapt, opis);
 }// PlotSame
 
+TH1D *HstDiff(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor)
+{
+TH1D *Hd12 = (TH1D*)HST1->Clone(title);
+Hd12->Add(HST1, HST2,    1.0, -1.0);
+Hd12->SetLineColor(kolor);
+return Hd12;
+}//HstDiff
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVcum()
@@ -527,13 +535,9 @@ void FigAfb()
   PlotSame(afbv_ISR2_FSR2,     ycapt, kBlue,    "KKsem  IFI off ");
   //====================plot2========================
   cFigAfb->cd(2);
-  TH1D *Hd21 =(TH1D*)HAfb_vTcPL_Ceex2->Clone("Hd21");
-  Hd21->Add(Hd21, HAfb_vTcPL_Ceex2n,    1.0, -1.0);        // KKMC_IFI   minus KKMC  noIFI black
-  TH1D *HstPRD_diff =(TH1D*)HST_xxAfb_Ord1n->Clone("HstPRD_diff");
-  HstPRD_diff->Add(HstPRD_diff,  HST_AfbPRD,    1.0, -1.0); //
-  TH1D *Hst_Foam1_diff =(TH1D*)HST_xxAfb_Ord1->Clone("Hst_Foam1_diff");
-  Hst_Foam1_diff->Add(Hst_Foam1_diff, HST_xxAfb_Ord1n,    1.0, -1.0); //
-  Hst_Foam1_diff->SetLineColor(kRed);
+  TH1D *Hd21           =HstDiff("Hd21",           HAfb_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2n,kBlack);
+  TH1D *HstPRD_diff    =HstDiff("HstPRD_diff",    HST_xxAfb_Ord1n,   HST_AfbPRD,       kCyan);
+  TH1D *Hst_Foam1_diff =HstDiff("Hst_Foam1_diff", HST_xxAfb_Ord1,    HST_xxAfb_Ord1n,  kRed);
   if( fabs(gCMSene -10.0) < 1.0) { Hd21->SetMinimum(-0.02); Hd21->SetMaximum( 0.06); }  // 189GeV, 10GeV
   if( fabs(gCMSene -95.0) < 1.0) { Hd21->SetMinimum(-0.006);Hd21->SetMaximum( 0.006);}  // 95GeV
   if( fabs(gCMSene -88.0) < 1.0) { Hd21->SetMinimum(-0.010);Hd21->SetMaximum( 0.025);}  // 88GeV
