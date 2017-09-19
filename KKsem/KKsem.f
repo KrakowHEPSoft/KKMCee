@@ -3123,9 +3123,9 @@ c]]]]]
          Result = AfbIFI2       ! only IFI according to PLB219
 ***         Result = AfbIFI56      !!!!! Xcheck
       ELSE IF( KeyDist .EQ. 105 ) THEN
-         Result = AfbIFI5       ! testing hard IFI, PLB219
+         Result = AfbIFI5       ! hard IFI, PLB219
       ELSE IF( KeyDist .EQ. 106 ) THEN
-         Result = AfbIFI6       ! testing soft IFI, PLB219
+         Result = AfbIFI6       ! soft IFI, PLB219
       ELSE IF( KeyDist .EQ. 301 ) THEN
          Result = sig_PRD       ! sigma [nb] of PRD
       ELSE
