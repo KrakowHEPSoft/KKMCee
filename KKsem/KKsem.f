@@ -3115,17 +3115,17 @@ c]]]]]
       IF(      KeyDist .EQ. 1 ) THEN
          Result = AFBborn       ! just Born for calibration
       ELSE IF( KeyDist .EQ. 100 ) THEN
-         Result = AFB_PRD_PL    ! PRD and PL combined
+         Result = AFB_PRD_PL    ! PRD41 and PLB219 combined
 ***         Result = AFB_PRD_PL2 !!!! Xcheck
       ELSE IF( KeyDist .EQ. 101 ) THEN
-         Result = AFB_PRD       ! only PRD, no IFI
+         Result = AFB_PRD       ! only PRD41, no IFI
       ELSE IF( KeyDist .EQ. 102 ) THEN
-         Result = AfbIFI2       ! only IFI according to PLB
+         Result = AfbIFI2       ! only IFI according to PLB219
 ***         Result = AfbIFI56      !!!!! Xcheck
       ELSE IF( KeyDist .EQ. 105 ) THEN
-         Result = AfbIFI5       ! testing hard IFI, PLB
+         Result = AfbIFI5       ! testing hard IFI, PLB219
       ELSE IF( KeyDist .EQ. 106 ) THEN
-         Result = AfbIFI6       ! testing soft IFI, PLB
+         Result = AfbIFI6       ! testing soft IFI, PLB219
       ELSE IF( KeyDist .EQ. 301 ) THEN
          Result = sig_PRD       ! sigma [nb] of PRD
       ELSE

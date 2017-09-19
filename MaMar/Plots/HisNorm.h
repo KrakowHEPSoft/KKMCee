@@ -42,9 +42,19 @@ void ProjC(TH2D *Scat, TH1D *&hTot, TH1D *&hAsy, int NbMax);
 ///////////////////////////////////////////////////////////////////////////////////
 void MakeCumul(TH1D *hst1, TH1D *&hcum1);
 
-  ///////////////////////////////////////////////////////////////////////////////////
+TH1D *HstCumul(TString title, TH1D *hst1);
+
+///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB);
 
+TH1D *HstDiff(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor);
+
+TH1D *HstRatio(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor);
+
+TH1D *HstRatioSc(TString title, TH1D *HST1, TH1D *HST2, Double_t fact);
+
+
+///////////////////////////////////////////////////////////////////////////////////
 void PlInitialize(FILE *ltx, int lint);
 
 void PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[] , const char *chr1, int k1,int k2,int dk);

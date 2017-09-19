@@ -259,9 +259,31 @@ void MakeCumul(TH1D *hst1, TH1D *&hcum1)
     hcum1->SetBinContent(iv,     dx*(sum));
     hcum1->SetBinError(  iv, dx*sqrt(sum2));
    }
-//
-
 }//MakeCumul
+
+TH1D *HstCumul(TString title, TH1D *hst1)
+{
+  // makes cumulative distribution
+  cout<<"Entering MakeCumul for  ";
+  cout<< hst1->GetName() <<endl;
+  int      nbX  = hst1->GetNbinsX();
+  Double_t Xmax = hst1->GetXaxis()->GetXmax();
+  Double_t Xmin = hst1->GetXaxis()->GetXmin();
+  //
+  TH1D *hcum1 = (TH1D*)hst1->Clone("hcum1"); // allocate hcum1
+  hcum1->Reset();
+  double sum=0 ,sum2=0;
+  double dx= (Xmax-Xmin)/nbX; // integration over X
+  for(int iv=0; iv <= nbX; iv++){
+    sum   += hst1->GetBinContent(  iv);
+    sum2 += sqr(hst1->GetBinError(iv));
+    hcum1->SetBinContent(iv,     dx*(sum));
+    hcum1->SetBinError(  iv, dx*sqrt(sum2));
+   }
+  hcum1->SetName(title);
+  return hcum1;
+}//HstRatio
+
 
   ///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB)
@@ -305,6 +327,32 @@ void MakeAFB(TH1D *hAll, TH1D *&hAFB)
   //for(int ic=1; ic <= nbX; ic++)
   //  cout<<"***"<<ic<<" "<< hAFB->GetBinContent(ic)<<endl;
 }// ProjC
+
+
+TH1D *HstDiff(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor)
+{
+TH1D *Hd12 = (TH1D*)HST1->Clone(title);
+Hd12->Add(HST1, HST2,    1.0, -1.0);
+Hd12->SetLineColor(kolor);
+return Hd12;
+}//HstDiff
+
+TH1D *HstRatio(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor)
+{
+TH1D *Hd12 = (TH1D*)HST1->Clone(title);
+Hd12->Divide(HST2);
+Hd12->SetLineColor(kolor);
+return Hd12;
+}//HstRatio
+
+
+TH1D *HstRatioSc(TString title, TH1D *HST1, TH1D *HST2, Double_t fact)
+{
+TH1D *Hd12 = (TH1D*)HST1->Clone(title);
+Hd12->Divide(HST2);
+Hd12->Scale(fact);
+return Hd12;
+}//HstDiff
 
 
 

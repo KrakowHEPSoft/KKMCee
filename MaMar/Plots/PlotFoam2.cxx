@@ -32,11 +32,12 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//File DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
-// July2017 runs
+// July2017 runs obsolete
 //TFile DiskFileA("../workKKMC/histo.root"); // current
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
@@ -45,10 +46,10 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
-TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_10G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_32G");
 
 
@@ -69,6 +70,21 @@ KKplot LibSem("KKplot");
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame(TH1D *HST, double &ycapt, Int_t kolor, TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  //double yy=ycapt;
+  CaptT->DrawLatex(0.40,ycapt, opis);
+}// PlotSame
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -86,8 +102,8 @@ void ReMakeMChisto(){
   TH2D *SCT_xc_EEX2   = (TH2D*)DiskFileF.Get("SCT_xc_EEX2");    // FOAM small range x<0.20
   TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2");   // FOAM small range x<0.20
 
-  // sigma(vmax) and AFB(vmax) from KKfoam scat. vmax<0.2, 100 bins in ctheta
-  //gNbMax=45;           // cosThetaMax = 45/50=0.90 Now global variable
+  // KKFoam1: sigma(vmax) and AFB(vmax) from scat. vmax<0.2, 100 bins in ctheta
+  // gNbMax=45;           // cosThetaMax = 45/50=0.90 Now global variable
   TH1D                 *Htot2_xmax_Ceex2n, *Hafb2_xmax_Ceex2n;
   ProjV( SCT_xc_Ceex2n, Htot2_xmax_Ceex2n,  Hafb2_xmax_Ceex2n, gNbMax);  //!!!!
   Htot2_xmax_Ceex2n->SetName("Htot2_xmax_Ceex2n");
@@ -177,22 +193,23 @@ void FigAfb3()
 //------------------------------------------------------------------------
   cout<<" ========================= FigAfb3 =========================== "<<endl;
 
-  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
-  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
+  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n"); // KKMC[PR]
+  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  // KKMC[PR]
   //
-  TH1D *HAfb2_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  //
+  TH1D *HAfb2_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  // KKMC[PL]
 
-  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // FOAM scatt.
-  TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // FOAM scatt.
+  TH1D *Hafb2_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2n");  // KKFoam scat.
+  TH1D *Hafb2_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex2");   // KKFoam scat.
 
-  TH1D *HST_PLBZ =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBZ");
-  LibSem.Ord1fill(HST_PLBZ,100);
-  HST_PLBZ->SetLineColor(kCyan);
-  //
+  TH1D *HST_PLBhard =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PLBhard");
+  LibSem.Ord1fill(HST_PLBhard,105);                           // IFI only, hard part, PLB219
+  HST_PLBhard->SetLineColor(kCyan);
+
+  // This HST_PL is temporrary insert
   double alfinv  = 137.035989;
   double alfpi   = 1/alfinv/3.1415926535897932;
   TH1D *HST_PL =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_PL");
-  HST_PL->SetLineColor(kViolet);
+  HST_PL->SetLineColor(kYellow);
   int Nbin    = HST_PL->GetNbinsX();
   double vmax = HST_PL->GetXaxis()->GetXmax();
   for(int i=1; i <= Nbin ; i++) {
@@ -215,40 +232,35 @@ void FigAfb3()
   cFigAfb3a->SetFillColor(10);
   cFigAfb3a->cd();
 
-  TH1D *Hst21_diff    =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("Hst21_diff");
-  Hst21_diff->Add(Hst21_diff, HAfb2_vTcPR_Ceex2n,  1.0, -1.0); // KKMC_IFI (black)
-  Hst21_diff->SetLineColor(kBlack);
-
-  TH1D *HST21_diff    =(TH1D*)Hafb2_xmax_Ceex2->Clone("HST21_diff");
-  HST21_diff->Add(HST21_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // FOAMC_IFI (magenta)
-  HST21_diff->SetLineColor(kMagenta);
-
-  TH1D *HstKF_diff    =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("HstKF_diff");
-  HstKF_diff->Add(HstKF_diff, Hafb2_xmax_Ceex2,  1.0, -1.0); // KKMC-Foam IFIon (green)
-  HstKF_diff->SetLineColor(kGreen);
-
-  TH1D *HstKFn_diff     =(TH1D*)HAfb2_vTcPR_Ceex2n->Clone("HstKFn_diff");
-  HstKFn_diff->Add(HstKFn_diff, Hafb2_xmax_Ceex2n,  1.0, -1.0); // KKMC-Foam IFIoff (blue)
-  HstKFn_diff->SetLineColor(kBlue);
-
-  TH1D *HstPL_diff    =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HstPL_diff");
-  HstPL_diff->Add(HstPL_diff, Hafb2_xmax_Ceex2,  1.0, -1.0);    // KKMC-Foam IFIon (red)
-  HstPL_diff->SetLineColor(kRed);
+  TH1D *Hst21_diff   = HstDiff("Hst21_diff",    HAfb2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2n, kBlack);
+  TH1D *HST21_diff   = HstDiff("HST21_diff",    Hafb2_xmax_Ceex2,   Hafb2_xmax_Ceex2n,  kMagenta);
+  TH1D *HstKF_diff   = HstDiff("HstKF_diff",    HAfb2_vTcPR_Ceex2,  Hafb2_xmax_Ceex2,   kGreen);
+  TH1D *HstKFn_diff  = HstDiff("HstKFn_diff",   HAfb2_vTcPR_Ceex2n, Hafb2_xmax_Ceex2n,  kBlue);
+  TH1D *HstPL_diff   = HstDiff("HstPL_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,   kRed);
 
   Hst21_diff->SetStats(0);
   Hst21_diff->SetTitle(0);
-  Hst21_diff->SetMinimum(-0.004);  // zoom
-  Hst21_diff->SetMaximum( 0.004);  // zoom
-//  Hst21_diff->SetMinimum(-0.02);   // zoom
-//  Hst21_diff->SetMaximum( 0.02);   // zoom
+  if( fabs(gCMSene -95.0) < 1.0) { Hst21_diff->SetMinimum(-0.004);  Hst21_diff->SetMaximum( 0.006);}  // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.008);}  // 88GeV
+  if( fabs(gCMSene -91.0) < 1.0) { Hst21_diff->SetMinimum(-0.0005); Hst21_diff->SetMaximum( 0.0035);} // 91GeV
+  if( fabs(gCMSene -10.0) < 1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.006);}  // 10GeV
+  Hst21_diff->GetXaxis()->SetTitle("v_{max}");
   Hst21_diff->DrawCopy("h");
-  HST21_diff->DrawCopy("hsame");
-  HstPL_diff->DrawCopy("hsame"); //!!! cosThetaPL !!!
-  HstKF_diff->DrawCopy("hsame");
-  HstKFn_diff->DrawCopy("hsame");
-  // extras
-  HST_PL->DrawCopy("hsame");   // !!!???
-  HST_PLBZ->DrawCopy("hsame"); // !!!???
+
+  double ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+
+  PlotSame(Hst21_diff,      ycapt, kBlack,    "KKMC[vPR]: IFIon-IFIoff ");
+  PlotSame(HST21_diff,      ycapt, kMagenta,  "KKFoam:    IFIon-IFIoff ");
+  PlotSame(HstKFn_diff,     ycapt, kBlue,     "KKMC[vPR]-KKFoam:  IFIoff");
+  PlotSame(HstKF_diff,      ycapt, kGreen,    "KKMC[vPR]-KKFoam:  IFIon");
+  PlotSame(HstPL_diff,      ycapt, kRed,      "KKMC[PL] -KKFoam:  IFIon");
+  PlotSame(HST_PLBhard,     ycapt, kCyan,     "PLB219, IFI only,  hard");
+
+  // extras !!!??? ???
+  HST_PL->DrawCopy("hsame");   // !!!??? ??? dubious agreement
 
 // zero line
   TH1D *hZero = (TH1D*)HAfb2_vTcPR_Ceex2n->Clone("hZero");  // zero line
@@ -256,41 +268,28 @@ void FigAfb3()
 
   hZero->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{FOAM}: Green=IFI, Blue=NOIFI");
-  CaptT->DrawLatex(0.50,0.75,gTextEne);
-
   //*****************************************************************************
   TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", 170, 100,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
   cFigAfb3b->SetFillColor(10);
   cFigAfb3b->cd();
-  //====================plot2========================
+  //=======================================================
+  TH1D *HstPL2_diff = HstDiff("HstPL2_diff",  HAfb2_vTcPR_Ceex2,  HAfb2_vTcPL_Ceex2, kBlack);
 
-  TH1D *HstPL2_diff =(TH1D*)HAfb2_vTcPR_Ceex2->Clone("HstPL2_diff");
-  HstPL2_diff->Add(HstPL2_diff, HAfb2_vTcPL_Ceex2 ,  1.0, -1.0);    // KKMC-Foam IFIon
-
-  HstPL2_diff->SetLineColor(kRed);
-
-  HstPL2_diff->SetMinimum(-0.0004);  // zoom
-  HstPL2_diff->SetMaximum( 0.0004);  // zoom
-
+  HstPL2_diff->SetMinimum(-0.0004);  HstPL2_diff->SetMaximum( 0.0004);  // zoom
   HstPL2_diff->SetStats(0);
   HstPL2_diff->SetTitle(0);
+  HstPL2_diff->GetXaxis()->SetTitle("v_{max}");
   HstPL2_diff->DrawCopy("h");
 
   hZero->DrawCopy("hsame");
-//  CaptT->DrawLatex(0.22,0.95,"A_{FB}(#theta_{PRD})-A_{FB}(#theta_{PL}) ");
-  CaptT->DrawLatex(0.22,0.95,"A_{FB}^{#bullet}-A*_{FB} ");
+  CaptT->DrawLatex(0.22,0.95,"KKMC: A_{FB}[#theta_{PRD}]-A_{FB}[#theta_{PL}] ");
+//  CaptT->DrawLatex(0.22,0.95,"A_{FB}^{#bullet}-A*_{FB} ");
   CaptT->DrawLatex(0.50,0.75,gTextEne);
-
 
   cFigAfb3b->cd();
   //================================================
 }//FigAfb3
-
-
-
-
 
 
 
