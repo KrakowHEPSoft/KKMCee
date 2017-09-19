@@ -85,6 +85,23 @@ double gCosTheta=1.00;    // to be synchronized with gNbMax
 KKplot LibSem("KKplot");
 ///////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame(TH1D *HST, double &ycapt, Int_t kolor, TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  //double yy=ycapt;
+  CaptT->DrawLatex(0.40,ycapt, opis);
+}// PlotSame
+
+
+
 void TestNorm(){
 // testing/debugging normalization
 cout<<"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"<<endl;
@@ -819,92 +836,70 @@ void FigTech()
   //====================plot1========================
   //                AFB(vmax)
   cFigTech->cd(1);
-
-  TH1D *HstTech_ratio0 =(TH1D*)Htot2_xmax_EEX2->Clone("HstTech_ratio0");
-  HstTech_ratio0->Divide(HstTech_ratio0, vcum_ISR2_FSR2); // sigma(xmax), FoamEEX/KKsem IFIoff
-  HstTech_ratio0->SetLineColor(kMagenta);                 // FoamEEX2/KKsem IFIoff
-
-  TH1D *HstTech_ratio1 =(TH1D*)Htot2_xmax_Ceex2n->Clone("HstTech_ratio1");
-  HstTech_ratio1->Divide(HstTech_ratio1, vcum_ISR2_FSR2);   // sigma(xmax), FoamGPS/KKsem IFIoff
-  HstTech_ratio1->SetLineColor(kGreen);
-
-  TH1D *HstTech_ratio3 =(TH1D*)HST_txmax_Ceex2n->Clone("HstTech_ratio3"); // FOAM direct
-  HstTech_ratio3->Divide(HstTech_ratio3, vcum_ISR2_FSR2); // sigma(xmax), Foam/KKsem IFIoff
-  HstTech_ratio3->SetLineColor(kRed);                     // testing norm. Foam/KKsem
-
-  TH1D *HstTech_ratio2 =(TH1D*)HTot2_vTcPR_Ceex2n->Clone("HstTech_ratio2");
-  HstTech_ratio2->Divide(HstTech_ratio2, vcum_ISR2_FSR2); // sigma(xmax), KKMCceex/KKsem IFIoff
-  HstTech_ratio2->SetLineColor(kBlack);                    // KKMCceexn/KKsem IFIoff
-
-  TH1D *HstTech_ratio4 =(TH1D*)HTot2_vTcPR_EEX2->Clone("HstTech_ratio4");
-  HstTech_ratio4->Divide(HstTech_ratio4, vcum_ISR2_FSR2); // sigma(xmax), KKMCeex/KKsem IFIoff
-  HstTech_ratio4->SetLineColor(kMagenta);                 // KKMCeex/KKsem IFIoff
+  TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,  vcum_ISR2_FSR2, kGreen);
+  TH1D *HstTech_ratio1  = HstRatio("HstTech_ratio1",  Htot2_xmax_Ceex2n,  vcum_ISR2_FSR2, kGreen);
+  TH1D *HstTech_ratio3  = HstRatio("HstTech_ratio3",  HST_txmax_Ceex2n,  vcum_ISR2_FSR2, kRed);
+  TH1D *HstTech_ratio2  = HstRatio("HstTech_ratio2",  HTot2_vTcPR_Ceex2n,  vcum_ISR2_FSR2, kBlack);
+  TH1D *HstTech_ratio4  = HstRatio("HstTech_ratio4",   HTot2_vTcPR_EEX2,    vcum_ISR2_FSR2, kMagenta);
 
   TH1D *HstTech_ratio = HstTech_ratio0;   // FoamEEX2/KKsem IFIoff magenta
 
   HstTech_ratio->SetStats(0);
   HstTech_ratio->SetTitle(0);
-  HstTech_ratio->SetMinimum(1 -0.0007);  // zoom
-  HstTech_ratio->SetMaximum(1 +0.0007);  // zoom
-  //HstTech_ratio->SetMinimum(1 -0.0050);  // zoom
-  //HstTech_ratio->SetMaximum(1 +0.0050);  // zoom
-  //HstTech_ratio->SetMinimum(1 -0.050);  // zoom
-  //HstTech_ratio->SetMaximum(1 +0.050);  // zoom
+  HstTech_ratio->SetMinimum(1 -0.0007); HstTech_ratio->SetMaximum(1 +0.0007);  // zoom
+  HstTech_ratio->GetXaxis()->SetTitle("v_{max}");
   HstTech_ratio->DrawCopy("h");
+
   HstTech_ratio1->DrawCopy("hsame");      // FoamGPS/KKsem IFIoff   green
   //HstTech_ratio3->DrawCopy("hsame");    // testing norm. Foam/KKsem
   HstTech_ratio4->DrawCopy("hsame");      // KKMCeex/KKsem IFIoff   magenta
   HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
+  double ycapt = 0.40; // starting value, to be decremented below
+  PlotSame(HstTech_ratio0,    ycapt, kBlue,       "FoamEEX2/KKsem IFIoff ");
+  PlotSame(HstTech_ratio1,    ycapt, kGreen,       "FoamGPS/KKsem  IFIoff ");
+//  PlotSame(HstTech_ratio3,    ycapt, kRed,         "testing norm. Foam/KKsem ");
+  PlotSame(HstTech_ratio4,    ycapt, kMagenta,     "KKMCeex/KKsem   IFIoff ");
+  PlotSame(HstTech_ratio2,    ycapt, kBlack,       "KKMCceexn/KKsem IFIoff");
+
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
-  hOne->SetLineColor(kRed);
+  hOne->SetLineColor(kBlack);
   hOne->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}): FOAM/KKsem(green), KKMC/KKsem");
+
+  CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}) ");
 
   //====================plot2========================
   cFigTech->cd(2);
-
-  TH1D *HstTech_diff0 =(TH1D*)Hafb2_xmax_EEX2->Clone("HstTech_diff0");
-  HstTech_diff0->Add(HstTech_diff0, afbv_ISR2_FSR2,  1.0, -1.0);   // AFB, Foam3EEX-KKsem IFIoff
-  HstTech_diff0->SetLineColor(kMagenta);
-
-  TH1D *HstTech_diff1 =(TH1D*)Hafb2_xmax_Ceex2n->Clone("HstTech_diff1");
-  HstTech_diff1->Add(HstTech_diff1, afbv_ISR2_FSR2,  1.0, -1.0);   // AFB, Foam3GPS-KKsem IFIoff
-  HstTech_diff1->SetLineColor(kGreen);
-
-  TH1D *HstTech_diff2 =(TH1D*)HAfb2_vTcPR_Ceex2n->Clone("HstTech_diff2");
-  HstTech_diff2->Add(HstTech_diff2, afbv_ISR2_FSR2,  1.0, -1.0);   // AFB, KKMCceexn-KKsem IFIoff
-  HstTech_diff2->SetLineColor(kBlack);
-
-  TH1D *HstTech_diff4 =(TH1D*)HAfb2_vTcPR_EEX2->Clone("HstTech_diff4");
-  HstTech_diff4->Add(HstTech_diff4, afbv_ISR2_FSR2,  1.0, -1.0);   // AFB, KKMCeex-KKsem IFIoff
-  HstTech_diff4->SetLineColor(kMagenta);
+  TH1D *HstTech_diff0  = HstDiff("HstTech_diff0",   Hafb2_xmax_EEX2,    afbv_ISR2_FSR2, kMagenta);
+  TH1D *HstTech_diff1  = HstDiff("HstTech_diff1",   Hafb2_xmax_Ceex2n,  afbv_ISR2_FSR2, kGreen);
+  TH1D *HstTech_diff2  = HstDiff("HstTech_diff2",   HAfb2_vTcPR_Ceex2n, afbv_ISR2_FSR2, kBlack);
+  TH1D *HstTech_diff4  = HstDiff("HstTech_diff4",   HAfb2_vTcPR_EEX2,   afbv_ISR2_FSR2, kBlue);
 
   TH1D *HstTech_diff= HstTech_diff4;
-  HstTech_diff->SetStats(0);
-  HstTech_diff->SetTitle(0);
-  HstTech_diff->SetMinimum(-0.0005);  // zoom
-  HstTech_diff->SetMaximum( 0.0005);  // zoom
-  //HstTech_diff->SetMinimum(-0.005);  // zoom
-  //HstTech_diff->SetMaximum( 0.005);  // zoom
+  HstTech_diff->SetStats(0); HstTech_diff->SetTitle(0);
+  HstTech_diff->SetMinimum(-0.0005); HstTech_diff->SetMaximum( 0.0005);  // zoom
 
-  HstTech_diff4->DrawCopy("h");
-  HstTech_diff2->DrawCopy("hsame");
-  HstTech_diff0->DrawCopy("hsame");
-  HstTech_diff1->DrawCopy("hsame");
+  HstTech_diff->GetXaxis()->SetTitle("v_{max}");
+  HstTech_diff->DrawCopy("h");
+
+  ycapt = 0.90; // starting value, to be decremented below
+  PlotSame(HstTech_diff4,    ycapt, kBlue,       "KKMCeex  -KKsem IFIoff ");
+  PlotSame(HstTech_diff2,    ycapt, kBlack,      "KKMCceexn-KKsem IFIoff ");
+  PlotSame(HstTech_diff0,    ycapt, kMagenta,    "Foam3EEX -KKsem IFIoff ");
+  PlotSame(HstTech_diff1,    ycapt, kGreen,      "Foam3GPS -KKsem IFIoff ");
 
   TH1D *hZero = (TH1D*)HstTech_diff->Clone("hZero");  // unity line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
   hZero->SetLineColor(kRed);
   hZero->DrawCopy("hsame");
 
-
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max}): FOAM-KKsem(green), KKMC-KKsem");
-  CaptT->DrawLatex(0.50,0.75,gTextEne);
-  CaptT->DrawLatex(0.50,0.70,gTextNev);
-  CaptT->DrawLatex(0.50,0.65,gTextNev2);
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFIoff}(v_{max})");
+  ycapt =0.30;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   cFigTech->cd();
   //================================================
