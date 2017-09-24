@@ -120,7 +120,7 @@ void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKplot::Ord1fill( TH1 *hstNew, int KeyDis)
+void KKplot::Ord1fill( TH1D *&hstNew, int KeyDis)
 // AFB(vmax), RHS of the bin
 {
   int    nbin = hstNew->GetNbinsX();

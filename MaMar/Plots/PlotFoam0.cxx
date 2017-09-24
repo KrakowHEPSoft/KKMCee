@@ -96,8 +96,32 @@ void PlotSame(TH1D *HST, double &ycapt, Int_t kolor, TString opis)
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
   ycapt += -0.04;
-  //double yy=ycapt;
   CaptT->DrawLatex(0.40,ycapt, opis);
+}// PlotSame
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  double xcapt = 0.40;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+
 }// PlotSame
 
 
@@ -785,6 +809,9 @@ void FigTech()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
+  //////////////////////////////////////////////
+  TLatex *CaptS = new TLatex();
+  CaptT->SetTextSize(0.035);
 
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
@@ -816,17 +843,21 @@ void FigTech()
   HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
   double ycapt = 0.40; // starting value, to be decremented below
-  PlotSame(HstTech_ratio0,    ycapt, kBlue,       "FoamEEX2/KKsem IFIoff ");
-  PlotSame(HstTech_ratio1,    ycapt, kGreen,       "FoamGPS/KKsem  IFIoff ");
+//  PlotSame(HstTech_ratio0,    ycapt, kBlue,        "FoamEEX2/KKsem IFIoff ");
+//  PlotSame(HstTech_ratio1,    ycapt, kGreen,       "FoamGPS/KKsem  IFIoff ");
 //  PlotSame(HstTech_ratio3,    ycapt, kRed,         "testing norm. Foam/KKsem ");
-  PlotSame(HstTech_ratio4,    ycapt, kMagenta,     "KKMCeex/KKsem   IFIoff ");
-  PlotSame(HstTech_ratio2,    ycapt, kBlack,       "KKMCceexn/KKsem IFIoff");
+//  PlotSame(HstTech_ratio4,    ycapt, kMagenta,     "KKMCeex/KKsem   IFIoff ");
+//  PlotSame(HstTech_ratio2,    ycapt, kBlack,       "KKMCceexn/KKsem IFIoff");
+
+  PlotSame2(HstTech_ratio0, ycapt, kBlue,     0.04, "(a)", "FoamEEX2/KKsem  IFIoff ");
+  PlotSame2(HstTech_ratio1, ycapt, kGreen,    0.08, "(b)", "FoamGPS/KKsem   IFIoff ");
+  PlotSame2(HstTech_ratio4, ycapt, kMagenta,  0.12, "(c)", "KKMCeex/KKsem   IFIoff ");
+  PlotSame2(HstTech_ratio2, ycapt, kBlack,    0.16, "(d)", "KKMCceexn/KKsem IFIoff");
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
   hOne->SetLineColor(kBlack);
   hOne->DrawCopy("hsame");
-
 
   CaptT->DrawLatex(0.12,0.95,"#sigma^{IFIoff}(v_{max}) ");
 
@@ -860,6 +891,7 @@ void FigTech()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
+
 
   cFigTech->cd();
   //================================================
