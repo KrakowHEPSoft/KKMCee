@@ -37,13 +37,6 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
-// July2017 runs obsolete
-//TFile DiskFileA("../workKKMC/histo.root"); // current
-//TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
-
 ////  *** FOAM 5dim
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
@@ -140,16 +133,34 @@ void ReMakeMChisto2(){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2") );
 
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n") );
+
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vT_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vT_Ceex2n") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vTcPL_Ceex2n") );
 
 ////////////////////////////////////////////////////////////////////
 // Pure KKMC reprocessing part
 // from bigger scattergram and restricted vmax<0.2
-  //////////////////////////////////////////////////////////////////
-   // Wide range, vmax<1.
+//////////////////////////////////////////////////////////////////
+
+  TH1D *hst_vT_Ceex2     = (TH1D*)DiskFileA.Get("hst_vT_Ceex2");
+  TH1D *hst_vTcPL_Ceex2  = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2");
+  TH1D *hst_vT_Ceex2n    = (TH1D*)DiskFileA.Get("hst_vT_Ceex2n");
+  TH1D *hst_vTcPL_Ceex2n = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2n");
+
+  TH1D *hst_cum_vT_Ceex2      = HstCumul("hst_cum_vT_Ceex2",     hst_vT_Ceex2);
+  TH1D *hst_cum_vTcPL_Ceex2   = HstCumul("hst_cum_vTcPL_Ceex2",  hst_vTcPL_Ceex2);
+  TH1D *hst_cum_vT_Ceex2n     = HstCumul("hst_cum_vT_Ceex2n",     hst_vT_Ceex2n);
+  TH1D *hst_cum_vTcPL_Ceex2n  = HstCumul("hst_cum_vTcPL_Ceex2n",  hst_vTcPL_Ceex2n);
+
+// Wide range, vmax<1.
     TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
     TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
     TH2D *sct_vTcPR_EEX2   = (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2");
     TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
+    TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
     cout<<"ReMakeMChisto2 [2]"<<endl;
     ///****************************************************************************************
     ///****************************************************************************************
@@ -176,6 +187,11 @@ void ReMakeMChisto2(){
     HTot2_vTcPL_Ceex2->SetName("HTot2_vTcPL_Ceex2");
     HAfb2_vTcPL_Ceex2->SetName("HAfb2_vTcPL_Ceex2");
 
+    // IFI off
+    TH1D                     *HTot2_vTcPL_Ceex2n,  *HAfb2_vTcPL_Ceex2n;
+    ProjV( sct_vTcPL_Ceex2n,  HTot2_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, gNbMax);  //!!!!
+    HTot2_vTcPL_Ceex2n->SetName("HTot2_vTcPL_Ceex2n");
+    HAfb2_vTcPL_Ceex2n->SetName("HAfb2_vTcPL_Ceex2n");
 
     ///****************************************************************************************
 
@@ -188,10 +204,10 @@ void ReMakeMChisto2(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigAfb3()
+void FigAfb3a()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigAfb3 =========================== "<<endl;
+  cout<<" ========================= FigAfb3a =========================== "<<endl;
 
   TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n"); // KKMC[PR]
   TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  // KKMC[PR]
@@ -227,7 +243,7 @@ void FigAfb3()
   CaptT->SetTextSize(0.035);
 //
   //*****************************************************************************
-  TCanvas *cFigAfb3a = new TCanvas("cFigAfb3a","FigAfb3a", 70, 70,   600, 600);
+  TCanvas *cFigAfb3a = new TCanvas("cFigAfb3a","FigAfb3a", 50, 50,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
   cFigAfb3a->SetFillColor(10);
   cFigAfb3a->cd();
@@ -268,8 +284,29 @@ void FigAfb3()
 
   hZero->DrawCopy("hsame");
 
+}//FigAfb3a
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb3b()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb3b =========================== "<<endl;
+
+  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  // KKMC[PR]
+  TH1D *HAfb2_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  // KKMC[PL]
+
+// zero line
+  TH1D *hZero2 = (TH1D*)HAfb2_vTcPR_Ceex2->Clone("hZero2");  // zero line
+  for(int i=1; i <= hZero2->GetNbinsX() ; i++) { hZero2->SetBinContent(i, 0); hZero2->SetBinError(i, 0);}
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
   //*****************************************************************************
-  TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", 170, 100,   600, 600);
+  TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", 150, 100,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
   cFigAfb3b->SetFillColor(10);
   cFigAfb3b->cd();
@@ -282,15 +319,77 @@ void FigAfb3()
   HstPL2_diff->GetXaxis()->SetTitle("v_{max}");
   HstPL2_diff->DrawCopy("h");
 
-  hZero->DrawCopy("hsame");
-  CaptT->DrawLatex(0.22,0.95,"KKMC: A_{FB}[#theta_{PRD}]-A_{FB}[#theta_{PL}] ");
-//  CaptT->DrawLatex(0.22,0.95,"A_{FB}^{#bullet}-A*_{FB} ");
+  hZero2->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.22,0.95,"KKMC: A_{FB}[#theta_{PRD}] - A_{FB}[#theta_{PL}] ");
+
   CaptT->DrawLatex(0.50,0.75,gTextEne);
 
   cFigAfb3b->cd();
   //================================================
-}//FigAfb3
+}//FigAfb3b
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb4()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb4 =========================== "<<endl;
+
+  TH1D *HAfb2_vTcPL_Ceex2   = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  // KKMC[PL]
+  TH1D *HAfb2_vTcPL_Ceex2n  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2n");  // KKMC[PL]
+
+  TH1D *hst_cum_vT_Ceex2        = (TH1D*)DiskFileB.Get("hst_cum_vT_Ceex2");
+  TH1D *hst_cum_vTcPL_Ceex2     = (TH1D*)DiskFileB.Get("hst_cum_vTcPL_Ceex2");
+  TH1D *hst_cum_vT_Ceex2n       = (TH1D*)DiskFileB.Get("hst_cum_vT_Ceex2n");
+  TH1D *hst_cum_vTcPL_Ceex2n    = (TH1D*)DiskFileB.Get("hst_cum_vTcPL_Ceex2n");
+
+  hst_cum_vTcPL_Ceex2->Divide(hst_cum_vT_Ceex2);
+  hst_cum_vTcPL_Ceex2->Scale(3.0/2.0);
+  hst_cum_vTcPL_Ceex2n->Divide(hst_cum_vT_Ceex2n);
+  hst_cum_vTcPL_Ceex2n->Scale(3.0/2.0);
+
+// zero line
+  TH1D *hZero2 = (TH1D*)HAfb2_vTcPL_Ceex2->Clone("hZero2");  // zero line
+  for(int i=1; i <= hZero2->GetNbinsX() ; i++) { hZero2->SetBinContent(i, 0); hZero2->SetBinError(i, 0);}
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  //*****************************************************************************
+  TCanvas *cFigAfb4 = new TCanvas("cFigAfb4","FigAfb4", 250, 150,   600, 600);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  cFigAfb4->SetFillColor(10);
+  cFigAfb4->cd();
+  //=======================================================
+
+  TH1D *HstPL0_diff = HstDiff("HstPL0_diff",  hst_cum_vTcPL_Ceex2,   HAfb2_vTcPL_Ceex2, kRed);
+  TH1D *HstPL1_diff = HstDiff("HstPL1_diff",  hst_cum_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, kBlue);
+
+  HstPL0_diff->SetMinimum(-0.0004);  HstPL0_diff->SetMaximum( 0.0004);  // zoom
+  HstPL0_diff->SetStats(0);
+  HstPL0_diff->SetTitle(0);
+  HstPL0_diff->GetXaxis()->SetTitle("v_{max}");
+  HstPL0_diff->DrawCopy("h");
+
+  HstPL1_diff->DrawCopy("hsame");
+
+//  hst_cum_vTcPL_Ceex2->DrawCopy("hsame");
+
+//  HAfb2_vTcPL_Ceex2->DrawCopy("hsame");
+
+
+  hZero2->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.22,0.95,"KKMC: #tilde{A}_{FB}[#theta_{PL}] - A_{FB}[#theta_{PL}] ");
+
+  CaptT->DrawLatex(0.50,0.75,gTextEne);
+
+  cFigAfb4->cd();
+  //================================================
+}//FigAfb4
 
 
 
@@ -331,7 +430,9 @@ int main(int argc, char **argv)
   ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
   ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam
 //========== PLOTTING ==========
-  FigAfb3();
+  FigAfb3a();
+  FigAfb3b();
+  FigAfb4();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
