@@ -355,6 +355,16 @@ return Hd12;
 }//HstDiff
 
 
+TH1D *HstTildeAFB(TString title, TH1D *HST1, TH1D *HST2)
+{
+TH1D *Hst1 = HstCumul(title,HST1);
+TH1D *Hst2 = HstCumul(title,HST2);
+Hst1->Divide(Hst2);
+Hst1->Scale(3.0/2.0);
+return Hst1;
+}//HstDiff
+
+
 
 void PlInitialize(FILE *ltx, int lint)
 {

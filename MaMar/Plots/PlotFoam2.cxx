@@ -145,16 +145,6 @@ void ReMakeMChisto2(){
 // from bigger scattergram and restricted vmax<0.2
 //////////////////////////////////////////////////////////////////
 
-  TH1D *hst_vT_Ceex2     = (TH1D*)DiskFileA.Get("hst_vT_Ceex2");
-  TH1D *hst_vTcPL_Ceex2  = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2");
-  TH1D *hst_vT_Ceex2n    = (TH1D*)DiskFileA.Get("hst_vT_Ceex2n");
-  TH1D *hst_vTcPL_Ceex2n = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2n");
-
-  TH1D *hst_cum_vT_Ceex2      = HstCumul("hst_cum_vT_Ceex2",     hst_vT_Ceex2);
-  TH1D *hst_cum_vTcPL_Ceex2   = HstCumul("hst_cum_vTcPL_Ceex2",  hst_vTcPL_Ceex2);
-  TH1D *hst_cum_vT_Ceex2n     = HstCumul("hst_cum_vT_Ceex2n",     hst_vT_Ceex2n);
-  TH1D *hst_cum_vTcPL_Ceex2n  = HstCumul("hst_cum_vTcPL_Ceex2n",  hst_vTcPL_Ceex2n);
-
 // Wide range, vmax<1.
     TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
     TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
@@ -193,7 +183,14 @@ void ReMakeMChisto2(){
     HTot2_vTcPL_Ceex2n->SetName("HTot2_vTcPL_Ceex2n");
     HAfb2_vTcPL_Ceex2n->SetName("HAfb2_vTcPL_Ceex2n");
 
-    ///****************************************************************************************
+///****************************************************************************************
+//     Calculating AFB from <cos(theta)>
+   TH1D *hst_vT_Ceex2     = (TH1D*)DiskFileA.Get("hst_vT_Ceex2");
+   TH1D *hst_vTcPL_Ceex2  = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2");
+   TH1D *hst_vT_Ceex2n    = (TH1D*)DiskFileA.Get("hst_vT_Ceex2n");
+   TH1D *hst_vTcPL_Ceex2n = (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2n");
+   TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", hst_vTcPL_Ceex2,  hst_vT_Ceex2);
+   TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",hst_vTcPL_Ceex2n, hst_vT_Ceex2n);
 
   cout<<"================ ReMakeMChisto2 ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -340,15 +337,8 @@ void FigAfb4()
   TH1D *HAfb2_vTcPL_Ceex2   = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  // KKMC[PL]
   TH1D *HAfb2_vTcPL_Ceex2n  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2n");  // KKMC[PL]
 
-  TH1D *hst_cum_vT_Ceex2        = (TH1D*)DiskFileB.Get("hst_cum_vT_Ceex2");
-  TH1D *hst_cum_vTcPL_Ceex2     = (TH1D*)DiskFileB.Get("hst_cum_vTcPL_Ceex2");
-  TH1D *hst_cum_vT_Ceex2n       = (TH1D*)DiskFileB.Get("hst_cum_vT_Ceex2n");
-  TH1D *hst_cum_vTcPL_Ceex2n    = (TH1D*)DiskFileB.Get("hst_cum_vTcPL_Ceex2n");
-
-  hst_cum_vTcPL_Ceex2->Divide(hst_cum_vT_Ceex2);
-  hst_cum_vTcPL_Ceex2->Scale(3.0/2.0);
-  hst_cum_vTcPL_Ceex2n->Divide(hst_cum_vT_Ceex2n);
-  hst_cum_vTcPL_Ceex2n->Scale(3.0/2.0);
+  TH1D *AfbT_Ceex2          =(TH1D*)DiskFileB.Get("AfbT_Ceex2");
+  TH1D *AfbT_Ceex2n         =(TH1D*)DiskFileB.Get("AfbT_Ceex2n");
 
 // zero line
   TH1D *hZero2 = (TH1D*)HAfb2_vTcPL_Ceex2->Clone("hZero2");  // zero line
@@ -365,8 +355,8 @@ void FigAfb4()
   cFigAfb4->cd();
   //=======================================================
 
-  TH1D *HstPL0_diff = HstDiff("HstPL0_diff",  hst_cum_vTcPL_Ceex2,   HAfb2_vTcPL_Ceex2, kRed);
-  TH1D *HstPL1_diff = HstDiff("HstPL1_diff",  hst_cum_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, kBlue);
+  TH1D *HstPL0_diff = HstDiff("HstPL0_diff",  AfbT_Ceex2,   HAfb2_vTcPL_Ceex2, kRed);
+  TH1D *HstPL1_diff = HstDiff("HstPL1_diff",  AfbT_Ceex2n,  HAfb2_vTcPL_Ceex2n, kBlue);
 
   HstPL0_diff->SetMinimum(-0.0004);  HstPL0_diff->SetMaximum( 0.0004);  // zoom
   HstPL0_diff->SetStats(0);
