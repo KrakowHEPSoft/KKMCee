@@ -601,18 +601,19 @@ void FigAfb2()
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
+  PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC   IFIon ");
+  PlotSame2(Hafb2_xmax_Ceex2, ycapt, kGreen,     0.025, "(b)", "Foam5  IFIon ");
+  PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem  IFIoff ");
+  PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKsem  IFIoff ");
+  PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3  IFIoff ");
+  PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43  IFIoff ");
+
 //  PlotSame(Hst2,              ycapt, kMagenta,   "KKMC   IFIon  ");
 //  PlotSame(Hafb2_xmax_Ceex2,  ycapt, kGreen,     "Foam5  IFIon ");
 //  PlotSame(afbv_ISR2_FSR2,    ycapt, kRed,       "KKsem  IFIoff ");
 //  PlotSame(Hst1,              ycapt, kBlack,     "KKMC   IFIoff ");
 //  PlotSame(Hafb2_xmax_Ceex2n, ycapt, kBlue,      "Foam5  IFIoff ");
 //  PlotSame(HST_PLBZ2,         ycapt, kCyan,      "PRD43, IFIoff ");
-  PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC   IFIon ");
-  PlotSame2(Hafb2_xmax_Ceex2, ycapt, kGreen,     0.025, "(b)", "Foam5  IFIon ");
-  PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem  IFIoff ");
-  PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKsem  IFIoff ");
-  PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam5  IFIoff ");
-  PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43  IFIoff ");
 
   //====================plot2========================
   cFigAfb2->cd(2);
@@ -631,10 +632,10 @@ void FigAfb2()
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
-  PlotSame2(Hst21_diff,   ycapt, kBlack,     0.120, "(a)", "KKMC_IFIon - KKMC_IFIoff ");
-  PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "KKMC_IFIon - Foam5_IFIon ");
-  PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC_IFIon - Foam5_IFIon ");
-  PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC_IFIoff - Foam5_IFIoff ");
+  PlotSame2(Hst21_diff,   ycapt, kBlack,     0.120, "(a)", "KKMC_IFIon  - KKMC_IFIoff ");
+  PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "Foam5_IFIon - Foam3_IFIoff ");
+  PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC_IFIon  - Foam5_IFIon ");
+  PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC_IFIoff - Foam3_IFIoff ");
   PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219 IFI hard part ");
 
 //  PlotSame(Hst21_diff,      ycapt, kBlack,    "KKMC_IFIon - KKMC_IFIoff ");
@@ -730,16 +731,15 @@ void FigTech()
   HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
   double ycapt = 0.40; // starting value, to be decremented below
+  PlotSame2(HstTech_ratio0, ycapt, kBlue,     0.04, "(a)", "Foam3_EEX2/KKsem IFIoff ");
+  PlotSame2(HstTech_ratio1, ycapt, kGreen,    0.08, "(b)", "Foam3_GPS/KKsem  IFIoff ");
+  PlotSame2(HstTech_ratio4, ycapt, kMagenta,  0.12, "(c)", "KKMC_EEX/KKsem   IFIoff ");
+  PlotSame2(HstTech_ratio2, ycapt, kBlack,    0.16, "(d)", "KKMC_CEEX/KKsem  IFIoff");
 //  PlotSame(HstTech_ratio0,    ycapt, kBlue,        "FoamEEX2/KKsem IFIoff ");
 //  PlotSame(HstTech_ratio1,    ycapt, kGreen,       "FoamGPS/KKsem  IFIoff ");
 //  PlotSame(HstTech_ratio3,    ycapt, kRed,         "testing norm. Foam/KKsem ");
 //  PlotSame(HstTech_ratio4,    ycapt, kMagenta,     "KKMCeex/KKsem   IFIoff ");
 //  PlotSame(HstTech_ratio2,    ycapt, kBlack,       "KKMCceexn/KKsem IFIoff");
-
-  PlotSame2(HstTech_ratio0, ycapt, kBlue,     0.04, "(a)", "Foam3_EEX2/KKsem IFIoff ");
-  PlotSame2(HstTech_ratio1, ycapt, kGreen,    0.08, "(b)", "Foam3_GPS/KKsem  IFIoff ");
-  PlotSame2(HstTech_ratio4, ycapt, kMagenta,  0.12, "(c)", "KKMC_EEX/KKsem   IFIoff ");
-  PlotSame2(HstTech_ratio2, ycapt, kBlack,    0.16, "(d)", "KKMC_CEEX/KKsem  IFIoff");
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
