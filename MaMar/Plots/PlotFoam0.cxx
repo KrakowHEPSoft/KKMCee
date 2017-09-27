@@ -121,7 +121,6 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   int ib = HST->FindBin(xx);
   double yy= HST->GetBinContent(ib);
   CaptS->DrawLatex(xx,yy,label);
-
 }// PlotSame
 
 
@@ -227,31 +226,21 @@ void ReMakeKKMC(){
     // Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
     //****************************************************************************************
     //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
-    // IFI on
-    TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
-    ProjV( sct_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, gNbMax);  //!!!!
-    HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
-    HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
-    // IFI off
-    TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
-    ProjV( sct_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, gNbMax);  //!!!!
-    HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
-    HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
-    // IFI off
-    TH1D                    *HTot2_vTcPR_EEX2, *HAfb2_vTcPR_EEX2;
-    ProjV( sct_vTcPR_EEX2, HTot2_vTcPR_EEX2,  HAfb2_vTcPR_EEX2, gNbMax);  //!!!!
-    HTot2_vTcPR_EEX2->SetName("HTot2_vTcPR_EEX2");
-    HAfb2_vTcPR_EEX2->SetName("HAfb2_vTcPR_EEX2");
-    // IFI on
-    TH1D                    *HTot2_vTcPL_Ceex2, *HAfb2_vTcPL_Ceex2;
-    ProjV( sct_vTcPL_Ceex2,  HTot2_vTcPL_Ceex2,  HAfb2_vTcPL_Ceex2, gNbMax);  //!!!!
-    HTot2_vTcPL_Ceex2->SetName("HTot2_vTcPL_Ceex2");
-    HAfb2_vTcPL_Ceex2->SetName("HAfb2_vTcPL_Ceex2");
-    // IFI off
-    TH1D                    *HTot2_vTcPL_Ceex2n, *HAfb2_vTcPL_Ceex2n;
-    ProjV( sct_vTcPL_Ceex2n, HTot2_vTcPL_Ceex2n,  HAfb2_vTcPL_Ceex2n, gNbMax);  //!!!!
-    HTot2_vTcPL_Ceex2n->SetName("HTot2_vTcPL_Ceex2n");
-    HAfb2_vTcPL_Ceex2n->SetName("HAfb2_vTcPL_Ceex2n");
+    // KKMC IFI on
+    TH1D  *HTot2_vTcPR_EEX2   = HstProjV("HTot2_vTcPR_EEX2",sct_vTcPR_EEX2,gNbMax);
+    TH1D  *HAfb2_vTcPR_EEX2   = HstProjA("HAfb2_vTcPR_EEX2",sct_vTcPR_EEX2,gNbMax);
+    // KKMC IFI off
+    TH1D  *HTot2_vTcPR_Ceex2  = HstProjV("HTot2_vTcPR_Ceex2",sct_vTcPR_Ceex2,gNbMax);
+    TH1D  *HAfb2_vTcPR_Ceex2  = HstProjA("HAfb2_vTcPR_Ceex2",sct_vTcPR_Ceex2,gNbMax);
+    // KKMC IFI off
+    TH1D  *HTot2_vTcPR_Ceex2n = HstProjV("HTot2_vTcPR_Ceex2n",sct_vTcPR_Ceex2n,gNbMax);
+    TH1D  *HAfb2_vTcPR_Ceex2n = HstProjA("HAfb2_vTcPR_Ceex2n",sct_vTcPR_Ceex2n,gNbMax);
+    // KKMC IFI off
+    TH1D  *HTot2_vTcPL_Ceex2  = HstProjV("HTot2_vTcPL_Ceex2",sct_vTcPL_Ceex2,gNbMax);
+    TH1D  *HAfb2_vTcPL_Ceex2  = HstProjA("HAfb2_vTcPL_Ceex2",sct_vTcPL_Ceex2,gNbMax);
+    // KKMC IFI off
+    TH1D  *HTot2_vTcPL_Ceex2n = HstProjV("HTot2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
+    TH1D  *HAfb2_vTcPL_Ceex2n = HstProjA("HAfb2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
 
   ///****************************************************************************************
   // Pure KKMC reprocessing part

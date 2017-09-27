@@ -172,6 +172,12 @@ void TRobolKKMC::Hbooker()
   sct_vTcPL_Ceex2->Sumw2();
   sct_vTcPL_Ceex2n= new TH2D("sct_vTcPL_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex2n->Sumw2();
+
+  sct_vTcPL_Ceex0 = new TH2D("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex0 ->Sumw2();
+  sct_vTcPL_Ceex0n= new TH2D("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex0n->Sumw2();
+
   sct_vKcPL_Ceex2= new TH2D("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vKcPL_Ceex2->Sumw2();
   sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -351,6 +357,8 @@ void TRobolKKMC::Production(double &iEvent)
   double WtCEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
   double WtCEEX2n= KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2) IFI off
+  double WtCEEX0 = KKMC_generator->GetWtAlter(201);    //  CEEX Weight O(alf0)
+  double WtCEEX0n= KKMC_generator->GetWtAlter(251);    //  CEEX Weight O(alf0) IFI off
   //
   double vvA = 1-zAleph;
   hst_nPhAll->Fill(  m_Nphot,WtMain);
@@ -388,7 +396,7 @@ void TRobolKKMC::Production(double &iEvent)
   sca_vXcPR_Ceex2->Fill(   vvK, CosPRD, WtCEEX2);
   sca_vXcPR_Eex2->Fill(    vvK, CosPRD, WtEEX2);
   //-------------------------------------------
-  // New very BIG scaterplots, restricted vv range
+  // New very BIG scaterplots, restricted range vv<0.20
   sct_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);  // true v, IFI on
   sct_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   sct_vTcPR_EEX2->Fill(    vv, CosPRD, WtEEX2);   // true v, IFI off
@@ -398,9 +406,13 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL
   sct_vTcPL_Ceex2->Fill(    vv, CosThePL, WtCEEX2);  // vv bare muons
   sct_vTcPL_Ceex2n->Fill(   vv, CosThePL, WtCEEX2n); // vv bare muons
+// New
+  sct_vTcPL_Ceex0->Fill(    vv, CosThePL, WtCEEX0);  // vv bare muons, IFIon
+  sct_vTcPL_Ceex0n->Fill(   vv, CosThePL, WtCEEX0n); // vv bare muons, IFIoff
+//
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   //-------------------------------
-  // special costheta PL
+  // specials for AFB from <costheta_PL>
   hst_vT_Ceex2->Fill(    vv, WtCEEX2);
   hst_vTcPL_Ceex2->Fill( vv, WtCEEX2*CosThePL);
   hst_vT_Ceex2n->Fill(   vv, WtCEEX2n);

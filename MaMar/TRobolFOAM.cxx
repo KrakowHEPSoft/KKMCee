@@ -104,6 +104,9 @@ void TRobolFOAM::Hbooker()
     SCT_xc_Ceex2=  TH2D_UP("SCT_xc_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex2n= TH2D_UP("SCT_xc_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+    // special histos for AFB from average cos(theta) for IFI on
+    HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
+    HST5_xc_Ceex2  = TH1D_UP("HST5_xc_Ceex2", "c*dSig/dv", NBv, 0.0, vmx2);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -141,6 +144,9 @@ if( MCgen->m_IsFoam5 == 1) {
   hst_weight5->Fill(wt5,1.0);
   SCA_xc_Ceex2->Fill(xx,CosTheta,wt5);
   SCT_xc_Ceex2->Fill(xx,CosTheta,wt5);
+  ///
+  HST5_xx_Ceex2->Fill(xx,wt5);
+  HST5_xc_Ceex2->Fill(xx,wt5*CosTheta);
 }// m_IsFoam
 
 /////////////////////////////////////////////////////////////
