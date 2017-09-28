@@ -110,10 +110,10 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void ReMakeMChisto(){
+void ReMakeFoam(){
 	//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
+  cout<<"================ ReMakeFoam  BEGIN  ============================"<<endl;
 //////////////////////////////////////////////////////////////////
   cout<<"  Renormalizing  and reprocessing histograms from FOAM"<<endl;
 
@@ -145,16 +145,16 @@ void ReMakeMChisto(){
   TH1D *Afb5T_Ceex2  = HstTildeAFB("Afb5T_Ceex2", (TH1D*)DiskFileF.Get("HST5_xc_Ceex2"),
 		                                          (TH1D*)DiskFileF.Get("HST5_xx_Ceex2") );
 
-  cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
+  cout<<"================ ReMakeFoam ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
-}//RemakeMChisto
+}//ReMakeFoam
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void ReMakeMChisto2(){
+void ReMakeKKMC(){
 	//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeMChisto2  BEGIN ============================"<<endl;
+  cout<<"================ ReMakeKKMC  BEGIN ============================"<<endl;
 
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
 
@@ -187,7 +187,7 @@ void ReMakeMChisto2(){
   TH2D *sct_vTcPL_Ceex0  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0");
   TH2D *sct_vTcPL_Ceex0n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0n");
 
-  cout<<"ReMakeMChisto2 [2]"<<endl;
+  cout<<"ReMakeKKMC [2]"<<endl;
 ///****************************************************************************************
 /// Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
 //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
@@ -221,9 +221,9 @@ void ReMakeMChisto2(){
 		                                        (TH1D*)DiskFileA.Get("hst_vT_Ceex2")   );
   TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2n"),
 		                                        (TH1D*)DiskFileA.Get("hst_vT_Ceex2n")  );
-  cout<<"================ ReMakeMChisto2 ENDs  ============================="<<endl;
+  cout<<"================ ReMakeKKMC ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
-}//RemakeMChisto2
+}//ReMakeKKMC
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -514,8 +514,8 @@ int main(int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////
 // ========= Preparing plots ==========
   DiskFileB.cd();
-  ReMakeMChisto();     // reprocessing MC histos from KKC and Foam
-  ReMakeMChisto2();    // reprocessing MC histos from KKC and Foam
+  ReMakeFoam();    // reprocessing MC histos from Foam
+  ReMakeKKMC();    // reprocessing MC histos from KKMC
 //========== PLOTTING ==========
   FigAfb3a();
   FigAfb3b();

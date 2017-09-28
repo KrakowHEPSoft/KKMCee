@@ -122,7 +122,8 @@ public:
   // Interfaces to KKsem integration routines using Gauss method
   void Initialize(TFile&);
   void Initialize(double[]);
-  void VVplot( TH1 *, int , char [], int, int );
+  void VVplot( TH1D *&, int , char [], int, int );
+  void VVmake( TH1D *&v, TH1D *&, int, char[], int, int, double);
   void Cplot(  TH1 *, int , char [], int, int, double, double);
   void ReaData(const char*, int, double[]);
   void Ord1fill( TH1D*&, int );

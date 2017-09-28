@@ -121,7 +121,7 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   int ib = HST->FindBin(xx);
   double yy= HST->GetBinContent(ib);
   CaptS->DrawLatex(xx,yy,label);
-}// PlotSame
+}// PlotSame2
 
 
 
@@ -254,36 +254,26 @@ void ReMakeKKMC(){
     // Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
     //****************************************************************************************
     nbMax=0;            // cosThetaMax = 1.0
-    TH1D                    *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
-    ProjV( sca_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
-    HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
-    HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
-    //
-    TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
-    ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
-    HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
-    HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
-    // IFI off
-    TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
-    ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
-    HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
-    HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
-    ///****************************************************************************************
+// KKMC IFI on
+    TH1D  *HTot_vTcPR_Eex2    = HstProjV("HTot_vTcPR_Eex2",sca_vTcPR_Eex2,nbMax);
+    TH1D  *HAfb_vTcPR_Eex2    = HstProjA("HAfb_vTcPR_Eex2",sca_vTcPR_Eex2,gNbMax);
+// KKMC IFI off
+    TH1D  *HTot_vTcPR_Ceex2  = HstProjV("HTot_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
+    TH1D  *HAfb_vTcPR_Ceex2  = HstProjA("HAfb_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
+// KKMC IFI off
+    TH1D  *HTot_vTcPR_Ceex2n = HstProjV("HTot_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
+    TH1D  *HAfb_vTcPR_Ceex2n = HstProjA("HAfb_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
+   ///****************************************************************************************
     // More Wide range, vmax<1.
     TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
     TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
     TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
     //
-    TH1D                    *HTot_vTcPL_Ceex2, *HAfb_vTcPL_Ceex2;
-    ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2, nbMax);  //!!!!
-    HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
-    HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
+    TH1D  *HTot_vTcPL_Ceex2 = HstProjV("HTot_vTcPL_Ceex2",sca_vTcPL_Ceex2,nbMax);
+    TH1D  *HAfb_vTcPL_Ceex2 = HstProjA("HAfb_vTcPL_Ceex2",sca_vTcPL_Ceex2,nbMax);
     //
-    TH1D                    *HTot_vTcPL_Ceex2n, *HAfb_vTcPL_Ceex2n;
-    ProjV( sca_vTcPL_Ceex2n,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
-    HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
-    HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
-
+    TH1D  *HTot_vTcPL_Ceex2n = HstProjV("HTot_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,nbMax);
+    TH1D  *HAfb_vTcPL_Ceex2n = HstProjA("HAfb_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,nbMax);
     //****************************************************************************************
     //  dsigma/dv unlimited cos(theta)
     //****************************************************************************************
@@ -390,21 +380,12 @@ void KKsemMakeHisto(){
 //------------------------------------------------------------------------
 //   MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta)
 //------------------------------------------------------------------------
-// ISR*FSR
-  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
-  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
-  kksem_setcrange_(-gCosTheta, gCosTheta); // F+B cos(theta) range
-  LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
-//-------------------------------------------------
-  kksem_setcrange_(0, gCosTheta); // forward cos(theta)
-  LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
-  afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
-  afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
-  kksem_setcrange_(-1.0, 1.0); // back to default full range
+  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
+  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
+  LibSem.VVmake( vcum_ISR2_FSR2, afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob, gCosTheta);
   //
-
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
   cout<<"==================================================================="<<endl;
 //------------------------------------------------------------------------

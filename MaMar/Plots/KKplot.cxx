@@ -97,7 +97,7 @@ void KKplot::Initialize( double xpar[]){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
+void KKplot::VVplot( TH1D *&hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
 {
   int   nbin = hstNew->GetNbinsX();
   double xmin = hstNew->GetXaxis()->GetXmin();
@@ -117,6 +117,19 @@ void KKplot::VVplot( TH1 *hstNew, int KF, char chak[5], int KeyDis, int KeyFob)
     hstNew->SetBinError(  ib+1, 0.0);
   }
 }// KKplot::VVplot
+
+///////////////////////////////////////////////////////////////////////////////////
+void KKplot::VVmake( TH1D *&Hcum, TH1D *&Hafb, int KF, char chak[5], int KeyDis, int KeyFob, double cmax)
+{
+  kksem_setcrange_(-cmax, cmax); // F+B cos(theta) range
+  VVplot(Hcum, KF, chak, KeyDis, KeyFob);
+//
+  kksem_setcrange_(0, cmax); // forward cos(theta)
+  VVplot(Hafb, KF, chak, KeyDis, KeyFob);// Forward
+  Hafb->Add(Hafb, Hcum, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
+  Hafb->Divide(Hcum);                          // finally (F-B)(F+B)
+  kksem_setcrange_(-1.0, 1.0); // back to default full range
+}//VVmake
 
 
 ///////////////////////////////////////////////////////////////////////////////////

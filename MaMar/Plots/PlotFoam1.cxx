@@ -71,6 +71,30 @@ void PlotSame(TH1D *&HST, double &ycapt, Int_t kolor, TString opis)
 }// PlotSame
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  double xcapt = 0.40;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+}// PlotSame2
+
+
 
 void HistNormKKMC(){
   //
@@ -241,27 +265,18 @@ void KKsemMakeHisto(){
 //------------------------------------------------------------------------
   cout<<"  MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta) "<<endl;
 //------------------------------------------------------------------------
-// ISR*FSR
-  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
-  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
-  LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
-//--------
-  kksem_setcrange_(0, 25.0/25); // forward cos(theta)
-  LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
-  afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
-  afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
-  kksem_setcrange_(-1.0, 1.0); // undoing forward,
+  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
+  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
+  LibSem.VVmake( vcum_ISR2_FSR2, afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob, 1.0);
   //------------------------------------------------------------------------
   cout<<"  MuMu  dsigma/dv, unlimited cos(theta)"<<endl;
-  //------------------------------------------------------------------------
   // ISR*FSR
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XRHO2");  // ISR*FSR Mff
   TH1D *vdis_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vdis_ISR2_FSR2");
   LibSem.VVplot(vdis_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
-
 
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -361,7 +376,6 @@ void FigVcum()
 
   cout<<"FigVcum calculating PRD xsection END "<<endl;
 
-
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
@@ -389,17 +403,18 @@ void FigVcum()
     double ycapt = 0.50;
     CaptT->SetTextColor(kBlack); ycapt += -0.04;
     CaptT->DrawLatex(0.40,ycapt,gTextEne);
-    PlotSame(HTot_vTcPL_Ceex2n, ycapt, kRed,    "KKMC   IFI off ");
-    PlotSame(HTot_vTcPL_Ceex2,  ycapt, kBlack,  "KKMC   IFI on ");
-    PlotSame(vcum_ISR2_FSR2,    ycapt, kGreen,  "KKsem  IFI off ");
-    PlotSame(HST_xxcum_Ord1n,   ycapt, kBlue,   "Foam1  IFI off ");
-    PlotSame(HST_xxcum_Ord1,    ycapt, kGold,   "Foam1  IFI on ");
-    PlotSame(HST_SigPRD,        ycapt, kMagenta,"PRD41  IFI off ");
+    PlotSame2(HTot_vTcPL_Ceex2n, ycapt, kRed,    0.30, "(a)", "KKMC Ceex2  IFI off ");
+    PlotSame2(HTot_vTcPL_Ceex2,  ycapt, kBlack,  0.40, "(b)", "KKMC Ceex2  IFI on ");
+    PlotSame2(vcum_ISR2_FSR2,    ycapt, kGreen,  0.60, "(c)", "KKsem eex2  IFI off ");
+    PlotSame2(HST_xxcum_Ord1n,   ycapt, kBlue,   0.60, "(d)", "Foam1 NoExp IFI off ");
+    PlotSame2(HST_xxcum_Ord1,    ycapt, kGold,   0.70, "(e)", "Foam1 NoExp IFI on ");
+    PlotSame2(HST_SigPRD,        ycapt, kMagenta,0.80, "(f)", "PRD41 NoExp IFI off ");
     //====================plot1========================
     cFigVcum->cd(2);
     TH1D *Hst1_ratio = HstRatio("Hst1_ratio",  HTot_vTcPL_Ceex2, HTot_vTcPL_Ceex2n, kBlack);
     TH1D *Hst2_ratio = HstRatio("Hst2_ratio",  HST_xxcum_Ord1 ,  HST_xxcum_Ord1n,   kRed);
     TH1D *Hst3_ratio = HstRatio("Hst3_ratio",  HST_xxcum_Ord1n,  HST_SigPRD,        kBlue);
+    TH1D *Hst4_ratio = HstRatio("Hst4_ratio",  HTot_vTcPL_Ceex2n,vcum_ISR2_FSR2,    kBlack);
 
     Hst3_ratio->SetStats(0);
     Hst3_ratio->SetTitle(0);
@@ -412,9 +427,10 @@ void FigVcum()
     CaptT->SetTextColor(kBlack); ycapt += -0.04;
     CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
-    PlotSame(Hst1_ratio,   ycapt, kBlack,"KKMC:   IFI on/off ");
-    PlotSame(Hst2_ratio,   ycapt, kRed,"Foam1:  IFI on/off ");
-    PlotSame(Hst3_ratio,   ycapt, kBlue, "Foam1/PRD41,  IFI off ");
+    PlotSame2(Hst1_ratio,  ycapt, kBlack, 0.30,   "(a)","KKMC:   IFI on/off ");
+    PlotSame2(Hst2_ratio,  ycapt, kRed,   0.40,   "(b)","Foam1:  IFI on/off ");
+    PlotSame2(Hst3_ratio,  ycapt, kBlue,  0.50,   "(c)","Foam1/PRD41, IFI off ");
+    PlotSame2(Hst4_ratio,  ycapt, kBlack, 0.20,   "(d)", "KKMC/KKsem,  IFI off ");
 
     cFigVcum->cd();
   cout<<" ========================= FigVcum end======================== "<<endl;
