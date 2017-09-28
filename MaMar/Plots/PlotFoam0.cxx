@@ -388,20 +388,17 @@ void KKsemMakeHisto(){
 //------------------------------------------------------------------------
   TH1D *hstVtemplate = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2");
 //------------------------------------------------------------------------
-//   MuMu  Sigma(vmax) with ulimited c=cos(theta)
+//   MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta)
 //------------------------------------------------------------------------
 // ISR*FSR
+  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
+  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
-  //double gCosTheta = 0.9; // now glogal variable
   kksem_setcrange_(-gCosTheta, gCosTheta); // F+B cos(theta) range
-  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
 //-------------------------------------------------
-//    AFB(vmax) for limited/unlimited c=cos(theta)
-//-------------------------------------------------
   kksem_setcrange_(0, gCosTheta); // forward cos(theta)
-  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
   afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
   afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
@@ -593,7 +590,7 @@ void FigAfb2()
   PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC   IFIon ");
   PlotSame2(Hafb2_xmax_Ceex2, ycapt, kGreen,     0.025, "(b)", "Foam5  IFIon ");
   PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem  IFIoff ");
-  PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKsem  IFIoff ");
+  PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3  IFIoff ");
   PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43  IFIoff ");
 

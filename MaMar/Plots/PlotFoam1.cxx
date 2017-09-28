@@ -239,23 +239,20 @@ void KKsemMakeHisto(){
   TH1D *hstVtemplate = (TH1D*)DiskFileA.Get("hst_vTrueCeex2");
   TH1D *hstCtemplate = (TH1D*)DiskFileA.Get("hst_Cost1Ceex2");
 //------------------------------------------------------------------------
-  cout<<"  MuMu  Sigma(vmax) with ulimited c=cos(theta) "<<endl;
+  cout<<"  MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta) "<<endl;
 //------------------------------------------------------------------------
 // ISR*FSR
+  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
+  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
-  TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   LibSem.VVplot(vcum_ISR2_FSR2, KF, chak, KeyDis, KeyFob);
-//-------------------------------------------------
-  cout<<"  AFB(vmax) for unlimited c=cos(theta) "<<endl;
-//-------------------------------------------------
+//--------
   kksem_setcrange_(0, 25.0/25); // forward cos(theta)
-  TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVplot(afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob);// Forward
   afbv_ISR2_FSR2->Add(afbv_ISR2_FSR2, vcum_ISR2_FSR2, 2.0, -1.0) ; // numerator F-B = 2F-(F+B)
   afbv_ISR2_FSR2->Divide(vcum_ISR2_FSR2);                          // finally (F-B)(F+B)
   kksem_setcrange_(-1.0, 1.0); // undoing forward,
-  //
   //------------------------------------------------------------------------
   cout<<"  MuMu  dsigma/dv, unlimited cos(theta)"<<endl;
   //------------------------------------------------------------------------
