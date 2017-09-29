@@ -58,10 +58,11 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int  kGold=92, kBrune=46, kPine=71;
-
 //
 int    gNbMax=50;         // gCosTheta = 45/50=0.90
 double gCosTheta=1.00;    // to be synchronized with gNbMax
+//
+float  gXcanv = 50, gYcanv = 50;
 //
 KKplot LibSem("KKplot");
 ///////////////////////////////////////////////////////////////////////////////////
@@ -266,8 +267,9 @@ void FigAfb3a()
   CaptT->SetTextSize(0.035);
 //
   //*****************************************************************************
-  TCanvas *cFigAfb3a = new TCanvas("cFigAfb3a","FigAfb3a", 50, 50,   600, 600);
+  TCanvas *cFigAfb3a = new TCanvas("cFigAfb3a","FigAfb3a", gXcanv, gYcanv,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb3a->SetFillColor(10);
   cFigAfb3a->cd();
 
@@ -330,8 +332,9 @@ void FigAfb3b()
   CaptT->SetTextSize(0.035);
 //
   //*****************************************************************************
-  TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", 150, 100,   600, 600);
+  TCanvas *cFigAfb3b = new TCanvas("cFigAfb3b","FigAfb3b", gXcanv, gYcanv,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb3b->SetFillColor(10);
   cFigAfb3b->cd();
 
@@ -401,8 +404,9 @@ void FigAfb4()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   //*****************************************************************************
-  TCanvas *cFigAfb4 = new TCanvas("cFigAfb4","FigAfb4", 250, 150,   600, 600);
+  TCanvas *cFigAfb4 = new TCanvas("cFigAfb4","FigAfb4", gXcanv, gYcanv,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb4->SetFillColor(10);
   cFigAfb4->cd();
   //=======================================================
@@ -454,8 +458,9 @@ void FigAfb5()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   //*****************************************************************************
-  TCanvas *cFigAfb5 = new TCanvas("cFigAfb5","FigAfb5", 350, 200,   600, 600);
+  TCanvas *cFigAfb5 = new TCanvas("cFigAfb5","FigAfb5", gXcanv, gYcanv,   600, 600);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb5->SetFillColor(10);
   cFigAfb5->cd();
   //=======================================================

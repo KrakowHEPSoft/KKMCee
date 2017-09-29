@@ -31,10 +31,12 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
+// Sept. 2017 runs
+TFile DiskFileA("../workKKMC/histo.root_95GeV_55M"); //
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ????
 // July2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_6G"); //
@@ -82,6 +84,7 @@ char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    gNbMax=50;         // gCosTheta = 45/50=0.90
 double gCosTheta=1.00;    // to be synchronized with gNbMax
 //
+float  gXcanv = 50, gYcanv = 50;
 KKplot LibSem("KKplot");
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -198,6 +201,9 @@ void HistNormKKMC(){
 
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
 
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0n") );
+
   //
 }
 
@@ -214,17 +220,17 @@ void ReMakeKKMC(){
     cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
 
     TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-
-   // Wide range, vmax<1.
+    cout<<"ReMakeKKMC [2]"<<endl;
+    //****************************************************************************************
+    // Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
+    //****************************************************************************************
     TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
     TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
     TH2D *sct_vTcPR_EEX2   = (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2");
     TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
     TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
-    cout<<"ReMakeKKMC [2]"<<endl;
-    //****************************************************************************************
-    // Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
-    //****************************************************************************************
+    TH2D *sct_vTcPL_Ceex0  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0");
+    TH2D *sct_vTcPL_Ceex0n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0n");
     //gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
     // KKMC IFI on
     TH1D  *HTot2_vTcPR_EEX2   = HstProjV("HTot2_vTcPR_EEX2",sct_vTcPR_EEX2,gNbMax);
@@ -242,38 +248,45 @@ void ReMakeKKMC(){
     TH1D  *HTot2_vTcPL_Ceex2n = HstProjV("HTot2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
     TH1D  *HAfb2_vTcPL_Ceex2n = HstProjA("HAfb2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
 
-  ///****************************************************************************************
-  // Pure KKMC reprocessing part
+    // KKMC IFI on
+    TH1D  *HTot2_vTcPL_Ceex0  = HstProjV("HTot2_vTcPL_Ceex0",sct_vTcPL_Ceex0,gNbMax);
+    TH1D  *HAfb2_vTcPL_Ceex0  = HstProjA("HAfb2_vTcPL_Ceex0",sct_vTcPL_Ceex0,gNbMax);
+    // KKMC IFI on
+    TH1D  *HTot2_vTcPL_Ceex0n = HstProjV("HTot2_vTcPL_Ceex0n",sct_vTcPL_Ceex0n,gNbMax);
+    TH1D  *HAfb2_vTcPL_Ceex0n = HstProjA("HAfb2_vTcPL_Ceex0n",sct_vTcPL_Ceex0n,gNbMax);
+
+///****************************************************************************************
+// Pure KKMC reprocessing part
     int nbMax;
     cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
     // Wide range, vmax<1.
     TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
     TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
     TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
-    //****************************************************************************************
-    // Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
-    //****************************************************************************************
-    nbMax=0;            // cosThetaMax = 1.0
+//****************************************************************************************
+// Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
+//****************************************************************************************
+//    nbMax=0;            // cosThetaMax = 1.0
 // KKMC IFI on
-    TH1D  *HTot_vTcPR_Eex2    = HstProjV("HTot_vTcPR_Eex2",sca_vTcPR_Eex2,nbMax);
+    TH1D  *HTot_vTcPR_Eex2    = HstProjV("HTot_vTcPR_Eex2",sca_vTcPR_Eex2,gNbMax);
     TH1D  *HAfb_vTcPR_Eex2    = HstProjA("HAfb_vTcPR_Eex2",sca_vTcPR_Eex2,gNbMax);
 // KKMC IFI off
-    TH1D  *HTot_vTcPR_Ceex2  = HstProjV("HTot_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
-    TH1D  *HAfb_vTcPR_Ceex2  = HstProjA("HAfb_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
+    TH1D  *HTot_vTcPR_Ceex2  = HstProjV("HTot_vTcPR_Ceex2",sca_vTcPR_Ceex2,gNbMax);
+    TH1D  *HAfb_vTcPR_Ceex2  = HstProjA("HAfb_vTcPR_Ceex2",sca_vTcPR_Ceex2,gNbMax);
 // KKMC IFI off
-    TH1D  *HTot_vTcPR_Ceex2n = HstProjV("HTot_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
-    TH1D  *HAfb_vTcPR_Ceex2n = HstProjA("HAfb_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
+    TH1D  *HTot_vTcPR_Ceex2n = HstProjV("HTot_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,gNbMax);
+    TH1D  *HAfb_vTcPR_Ceex2n = HstProjA("HAfb_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,gNbMax);
    ///****************************************************************************************
     // More Wide range, vmax<1.
     TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
     TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
     TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
     //
-    TH1D  *HTot_vTcPL_Ceex2 = HstProjV("HTot_vTcPL_Ceex2",sca_vTcPL_Ceex2,nbMax);
-    TH1D  *HAfb_vTcPL_Ceex2 = HstProjA("HAfb_vTcPL_Ceex2",sca_vTcPL_Ceex2,nbMax);
+    TH1D  *HTot_vTcPL_Ceex2 = HstProjV("HTot_vTcPL_Ceex2",sca_vTcPL_Ceex2,gNbMax);
+    TH1D  *HAfb_vTcPL_Ceex2 = HstProjA("HAfb_vTcPL_Ceex2",sca_vTcPL_Ceex2,gNbMax);
     //
-    TH1D  *HTot_vTcPL_Ceex2n = HstProjV("HTot_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,nbMax);
-    TH1D  *HAfb_vTcPL_Ceex2n = HstProjA("HAfb_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,nbMax);
+    TH1D  *HTot_vTcPL_Ceex2n = HstProjV("HTot_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,gNbMax);
+    TH1D  *HAfb_vTcPL_Ceex2n = HstProjA("HAfb_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,gNbMax);
     //****************************************************************************************
     //  dsigma/dv unlimited cos(theta)
     //****************************************************************************************
@@ -379,12 +392,18 @@ void KKsemMakeHisto(){
   TH1D *hstVtemplate = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2");
 //------------------------------------------------------------------------
 //   MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta)
-//------------------------------------------------------------------------
+//
   KeyDis = 302302;        // ISR*FSR O(alf2)
   sprintf(chak,"XCHI2");  // ISR*FSR Mff
   TH1D *vcum_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("vcum_ISR2_FSR2");
   TH1D *afbv_ISR2_FSR2 =(TH1D*)hstVtemplate->Clone("afbv_ISR2_FSR2");
   LibSem.VVmake( vcum_ISR2_FSR2, afbv_ISR2_FSR2, KF, chak, KeyDis, KeyFob, gCosTheta);
+  //
+  KeyDis = 300300;        // ISR*FSR O(alf2)
+  sprintf(chak,"XCHI2");  // ISR*FSR Mff
+  TH1D *vcum_ISR0_FSR0 =(TH1D*)hstVtemplate->Clone("vcum_ISR0_FSR0");
+  TH1D *afbv_ISR0_FSR0 =(TH1D*)hstVtemplate->Clone("afbv_ISR0_FSR0");
+  LibSem.VVmake( vcum_ISR0_FSR0, afbv_ISR0_FSR0, KF, chak, KeyDis, KeyFob, gCosTheta);
   //
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -414,8 +433,9 @@ void FigVdist()
   //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist", 50, 50,    1200, 800);
-  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist", gXcanv, gYcanv,    1200, 800);
+  //                           Name    Title               xoff,   yoff,    WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigVdist->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVdist->Divide( 2,  2);
@@ -532,8 +552,9 @@ void FigAfb2()
 //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", 70, 350,   1200, 550);
+  TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", gXcanv, gYcanv,   1200, 550);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb2->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfb2->Divide( 2,  0);
@@ -624,6 +645,51 @@ void FigAfb2()
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigTech0()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigTech0 IFI off =========================== "<<endl;
+
+// sigma(vmax)
+  TH1D *HTot2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HTot2_vTcPL_Ceex0n"); // KKMC sigma(vmax) from scat.
+
+  TH1D *vcum_ISR0_FSR0     = (TH1D*)DiskFileB.Get("vcum_ISR0_FSR0");     // KKsem
+
+  TH1D *hOne2 = (TH1D*)vcum_ISR0_FSR0->Clone("hOne2");  // unity line
+  for(int i=1; i <= hOne2->GetNbinsX() ; i++) { hOne2->SetBinContent(i, 1); hOne2->SetBinError(i, 0);}
+  hOne2->SetLineColor(kBlack);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  //*****************************************************************************
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigTech0 = new TCanvas("cFigTech0","FigTech0", gXcanv, gYcanv,   1200, 550);
+  //                                 Name    Title      xoff,    yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
+  cFigTech0->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigTech0->Divide( 2,  0);
+  //====================plot1========================
+  cFigTech0->cd(1);
+  TH1D *HstTech0_ratio  = HstRatio("HstTech0_ratio",  HTot2_vTcPL_Ceex0n,  vcum_ISR0_FSR0, kGreen);
+
+  HstTech0_ratio->SetStats(0);
+  HstTech0_ratio->SetTitle(0);
+  HstTech0_ratio->SetMinimum(1 -0.0007); HstTech0_ratio->SetMaximum(1 +0.0007);  // zoom
+  HstTech0_ratio->GetXaxis()->SetTitle("v_{max}");
+  HstTech0_ratio->DrawCopy("h");
+
+  double ycapt = 0.40; // starting value, to be decremented below
+  PlotSame2(HstTech0_ratio, ycapt, kBlack,    0.16, "(a)", "KKMC_CEEX0/KKsem0  IFIoff");
+
+  hOne2->DrawCopy("hsame");
+
+  //================================================
+}//FigTech0
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigTech()
@@ -664,25 +730,21 @@ void FigTech()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
-  //////////////////////////////////////////////
-  TLatex *CaptS = new TLatex();
-  CaptT->SetTextSize(0.035);
-
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigTech = new TCanvas("cFigTech","FigTech", 100, 400,   1200, 550);
-  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  TCanvas *cFigTech = new TCanvas("cFigTech","FigTech", gXcanv, gYcanv,   1200, 550);
+  //                                 Name    Title      xoff,    yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigTech->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigTech->Divide( 2,  0);
   //====================plot1========================
-  //                AFB(vmax)
   cFigTech->cd(1);
-  TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,  vcum_ISR2_FSR2, kGreen);
+  TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,    vcum_ISR2_FSR2, kGreen);
   TH1D *HstTech_ratio1  = HstRatio("HstTech_ratio1",  Htot2_xmax_Ceex2n,  vcum_ISR2_FSR2, kGreen);
-  TH1D *HstTech_ratio3  = HstRatio("HstTech_ratio3",  HST_txmax_Ceex2n,  vcum_ISR2_FSR2, kRed);
-  TH1D *HstTech_ratio2  = HstRatio("HstTech_ratio2",  HTot2_vTcPR_Ceex2n,  vcum_ISR2_FSR2, kBlack);
-  TH1D *HstTech_ratio4  = HstRatio("HstTech_ratio4",   HTot2_vTcPR_EEX2,    vcum_ISR2_FSR2, kMagenta);
+  TH1D *HstTech_ratio3  = HstRatio("HstTech_ratio3",  HST_txmax_Ceex2n,   vcum_ISR2_FSR2, kRed);
+  TH1D *HstTech_ratio2  = HstRatio("HstTech_ratio2",  HTot2_vTcPR_Ceex2n, vcum_ISR2_FSR2, kBlack);
+  TH1D *HstTech_ratio4  = HstRatio("HstTech_ratio4",   HTot2_vTcPR_EEX2,   vcum_ISR2_FSR2, kMagenta);
 
   TH1D *HstTech_ratio = HstTech_ratio0;   // FoamEEX2/KKsem IFIoff magenta
 
@@ -702,11 +764,6 @@ void FigTech()
   PlotSame2(HstTech_ratio1, ycapt, kGreen,    0.08, "(b)", "Foam3_GPS/KKsem  IFIoff ");
   PlotSame2(HstTech_ratio4, ycapt, kMagenta,  0.12, "(c)", "KKMC_EEX/KKsem   IFIoff ");
   PlotSame2(HstTech_ratio2, ycapt, kBlack,    0.16, "(d)", "KKMC_CEEX/KKsem  IFIoff");
-//  PlotSame(HstTech_ratio0,    ycapt, kBlue,        "FoamEEX2/KKsem IFIoff ");
-//  PlotSame(HstTech_ratio1,    ycapt, kGreen,       "FoamGPS/KKsem  IFIoff ");
-//  PlotSame(HstTech_ratio3,    ycapt, kRed,         "testing norm. Foam/KKsem ");
-//  PlotSame(HstTech_ratio4,    ycapt, kMagenta,     "KKMCeex/KKsem   IFIoff ");
-//  PlotSame(HstTech_ratio2,    ycapt, kBlack,       "KKMCceexn/KKsem IFIoff");
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
@@ -735,11 +792,6 @@ void FigTech()
   PlotSame2(HstTech_diff0,   ycapt, kMagenta,  0.160, "(c)", "Foam3_EEX -KKsem IFIoff ");
   PlotSame2(HstTech_diff1,   ycapt, kGreen,    0.180, "(d)", "Foam3_GPS -KKsem IFIoff ");
 
-//  PlotSame(HstTech_diff4,    ycapt, kBlue,       "KKMCeex  -KKsem IFIoff ");
-//  PlotSame(HstTech_diff2,    ycapt, kBlack,      "KKMCceexn-KKsem IFIoff ");
-//  PlotSame(HstTech_diff0,    ycapt, kMagenta,    "Foam3EEX -KKsem IFIoff ");
-//  PlotSame(HstTech_diff1,    ycapt, kGreen,      "Foam3GPS -KKsem IFIoff ");
-
   TH1D *hZero = (TH1D*)HstTech_diff->Clone("hZero");  // unity line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
   hZero->SetLineColor(kRed);
@@ -750,7 +802,6 @@ void FigTech()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
-
 
   cFigTech->cd();
   //================================================
@@ -769,8 +820,9 @@ void FigInfo()
  //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 140, 500,   1200, 550);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", gXcanv, gXcanv,   1200, 550);
   //                            Name    Title                     xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigInfo->Divide( 2,  0);
@@ -851,10 +903,11 @@ int main(int argc, char **argv)
 //========== PLOTTING ==========
 // vmax=1, sigma(v) and sigma(vmax) KKMC/Foam
 //  FigVdist(); // OBSOLETE
+  FigInfo();
   FigAfb2();  // vmax =0.2
   FigTech();  // vmax =0.2
+  FigTech0();  // vmax =0.2
 // weight distribution
-  //igInfo();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

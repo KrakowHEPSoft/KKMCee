@@ -52,6 +52,8 @@ int  kGold=92, kBrune=46, kPine=71;
 //int    gNbMax=50;         // gCosTheta = 45/50=0.90
 //double gCosTheta=1.00;    // to be synchronized with gNbMax
 //
+float  gXcanv = 50, gYcanv = 50;
+///
 KKplot LibSem("KKplot");
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -306,8 +308,9 @@ void FigVV()
   CaptT->SetTextSize(0.04);
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVV = new TCanvas("cFigVV","FigVV", 50, 50,    1200, 550);
+  TCanvas *cFigVV = new TCanvas("cFigVV","FigVV", gXcanv, gYcanv,    1200, 550);
   //                            Name    Title   xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigVV->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVV->Divide( 2,  1);
@@ -382,8 +385,9 @@ void FigVcum()
   CaptT->SetTextSize(0.04);
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVcum = new TCanvas("cFigVcum","FigVcum", 100, 100,    1200, 550);
+  TCanvas *cFigVcum = new TCanvas("cFigVcum","FigVcum", gXcanv, gYcanv,    1200, 550);
   //                            Name    Title   xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigVcum->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVcum->Divide( 2,  1);
@@ -475,8 +479,9 @@ void FigAfb()
 
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", 150, 150,   1200, 550);
+  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", gXcanv, gYcanv,   1200, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfb->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfb->Divide( 2,  0);
@@ -556,8 +561,9 @@ void FigAfbN()
 
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfbN = new TCanvas("cFigAfbN","FigAfbN", 200, 200,   600, 550);
+  TCanvas *cFigAfbN = new TCanvas("cFigAfbN","FigAfbN", gXcanv, gYcanv,   600, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigAfbN->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfbN->cd();
@@ -597,8 +603,9 @@ void FigInfo()
 //
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", 250, 250,   600, 550);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo ", gXcanv, gYcanv,   600, 550);
   //                            Name    Title                     xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigInfo->Divide( 1,  0);
