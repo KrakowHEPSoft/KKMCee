@@ -653,8 +653,10 @@ void FigTech0()
 
 // sigma(vmax)
   TH1D *HTot2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HTot2_vTcPL_Ceex0n"); // KKMC sigma(vmax) from scat.
+  TH1D *HAfb2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex0n"); // KKMC AFB(vmax)   from scat.
 
   TH1D *vcum_ISR0_FSR0     = (TH1D*)DiskFileB.Get("vcum_ISR0_FSR0");     // KKsem
+  TH1D *afbv_ISR0_FSR0     = (TH1D*)DiskFileB.Get("afbv_ISR0_FSR0");     // KKsem
 
   TH1D *hOne2 = (TH1D*)vcum_ISR0_FSR0->Clone("hOne2");  // unity line
   for(int i=1; i <= hOne2->GetNbinsX() ; i++) { hOne2->SetBinContent(i, 1); hOne2->SetBinError(i, 0);}
@@ -686,6 +688,31 @@ void FigTech0()
   PlotSame2(HstTech0_ratio, ycapt, kBlack,    0.16, "(a)", "KKMC_CEEX0/KKsem0  IFIoff");
 
   hOne2->DrawCopy("hsame");
+
+  //====================plot2========================
+  cFigTech0->cd(2);
+  TH1D *HstTech0_diff2  = HstDiff("HstTech0_diff2",   HAfb2_vTcPL_Ceex0n, afbv_ISR0_FSR0, kBlack);
+
+  TH1D *HstTech0_diff= HstTech0_diff2;
+  HstTech0_diff->SetStats(0); HstTech0_diff->SetTitle(0);
+  HstTech0_diff->SetMinimum(-0.0004); HstTech0_diff->SetMaximum( 0.0004);  // zoom
+
+  HstTech0_diff->GetXaxis()->SetTitle("v_{max}");
+  HstTech0_diff->DrawCopy("h");
+
+  ycapt = 0.90; // starting value, to be decremented below
+  PlotSame2(HstTech0_diff2,   ycapt, kBlack,    0.140, "(b)", "KKMC_CEEX0 -KKsem0 IFIoff ");
+
+  TH1D *hZero2 = (TH1D*)HstTech0_diff->Clone("hZero2");  // unity line
+  for(int i=1; i <= hZero2->GetNbinsX() ; i++) { hZero2->SetBinContent(i, 0); hZero2->SetBinError(i, 0);}
+  hZero2->SetLineColor(kRed);
+  hZero2->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
+  ycapt =0.30;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   //================================================
 }//FigTech0

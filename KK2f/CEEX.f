@@ -1788,10 +1788,17 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 *
 *////                  AmpBoxy = DCMPLX(0,0)
                   BornSum = BornSum +AmpBorn*DCONJG(AmpBorn)
-                  IF( Mode .EQ. 0 ) THEN
+                  IF(      Mode .EQ.  0 ) THEN
+                    m_AmpBorn2(j1,j2,j3,j4) =AmpBorn
+                  ELSE IF( Mode .EQ.  1 ) THEN
+                    m_AmpBorn1(j1,j2,j3,j4) =AmpBorn
+                  ELSE IF( Mode .EQ. 20 ) THEN
                     m_AmpBorn2(j1,j2,j3,j4) =AmpBorn+AmpBoxy
-                  ELSE
+                  ELSE IF( Mode .EQ. 21 ) THEN
                     m_AmpBorn1(j1,j2,j3,j4) =AmpBorn+AmpBoxy
+                  ELSE
+                    WRITE(*,*) "+++ STOP in GPS_BornFoam, wrong Mode= ", Mode
+                    STOP
                   ENDIF
                ENDDO
             ENDDO

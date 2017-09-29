@@ -98,11 +98,19 @@ void TRobolFOAM::Hbooker()
     SCA_xc_Ceex2  = TH2D_UP("SCA_xc_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
     SCA_xc_Ceex2n = TH2D_UP("SCA_xc_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
 
+    SCA_xc_Ceex0  = TH2D_UP("SCA_xc_Ceex0",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+    SCA_xc_Ceex0n = TH2D_UP("SCA_xc_Ceex0n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+
     //  New bigger scatergrams, restricted vmax
     int NBv =100; int NBc = 100;
     double vmx2= 0.20;
     SCT_xc_Ceex2=  TH2D_UP("SCT_xc_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex2n= TH2D_UP("SCT_xc_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+
+    SCT_xc_Ceex0=  TH2D_UP("SCT_xc_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+    SCT_xc_Ceex0n= TH2D_UP("SCT_xc_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+
+
     SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     // special histos for AFB from average cos(theta) for IFI on
     HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
@@ -147,6 +155,11 @@ if( MCgen->m_IsFoam5 == 1) {
   ///
   HST5_xx_Ceex2->Fill(xx,wt5);
   HST5_xc_Ceex2->Fill(xx,wt5*CosTheta);
+  //
+  double WTceex0 = wt5 * MCgen->m_WTmodel[50];
+  SCA_xc_Ceex0->Fill(xx,CosTheta, WTceex0);
+  SCT_xc_Ceex0->Fill(xx,CosTheta, WTceex0);
+
 }// m_IsFoam
 
 /////////////////////////////////////////////////////////////

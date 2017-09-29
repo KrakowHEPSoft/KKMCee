@@ -152,8 +152,8 @@ class TMCgenFOAM :public TMCgen
   double gamISR( double );
   double gamFSR( double );
   double gamIFI( double );
-  double RhoFSR(double, double );
-  double RhoISR(double, double );
+  double RhoFSR(int, double, double );
+  double RhoISR(int, double, double );
   double RhoIFI(double, double );
   void GetRhoFSR1(double, double, double&, double& );
   void GetRhoISR1(double, double, double&, double& );
