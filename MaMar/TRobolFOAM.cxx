@@ -110,7 +110,6 @@ void TRobolFOAM::Hbooker()
     SCT_xc_Ceex0=  TH2D_UP("SCT_xc_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex0n= TH2D_UP("SCT_xc_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
 
-
     SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     // special histos for AFB from average cos(theta) for IFI on
     HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
@@ -176,8 +175,12 @@ if( MCgen->m_IsFoam3 == 1) {
   HST_tx_Ceex2n->Fill(xx,wt3);
   SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
   SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
-  double WTeex2 = wt3 * MCgen->m_WTmodel[2];
+  double WTeex2  = wt3 * MCgen->m_WTmodel[ 2];
+  double WTceex0 = wt3 * MCgen->m_WTmodel[52];
   SCT_xc_EEX2->Fill(xx,CosTheta,WTeex2);
+  //
+  SCA_xc_Ceex0n->Fill(xx,CosTheta,WTceex0);
+  SCT_xc_Ceex0n->Fill(xx,CosTheta,WTceex0);
   ///  Fill in special normalization histogram
   double Xnorm3 = MCgen->m_Xsav3;
   HST_FOAM_NORMA3->Fill(-1, Xnorm3);      // Normal*Nevtot, new style

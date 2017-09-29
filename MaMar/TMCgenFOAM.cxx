@@ -655,10 +655,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 // ******** mapping for ISR *******
 	double gami = gamISR(svar);
 	double R= Xarg[0];
-	double dJac,Rho2,Rho3;
+	double dJac,RhoIsr2,RhoFsr2,RhoIsr0,RhoFsr0;
 	MapPlus(  R, gami, m_vv, dJac);
-	Rho2 = RhoISR(2, svar,m_vv);
-	Dist *= dJac *Rho2;
+	RhoIsr2 = RhoISR(2, svar,m_vv);
+	RhoIsr0 = RhoISR(0, svar,m_vv);
+	Dist *= dJac *RhoIsr2;
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
 ///////////////////////////////////////////////////////
@@ -666,8 +667,9 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
 	MapPlus(  rr, gamf, m_uu, dJac);
- 	Rho3 = RhoFSR(2, svar2,m_uu);
- 	Dist *= dJac* Rho3;
+ 	RhoFsr2 = RhoFSR(2, svar2,m_uu);
+ 	RhoFsr0 = RhoFSR(0, svar2,m_uu);
+ 	Dist *= dJac* RhoFsr2;
     svarCum *= (1-m_uu);
 ////////////////////////////////////////////////////////////
 // ******** mapping for polar angle *******
@@ -782,9 +784,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //****************************************
 //          Model weights
 //****************************************
-    m_WTmodel[2] = 0.0;
+    m_WTmodel[ 2] = 0.0;
+    m_WTmodel[52] = 0.0;
     if( Dist_EEX != 0.0){
-    	m_WTmodel[2] = Dist_GPS/Dist_EEX; // Auxiliary model weight
+    	m_WTmodel[ 2] = Dist_GPS/Dist_EEX; // Auxiliary model weight
+    	m_WTmodel[52] = Dist_GPS/Dist_EEX *RhoIsr0/RhoIsr2 *RhoFsr0/RhoFsr2;
     }//
 // principal distribution for FOAM, always positive
 	return Dist_EEX; // principal distribution for FOAM
