@@ -136,7 +136,11 @@ void TRobolKKMC::Hbooker()
   hst_CosPRCeex2->Sumw2();
   hst_CosPREex2= new TH1D("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
   hst_CosPREex2->Sumw2();
-  // scatergrams
+  // scatergrams unrestricted vmax<1.0
+  sca_vTcPL_Ceex0  = new TH2D("sca_vTcPL_Ceex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex0n = new TH2D("sca_vTcPL_Ceex0n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex0->Sumw2();
+  sca_vTcPL_Ceex0n->Sumw2();
   sca_vTcPL_Ceex2  = new TH2D("sca_vTcPL_Ceex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPL_Ceex2n = new TH2D("sca_vTcPL_Ceex2n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPL_Eex2   = new TH2D("sca_vTcPL_Eex2",     "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
@@ -154,7 +158,7 @@ void TRobolKKMC::Hbooker()
   sca_vXcPR_Ceex2->Sumw2();
   sca_vXcPR_Eex2->Sumw2();
   ///////////////////////////////////////////////////////////////////////////
-  //  New bigger scatergrams, restricted vmax
+  //  New bigger scatergrams, restricted vmax<0.2
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
   sct_vTcPR_Ceex2 = new TH2D("sct_vTcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -384,7 +388,7 @@ void TRobolKKMC::Production(double &iEvent)
     hst_CosPRCeex2->Fill(  CosPRD, WtCEEX2);
   }
   hst_CosPREex2->Fill(  CosPRD, WtEEX2);
-  // big scatergrams
+  // big scatergrams, range vv< 1.0
   sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
@@ -392,6 +396,9 @@ void TRobolKKMC::Production(double &iEvent)
   sca_vTcPL_Ceex2->Fill(   vv, CosThePL, WtCEEX2);
   sca_vTcPL_Ceex2n->Fill(  vv, CosThePL, WtCEEX2n); // true v, IFI off
   sca_vTcPL_Eex2->Fill(    vv, CosThePL,  WtEEX2);   // true v, IFI off
+
+  sca_vTcPL_Ceex0->Fill(   vv, CosThePL, WtCEEX0);
+  sca_vTcPL_Ceex0n->Fill(  vv, CosThePL, WtCEEX0n); // true v, IFI off
 
   sca_vXcPR_Ceex2->Fill(   vvK, CosPRD, WtCEEX2);
   sca_vXcPR_Eex2->Fill(    vvK, CosPRD, WtEEX2);
