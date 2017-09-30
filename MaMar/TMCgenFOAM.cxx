@@ -416,7 +416,7 @@ double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv){
   if(       KeyISR == 0){
 /// zero   order exponentiated
 	dels = 0;
-	delh = 0;
+	delh = -gami/4.0 *log(1.0-vv);
   }else if( KeyISR == 1){
 /// first  order
 	dels = gami/2;   /// NLO part =0 as for vector boson???
@@ -462,7 +462,7 @@ double TMCgenFOAM::RhoFSR(int KeyFSR, double svar, double uu){
   if(       KeyFSR == 0){
 /// zero   order exponentiated
 	dels = 0;
-	delh = 0;
+    delh = -gamf/4.0 *log(1.0-uu);
 //	rho  = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
   }else if( KeyFSR == 1){
 /// first  order
@@ -785,9 +785,11 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //          Model weights
 //****************************************
     m_WTmodel[ 2] = 0.0;
+    m_WTmodel[ 3] = 0.0;
     m_WTmodel[52] = 0.0;
     if( Dist_EEX != 0.0){
     	m_WTmodel[ 2] = Dist_GPS/Dist_EEX; // Auxiliary model weight
+    	m_WTmodel[ 3] = RhoIsr0/RhoIsr2 *RhoFsr0/RhoFsr2; // Auxiliary model weight
     	m_WTmodel[52] = Dist_GPS/Dist_EEX *RhoIsr0/RhoIsr2 *RhoFsr0/RhoFsr2;
     }//
 // principal distribution for FOAM, always positive
