@@ -165,20 +165,11 @@ void HisReMakeFoam35(TFile *DiskFileF){
   TH2D *SCA_xc_Ceex2  = (TH2D*)DiskFileF->Get("SCA_xc_Ceex2");   // FOAM big   range x<0.99
   TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF->Get("SCT_xc_Ceex2");   // FOAM small range x<0.20
 
-
   TH2D *SCA_xc_Ceex0  = (TH2D*)DiskFileF->Get("SCA_xc_Ceex0");   // FOAM big   range x<0.99
   TH2D *SCT_xc_Ceex0  = (TH2D*)DiskFileF->Get("SCT_xc_Ceex0");   // FOAM small range x<0.20
 
   TH2D *SCA_xc_Ceex0n  = (TH2D*)DiskFileF->Get("SCA_xc_Ceex0n");   // FOAM big   range x<0.99
   TH2D *SCT_xc_Ceex0n  = (TH2D*)DiskFileF->Get("SCT_xc_Ceex0n");   // FOAM small range x<0.20
-
-////////////////////////////////////////////////////////////////
-  // sigma(vmax) direct histogramming
-  HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
-  HisNorm1(HST_FOAM_NORMA3, HST_tx_Ceex2n );  // normalizing testing norm.
-  //
-  TH1D *HST_xmax_Ceex2n   = HstCumul("HST_xmax_Ceex2n",   HST_xx_Ceex2n);
-  TH1D *HST_txmax_Ceex2n  = HstCumul("HST_txmax_Ceex2n",  HST_tx_Ceex2n);
 
 ////////////////////////////////////////////////////////////////
   // FOAM3
@@ -197,7 +188,7 @@ void HisReMakeFoam35(TFile *DiskFileF){
   HisNorm2(HST_FOAM_NORMA5, SCA_xc_Ceex0 );   // normalizing
   HisNorm2(HST_FOAM_NORMA5, SCT_xc_Ceex0 );   // normalizing
 
-///////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
   // sigma(vmax) and AFB(vmax) from KKfoam, vmax<1, 50 bins in costheta
   int nbMax=0;   // <--- CosThetaMax = 1.0
   // Foam3
@@ -227,6 +218,20 @@ void HisReMakeFoam35(TFile *DiskFileF){
   // Foam5
   TH1D  *Htot2_xmax_Ceex2 = HstProjV("Htot2_xmax_Ceex2",SCT_xc_Ceex2,NbMax);
   TH1D  *Hafb2_xmax_Ceex2 = HstProjA("Hafb2_xmax_Ceex2",SCT_xc_Ceex2,NbMax);
+
+///****************************************************************************************
+  //     Calculating AFB from <cos(theta)>
+  TH1D *Afb5T_Ceex2  = HstTildeAFB("Afb5T_Ceex2", (TH1D*)DiskFileF->Get("HST5_xc_Ceex2"),
+		                                          (TH1D*)DiskFileF->Get("HST5_xx_Ceex2") );
+
+
+  ////////////////////////////////////////////////////////////////
+    // sigma(vmax) direct histogramming
+    HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
+    HisNorm1(HST_FOAM_NORMA3, HST_tx_Ceex2n );  // normalizing testing norm.
+    //
+    TH1D *HST_xmax_Ceex2n   = HstCumul("HST_xmax_Ceex2n",   HST_xx_Ceex2n);
+    TH1D *HST_txmax_Ceex2n  = HstCumul("HST_txmax_Ceex2n",  HST_tx_Ceex2n);
 
   cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;

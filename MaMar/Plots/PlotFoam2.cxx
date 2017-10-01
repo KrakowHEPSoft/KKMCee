@@ -109,59 +109,6 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
 }// PlotSame
 
 
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void ReMakeFoam(){
-	//------------------------------------------------------------------------
-  cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeFoam  BEGIN  ============================"<<endl;
-//////////////////////////////////////////////////////////////////
-  cout<<"  Renormalizing  and reprocessing histograms from FOAM"<<endl;
-
-  TH1D *HST_FOAM_NORMA3 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA3");
-  TH1D *HST_FOAM_NORMA5 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA5");
-
-  HisNorm2(HST_FOAM_NORMA3, (TH2D*)DiskFileF.Get("SCT_xc_EEX2") );
-  HisNorm2(HST_FOAM_NORMA3, (TH2D*)DiskFileF.Get("SCT_xc_Ceex2n") );
-  HisNorm2(HST_FOAM_NORMA3, (TH2D*)DiskFileF.Get("SCT_xc_Ceex0n") );  // normalizing
-
-  HisNorm2(HST_FOAM_NORMA5, (TH2D*)DiskFileF.Get("SCT_xc_Ceex2") );
-  HisNorm2(HST_FOAM_NORMA5, (TH2D*)DiskFileF.Get("SCT_xc_Ceex0") );   // normalizing
-
-  TH2D *SCT_xc_EEX2   = (TH2D*)DiskFileF.Get("SCT_xc_EEX2");    // FOAM small range x<0.20
-  TH2D *SCT_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2n");  // FOAM small range x<0.20
-  TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2");   // FOAM small range x<0.20
-  TH2D *SCT_xc_Ceex0  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex0");   // FOAM small range x<0.20
-  TH2D *SCT_xc_Ceex0n = (TH2D*)DiskFileF.Get("SCT_xc_Ceex0n");   // FOAM small range x<0.20
-
-  // KKFoam1: sigma(vmax) and AFB(vmax) from scat. vmax<0.2, 100 bins in ctheta
-  // gNbMax=45;           // cosThetaMax = 45/50=0.90 Now global variable
-  // Foam3
-  TH1D  *Htot2_xmax_EEX2    = HstProjV("Htot2_xmax_EEX2", SCT_xc_EEX2,gNbMax);
-  TH1D  *Hafb2_xmax_EEX2    = HstProjA("Hafb2_xmax_EEX2", SCT_xc_EEX2,gNbMax);
-  // Foam3
-  TH1D  *Htot2_xmax_Ceex2n   = HstProjV("Htot2_xmax_Ceex2n",SCT_xc_Ceex2n,gNbMax);
-  TH1D  *Hafb2_xmax_Ceex2n   = HstProjA("Hafb2_xmax_Ceex2n",SCT_xc_Ceex2n,gNbMax);
-  // Foam5
-  TH1D  *Htot2_xmax_Ceex0n   = HstProjV("Htot2_xmax_Ceex0n",SCT_xc_Ceex0n,gNbMax);
-  TH1D  *Hafb2_xmax_Ceex0n   = HstProjA("Hafb2_xmax_Ceex0n",SCT_xc_Ceex0n,gNbMax);
-  // Foam3
-  TH1D  *Htot2_xmax_Ceex2   = HstProjV("Htot2_xmax_Ceex2",SCT_xc_Ceex2,gNbMax);
-  TH1D  *Hafb2_xmax_Ceex2   = HstProjA("Hafb2_xmax_Ceex2",SCT_xc_Ceex2,gNbMax);
-  // Foam3
-  TH1D  *Htot2_xmax_Ceex0   = HstProjV("Htot2_xmax_Ceex0",SCT_xc_Ceex0,gNbMax);
-  TH1D  *Hafb2_xmax_Ceex0   = HstProjA("Hafb2_xmax_Ceex0",SCT_xc_Ceex0,gNbMax);
-
-  ///****************************************************************************************
-  //     Calculating AFB from <cos(theta)>
-  TH1D *Afb5T_Ceex2  = HstTildeAFB("Afb5T_Ceex2", (TH1D*)DiskFileF.Get("HST5_xc_Ceex2"),
-		                                          (TH1D*)DiskFileF.Get("HST5_xx_Ceex2") );
-
-  cout<<"================ ReMakeFoam ENDs  ============================="<<endl;
-  cout<<"==================================================================="<<endl;
-}//ReMakeFoam
-
 ///////////////////////////////////////////////////////////////////////////////////
 void FigAfb3a()
 {
@@ -450,9 +397,9 @@ int main(int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////
 // ========= Preparing plots ==========
   DiskFileB.cd();
-  ReMakeFoam();    // reprocessing MC histos from Foam
 
   HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
+  HisReMakeFoam35(&DiskFileF);   // reprocessing MC histos from Foam
 
 
 //========== PLOTTING ==========
