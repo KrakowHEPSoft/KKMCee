@@ -33,7 +33,7 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root");
 
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_55M"); //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_55M"); // 550M!!! obsolete
 
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
@@ -329,6 +329,8 @@ void FigAfb3b()
   cout<<" ========================= FigAfb3b =========================== "<<endl;
   //
 
+  TH1D *HAfb2_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  // KKMC[PL] CCEX2
+
   TH1D *HAfb2_vTcPL_Ceex0  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex0");  // KKMC[PL] CCEX0
   TH1D *HAfb2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex0n"); // KKMC[PL] CCEX0
 
@@ -349,6 +351,7 @@ void FigAfb3b()
   TH1D *HstC0_diff = HstDiff("HstC0_diff",    HAfb2_vTcPL_Ceex0,  HAfb2_vTcPL_Ceex0n, kBlack);  // KK_Ceex0:IFIon-IFIoff
   TH1D *HST21_diff = HstDiff("HST21_diff",    Hafb2_xmax_Ceex0,   Hafb2_xmax_Ceex0n,  kMagenta);// KKFoam5.0: IFIon-IFIoff
   TH1D *HstPL_diff = HstDiff("HstPL_diff",    HAfb2_vTcPL_Ceex0,  Hafb2_xmax_Ceex0,   kRed);    // KK_Ceex2-KKFoam:IFIon
+  TH1D *HST20_diff = HstDiff("HST20_diff",    HAfb2_vTcPL_Ceex2,  HAfb2_vTcPL_Ceex0,  kBlue);    // KK_Ceex2-KK_Ceex0:IFIon
 
   HST21_diff->SetStats(0);
   HST21_diff->SetTitle(0);
@@ -367,6 +370,7 @@ void FigAfb3b()
   PlotSame2(HstC0_diff,   ycapt, kBlack,     0.120, "(a)", "KKMC.0:  IFIon-IFIoff ");
   PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "Foam5.0: IFIon-IFIoff ");
   PlotSame2(HstPL_diff,   ycapt, kRed,       0.160, "(c)", "KKMC.0 - Foam5.0:  IFIon");
+//  PlotSame2(HST20_diff,   ycapt, kBlue,      0.140, "(d)", "KKMC.2 -KKMC.0 : IFIon ");
 
   ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;

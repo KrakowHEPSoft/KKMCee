@@ -69,7 +69,7 @@ PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
 PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-PlotFoam0_SOURCES = KKplot.cxx HisNorm.cxx PlotFoam0.cxx
+PlotFoam0_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotFoam0.cxx
 PlotFoam0_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
 PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
