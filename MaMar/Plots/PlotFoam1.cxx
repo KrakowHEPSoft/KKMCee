@@ -23,6 +23,7 @@ using namespace std;
 #include "TObjString.h"
 #include "TFile.h"
 
+#include "HisReMake.h"
 #include "HisNorm.h"
 #include "KKplot.h"
 
@@ -30,11 +31,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
@@ -95,97 +96,6 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   double yy= HST->GetBinContent(ib);
   CaptS->DrawLatex(xx,yy,label);
 }// PlotSame2
-
-
-
-void HistNormKKMC(){
-  //
-  cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
-  //DiskFileA.ls("");
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vAlepCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vXGenCeex2") );
-  //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_Cost1Ceex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPLCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPRCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPREex2") );
-  //
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2") );
-  //
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2") );
-  //
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2") );
-  //
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n") );
-
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
-  //
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-void ReMakeKKMC(){
-	//------------------------------------------------------------------------
-  cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeKKMC  BEGIN ============================"<<endl;
-////////////////////////////////////////////////////////////////////
-// Pure KKMC reprocessing part
-// from bigger scattergram and restricted vmax<0.2
-//////////////////////////////////////////////////////////////////
-    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
-
-    TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-
-    ///****************************************************************************************
-    // Pure KKMC reprocessing part
-    int nbMax;
-    cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
-    // Wide range, vmax<1.
-    TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
-    TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
-    TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
-
-    //****************************************************************************************
-    //  dsigma/dv unlimited cos(theta)
-    //****************************************************************************************
-    TH1D *Hpro_vT_Ceex2;
-    ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
-    Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
-    //  dsigma/dv unlimited cos(theta)
-    TH1D *Hpro_vT_Ceex2n;
-    ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
-    Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
-
-    ///****************************************************************************************
-    // More Wide range, vmax<1.
-    TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPL_Eex2");
-    TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2");
-    TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPL_Ceex2n");
-    //
-    TH1D                    *HTot_vTcPL_Ceex2, *HAfb_vTcPL_Ceex2;
-    ProjV( sca_vTcPL_Ceex2,  HTot_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2, nbMax);  //!!!!
-    HTot_vTcPL_Ceex2->SetName("HTot_vTcPL_Ceex2");
-    HAfb_vTcPL_Ceex2->SetName("HAfb_vTcPL_Ceex2");
-    //
-    TH1D                    *HTot_vTcPL_Ceex2n,  *HAfb_vTcPL_Ceex2n;
-    ProjV( sca_vTcPL_Ceex2n,  HTot_vTcPL_Ceex2n,  HAfb_vTcPL_Ceex2n, nbMax);  //!!!!
-    HTot_vTcPL_Ceex2n->SetName("HTot_vTcPL_Ceex2n");
-    HAfb_vTcPL_Ceex2n->SetName("HAfb_vTcPL_Ceex2n");
-
-
-  cout<<"================ ReMakeKKMC ENDs  ============================="<<endl;
-  cout<<"==================================================================="<<endl;
-}//ReMakeKKMC
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -671,8 +581,9 @@ int main(int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////
 // ========= Preparing plots ==========
   DiskFileB.cd();
-  HistNormKKMC();     // Renormalization of MC histograms
-  ReMakeKKMC();       // reprocessing MC histos from KKC
+
+  HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
+
   ReMakeFoam1();      // reprocessing MC histos from Foam1
   KKsemMakeHisto();   // prepare histos from KKsem
 //========== PLOTTING ==========

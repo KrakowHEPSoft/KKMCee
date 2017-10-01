@@ -35,11 +35,14 @@ void HisReMakeKKMC(TFile *DiskFileA){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex2n") );
 
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex2") );
 
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex0") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex0n") );
   //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2n") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vTcPL_Ceex2n") );
 
 //]]]]]]]]]]]]]]]]
 ////////////////////////////////////////////////////////////////////
@@ -82,17 +85,21 @@ void HisReMakeKKMC(TFile *DiskFileA){
   TH1D  *HAfb2_vTcPL_Ceex0n = HstProjA("HAfb2_vTcPL_Ceex0n",sct_vTcPL_Ceex0n,NbMax);
 
 ///****************************************************************************************
-// Pure KKMC reprocessing part
+// Pure KKMC reprocessing part, vmax<1.
   int nbMax;
   cout<<"  Renormalizing  and reprocessing histograms from KKMC"<<endl;
   // Wide range, vmax<1.
   TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA->Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2n");
+  //
+  TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA->Get("sca_vTcPL_Eex2");
+  TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2");
+  TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2n");
 //****************************************************************************************
 // Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
 //****************************************************************************************
-//    nbMax=0;            // cosThetaMax = 1.0
+//  nbMax=0;            // cosThetaMax = 1.0
 // KKMC IFI on
   TH1D  *HTot_vTcPR_Eex2    = HstProjV("HTot_vTcPR_Eex2",sca_vTcPR_Eex2,NbMax);
   TH1D  *HAfb_vTcPR_Eex2    = HstProjA("HAfb_vTcPR_Eex2",sca_vTcPR_Eex2,NbMax);
@@ -104,10 +111,6 @@ void HisReMakeKKMC(TFile *DiskFileA){
   TH1D  *HAfb_vTcPR_Ceex2n = HstProjA("HAfb_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,NbMax);
  ///****************************************************************************************
   // More Wide range, vmax<1.
-  TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA->Get("sca_vTcPL_Eex2");
-  TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2");
-  TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2n");
-  //
   TH1D  *HTot_vTcPL_Ceex2 = HstProjV("HTot_vTcPL_Ceex2",sca_vTcPL_Ceex2,NbMax);
   TH1D  *HAfb_vTcPL_Ceex2 = HstProjA("HAfb_vTcPL_Ceex2",sca_vTcPL_Ceex2,NbMax);
   //
@@ -123,6 +126,14 @@ void HisReMakeKKMC(TFile *DiskFileA){
   TH1D *Hpro_vT_Ceex2n;
   ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
   Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
+
+
+  ///****************************************************************************************
+  //      AFB fron <cos(theta)>
+  TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2"),
+                                                (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
+  TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2n"),
+                                                (TH1D*)DiskFileA->Get("hst_vT_Ceex2n")  );
 
 cout<<"================ HisReMakeKKMC ENDs  ============================="<<endl;
 cout<<"==================================================================="<<endl;

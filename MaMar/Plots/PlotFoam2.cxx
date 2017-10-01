@@ -23,6 +23,7 @@ using namespace std;
 #include "TObjString.h"
 #include "TFile.h"
 
+#include "HisReMake.h"
 #include "HisNorm.h"
 #include "KKplot.h"
 
@@ -160,83 +161,6 @@ void ReMakeFoam(){
   cout<<"================ ReMakeFoam ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//ReMakeFoam
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void ReMakeKKMC(){
-	//------------------------------------------------------------------------
-  cout<<"==================================================================="<<endl;
-  cout<<"================ ReMakeKKMC  BEGIN ============================"<<endl;
-
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2") );
-
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n") );
-
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0n") );
-
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vT_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vTcPL_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vT_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("hst_vTcPL_Ceex2n") );
-
-////////////////////////////////////////////////////////////////////
-// Pure KKMC reprocessing from scattergram with restricted vmax<0.2
-////////////////////////////////////////////////////////////////////
-
-// Wide range, vmax<1.
-  TH2D *sct_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2");
-  TH2D *sct_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPR_Ceex2n");
-  TH2D *sct_vTcPR_EEX2   = (TH2D*)DiskFileA.Get("sct_vTcPR_EEX2");
-  TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
-  TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
-
-  TH2D *sct_vTcPL_Ceex0  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0");
-  TH2D *sct_vTcPL_Ceex0n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex0n");
-
-  cout<<"ReMakeKKMC [2]"<<endl;
-///****************************************************************************************
-/// Distributions of v=vTrue<vmax<0.20, c=cos(theta) with 100 bins
-//gNbMax=45;         // cosThetaMax = 45/50=0.90 Now global variable
-// KKMC IFI on
-  TH1D  *HTot2_vTcPR_EEX2   = HstProjV("HTot2_vTcPR_EEX2",sct_vTcPR_EEX2,gNbMax);
-  TH1D  *HAfb2_vTcPR_EEX2   = HstProjA("HAfb2_vTcPR_EEX2",sct_vTcPR_EEX2,gNbMax);
-// KKMC IFI off
-  TH1D  *HTot2_vTcPR_Ceex2  = HstProjV("HTot2_vTcPR_Ceex2",sct_vTcPR_Ceex2,gNbMax);
-  TH1D  *HAfb2_vTcPR_Ceex2  = HstProjA("HAfb2_vTcPR_Ceex2",sct_vTcPR_Ceex2,gNbMax);
-// KKMC IFI off
-  TH1D  *HTot2_vTcPR_Ceex2n = HstProjV("HTot2_vTcPR_Ceex2n",sct_vTcPR_Ceex2n,gNbMax);
-  TH1D  *HAfb2_vTcPR_Ceex2n = HstProjA("HAfb2_vTcPR_Ceex2n",sct_vTcPR_Ceex2n,gNbMax);
-// KKMC IFI off
-  TH1D  *HTot2_vTcPL_Ceex2  = HstProjV("HTot2_vTcPL_Ceex2",sct_vTcPL_Ceex2,gNbMax);
-  TH1D  *HAfb2_vTcPL_Ceex2  = HstProjA("HAfb2_vTcPL_Ceex2",sct_vTcPL_Ceex2,gNbMax);
-// KKMC IFI off
-  TH1D  *HTot2_vTcPL_Ceex2n = HstProjV("HTot2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
-  TH1D  *HAfb2_vTcPL_Ceex2n = HstProjA("HAfb2_vTcPL_Ceex2n",sct_vTcPL_Ceex2n,gNbMax);
-
-// KKMC IFI on
-  TH1D  *HTot2_vTcPL_Ceex0  = HstProjV("HTot2_vTcPL_Ceex0",sct_vTcPL_Ceex0,gNbMax);
-  TH1D  *HAfb2_vTcPL_Ceex0  = HstProjA("HAfb2_vTcPL_Ceex0",sct_vTcPL_Ceex0,gNbMax);
-// KKMC IFI on
-  TH1D  *HTot2_vTcPL_Ceex0n = HstProjV("HTot2_vTcPL_Ceex0n",sct_vTcPL_Ceex0n,gNbMax);
-  TH1D  *HAfb2_vTcPL_Ceex0n = HstProjA("HAfb2_vTcPL_Ceex0n",sct_vTcPL_Ceex0n,gNbMax);
-
-
-///****************************************************************************************
-//      AFB fron <cos(theta)>
-  TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2"),
-		                                        (TH1D*)DiskFileA.Get("hst_vT_Ceex2")   );
-  TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA.Get("hst_vTcPL_Ceex2n"),
-		                                        (TH1D*)DiskFileA.Get("hst_vT_Ceex2n")  );
-  cout<<"================ ReMakeKKMC ENDs  ============================="<<endl;
-  cout<<"==================================================================="<<endl;
-}//ReMakeKKMC
-
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigAfb3a()
@@ -527,7 +451,10 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
   ReMakeFoam();    // reprocessing MC histos from Foam
-  ReMakeKKMC();    // reprocessing MC histos from KKMC
+
+  HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
+
+
 //========== PLOTTING ==========
   FigAfb3a();
   FigAfb3b();
