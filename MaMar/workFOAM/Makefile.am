@@ -54,7 +54,7 @@ sfarm6:	farm-clean start_n
 sfarm24:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",24)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-sfarm40:	farm-clean check_all
+sfarm40:	farm-clean start_n
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",40)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
