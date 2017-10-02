@@ -112,6 +112,98 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
 }// PlotSame
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb20()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb20 =========================== "<<endl;
+  //
+  TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n");  // KKMC[PL]
+  TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC[PL]
+  //
+  TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // KKFoam scat.
+  TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // KKFoam scat.
+  //
+  TH1D *HAfb_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0n");  // KKMC[PL]
+  TH1D *HAfb_vTcPL_Ceex0  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0");  // KKMC[PL]
+  //
+  TH1D *Hafb_xmax_Ceex0n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0n");  // KKFoam scat.
+  TH1D *Hafb_xmax_Ceex0   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0");   // KKFoam scat.
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+//
+  //*****************************************************************************
+  TCanvas *cFigAfb20 = new TCanvas("cFigAfb20","FigAfb20", gXcanv, gYcanv,   1200, 600);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
+  cFigAfb20->Divide( 2,  0);
+  cFigAfb20->SetFillColor(10);
+  cFigAfb20->cd(1);
+
+  TH1D *HstN_diff    = HstDiff("HstN_diff",    HAfb_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2n, kBlack);
+  TH1D *HstN_diff2   = HstDiff("HstN_diff2",   Hafb_xmax_Ceex2,   Hafb_xmax_Ceex2n,  kMagenta);
+  TH1D *HstN_diff3   = HstDiff("HstN_diff3",   HAfb_vTcPL_Ceex2,  Hafb_xmax_Ceex2,  kMagenta);
+
+  HstN_diff->SetStats(0);
+  HstN_diff->SetTitle(0);
+  if( fabs(gCMSene -95.0) < 1.0) { HstN_diff->SetMinimum(-0.004);  HstN_diff->SetMaximum( 0.004);}  // 95GeV
+
+  HstN_diff->GetXaxis()->SetTitle("v_{max}");
+  HstN_diff->DrawCopy("h");
+
+  double ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+
+  PlotSame2(HstN_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.2:  IFIon-IFIoff ");
+  PlotSame2(HstN_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.2:  IFIon-IFIoff ");
+  PlotSame2(HstN_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.2 - Foam.2: IFIon");
+
+  // zero line
+  TH1D *hZeroN = (TH1D*)HAfb_vTcPL_Ceex2->Clone("hZeroN");  // zero line
+  for(int i=1; i <= hZeroN->GetNbinsX() ; i++) { hZeroN->SetBinContent(i, 0); hZeroN->SetBinError(i, 0);}
+  hZeroN->SetLineColor(kBlack);
+  hZeroN->DrawCopy("hsame");
+
+  //====================plot2========================
+  cFigAfb20->cd(2);
+  TH1D *HstK_diff    = HstDiff("HstK_diff",    HAfb_vTcPL_Ceex0,  HAfb_vTcPL_Ceex0n, kBlack);
+  TH1D *HstK_diff2   = HstDiff("HstK_diff2",   Hafb_xmax_Ceex0,   Hafb_xmax_Ceex0n,  kMagenta);
+  TH1D *HstK_diff3   = HstDiff("HstK_diff3",   HAfb_vTcPL_Ceex0,  Hafb_xmax_Ceex0,  kMagenta);
+
+  HstK_diff->SetStats(0);
+  HstK_diff->SetTitle(0);
+  if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
+
+  HstK_diff->GetXaxis()->SetTitle("v_{max}");
+  HstK_diff->DrawCopy("h");
+
+  ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+
+  PlotSame2(HstK_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.0:  IFIon-IFIoff ");
+  PlotSame2(HstK_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.0:  IFIon-IFIoff ");
+  PlotSame2(HstK_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.0 - Foam.0: IFIon");
+
+  // zero line
+  hZeroN->DrawCopy("hsame");
+
+  ycapt=0.35;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
+
+
+}//
+
 ///////////////////////////////////////////////////////////////////////////////////
 void FigAfb3a()
 {
@@ -293,7 +385,10 @@ void FigAfb5()
 
   CaptT->DrawLatex(0.22,0.95,"KKMC: A_{FB}[#theta_{PRD}] - A_{FB}[#theta_{PL}] ");
 
-  CaptT->DrawLatex(0.50,0.75,gTextEne);
+  double ycapt=0.75;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+//  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   cFigAfb5->cd();
   //================================================
@@ -342,6 +437,7 @@ int main(int argc, char **argv)
 
 
 //========== PLOTTING ==========
+  FigAfb20();
   FigAfb3a();
   FigAfb4();
   FigAfb5();

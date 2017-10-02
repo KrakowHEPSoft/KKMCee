@@ -24,9 +24,12 @@ void HisReMakeKKMC(TFile *DiskFileA){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPR_Eex2") );
   //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Eex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Eex2") );
+  //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex0") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex0n") );
   //
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPR_Ceex2n") );
@@ -35,10 +38,9 @@ void HisReMakeKKMC(TFile *DiskFileA){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex2n") );
 
-
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex0") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sct_vTcPL_Ceex0n") );
-  //
+  // ??? HisNorm2 ???
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vTcPL_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2n") );
@@ -96,6 +98,9 @@ void HisReMakeKKMC(TFile *DiskFileA){
   TH2D *sca_vTcPL_Eex2   = (TH2D*)DiskFileA->Get("sca_vTcPL_Eex2");
   TH2D *sca_vTcPL_Ceex2  = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2");
   TH2D *sca_vTcPL_Ceex2n = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex2n");
+
+  TH2D *sca_vTcPL_Ceex0  = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex0");
+  TH2D *sca_vTcPL_Ceex0n = (TH2D*)DiskFileA->Get("sca_vTcPL_Ceex0n");
 //****************************************************************************************
 // Distributions of v=vTrue<1.0 unlimited c=cos(theta), 50 bins
 //****************************************************************************************
@@ -116,6 +121,12 @@ void HisReMakeKKMC(TFile *DiskFileA){
   //
   TH1D  *HTot_vTcPL_Ceex2n = HstProjV("HTot_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,NbMax);
   TH1D  *HAfb_vTcPL_Ceex2n = HstProjA("HAfb_vTcPL_Ceex2n",sca_vTcPL_Ceex2n,NbMax);
+  //
+  TH1D  *HTot_vTcPL_Ceex0 = HstProjV("HTot_vTcPL_Ceex0",sca_vTcPL_Ceex0,NbMax);
+  TH1D  *HAfb_vTcPL_Ceex0 = HstProjA("HAfb_vTcPL_Ceex0",sca_vTcPL_Ceex0,NbMax);
+  //
+  TH1D  *HTot_vTcPL_Ceex0n = HstProjV("HTot_vTcPL_Ceex0n",sca_vTcPL_Ceex0n,NbMax);
+  TH1D  *HAfb_vTcPL_Ceex0n = HstProjA("HAfb_vTcPL_Ceex0n",sca_vTcPL_Ceex0n,NbMax);
   //****************************************************************************************
   //  dsigma/dv unlimited cos(theta)
   //****************************************************************************************
@@ -197,6 +208,12 @@ void HisReMakeFoam35(TFile *DiskFileF){
   // Foam5
   TH1D  *Htot_xmax_Ceex2 = HstProjV("Htot_xmax_Ceex2",SCA_xc_Ceex2,NbMax);
   TH1D  *Hafb_xmax_Ceex2 = HstProjA("Hafb_xmax_Ceex2",SCA_xc_Ceex2,NbMax);
+  // Foam3
+  TH1D  *Htot_xmax_Ceex0n = HstProjV("Htot_xmax_Ceex0n",SCA_xc_Ceex0n,NbMax);
+  TH1D  *Hafb_xmax_Ceex0n = HstProjA("Hafb_xmax_Ceex0n",SCA_xc_Ceex0n,NbMax);
+  // Foam5
+  TH1D  *Htot_xmax_Ceex0 = HstProjV("Htot_xmax_Ceex0",SCA_xc_Ceex0,NbMax);
+  TH1D  *Hafb_xmax_Ceex0 = HstProjA("Hafb_xmax_Ceex0",SCA_xc_Ceex0,NbMax);
 
 // sigma(vmax) and AFB(vmax) from KKfoam scat. vmax<0.2, 100 bins in ctheta
 //NbMax=45;           // cosThetaMax = 45/50=0.90 Now global variable
