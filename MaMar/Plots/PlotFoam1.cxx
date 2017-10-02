@@ -40,6 +40,8 @@ TFile DiskFileA("../workKKMC/histo.root");
 
 ////  *** FOAM
 TFile DiskFileF("../workFOAM1/histo.root"); // current
+// Sept. 2017 runs
+//TFile DiskFileF("../workFOAM1/histo.root_95GeV_???");
 
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 

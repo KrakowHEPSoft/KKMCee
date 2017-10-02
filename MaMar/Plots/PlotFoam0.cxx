@@ -46,10 +46,11 @@ TFile DiskFileA("../workKKMC/histo.root");
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_14G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
 // August2017 runs
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_14G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_45G");
@@ -318,6 +319,90 @@ void FigVdist()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+void FigAfb0()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb0 =========================== "<<endl;
+  //
+  TH1D *HAfb2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex0n");  //
+  TH1D *HAfb2_vTcPL_Ceex0  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex0");  //
+  //
+  TH1D *Hafb2_xmax_Ceex0n  = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex0n");  // FOAM scatt.
+  TH1D *Hafb2_xmax_Ceex0   = (TH1D*)DiskFileB.Get("Hafb2_xmax_Ceex0");   // FOAM scatt.
+
+  TH1D *afbv_ISR0_FSR0    = (TH1D*)DiskFileB.Get("afbv_ISR0_FSR0");    // KKsem
+
+  //*****************************************************************************
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigAfb0 = new TCanvas("cFigAfb0","FigAfb0", gXcanv, gYcanv,   1200, 550);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 100; gYcanv += 50;
+  cFigAfb0->SetFillColor(10);
+  cFigAfb0->Divide( 2,  0);
+
+  //====================plot1========================
+  //                AFB(vmax)
+  cFigAfb0->cd(1);
+  TH1D *Hst1 = HAfb2_vTcPL_Ceex0n;         // KKMC AFB(vmax) from scat. IFI off
+  TH1D *Hst2 = HAfb2_vTcPL_Ceex0;          // KKMC AFB(vmax) from scat. IFI on
+  //
+  Hst2->SetStats(0);
+  Hst2->SetTitle(0);
+  Hst2->SetLineColor(kMagenta);            // magenta
+
+  if( fabs(gCMSene-94e0) <1.0 ) { Hst2->SetMinimum( 0.15); Hst2->SetMaximum( 0.35);}
+  if( fabs(gCMSene-10e0) <1.0 ) { Hst2->SetMinimum(-0.02); Hst2->SetMaximum( 0.08);}
+
+  Hst2->GetXaxis()->SetTitle("v_{max}");
+  Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
+
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  double ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+
+  PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC.0   IFIon ");
+  PlotSame2(Hafb2_xmax_Ceex0, ycapt, kGreen,     0.025, "(b)", "Foam5.0  IFIon ");
+  PlotSame2(afbv_ISR0_FSR0,   ycapt, kRed,       0.120, "(c)", "KKsem.0  IFIoff ");
+  PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.0   IFIoff ");
+  PlotSame2(Hafb2_xmax_Ceex0n,ycapt, kBlue,      0.150, "(e)", "Foam3.0  IFIoff ");
+
+
+  //====================plot2========================
+  cFigAfb0->cd(2);
+  TH1D *Hst21_diff0   = HstDiff("Hst21_diff0",    HAfb2_vTcPL_Ceex0,  HAfb2_vTcPL_Ceex0n,  kBlack);
+  TH1D *HST21_diff0   = HstDiff("HST21_diff0",    Hafb2_xmax_Ceex0,   Hafb2_xmax_Ceex0n,   kMagenta);
+  TH1D *HstPL_diff0   = HstDiff("HstPL_diff0",    HAfb2_vTcPL_Ceex0,  Hafb2_xmax_Ceex0,    kRed);
+  TH1D *HstKFn_diff0  = HstDiff("HstKFn_diff0",   HAfb2_vTcPL_Ceex0n, Hafb2_xmax_Ceex0n,  kBlue);
+
+  Hst21_diff0->SetMinimum(-0.004); Hst21_diff0->SetMaximum( 0.004);  // zoom
+  Hst21_diff0->GetXaxis()->SetTitle("v_{max}");
+  Hst21_diff0->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  ycapt = 0.99; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+
+  PlotSame2(Hst21_diff0,   ycapt, kBlack,     0.120, "(a)", "KKMC.0,   IFIon - IFIoff ");
+  PlotSame2(HST21_diff0,   ycapt, kMagenta,   0.140, "(b)", "Foam5.0   IFIon - IFIoff ");
+  PlotSame2(HstPL_diff0,   ycapt, kRed,       0.100, "(c)", "KKMC.0_IFIon  - Foam5.0_IFIon ");
+  PlotSame2(HstKFn_diff0,  ycapt, kBlue,      0.160, "(d)", "KKMC.0_IFIoff - Foam3.0_IFIoff ");
+
+// zero line
+  TH1D *hZero0 = (TH1D*)Hst1->Clone("hZero0");  // zero line
+  for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
+  hZero0->DrawCopy("hsame");
+
+
+
+  //================================================
+}//FigAfb0
+
+///////////////////////////////////////////////////////////////////////////////////
 void FigAfb2()
 {
 //------------------------------------------------------------------------
@@ -344,6 +429,9 @@ void FigAfb2()
   HST_IFI4->SetLineColor(kCyan);
 //
   //*****************************************************************************
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAfb2 = new TCanvas("cFigAfb2","FigAfb2", gXcanv, gYcanv,   1200, 550);
   //                                 Name    Title      xoff,yoff, WidPix,HeiPix
@@ -352,9 +440,6 @@ void FigAfb2()
   ////////////////////////////////////////////////////////////////////////////////
   cFigAfb2->Divide( 2,  0);
   //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.035);
   //====================plot1========================
   //                AFB(vmax)
   cFigAfb2->cd(1);
@@ -368,8 +453,8 @@ void FigAfb2()
   Hst2->SetTitle(0);
   Hst2->SetLineColor(kMagenta);            // magenta
 
-  Hst2->SetMinimum(-1);  //
-  Hst2->SetMaximum( 1);  //
+  //Hst2->SetMinimum(-1);  //
+  //Hst2->SetMaximum( 1);  //
 
   if( fabs(gCMSene-94e0) <1.0 ) { Hst2->SetMinimum( 0.15); Hst2->SetMaximum( 0.35);}
   if( fabs(gCMSene-10e0) <1.0 ) { Hst2->SetMinimum(-0.02); Hst2->SetMaximum( 0.08);}
@@ -425,10 +510,10 @@ void FigAfb2()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigTech0()
+void FigSigAfb0()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigTech0 IFI off =========================== "<<endl;
+  cout<<" ========================= FigSigAfb0 IFI off =========================== "<<endl;
 
 // sigma(vmax)
   TH1D *HTot2_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HTot2_vTcPL_Ceex0n"); // KKMC sigma(vmax) from scat.
@@ -456,14 +541,14 @@ void FigTech0()
   CaptT->SetTextSize(0.035);
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigTech0 = new TCanvas("cFigTech0","FigTech0", gXcanv, gYcanv,   1200, 550);
+  TCanvas *cFigSigAfb0 = new TCanvas("cFigSigAfb0","FigSigAfb0", gXcanv, gYcanv,   1200, 550);
   //                                 Name    Title      xoff,    yoff, WidPix,HeiPix
   gXcanv += 100; gYcanv += 50;
-  cFigTech0->SetFillColor(10);
+  cFigSigAfb0->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigTech0->Divide( 2,  0);
+  cFigSigAfb0->Divide( 2,  0);
   //====================plot1========================
-  cFigTech0->cd(1);
+  cFigSigAfb0->cd(1);
   TH1D *HstTech0_ratio  = HstRatio("HstTech0_ratio",   HTot2_vTcPL_Ceex0n, vcum_ISR0_FSR0, kBlack);
   TH1D *HstTech0_ratio2 = HstRatio("HstTech0_ratio2",  Htot2_xmax_Ceex0n,  vcum_ISR0_FSR0, kGreen);
   TH1D *HstTech0_ratio3 = HstRatio("HstTech0_ratio3",  Htot2_xmax_Ceex0,   vcum_ISR0_FSR0, kGreen);
@@ -486,7 +571,7 @@ void FigTech0()
   CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max}) ");
 
   //====================plot2========================
-  cFigTech0->cd(2);
+  cFigSigAfb0->cd(2);
   TH1D *HstTech0_diff2  = HstDiff("HstTech0_diff2",   HAfb2_vTcPL_Ceex0n, afbv_ISR0_FSR0, kBlack);
   TH1D *HstTech0_diff1  = HstDiff("HstTech0_diff1",   Hafb2_xmax_Ceex0n,  afbv_ISR0_FSR0, kGreen);
   TH1D *HstTech0_diff3  = HstDiff("HstTech0_diff3",   Hafb2_xmax_EEX0,    afbv_ISR0_FSR0, kMagenta);
@@ -515,14 +600,14 @@ void FigTech0()
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   //================================================
-}//FigTech0
+}//FigSigAfb0
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigTech()
+void FigSigAfb2()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigTech IFI off =========================== "<<endl;
+  cout<<" ========================= FigSigAfb2 IFI off =========================== "<<endl;
 
 // sigma(vmax)
   TH1D *HTot2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2n"); // KKMC sigma(vmax) from scat.
@@ -559,14 +644,14 @@ void FigTech()
   CaptT->SetTextSize(0.035);
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigTech = new TCanvas("cFigTech","FigTech", gXcanv, gYcanv,   1200, 550);
+  TCanvas *cFigSigAfb2 = new TCanvas("cFigSigAfb2","FigSigAfb2", gXcanv, gYcanv,   1200, 550);
   //                                 Name    Title      xoff,    yoff, WidPix,HeiPix
   gXcanv += 100; gYcanv += 50;
-  cFigTech->SetFillColor(10);
+  cFigSigAfb2->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigTech->Divide( 2,  0);
+  cFigSigAfb2->Divide( 2,  0);
   //====================plot1========================
-  cFigTech->cd(1);
+  cFigSigAfb2->cd(1);
   TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,    vcum_ISR2_FSR2, kGreen);
   TH1D *HstTech_ratio1  = HstRatio("HstTech_ratio1",  Htot2_xmax_Ceex2n,  vcum_ISR2_FSR2, kGreen);
   TH1D *HstTech_ratio3  = HstRatio("HstTech_ratio3",  HST_txmax_Ceex2n,   vcum_ISR2_FSR2, kRed);
@@ -600,7 +685,7 @@ void FigTech()
   CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max}) ");
 
   //====================plot2========================
-  cFigTech->cd(2);
+  cFigSigAfb2->cd(2);
   TH1D *HstTech_diff0  = HstDiff("HstTech_diff0",   Hafb2_xmax_EEX2,    afbv_ISR2_FSR2, kMagenta);
   TH1D *HstTech_diff1  = HstDiff("HstTech_diff1",   Hafb2_xmax_Ceex2n,  afbv_ISR2_FSR2, kGreen);
   TH1D *HstTech_diff2  = HstDiff("HstTech_diff2",   HAfb2_vTcPR_Ceex2n, afbv_ISR2_FSR2, kBlack);
@@ -630,10 +715,10 @@ void FigTech()
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
-  cFigTech->cd();
+  cFigSigAfb2->cd();
   //================================================
 
-}//FigTech
+}//FigSigAfb2
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -731,9 +816,10 @@ int main(int argc, char **argv)
 // vmax=1, sigma(v) and sigma(vmax) KKMC/Foam
 //  FigVdist(); // OBSOLETE
   FigInfo();
+  FigAfb0();  // vmax =0.2
   FigAfb2();  // vmax =0.2
-  FigTech();  // vmax =0.2
-  FigTech0();  // vmax =0.2
+  FigSigAfb2();  // vmax =0.2
+  FigSigAfb0();  // vmax =0.2
 // weight distribution
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
