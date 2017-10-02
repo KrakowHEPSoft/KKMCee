@@ -31,10 +31,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_55M"); // 550M!!! obsolete
+TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
 
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //

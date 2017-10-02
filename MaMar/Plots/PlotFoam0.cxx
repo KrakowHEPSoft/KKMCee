@@ -31,9 +31,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_55M"); // It is 550M!!!
+TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
