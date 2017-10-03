@@ -31,10 +31,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 
 // Sept. 2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
+TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
@@ -43,9 +44,10 @@ TFile DiskFileA("../workKKMC/histo.root");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM 5dim
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
+TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 // August2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_16G");
@@ -346,7 +348,6 @@ int main(int argc, char **argv)
 
 
 //========== PLOTTING ==========
-  FigAfb20();
   FigAfb3a();
   FigAfb4();
   FigAfb5();
@@ -363,7 +364,11 @@ int main(int argc, char **argv)
   //DiskFileA.GetListOfKeys()->Print();
   cout<<"------------------------F.GetListOfKeys-----------------------------"<<endl;
   DiskFileF.GetListOfKeys()->Print();
-  //cout<<"------------------------------end---------------------------------"<<endl;
+  //
+   cout<< "CMSene[GeV] = "<< gCMSene<< endl;
+   cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
+   cout<< "FOAM: No. of farm nodes="<< Nodes2 << "  Tot no. of events = "<<gNevTot2<<endl;
+  cout<<"------------------------------end---------------------------------"<<endl;
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
