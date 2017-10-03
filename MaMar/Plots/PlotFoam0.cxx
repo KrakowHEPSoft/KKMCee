@@ -33,8 +33,8 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
-TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
+TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
@@ -49,8 +49,8 @@ TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
-TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 // August2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_14G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
@@ -428,16 +428,16 @@ void FigAfb0()
   TH1D *HstPL_diff0   = HstDiff("HstPL_diff0",    HAfb2_vTcPL_Ceex0,  Hafb2_xmax_Ceex0,    kRed);
   TH1D *HstKFn_diff0  = HstDiff("HstKFn_diff0",   HAfb2_vTcPL_Ceex0n, Hafb2_xmax_Ceex0n,  kBlue);
 
-  if( fabs(gCMSene -95.0) < 1.0) { Hst21_diff0->SetMinimum(-0.004);  Hst21_diff0->SetMaximum( 0.006);}  // 95GeV
-  if( fabs(gCMSene -88.0) < 1.0) { Hst21_diff0->SetMinimum(-0.002);  Hst21_diff0->SetMaximum( 0.012);}  // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) { Hst21_diff0->SetMinimum(-0.0005); Hst21_diff0->SetMaximum( 0.0035);} // 91GeV
-  if( fabs(gCMSene -10.0) < 1.0) { Hst21_diff0->SetMinimum(-0.002);  Hst21_diff0->SetMaximum( 0.006);}  // 10GeV
+  ycapt = 0.99; // starting value, to be decremented below
+  if(fabs(gCMSene-95.0) <1.0) { Hst21_diff0->SetMinimum(-0.004);  Hst21_diff0->SetMaximum( 0.006);}  // 95GeV
+  if(fabs(gCMSene-88.0) <1.0) { Hst21_diff0->SetMinimum(-0.002);  Hst21_diff0->SetMaximum( 0.012); ycapt = 0.55;}// 88GeV
+  if(fabs(gCMSene-91.0) <1.0) { Hst21_diff0->SetMinimum(-0.0005); Hst21_diff0->SetMaximum( 0.0045);} // 91GeV
+  if(fabs(gCMSene-10.0) <1.0) { Hst21_diff0->SetMinimum(-0.002);  Hst21_diff0->SetMaximum( 0.006);}  // 10GeV
 
   Hst21_diff0->GetXaxis()->SetTitle("v_{max}");
   Hst21_diff0->DrawCopy("h");
 
   CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
-  ycapt = 0.99; // starting value, to be decremented below
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
@@ -527,22 +527,20 @@ void FigAfb2()
   PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem.2  IFIoff ");
   PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.2   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3.2  IFIoff ");
-  PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43.1  IFIoff ");
+  PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
 
   //====================plot2========================
   cFigAfb2->cd(2);
   TH1D *Hst21_diff   = HstDiff("Hst21_diff",    HAfb2_vTcPL_Ceex2,  HAfb2_vTcPL_Ceex2n,  kBlack);
   TH1D *HST21_diff   = HstDiff("HST21_diff",    Hafb2_xmax_Ceex2,   Hafb2_xmax_Ceex2n,   kMagenta);
-//  TH1D *HstKF_diff   = HstDiff("HstKF_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kGreen);
   TH1D *HstPL_diff   = HstDiff("HstPL_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kRed);
   TH1D *HstKFn_diff  = HstDiff("HstKFn_diff",   HAfb2_vTcPL_Ceex2n,  Hafb2_xmax_Ceex2n,  kBlue);
+  //  TH1D *HstKF_diff   = HstDiff("HstKF_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kGreen);
 
-  //Hst21_diff->SetMinimum(-0.004); Hst21_diff->SetMaximum( 0.004);  // zoom
-
-  if( fabs(gCMSene -95.0) < 1.0) { Hst21_diff->SetMinimum(-0.004);  Hst21_diff->SetMaximum( 0.006);}  // 95GeV
-  if( fabs(gCMSene -88.0) < 1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.012);}  // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) { Hst21_diff->SetMinimum(-0.0005); Hst21_diff->SetMaximum( 0.0035);} // 91GeV
-  if( fabs(gCMSene -10.0) < 1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.006);}  // 10GeV
+  if(fabs(gCMSene-95.0) <1.0) { Hst21_diff->SetMinimum(-0.004);  Hst21_diff->SetMaximum( 0.006);}  // 95GeV
+  if(fabs(gCMSene-88.0) <1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.012);}// 88GeV
+  if(fabs(gCMSene-91.0) <1.0) { Hst21_diff->SetMinimum(-0.0005); Hst21_diff->SetMaximum( 0.0045);} // 91GeV
+  if(fabs(gCMSene-10.0) <1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.006);}  // 10GeV
 
 
   Hst21_diff->GetXaxis()->SetTitle("v_{max}");
@@ -557,7 +555,7 @@ void FigAfb2()
   PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "Foam5.2   IFIon - IFIoff ");
   PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC.2_IFIon  - Foam5.2_IFIon ");
   PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC.2_IFIoff - Foam3.2_IFIoff ");
-  PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219.1 IFI hard part ");
+  PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219: O(#alpha^{1}), IFI hard part ");
 
 
 // zero line
@@ -568,6 +566,118 @@ void FigAfb2()
   cFigAfb2->cd();
   //================================================
 }//FigAfb2
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAfb20()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAfb20 =========================== "<<endl;
+  //
+  TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n");  // KKMC[PL]
+  TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC[PL]
+  //
+  TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // KKFoam scat.
+  TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // KKFoam scat.
+  //
+  TH1D *HAfb_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0n");  // KKMC[PL]
+  TH1D *HAfb_vTcPL_Ceex0  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0");  // KKMC[PL]
+  //
+  TH1D *Hafb_xmax_Ceex0n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0n");  // KKFoam scat.
+  TH1D *Hafb_xmax_Ceex0   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0");   // KKFoam scat.
+
+
+  //
+  TH1D *HST_IFI5 =(TH1D*)HAfb_vTcPL_Ceex2n->Clone("HST_IFI4");
+  LibSem.Ord1fill(HST_IFI5,105);   // PLB219 hard IFI
+  HST_IFI5->SetLineColor(kCyan);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+//
+  //*****************************************************************************
+  TCanvas *cFigAfb20 = new TCanvas("cFigAfb20","FigAfb20", gXcanv, gYcanv,   1200, 550);
+  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
+  gXcanv += 50; gYcanv += 50;
+  cFigAfb20->Divide( 2,  0);
+  cFigAfb20->SetFillColor(10);
+  //====================plot1========================
+  cFigAfb20->cd(1);
+
+  TH1D *HstN_diff    = HstDiff("HstN_diff",    HAfb_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2n, kBlack);
+  TH1D *HstN_diff2   = HstDiff("HstN_diff2",   Hafb_xmax_Ceex2,   Hafb_xmax_Ceex2n,  kMagenta);
+  TH1D *HstN_diff3   = HstDiff("HstN_diff3",   HAfb_vTcPL_Ceex2,  Hafb_xmax_Ceex2,  kMagenta);
+
+  HstN_diff->SetStats(0);
+  HstN_diff->SetTitle(0);
+
+  //if( fabs(gCMSene -95.0) < 1.0) { HstN_diff->SetMinimum(-0.004);  HstN_diff->SetMaximum( 0.004);}  // 95GeV
+
+  if( fabs(gCMSene -95.0) < 1.0) { HstN_diff->SetMinimum(-0.004);  HstN_diff->SetMaximum( 0.004);}  // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { HstN_diff->SetMinimum(-0.002);  HstN_diff->SetMaximum( 0.008);}  // 88GeV
+  if( fabs(gCMSene -91.0) < 1.0) { HstN_diff->SetMinimum(-0.001);  HstN_diff->SetMaximum( 0.003);} // 91GeV
+  if( fabs(gCMSene -10.0) < 1.0) { HstN_diff->SetMinimum(-0.002);  HstN_diff->SetMaximum( 0.006);}  // 10GeV
+
+  HstN_diff->GetXaxis()->SetTitle("v_{max}");
+  HstN_diff->DrawCopy("h");
+
+  double ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+
+  PlotSame2(HstN_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.2:  IFIon-IFIoff ");
+  PlotSame2(HstN_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.2:  IFIon-IFIoff ");
+  PlotSame2(HstN_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.2 - Foam.2: IFIon");
+  PlotSame2(HST_IFI5,    ycapt, kCyan,      0.200, "(d)", "PLB219, O(#alpha^{1}), IFI hard part");
+
+  // zero line
+  TH1D *hZeroN = (TH1D*)HAfb_vTcPL_Ceex2->Clone("hZeroN");  // zero line
+  for(int i=1; i <= hZeroN->GetNbinsX() ; i++) { hZeroN->SetBinContent(i, 0); hZeroN->SetBinError(i, 0);}
+  hZeroN->SetLineColor(kBlack);
+  hZeroN->DrawCopy("hsame");
+
+  //====================plot2========================
+  cFigAfb20->cd(2);
+  TH1D *HstK_diff    = HstDiff("HstK_diff",    HAfb_vTcPL_Ceex0,  HAfb_vTcPL_Ceex0n, kBlack);
+  TH1D *HstK_diff2   = HstDiff("HstK_diff2",   Hafb_xmax_Ceex0,   Hafb_xmax_Ceex0n,  kMagenta);
+  TH1D *HstK_diff3   = HstDiff("HstK_diff3",   HAfb_vTcPL_Ceex0,  Hafb_xmax_Ceex0,  kMagenta);
+
+  HstK_diff->SetStats(0);
+  HstK_diff->SetTitle(0);
+  //if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
+
+  if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.008);}  // 88GeV
+  if( fabs(gCMSene -91.0) < 1.0) { HstK_diff->SetMinimum(-0.001);  HstK_diff->SetMaximum(  0.003);} // 91GeV
+  if( fabs(gCMSene -10.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.006);}  // 10GeV
+
+
+  HstK_diff->GetXaxis()->SetTitle("v_{max}");
+  HstK_diff->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  ycapt = 0.90; // starting value, to be decremented below
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+
+  PlotSame2(HstK_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.0:  IFIon-IFIoff ");
+  PlotSame2(HstK_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.0:  IFIon-IFIoff ");
+  PlotSame2(HstK_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.0 - Foam.0: IFIon");
+  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
+
+
+  // zero line
+  hZeroN->DrawCopy("hsame");
+
+}//FigAfb20
+
+
 
 
 
@@ -785,110 +895,6 @@ void FigSigAfb2()
 
 
 
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigAfb20()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigAfb20 =========================== "<<endl;
-  //
-  TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n");  // KKMC[PL]
-  TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC[PL]
-  //
-  TH1D *Hafb_xmax_Ceex2n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2n");  // KKFoam scat.
-  TH1D *Hafb_xmax_Ceex2   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex2");   // KKFoam scat.
-  //
-  TH1D *HAfb_vTcPL_Ceex0n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0n");  // KKMC[PL]
-  TH1D *HAfb_vTcPL_Ceex0  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex0");  // KKMC[PL]
-  //
-  TH1D *Hafb_xmax_Ceex0n  = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0n");  // KKFoam scat.
-  TH1D *Hafb_xmax_Ceex0   = (TH1D*)DiskFileB.Get("Hafb_xmax_Ceex0");   // KKFoam scat.
-
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.035);
-//
-  //*****************************************************************************
-  TCanvas *cFigAfb20 = new TCanvas("cFigAfb20","FigAfb20", gXcanv, gYcanv,   1200, 550);
-  //                                 Name    Title      xoff,yoff, WidPix,HeiPix
-  gXcanv += 50; gYcanv += 50;
-  cFigAfb20->Divide( 2,  0);
-  cFigAfb20->SetFillColor(10);
-  cFigAfb20->cd(1);
-
-  TH1D *HstN_diff    = HstDiff("HstN_diff",    HAfb_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2n, kBlack);
-  TH1D *HstN_diff2   = HstDiff("HstN_diff2",   Hafb_xmax_Ceex2,   Hafb_xmax_Ceex2n,  kMagenta);
-  TH1D *HstN_diff3   = HstDiff("HstN_diff3",   HAfb_vTcPL_Ceex2,  Hafb_xmax_Ceex2,  kMagenta);
-
-  HstN_diff->SetStats(0);
-  HstN_diff->SetTitle(0);
-
-  //if( fabs(gCMSene -95.0) < 1.0) { HstN_diff->SetMinimum(-0.004);  HstN_diff->SetMaximum( 0.004);}  // 95GeV
-
-  if( fabs(gCMSene -95.0) < 1.0) { HstN_diff->SetMinimum(-0.004);  HstN_diff->SetMaximum( 0.004);}  // 95GeV
-  if( fabs(gCMSene -88.0) < 1.0) { HstN_diff->SetMinimum(-0.002);  HstN_diff->SetMaximum( 0.008);}  // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) { HstN_diff->SetMinimum(-0.0005); HstN_diff->SetMaximum( 0.0035);} // 91GeV
-  if( fabs(gCMSene -10.0) < 1.0) { HstN_diff->SetMinimum(-0.002);  HstN_diff->SetMaximum( 0.006);}  // 10GeV
-
-  HstN_diff->GetXaxis()->SetTitle("v_{max}");
-  HstN_diff->DrawCopy("h");
-
-  double ycapt = 0.90; // starting value, to be decremented below
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
-
-  PlotSame2(HstN_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.2:  IFIon-IFIoff ");
-  PlotSame2(HstN_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.2:  IFIon-IFIoff ");
-  PlotSame2(HstN_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.2 - Foam.2: IFIon");
-
-  // zero line
-  TH1D *hZeroN = (TH1D*)HAfb_vTcPL_Ceex2->Clone("hZeroN");  // zero line
-  for(int i=1; i <= hZeroN->GetNbinsX() ; i++) { hZeroN->SetBinContent(i, 0); hZeroN->SetBinError(i, 0);}
-  hZeroN->SetLineColor(kBlack);
-  hZeroN->DrawCopy("hsame");
-
-  //====================plot2========================
-  cFigAfb20->cd(2);
-  TH1D *HstK_diff    = HstDiff("HstK_diff",    HAfb_vTcPL_Ceex0,  HAfb_vTcPL_Ceex0n, kBlack);
-  TH1D *HstK_diff2   = HstDiff("HstK_diff2",   Hafb_xmax_Ceex0,   Hafb_xmax_Ceex0n,  kMagenta);
-  TH1D *HstK_diff3   = HstDiff("HstK_diff3",   HAfb_vTcPL_Ceex0,  Hafb_xmax_Ceex0,  kMagenta);
-
-  HstK_diff->SetStats(0);
-  HstK_diff->SetTitle(0);
-  //if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
-
-  if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
-  if( fabs(gCMSene -88.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.008);}  // 88GeV
-  if( fabs(gCMSene -91.0) < 1.0) { HstK_diff->SetMinimum(-0.0005); HstK_diff->SetMaximum( 0.0035);} // 91GeV
-  if( fabs(gCMSene -10.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.006);}  // 10GeV
-
-
-  HstK_diff->GetXaxis()->SetTitle("v_{max}");
-  HstK_diff->DrawCopy("h");
-
-  ycapt = 0.90; // starting value, to be decremented below
-  CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
-
-  PlotSame2(HstK_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.0:  IFIon-IFIoff ");
-  PlotSame2(HstK_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.0:  IFIon-IFIoff ");
-  PlotSame2(HstK_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.0 - Foam.0: IFIon");
-
-  // zero line
-  hZeroN->DrawCopy("hsame");
-
-  ycapt=0.35;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
-
-}//FigAfb20
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -938,13 +944,12 @@ int main(int argc, char **argv)
 //========== PLOTTING ==========
 // vmax=1, sigma(v) and sigma(vmax) KKMC/Foam
 //  FigVdist(); // OBSOLETE
-  FigInfo();
+  FigInfo();     // weight distribution
   FigAfb0();     // vmax =0.2
   FigAfb2();     // vmax =0.2
   FigAfb20();    // vmax =1.0
   FigSigAfb2();  // vmax =0.2
   FigSigAfb0();  // vmax =0.2
-// weight distribution
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
