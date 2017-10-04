@@ -32,6 +32,7 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive
@@ -46,6 +47,30 @@ KKplot LibSem("KKplot");
 
 //
 float  gXcanv = 10, gYcanv = 10;
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  double xcapt = 0.40;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+}// PlotSame2
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -302,7 +327,7 @@ void FigScatA()
   TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   //
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cScatA = new TCanvas("cScatA","cScatA", gXcanv,  gYcanv,   1200,  600);
+  TCanvas *cScatA = new TCanvas("cScatA","cScatA", gXcanv,  gYcanv,   1000,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   gXcanv += 25, gYcanv += 25;
   cScatA->SetFillColor(10);
@@ -886,6 +911,48 @@ void FigCprod()
 }//FigCprod
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigCosThe()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCosThe =========================== "<<endl;
+
+  TH1D *Hcth_vTcPR_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2_vmax02");
+  TH1D *Hcth_vTcPR_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2n_vmax02");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+ ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigCosThe = new TCanvas("cFigCosThe","cFigCosThe", gXcanv, gYcanv,    600, 600);
+  //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+  cFigCosThe->SetFillColor(10);
+
+  cFigCosThe->cd();
+
+  TH1D *Hst=Hcth_vTcPR_Ceex2_vmax02;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->CenterTitle();
+  Hst->GetYaxis()->SetTitleSize(0.04);
+  Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
+  Hst->GetXaxis()->SetTitleSize(0.04);
+  Hst->GetXaxis()->SetTitle("cos(#theta)");
+
+  Hst->SetLineColor(kBlue);
+  Hst->SetMinimum(0.0);
+  Hst->DrawCopy("h");
+
+  double ycapt = 0.80;
+  CaptT->DrawLatex(0.40, ycapt,"#sqrt{s} = 10GeV");
+  PlotSame2(Hst,                      ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
+  PlotSame2(Hcth_vTcPR_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
+
+
+  //================================================
+}//FigCosThe
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -896,9 +963,11 @@ int main(int argc, char **argv)
   LibSem.Initialize(DiskFileA);
 
   HistNormalize();     // Renormalization of MC histograms
-  KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
+  /*
+  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
+  //
   FigScatA();
   FigInfo();
 
@@ -907,6 +976,8 @@ int main(int argc, char **argv)
 
   FigVprod();
   FigCprod();
+  */
+  FigCosThe();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
