@@ -31,18 +31,21 @@ using namespace std;
 // current
 //TFile DiskFileA("../workKKMC/histo.root");
 
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
 
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
-//TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
+TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
 KKplot LibSem("KKplot");
+
+//
+float  gXcanv = 10, gYcanv = 10;
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -299,9 +302,9 @@ void FigScatA()
   TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   //
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cScatA = new TCanvas("cScatA","2dim big picture", 70,  50,   1200,  600);
+  TCanvas *cScatA = new TCanvas("cScatA","cScatA", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 25, gYcanv += 25;
   cScatA->SetFillColor(10);
   cScatA->Divide( 2,  0);
   //cScatA->Divide( 2,  0,     0.0,     0.0,   10);
@@ -363,8 +366,10 @@ void FigInfo()
   TH1D *hst_CosPRCeex2 = (TH1D*)DiskFileA.Get("hst_CosPRCeex2");
 //------------------------------------------------------------------------  
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 80,    1000,  800);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","cFigInfo ", gXcanv, gYcanv,    1000,  1000);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+  //
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigInfo->Divide( 2,  2);
@@ -438,8 +443,9 @@ void FigVtest()
   //****************************************************************************************
   //****************************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVtest = new TCanvas("cFigVtest","FigVtest: photonic2", 50, 50,    1000, 800);
+  TCanvas *cFigVtest = new TCanvas("cFigVtest","cFigVtest", gXcanv, gXcanv,    1000, 1000);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
   cFigVtest->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVtest->Divide( 2,  2);
@@ -529,8 +535,10 @@ void FigCtest()
   //****************************************************************************************
   //****************************************************************************************
    ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigCtest = new TCanvas("cFigCtest","FigCtest: cos(thet) dis.", 30, 70,    1000, 800);
+  TCanvas *cFigCtest = new TCanvas("cFigCtest","cFigCtest: cos(thet) dis.", gXcanv, gXcanv,    1000, 1000);
   //                                Name    Title            xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+
   cFigCtest->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigCtest->Divide( 2,  2);
@@ -618,8 +626,9 @@ void FigVprod()
   //
   TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVprod = new TCanvas("cFigVprod","FigVprod", 70, 20,    1000, 800);
+  TCanvas *cFigVprod = new TCanvas("cFigVprod","FigVprod", gXcanv, gYcanv,    1000, 1000);
   //                                   Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
   cFigVprod->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigVprod->Divide( 2,  2);
@@ -737,14 +746,15 @@ void FigCprod()
 
   //****************************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigCprod = new TCanvas("cFigCprod","FigCprod: cos theta production", 50, 50,    1000, 400);
+  TCanvas *cFigCprod = new TCanvas("cFigCprod","cFigCprod", gXcanv, gYcanv,    1000, 1000);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
   cFigCprod->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigCprod->Divide( 2,  1);  // lower raw temporarily off
-  //cFigCprod->Divide( 2,  2);
+  //cFigCprod->Divide( 2,  1);  // lower raw temporarily off
+  cFigCprod->Divide( 2,  2);
   //cFigCprod->Divide( 2,  2,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
+  //                nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -815,7 +825,6 @@ void FigCprod()
   //CaptT->DrawLatex(0.15,0.77," KKsem: Magenta=IFIoff&ELWoff ");
   CaptT->DrawLatex(0.60,0.75,TextEne);
   //==========plot3==============
-  /*
   cFigCprod->cd(3);
   Hst=Hcth_vTcPR_Ceex2_vmax90;
   Hst->SetStats(0);
@@ -870,7 +879,7 @@ void FigCprod()
   hZero->DrawCopy("hsame");
   CaptT->DrawLatex(0.12,0.86,"CEEX2: Black/Red/Green/Blue =  v< 0.9, 0.3, 0.10, 0.02");
   CaptT->DrawLatex(0.12,0.81,"CEEX2: IFI off, Cyan v< 0.02");
-  */
+
   //----------------------------
   cFigCprod->cd();
   //================================================
