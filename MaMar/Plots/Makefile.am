@@ -104,6 +104,8 @@ PlotIFI-run: PlotIFI
 	./PlotIFI
 PlotAFB-run: PlotAFB
 	./PlotAFB
+PlotAFB2-run: PlotAFB2
+	./PlotAFB2
 PlotFoam0-run: PlotFoam0
 	./PlotFoam0
 PlotFoam1-run: PlotFoam1

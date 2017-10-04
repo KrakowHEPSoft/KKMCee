@@ -1,6 +1,9 @@
 //    make PlotAFB2
 //    Plot for FCC week 2016 in Rome and "Beyond precision..." paper
 
+// This is only AFB study for several energies,
+// renomalizing scattergrams is no necesssary!
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -50,12 +53,8 @@ void HistNormalize(){
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
   DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  // 1-dim histos
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21F") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21B") );
   //
+  // renomalizing scattergrams is no necesssary!
   //  BIG scatergrams
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n") );
@@ -88,9 +87,9 @@ void ReMakeMChisto(){
   ///
   TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA4.Get("sct_vAcPR_Ceex2");
   TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA4.Get("sct_vAcPR_Ceex2n");
-  //
-  //TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
-  //TH2D *sct_vKcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vKcPL_Ceex2");
+  //!!!!!
+  TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
+  TH2D *sct9_vKcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vKcPL_Ceex2");
 
   // ****************************************************************************************
   /// Distributions of v with limited c=cos(theta)
@@ -99,51 +98,33 @@ void ReMakeMChisto(){
   nbMax=50;      // cosThetaMax = 50/50=1.00
   nbMax=45;      // cosThetaMax = 45/50=0.90
   // ---------------------- 95GeV ----------------------------------
-  TH1D                     *Hsig9_vAcPR_Ceex2, *Hafb9_vAcPR_Ceex2;
-  ProjV( sct9_vAcPR_Ceex2,  Hsig9_vAcPR_Ceex2,  Hafb9_vAcPR_Ceex2, nbMax);
-  Hsig9_vAcPR_Ceex2->SetName("Hsig9_vAcPR_Ceex2");
-  Hafb9_vAcPR_Ceex2->SetName("Hafb9_vAcPR_Ceex2");
+  TH1D  *Hsig9_vAcPR_Ceex2  = HstProjV("Hsig9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
+  TH1D  *Hafb9_vAcPR_Ceex2  = HstProjA("Hafb9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
   //******** IFI off
-  TH1D                      *Hsig9_vAcPR_Ceex2n, *Hafb9_vAcPR_Ceex2n;
-  ProjV( sct9_vAcPR_Ceex2n,  Hsig9_vAcPR_Ceex2n,  Hafb9_vAcPR_Ceex2n, nbMax);
-  Hsig9_vAcPR_Ceex2n->SetName("Hsig9_vAcPR_Ceex2n");
-  Hafb9_vAcPR_Ceex2n->SetName("Hafb9_vAcPR_Ceex2n");
+  TH1D  *Hsig9_vAcPR_Ceex2n  = HstProjV("Hsig9_vAcPR_Ceex2n", sct9_vAcPR_Ceex2n, nbMax);
+  TH1D  *Hafb9_vAcPR_Ceex2n  = HstProjA("Hafb9_vAcPR_Ceex2n", sct9_vAcPR_Ceex2n, nbMax);
   //
   // ---------------------- 88GeV ----------------------------------
-  TH1D                     *Hsig8_vAcPR_Ceex2, *Hafb8_vAcPR_Ceex2;
-  ProjV( sct8_vAcPR_Ceex2,  Hsig8_vAcPR_Ceex2,  Hafb8_vAcPR_Ceex2, nbMax);
-  Hsig8_vAcPR_Ceex2->SetName("Hsig8_vAcPR_Ceex2");
-  Hafb8_vAcPR_Ceex2->SetName("Hafb8_vAcPR_Ceex2");
+  TH1D  *Hsig8_vAcPR_Ceex2  = HstProjV("Hsig8_vAcPR_Ceex2", sct8_vAcPR_Ceex2, nbMax);
+  TH1D  *Hafb8_vAcPR_Ceex2  = HstProjA("Hafb8_vAcPR_Ceex2", sct8_vAcPR_Ceex2, nbMax);
   Hafb8_vAcPR_Ceex2->Scale(-1.0);
   //******** IFI off
-  TH1D                      *Hsig8_vAcPR_Ceex2n, *Hafb8_vAcPR_Ceex2n;
-  ProjV( sct8_vAcPR_Ceex2n,  Hsig8_vAcPR_Ceex2n,  Hafb8_vAcPR_Ceex2n, nbMax);
-  Hsig8_vAcPR_Ceex2n->SetName("Hsig8_vAcPR_Ceex2n");
-  Hafb8_vAcPR_Ceex2n->SetName("Hafb8_vAcPR_Ceex2n");
+  TH1D  *Hsig8_vAcPR_Ceex2n  = HstProjV("Hsig8_vAcPR_Ceex2n", sct8_vAcPR_Ceex2n, nbMax);
+  TH1D  *Hafb8_vAcPR_Ceex2n  = HstProjA("Hafb8_vAcPR_Ceex2n", sct8_vAcPR_Ceex2n, nbMax);
   Hafb8_vAcPR_Ceex2n->Scale(-1.0);
-
   //
   // ---------------------- 91.2GeV ----------------------------------
-  TH1D                     *HsigZ_vAcPR_Ceex2, *HafbZ_vAcPR_Ceex2;
-  ProjV( sctZ_vAcPR_Ceex2,  HsigZ_vAcPR_Ceex2,  HafbZ_vAcPR_Ceex2, nbMax);
-  HsigZ_vAcPR_Ceex2->SetName("HsigZ_vAcPR_Ceex2");
-  HafbZ_vAcPR_Ceex2->SetName("HafbZ_vAcPR_Ceex2");
+  TH1D  *HsigZ_vAcPR_Ceex2  = HstProjV("HsigZ_vAcPR_Ceex2", sctZ_vAcPR_Ceex2, nbMax);
+  TH1D  *HafbZ_vAcPR_Ceex2  = HstProjA("HafbZ_vAcPR_Ceex2", sctZ_vAcPR_Ceex2, nbMax);
   //******** IFI off
-  TH1D                      *HsigZ_vAcPR_Ceex2n, *HafbZ_vAcPR_Ceex2n;
-  ProjV( sctZ_vAcPR_Ceex2n,  HsigZ_vAcPR_Ceex2n,  HafbZ_vAcPR_Ceex2n, nbMax);
-  HsigZ_vAcPR_Ceex2n->SetName("HsigZ_vAcPR_Ceex2n");
-  HafbZ_vAcPR_Ceex2n->SetName("HafbZ_vAcPR_Ceex2n");
-
+  TH1D  *HsigZ_vAcPR_Ceex2n  = HstProjV("HsigZ_vAcPR_Ceex2n", sctZ_vAcPR_Ceex2n, nbMax);
+  TH1D  *HafbZ_vAcPR_Ceex2n  = HstProjA("HafbZ_vAcPR_Ceex2n", sctZ_vAcPR_Ceex2n, nbMax);
   // ---------------------- 10GeV ----------------------------------
-  TH1D                     *Hsig1_vAcPR_Ceex2, *Hafb1_vAcPR_Ceex2;
-  ProjV( sct1_vAcPR_Ceex2,  Hsig1_vAcPR_Ceex2,  Hafb1_vAcPR_Ceex2, nbMax);
-  Hsig1_vAcPR_Ceex2->SetName("Hsig1_vAcPR_Ceex2");
-  Hafb1_vAcPR_Ceex2->SetName("Hafb1_vAcPR_Ceex2");
+  TH1D  *Hsig1_vAcPR_Ceex2  = HstProjV("Hsig1_vAcPR_Ceex2", sct1_vAcPR_Ceex2, nbMax);
+  TH1D  *Hafb1_vAcPR_Ceex2  = HstProjA("Hafb1_vAcPR_Ceex2", sct1_vAcPR_Ceex2, nbMax);
   //******** IFI off
-  TH1D                      *Hsig1_vAcPR_Ceex2n, *Hafb1_vAcPR_Ceex2n;
-  ProjV( sct1_vAcPR_Ceex2n,  Hsig1_vAcPR_Ceex2n,  Hafb1_vAcPR_Ceex2n, nbMax);
-  Hsig1_vAcPR_Ceex2n->SetName("Hsig1_vAcPR_Ceex2n");
-  Hafb1_vAcPR_Ceex2n->SetName("Hafb1_vAcPR_Ceex2n");
+  TH1D  *Hsig1_vAcPR_Ceex2n  = HstProjV("Hsig1_vAcPR_Ceex2n", sct1_vAcPR_Ceex2n, nbMax);
+  TH1D  *Hafb1_vAcPR_Ceex2n  = HstProjA("Hafb1_vAcPR_Ceex2n", sct1_vAcPR_Ceex2n, nbMax);
 
 }//ReMakeMChisto
 
@@ -213,6 +194,7 @@ void FigCdifIFI()
   //cCdifIFI->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
+  //*****************************************************************************
   cCdifIFI->cd(1);
   Hafb9_vAcPR_Ceex2->SetTitle(0);
   Hafb9_vAcPR_Ceex2->SetStats(0);
@@ -234,13 +216,14 @@ void FigCdifIFI()
   CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), Black=IFIoff,  Blue=IFIon,    v=v_{ALEPH}");
   CaptT->DrawLatex(0.65,0.20," #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.65,0.83," #sqrt{s}=87.9GeV ");
-  //-------------------------------------
+  //*****************************************************************************
   cCdifIFI->cd(2);
   TH1D *hZero = (TH1D*)Hafb8_vAcPR_Ceex2n->Clone("hZero");  // zero line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
 
   TH1D *Hafb9_vAcPR_IFIdiff= (TH1D*)Hafb9_vAcPR_Ceex2->Clone("Hafb9_vAcPR_IFIdiff");
   Hafb9_vAcPR_IFIdiff->Add(Hafb9_vAcPR_IFIdiff,Hafb9_vAcPR_Ceex2n,1.0,-1.0);
+
   Hafb9_vAcPR_IFIdiff->SetTitle(0);
   Hafb9_vAcPR_IFIdiff->SetStats(0);
   Hafb9_vAcPR_IFIdiff->GetYaxis()->SetTitle("#Delta A^{IFI}_{FB}(v_{max})");
