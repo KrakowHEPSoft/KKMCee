@@ -33,10 +33,10 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
@@ -52,10 +52,10 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
-TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
 // August2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_14G");
@@ -778,6 +778,8 @@ void FigSigAfb0()
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   //================================================
+  cFigSigAfb0->SaveAs("cFigSigAfb0.pdf");
+
 }//FigSigAfb0
 
 
@@ -896,6 +898,7 @@ void FigSigAfb2()
 
   cFigSigAfb2->cd();
   //================================================
+  cFigSigAfb2->SaveAs("cFigSigAfb2.pdf");
 
 }//FigSigAfb2
 
