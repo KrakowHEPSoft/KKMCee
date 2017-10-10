@@ -33,11 +33,22 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
+TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
+////  *** FOAM
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+// Sept. 2017 runs
+TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
+//TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+
+//************************************************************************
+// Archive, obsolete
+/////  *** KKMC
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_1G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
@@ -48,15 +59,6 @@ TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_4G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");   //
-
-////  *** FOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
-// Sept. 2017 runs
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
-//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
-//TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
-TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
-
 // August2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_14G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_37G_vmax0.2");
@@ -457,7 +459,8 @@ void FigAfb0()
   for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
   hZero0->DrawCopy("hsame");
 
-
+  //================================================
+  cFigAfb0->SaveAs("cFigAfb0.pdf");
 
   //================================================
 }//FigAfb0
@@ -570,7 +573,10 @@ void FigAfb2()
   hZero->DrawCopy("hsame");
 
   cFigAfb2->cd();
+
   //================================================
+  cFigAfb2->SaveAs("cFigAfb2.pdf");
+
 }//FigAfb2
 
 
