@@ -19,7 +19,8 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 TString semaf   = "START";
 double nevtot   = 1e10;
 //nevtot = 4500000;
-nevtot = 10e6;
+//nevtot = 10e6;
+nevtot = 100e6;
 //nevtot = 2e5;
 double nevgrp   = 2e5; // 200k
 nevgrp = 5e5;

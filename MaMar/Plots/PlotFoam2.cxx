@@ -34,7 +34,7 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_2.8G"); // It is 550M!!!
+TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
@@ -262,6 +262,7 @@ void FigAfb4()
 
   cFigAfb4->cd();
   //================================================
+  cFigAfb4->SaveAs("cFigAfb4.pdf");
 }//FigAfb4
 
 
@@ -308,6 +309,8 @@ void FigAfb5()
 
   cFigAfb5->cd();
   //================================================
+  cFigAfb5->SaveAs("cFigAfb5.pdf");
+
 }//FigAfb5
 
 

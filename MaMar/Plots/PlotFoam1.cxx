@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-//    make PlotFoam0-run
+//    make PlotFoam1-run
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -31,17 +31,17 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_16G");
+TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM1/histo.root"); // current
+//TFile DiskFileF("../workFOAM1/histo.root"); // current
 // Sept. 2017 runs
-//TFile DiskFileF("../workFOAM1/histo.root_95GeV_???");
+TFile DiskFileF("../workFOAM1/histo.root_95GeV_100M");
 
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 
@@ -349,15 +349,16 @@ void FigVcum()
     PlotSame2(Hst4_ratio,  ycapt, kBlack, 0.20,   "(d)", "KKMC/KKsem,  IFI off ");
 
     cFigVcum->cd();
+    cFigVcum->SaveAs("cFigVcum.pdf");
   cout<<" ========================= FigVcum end======================== "<<endl;
   //================================================
 }//FigVcum
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigAfb()
+void FigAfb10()
 {
-  cout<<" ========================= FigAfb =========================== "<<endl;
+  cout<<" ========================= FigAfb10 =========================== "<<endl;
   //
   TH1D *HAfb_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2");  // KKMC
   TH1D *HAfb_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPL_Ceex2n"); // KKMC
@@ -391,41 +392,41 @@ void FigAfb()
 
   //*****************************************************************************
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb", gXcanv, gYcanv,   1200, 550);
+  TCanvas *cFigAfb10 = new TCanvas("cFigAfb10","FigAfb10", gXcanv, gYcanv,   1200, 550);
   //                            Name    Title                   xoff,yoff, WidPix,HeiPix
   gXcanv += 100; gYcanv += 50;
-  cFigAfb->SetFillColor(10);
+  cFigAfb10->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigAfb->Divide( 2,  0);
+  cFigAfb10->Divide( 2,  0);
   //====================plot1========================
-  cFigAfb->cd(1); // AFB(vmax)
+  cFigAfb10->cd(1); // AFB(vmax)
   TH1D *Hst2 = HAfb_vTcPL_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
   Hst2->SetStats(0);
   Hst2->SetTitle(0);
   Hst2->GetXaxis()->SetTitle("v_{max}");
-  if( fabs(gCMSene -10.0) < 1.0) { Hst2->SetMinimum(-0.02); Hst2->SetMaximum(+0.06);} // 10GeV
-  if( fabs(gCMSene -95.0) < 1.0) { Hst2->SetMinimum( 0.15); Hst2->SetMaximum(+0.20);} // 95GeV
-  if( fabs(gCMSene -88.0) < 1.0) { Hst2->SetMinimum(-0.32); Hst2->SetMaximum(-0.20);} // 88GeV
+  if( fabs(gCMSene -10.0) < 1.0) { Hst2->SetMinimum(-0.020); Hst2->SetMaximum(+0.06);} // 10GeV
+  if( fabs(gCMSene -95.0) < 1.0) { Hst2->SetMinimum( 0.155); Hst2->SetMaximum(+0.18);} // 95GeV
+  if( fabs(gCMSene -88.0) < 1.0) { Hst2->SetMinimum(-0.320); Hst2->SetMaximum(-0.20);} // 88GeV
   if( fabs(gCMSene -91.0) < 1.0) { Hst2->SetMinimum(-0.000); Hst2->SetMaximum(+0.025);} // 91GeV
   Hst2->DrawCopy("h");                     // to be repeated below
   CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
   ycapt = 0.90;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  PlotSame(Hst2,               ycapt, kMagenta, "KKMC  IFI on ");
-  PlotSame(HAfb_vTcPL_Ceex2n,  ycapt, kBlack,   "KKMC  IFI off ");
-  PlotSame(HST_xxAfb_Ord1n,    ycapt, kCyan,    "Foam1  IFI off ");
-  PlotSame(HST_xxAfb_Ord1,     ycapt, kBrune,   "Foam1  IFI on ");
-  PlotSame(HST_AfbPRD,         ycapt, kRed,     "PRD41  IFI off ");
-  PlotSame(HST_AfbPRD_PL,      ycapt, kGold,    "PRD41+PLB219  IFIon ");
-  PlotSame(afbv_ISR2_FSR2,     ycapt, kBlue,    "KKsem  IFI off ");
+  PlotSame2(Hst2,               ycapt, kMagenta,0.10, "(a)", "KKMC  IFI on ");
+  PlotSame2(HAfb_vTcPL_Ceex2n,  ycapt, kBlack,  0.15, "(b)", "KKMC  IFI off ");
+  PlotSame2(afbv_ISR2_FSR2,     ycapt, kBlue,   0.40, "(c)", "KKsem  IFI off ");
+  PlotSame2(HST_xxAfb_Ord1n,    ycapt, kCyan,   0.08, "(d)", "Foam1  IFI off ");
+  PlotSame2(HST_xxAfb_Ord1,     ycapt, kBrune,  0.10, "(e)", "Foam1  IFI on ");
+  PlotSame2(HST_AfbPRD,         ycapt, kRed,    0.18, "(f)", "PRD41  IFI off ");
+  PlotSame2(HST_AfbPRD_PL,      ycapt, kGold,   0.25, "(g)", "PRD41+PLB219  IFIon ");
   //====================plot2========================
-  cFigAfb->cd(2);
+  cFigAfb10->cd(2);
   TH1D *Hdif           =HstDiff("Hdif",           HAfb_vTcPL_Ceex2,  HAfb_vTcPL_Ceex2n,kBlack);
   TH1D *HstPRD_diff    =HstDiff("HstPRD_diff",    HST_xxAfb_Ord1n,   HST_AfbPRD,       kCyan);
   TH1D *Hst_Foam1_diff =HstDiff("Hst_Foam1_diff", HST_xxAfb_Ord1,    HST_xxAfb_Ord1n,  kRed);
   if( fabs(gCMSene -10.0) < 1.0) { Hdif->SetMinimum(-0.02); Hdif->SetMaximum( 0.06); }  // 189GeV, 10GeV
-  if( fabs(gCMSene -95.0) < 1.0) { Hdif->SetMinimum(-0.006);Hdif->SetMaximum( 0.006);}  // 95GeV
+  if( fabs(gCMSene -95.0) < 1.0) { Hdif->SetMinimum(-0.008);Hdif->SetMaximum( 0.004);}  // 95GeV
   if( fabs(gCMSene -88.0) < 1.0) { Hdif->SetMinimum(-0.010);Hdif->SetMaximum( 0.025);}  // 88GeV
   if( fabs(gCMSene -91.0) < 1.0) { Hdif->SetMinimum(-0.002);Hdif->SetMaximum( 0.006);}  // 91GeV
   Hdif->DrawCopy("h");          // to be repeated below
@@ -433,16 +434,19 @@ void FigAfb()
   ycapt = 0.90; // starting value, to be decremented below
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  PlotSame(Hdif,           ycapt, kBlack,    "KKMC_IFIon - KKMC_IFIoff ");
-  PlotSame(HstPRD_diff,    ycapt, kCyan,     "IFI off: Foam1-PRD41 ");
-//  PlotSame(Hst_Foam1_diff, ycapt, kRed,      "Foam1:  IFI only "); // stat. error to big
-  PlotSame(HST_AfbPL,      ycapt, kMagenta , "PLB219: IFI only ");
-  PlotSame(HST_xxAfb_Ird1, ycapt, kRed,      "Foam1:  IFI only ");
+  PlotSame2(Hdif,           ycapt, kBlack,   0.15, "(a)", "KKMC_IFIon - KKMC_IFIoff ");
+  PlotSame2(HstPRD_diff,    ycapt, kCyan,    0.10, "(b)", "IFI off: Foam1-PRD41 ");
+  PlotSame2(HST_AfbPL,      ycapt, kMagenta, 0.10, "(c)", "PLB219: IFI only ");
+  PlotSame2(HST_xxAfb_Ird1, ycapt, kRed,     0.05, "(d)", "Foam1:  IFI only ");
+  //PlotSame2(Hst_Foam1_diff, ycapt, kGreen,   0.20, "(e)", "Foam1:  IFI only "); // stat. error to big?
 
   hZero0->DrawCopy("hsame");
-  cFigAfb->cd();
-  cout<<" ========================= FigAfb end======================== "<<endl;
-}//FigAfb
+  cFigAfb10->cd();
+
+  cFigAfb10->SaveAs("cFigAfb10.pdf");
+
+  cout<<" ========================= FigAfb10 end======================== "<<endl;
+}//FigAfb10
 
 
 
@@ -592,7 +596,7 @@ int main(int argc, char **argv)
 // vmax=1
   FigVV();     // dsigma/dv KKMC/Foam
   FigVcum();   // sigma(vmax) KKMC/Foam
-  FigAfb();    // AFB(vmax) KKMC/Foam
+  FigAfb10();    // AFB(vmax) KKMC/Foam
   FigAfbN();   // AFB(vmax) KKMC/Foam
 // weight distribution
   FigInfo();
