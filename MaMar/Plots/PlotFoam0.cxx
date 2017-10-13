@@ -93,12 +93,13 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 //
-//int    gNbMax=45;         // gCosTheta = 45/50=0.90
-//double gCosTheta=0.90;    // to be synchronized with gNbMax
+//int    gNbMax   =45;          // for 100bins, gCosTheta = 45/50=0.90
+//double gCosTheta=0.90;        // to be synchronized with gNbMax
 //
-int    gNbMax=0;            // gCosTheta = 45/50=0.90
+int    gNbMax   =0;          // for 100bins, default=0 for gCosTheta = 1.00
+double gCosTheta=1.00;       // to be synchronized with gNbMax
 //
-double gCosTheta=1.00;      // to be synchronized with gNbMax
+int    gNbMax2=0;            // for 50 bins, default=0 for gCosTheta = 1.00
 //
 float  gXcanv = 50, gYcanv = 50;
 KKplot LibSem("KKplot");
@@ -194,6 +195,7 @@ void KKsemMakeHisto(){
   char chak[5];
   KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //------------------------------------------------------------------------
+// Tempate is for vmax<0.20 and 100 bins in cos(theta)
   TH1D *hstVtemplate = (TH1D*)DiskFileB.Get("HTot2_vTcPR_Ceex2");
 //------------------------------------------------------------------------
 //   MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta)
@@ -953,8 +955,8 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
   TestNorm();          // special test of normalizaion
-  HisReMakeKKMC(  &DiskFileA, gNbMax);   // reprocessing MC histos from KKC
-  HisReMakeFoam35(&DiskFileF, gNbMax);   // reprocessing MC histos from Foam
+  HisReMakeKKMC(  &DiskFileA, gNbMax, gNbMax2);   // reprocessing MC histos from KKC
+  HisReMakeFoam35(&DiskFileF, gNbMax, gNbMax2);   // reprocessing MC histos from Foam
 
   KKsemMakeHisto();    // prepare histos from KKsem
 //========== PLOTTING ==========
