@@ -112,9 +112,15 @@ void TRobolFOAM::Hbooker()
 
     SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_EEX0 =  TH2D_UP("SCT_xc_EEX0",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+
     // special histos for AFB from average cos(theta) for IFI on
     HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
     HST5_xc_Ceex2  = TH1D_UP("HST5_xc_Ceex2", "c*dSig/dv", NBv, 0.0, vmx2);
+    // for AFB=(F-B)/(F+B) with |cos(theta)|<1.0
+    HST5_xx_forw_Ceex2  = TH1D_UP("HST5_xx_forw_Ceex2", "dSig/dv",    NBv, 0.0, vmx2);
+    // for AFB=(F-B)/(F+B) with |cos(theta)|<0.9
+    HST5_xx9_Ceex2      = TH1D_UP("HST5_xx9_Ceex2", "dSig/dv",        NBv, 0.0, vmx2);
+    HST5_xx9_forw_Ceex2 = TH1D_UP("HST5_xx9_forw_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -155,6 +161,11 @@ if( MCgen->m_IsFoam5 == 1) {
   ///
   HST5_xx_Ceex2->Fill(xx,wt5);
   HST5_xc_Ceex2->Fill(xx,wt5*CosTheta);
+  // forward
+  if( CosTheta> 0.0)                  HST5_xx_forw_Ceex2->Fill(xx,wt5);
+  // tot. and forw. for costheta<0.9
+  if( fabs(CosTheta) < 0.9 )          HST5_xx9_Ceex2->Fill(xx,wt5);
+  if( CosTheta>0.0 && CosTheta < 0.9) HST5_xx9_forw_Ceex2->Fill(xx,wt5);
   //
   double WTceex0 = wt5 * MCgen->m_WTmodel[50];
   SCA_xc_Ceex0->Fill(xx,CosTheta, WTceex0);

@@ -239,18 +239,29 @@ void HisReMakeFoam35(TFile *DiskFileF, int NbMax, int NbMax2){
     TH1D  *Htot_xmax_Ceex0 = HstProjV("Htot_xmax_Ceex0",SCA_xc_Ceex0,NbMax2);
     TH1D  *Hafb_xmax_Ceex0 = HstProjA("Hafb_xmax_Ceex0",SCA_xc_Ceex0,NbMax2);
 
-///****************************************************************************************
-  //     Calculating AFB from <cos(theta),  renormalizatio not needed!
-  TH1D *Afb5T_Ceex2  = HstTildeAFB("Afb5T_Ceex2", (TH1D*)DiskFileF->Get("HST5_xc_Ceex2"),
-		                                          (TH1D*)DiskFileF->Get("HST5_xx_Ceex2") );
+////////////////////////////////////////////////////////////////
+  // sigma(vmax) direct histogramming, renormalizing not necessary
+  HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
+  HisNorm1(HST_FOAM_NORMA3, HST_tx_Ceex2n );  // normalizing testing norm.
+  //
+  TH1D *HST_xmax_Ceex2n   = HstCumul("HST_xmax_Ceex2n",   HST_xx_Ceex2n);
+  TH1D *HST_txmax_Ceex2n  = HstCumul("HST_txmax_Ceex2n",  HST_tx_Ceex2n);
 
-  ////////////////////////////////////////////////////////////////
-    // sigma(vmax) direct histogramming
-    HisNorm1(HST_FOAM_NORMA3, HST_xx_Ceex2n );  // normalizing
-    HisNorm1(HST_FOAM_NORMA3, HST_tx_Ceex2n );  // normalizing testing norm.
-    //
-    TH1D *HST_xmax_Ceex2n   = HstCumul("HST_xmax_Ceex2n",   HST_xx_Ceex2n);
-    TH1D *HST_txmax_Ceex2n  = HstCumul("HST_txmax_Ceex2n",  HST_tx_Ceex2n);
+
+//****************************************************************************************
+//     Calculating AFB from <cos(theta)>,  renormalizatio not needed!
+  TH1D *Afb5T_Ceex2   = HstTildeAFB("Afb5T_Ceex2", (TH1D*)DiskFileF->Get("HST5_xc_Ceex2"),
+    		                                       (TH1D*)DiskFileF->Get("HST5_xx_Ceex2") );
+
+//[[[[[[[[[[[[[[[[[[ new
+///****************************************************************************************
+//   Xcheck for   AFB=(F-B)/(F+B)
+
+  TH1D *Afb5st_Ceex2  = HstAFB("Afb5st_Ceex2",  (TH1D*)DiskFileF->Get("HST5_xx_forw_Ceex2"),
+                                                (TH1D*)DiskFileF->Get("HST5_xx_Ceex2")   );
+  TH1D *Afb5st9_Ceex2 = HstAFB("Afb5st9_Ceex2", (TH1D*)DiskFileF->Get("HST5_xx9_forw_Ceex2"),
+                                                (TH1D*)DiskFileF->Get("HST5_xx9_Ceex2")  );
+//]]]]]]]]]]]]]]]]]]
 
   cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
