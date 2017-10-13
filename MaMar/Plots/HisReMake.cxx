@@ -39,12 +39,13 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosPLCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosPRCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosPREex2") );
-  // AFB fron <cos(theta)>
+  // AFB fron <cos(theta)> renormalization not needed
+  /*
   HisNorm1(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2") );
   HisNorm1(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vTcPL_Ceex2") );
   HisNorm1(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vT_Ceex2n") );
   HisNorm1(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("hst_vTcPL_Ceex2n") );
-
+  */
 //****************************************************************************************
 //  !!!!!!!!! v=vTrue<vmax<0.20, c=cos(theta) with 100 bins !!!!!!!!!
 //****************************************************************************************
@@ -131,14 +132,22 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
   ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
   Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
 
-
   ///****************************************************************************************
-  //      AFB fron <cos(theta)>
+  //      AFB from <cos(theta)>
   TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
   TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2n"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2n")  );
 
+  //[[[[[[[[[[[[[[[[[[ new
+  ///****************************************************************************************
+  //   Xcheck for   AFB=(F-B)/(F+B)
+
+  TH1D *AfbS_Ceex2  = HstAFB("AfbS_Ceex2",  (TH1D*)DiskFileA->Get("hst_vTcPLforw_Ceex2"),
+                                            (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
+  TH1D *AfbS9_Ceex2 = HstAFB("AfbS9_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL9forw_Ceex2"),
+                                            (TH1D*)DiskFileA->Get("hst_vTcPL9_Ceex2")  );
+  //]]]]]]]]]]]]]]]]]]
 cout<<"================ HisReMakeKKMC ENDs  ============================="<<endl;
 cout<<"==================================================================="<<endl;
 

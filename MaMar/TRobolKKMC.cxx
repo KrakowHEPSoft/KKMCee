@@ -186,15 +186,27 @@ void TRobolKKMC::Hbooker()
   sct_vKcPL_Ceex2->Sumw2();
   sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vAcPL_Ceex2->Sumw2();
-  // for special AFB^start with costheta PL
+  // for special test, any cost(theta)
   hst_vT_Ceex2 = new TH1D(  "hst_vT_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vT_Ceex2->Sumw2();
+  //
   hst_vT_Ceex2n = new TH1D( "hst_vT_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vT_Ceex2n->Sumw2();
+  // for special AFB from <costheta PL>
   hst_vTcPL_Ceex2 = new TH1D(  "hst_vTcPL_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vTcPL_Ceex2->Sumw2();
+  // for special AFB from <costheta PL>
   hst_vTcPL_Ceex2n = new TH1D( "hst_vTcPL_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vTcPL_Ceex2n->Sumw2();
+  // for standard AFB from (F-B)/(F+B) |cost(theta|<1.0
+  hst_vTcPLforw_Ceex2 = new TH1D(  "hst_vTcPLforw_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vTcPLforw_Ceex2->Sumw2();
+  // for standard AFB from (F-B)/(F+B) |cost(theta|<0.9
+  hst_vTcPL9_Ceex2 = new TH1D( "hst_vTcPL9_Ceex2","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vTcPL9_Ceex2->Sumw2();
+  // forward
+  hst_vTcPL9forw_Ceex2 = new TH1D( "hst_vTcPL9forw_Ceex2","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vTcPL9forw_Ceex2->Sumw2();
   // for xcheck and h.o ISR
   hst_vACeex2   = new TH1D("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex21F = new TH1D("hst_vACeex21F","dSig/dvTrue ", NBv, 0.000 ,vmx2);
@@ -419,11 +431,18 @@ void TRobolKKMC::Production(double &iEvent)
 //
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   //-------------------------------
-  // specials for AFB from <costheta_PL>
+  // dsigma/dv, any theta, no cut
   hst_vT_Ceex2->Fill(    vv, WtCEEX2);
   hst_vTcPL_Ceex2->Fill( vv, WtCEEX2*CosThePL);
+  // specials for AFB from <costheta_PL>
   hst_vT_Ceex2n->Fill(   vv, WtCEEX2n);
   hst_vTcPL_Ceex2n->Fill(vv, WtCEEX2n*CosThePL);
+  // AFB from (F-B)/(F+B), cos(theta)>0, cmax=1
+  if( CosThePL> 0.0)                      hst_vTcPLforw_Ceex2->Fill(  vv, WtCEEX2);
+  // AFB from (F-B)/(F+B) with |cos(theta)| < 0.9 cut
+  if( fabs(CosThePL) < 0.9 )              hst_vTcPL9_Ceex2->Fill(     vv, WtCEEX2);
+  if( CosThePL>0.0 && CosThePL < 0.9)     hst_vTcPL9forw_Ceex2->Fill( vv, WtCEEX2);
+  //
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;

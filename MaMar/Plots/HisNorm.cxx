@@ -451,12 +451,23 @@ return Hd12;
 
 TH1D *HstTildeAFB(TString title, TH1D *HST1, TH1D *HST2)
 {
-TH1D *Hst1 = HstCumul(title,HST1);
-TH1D *Hst2 = HstCumul(title,HST2);
+TH1D *Hst1 = HstCumul(title,HST1);       // total
+TH1D *Hst2 = HstCumul("hst_test",HST2);  // weighted with cos(theta)
 Hst1->Divide(Hst2);
 Hst1->Scale(3.0/2.0);
 return Hst1;
-}//HstDiff
+}//HstTildeAFB
+
+
+TH1D *HstAFB(TString title, TH1D *HST1, TH1D *HST2)
+{
+TH1D *Hst1 = HstCumul(title,HST1);        // forward F
+TH1D *Hst2 = HstCumul("hst_test2",HST2);  // total F+B
+Hst1->Add(Hst1, Hst2,    2.0, -1.0);      // 2F-(F+B)=F-B
+//
+Hst1->Divide(Hst2);
+return Hst1;
+}//HstAFB
 
 
 

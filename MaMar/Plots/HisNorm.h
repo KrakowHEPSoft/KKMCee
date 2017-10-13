@@ -60,6 +60,8 @@ TH1D *HstRatioSc(TString title, TH1D *HST1, TH1D *HST2, Double_t fact);
 
 TH1D *HstTildeAFB(TString title, TH1D *HST1, TH1D *HST2);
 
+TH1D *HstAFB(TString title, TH1D *HST1, TH1D *HST2);
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void PlInitialize(FILE *ltx, int lint);

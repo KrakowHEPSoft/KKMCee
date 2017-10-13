@@ -31,9 +31,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
@@ -476,6 +476,10 @@ void FigAfb2()
 
 //  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
 //  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
+  //[[[[[[[[
+  TH1D *AfbS_Ceex2 = (TH1D*)DiskFileB.Get("AfbS_Ceex2");  //
+  TH1D *AfbS9_Ceex2 = (TH1D*)DiskFileB.Get("AfbS9_Ceex2");  //
+  //]]]]]]]]
   //
   TH1D *HAfb2_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2n");  //
   TH1D *HAfb2_vTcPL_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2");  //
@@ -540,6 +544,11 @@ void FigAfb2()
   PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.2   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3.2  IFIoff ");
   PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
+
+  //[[[[[
+  PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
+  PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
+  //]]]]]
 
   //====================plot2========================
   cFigAfb2->cd(2);
