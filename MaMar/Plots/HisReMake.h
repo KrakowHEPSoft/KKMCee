@@ -17,8 +17,8 @@ using namespace std;
 #include "KKplot.h"
 
 
-void HisReMakeKKMC(TFile *DiskFileA);
+void HisReMakeKKMC(  TFile *DiskFileA, int NbMax);
 
-void HisReMakeFoam35(TFile *DiskFileA);
+void HisReMakeFoam35(TFile *DiskFileA, int NbMax);
 
 #endif

@@ -52,8 +52,8 @@ double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int  kGold=92, kBrune=46, kPine=71;
 //
-//int    gNbMax=50;         // gCosTheta = 45/50=0.90
-//double gCosTheta=1.00;    // to be synchronized with gNbMax
+int    gNbMax=0;          // gCosTheta = 45/50=0.90
+double gCosTheta=1.00;    // to be synchronized with gNbMax
 //
 float  gXcanv = 50, gYcanv = 50;
 ///
@@ -588,7 +588,7 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
 
-  HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
+  HisReMakeKKMC(  &DiskFileA, gNbMax );   // reprocessing MC histos from KKC
 
   ReMakeFoam1();      // reprocessing MC histos from Foam1
   KKsemMakeHisto();   // prepare histos from KKsem
@@ -596,7 +596,7 @@ int main(int argc, char **argv)
 // vmax=1
   FigVV();     // dsigma/dv KKMC/Foam
   FigVcum();   // sigma(vmax) KKMC/Foam
-  FigAfb10();    // AFB(vmax) KKMC/Foam
+  FigAfb10();  // AFB(vmax) KKMC/Foam
   FigAfbN();   // AFB(vmax) KKMC/Foam
 // weight distribution
   FigInfo();

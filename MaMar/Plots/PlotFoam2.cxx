@@ -70,7 +70,7 @@ double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int  kGold=92, kBrune=46, kPine=71;
 //
-int    gNbMax=50;         // gCosTheta = 45/50=0.90
+int    gNbMax=0;          // gCosTheta = 45/50=0.90
 double gCosTheta=1.00;    // to be synchronized with gNbMax
 //
 float  gXcanv = 50, gYcanv = 50;
@@ -351,8 +351,8 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
 
-  HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
-  HisReMakeFoam35(&DiskFileF);   // reprocessing MC histos from Foam
+  HisReMakeKKMC(  &DiskFileA, gNbMax );   // reprocessing MC histos from KKC
+  HisReMakeFoam35(&DiskFileF, gNbMax );   // reprocessing MC histos from Foam
 
 
 //========== PLOTTING ==========

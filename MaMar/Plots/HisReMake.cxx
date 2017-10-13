@@ -2,11 +2,10 @@
 #include "HisReMake.h"
 
 
-void HisReMakeKKMC(TFile *DiskFileA){
+void HisReMakeKKMC(TFile *DiskFileA, int NbMax=0){
   cout<<"==================================================================="<<endl;
   cout<<"================ HisReMakeKKMC  BEGIN  ============================"<<endl;
   //
-  int NbMax=0;
   //DiskFileA->ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
   //
@@ -152,9 +151,8 @@ cout<<"==================================================================="<<end
 }//HisReMakeKKMC
 
 ///////////////////////////////////////////////////////////////////////////////////
-void HisReMakeFoam35(TFile *DiskFileF){
+void HisReMakeFoam35(TFile *DiskFileF, int NbMax=0){
   //------------------------------------------------------------------------
-  int NbMax=0;
   //
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeFoam35  BEGIN   ============================"<<endl;

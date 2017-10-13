@@ -96,8 +96,9 @@ char   gTextEne[100], gTextNev[100], gTextNev2[100];
 //int    gNbMax=45;         // gCosTheta = 45/50=0.90
 //double gCosTheta=0.90;    // to be synchronized with gNbMax
 //
-int    gNbMax=50;         // gCosTheta = 45/50=0.90
-double gCosTheta=1.00;    // to be synchronized with gNbMax
+int    gNbMax=0;            // gCosTheta = 45/50=0.90
+//
+double gCosTheta=1.00;      // to be synchronized with gNbMax
 //
 float  gXcanv = 50, gYcanv = 50;
 KKplot LibSem("KKplot");
@@ -952,8 +953,8 @@ int main(int argc, char **argv)
 // ========= Preparing plots ==========
   DiskFileB.cd();
   TestNorm();          // special test of normalizaion
-  HisReMakeKKMC(  &DiskFileA);   // reprocessing MC histos from KKC
-  HisReMakeFoam35(&DiskFileF);   // reprocessing MC histos from Foam
+  HisReMakeKKMC(  &DiskFileA, gNbMax);   // reprocessing MC histos from KKC
+  HisReMakeFoam35(&DiskFileF, gNbMax);   // reprocessing MC histos from Foam
 
   KKsemMakeHisto();    // prepare histos from KKsem
 //========== PLOTTING ==========
