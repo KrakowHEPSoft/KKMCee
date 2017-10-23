@@ -964,7 +964,7 @@ int main(int argc, char **argv)
 
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();     // reprocessing MC histos
-  /*
+  //
   KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
@@ -976,7 +976,7 @@ int main(int argc, char **argv)
 
   FigVprod();
   FigCprod();
-  */
+  //
   FigCosThe();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
