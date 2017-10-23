@@ -32,10 +32,12 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
+//
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");
 // August2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM

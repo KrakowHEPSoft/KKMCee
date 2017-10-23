@@ -31,16 +31,18 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  *** KKMC
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 ////  *** FOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
+TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
