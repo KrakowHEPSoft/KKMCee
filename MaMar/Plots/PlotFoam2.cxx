@@ -47,7 +47,7 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM 5dim
-/TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
 TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
