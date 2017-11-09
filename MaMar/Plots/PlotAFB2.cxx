@@ -1,4 +1,4 @@
-//    make PlotAFB2
+//    make PlotAFB2-run
 //    Plot for FCC week 2016 in Rome and "Beyond precision..." paper
 
 // This is only AFB study for several energies,
@@ -31,12 +31,17 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
-// Archive
-// Archive
-TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
-TFile DiskFileA2("../workAFB/rmain.root_88GeV_100M");
-TFile DiskFileA3("../workAFB/rmain.root_91GeV_48M");
-TFile DiskFileA4("../workAFB/rmain.root_10GeV_30M");
+// Latest from /workKKMC
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+TFile DiskFileA2("../workKKMC/histo.root_88GeV_2.5G"); // oct.2017
+TFile DiskFileA3("../workKKMC/histo.root_91GeV_3.5G"); // oct.2017
+TFile DiskFileA4("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
+
+// Archive from /workAFB, as for Rome
+//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA2("../workAFB/rmain.root_88GeV_100M");
+//TFile DiskFileA3("../workAFB/rmain.root_91GeV_48M");
+//TFile DiskFileA4("../workAFB/rmain.root_10GeV_30M");
 /// Current
 //TFile DiskFileA("../workAFB/rmain.root");
 //TFile DiskFileA2("../test0/rmain.root");
@@ -80,7 +85,7 @@ void HistNormalize(){
   DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
-  // renomalizing scattergrams is no necesssary!
+  // renomalizing scattergrams is not necesssary!
   //  BIG scatergrams
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n") );
@@ -160,10 +165,8 @@ void ReMakeMChisto(){
   //******** IFI off
   TH1D  *Hsig1_vAcPR_Ceex2n  = HstProjV("Hsig1_vAcPR_Ceex2n", sct1_vAcPR_Ceex2n, nbMax);
   TH1D  *Hafb1_vAcPR_Ceex2n  = HstProjA("Hafb1_vAcPR_Ceex2n", sct1_vAcPR_Ceex2n, nbMax);
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  // scattergrams for vTcPL noIFI are missing !!!!!
-  /*
+  // Warning! scattergrams for vTcPL noIFI were missing in Rome version
   // ---------------------- 95GeV ----------------------------------
   TH1D  *Hsig9_vTcPL_Ceex2  = HstProjV("Hsig9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2  = HstProjA("Hafb9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
@@ -192,8 +195,6 @@ void ReMakeMChisto(){
   //******** IFI off
   TH1D  *Hsig1_vTcPL_Ceex2n  = HstProjV("Hsig1_vTcPL_Ceex2n", sct1_vTcPL_Ceex2n, nbMax);
   TH1D  *Hafb1_vTcPL_Ceex2n  = HstProjA("Hafb1_vTcPL_Ceex2n", sct1_vTcPL_Ceex2n, nbMax);
-  */
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 }//ReMakeMChisto
@@ -232,10 +233,10 @@ void FigTempl()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigDifIFIa()
+void FigIFIvAa()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigDifIFIa =========================== "<<endl;
+  cout<<" ========================= FigIFIvAa =========================== "<<endl;
   ////////////////////////////////////////////////////////////////////////////////
   TH1D *Hafb9_vAcPR_Ceex2      = (TH1D*)DiskFileB.Get("Hafb9_vAcPR_Ceex2");
   TH1D *Hafb9_vAcPR_Ceex2n     = (TH1D*)DiskFileB.Get("Hafb9_vAcPR_Ceex2n");
@@ -252,13 +253,13 @@ void FigDifIFIa()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigDifIFIa = new TCanvas("cFigDifIFIa","cFigDifIFIa", 25,  25,   1200,  600);
+  TCanvas *cFigIFIvAa = new TCanvas("cFigIFIvAa","cFigIFIvAa", 25,  25,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
-  cFigDifIFIa->SetFillColor(10);
-  cFigDifIFIa->Divide( 2,  1);
+  cFigIFIvAa->SetFillColor(10);
+  cFigIFIvAa->Divide( 2,  1);
 //*****************************************************************************
-  cFigDifIFIa->cd(1);
+  cFigIFIvAa->cd(1);
   Hafb9_vAcPR_Ceex2->SetTitle(0);
   Hafb9_vAcPR_Ceex2->SetStats(0);
   Hafb9_vAcPR_Ceex2->GetXaxis()->SetTitle("v_{max}");
@@ -280,7 +281,7 @@ void FigDifIFIa()
   CaptT->DrawLatex(0.50,0.20,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
   //*****************************************************************************
-  cFigDifIFIa->cd(2);
+  cFigIFIvAa->cd(2);
   TH1D *hZero = (TH1D*)Hafb8_vAcPR_Ceex2n->Clone("hZero");  // zero line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
 
@@ -310,17 +311,16 @@ void FigDifIFIa()
   PlotSame2(HDifSum,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
-  cFigDifIFIa->cd();
+  cFigIFIvAa->cd();
 //
-}// FigDifIFIa
-
+}// FigIFIvAa
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigDifIFIb()
+void FigIFIvAb()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigDifIFIb =========================== "<<endl;
+  cout<<" ========================= FigIFIvAb =========================== "<<endl;
   ////////////////////////////////////////////////////////////////////////////////
   TH1D *Hafb9_vAcPR_Ceex2      = (TH1D*)DiskFileB.Get("Hafb9_vAcPR_Ceex2");
   TH1D *Hafb9_vAcPR_Ceex2n     = (TH1D*)DiskFileB.Get("Hafb9_vAcPR_Ceex2n");
@@ -347,10 +347,10 @@ void FigDifIFIb()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigDifIFIb = new TCanvas("cFigDifIFIb","cFigDifIFIb", 50,  50,   600,  600);
+  TCanvas *cFigIFIvAb = new TCanvas("cFigIFIvAb","cFigIFIvAb", 50,  50,   600,  600);
   //                                   Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
-  cFigDifIFIb->SetFillColor(10);
+  cFigIFIvAb->SetFillColor(10);
 
   TH1D *Ddiff = Hafb9_vAcPR_IFIdiff;
   Ddiff->SetTitle(0);
@@ -368,9 +368,12 @@ void FigDifIFIb()
   PlotSame2(Hafb1_vAcPR_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
   hZero->DrawCopy("hsame");
 
-  cFigDifIFIb->SaveAs("cFigDifIFIb.pdf");
+  cFigIFIvAb->SaveAs("cFigIFIvAb.pdf");
   //
-  }// FigDifIFIb
+  }// FigIFIvAb
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -384,8 +387,8 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   // Template empty canvas  with 2 figures
   //FigTempl();
-  FigDifIFIa();
-  FigDifIFIb();
+  FigIFIvAa();
+  FigIFIvAb();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
