@@ -35,7 +35,8 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 TFile DiskFileA2("../workKKMC/histo.root_88GeV_2.5G"); // oct.2017
 TFile DiskFileA3("../workKKMC/histo.root_91GeV_3.5G"); // oct.2017
-TFile DiskFileA4("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
+//TFile DiskFileA4("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
+TFile DiskFileA4("../workKKMC/histo.root"); // oct.2017
 
 // Archive from /workAFB, as for Rome
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
@@ -87,10 +88,10 @@ void HistNormalize(){
   //
   // renomalizing scattergrams is not necesssary!
   //  BIG scatergrams
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
-  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vKcPL_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vKcPL_Ceex2") );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +294,8 @@ void FigIFIvAa()
   TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_vAcPR_IFIdiff, Hafb8_vAcPR_IFIdiff,  kRed);
   //HDifSum->SetLineWidth(2);
 
-  TH1D *Ddiff = Hafb9_vAcPR_IFIdiff;
+//  TH1D *Ddiff = Hafb9_vAcPR_IFIdiff;
+  TH1D *Ddiff = Hafb1_vAcPR_IFIdiff;
   Ddiff->SetTitle(0);
   Ddiff->SetStats(0);
   //Ddiff->GetYaxis()->SetTitle("#Delta A^{IFI}_{FB}(v_{max})");

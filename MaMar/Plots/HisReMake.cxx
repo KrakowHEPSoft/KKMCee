@@ -142,11 +142,12 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
   //[[[[[[[[[[[[[[[[[[ new
   ///****************************************************************************************
   //   Xcheck for   AFB=(F-B)/(F+B)
-
+  /*
   TH1D *AfbS_Ceex2  = HstAFB("AfbS_Ceex2",  (TH1D*)DiskFileA->Get("hst_vTcPLforw_Ceex2"),
                                             (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
   TH1D *AfbS9_Ceex2 = HstAFB("AfbS9_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL9forw_Ceex2"),
                                             (TH1D*)DiskFileA->Get("hst_vTcPL9_Ceex2")  );
+  */
   //]]]]]]]]]]]]]]]]]]
 cout<<"================ HisReMakeKKMC ENDs  ============================="<<endl;
 cout<<"==================================================================="<<endl;
@@ -256,11 +257,12 @@ void HisReMakeFoam35(TFile *DiskFileF, int NbMax, int NbMax2){
 //[[[[[[[[[[[[[[[[[[ new
 ///****************************************************************************************
 //   Xcheck for   AFB=(F-B)/(F+B)
-
+/*
   TH1D *Afb5st_Ceex2  = HstAFB("Afb5st_Ceex2",  (TH1D*)DiskFileF->Get("HST5_xx_forw_Ceex2"),
                                                 (TH1D*)DiskFileF->Get("HST5_xx_Ceex2")   );
   TH1D *Afb5st9_Ceex2 = HstAFB("Afb5st9_Ceex2", (TH1D*)DiskFileF->Get("HST5_xx9_forw_Ceex2"),
                                                 (TH1D*)DiskFileF->Get("HST5_xx9_Ceex2")  );
+*/
 //]]]]]]]]]]]]]]]]]]
 
   cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;

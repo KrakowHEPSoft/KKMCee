@@ -33,20 +33,20 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
-TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
 //************************************************************************
 // Archive, obsolete
@@ -479,11 +479,11 @@ void FigAfb2()
 //  TH1D *HAfb2_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2n");  //
 //  TH1D *HAfb2_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb2_vTcPR_Ceex2");  //
   //[[[[[[[[
-  TH1D *AfbS_Ceex2  = (TH1D*)DiskFileB.Get("AfbS_Ceex2");  //
-  TH1D *AfbS9_Ceex2 = (TH1D*)DiskFileB.Get("AfbS9_Ceex2");  //
+  //TH1D *AfbS_Ceex2  = (TH1D*)DiskFileB.Get("AfbS_Ceex2");  //
+  //TH1D *AfbS9_Ceex2 = (TH1D*)DiskFileB.Get("AfbS9_Ceex2");  //
 
-  TH1D *Afb5st_Ceex2  = (TH1D*)DiskFileB.Get("Afb5st_Ceex2");  //
-  TH1D *Afb5st9_Ceex2 = (TH1D*)DiskFileB.Get("Afb5st9_Ceex2");  //
+  //TH1D *Afb5st_Ceex2  = (TH1D*)DiskFileB.Get("Afb5st_Ceex2");  //
+  //TH1D *Afb5st9_Ceex2 = (TH1D*)DiskFileB.Get("Afb5st9_Ceex2");  //
   //]]]]]]]]
   //
   TH1D *HAfb2_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("HAfb2_vTcPL_Ceex2n");  //
@@ -554,8 +554,8 @@ void FigAfb2()
   //PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
   //PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
 
-  PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
-  PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
+  //PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
+  //PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
   //]]]]]
 
   //====================plot2========================
