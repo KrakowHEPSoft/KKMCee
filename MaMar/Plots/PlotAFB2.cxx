@@ -493,8 +493,8 @@ void AfbIFIvTa()
   Hafb8_vTcPL_IFIdiff->Scale(-1.0); // undoing sign change
   TH1D *HafbZ_vTcPL_IFIdiff = HstDiff("HafbZ_vTcPL_IFIdiff",  HafbZ_vTcPL_Ceex2, HafbZ_vTcPL_Ceex2n,  kMagenta);
   TH1D *Hafb1_vTcPL_IFIdiff = HstDiff("Hafb1_vTcPL_IFIdiff",  Hafb1_vTcPL_Ceex2, Hafb1_vTcPL_Ceex2n,  kGreen);
-  TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
-  //HDifSum->SetLineWidth(2);
+  TH1D *HDifPat_vTcPL             = HstDiff("HDifPat_vTcPL",            Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
+  //HDifPat_vTcPL->SetLineWidth(2);
 
   TH1D *Ddiff = Hafb9_vTcPL_IFIdiff;
   Ddiff->SetTitle(0);
@@ -513,7 +513,7 @@ void AfbIFIvTa()
   PlotSame2(HafbZ_vTcPL_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
   PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
   }
-  PlotSame2(HDifSum,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
+  PlotSame2(HDifPat_vTcPL,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
   cAfbIFIvTa->cd();
@@ -573,8 +573,8 @@ void AfbIFI_Foam()
   TH1D *Hafb9_xmax_IFIdiff = HstDiff("Hafb9_xmax_IFIdiff",  Hafb9_xmax_Ceex2, Hafb9_xmax_Ceex2n,  kBlack);
   TH1D *Hafb8_xmax_IFIdiff = HstDiff("Hafb8_xmax_IFIdiff",  Hafb8_xmax_Ceex2, Hafb8_xmax_Ceex2n,  kBlue);
   Hafb8_xmax_IFIdiff->Scale(-1.0); // undoing sign change
-  TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_xmax_IFIdiff, Hafb8_xmax_IFIdiff,  kRed);
-  //HDifSum->SetLineWidth(2);
+  TH1D *HDifPat_xmax             = HstDiff("HDifPat_xmax",            Hafb9_xmax_IFIdiff, Hafb8_xmax_IFIdiff,  kRed);
+  //HDifPat_xmax->SetLineWidth(2);
 
   TH1D *Ddiff = Hafb9_xmax_IFIdiff;
   Ddiff->SetTitle(0);
@@ -589,12 +589,51 @@ void AfbIFI_Foam()
   double ycapt =0.33;
   PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.020, "(a)", "#sqrt{s}=94.3GeV");
   PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
-  PlotSame2(HDifSum,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
+  PlotSame2(HDifPat_xmax,       ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
   cAfbIFI_Foam->cd();
 //
 }// AfbIFI_Foam
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void AfbDifPat()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= AfbDifPat =========================== "<<endl;
+  ////////////////////////////////////////////////////////////////////////////////
+  TH1D *HDifPat_vTcPL     = (TH1D*)DiskFileB.Get("HDifPat_vTcPL");
+  TH1D *HDifPat_xmax      = (TH1D*)DiskFileB.Get("HDifPat_xmax");
+  //
+  TH1D *hZero7 = (TH1D*)HDifPat_xmax->Clone("hZero7");  // zero line
+  for(int i=1; i <= hZero7->GetNbinsX() ; i++) { hZero7->SetBinContent(i, 0); hZero7->SetBinError(i, 0);}
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfbDifPat = new TCanvas("cAfbDifPat","cAfbDifPat", gXcanv,  gYcanv,   600,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfbDifPat->SetFillColor(10);
+
+  cAfbDifPat->cd();
+
+  HDifPat_vTcPL->SetMaximum( 0.006); HDifPat_vTcPL->SetMinimum(-0.012);
+
+  HDifPat_vTcPL->DrawCopy("h");
+  HDifPat_xmax->DrawCopy("hsame");
+
+  hZero7->SetLineColor(kBlack);
+  hZero7->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max},s_{+}) - A_{FB}^{IFI}(v_{max},s_{-}),  KKMC-KKFoam");
+  //
+  cAfbDifPat->cd();
+//
+}// AfbDifPat
 
 
 
@@ -617,6 +656,8 @@ int main(int argc, char **argv)
   AfbIFIvTa();
   //
   AfbIFI_Foam();
+  //
+  AfbDifPat();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();
