@@ -241,12 +241,12 @@ void ReMakeMChisto(){
   HisNorm2(HST_FOAM_NORMA5_88, SCT8_xc_Ceex2 );   // normalizing
 
   // Foam3
-  TH1D  *HHtot8_xmax_Ceex2n = HstProjV("HHtot8_xmax_Ceex2n",SCT9_xc_Ceex2n,NbMax);
-  TH1D  *HHafb8_xmax_Ceex2n = HstProjA("HHafb8_xmax_Ceex2n",SCT9_xc_Ceex2n,NbMax);
+  TH1D  *HHtot8_xmax_Ceex2n = HstProjV("HHtot8_xmax_Ceex2n",SCT8_xc_Ceex2n,NbMax);
+  TH1D  *HHafb8_xmax_Ceex2n = HstProjA("HHafb8_xmax_Ceex2n",SCT8_xc_Ceex2n,NbMax);
   HHafb8_xmax_Ceex2n->Scale(-1.0);
   // Foam5
-  TH1D  *HHtot8_xmax_Ceex2  = HstProjV("HHtot8_xmax_Ceex2",SCT9_xc_Ceex2,NbMax);
-  TH1D  *HHafb8_xmax_Ceex2  = HstProjA("HHafb8_xmax_Ceex2",SCT9_xc_Ceex2,NbMax);
+  TH1D  *HHtot8_xmax_Ceex2  = HstProjV("HHtot8_xmax_Ceex2",SCT8_xc_Ceex2,NbMax);
+  TH1D  *HHafb8_xmax_Ceex2  = HstProjA("HHafb8_xmax_Ceex2",SCT8_xc_Ceex2,NbMax);
   HHafb8_xmax_Ceex2->Scale(-1.0);
 
 
@@ -528,11 +528,11 @@ void AfbIFI_Foam()
 //------------------------------------------------------------------------
   cout<<" ========================= AfbIFI_Foam =========================== "<<endl;
   ////////////////////////////////////////////////////////////////////////////////
-  TH1D *Hafb9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2");
-  TH1D *Hafb9_vTcPL_Ceex2n     = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2n");
+  TH1D *Hafb9_xmax_Ceex2      = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2");
+  TH1D *Hafb9_xmax_Ceex2n     = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2n");
   //HHafb9_xmax_Ceex2n
-  TH1D *Hafb8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2");
-  TH1D *Hafb8_vTcPL_Ceex2n     = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2n");
+  TH1D *Hafb8_xmax_Ceex2      = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2");
+  TH1D *Hafb8_xmax_Ceex2n     = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2n");
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
@@ -545,38 +545,38 @@ void AfbIFI_Foam()
   cAfbIFI_Foam->Divide( 2,  1);
 //*****************************************************************************
   cAfbIFI_Foam->cd(1);
-  Hafb9_vTcPL_Ceex2->SetTitle(0);
-  Hafb9_vTcPL_Ceex2->SetStats(0);
-  Hafb9_vTcPL_Ceex2->GetXaxis()->SetTitle("v_{max}");
-  //Hafb9_vTcPL_Ceex2->GetYaxis()->SetTitle("A_{FB}(v_{max})");
-  Hafb9_vTcPL_Ceex2->SetLineColor(kBlue);
-  Hafb9_vTcPL_Ceex2->SetMaximum( 0.33);
-  Hafb9_vTcPL_Ceex2->SetMinimum( 0.15);
-  Hafb9_vTcPL_Ceex2->DrawCopy("h");
+  Hafb9_xmax_Ceex2->SetTitle(0);
+  Hafb9_xmax_Ceex2->SetStats(0);
+  Hafb9_xmax_Ceex2->GetXaxis()->SetTitle("v_{max}");
+  //Hafb9_xmax_Ceex2->GetYaxis()->SetTitle("A_{FB}(v_{max})");
+  Hafb9_xmax_Ceex2->SetLineColor(kBlue);
+  Hafb9_xmax_Ceex2->SetMaximum( 0.33);
+  Hafb9_xmax_Ceex2->SetMinimum( 0.15);
+  Hafb9_xmax_Ceex2->DrawCopy("h");
   //
-  Hafb9_vTcPL_Ceex2n->SetLineColor(kBlack);
-  Hafb9_vTcPL_Ceex2n->DrawCopy("hsame");
+  Hafb9_xmax_Ceex2n->SetLineColor(kBlack);
+  Hafb9_xmax_Ceex2n->DrawCopy("hsame");
   //
-  Hafb8_vTcPL_Ceex2->SetLineColor(kBlue);
-  Hafb8_vTcPL_Ceex2->DrawCopy("hsame");
-  Hafb8_vTcPL_Ceex2n->SetLineColor(kBlack);
-  Hafb8_vTcPL_Ceex2n->DrawCopy("hsame");
+  Hafb8_xmax_Ceex2->SetLineColor(kBlue);
+  Hafb8_xmax_Ceex2->DrawCopy("hsame");
+  Hafb8_xmax_Ceex2n->SetLineColor(kBlack);
+  Hafb8_xmax_Ceex2n->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, v=v_{True}");
+  CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, KKFoam");
   CaptT->DrawLatex(0.50,0.20,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
   //*****************************************************************************
   cAfbIFI_Foam->cd(2);
-  TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2n->Clone("hZero");  // zero line
+  TH1D *hZero = (TH1D*)Hafb8_xmax_Ceex2n->Clone("hZero");  // zero line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
 
-  TH1D *Hafb9_vTcPL_IFIdiff = HstDiff("Hafb9_vTcPL_IFIdiff",  Hafb9_vTcPL_Ceex2, Hafb9_vTcPL_Ceex2n,  kBlack);
-  TH1D *Hafb8_vTcPL_IFIdiff = HstDiff("Hafb8_vTcPL_IFIdiff",  Hafb8_vTcPL_Ceex2, Hafb8_vTcPL_Ceex2n,  kBlue);
-  Hafb8_vTcPL_IFIdiff->Scale(-1.0); // undoing sign change
-  TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
+  TH1D *Hafb9_xmax_IFIdiff = HstDiff("Hafb9_xmax_IFIdiff",  Hafb9_xmax_Ceex2, Hafb9_xmax_Ceex2n,  kBlack);
+  TH1D *Hafb8_xmax_IFIdiff = HstDiff("Hafb8_xmax_IFIdiff",  Hafb8_xmax_Ceex2, Hafb8_xmax_Ceex2n,  kBlue);
+  Hafb8_xmax_IFIdiff->Scale(-1.0); // undoing sign change
+  TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_xmax_IFIdiff, Hafb8_xmax_IFIdiff,  kRed);
   //HDifSum->SetLineWidth(2);
 
-  TH1D *Ddiff = Hafb9_vTcPL_IFIdiff;
+  TH1D *Ddiff = Hafb9_xmax_IFIdiff;
   Ddiff->SetTitle(0);
   Ddiff->SetStats(0);
   //Ddiff->GetYaxis()->SetTitle("#Delta A^{IFI}_{FB}(v_{max})");
@@ -587,11 +587,11 @@ void AfbIFI_Foam()
   CaptT->SetTextColor(kBlack);
   CaptT->DrawLatex(0.01, 0.95, " A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
   double ycapt =0.33;
-  PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.020, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.020, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
   PlotSame2(HDifSum,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
-  //hZero->DrawCopy("hsame");
+  hZero->DrawCopy("hsame");
   cAfbIFI_Foam->cd();
 //
 }// AfbIFI_Foam
