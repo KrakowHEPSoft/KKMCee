@@ -52,10 +52,13 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../test0/rmain.root_88GeV_IFIoff_1M"); //
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 //=============================================================================
+///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+//
+float  gXcanv = 50, gYcanv = 50;
 
 //Double_t sqr( const Double_t x ){ return x*x;};
-// Auxiliary procedures for plotting
-//#include "HisNorm.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -162,9 +165,10 @@ void FigTempl()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cTempl = new TCanvas("cTempl","cTempl", 25,  25,   1200,  600);
+  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cTempl->SetFillColor(10);
   cTempl->Divide( 2,  0);
   //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
@@ -197,9 +201,10 @@ void FigScatA()
   TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
   //
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cScatA = new TCanvas("cScatA","cScatA", 50,  50,   1200,  600);
+  TCanvas *cScatA = new TCanvas("cScatA","cScatA", gXcanv,  gXcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cScatA->SetFillColor(10);
   cScatA->Divide( 2,  0);
   //cScatA->Divide( 2,  0,     0.0,     0.0,   10);
@@ -264,9 +269,10 @@ void FigVsig()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cVsig = new TCanvas("cVsig","cVsig", 50,  50,   1000,  400);
+  TCanvas *cVsig = new TCanvas("cVsig","cVsig", gXcanv,  gYcanv,   1000,  400);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cVsig->SetFillColor(10);
   cVsig->Divide( 2,  0);
   //cVsig->Divide( 2,  0,     0.0,     0.0,   10);
@@ -329,9 +335,10 @@ void FigAfbIFI()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cAfbIFI = new TCanvas("cAfbIFI","cAfbIFI", 75,  75,   1200,  500);
+  TCanvas *cAfbIFI = new TCanvas("cAfbIFI","cAfbIFI", gXcanv,  gYcanv,   1200,  500);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cAfbIFI->SetFillColor(10);
   cAfbIFI->Divide( 2,  1);
   //cAfbIFI->Divide( 2,  0,     0.0,     0.0,   10);
@@ -388,9 +395,10 @@ void FigAfbKin()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cAfbKin = new TCanvas("cAfbKin","cAfbKin", 100,  100,   1200,  500);
+  TCanvas *cAfbKin = new TCanvas("cAfbKin","cAfbKin", gXcanv,  gYcanv,   1200,  500);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cAfbKin->SetFillColor(10);
   cAfbKin->Divide( 2,  1);
   //cAfbKin->Divide( 2,  0,     0.0,     0.0,   10);
@@ -484,9 +492,10 @@ void FigDifCeex()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cDifCeex = new TCanvas("cDifCeex","cDifCeex",125, 125,   600,  500);
+  TCanvas *cDifCeex = new TCanvas("cDifCeex","cDifCeex",gXcanv, gXcanv,   600,  500);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cDifCeex->SetFillColor(10);
   cDifCeex->Divide( 1,  0);
   //cDifCeex->Divide( 2,  0,     0.0,     0.0,   10);

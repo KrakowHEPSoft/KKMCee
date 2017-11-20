@@ -32,22 +32,26 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");   // oct.2017
-TFile DiskFileA2("../workKKMC/histo.root_88GeV_2.5G"); // oct.2017
-TFile DiskFileA3("../workKKMC/histo.root_91GeV_3.5G"); // oct.2017
-//TFile DiskFileA4("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
-TFile DiskFileA4("../workKKMC/histo.root"); // oct.2017
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G"); // oct.2017
+TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G"); // oct.2017
+//TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
+TFile DiskFileA10("../workKKMC/histo.root"); // oct.2017
 
 // Archive from /workAFB, as for Rome
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
-//TFile DiskFileA2("../workAFB/rmain.root_88GeV_100M");
-//TFile DiskFileA3("../workAFB/rmain.root_91GeV_48M");
-//TFile DiskFileA4("../workAFB/rmain.root_10GeV_30M");
+//TFile DiskFileA95("../workAFB/rmain.root_95GeV_100M");
+//TFile DiskFileA88("../workAFB/rmain.root_88GeV_100M");
+//TFile DiskFileA91("../workAFB/rmain.root_91GeV_48M");
+//TFile DiskFileA10("../workAFB/rmain.root_10GeV_30M");
 /// Current
-//TFile DiskFileA("../workAFB/rmain.root");
-//TFile DiskFileA2("../test0/rmain.root");
+//TFile DiskFileA95("../workAFB/rmain.root");
+//TFile DiskFileA88("../test0/rmain.root");
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
-//=============================================================================
+///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+//
+float  gXcanv = 50, gYcanv = 50;
 
 //Double_t sqr( const Double_t x ){ return x*x;};
 // Auxiliary procedures for plotting
@@ -83,15 +87,15 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
 void HistNormalize(){
   //
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
-  DiskFileA.ls("");
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  DiskFileA95.ls("");
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA95.Get("HST_KKMC_NORMA");
   //
   // renomalizing scattergrams is not necesssary!
   //  BIG scatergrams
-  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
-  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n") );
-  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
-  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vKcPL_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA95.Get("sct_vAcPR_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA95.Get("sct_vAcPR_Ceex2n") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA95.Get("sct_vKcPL_Ceex2") );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -102,35 +106,35 @@ void ReMakeMChisto(){
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
   Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA95.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
 
   //****************************************************************************************
   // Pure MC reprocessing part
   //
-  TH2D *sct9_vAcPR_Ceex2  = (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2");
-  TH2D *sct9_vAcPR_Ceex2n = (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2n");
+  TH2D *sct9_vAcPR_Ceex2  = (TH2D*)DiskFileA95.Get("sct_vAcPR_Ceex2");
+  TH2D *sct9_vAcPR_Ceex2n = (TH2D*)DiskFileA95.Get("sct_vAcPR_Ceex2n");
   //
-  TH2D *sct8_vAcPR_Ceex2  = (TH2D*)DiskFileA2.Get("sct_vAcPR_Ceex2");
-  TH2D *sct8_vAcPR_Ceex2n = (TH2D*)DiskFileA2.Get("sct_vAcPR_Ceex2n");
+  TH2D *sct8_vAcPR_Ceex2  = (TH2D*)DiskFileA88.Get("sct_vAcPR_Ceex2");
+  TH2D *sct8_vAcPR_Ceex2n = (TH2D*)DiskFileA88.Get("sct_vAcPR_Ceex2n");
   //
-  TH2D *sctZ_vAcPR_Ceex2  = (TH2D*)DiskFileA3.Get("sct_vAcPR_Ceex2");
-  TH2D *sctZ_vAcPR_Ceex2n = (TH2D*)DiskFileA3.Get("sct_vAcPR_Ceex2n");
+  TH2D *sctZ_vAcPR_Ceex2  = (TH2D*)DiskFileA91.Get("sct_vAcPR_Ceex2");
+  TH2D *sctZ_vAcPR_Ceex2n = (TH2D*)DiskFileA91.Get("sct_vAcPR_Ceex2n");
   ///
-  TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA4.Get("sct_vAcPR_Ceex2");
-  TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA4.Get("sct_vAcPR_Ceex2n");
+  TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2");
+  TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2n");
   //!!!!!
-  TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
-  TH2D *sct9_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
+  TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2");
+  TH2D *sct9_vTcPL_Ceex2n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2n");
   //
-  TH2D *sct8_vTcPL_Ceex2  = (TH2D*)DiskFileA2.Get("sct_vTcPL_Ceex2");
-  TH2D *sct8_vTcPL_Ceex2n = (TH2D*)DiskFileA2.Get("sct_vTcPL_Ceex2n");
+  TH2D *sct8_vTcPL_Ceex2  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2");
+  TH2D *sct8_vTcPL_Ceex2n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2n");
   //
-  TH2D *sctZ_vTcPL_Ceex2  = (TH2D*)DiskFileA3.Get("sct_vTcPL_Ceex2");
-  TH2D *sctZ_vTcPL_Ceex2n = (TH2D*)DiskFileA3.Get("sct_vTcPL_Ceex2n");
+  TH2D *sctZ_vTcPL_Ceex2  = (TH2D*)DiskFileA91.Get("sct_vTcPL_Ceex2");
+  TH2D *sctZ_vTcPL_Ceex2n = (TH2D*)DiskFileA91.Get("sct_vTcPL_Ceex2n");
   ///
-  TH2D *sct1_vTcPL_Ceex2  = (TH2D*)DiskFileA4.Get("sct_vTcPL_Ceex2");
-  TH2D *sct1_vTcPL_Ceex2n = (TH2D*)DiskFileA4.Get("sct_vTcPL_Ceex2n");
+  TH2D *sct1_vTcPL_Ceex2  = (TH2D*)DiskFileA10.Get("sct_vTcPL_Ceex2");
+  TH2D *sct1_vTcPL_Ceex2n = (TH2D*)DiskFileA10.Get("sct_vTcPL_Ceex2n");
 
   // ****************************************************************************************
   /// Distributions of v with limited c=cos(theta)
@@ -208,15 +212,16 @@ void FigTempl()
   cout<<" ========================= FigTempl =========================== "<<endl;
   // renormalize histograms in nanobarns
   Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA95.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   //
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cTempl = new TCanvas("cTempl","cTempl", 25,  25,   1200,  600);
+  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cTempl->SetFillColor(10);
   cTempl->Divide( 2,  0);
   //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
@@ -254,9 +259,10 @@ void FigIFIvAa()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigIFIvAa = new TCanvas("cFigIFIvAa","cFigIFIvAa", 25,  25,   1200,  600);
+  TCanvas *cFigIFIvAa = new TCanvas("cFigIFIvAa","cFigIFIvAa", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cFigIFIvAa->SetFillColor(10);
   cFigIFIvAa->Divide( 2,  1);
 //*****************************************************************************
@@ -349,9 +355,10 @@ void FigIFIvAb()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigIFIvAb = new TCanvas("cFigIFIvAb","cFigIFIvAb", 50,  50,   600,  600);
+  TCanvas *cFigIFIvAb = new TCanvas("cFigIFIvAb","cFigIFIvAb", gXcanv,  gYcanv,   600,  600);
   //                                   Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cFigIFIvAb->SetFillColor(10);
 
   TH1D *Ddiff = Hafb9_vAcPR_IFIdiff;
@@ -396,9 +403,10 @@ void FigIFIvTa()
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigIFIvTa = new TCanvas("cFigIFIvTa","cFigIFIvTa", 25,  25,   1200,  600);
+  TCanvas *cFigIFIvTa = new TCanvas("cFigIFIvTa","cFigIFIvTa", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
   cFigIFIvTa->SetFillColor(10);
   cFigIFIvTa->Divide( 2,  1);
 //*****************************************************************************
@@ -478,7 +486,7 @@ int main(int argc, char **argv)
   //
   FigIFIvTa();
   //++++++++++++++++++++++++++++++++++++++++
-  DiskFileA.ls();
+  DiskFileA95.ls();
   DiskFileB.ls();
   DiskFileB.Write();
   DiskFileB.Close();
