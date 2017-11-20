@@ -33,20 +33,20 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
-TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
 //************************************************************************
 // Archive, obsolete
@@ -548,7 +548,7 @@ void FigAfb2()
   PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem.2  IFIoff ");
   PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.2   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3.2  IFIoff ");
-  PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
+  //PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
 
   //[[[[[
   //PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
@@ -584,7 +584,7 @@ void FigAfb2()
   PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "Foam5.2   IFIon - IFIoff ");
   PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC.2_IFIon  - Foam5.2_IFIon ");
   PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC.2_IFIoff - Foam3.2_IFIoff ");
-  PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219: O(#alpha^{1}), IFI hard part ");
+  //PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219: O(#alpha^{1}), IFI hard part ");
 
 
 // zero line

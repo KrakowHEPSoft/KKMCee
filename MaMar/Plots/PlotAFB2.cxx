@@ -75,7 +75,7 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   HST->SetLineColor(kolor);
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
-  ycapt += -0.04;
+  ycapt += -0.05;
   double xcapt = 0.50;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.05,ycapt, label);
@@ -149,8 +149,8 @@ void ReMakeMChisto(){
   /// Distributions of v with limited c=cos(theta)
   //  without cutoff on c=cos(thetaPRD)
   int nbMax=0;   // cosThetaMax = 1.0, no cut
-  nbMax=50;      // cosThetaMax = 50/50=1.00
-  nbMax=45;      // cosThetaMax = 45/50=0.90
+  //nbMax=50;      // cosThetaMax = 50/50=1.00
+  //nbMax=45;      // cosThetaMax = 45/50=0.90
   // ---------------------- 95GeV ----------------------------------
   TH1D  *Hsig9_vAcPR_Ceex2  = HstProjV("Hsig9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
   TH1D  *Hafb9_vAcPR_Ceex2  = HstProjA("Hafb9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
@@ -480,8 +480,8 @@ void AfbIFIvTa()
   Hafb8_vTcPL_Ceex2n->SetLineColor(kBlack);
   Hafb8_vTcPL_Ceex2n->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, v=v_{True}");
-  CaptT->DrawLatex(0.50,0.20,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
+  CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, v=v_{True} KKMC");
+  CaptT->DrawLatex(0.50,0.25,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
   //*****************************************************************************
   cAfbIFIvTa->cd(2);
@@ -493,7 +493,7 @@ void AfbIFIvTa()
   Hafb8_vTcPL_IFIdiff->Scale(-1.0); // undoing sign change
   TH1D *HafbZ_vTcPL_IFIdiff = HstDiff("HafbZ_vTcPL_IFIdiff",  HafbZ_vTcPL_Ceex2, HafbZ_vTcPL_Ceex2n,  kMagenta);
   TH1D *Hafb1_vTcPL_IFIdiff = HstDiff("Hafb1_vTcPL_IFIdiff",  Hafb1_vTcPL_Ceex2, Hafb1_vTcPL_Ceex2n,  kGreen);
-  TH1D *HDifPat_vTcPL             = HstDiff("HDifPat_vTcPL",            Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
+  TH1D *HDifPat_vTcPL       = HstDiff("HDifPat_vTcPL",        Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
   //HDifPat_vTcPL->SetLineWidth(2);
 
   TH1D *Ddiff = Hafb9_vTcPL_IFIdiff;
@@ -505,10 +505,10 @@ void AfbIFIvTa()
   Ddiff->DrawCopy("h");
 
   CaptT->SetTextColor(kBlack);
-  CaptT->DrawLatex(0.01, 0.95, " A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
+  CaptT->DrawLatex(0.01, 0.95, " A^{IFI}_{FB}(v_{max}) = A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
   double ycapt =0.33;
-  PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.020, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.040, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.065, "(b)", "#sqrt{s}=87.9GeV");
   if( gTogEne ){
   PlotSame2(HafbZ_vTcPL_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
   PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
@@ -563,7 +563,7 @@ void AfbIFI_Foam()
   Hafb8_xmax_Ceex2n->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, KKFoam");
-  CaptT->DrawLatex(0.50,0.20,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
+  CaptT->DrawLatex(0.50,0.25,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
   //*****************************************************************************
   cAfbIFI_Foam->cd(2);
@@ -585,10 +585,10 @@ void AfbIFI_Foam()
   Ddiff->DrawCopy("h");
 
   CaptT->SetTextColor(kBlack);
-  CaptT->DrawLatex(0.01, 0.95, " A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
+  CaptT->DrawLatex(0.01, 0.95, " A^{IFI}_{FB}(v_{max})= A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
   double ycapt =0.33;
-  PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.020, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.040, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.065, "(b)", "#sqrt{s}=87.9GeV");
   PlotSame2(HDifPat_xmax,       ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
@@ -621,17 +621,29 @@ void AfbDifPat()
 
   cAfbDifPat->cd();
 
-  HDifPat_vTcPL->SetMaximum( 0.006); HDifPat_vTcPL->SetMinimum(-0.012);
+  TH1D *Hafb_IFI_diff_Pat = HstDiff("Hafb_IFI_diff_Pat", HDifPat_vTcPL, HDifPat_xmax,  kRed);
+  Hafb_IFI_diff_Pat->Scale(10.0);
 
-  HDifPat_vTcPL->DrawCopy("h");
+  TH1D *HDif1 = HDifPat_vTcPL;
+  HDif1->SetMaximum( 0.006); HDif1->SetMinimum(-0.012);
+
+  HDif1->DrawCopy("h");
+
+  double ycapt =0.90;
+  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack,   0.170, "(a)", "KKMC");
+  PlotSame2(HDifPat_xmax,      ycapt, kBlue,    0.140, "(b)", "KKFoam");
+  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,     0.040, "(c)", "= [(a)-(b)]x10");
+
   HDifPat_xmax->DrawCopy("hsame");
 
   hZero7->SetLineColor(kBlack);
   hZero7->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max},s_{+}) - A_{FB}^{IFI}(v_{max},s_{-}),  KKMC-KKFoam");
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max},s_{+} ) - A_{FB}^{IFI}(v_{max},s_{-} )");
   //
   cAfbDifPat->cd();
+  cAfbDifPat->SaveAs("cAfbDifPat.pdf");
+
 //
 }// AfbDifPat
 

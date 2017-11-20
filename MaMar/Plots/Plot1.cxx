@@ -31,14 +31,14 @@ using namespace std;
 // current
 //TFile DiskFileA("../workKKMC/histo.root");
 
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
+TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
-TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
+//TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
