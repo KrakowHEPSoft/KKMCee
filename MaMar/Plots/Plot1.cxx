@@ -31,7 +31,8 @@ using namespace std;
 // current
 //TFile DiskFileA("../workKKMC/histo.root");
 
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 
 //TFile DiskFileA("../workAFB/rmain.root");
@@ -45,6 +46,13 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 
 KKplot LibSem("KKplot");
 
+///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
+char   gTextEne[100], gTextNev[100], gTextNev2[100];
+int    kGold=92, kBrune=46, kPine=71;
+//
 //
 float  gXcanv = 10, gYcanv = 10;
 
@@ -208,9 +216,8 @@ void KKsemMakeHisto(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 void ReMakeMChisto(){
-	// Here we produce semianalytical plots using KKsem program, No plotting
-	// also some MC histos are preprocessed
-	//------------------------------------------------------------------------
+// Some KKMC histos are preprocessed
+//------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -220,8 +227,8 @@ void ReMakeMChisto(){
   //****************************************************************************************
   // Pure MC reprocessing part
   //
-  TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
-  TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
+  TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
+  TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
 
   // *********  distributions in cos(theta) and limited v *************
@@ -311,6 +318,8 @@ void ReMakeMChisto(){
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigScatA()
@@ -946,7 +955,7 @@ void FigCosThe()
   Hst->DrawCopy("h");
 
   double ycapt = 0.80;
-  CaptT->DrawLatex(0.40, ycapt,"#sqrt{s} = 10GeV");
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
   PlotSame2(Hst,                      ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
   PlotSame2(Hcth_vTcPR_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
 
@@ -961,6 +970,32 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   LibSem.Initialize(DiskFileA);
+  /////////////////////////////////////////////////////////
+  // Reading directly KKMC input (farming)
+  int Nodes, Nodes2;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  Nodes    = HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
+  gCMSene  = HST_KKMC_NORMA->GetBinContent(1)/Nodes;   // CMSene=xpar(1), farn adjusted
+  gNevTot  = HST_KKMC_NORMA->GetEntries();             // MC statistics from KKMC
+  sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
+  sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
+  //
+  /*
+  TH1D *HST_FOAM_NORMA3 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA3");
+  Nodes2   =  HST_FOAM_NORMA3->GetBinContent(511);    // No of farm nodes (trick)
+  double  CMSeneF  = HST_FOAM_NORMA3->GetBinContent(1)/Nodes2; // CMSene=xpar(1)
+  if( fabs(gCMSene/CMSeneF-1) >1e-4 ){
+	  cout<<" +++++ Wrong input files !!!! KKMC "<< gCMSene <<"GeV and  FOAM "<< CMSeneF<<"GeV"<<endl;
+	  exit(19);
+  }
+  gNevTot2  = HST_FOAM_NORMA3->GetEntries();       // MC statistics from KKMC
+  sprintf(gTextNev2,"FOAM:%10.2e events", gNevTot2);
+  */
+  //
+  cout<< "CMSene[GeV] = "<< gCMSene<< endl;
+  cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
+  //cout<< "FOAM: No. of farm nodes="<< Nodes2 << "  Tot no. of events = "<<gNevTot2<<endl;
+//////////////////////////////////////////////////////////////////////////
 
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();     // reprocessing MC histos
