@@ -28,7 +28,7 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
-// current
+// KKMC current
 //TFile DiskFileA("../workKKMC/histo.root");
 
 TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
@@ -36,11 +36,17 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
 
 //TFile DiskFileA("../workAFB/rmain.root");
-// archive
+// archive obsolete!
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-//
+
+//////  *** KKFOAM
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+// Sept. 2017 runs
+TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+
+
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
 
@@ -101,6 +107,9 @@ void HistNormalize(){
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2") );
   //
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n") );
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -226,7 +235,7 @@ void ReMakeMChisto(){
 
   //****************************************************************************************
   // Pure MC reprocessing part
-  //
+  // wide range scaterplots, v<1, 50x50
   TH2D *sca_vTcPR_Ceex2  = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2");
   TH2D *sca_vTcPR_Eex2   = (TH2D*)DiskFileA.Get("sca_vTcPR_Eex2");
   TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA.Get("sca_vTcPR_Ceex2n");
@@ -251,6 +260,16 @@ void ReMakeMChisto(){
   //
   TH1D *Hcth_vTcPR_Ceex2n_vmax02 = HstProjC( "Hcth_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
   TH1D *Hcas_vTcPR_Ceex2n_vmax02 = HstProjCA("Hcas_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
+  //
+  // narower range scaterplots, v<0.2, 100x100
+  TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
+  TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
+  nbMax=10;     // vMax = 10/100*0.2=0.02
+  TH1D *Hcth_vTcPL_Ceex2_vmax02  = HstProjC( "Hcth_vTcPL_Ceex2_vmax02",  sct_vTcPL_Ceex2,  nbMax);
+  TH1D *Hcas_vTcPL_Ceex2_vmax02  = HstProjCA("Hcas_vTcPL_Ceex2_vmax02",  sct_vTcPL_Ceex2,  nbMax);
+  //
+  TH1D *Hcth_vTcPL_Ceex2n_vmax02 = HstProjC( "Hcth_vTcPL_Ceex2n_vmax02", sct_vTcPL_Ceex2n, nbMax);
+  TH1D *Hcas_vTcPL_Ceex2n_vmax02 = HstProjCA("Hcas_vTcPL_Ceex2n_vmax02", sct_vTcPL_Ceex2n, nbMax);
 
   //  *********** distrib. of cos(theta) unlimited v
   TH1D                   *Hpro_cosPR_Ceex2;
@@ -894,6 +913,7 @@ void FigCprod()
 void FigCosThe()
 {
 //------------------------------------------------------------------------
+// Older version with PRD angle
   cout<<" ========================= FigCosThe =========================== "<<endl;
 
   TH1D *Hcth_vTcPR_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2_vmax02");
@@ -929,9 +949,57 @@ void FigCosThe()
   PlotSame2(Hcth_vTcPR_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
   PlotSame2(Hcth_vTcPR_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
 
-
   //================================================
 }//FigCosThe
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCosThe2()
+{
+//------------------------------------------------------------------------
+// Older version with PRD angle
+  cout<<" ========================= FigCosThe2 =========================== "<<endl;
+
+  TH1D *Hcth_vTcPR_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2_vmax02");
+  TH1D *Hcth_vTcPR_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2n_vmax02");
+  //
+  TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax02");
+  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+ ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigCosThe2 = new TCanvas("cFigCosThe2","cFigCosThe2", gXcanv, gYcanv,    600, 600);
+  //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+  cFigCosThe2->SetFillColor(10);
+
+  cFigCosThe2->cd();
+
+//  TH1D *Hst=Hcth_vTcPR_Ceex2_vmax02;
+  TH1D *Hst=Hcth_vTcPL_Ceex2_vmax02;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->CenterTitle();
+  Hst->GetYaxis()->SetTitleSize(0.04);
+  Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
+  Hst->GetXaxis()->SetTitleSize(0.04);
+  Hst->GetXaxis()->SetTitle("cos(#theta)");
+
+  Hst->SetLineColor(kBlue);
+  Hst->SetMinimum(0.0);
+  Hst->DrawCopy("h");
+
+  double ycapt = 0.80;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  PlotSame2(Hcth_vTcPL_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
+  PlotSame2(Hcth_vTcPL_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
+
+  //================================================
+}//FigCosThe2
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -950,7 +1018,6 @@ int main(int argc, char **argv)
   sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
   sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
   //
-  /*
   TH1D *HST_FOAM_NORMA3 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA3");
   Nodes2   =  HST_FOAM_NORMA3->GetBinContent(511);    // No of farm nodes (trick)
   double  CMSeneF  = HST_FOAM_NORMA3->GetBinContent(1)/Nodes2; // CMSene=xpar(1)
@@ -960,7 +1027,7 @@ int main(int argc, char **argv)
   }
   gNevTot2  = HST_FOAM_NORMA3->GetEntries();       // MC statistics from KKMC
   sprintf(gTextNev2,"FOAM:%10.2e events", gNevTot2);
-  */
+
   //
   cout<< "CMSene[GeV] = "<< gCMSene<< endl;
   cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
@@ -983,6 +1050,7 @@ int main(int argc, char **argv)
   FigCprod();
   //
   FigCosThe();
+  FigCosThe2();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
