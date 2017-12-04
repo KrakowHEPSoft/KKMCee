@@ -333,6 +333,109 @@ void ProjC(TH2D *Scat, TH1D *&hTot, TH1D *&hAsy, int NbMax)
   hSym->Delete();
 }// ProjC
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+TH1D *HstProjCA(TString title, TH2D *Scat, int NbMax)
+{
+  // Projection onto c=cos(theta) axis, suming over v up to a limit
+  int      nbX  = Scat->GetNbinsX();
+  int      nbY  = Scat->GetNbinsY();
+  Double_t Xmax = Scat->GetXaxis()->GetXmax();
+  Double_t Xmin = Scat->GetXaxis()->GetXmin();
+  Double_t Ymax = Scat->GetYaxis()->GetXmax();
+  Double_t Ymin = Scat->GetYaxis()->GetXmin();
+  //
+  TH1D *hAsy = (TH1D*)Scat->ProjectionY(title,1,nbX,"e"); // option "e" doesnt work
+  hAsy->Reset();
+  TH1D *hSym = (TH1D*)hAsy->Clone("HstNew2"); // local histo
+  //
+  double forw,forw2;
+  double back,back2;
+  double dx= (Xmax-Xmin)/nbX; // integration over X
+  int ivMax;
+  //
+  if( (NbMax>0) && (NbMax<nbX) )
+    ivMax = NbMax;
+  else
+    ivMax = nbX;
+  int nbYhalf = nbY/2;
+  for(int ic=1; ic <= nbYhalf; ic++){
+    int iforw = nbYhalf+ic;
+    int iback = nbYhalf-ic+1;
+    forw=0.0;  forw2=0.0;
+    back=0.0;  back2=0.0;
+    for(int iv=0; iv <= ivMax; iv++){
+      forw  += Scat->GetBinContent(  iv,iforw);
+      forw2 += sqr(Scat->GetBinError(iv,iforw));
+      back  += Scat->GetBinContent(  iv,iback);
+      back2 += sqr(Scat->GetBinError(iv,iback));
+    }
+   // asymetric
+    hAsy->SetBinContent(iforw,     dx*(forw-back));
+    hAsy->SetBinError(  iforw, dx*sqrt(forw2+back2));
+    hAsy->SetBinContent(iback,    -dx*(forw-back));
+    hAsy->SetBinError(  iback, dx*sqrt(forw2+back2));
+    // symetric
+    hSym->SetBinContent(iforw,     dx*(forw+back));
+    hSym->SetBinError(  iforw, dx*sqrt(forw2+back2));
+    hSym->SetBinContent(iback,     dx*(forw+back));
+    hSym->SetBinError(  iback, dx*sqrt(forw2+back2));
+  }
+  hAsy->Divide(hSym);
+  hSym->Delete();
+  return hAsy;
+}// HstProjCA
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+TH1D *HstProjC(TString title, TH2D *Scat, int NbMax)
+{
+  // Projection onto c=cos(theta) axis, suming over v up to a limit
+  int      nbX  = Scat->GetNbinsX();
+  int      nbY  = Scat->GetNbinsY();
+  Double_t Xmax = Scat->GetXaxis()->GetXmax();
+  Double_t Xmin = Scat->GetXaxis()->GetXmin();
+  Double_t Ymax = Scat->GetYaxis()->GetXmax();
+  Double_t Ymin = Scat->GetYaxis()->GetXmin();
+  //
+  TH1D *hTot = (TH1D*)Scat->ProjectionY(title,1,nbX,"e"); // option "e" doesnt work
+  hTot->Reset();
+  //
+  double forw,forw2;
+  double back,back2;
+  double dx= (Xmax-Xmin)/nbX; // integration over X
+  int ivMax;
+  //
+  if( (NbMax>0) && (NbMax<nbX) )
+    ivMax = NbMax;
+  else
+    ivMax = nbX;
+  int nbYhalf = nbY/2;
+  for(int ic=1; ic <= nbYhalf; ic++){
+    int iforw = nbYhalf+ic;
+    int iback = nbYhalf-ic+1;
+    forw=0.0;  forw2=0.0;
+    back=0.0;  back2=0.0;
+    for(int iv=0; iv <= ivMax; iv++){
+      forw  += Scat->GetBinContent(  iv,iforw);
+      forw2 += sqr(Scat->GetBinError(iv,iforw));
+      back  += Scat->GetBinContent(  iv,iback);
+      back2 += sqr(Scat->GetBinError(iv,iback));
+    }
+    // total
+    hTot->SetBinContent(iforw,     dx*(forw));
+    hTot->SetBinError(  iforw, dx*sqrt(forw2));
+    hTot->SetBinContent(iback,     dx*(back));
+    hTot->SetBinError(  iback, dx*sqrt(back2));
+  }
+  return hTot;
+}// HstProjC
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 void MakeCumul(TH1D *hst1, TH1D *&hcum1)
 {

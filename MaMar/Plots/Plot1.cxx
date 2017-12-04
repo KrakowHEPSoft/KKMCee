@@ -233,40 +233,24 @@ void ReMakeMChisto(){
 
   // *********  distributions in cos(theta) and limited v *************
   int nbMax=0; // it is cut on vv, 0= no cut
-  //nbMax=45;    // vMax = 45/50=0.9
-  TH1D                    *Hcth_vTcPR_Ceex2_vmax90, *Hcas_vTcPR_Ceex2_vmax90;
-  ProjC( sca_vTcPR_Ceex2,  Hcth_vTcPR_Ceex2_vmax90,  Hcas_vTcPR_Ceex2_vmax90, nbMax);
-  Hcth_vTcPR_Ceex2_vmax90->SetName("Hcth_vTcPR_Ceex2_vmax90");
-  Hcas_vTcPR_Ceex2_vmax90->SetName("Hcas_vTcPR_Ceex2_vmax90");
-  //if( CMSene<91.0 ) Hcas_vTcPR_Ceex2_vmax90->Scale(-1);
+  nbMax=45;    // vMax = 45/50=0.9
+  TH1D *Hcth_vTcPR_Ceex2_vmax90  = HstProjC( "Hcth_vTcPR_Ceex2_vmax90",  sca_vTcPR_Ceex2,  nbMax);
+  TH1D *Hcas_vTcPR_Ceex2_vmax90  = HstProjCA("Hcas_vTcPR_Ceex2_vmax90",  sca_vTcPR_Ceex2,  nbMax);
   //
   nbMax=15;    // vMax = 15/50=0.3
-  TH1D                    *Hcth_vTcPR_Ceex2_vmax30, *Hcas_vTcPR_Ceex2_vmax30;
-  ProjC( sca_vTcPR_Ceex2,  Hcth_vTcPR_Ceex2_vmax30,  Hcas_vTcPR_Ceex2_vmax30, nbMax);
-  Hcth_vTcPR_Ceex2_vmax30->SetName("Hcth_vTcPR_Ceex2_vmax30");
-  Hcas_vTcPR_Ceex2_vmax30->SetName("Hcas_vTcPR_Ceex2_vmax30");
-  //if( CMSene<91.0 ) Hcas_vTcPR_Ceex2_vmax30->Scale(-1);
+  TH1D *Hcth_vTcPR_Ceex2_vmax30  = HstProjC( "Hcth_vTcPR_Ceex2_vmax30",  sca_vTcPR_Ceex2,  nbMax);
+  TH1D *Hcas_vTcPR_Ceex2_vmax30  = HstProjCA("Hcas_vTcPR_Ceex2_vmax30",  sca_vTcPR_Ceex2,  nbMax);
   //
   nbMax=5;     // vMax = 5/50=0.1
-  TH1D                    *Hcth_vTcPR_Ceex2_vmax10, *Hcas_vTcPR_Ceex2_vmax10;
-  ProjC( sca_vTcPR_Ceex2,  Hcth_vTcPR_Ceex2_vmax10,  Hcas_vTcPR_Ceex2_vmax10, nbMax);
-  Hcth_vTcPR_Ceex2_vmax10->SetName("Hcth_vTcPR_Ceex2_vmax10");
-  Hcas_vTcPR_Ceex2_vmax10->SetName("Hcas_vTcPR_Ceex2_vmax10");
-  //if( CMSene<91.0 ) Hcas_vTcPR_Ceex2_vmax10->Scale(-1);
+  TH1D *Hcth_vTcPR_Ceex2_vmax10  = HstProjC( "Hcth_vTcPR_Ceex2_vmax10",  sca_vTcPR_Ceex2,  nbMax);
+  TH1D *Hcas_vTcPR_Ceex2_vmax10  = HstProjCA("Hcas_vTcPR_Ceex2_vmax10",  sca_vTcPR_Ceex2,  nbMax);
   //
   nbMax=1;     // vMax = 5/50=0.02
-  TH1D                    *Hcth_vTcPR_Ceex2_vmax02, *Hcas_vTcPR_Ceex2_vmax02;
-  ProjC( sca_vTcPR_Ceex2,  Hcth_vTcPR_Ceex2_vmax02,  Hcas_vTcPR_Ceex2_vmax02, nbMax);
-  Hcth_vTcPR_Ceex2_vmax02->SetName("Hcth_vTcPR_Ceex2_vmax02");
-  Hcas_vTcPR_Ceex2_vmax02->SetName("Hcas_vTcPR_Ceex2_vmax02");
-  //if( CMSene<91.0 ) Hcas_vTcPR_Ceex2_vmax02->Scale(-1);
-
-  // IFI off
-  TH1D                     *Hcth_vTcPR_Ceex2n_vmax02, *Hcas_vTcPR_Ceex2n_vmax02;
-  ProjC( sca_vTcPR_Ceex2n,  Hcth_vTcPR_Ceex2n_vmax02,  Hcas_vTcPR_Ceex2n_vmax02, nbMax);
-  Hcth_vTcPR_Ceex2n_vmax02->SetName("Hcth_vTcPR_Ceex2n_vmax02");
-  Hcas_vTcPR_Ceex2n_vmax02->SetName("Hcas_vTcPR_Ceex2n_vmax02");
-  //if( CMSene<91.0 ) Hcas_vTcPR_Ceex2n_vmax02->Scale(-1);
+  TH1D *Hcth_vTcPR_Ceex2_vmax02  = HstProjC( "Hcth_vTcPR_Ceex2_vmax02",  sca_vTcPR_Ceex2,  nbMax);
+  TH1D *Hcas_vTcPR_Ceex2_vmax02  = HstProjCA("Hcas_vTcPR_Ceex2_vmax02",  sca_vTcPR_Ceex2,  nbMax);
+  //
+  TH1D *Hcth_vTcPR_Ceex2n_vmax02 = HstProjC( "Hcth_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
+  TH1D *Hcas_vTcPR_Ceex2n_vmax02 = HstProjCA("Hcas_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
 
   //  *********** distrib. of cos(theta) unlimited v
   TH1D                   *Hpro_cosPR_Ceex2;
@@ -282,42 +266,28 @@ void ReMakeMChisto(){
   // ******* distrib. of v unlimited c, (failed xcheck)
   //TH1D *hst_ProjV = (TH1D*)sca_vTcPR_Ceex2->ProjectionX("hst_projV",1,50,"e");
 
-
   ///****************************************************************************************
   /// Distributions of v=vTrue with limited c=cos(theta)
   //  without cutoff on c=cos(thetaPRD)
   nbMax=0;   // cosThetaMax = 1.0
-  TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
-  ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
-  HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
-  HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
-  //if( CMSene<91.0 ) HAfb_vTcPR_Ceex2->Scale(-1);
-  //
+  TH1D  *HTot_vTcPR_Ceex2  = HstProjV("HTot_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
+  TH1D  *HAfb_vTcPR_Ceex2  = HstProjA("HAfb_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
   nbMax=22;      // cosThetaMax = 22/25 =0.88
-  TH1D                    *HTot2_vTcPR_Ceex2, *HAfb2_vTcPR_Ceex2;
-  ProjV( sca_vTcPR_Ceex2,  HTot2_vTcPR_Ceex2,  HAfb2_vTcPR_Ceex2, nbMax); //!!!!
-  HTot2_vTcPR_Ceex2->SetName("HTot2_vTcPR_Ceex2");
-  HAfb2_vTcPR_Ceex2->SetName("HAfb2_vTcPR_Ceex2");
-  //if( CMSene<91.0 ) HAfb2_vTcPR_Ceex2->Scale(-1);
-  // IFI off
+  TH1D  *HTot2_vTcPR_Ceex2  = HstProjV("HTot2_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
+  TH1D  *HAfb2_vTcPR_Ceex2  = HstProjA("HAfb2_vTcPR_Ceex2",sca_vTcPR_Ceex2,nbMax);
   nbMax=0;   // cosThetaMax = 1.0
-  TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
-  ProjV( sca_vTcPR_Ceex2n, HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
-  HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
-  HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
-  //if( CMSene<91.0 ) HAfb_vTcPR_Ceex2n->Scale(-1);
-  //
+  TH1D  *HTot_vTcPR_Ceex2n  = HstProjV("HTot_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
+  TH1D  *HAfb_vTcPR_Ceex2n  = HstProjA("HAfb_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
   nbMax=22;      // cosThetaMax = 22/25 =0.88
-  TH1D                    *HTot2_vTcPR_Ceex2n, *HAfb2_vTcPR_Ceex2n;
-  ProjV( sca_vTcPR_Ceex2n, HTot2_vTcPR_Ceex2n,  HAfb2_vTcPR_Ceex2n, nbMax); //!!!!
-  HTot2_vTcPR_Ceex2n->SetName("HTot2_vTcPR_Ceex2n");
-  HAfb2_vTcPR_Ceex2n->SetName("HAfb2_vTcPR_Ceex2n");
-  //if( CMSene<91.0 ) HAfb2_vTcPR_Ceex2n->Scale(-1);
-
+  TH1D  *HTot2_vTcPR_Ceex2n  = HstProjV("HTot2_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
+  TH1D  *HAfb2_vTcPR_Ceex2n  = HstProjA("HAfb2_vTcPR_Ceex2n",sca_vTcPR_Ceex2n,nbMax);
 
   cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
+
+
+
 
 
 
@@ -956,7 +926,7 @@ void FigCosThe()
 
   double ycapt = 0.80;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
-  PlotSame2(Hst,                      ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
+  PlotSame2(Hcth_vTcPR_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
   PlotSame2(Hcth_vTcPR_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
 
 
@@ -1003,8 +973,8 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
-  FigScatA();
-  FigInfo();
+  //FigScatA();
+  //FigInfo();
 
   FigVtest();  // introduct. tests/calibrations
   FigCtest();  // introduct. tests/calibrations
