@@ -224,7 +224,7 @@ void KKsemMakeHisto(){
 }//  KKsemMakeHisto
 
 ///////////////////////////////////////////////////////////////////////////////////
-void ReMakeMChisto(){
+void ReMakeKKMC(){
 // Some KKMC histos are preprocessed
 //------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
@@ -307,6 +307,31 @@ void ReMakeMChisto(){
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+//void HisReMakeFoam35(TFile *DiskFileF, int NbMax, int NbMax2){
+void HisReMakeFoam35(){
+
+  int NbMax =0;
+  int NbMax2=0;
+  //------------------------------------------------------------------------
+  //
+  cout<<"==================================================================="<<endl;
+  cout<<"================ ReMakeFoam35  BEGIN   ============================"<<endl;
+//////////////////////////////////////////////////////////////////
+  cout<<"  Renormalizing  and reprocessing histograms from FOAM"<<endl;
+
+  TH1D *HST_FOAM_NORMA3 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA3");
+  TH1D *HST_FOAM_NORMA5 = (TH1D*)DiskFileF.Get("HST_FOAM_NORMA5");
+
+  TH2D *SCT_xc_Ceex2  = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2");   // FOAM5 small range x<0.20
+  TH2D *SCT_xc_Ceex2n = (TH2D*)DiskFileF.Get("SCT_xc_Ceex2n");  // FOAM3 small range x<0.20
+
+  HisNorm2(HST_FOAM_NORMA5, SCT_xc_Ceex2 );   // normalizing FOAM5
+  HisNorm2(HST_FOAM_NORMA3, SCT_xc_Ceex2n );  // normalizing FOAM3
+
+  cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;
+  cout<<"==================================================================="<<endl;
+}//ReMakeFoam35
 
 
 
@@ -1035,9 +1060,10 @@ int main(int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////
 
   HistNormalize();     // Renormalization of MC histograms
-  ReMakeMChisto();     // reprocessing MC histos
+  ReMakeKKMC();        // reprocessing KKMC histos
   //
   KKsemMakeHisto();    // prepare histos from KKsem
+  HisReMakeFoam35();   // prepare histos from KKfoam
   //========== PLOTTING ==========
   //
   //FigScatA();
