@@ -260,7 +260,7 @@ void ReMakeKKMC(){
   //
   TH1D *Hcth_vTcPR_Ceex2n_vmax02 = HstProjC( "Hcth_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
   TH1D *Hcas_vTcPR_Ceex2n_vmax02 = HstProjCA("Hcas_vTcPR_Ceex2n_vmax02", sca_vTcPR_Ceex2n, nbMax);
-  //
+  //=======================================================
   // narower range scaterplots, v<0.2, 100x100
   TH2D *sct_vTcPL_Ceex2  = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2");
   TH2D *sct_vTcPL_Ceex2n = (TH2D*)DiskFileA.Get("sct_vTcPL_Ceex2n");
@@ -311,10 +311,7 @@ void ReMakeKKMC(){
 //void HisReMakeFoam35(TFile *DiskFileF, int NbMax, int NbMax2){
 void HisReMakeFoam35(){
 
-  int NbMax =0;
-  int NbMax2=0;
-  //------------------------------------------------------------------------
-  //
+//
   cout<<"==================================================================="<<endl;
   cout<<"================ ReMakeFoam35  BEGIN   ============================"<<endl;
 //////////////////////////////////////////////////////////////////
@@ -329,7 +326,13 @@ void HisReMakeFoam35(){
   HisNorm2(HST_FOAM_NORMA5, SCT_xc_Ceex2 );   // normalizing FOAM5
   HisNorm2(HST_FOAM_NORMA3, SCT_xc_Ceex2n );  // normalizing FOAM3
 
-  cout<<"================ ReMakeFoam35 ENDs  ============================="<<endl;
+
+  int nbMax=10;     // vMax = 10/100*0.2=0.02
+  TH1D *Hcth_foam_Ceex2_vmax02  = HstProjC( "Hcth_foam_Ceex2_vmax02",  SCT_xc_Ceex2,  nbMax);
+  //
+  TH1D *Hcth_foam_Ceex2n_vmax02 = HstProjC( "Hcth_foam_Ceex2n_vmax02", SCT_xc_Ceex2n, nbMax);
+
+  cout<<"================ ReMakeFoam35 ENDs  ==============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//ReMakeFoam35
 
@@ -984,25 +987,26 @@ void FigCosThe2()
 //------------------------------------------------------------------------
 // Older version with PRD angle
   cout<<" ========================= FigCosThe2 =========================== "<<endl;
-
-  TH1D *Hcth_vTcPR_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2_vmax02");
-  TH1D *Hcth_vTcPR_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPR_Ceex2n_vmax02");
-  //
+ //
   TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax02");
   TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
+  //
+  TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax02");
+  TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigCosThe2 = new TCanvas("cFigCosThe2","cFigCosThe2", gXcanv, gYcanv,    600, 600);
+  TCanvas *cFigCosThe2 = new TCanvas("cFigCosThe2","cFigCosThe2", gXcanv, gYcanv,    1200, 600);
   //                                      Name    Title        xoff,yoff, WidPix,HeiPix
   gXcanv += 25, gYcanv += 25;
   cFigCosThe2->SetFillColor(10);
-
-  cFigCosThe2->cd();
-
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigCosThe2->Divide( 2,  0);
+  //====================plot1========================
+  cFigCosThe2->cd(1);
 //  TH1D *Hst=Hcth_vTcPR_Ceex2_vmax02;
   TH1D *Hst=Hcth_vTcPL_Ceex2_vmax02;
   Hst->SetStats(0);
@@ -1021,8 +1025,28 @@ void FigCosThe2()
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   PlotSame2(Hcth_vTcPL_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
   PlotSame2(Hcth_vTcPL_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
+  PlotSame2(Hcth_foam_Ceex2_vmax02,   ycapt, kRed,    +0.70, "(c)", "KKfoam, IFI on ");
+  PlotSame2(Hcth_foam_Ceex2n_vmax02,  ycapt, kGold,   -0.70, "(d)", "KKfoam, IFI off ");
+
+  //====================plot2========================
+  cFigCosThe2->cd(2);
+  TH1D *Hst_ratio1  = HstRatio("Hst_ratio1",   Hcth_vTcPL_Ceex2_vmax02,  Hcth_foam_Ceex2_vmax02, kBlack);
+  TH1D *Hst_ratio2  = HstRatio("Hst_ratio2",   Hcth_vTcPL_Ceex2n_vmax02, Hcth_foam_Ceex2n_vmax02,kBlue);
+
+  Hst=Hst_ratio1;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+
+  Hst->SetMinimum(1.0 -0.01); Hst->SetMaximum(1.0 +0.01);
+  Hst->DrawCopy("h");
+
+  ycapt = 0.40; // starting value, to be decremented below
+  PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(a)", "KKMC/KKfoam  IFIon");
+  PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(b)", "KKMC/KKfoam  IFIoff");
 
   //================================================
+  cFigCosThe2->SaveAs("cFigCosThe2.pdf");
+
 }//FigCosThe2
 
 
