@@ -60,8 +60,8 @@ TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 //
 float  gXcanv = 50, gYcanv = 50;
 //
-//int    gTogEne = 1;   // 10 GeV and MZ included
-int    gTogEne = 0; // 10 GeV and MZ exluded
+int    gTogEne = 1;   // 10 GeV and MZ included
+//int    gTogEne = 0; // 10 GeV and MZ exluded
 
 //Double_t sqr( const Double_t x ){ return x*x;};
 
@@ -75,7 +75,8 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   HST->SetLineColor(kolor);
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
-  ycapt += -0.05;
+//  ycapt += -0.050;
+  ycapt += -0.040;
   double xcapt = 0.50;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.05,ycapt, label);
@@ -480,9 +481,14 @@ void AfbIFIvTa()
   Hafb8_vTcPL_Ceex2n->SetLineColor(kBlack);
   Hafb8_vTcPL_Ceex2n->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.02,0.95," Black=IFIoff,  Blue=IFIon, v=v_{True} KKMC");
+  CaptT->DrawLatex(0.02,0.95," KKMC");
   CaptT->DrawLatex(0.50,0.25,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
   CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
+
+  double ycapt =0.60;
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,   0.010, "(a)", "A_{FB}(v_{max}), IFI ON");
+  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack,  0.010, "(b)", "A_{FB}(v_{max}), IFI OFF");
+
   //*****************************************************************************
   cAfbIFIvTa->cd(2);
   TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2n->Clone("hZero");  // zero line
@@ -506,7 +512,7 @@ void AfbIFIvTa()
 
   CaptT->SetTextColor(kBlack);
   CaptT->DrawLatex(0.01, 0.95, " A^{IFI}_{FB}(v_{max}) = A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
-  double ycapt =0.33;
+  ycapt =0.33;
   PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.040, "(a)", "#sqrt{s}=94.3GeV");
   PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.065, "(b)", "#sqrt{s}=87.9GeV");
   if( gTogEne ){
