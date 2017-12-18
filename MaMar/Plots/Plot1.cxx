@@ -31,21 +31,24 @@ using namespace std;
 // KKMC current
 //TFile DiskFileA("../workKKMC/histo.root");
 
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
+//////  *** KKFOAM
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+// Sept. 2017 runs
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+
+///////////////////////////
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive obsolete!
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
 //TFile DiskFileA("../workAFB/rmain.root_88GeV_100M"); // archive
 //TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-
-//////  *** KKFOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
-// Sept. 2017 runs
-TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
-
 
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 //=============================================================================
@@ -270,6 +273,10 @@ void ReMakeKKMC(){
   //
   TH1D *Hcth_vTcPL_Ceex2n_vmax02 = HstProjC( "Hcth_vTcPL_Ceex2n_vmax02", sct_vTcPL_Ceex2n, nbMax);
   TH1D *Hcas_vTcPL_Ceex2n_vmax02 = HstProjCA("Hcas_vTcPL_Ceex2n_vmax02", sct_vTcPL_Ceex2n, nbMax);
+  //
+  nbMax=1;     // vMax = 1/100*0.2=0.002
+  TH1D *Hcth_vTcPL_Ceex2_vmax002  = HstProjC( "Hcth_vTcPL_Ceex2_vmax002",  sct_vTcPL_Ceex2,  nbMax);
+  TH1D *Hcth_vTcPL_Ceex2n_vmax002 = HstProjC( "Hcth_vTcPL_Ceex2n_vmax002", sct_vTcPL_Ceex2n, nbMax);
 
   //  *********** distrib. of cos(theta) unlimited v
   TH1D                   *Hpro_cosPR_Ceex2;
@@ -329,8 +336,10 @@ void HisReMakeFoam35(){
 
   int nbMax=10;     // vMax = 10/100*0.2=0.02
   TH1D *Hcth_foam_Ceex2_vmax02  = HstProjC( "Hcth_foam_Ceex2_vmax02",  SCT_xc_Ceex2,  nbMax);
-  //
   TH1D *Hcth_foam_Ceex2n_vmax02 = HstProjC( "Hcth_foam_Ceex2n_vmax02", SCT_xc_Ceex2n, nbMax);
+  nbMax=1;     // vMax = 1/100*0.2=0.002
+  TH1D *Hcth_foam_Ceex2_vmax002  = HstProjC( "Hcth_foam_Ceex2_vmax002",  SCT_xc_Ceex2,  nbMax);
+  TH1D *Hcth_foam_Ceex2n_vmax002 = HstProjC( "Hcth_foam_Ceex2n_vmax002", SCT_xc_Ceex2n, nbMax);
 
   cout<<"================ ReMakeFoam35 ENDs  ==============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -1012,15 +1021,16 @@ void FigCosThe2()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->CenterTitle();
-  Hst->GetYaxis()->SetTitleSize(0.04);
-  Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
+  //Hst->GetYaxis()->SetTitleSize(0.04);
+  //Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
   Hst->GetXaxis()->SetTitleSize(0.04);
-  Hst->GetXaxis()->SetTitle("cos(#theta)");
+  Hst->GetXaxis()->SetTitle("cos #theta");
 
   Hst->SetLineColor(kBlue);
   Hst->SetMinimum(0.0);
   Hst->DrawCopy("h");
 
+  CaptT->DrawLatex(0.00,0.96,"d#sigma/d(cos #theta)");
   double ycapt = 0.80;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   PlotSame2(Hcth_vTcPL_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
@@ -1039,8 +1049,13 @@ void FigCosThe2()
 
   Hst->SetMinimum(1.0 -0.01); Hst->SetMaximum(1.0 +0.01);
   Hst->DrawCopy("h");
-
-  ycapt = 0.40; // starting value, to be decremented below
+  CaptT->DrawLatex(0.00,0.96,"Ratios of d#sigma/d(cos #theta)");
+  ycapt = 0.85; // starting value, to be decremented below
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.02");
+  //
   PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(a)", "KKMC/KKfoam  IFIon");
   PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(b)", "KKMC/KKfoam  IFIoff");
 
