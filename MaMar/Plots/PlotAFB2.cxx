@@ -473,21 +473,24 @@ void AfbIFIvTa()
   Hafb9_vTcPL_Ceex2->SetMinimum( 0.15);
   Hafb9_vTcPL_Ceex2->DrawCopy("h");
   //
-  Hafb9_vTcPL_Ceex2n->SetLineColor(kBlack);
-  Hafb9_vTcPL_Ceex2n->DrawCopy("hsame");
+  //Hafb9_vTcPL_Ceex2n->SetLineColor(kBlack);
+  //Hafb9_vTcPL_Ceex2n->DrawCopy("hsame");
   //
-  Hafb8_vTcPL_Ceex2->SetLineColor(kBlue);
-  Hafb8_vTcPL_Ceex2->DrawCopy("hsame");
-  Hafb8_vTcPL_Ceex2n->SetLineColor(kBlack);
-  Hafb8_vTcPL_Ceex2n->DrawCopy("hsame");
+  //Hafb8_vTcPL_Ceex2->SetLineColor(kBlue);
+  //Hafb8_vTcPL_Ceex2->DrawCopy("hsame");
+  //Hafb8_vTcPL_Ceex2n->SetLineColor(kBlack);
+  //Hafb8_vTcPL_Ceex2n->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.02,0.95," KKMC");
-  CaptT->DrawLatex(0.50,0.25,"  A_{FB}(v_{max}), #sqrt{s}=94.3GeV ");
-  CaptT->DrawLatex(0.50,0.83," -A_{FB}(v_{max}), #sqrt{s}=87.9GeV ");
+  CaptT->DrawLatex(0.02,0.95," KKMC: A_{FB}(v_{max})");
+  CaptT->DrawLatex(0.50,0.25," #sqrt{s}=94.3GeV ");
+  CaptT->DrawLatex(0.50,0.83," #sqrt{s}=87.9GeV ");
 
-  double ycapt =0.60;
-  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,   0.010, "(a)", "A_{FB}(v_{max}), IFI ON");
-  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack,  0.010, "(b)", "A_{FB}(v_{max}), IFI OFF");
+  double ycapt =0.70;
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,   0.010, "(a)", "A_{FB}(v_{max}), IFI on");
+  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack,  0.010, "(b)", "A_{FB}(v_{max}), IFI off");
+  //
+  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,   0.050, "(c)", "-A_{FB}(v_{max}), IFI on");
+  PlotSame2(Hafb8_vTcPL_Ceex2n,ycapt, kBlack,  0.050, "(d)", "-A_{FB}(v_{max}), IFI off");
 
   //*****************************************************************************
   cAfbIFIvTa->cd(2);
@@ -523,6 +526,8 @@ void AfbIFIvTa()
   //
   hZero->DrawCopy("hsame");
   cAfbIFIvTa->cd();
+  //
+  cAfbIFIvTa->SaveAs("cAfbIFIvTa.pdf");
 //
 }// AfbIFIvTa
 
