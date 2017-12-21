@@ -65,6 +65,7 @@ class TRobolFOAM : public TRobol {
 
   TH1D   *HST_FOAM_NORMA3;       //! no streamer
   TH1D   *HST_FOAM_NORMA1;       //! no streamer
+  TH1D   *HST_FOAM_NORMA2;       //! no streamer
 ////////////////////////////////////////////////////////////////////////////
   ClassDef(TRobolFOAM,2); // Monte Carlo generator
 };

@@ -115,14 +115,18 @@ class TMCgenFOAM :public TMCgen
   double m_eps;           // for mapping
   double m_del;           // for mapping
   double m_vvmax;         // for mapping
+  double m_vvcut;         // auxiliary vvmax
 ////////////////////////////////////////////////////////////
 // Additional Foam object for ISR+FSR without IFI
-  int     m_IsFoam5;       //  ON/OFF switch
-  int     m_IsFoam3;       //  ON/OFF switch
-  int     m_IsFoam1;       //  ON/OFF switch
+  int     m_IsFoam5;       //  ON/OFF switch 5-dim
+  int     m_IsFoam3;       //  ON/OFF switch 3-dim
+  int     m_IsFoam2;       //  ON/OFF switch 2-dim
+  int     m_IsFoam1;       //  ON/OFF switch 1-dim
   double  m_Xsav3;        //  normalization
+  double  m_Xsav2;        //  normalization
   double  m_Xsav1;        //  normalization
   TFOAM  *m_Foam3;        //  Additional Foam object
+  TFOAM  *m_Foam2;        //  Additional Foam object
   TFOAM  *m_Foam1;        //  Additional Foam object
 //******** MC EVENT ********
   double m_CosTheta;      //! no streamer!!!
@@ -167,6 +171,7 @@ class TMCgenFOAM :public TMCgen
   double Density5(int, double *);   ///
   double Density3(int, double *);   ///
   double Density1(int, double *);   ///
+  double Density2(int, double *);   ///
   /// methods auxiliary
   void ReaData(const char*, int, double[]);
   void Vdef(double[4], const double, const double, const double, const double);

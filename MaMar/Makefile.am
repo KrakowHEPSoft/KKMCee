@@ -158,7 +158,7 @@ workFoam0-start: all
 workFoam0-stop:
 	(cd ./workFoam0; make stop)
 #-----------------------------------------------------------------------
-###   make workFOAM9-start
+###   make workFOAM1-start
 workFOAM1-start: all
 	(cd ./workFOAM1; make start)
 workFOAM1-stop:

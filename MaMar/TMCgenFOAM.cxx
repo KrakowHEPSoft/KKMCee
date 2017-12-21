@@ -13,6 +13,7 @@ TMCgenFOAM::TMCgenFOAM():
   /// This constructor is for ROOT streamers ONLY
   cout<< "----> TMCgenFOAM Default Constructor (for ROOT only) "<<endl;
   m_Foam3 = NULL;
+  m_Foam2 = NULL;
   m_Foam1 = NULL;
 }
 
@@ -30,9 +31,11 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
 //! all defaults defined here can be changed by the user
 //! before calling TMCgen::Initialize
   m_Foam3 = NULL;
+  m_Foam2 = NULL;
   m_Foam1 = NULL;
   m_IsFoam5 = 1;   // Foam5 ON
   m_IsFoam3 = 1;   // Foam3 ON
+  m_IsFoam2 = 0;   // Foam2 OFF
   m_IsFoam1 = 0;   // Foam1 OFF
 ///////////////////////////////////////////////////
 // Physics
@@ -64,6 +67,7 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
   m_del     = 1e-6;         // limit for |gamma*ln(eps)| in IFI mapping $$$
 //  m_eps = 1e-6;             // IR regulator
   m_eps = 1e-8;             // IR regulator, test $$$
+  m_vvcut = 0.020;          // auxiliary vmax for soft limit test
   m_Mode    = 5;
 ///////////////////////////////////////////////////
 // debug
@@ -107,70 +111,84 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   {
   /// ******  SETTING UP FOAM of base class  *****
   if( m_IsFoam5 == 1 ){
-  f_FoamI   = new TFOAM("FoamI");   // new instance of MC generator FOAM
-  m_kDim    = 5;
-  m_nCells  =  10000;
-  m_nSampl  = 100000;
-  f_FoamI->SetkDim(m_kDim);         // No. of dims. Obligatory!
-  f_FoamI->SetnCells(m_nCells);     // No. of cells, optional, default=2000
-  f_FoamI->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
-  f_FoamI->SetnBin(        16);     // No. of bins default 8
-  f_FoamI->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
-  m_Mode    = 5;
-  f_FoamI->Initialize( f_RNgen, this);     // Initialize FOAM
-  f_FoamI->GetIntNorm(m_Xnorm,errel);   // universal normalization
+    f_FoamI   = new TFOAM("FoamI");   // new instance of MC generator FOAM
+    m_kDim    = 5;
+    m_nCells  =  10000;
+    m_nSampl  = 100000;
+    f_FoamI->SetkDim(m_kDim);         // No. of dims. Obligatory!
+    f_FoamI->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+    f_FoamI->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+    f_FoamI->SetnBin(        16);     // No. of bins default 8
+    f_FoamI->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+    m_Mode    = 5;
+    f_FoamI->Initialize( f_RNgen, this);     // Initialize FOAM
+    f_FoamI->GetIntNorm(m_Xnorm,errel);   // universal normalization
   }// m_IsFoam5
   //////////////////////////////////////////////////////////////
   /// ******  SETTING UP additional FOAM of the user class *****
   if( m_IsFoam3 == 1 ){
-  m_Foam3   = new TFOAM("Foam3");   // new instance of MC generator FOAM
-  m_kDim    = 3;
-  m_Foam3->SetkDim(m_kDim);         // No. of dims. Obligatory!
-  m_Foam3->SetnCells(m_nCells);     // No. of cells, optional, default=2000
-  m_Foam3->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
-  m_Foam3->SetnBin(        16);     // No. of bins default 8
-  m_Foam3->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
-  m_Mode    = 3;
-  m_count =0;
-  m_Foam3->Initialize( f_RNgen, this);     // Initialize FOAM
-  m_Foam3->GetIntNorm(m_Xsav3,errel);
+    m_Foam3   = new TFOAM("Foam3");   // new instance of MC generator FOAM
+    m_kDim    = 3;
+    m_Foam3->SetkDim(m_kDim);         // No. of dims. Obligatory!
+    m_Foam3->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+    m_Foam3->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+    m_Foam3->SetnBin(        16);     // No. of bins default 8
+    m_Foam3->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+    m_Mode    = 3;
+    m_count =0;
+    m_Foam3->Initialize( f_RNgen, this);     // Initialize FOAM
+    m_Foam3->GetIntNorm(m_Xsav3,errel);
   }// m_IsFoam3
   //////////////////////////////////////////////////////////////
   /// ******  SETTING UP additional FOAM of the user class *****
   if( m_IsFoam1 == 1 ){
-	 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-	    // checking EW implementation in Born xsection
-        // SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
-	    double xBorn,xBorn1;
-	    kksem_ord1v_(  1,m_KFini, m_KFf, m_CMSene, 0e0, xBorn);  // Born [nb]
-	    kksem_ord1v_(501,m_KFini, m_KFf, m_CMSene, 0e0, xBorn1);  // Born [nb]
-	    cout<< "|||| xBorn   Gmu scheme = "<< xBorn  << endl;
-	    cout<< "|||| xBorn alpha scheme = "<< xBorn1 << "   "<< xBorn1/xBorn <<endl;
-	    double AfbBorn;
-	    kksem_afb_calc_(  1,m_KFini, m_KFf, m_CMSene, 0e0, AfbBorn);  // AFB
-	    cout<< "**** KKsem_Afb_Calc AFB = "<< AfbBorn <<endl;
-	    double svar = sqr(m_CMSene);
-	    bornv_interpogsw_(m_KFf,svar, 0.0);
-	    double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar,  0.0, 0.0, 0.0, 0.0, 0.0);
-	    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
-	    //double sig_EEX =  dSig_EEX0   *3.0/8.0 *sig0nb;  // Born of EEX
-	    double sig_EEX =  dSig_EEX0   *sig0nb;  // Born of EEX
-	    cout<< "|||| Born Dizet   = "<< sig_EEX << "   "<< sig_EEX/xBorn <<endl;
-	    //exit(-5);
-	 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-  m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
-  m_kDim    = 2;
-  m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
-  m_Foam1->SetnCells(m_nCells);     // No. of cells, optional, default=2000
-  m_Foam1->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
-  m_Foam1->SetnBin(        16);     // No. of bins default 8
-  m_Foam1->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
-  m_Mode    = 1;
-  m_count =0;
-  m_Foam1->Initialize( f_RNgen, this);     // Initialize FOAM
-  m_Foam1->GetIntNorm(m_Xsav1,errel);
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  // checking EW implementation in Born xsection
+  // SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
+    double xBorn,xBorn1;
+    kksem_ord1v_(  1,m_KFini, m_KFf, m_CMSene, 0e0, xBorn);  // Born [nb]
+    kksem_ord1v_(501,m_KFini, m_KFf, m_CMSene, 0e0, xBorn1);  // Born [nb]
+    cout<< "|||| xBorn   Gmu scheme = "<< xBorn  << endl;
+    cout<< "|||| xBorn alpha scheme = "<< xBorn1 << "   "<< xBorn1/xBorn <<endl;
+    double AfbBorn;
+    kksem_afb_calc_(  1,m_KFini, m_KFf, m_CMSene, 0e0, AfbBorn);  // AFB
+    cout<< "**** KKsem_Afb_Calc AFB = "<< AfbBorn <<endl;
+    double svar = sqr(m_CMSene);
+    bornv_interpogsw_(m_KFf,svar, 0.0);
+    double dSig_EEX0 = bornv_dizet_( 1, m_KFini, m_KFf, svar,  0.0, 0.0, 0.0, 0.0, 0.0);
+    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
+    //double sig_EEX =  dSig_EEX0   *3.0/8.0 *sig0nb;  // Born of EEX
+    double sig_EEX =  dSig_EEX0   *sig0nb;  // Born of EEX
+    cout<< "|||| Born Dizet   = "<< sig_EEX << "   "<< sig_EEX/xBorn <<endl;
+    //exit(-5);
+    //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+    m_Foam1   = new TFOAM("Foam1");   // new instance of MC generator FOAM
+    m_kDim    = 2;
+    m_Foam1->SetkDim(m_kDim);         // No. of dims. Obligatory!
+    m_Foam1->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+    m_Foam1->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+    m_Foam1->SetnBin(        16);     // No. of bins default 8
+    m_Foam1->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+    m_Mode    = 1;
+    m_count =0;
+    m_Foam1->Initialize( f_RNgen, this);     // Initialize FOAM
+    m_Foam1->GetIntNorm(m_Xsav1,errel);
   }// m_IsFoam1
-  //////////////////////////////////////////////////////////////
+  ////////////////////////////////
+  if( m_IsFoam2 == 1 ){
+    m_Foam2   = new TFOAM("Foam2");   // new instance of MC generator FOAM
+    m_kDim    = 1;
+    m_Foam2->SetkDim(m_kDim);         // No. of dims. Obligatory!
+    m_Foam2->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+    m_Foam2->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+    m_Foam2->SetnBin(        16);     // No. of bins default 8
+    m_Foam2->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+    m_Mode    = 2;
+    m_count =0;
+    m_Foam2->Initialize( f_RNgen, this);     // Initialize FOAM
+    m_Foam2->GetIntNorm(m_Xsav2,errel);
+  }// m_IsFoam2
+ //////////////////////////////////////////////////////////////
   //screen output
   BXOPE(*f_Out);
   BXTXT(*f_Out,"========================================");
@@ -524,6 +542,8 @@ double TMCgenFOAM::Density(int nDim, double *Xarg){
 		return Density3(nDim, Xarg);
 	} else if( abs(m_Mode) == 1 ){
 		return Density1(nDim, Xarg);
+	} else if( abs(m_Mode) == 2 ){
+		return Density2(nDim, Xarg);
 	} else {
 		cout<<" TMCgenFOAM::Density: wrong Mode ="<<m_Mode<<endl;
 		exit(-9);
@@ -642,6 +662,34 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 }// Density5
 
 
+
+///////////////////////////////////////////////////////////////
+Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
+	m_count++;  // counter for debug
+	//
+	Double_t Dist=1;
+	double svar = sqr(m_CMSene);
+	double svarCum = svar;
+/////////////////////////////////////////////////////////
+// ******** ISR *******
+	double gami   = gamISR(svar);
+    double gamf   = gamFSR(svar);
+    // ******** mapping for polar angle *******
+    m_CosTheta = -1.0 + 2.0* Xarg[0];
+    Dist *= 2.0;
+
+	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
+/////////////////////////////////////////////////////////////////
+    double Dist_EEX, Dist_GPS;
+    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
+	Dist_EEX =  Dist* dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+
+// principal distribution for FOAM, always positive
+	Dist *= Dist_EEX;
+    if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+    return Dist; // principal distribution for FOAM
+}//Density2
 
 ///////////////////////////////////////////////////////////////
 Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)

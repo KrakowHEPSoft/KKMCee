@@ -59,6 +59,10 @@ void TRobolFOAM::Initialize(
     for(int j=1; j<=jmax; j++) HST_FOAM_NORMA1->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
     HST_FOAM_NORMA1->SetEntries(0);
   }
+  if( MCgen->m_IsFoam2 == 1) {
+    for(int j=1; j<=jmax; j++) HST_FOAM_NORMA2->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
+    HST_FOAM_NORMA2->SetEntries(0);
+  }
   cout<< "****> TRobolFOAM::Initialize: finished"<<endl;
 }///Initialize
 
@@ -126,6 +130,7 @@ void TRobolFOAM::Hbooker()
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
     HST_FOAM_NORMA3 = TH1D_UP("HST_FOAM_NORMA3","Normalization and xpar",jmax,0.0,10000.0);
     HST_FOAM_NORMA1 = TH1D_UP("HST_FOAM_NORMA1","Normalization and xpar",jmax,0.0,10000.0);
+    HST_FOAM_NORMA2 = TH1D_UP("HST_FOAM_NORMA2","Normalization and xpar",jmax,0.0,10000.0);
 
     // additional histo for testing normalization
     HST_tx_Ceex2n = TH1D_UP("HST_tx_Ceex2n" ,  "dSig/dv",   100, 0.0, 0.2);
@@ -219,6 +224,15 @@ if( MCgen->m_IsFoam1 == 1) {
 
   double Xnorm1 = MCgen->m_Xsav1;
   HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style
+/////////////////////////////////////////////////////////////
+if( MCgen->m_IsFoam2 == 1) {
+/// MC generation in user class, ISR+FSR+IFI soft limit
+  MCgen->m_Mode = -2;
+  MCgen->m_Foam2->MakeEvent();         // Additional Foam of the user class
+
+  double Xnorm2 = MCgen->m_Xsav2;
+  HST_FOAM_NORMA2->Fill(-1, Xnorm2);   // Normal*Nevtot, new style
+}
 
 }// m_IsFoam
 
