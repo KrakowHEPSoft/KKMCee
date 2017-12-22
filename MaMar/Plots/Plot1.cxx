@@ -43,7 +43,10 @@ TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
-///////////////////////////
+//////  *** KKFOAM1
+TFile DiskFileF2("../workFOAM1/histo.root"); // current
+
+//////////////////OBSOLETE///////////////////
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive obsolete!
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
@@ -340,6 +343,13 @@ void HisReMakeFoam35(){
   nbMax=1;     // vMax = 1/100*0.2=0.002
   TH1D *Hcth_foam_Ceex2_vmax002  = HstProjC( "Hcth_foam_Ceex2_vmax002",  SCT_xc_Ceex2,  nbMax);
   TH1D *Hcth_foam_Ceex2n_vmax002 = HstProjC( "Hcth_foam_Ceex2n_vmax002", SCT_xc_Ceex2n, nbMax);
+
+  //////////////////////////////////////////////////////////////////
+  // testing soft limit using Foam
+  TH1D *HST_FOAM_NORMA2   = (TH1D*)DiskFileF2.Get("HST_FOAM_NORMA2");
+
+  HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_csof_Ceex2") );
+
 
   cout<<"================ ReMakeFoam35 ENDs  ==============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -1003,6 +1013,9 @@ void FigCosThe2()
   TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax02");
   TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
 
+  TH1D *HST_csof_Ceex2 = (TH1D*)DiskFileF2.Get("HST_csof_Ceex2");
+  HST_csof_Ceex2->SetLineColor(kGreen);
+
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
@@ -1037,6 +1050,9 @@ void FigCosThe2()
   PlotSame2(Hcth_vTcPL_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
   PlotSame2(Hcth_foam_Ceex2_vmax02,   ycapt, kRed,    +0.70, "(c)", "KKfoam, IFI on ");
   PlotSame2(Hcth_foam_Ceex2n_vmax02,  ycapt, kGold,   -0.70, "(d)", "KKfoam, IFI off ");
+
+  //[[[[[[[[[[[[
+  HST_csof_Ceex2->DrawCopy("hsame");
 
   //====================plot2========================
   cFigCosThe2->cd(2);

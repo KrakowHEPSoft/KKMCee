@@ -41,9 +41,9 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
 
 ////  *** FOAM
-//TFile DiskFileF("../workFOAM1/histo.root"); // current
+TFile DiskFileF("../workFOAM1/histo.root"); // current
 // Sept. 2017 runs
-TFile DiskFileF("../workFOAM1/histo.root_95GeV_100M");
+//TFile DiskFileF("../workFOAM1/histo.root_95GeV_100M");
 
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 

@@ -126,6 +126,9 @@ void TRobolFOAM::Hbooker()
     HST5_xx9_Ceex2      = TH1D_UP("HST5_xx9_Ceex2", "dSig/dv",        NBv, 0.0, vmx2);
     HST5_xx9_forw_Ceex2 = TH1D_UP("HST5_xx9_forw_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
 
+    // Testing soft linit
+    HST_csof_Ceex2  = TH1D_UP("HST_csof_Ceex2", "dSig/dc",   NBc, -1, 1);
+
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
     HST_FOAM_NORMA3 = TH1D_UP("HST_FOAM_NORMA3","Normalization and xpar",jmax,0.0,10000.0);
@@ -148,7 +151,7 @@ void TRobolFOAM::Hbooker()
 void TRobolFOAM::Production(double &iEvent)
 {
 /////////////////////////////////////////////////////////////
-  double wt1, wt3, wt5, xx, CosTheta;
+  double wt1, wt2, wt3, wt5, xx, CosTheta;
   TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
 
 /////////////////////////////////////////////////////////////
@@ -224,11 +227,17 @@ if( MCgen->m_IsFoam1 == 1) {
 
   double Xnorm1 = MCgen->m_Xsav1;
   HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style
+
 /////////////////////////////////////////////////////////////
 if( MCgen->m_IsFoam2 == 1) {
 /// MC generation in user class, ISR+FSR+IFI soft limit
   MCgen->m_Mode = -2;
   MCgen->m_Foam2->MakeEvent();         // Additional Foam of the user class
+  MCgen->m_Foam2->GetMCwt(wt2);
+
+  CosTheta = MCgen->m_CosTheta;
+
+  HST_csof_Ceex2->Fill(CosTheta, wt2);
 
   double Xnorm2 = MCgen->m_Xsav2;
   HST_FOAM_NORMA2->Fill(-1, Xnorm2);   // Normal*Nevtot, new style

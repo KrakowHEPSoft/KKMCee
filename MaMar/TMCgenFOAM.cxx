@@ -422,7 +422,7 @@ void TMCgenFOAM::GetRhoIFI1c(int KeyDist, double cc, double &rho){
 
 
 ///------------------------------------------------------------------------
-double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv){
+double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv, double eps){
 /// ISR rho-function for ISR
   double alf1   = m_alfpi;
   double gami   = gamISR(svar);
@@ -447,10 +447,10 @@ double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv){
   }else{
 	 cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl; exit(5);
   }
-  if( vv > m_eps){
+  if( vv > eps){
      rho = ffact*gami* exp( log(vv)*(gami-1) ) *(1 +dels +delh);
   }else{
-	 rho = ffact* exp( log(m_eps)*(gami) ) *(1 +dels);
+	 rho = ffact* exp( log(eps)*(gami) ) *(1 +dels);
   }
   return rho;
 }//Rho_ISR
@@ -458,7 +458,7 @@ double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv){
 
 
 ///------------------------------------------------------------------------
-double TMCgenFOAM::RhoFSR(int KeyFSR, double svar, double uu){
+double TMCgenFOAM::RhoFSR(int KeyFSR, double svar, double uu, double eps){
 /// ISR+FSR rho-function
 
 //////// from KKsem_uurho(), keyd=302
@@ -499,10 +499,10 @@ double TMCgenFOAM::RhoFSR(int KeyFSR, double svar, double uu){
   }else{
 	  cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << KeyFSR<<endl; exit(5);
   }
-  if( uu > m_eps) {
+  if( uu > eps) {
 	  rho = ffact*gamf* exp( log(uu)*(gamf-1) ) *(1 +dels +delh);
   }else{
-	  rho = ffact*exp( log(m_eps)*gamf ) *(1 +dels);
+	  rho = ffact*exp( log(eps)*gamf ) *(1 +dels);
   }
   return rho;
 }//RhoFSR
@@ -518,15 +518,14 @@ double TMCgenFOAM::Soft_yfs(double gam){
 
 
 ///--------------------------------------------------------------
-double TMCgenFOAM::RhoIFI(double costhe, double uu){
+double TMCgenFOAM::RhoIFI(double costhe, double uu, double eps){
 /// ISR+FSR rho-function
-  double eps = m_eps;
   double rho, gami;
   gami   = gamIFI( costhe );
-  if( uu < eps){
-	rho = exp( log(eps)*gami );
-  } else {
+  if( uu > eps){
 	rho = gami*exp( log(uu)*(gami-1) );
+  } else {
+	rho = exp( log(eps)*gami );
   }
   rho *= Fyfs(gami);
   return rho;
@@ -564,9 +563,9 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double gami = gamISR(svar);
 	double dJacISR;
 	MapPlus(  R, gami, m_vv, dJacISR);
-	double RhoIsr  = RhoISR(2,svar,m_vv);
+	double RhoIsr  = RhoISR(2,svar,m_vv,m_eps);
 	double DistISR = dJacISR * RhoIsr;
-	double RhoIsr0 = RhoISR(0,svar,m_vv);
+	double RhoIsr0 = RhoISR(0,svar,m_vv,m_eps);
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
 // ******** mapping for FSR *******
@@ -574,9 +573,9 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double gamf   = gamFSR(svar2);
     double dJacFSR;
 	MapPlus(  rr, gamf, m_uu, dJacFSR);
- 	double RhoFsr  = RhoFSR(2, svar2,m_uu);
+ 	double RhoFsr  = RhoFSR(2, svar2,m_uu,m_eps);
  	double DistFSR = dJacFSR *RhoFsr;
- 	double RhoFsr0 = RhoFSR(0, svar2,m_uu);
+ 	double RhoFsr0 = RhoFSR(0, svar2,m_uu,m_eps);
     svarCum *= (1-m_uu);
     // ******** mapping for polar angle *******
     double cmax = 0.99999;
@@ -587,8 +586,8 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double dJacInt1, dJacInt2;
     MapIFI( Xarg[3], gamint, m_r1, dJacInt1);           // mapping eps-dependent !!!
     MapIFI( Xarg[4], gamint, m_r2, dJacInt2);           // mapping eps-dependent !!!
-    double RhoInt1 = RhoIFI( m_CosTheta, m_r1);  // implicitly eps-dependent !!!
-    double RhoInt2 = RhoIFI( m_CosTheta, m_r2);  // implicitly eps-dependent !!!
+    double RhoInt1 = RhoIFI( m_CosTheta, m_r1,m_eps);  // implicitly eps-dependent !!!
+    double RhoInt2 = RhoIFI( m_CosTheta, m_r2,m_eps);  // implicitly eps-dependent !!!
     double DistIFI1 = dJacInt1 *RhoInt1;
     double DistIFI2 = dJacInt2 *RhoInt2;
     Dist *= DistISR* DistFSR* DistIFI1 *DistIFI2;
@@ -679,6 +678,12 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     m_CosTheta = -1.0 + 2.0* Xarg[0];
     Dist *= 2.0;
 
+	double RhoIsr2 = RhoISR(2, svar,m_vvcut,m_vvcut);
+ 	double RhoFsr2 = RhoFSR(2, svar,m_vvcut,m_vvcut);
+
+ 	Dist *= RhoIsr2*RhoFsr2;
+
+
 	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 /////////////////////////////////////////////////////////////////
     double Dist_EEX, Dist_GPS;
@@ -705,8 +710,8 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	double R= Xarg[0];
 	double dJac,RhoIsr2,RhoFsr2,RhoIsr0,RhoFsr0;
 	MapPlus(  R, gami, m_vv, dJac);
-	RhoIsr2 = RhoISR(2, svar,m_vv);
-	RhoIsr0 = RhoISR(0, svar,m_vv);
+	RhoIsr2 = RhoISR(2, svar,m_vv,m_eps);
+	RhoIsr0 = RhoISR(0, svar,m_vv,m_eps);
 	Dist *= dJac *RhoIsr2;
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
@@ -715,8 +720,8 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     double rr= Xarg[1];
     double gamf   = gamFSR(svar2);
 	MapPlus(  rr, gamf, m_uu, dJac);
- 	RhoFsr2 = RhoFSR(2, svar2,m_uu);
- 	RhoFsr0 = RhoFSR(0, svar2,m_uu);
+ 	RhoFsr2 = RhoFSR(2, svar2,m_uu,m_eps);
+ 	RhoFsr0 = RhoFSR(0, svar2,m_uu,m_eps);
  	Dist *= dJac* RhoFsr2;
     svarCum *= (1-m_uu);
 ////////////////////////////////////////////////////////////
@@ -814,9 +819,9 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
         ///////////// testing soft limit /////////////
      	double SoftFin = Soft_yfs(gamf);
         gamf =  gamFSR(svar);
-    	double    softISR = RhoISR(2, svar,m_vv)  / exp( (gami-1)* log(m_vv))/gami;
+    	double    softISR = RhoISR(2, svar,m_vv,m_eps)  / exp( (gami-1)* log(m_vv))/gami;
     	cout<<"  gami="<< gami<<"  softISR = "<< softISR<< " SoftIni= "<<SoftIni<<endl;
-    	double    softFSR = RhoFSR(2, svar2,m_uu) / exp( (gamf-1)* log(m_uu))/gamf;
+    	double    softFSR = RhoFSR(2, svar2,m_uu,m_eps) / exp( (gamf-1)* log(m_uu))/gamf;
     	cout<<"  gamf="<< gamf<<"  softFSR = "<< softFSR<< " SoftFin= "<<SoftFin;
     	cout<<"  SoftIni* SoftFin = "                <<  SoftIni* SoftFin  <<endl;
     	cout<<"  exp( (gami+gamf) * log(m_vvmax)) = "<<  exp( (gami+gamf) * log(m_vvmax)) <<endl;
