@@ -1007,11 +1007,11 @@ void FigCosThe2()
 // Older version with PRD angle
   cout<<" ========================= FigCosThe2 =========================== "<<endl;
  //
-  TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax02");
-  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
+  TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax002");
+  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax002");
   //
-  TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax02");
-  TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
+  TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax002");
+  TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax002");
 
   TH1D *HST_csof_Ceex2 = (TH1D*)DiskFileF2.Get("HST_csof_Ceex2");
   HST_csof_Ceex2->SetLineColor(kGreen);
@@ -1070,7 +1070,7 @@ void FigCosThe2()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.02");
+  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.002");
   //
   PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(a)", "KKMC/KKfoam  IFIon");
   PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(b)", "KKMC/KKfoam  IFIoff");

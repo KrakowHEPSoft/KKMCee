@@ -669,7 +669,6 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	//
 	Double_t Dist=1;
 	double svar = sqr(m_CMSene);
-	double svarCum = svar;
 /////////////////////////////////////////////////////////
 // ******** ISR *******
 	double gami   = gamISR(svar);
@@ -678,17 +677,20 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     m_CosTheta = -1.0 + 2.0* Xarg[0];
     Dist *= 2.0;
 
-	double RhoIsr2 = RhoISR(2, svar,m_vvcut,m_vvcut);
- 	double RhoFsr2 = RhoFSR(2, svar,m_vvcut,m_vvcut);
+	double RhoIsr2 = RhoISR(2, svar,m_vvcut*0.99999,m_vvcut);
+ 	double RhoFsr2 = RhoFSR(2, svar,m_vvcut*0.99999,m_vvcut);
 
  	Dist *= RhoIsr2*RhoFsr2;
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
+	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 
-	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
 /////////////////////////////////////////////////////////////////
     double Dist_EEX, Dist_GPS;
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
 	Dist_EEX =  Dist* dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+//	Dist_EEX =  Dist* dSig_EEX   *sig0nb;  // Born of EEX
 
 // principal distribution for FOAM, always positive
 	Dist *= Dist_EEX;
