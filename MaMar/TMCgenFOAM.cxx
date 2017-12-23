@@ -676,11 +676,19 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     // ******** mapping for polar angle *******
     m_CosTheta = -1.0 + 2.0* Xarg[0];
     Dist *= 2.0;
-
-	double RhoIsr2 = RhoISR(2, svar,m_vvcut*0.99999,m_vvcut);
- 	double RhoFsr2 = RhoFSR(2, svar,m_vvcut*0.99999,m_vvcut);
-
- 	Dist *= RhoIsr2*RhoFsr2;
+    double RhoIsr2,RhoFsr2,vvcut;
+    vvcut = 0.02;
+	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
+ 	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
+ 	double Rho_cut02= RhoIsr2*RhoFsr2;
+    vvcut = 0.002;
+	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
+ 	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
+ 	double Rho_cut002= RhoIsr2*RhoFsr2;
+    vvcut = 0.0002;
+	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
+ 	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
+ 	double Rho_cut0002= RhoIsr2*RhoFsr2;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
@@ -693,7 +701,14 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 //	Dist_EEX =  Dist* dSig_EEX   *sig0nb;  // Born of EEX
 
 // principal distribution for FOAM, always positive
-	Dist *= Dist_EEX;
+	Dist *= Dist_EEX*Rho_cut02;
+    m_WTmodel[72] = 0.0;
+    m_WTmodel[73] = 0.0;
+    if( Dist != 0.0){
+      m_WTmodel[72] = Rho_cut002 /Rho_cut02;
+      m_WTmodel[73] = Rho_cut0002/Rho_cut02;
+    }//
+
     if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
     return Dist; // principal distribution for FOAM
 }//Density2

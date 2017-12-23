@@ -37,11 +37,11 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 //////  *** KKFOAM
-//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root"); // current
 // Sept. 2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
-TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
 //////  *** KKFOAM1
 TFile DiskFileF2("../workFOAM1/histo.root"); // current
@@ -344,11 +344,20 @@ void HisReMakeFoam35(){
   TH1D *Hcth_foam_Ceex2_vmax002  = HstProjC( "Hcth_foam_Ceex2_vmax002",  SCT_xc_Ceex2,  nbMax);
   TH1D *Hcth_foam_Ceex2n_vmax002 = HstProjC( "Hcth_foam_Ceex2n_vmax002", SCT_xc_Ceex2n, nbMax);
 
+  HisNorm1(HST_FOAM_NORMA3, (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax02") );
+  HisNorm1(HST_FOAM_NORMA3, (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax002") );
+  HisNorm1(HST_FOAM_NORMA3, (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax0002") );
+
+
   //////////////////////////////////////////////////////////////////
   // testing soft limit using Foam
   TH1D *HST_FOAM_NORMA2   = (TH1D*)DiskFileF2.Get("HST_FOAM_NORMA2");
 
   HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_csof_Ceex2") );
+
+  HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax02") );
+  HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax002") );
+  HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax0002") );
 
 
   cout<<"================ ReMakeFoam35 ENDs  ==============================="<<endl;
@@ -1004,17 +1013,13 @@ void FigCosThe()
 void FigCosThe2()
 {
 //------------------------------------------------------------------------
-// Older version with PRD angle
   cout<<" ========================= FigCosThe2 =========================== "<<endl;
  //
-  TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax002");
-  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax002");
+  TH1D *Hcth_vTcPL_Ceex2_vmax02 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax02");
+  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
   //
-  TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax002");
-  TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax002");
-
-  TH1D *HST_csof_Ceex2 = (TH1D*)DiskFileF2.Get("HST_csof_Ceex2");
-  HST_csof_Ceex2->SetLineColor(kGreen);
+  TH1D *Hcth_foam_Ceex2_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax02");
+  TH1D *Hcth_foam_Ceex2n_vmax02 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -1051,9 +1056,6 @@ void FigCosThe2()
   PlotSame2(Hcth_foam_Ceex2_vmax02,   ycapt, kRed,    +0.70, "(c)", "KKfoam, IFI on ");
   PlotSame2(Hcth_foam_Ceex2n_vmax02,  ycapt, kGold,   -0.70, "(d)", "KKfoam, IFI off ");
 
-  //[[[[[[[[[[[[
-  HST_csof_Ceex2->DrawCopy("hsame");
-
   //====================plot2========================
   cFigCosThe2->cd(2);
   TH1D *Hst_ratio1  = HstRatio("Hst_ratio1",   Hcth_vTcPL_Ceex2_vmax02,  Hcth_foam_Ceex2_vmax02, kBlack);
@@ -1070,7 +1072,7 @@ void FigCosThe2()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.002");
+  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.02");
   //
   PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(a)", "KKMC/KKfoam  IFIon");
   PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(b)", "KKMC/KKfoam  IFIoff");
@@ -1079,6 +1081,95 @@ void FigCosThe2()
   cFigCosThe2->SaveAs("cFigCosThe2.pdf");
 
 }//FigCosThe2
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCtheSoft()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCtheSoft =========================== "<<endl;
+  // KKMC
+  TH1D *Hcth_vTcPL_Ceex2n_vmax02= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
+  // KKfoam3 from scat
+  TH1D *Hcth_foam3_Ceex2n_vmax02  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
+  TH1D *Hcth_foam3_Ceex2n_vmax002 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax002");
+  // KKfoam3 from hst
+  TH1D *HST_cc_EEX2_vmax02   = (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax02");
+  TH1D *HST_cc_EEX2_vmax002  = (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax002");
+  TH1D *HST_cc_EEX2_vmax0002 = (TH1D*)DiskFileF.Get("HST_cc_EEX2_vmax0002");
+  // KKfoam2 SOFT!!!
+  TH1D *HST_cs_EEX2_vmax02   = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax02");
+  TH1D *HST_cs_EEX2_vmax002  = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax002");
+  TH1D *HST_cs_EEX2_vmax0002 = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax0002");
+  // KKfoam2
+  TH1D *HST_csof_Ceex2 = (TH1D*)DiskFileF2.Get("HST_csof_Ceex2");
+  HST_csof_Ceex2->SetLineColor(kGreen);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+ ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigCtheSoft = new TCanvas("cFigCtheSoft","cFigCtheSoft", gXcanv, gYcanv,    1200, 600);
+  //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+  cFigCtheSoft->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigCtheSoft->Divide( 2,  0);
+  //====================plot1========================
+  cFigCtheSoft->cd(1);
+  TH1D *Hst=Hcth_vTcPL_Ceex2n_vmax02;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->CenterTitle();
+  //Hst->GetYaxis()->SetTitleSize(0.04);
+  //Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
+  Hst->GetXaxis()->SetTitleSize(0.04);
+  Hst->GetXaxis()->SetTitle("cos #theta");
+
+  Hst->SetMinimum(0);Hst->SetMaximum(0.6);
+
+  Hst->SetLineColor(kBlue);
+  Hst->SetMinimum(0.0);
+  Hst->DrawCopy("h");
+
+  CaptT->DrawLatex(0.00,0.96,"d#sigma/d(cos #theta)");
+  double ycapt = 0.80;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  PlotSame2(Hcth_vTcPL_Ceex2n_vmax02,  ycapt, kBlack,  -0.80, "(a1)", "KKMC:  IFIoff, v<0.02 ");
+//  PlotSame2(Hcth_foam3_Ceex2n_vmax02,  ycapt, kGold,   -0.30, "(b1)", "foam3: IFIoff, v<0.02  (scat)");
+//  PlotSame2(Hcth_foam3_Ceex2n_vmax002, ycapt, kGold,   -0.30, "(b2)", "foam3: IFIoff, v<0.002 (scat)");
+  //
+  PlotSame2(HST_cc_EEX2_vmax02,        ycapt, kRed,   -0.40, "(c1)", "foam3: IFIoff, v<0.02  (hst)");
+  PlotSame2(HST_cc_EEX2_vmax002,       ycapt, kRed,   -0.40, "(c2)", "foam3: IFIoff, v<0.002 (hst)");
+  PlotSame2(HST_cc_EEX2_vmax0002,      ycapt, kRed,   -0.40, "(c3)", "foam3: IFIoff, v<0.0002(hst)");
+  //
+  PlotSame2(HST_cs_EEX2_vmax02,       ycapt, kGreen,  -0.70, "(d1)", "foam2, IFIoff, v<0.02   soft");
+  PlotSame2(HST_cs_EEX2_vmax002,      ycapt, kGreen,  -0.70, "(d2)", "foam2, IFIoff, v<0.002  soft");
+  PlotSame2(HST_cs_EEX2_vmax0002,     ycapt, kGreen,  -0.70, "(d3)", "foam2, IFIoff, v<0.0002 soft");
+// obsolete
+//PlotSame2(HST_csof_Ceex2,           ycapt, kRed,     0.70, "(e)", "foam2, IFIoff, v<0.02 soft!");
+
+
+  //====================plot2========================
+  cFigCtheSoft->cd(2);
+  TH1D *Hst_rats1  = HstRatio("Hst_rats1",   HST_cc_EEX2_vmax02,   HST_cs_EEX2_vmax02,  kBlack);
+  TH1D *Hst_rats2  = HstRatio("Hst_rats2",   HST_cc_EEX2_vmax002,  HST_cs_EEX2_vmax002, kBlue);
+  TH1D *Hst_rats3  = HstRatio("Hst_rats3",   HST_cc_EEX2_vmax0002, HST_cs_EEX2_vmax0002,kGreen);
+
+  Hst=Hst_rats1;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+
+  Hst->DrawCopy("h");
+  PlotSame2(Hst_rats1,    ycapt, kBlack,   -0.40, "(e1)", "foam2/foam3, v<0.02  ");
+  PlotSame2(Hst_rats2,    ycapt, kBlue,    -0.40, "(e2)", "foam2/foam3, v<0.002 ");
+  PlotSame2(Hst_rats3,    ycapt, kGreen,   -0.40, "(e3)", "foam2/foam3, v<0.0002");
+
+  //================================================
+  cFigCtheSoft->SaveAs("cFigCtheSoft.pdf");
+
+}//FigCtheSoft
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1132,6 +1223,8 @@ int main(int argc, char **argv)
   //
   FigCosThe();
   FigCosThe2();
+  //
+  FigCtheSoft();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

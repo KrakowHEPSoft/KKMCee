@@ -127,7 +127,15 @@ void TRobolFOAM::Hbooker()
     HST5_xx9_forw_Ceex2 = TH1D_UP("HST5_xx9_forw_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
 
     // Testing soft linit
-    HST_csof_Ceex2  = TH1D_UP("HST_csof_Ceex2", "dSig/dc",   NBc, -1, 1);
+    HST_csof_Ceex2       = TH1D_UP("HST_csof_Ceex2",      "dSig/dc",   NBc, -1, 1);
+    //
+    HST_cs_EEX2_vmax02   = TH1D_UP("HST_cs_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax002  = TH1D_UP("HST_cs_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax0002 = TH1D_UP("HST_cs_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
+    //
+    HST_cc_EEX2_vmax02   = TH1D_UP("HST_cc_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cc_EEX2_vmax002  = TH1D_UP("HST_cc_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cc_EEX2_vmax0002 = TH1D_UP("HST_cc_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -180,7 +188,8 @@ if( MCgen->m_IsFoam5 == 1) {
   SCT_xc_Ceex0->Fill(xx,CosTheta, WTceex0);
 
 }// m_IsFoam
-
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 if( MCgen->m_IsFoam3 == 1) {
   /// MC generation in user class, ISR+FSR no IFI
@@ -188,25 +197,34 @@ if( MCgen->m_IsFoam3 == 1) {
   MCgen->m_Foam3->MakeEvent();         // Additional Foam of the user class
   // filling in histos
   MCgen->m_Foam3->GetMCwt(wt3);
+  double WTeex2, WTeex0, WTceex2n, WTceex0n;
+  WTeex2   = wt3;
+  WTeex0   = wt3 *MCgen->m_WTmodel[ 3];
+  WTceex2n = wt3 *MCgen->m_WTmodel[ 2];
+  WTceex0n = wt3 *MCgen->m_WTmodel[52];
+//WTceex0n = wt3 *MCgen->m_WTmodel[ 3] *MCgen->m_WTmodel[ 2]; // the same
   xx  = MCgen->m_xx;
   CosTheta = MCgen->m_CosTheta;
   hst_weight3->Fill(wt3,1.0);
-  HST_xx_Ceex2n->Fill(xx,wt3);
-  HST_tx_Ceex2n->Fill(xx,wt3);
-  SCA_xc_Ceex2n->Fill(xx,CosTheta,wt3);
-  SCT_xc_Ceex2n->Fill(xx,CosTheta,wt3);
-  double WTeex2  = wt3 * MCgen->m_WTmodel[ 2];
-  double WTeex0  = wt3 * MCgen->m_WTmodel[ 3];
-  double WTceex0 = wt3 * MCgen->m_WTmodel[52];
+  HST_xx_Ceex2n->Fill(xx, WTceex2n);
+  HST_tx_Ceex2n->Fill(xx, WTceex2n);
+  SCA_xc_Ceex2n->Fill(xx,CosTheta, WTceex2n);
+  SCT_xc_Ceex2n->Fill(xx,CosTheta, WTceex2n);
   SCT_xc_EEX2->Fill(xx,CosTheta,WTeex2);
   SCT_xc_EEX0->Fill(xx,CosTheta,WTeex0);
   //
-  SCA_xc_Ceex0n->Fill(xx,CosTheta,WTceex0);
-  SCT_xc_Ceex0n->Fill(xx,CosTheta,WTceex0);
+  SCA_xc_Ceex0n->Fill(xx,CosTheta,WTceex0n);
+  SCT_xc_Ceex0n->Fill(xx,CosTheta,WTceex0n);
+  //
+  if( xx < 0.02 )   HST_cc_EEX2_vmax02->Fill(CosTheta,WTeex2);
+  if( xx < 0.002 )  HST_cc_EEX2_vmax002->Fill(CosTheta,WTeex2);
+  if( xx < 0.0002 ) HST_cc_EEX2_vmax0002->Fill(CosTheta,WTeex2);
   ///  Fill in special normalization histogram
   double Xnorm3 = MCgen->m_Xsav3;
   HST_FOAM_NORMA3->Fill(-1, Xnorm3);      // Normal*Nevtot, new style
 }// m_IsFoam
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 if( MCgen->m_IsFoam1 == 1) {
 /// MC generation in user class, ISR+FSR 1st Order
@@ -227,7 +245,10 @@ if( MCgen->m_IsFoam1 == 1) {
 
   double Xnorm1 = MCgen->m_Xsav1;
   HST_FOAM_NORMA1->Fill(-1, Xnorm1);      // Normal*Nevtot, new style
+}// m_IsFoam
 
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 if( MCgen->m_IsFoam2 == 1) {
 /// MC generation in user class, ISR+FSR+IFI soft limit
@@ -238,11 +259,13 @@ if( MCgen->m_IsFoam2 == 1) {
   CosTheta = MCgen->m_CosTheta;
 
   HST_csof_Ceex2->Fill(CosTheta, wt2);
+  //
+  HST_cs_EEX2_vmax02->Fill(  CosTheta,wt2);
+  HST_cs_EEX2_vmax002->Fill( CosTheta,wt2*MCgen->m_WTmodel[72]);
+  HST_cs_EEX2_vmax0002->Fill(CosTheta,wt2*MCgen->m_WTmodel[73]);
 
   double Xnorm2 = MCgen->m_Xsav2;
   HST_FOAM_NORMA2->Fill(-1, Xnorm2);   // Normal*Nevtot, new style
-}
-
 }// m_IsFoam
 
 ///

@@ -65,6 +65,14 @@ class TRobolFOAM : public TRobol {
 
   TH1D   *HST_csof_Ceex2;        //! no streamer
 
+  TH1D   *HST_cc_EEX2_vmax02;    //! no streamer
+  TH1D   *HST_cc_EEX2_vmax002;   //! no streamer
+  TH1D   *HST_cc_EEX2_vmax0002;  //! no streamer
+
+  TH1D   *HST_cs_EEX2_vmax02;    //! no streamer
+  TH1D   *HST_cs_EEX2_vmax002;   //! no streamer
+  TH1D   *HST_cs_EEX2_vmax0002;  //! no streamer
+
   TH1D   *HST_FOAM_NORMA3;       //! no streamer
   TH1D   *HST_FOAM_NORMA1;       //! no streamer
   TH1D   *HST_FOAM_NORMA2;       //! no streamer

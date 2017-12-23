@@ -18,8 +18,8 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 ///   and fill it with the MC run general parameters
 TString semaf   = "START";
 double nevtot   = 1e10;
-nevtot = 4500000;
-//nevtot = 10e6;
+nevtot =  5e6;
+nevtot = 20e6;
 //nevtot = 100e6;
 double nevgrp   = 2e5; // 200k
 nevgrp = 5e5;
@@ -54,7 +54,7 @@ MCgen->m_IsFoam2 = 1;   // Foam0 ON
 MCgen->m_eps  =   1e-3; // IR regulator
 MCgen->m_eps  =   1e-5; // IR regulator
 MCgen->m_vvcut = 0.020; // IR cut for soft limit test
-MCgen->m_vvcut = 0.002; // IR cut for soft limit test
+//MCgen->m_vvcut = 0.002; // IR cut for soft limit test
 //MCgen->m_eps  =   1e-7; // IR regulator
 //MCgen->m_eps  =   0.02; // IR regulator, good for 10GeV
 //##########################################################
