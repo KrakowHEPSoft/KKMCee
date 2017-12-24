@@ -711,6 +711,7 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX, boxes included
+	double dSig_GPS;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
 	Dist_GPS =  Dist* dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
