@@ -125,17 +125,15 @@ void TRobolFOAM::Hbooker()
     // for AFB=(F-B)/(F+B) with |cos(theta)|<0.9
     HST5_xx9_Ceex2      = TH1D_UP("HST5_xx9_Ceex2", "dSig/dv",        NBv, 0.0, vmx2);
     HST5_xx9_forw_Ceex2 = TH1D_UP("HST5_xx9_forw_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
-
-    // Testing soft linit
-    HST_csof_Ceex2       = TH1D_UP("HST_csof_Ceex2",      "dSig/dc",   NBc, -1, 1);
-    //
-    HST_cs_EEX2_vmax02   = TH1D_UP("HST_cs_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
-    HST_cs_EEX2_vmax002  = TH1D_UP("HST_cs_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
-    HST_cs_EEX2_vmax0002 = TH1D_UP("HST_cs_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
     //
     HST_cc_EEX2_vmax02   = TH1D_UP("HST_cc_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
     HST_cc_EEX2_vmax002  = TH1D_UP("HST_cc_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
     HST_cc_EEX2_vmax0002 = TH1D_UP("HST_cc_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
+
+    // Testing soft limit
+    HST_cs_EEX2_vmax02   = TH1D_UP("HST_cs_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax002  = TH1D_UP("HST_cs_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax0002 = TH1D_UP("HST_cs_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -257,8 +255,6 @@ if( MCgen->m_IsFoam2 == 1) {
   MCgen->m_Foam2->GetMCwt(wt2);
 
   CosTheta = MCgen->m_CosTheta;
-
-  HST_csof_Ceex2->Fill(CosTheta, wt2);
   //
   HST_cs_EEX2_vmax02->Fill(  CosTheta,wt2);
   HST_cs_EEX2_vmax002->Fill( CosTheta,wt2*MCgen->m_WTmodel[72]);

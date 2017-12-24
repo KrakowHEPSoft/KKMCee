@@ -676,6 +676,7 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     // ******** mapping for polar angle *******
     m_CosTheta = -1.0 + 2.0* Xarg[0];
     Dist *= 2.0;
+    // bremsstrahlung part
     double RhoIsr2,RhoFsr2,vvcut;
     vvcut = 0.02;
 	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
@@ -689,19 +690,32 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
  	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
  	double Rho_cut0002= RhoIsr2*RhoFsr2;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
-	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
-
-/////////////////////////////////////////////////////////////////
+ 	Dist *= Fyfs(gami+gamf)/Fyfs(gami)/Fyfs(gamf);
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     double Dist_EEX, Dist_GPS;
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
-	Dist_EEX =  Dist* dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
-//	Dist_EEX =  Dist* dSig_EEX   *sig0nb;  // Born of EEX
-
-// principal distribution for FOAM, always positive
-	Dist *= Dist_EEX*Rho_cut02;
+    double BetaFin = sqrt(1-4*sqr(m_fin)/svar ); // phase space factor
+	bornv_interpogsw_(m_KFf,svar, m_CosTheta);
+	double dSig_EEX = bornv_dizet_( 1, m_KFini, m_KFf, svar, m_CosTheta, 0.0, 0.0, 0.0, 0.0);
+	Dist_EEX =  dSig_EEX   *3.0/8.0 *sig0nb;  // Born of EEX
+//Dist_EEX = BetaFin*(1+ sqr(m_CosTheta)) *3.0/8.0 *sig0nb;
+/////////////////////////////////////////////////////////////////
+// =============== Sigm/dOmega from spin amplitudes ===============
+// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
+	double Ene = sqrt(svar)/2;
+	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
+	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
+	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
+	double PX[4] = {0, 0, 0, 2*Ene};
+//***** pure Born of CEEX, boxes included
+    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
+                                               m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
+	Dist_GPS =  Dist* dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
+////////////////////////////////////////////////////////////////
+	Dist *= Dist_EEX *Rho_cut02;
     m_WTmodel[72] = 0.0;
     m_WTmodel[73] = 0.0;
     if( Dist != 0.0){
@@ -863,7 +877,9 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	m_WTmodel[52] = Dist_GPS/Dist_EEX *RhoIsr0/RhoIsr2 *RhoFsr0/RhoFsr2;
     }//
 // principal distribution for FOAM, always positive
-	return Dist_EEX; // principal distribution for FOAM
+//[[[	return Dist_EEX; // principal distribution for FOAM
+    return Dist;
+//
 }// Density3
 
 ///////////////////////////////////////////////////////////////

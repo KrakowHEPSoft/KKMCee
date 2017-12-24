@@ -37,7 +37,9 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 //////  *** KKFOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//TFile DiskFileF("../workFOAM/histo.root"); // current
+// Dec 2017 run
+TFile DiskFileF("../workFOAM/histo.root_10GeV_24G");
 // Sept. 2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
@@ -352,8 +354,6 @@ void HisReMakeFoam35(){
   //////////////////////////////////////////////////////////////////
   // testing soft limit using Foam
   TH1D *HST_FOAM_NORMA2   = (TH1D*)DiskFileF2.Get("HST_FOAM_NORMA2");
-
-  HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_csof_Ceex2") );
 
   HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax02") );
   HisNorm1(HST_FOAM_NORMA2, (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax002") );
@@ -1101,9 +1101,6 @@ void FigCtheSoft()
   TH1D *HST_cs_EEX2_vmax02   = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax02");
   TH1D *HST_cs_EEX2_vmax002  = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax002");
   TH1D *HST_cs_EEX2_vmax0002 = (TH1D*)DiskFileF2.Get("HST_cs_EEX2_vmax0002");
-  // KKfoam2
-  TH1D *HST_csof_Ceex2 = (TH1D*)DiskFileF2.Get("HST_csof_Ceex2");
-  HST_csof_Ceex2->SetLineColor(kGreen);
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -1127,7 +1124,7 @@ void FigCtheSoft()
   Hst->GetXaxis()->SetTitleSize(0.04);
   Hst->GetXaxis()->SetTitle("cos #theta");
 
-  Hst->SetMinimum(0);Hst->SetMaximum(0.6);
+  Hst->SetMinimum(0);Hst->SetMaximum(0.8);
 
   Hst->SetLineColor(kBlue);
   Hst->SetMinimum(0.0);
@@ -1148,7 +1145,6 @@ void FigCtheSoft()
   PlotSame2(HST_cs_EEX2_vmax002,      ycapt, kGreen,  -0.70, "(d2)", "foam2, IFIoff, v<0.002  soft");
   PlotSame2(HST_cs_EEX2_vmax0002,     ycapt, kGreen,  -0.70, "(d3)", "foam2, IFIoff, v<0.0002 soft");
 // obsolete
-//PlotSame2(HST_csof_Ceex2,           ycapt, kRed,     0.70, "(e)", "foam2, IFIoff, v<0.02 soft!");
 
 
   //====================plot2========================
@@ -1160,11 +1156,13 @@ void FigCtheSoft()
   Hst=Hst_rats1;
   Hst->SetStats(0);
   Hst->SetTitle(0);
+  Hst->SetMinimum(1.0 -0.01); Hst->SetMaximum(1.0 +0.01);
 
   Hst->DrawCopy("h");
-  PlotSame2(Hst_rats1,    ycapt, kBlack,   -0.40, "(e1)", "foam2/foam3, v<0.02  ");
-  PlotSame2(Hst_rats2,    ycapt, kBlue,    -0.40, "(e2)", "foam2/foam3, v<0.002 ");
-  PlotSame2(Hst_rats3,    ycapt, kGreen,   -0.40, "(e3)", "foam2/foam3, v<0.0002");
+  ycapt = 0.80;
+  PlotSame2(Hst_rats1,    ycapt, kBlack,   -0.80, "(e1)", "foam2/foam3, v<0.02  ");
+  PlotSame2(Hst_rats2,    ycapt, kBlue,    -0.80, "(e2)", "foam2/foam3, v<0.002 ");
+  PlotSame2(Hst_rats3,    ycapt, kGreen,   -0.80, "(e3)", "foam2/foam3, v<0.0002");
 
   //================================================
   cFigCtheSoft->SaveAs("cFigCtheSoft.pdf");
