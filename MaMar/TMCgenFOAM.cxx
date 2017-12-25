@@ -519,9 +519,24 @@ double TMCgenFOAM::Soft_yfs(double gam){
 
 ///--------------------------------------------------------------
 double TMCgenFOAM::RhoIFI(double costhe, double uu, double eps){
-/// ISR+FSR rho-function
+/// ISR+FSR rho-function amlitute level
   double rho, gami;
   gami   = gamIFI( costhe );
+  if( uu > eps){
+	rho = gami*exp( log(uu)*(gami-1) );
+  } else {
+	rho = exp( log(eps)*gami );
+  }
+  rho *= Fyfs(gami);
+  return rho;
+}//RhoIFI
+
+
+///--------------------------------------------------------------
+double TMCgenFOAM::RhoIFI2(double costhe, double uu, double eps){
+/// ISR+FSR rho-function amlitude squared level
+  double rho, gami;
+  gami   = 2*gamIFI( costhe );
   if( uu > eps){
 	rho = gami*exp( log(uu)*(gami-1) );
   } else {
@@ -670,27 +685,35 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	Double_t Dist=1;
 	double svar = sqr(m_CMSene);
 /////////////////////////////////////////////////////////
-// ******** ISR *******
-	double gami   = gamISR(svar);
-    double gamf   = gamFSR(svar);
     // ******** mapping for polar angle *******
     m_CosTheta = -1.0 + 2.0* Xarg[0];
     Dist *= 2.0;
-    // bremsstrahlung part
-    double RhoIsr2,RhoFsr2,vvcut;
+// ******** ISR *******
+	double gami   = gamISR(svar);
+    double gamf   = gamFSR(svar);
+    double gamx   = 2.0*gamIFI(m_CosTheta);
+ 	double PhiN   = Fyfs(gami+gamf)/Fyfs(gami)/Fyfs(gamf);
+	double PhiX   = Fyfs(gami+gamf+gamx)/Fyfs(gami)/Fyfs(gamf)/Fyfs(gamx);
+//
+    double RhoIsr2,RhoFsr2,RhoIfi2,vvcut;
     vvcut = 0.02;
 	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
  	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
- 	double Rho_cut02= RhoIsr2*RhoFsr2;
+ 	RhoIfi2 = RhoIFI2(m_CosTheta,vvcut*0.99999,vvcut);
+ 	double Rho_cut02= RhoIsr2*RhoFsr2 *PhiN;
+ 	double Eta_cut02= RhoIsr2*RhoFsr2*RhoIfi2 *PhiX;
     vvcut = 0.002;
 	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
  	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
- 	double Rho_cut002= RhoIsr2*RhoFsr2;
+ 	RhoIfi2 = RhoIFI2(m_CosTheta,vvcut*0.99999,vvcut);
+ 	double Rho_cut002= RhoIsr2*RhoFsr2 *PhiN;
+ 	double Eta_cut002= RhoIsr2*RhoFsr2*RhoIfi2 *PhiX;
     vvcut = 0.0002;
 	RhoIsr2 = RhoISR(2, svar,vvcut*0.99999,vvcut);
  	RhoFsr2 = RhoFSR(2, svar,vvcut*0.99999,vvcut);
- 	double Rho_cut0002= RhoIsr2*RhoFsr2;
- 	Dist *= Fyfs(gami+gamf)/Fyfs(gami)/Fyfs(gamf);
+ 	RhoIfi2 = RhoIFI2(m_CosTheta,vvcut*0.99999,vvcut);
+ 	double Rho_cut0002= RhoIsr2*RhoFsr2*PhiN;
+ 	double Eta_cut0002= RhoIsr2*RhoFsr2*RhoIfi2 *PhiX;
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     double Dist_EEX, Dist_GPS;
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar )*m_gnanob;
@@ -714,14 +737,19 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	double dSig_GPS;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
-	Dist_GPS =  Dist* dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
+	Dist_GPS =  dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
 ////////////////////////////////////////////////////////////////
-	Dist *= Dist_EEX *Rho_cut02;
-    m_WTmodel[72] = 0.0;
-    m_WTmodel[73] = 0.0;
+	Dist *= Dist_EEX *Rho_cut02;              // EEX2, v<0.0
+    for( int j=72; j<80; j++ ) m_WTmodel[j] = 0.0;
     if( Dist != 0.0){
-      m_WTmodel[72] = Rho_cut002 /Rho_cut02;
-      m_WTmodel[73] = Rho_cut0002/Rho_cut02;
+      m_WTmodel[72] = Rho_cut002 /Rho_cut02;     // EEX2, v<0.002
+      m_WTmodel[73] = Rho_cut0002/Rho_cut02;     // EEX2, v<0.0002
+      m_WTmodel[74] = Dist_GPS/Dist_EEX;                 //ceex2n, v<0.02
+      m_WTmodel[75] = Dist_GPS/Dist_EEX *m_WTmodel[72];  //ceex2n, v<0.002
+      m_WTmodel[76] = Dist_GPS/Dist_EEX *m_WTmodel[73];  //ceex2n, v<0.0002
+      m_WTmodel[77] = m_WTmodel[74]*Eta_cut02/Rho_cut02;     //ceex2, v<0.0002
+      m_WTmodel[78] = m_WTmodel[75]*Eta_cut002/Rho_cut002;   //ceex2, v<0.0002
+      m_WTmodel[79] = m_WTmodel[76]*Eta_cut0002/Rho_cut0002; //ceex2, v<0.0002
     }//
 
     if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode

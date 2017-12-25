@@ -129,11 +129,23 @@ void TRobolFOAM::Hbooker()
     HST_cc_EEX2_vmax02   = TH1D_UP("HST_cc_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
     HST_cc_EEX2_vmax002  = TH1D_UP("HST_cc_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
     HST_cc_EEX2_vmax0002 = TH1D_UP("HST_cc_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
+    //
+    HST_cc_ceex2_vmax02   = TH1D_UP("HST_cc_ceex2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cc_ceex2_vmax002  = TH1D_UP("HST_cc_ceex2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cc_ceex2_vmax0002 = TH1D_UP("HST_cc_ceex2_vmax0002","dSig/dc",   NBc, -1, 1);
 
     // Testing soft limit
-    HST_cs_EEX2_vmax02   = TH1D_UP("HST_cs_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
-    HST_cs_EEX2_vmax002  = TH1D_UP("HST_cs_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
-    HST_cs_EEX2_vmax0002 = TH1D_UP("HST_cs_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax02     = TH1D_UP("HST_cs_EEX2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax002    = TH1D_UP("HST_cs_EEX2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cs_EEX2_vmax0002   = TH1D_UP("HST_cs_EEX2_vmax0002","dSig/dc",   NBc, -1, 1);
+    //
+    HST_cs_ceex2n_vmax02   = TH1D_UP("HST_cs_ceex2n_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cs_ceex2n_vmax002  = TH1D_UP("HST_cs_ceex2n_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cs_ceex2n_vmax0002 = TH1D_UP("HST_cs_ceex2n_vmax0002","dSig/dc",   NBc, -1, 1);
+    //
+    HST_cs_ceex2_vmax02   = TH1D_UP("HST_cs_ceex2_vmax02",  "dSig/dc",   NBc, -1, 1);
+    HST_cs_ceex2_vmax002  = TH1D_UP("HST_cs_ceex2_vmax002", "dSig/dc",   NBc, -1, 1);
+    HST_cs_ceex2_vmax0002 = TH1D_UP("HST_cs_ceex2_vmax0002","dSig/dc",   NBc, -1, 1);
 
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
@@ -184,6 +196,10 @@ if( MCgen->m_IsFoam5 == 1) {
   double WTceex0 = wt5 * MCgen->m_WTmodel[50];
   SCA_xc_Ceex0->Fill(xx,CosTheta, WTceex0);
   SCT_xc_Ceex0->Fill(xx,CosTheta, WTceex0);
+  //
+  if( xx < 0.02 )   HST_cc_ceex2_vmax02->Fill(  CosTheta,wt5);
+  if( xx < 0.002 )  HST_cc_ceex2_vmax002->Fill( CosTheta,wt5);
+  if( xx < 0.0002 ) HST_cc_ceex2_vmax0002->Fill(CosTheta,wt5);
 
 }// m_IsFoam
 /////////////////////////////////////////////////////////////
@@ -259,6 +275,14 @@ if( MCgen->m_IsFoam2 == 1) {
   HST_cs_EEX2_vmax02->Fill(  CosTheta,wt2);
   HST_cs_EEX2_vmax002->Fill( CosTheta,wt2*MCgen->m_WTmodel[72]);
   HST_cs_EEX2_vmax0002->Fill(CosTheta,wt2*MCgen->m_WTmodel[73]);
+  //
+  HST_cs_ceex2n_vmax02->Fill(  CosTheta,wt2*MCgen->m_WTmodel[74]);
+  HST_cs_ceex2n_vmax002->Fill( CosTheta,wt2*MCgen->m_WTmodel[75]);
+  HST_cs_ceex2n_vmax0002->Fill(CosTheta,wt2*MCgen->m_WTmodel[76]);
+  //
+  HST_cs_ceex2_vmax02->Fill(  CosTheta,wt2*MCgen->m_WTmodel[77]);
+  HST_cs_ceex2_vmax002->Fill( CosTheta,wt2*MCgen->m_WTmodel[78]);
+  HST_cs_ceex2_vmax0002->Fill(CosTheta,wt2*MCgen->m_WTmodel[79]);
 
   double Xnorm2 = MCgen->m_Xsav2;
   HST_FOAM_NORMA2->Fill(-1, Xnorm2);   // Normal*Nevtot, new style
