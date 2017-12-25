@@ -627,8 +627,12 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
 //
 // Three-stroke calculation of Re(M M^*) including boxes
+//	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,m_CosTheta,dSig_GPSF1);
+//	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,m_CosTheta,dSig_GPSF2);
+	//[[[[[[[[[[[[[
 	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,m_CosTheta,dSig_GPSF1);
 	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,m_CosTheta,dSig_GPSF2);
+	//]]]]]]]]]]]]]
     double dBorn_GPS = gps_makerhofoam_(1.0);
 //
 // Re(M M^*) including only leading part on gamma-Z box
@@ -735,8 +739,12 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	double PX[4] = {0, 0, 0, 2*Ene};
 //***** pure Born of CEEX, boxes included
 	double dSig_GPS;
-    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
+//    gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,
+//                                               m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
+//[[[[[[[[[[[
+    gps_bornf_(m_KFini, m_KFf ,PX, 0.0       , m_p1,m_beam, m_p2, -m_beam,
                                                m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
+//]]]]]]]]]]]
 	Dist_GPS =  dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
 ////////////////////////////////////////////////////////////////
 	Dist *= Dist_EEX *Rho_cut02;              // EEX2, v<0.0
