@@ -594,7 +594,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     // ******** mapping for polar angle *******
     double cmax = 0.99999;
     m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
-    Dist *= 2.0*cmax;
+//    Dist *= 2.0*cmax;
     // ******** mapping for IFI variable *******
     double gamint = gamIFI(m_CosTheta);
     double dJacInt1, dJacInt2;
@@ -604,7 +604,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double RhoInt2 = RhoIFI( m_CosTheta, m_r2,m_eps);  // implicitly eps-dependent !!!
     double DistIFI1 = dJacInt1 *RhoInt1;
     double DistIFI2 = dJacInt2 *RhoInt2;
-    Dist *= DistISR* DistFSR* DistIFI1 *DistIFI2;
+//    Dist *= DistISR* DistFSR* DistIFI1 *DistIFI2;
 // ******* MC event *******
     double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
     m_xx = 1-zz;
@@ -616,7 +616,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double Ene = sqrt(svar2)/2;
 	double CosTheta = m_CosTheta;
 ///[[[[[
-    CosTheta =0.0;
+//    CosTheta =0.0;
 ///]]]]]
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
 	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
@@ -633,7 +633,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,dSig_GPSF2);
     double dBorn_GPS = gps_makerhofoam_(1.0);
 //
-// Re(M M^*) including only leading part on gamma-Z box
+// Re(M M^*) including only leading part of gamma-Z box
     gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,dSig_GPSF1);
     gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,dSig_GPSF2);
     double dBorn_GPS0 = gps_makerhofoam_(1.0);
@@ -730,7 +730,7 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	double Ene = sqrt(svar)/2;
 	double CosTheta = m_CosTheta;
 ///[[[[[
-	CosTheta = 0.0;
+//	CosTheta = 0.0;
 ///]]]]]
 	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
 	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
@@ -739,11 +739,19 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 	Vdef(m_p3, Pmf*sqrt(1-sqr(CosTheta)), 0 , Pmf*CosTheta,  Ene); // final
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(CosTheta)), 0 ,-Pmf*CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-//***** pure Born of CEEX, boxes included
-	double dSig_GPS;
-    gps_bornf_(m_KFini, m_KFf ,PX, CosTheta, m_p1,m_beam, m_p2, -m_beam,
-                                               m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
-	Dist_GPS =  dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
+//***** pure Born of CEEX, boxes included as in density3
+//	double dSig_GPS;
+//    gps_bornf_(m_KFini, m_KFf ,PX, CosTheta, m_p1,m_beam, m_p2, -m_beam,
+//                                             m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
+//	Dist_GPS =  dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
+//
+// Three-stroke calculation of Re(M M^*) including boxes as in density5
+	double dSig_GPSF1,dSig_GPSF2;
+    gps_bornfoam_( 20,m_KFini,m_KFf,m_CMSene,CosTheta,dSig_GPSF1);
+	gps_bornfoam_( 21,m_KFini,m_KFf,m_CMSene,CosTheta,dSig_GPSF2);
+    double dBorn_GPS = gps_makerhofoam_(1.0);
+	Dist_GPS =  dBorn_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
+
 ////////////////////////////////////////////////////////////////
 	Dist *= Dist_EEX *Rho_cut02;              // EEX2, v<0.0
     for( int j=72; j<80; j++ ) m_WTmodel[j] = 0.0;
