@@ -625,29 +625,30 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	Vdef(m_p3, Pmf*sqrt(1-sqr(CosTheta)), 0 , Pmf*CosTheta,  Ene); // final
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(CosTheta)), 0 ,-Pmf*CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-	double dSig_GPSF1,dSig_GPSF2, Misr1,Misr2;
+	double Yint, Misr1,Misr2;
 	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
 	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
 // Three-stroke calculation of Re(M M^*) including boxes
-	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,CosTheta,dSig_GPSF1);
-	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,dSig_GPSF2);
-    double dBorn_GPS = gps_makerhofoam_(1.0);
+	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,CosTheta,Yint); // Yint is output
+	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
 //
 // Re(M M^*) including only leading part of gamma-Z box
-    gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,dSig_GPSF1);
-    gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,dSig_GPSF2);
-    double dBorn_GPS0 = gps_makerhofoam_(1.0);
+    gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
+    gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    double dBorn_GPS0 = gps_makerhofoam_(Yint);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && fabs(svar/svar2-1)>0.20 ){  // debug
-    if( m_count <10 ){  // debug
+    if( m_count <1000 ){  // debug
     	double Rat;
-    	Rat = dSig_GPSF1/( dSig_GPSF2 );
+//    	Rat = dSig_GPSF1/( dSig_GPSF2 );
     	cout<<" =============================================== "<< m_count<< endl;
     	cout<<" Density5 debug m_count= "<< m_count<< endl;
-    	cout<<" dSig_GPSF1    = "<< dSig_GPSF1;
-    	cout<<" dSig_GPSF2    = "<< dSig_GPSF2;
-    	cout<<" svar/svar2 = "<< svar/svar2;
-    	cout<<" Rat = "<<Rat<<endl;
+    	cout<<" Yint    = "<< Yint;
+//    	cout<<" dSig_GPSF1    = "<< dSig_GPSF1;
+//   	cout<<" dSig_GPSF2    = "<< dSig_GPSF2;
+//    	cout<<" svar/svar2 = "<< svar/svar2;
+    	cout<<" CosTheta = "<<CosTheta<<endl;
     } //
     if( m_count <10 ){  // debug
 //    if( m_count <1 && m_r1 > 0 && gamint <0 ){  // debug
@@ -746,10 +747,10 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 //	Dist_GPS =  dSig_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
 //
 // Three-stroke calculation of Re(M M^*) including boxes as in density5
-	double dSig_GPSF1,dSig_GPSF2;
-    gps_bornfoam_( 20,m_KFini,m_KFf,m_CMSene,CosTheta,dSig_GPSF1);
-	gps_bornfoam_( 21,m_KFini,m_KFf,m_CMSene,CosTheta,dSig_GPSF2);
-    double dBorn_GPS = gps_makerhofoam_(1.0);
+	double Yint;
+    gps_bornfoam_( 20,m_KFini,m_KFf,m_CMSene,CosTheta,Yint);
+	gps_bornfoam_( 21,m_KFini,m_KFf,m_CMSene,CosTheta,Yint);
+    double dBorn_GPS = gps_makerhofoam_(Yint);
 	Dist_GPS =  dBorn_GPS   *3.0/8.0 *sig0nb *BetaFin;  // Born of CEEX2
 
 ////////////////////////////////////////////////////////////////
@@ -765,6 +766,11 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
       m_WTmodel[78] = m_WTmodel[75]*Eta_cut002/Rho_cut002;   //ceex2, v<0.0002
       m_WTmodel[79] = m_WTmodel[76]*Eta_cut0002/Rho_cut0002; //ceex2, v<0.0002
     }//
+    if( m_count <100 ){  // debug
+    	cout<<" =============================================== "<< m_count<< endl;
+    	cout<<" Density2 debug m_count= "<< m_count<< endl;
+    	cout<<" Yint     = "<< Yint << " CosTheta = "<<CosTheta<<endl;
+    } //
 
     if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
     return Dist; // principal distribution for FOAM
@@ -871,7 +877,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 //    	cout<<" (dSig_GPS-dSig_EEX)/ref  = "<< (dSig_GPS-dSig_EEX)/dSigRef ;
 //   	  // Born+boxes, WARNING Z-box may be modified for KeyZet=2
 //      double dSig_GPSF0,dSig_GPSF1;
-//    	gps_bornfoam_( 20,m_KFini,m_KFf,m_Mka,m_CosTheta,dSig_GPSF0);
+//    	gps_bornfoam_( 20,m_KFini,m_KFf,m_Mka,m_CosTheta,dSig_GPSF0); // dSig_GPSF0 is obsolete
 //    	cout<<" dSig_GPSF0/dSig_EEX = "<< dSig_GPSF/dSig_EEX;
 //    	gps_bornfoam_( 21,m_KFini,m_KFf,m_Mka,m_CosTheta,dSig_GPSF1);
 //      double dSig_GPSFR = gps_makerhofoam_(1.0);

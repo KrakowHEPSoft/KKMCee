@@ -547,7 +547,7 @@ C]]]]]]]]]]
             ENDDO
          ENDDO
       ENDDO
-      GPS_MakeRhoFoam = Sum0
+      GPS_MakeRhoFoam = Sum0*XNorm
       END
 
       SUBROUTINE GPS_MakeRho(ExpoNorm)
@@ -1572,7 +1572,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       END                       !!!GPS_BornF!!!
 
 
-      SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Xborn)
+      SUBROUTINE GPS_BornFoam(Mode,KFi,KFf,CMSene,CosThe,Yint)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//                         Born + Boxes                                            //
@@ -1592,7 +1592,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 *//   p4,m4    =fermion momentum and mass final state                               //
 *//                                                                                 //
 *//   Output:                                                                       //
-*//   Xborn     = dsigma/dcosTheta                                                  //
+*//   Yint     = IFI part of YFS formfactor                                         //
 *//   m_AmpBorn = Born spin amplitudes                                              //
 *//                                                                                 //
 *//   Notes:                                                                        //
@@ -1608,7 +1608,7 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       DOUBLE PRECISION  PX(4),p1(4),p2(4),p3(4),p4(4)
       DOUBLE PRECISION  CMSene, CosThe, m1,m2,m3,m4,meps
       DOUBLE COMPLEX    AmpBorn
-      DOUBLE PRECISION  Xborn
+      DOUBLE PRECISION  Yint
 *
       DOUBLE PRECISION  T3e,Qe
       DOUBLE PRECISION  T3f,Qf
@@ -1630,10 +1630,14 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       DOUBLE COMPLEX    GPS_iProd1
       DOUBLE COMPLEX    GPS_iProd2
       DOUBLE COMPLEX    AmpBoxy
-      DOUBLE COMPLEX    BVR_CBoxGG, BVR_CBoxGZ, BVR_IntIR, BVR_IntReson, BVR_TForFac
+      DOUBLE COMPLEX    BVR_CBoxGG, BVR_CBoxGZ, BVR_IntIR, BVR_IntReson
       DOUBLE COMPLEX    Coef, IntIR
       DOUBLE PRECISION  dummy, BornSum, Mini, Mfin, Ene, Pini, Pfin, CosThetD
-      DOUBLE PRECISION  s,t,u, MasPhot, alfpmix, Yint
+      DOUBLE PRECISION  s,t,u, MasPhot, alfpmix, BVR_TForFac
+c[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      INTEGER    icont
+      DATA       icont /0/
+c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *-----------------------------------------------------------------------------
       CALL GPS_Initialize
 *=============================================================
@@ -1671,10 +1675,17 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
 * YFS formfactor Real+Virtual
 * Remember Yint depends on Emin and provides angular asymmetry (MasPhot is dummy)
       alfpmix  = m_Alfpi*Qe*Qf
-      Yint  =  BVR_TForFac( alfpmix, p1,m1, p3,m3, Ene, MasPhot)
-     $        *BVR_TForFac( alfpmix, p2,m2, p4,m4, Ene, MasPhot)
-     $        *BVR_TForFac(-alfpmix, p1,m1, p4,m4, Ene, MasPhot)
-     $        *BVR_TForFac(-alfpmix, p2,m2, p3,m3, Ene, MasPhot)
+      Yint  =  BVR_TForFac( alfpmix, p1,Mini, p3,Mfin, Ene, MasPhot)
+     $        *BVR_TForFac( alfpmix, p2,Mini, p4,Mfin, Ene, MasPhot)
+     $        *BVR_TForFac(-alfpmix, p1,Mini, p4,Mfin, Ene, MasPhot)
+     $        *BVR_TForFac(-alfpmix, p2,Mini, p3,Mfin, Ene, MasPhot)
+c[[[[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      icont=icont+1
+      IF(icont.LE.10) THEN
+         write(*,*) ' //////////////////////GPS_BornFoam///////////////////////////////////////'
+         write(*,*) 'GPS_BornFoam: Yint= ',Yint
+      ENDIF
+c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *=============================================================
 * Basic spinor products
       DO j1 = 1,2
@@ -1811,8 +1822,6 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
             ENDDO
          ENDDO
       ENDDO
-      BornSum = BornSum*Yint
-      Xborn = BornSum
       END                       !!!GPS_BornFoam!!!
 
 
