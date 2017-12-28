@@ -22,7 +22,7 @@ double nevtot   = 1e10;
 //nevtot = 20e6;
 //nevtot = 100e6;
 double nevgrp   = 5e5; // 500k
-nevgrp = 2e6;
+nevgrp = 1e6;
 ///------------------------------------------------------------------
 SemFile.cd();
 TSemaf *Semafor = new TSemaf(semaf, nevtot, nevgrp);

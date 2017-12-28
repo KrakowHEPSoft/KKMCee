@@ -46,8 +46,8 @@ TFile DiskFileF("../workFOAM/histo.root_10GeV_45G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
 //////  *** KKFOAM1
-//TFile DiskFileF2("../workFOAM1/histo.root"); // current
-TFile DiskFileF2("../workFOAM1/histo.root_10GeV_14G"); // dec.2017
+TFile DiskFileF2("../workFOAM1/histo.root"); // current
+//TFile DiskFileF2("../workFOAM1/histo.root_10GeV_14G"); // dec.2017
 
 //////////////////OBSOLETE///////////////////
 //TFile DiskFileA("../workAFB/rmain.root");
