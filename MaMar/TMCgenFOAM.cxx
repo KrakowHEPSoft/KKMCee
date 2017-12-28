@@ -631,7 +631,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 // Three-stroke calculation of Re(M M^*) including boxes
 	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,CosTheta,Yint); // Yint is output
 	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,Yint);
-    double dBorn_GPS = gps_makerhofoam_(1.0);            // Yint is input
+    double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
 //
 // Re(M M^*) including only leading part of gamma-Z box
     gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
