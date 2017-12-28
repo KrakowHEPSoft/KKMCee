@@ -631,7 +631,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 // Three-stroke calculation of Re(M M^*) including boxes
 	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,CosTheta,Yint); // Yint is output
 	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,Yint);
-    double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
+    double dBorn_GPS = gps_makerhofoam_(1.0);            // Yint is input
 //
 // Re(M M^*) including only leading part of gamma-Z box
     gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
@@ -771,7 +771,6 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     	cout<<" Density2 debug m_count= "<< m_count<< endl;
     	cout<<" Yint     = "<< Yint << " CosTheta = "<<CosTheta<<endl;
     } //
-
     if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
     return Dist; // principal distribution for FOAM
 }//Density2
@@ -926,8 +925,8 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
     	m_WTmodel[52] = Dist_GPS/Dist_EEX *RhoIsr0/RhoIsr2 *RhoFsr0/RhoFsr2;
     }//
 // principal distribution for FOAM, always positive
-//[[[	return Dist_EEX; // principal distribution for FOAM
-    return Dist;
+	return Dist_EEX; // principal distribution for FOAM
+////[[[    return Dist;
 //
 }// Density3
 
