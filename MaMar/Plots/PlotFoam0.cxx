@@ -33,21 +33,21 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_7G"); //
+TFile DiskFileA("../workKKMC/histo.root_88GeV_10G"); //
 //
 // Sept. 2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Dec 2017 run
-//TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
-TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 // Sept. 2017 runs OBSOLETE
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G"); // OBSOLETE
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_28G"); // OBSOLETE
