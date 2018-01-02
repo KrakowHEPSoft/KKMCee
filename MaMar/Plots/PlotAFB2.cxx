@@ -32,16 +32,21 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_6G");  // jan.2018
+//
 TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017
+////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
-//TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G"); // oct.2017
-TFile DiskFileA10("../workKKMC/histo.root"); // oct.2017
+TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
+//
+//TFile DiskFileA88("../workKKMC/histo.root"); // actual
 //
 // Latest from /workFOAM
-TFile DiskFileF95("../workFOAM/histo.root_95GeV_57G");  // Sept. 2017 runs
-//TFile DiskFileF95("../workFOAM/histo.root_95GeV_4G");
-TFile DiskFileF88("../workFOAM/histo.root_88GeV_15G");  // Sept. 2017 runs
+TFile DiskFileF95("../workFOAM/histo.root_95GeV_23G");    // Dec.  2017 runs
+//TFile DiskFileF95("../workFOAM/histo.root_95GeV_57G");  // Sept. 2017 runs
+//
+TFile DiskFileF88("../workFOAM/histo.root_88GeV_22G");    // Dec.  2017 runs
+//TFile DiskFileF88("../workFOAM/histo.root_88GeV_15G");  // Sept. 2017 runs
 
 
 ////////////////////////////////////////////////////////////////
@@ -57,6 +62,7 @@ TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff
 ///////////////////////////////////////////////////////////////////////////////////
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
 float  gXcanv = 50, gYcanv = 50;
 //
@@ -214,6 +220,7 @@ void ReMakeMChisto(){
 //======================================================================================
 // FOAM corner
   int    NbMax   =0;          // for 100bins, default=0 for gCosTheta = 1.00
+  //NbMax=45;      // cosThetaMax = 45/50=0.90
   //////////////  95GeV /////////////////
   TH1D *HST_FOAM_NORMA3_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA3");
   TH1D *HST_FOAM_NORMA5_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA5");
@@ -345,7 +352,7 @@ void AfbIFIvAa()
   TH1D *Hafb8_vAcPR_IFIdiff = HstDiff("Hafb8_vAcPR_IFIdiff",  Hafb8_vAcPR_Ceex2, Hafb8_vAcPR_Ceex2n,  kBlue);
   Hafb8_vAcPR_IFIdiff->Scale(-1.0); // undoing sign change
   TH1D *HafbZ_vAcPR_IFIdiff = HstDiff("HafbZ_vAcPR_IFIdiff",  HafbZ_vAcPR_Ceex2, HafbZ_vAcPR_Ceex2n,  kMagenta);
-  TH1D *Hafb1_vAcPR_IFIdiff = HstDiff("Hafb1_vAcPR_IFIdiff",  Hafb1_vAcPR_Ceex2, Hafb1_vAcPR_Ceex2n,  kGreen);
+  TH1D *Hafb1_vAcPR_IFIdiff = HstDiff("Hafb1_vAcPR_IFIdiff",  Hafb1_vAcPR_Ceex2, Hafb1_vAcPR_Ceex2n,  kPine);
   TH1D *HDifSum             = HstDiff("HDifSum",            Hafb9_vAcPR_IFIdiff, Hafb8_vAcPR_IFIdiff,  kRed);
   //HDifSum->SetLineWidth(2);
 
@@ -365,7 +372,7 @@ void AfbIFIvAa()
   PlotSame2(Hafb8_vAcPR_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
   if( gTogEne ){
   PlotSame2(HafbZ_vAcPR_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
-  PlotSame2(Hafb1_vAcPR_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
+  PlotSame2(Hafb1_vAcPR_IFIdiff, ycapt, kPine,   0.090, "(d)", "#sqrt{s}=10GeV");
   }
   PlotSame2(HDifSum,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
@@ -397,7 +404,7 @@ void AfbIFIvAb()
   TH1D *Hafb8_vAcPR_IFIdiff = HstDiff("Hafb8_vAcPR_IFIdiff",  Hafb8_vAcPR_Ceex2, Hafb8_vAcPR_Ceex2n,  kBlue);
   Hafb8_vAcPR_IFIdiff->Scale(-1.0); // undoing sign change
   TH1D *HafbZ_vAcPR_IFIdiff = HstDiff("HafbZ_vAcPR_IFIdiff",  HafbZ_vAcPR_Ceex2, HafbZ_vAcPR_Ceex2n,  kMagenta);
-  TH1D *Hafb1_vAcPR_IFIdiff = HstDiff("Hafb1_vAcPR_IFIdiff",  Hafb1_vAcPR_Ceex2, Hafb1_vAcPR_Ceex2n,  kGreen);
+  TH1D *Hafb1_vAcPR_IFIdiff = HstDiff("Hafb1_vAcPR_IFIdiff",  Hafb1_vAcPR_Ceex2, Hafb1_vAcPR_Ceex2n,  kPine);
 
   TH1D *hZero = (TH1D*)Hafb8_vAcPR_Ceex2n->Clone("hZero");  // zero line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
@@ -426,7 +433,7 @@ void AfbIFIvAb()
   PlotSame2(Hafb8_vAcPR_IFIdiff, ycapt, kBlue,    0.045, "(b)", "#sqrt{s}=87.9GeV");
   if( gTogEne ){
   PlotSame2(HafbZ_vAcPR_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
-  PlotSame2(Hafb1_vAcPR_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
+  PlotSame2(Hafb1_vAcPR_IFIdiff, ycapt, kPine,   0.090, "(d)", "#sqrt{s}=10GeV");
   }
   hZero->DrawCopy("hsame");
 
@@ -501,7 +508,7 @@ void AfbIFIvTa()
   TH1D *Hafb8_vTcPL_IFIdiff = HstDiff("Hafb8_vTcPL_IFIdiff",  Hafb8_vTcPL_Ceex2, Hafb8_vTcPL_Ceex2n,  kBlue);
   Hafb8_vTcPL_IFIdiff->Scale(-1.0); // undoing sign change
   TH1D *HafbZ_vTcPL_IFIdiff = HstDiff("HafbZ_vTcPL_IFIdiff",  HafbZ_vTcPL_Ceex2, HafbZ_vTcPL_Ceex2n,  kMagenta);
-  TH1D *Hafb1_vTcPL_IFIdiff = HstDiff("Hafb1_vTcPL_IFIdiff",  Hafb1_vTcPL_Ceex2, Hafb1_vTcPL_Ceex2n,  kGreen);
+  TH1D *Hafb1_vTcPL_IFIdiff = HstDiff("Hafb1_vTcPL_IFIdiff",  Hafb1_vTcPL_Ceex2, Hafb1_vTcPL_Ceex2n,  kPine);
   TH1D *HDifPat_vTcPL       = HstDiff("HDifPat_vTcPL",        Hafb9_vTcPL_IFIdiff, Hafb8_vTcPL_IFIdiff,  kRed);
   //HDifPat_vTcPL->SetLineWidth(2);
 
@@ -520,7 +527,7 @@ void AfbIFIvTa()
   PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.065, "(b)", "#sqrt{s}=87.9GeV");
   if( gTogEne ){
   PlotSame2(HafbZ_vTcPL_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
-  PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kGreen,   0.090, "(d)", "#sqrt{s}=10GeV");
+  PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kPine,   0.090, "(d)", "#sqrt{s}=10GeV");
   }
   PlotSame2(HDifPat_vTcPL,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //

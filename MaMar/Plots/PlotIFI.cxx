@@ -33,7 +33,9 @@ using namespace std;
 // New
 //TFile  DiskFileA("../workKKMC/histo.root");           // KKMC current
 
-TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); // newest!
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
+
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
 
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
 //TString XparFile="../workKKMC/workKKMC_95GeV.input";  // KKMC input

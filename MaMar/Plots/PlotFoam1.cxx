@@ -33,15 +33,19 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");
-// August2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); //
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); //
-//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G"); ///????
+TFile DiskFileA("../workKKMC/histo.root_88GeV_6G");  // jan.2018
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // sept 2017
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  // sept 2017
+//
+// August2017 runs, obsolete
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.7G"); // obsolete
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.1G"); // obsolete
+//TFile DiskFileA("../workKKMC/histo.root_91GeV_9G");   // obsolete
 
-////  *** FOAM
-TFile DiskFileF("../workFOAM1/histo.root"); // current
+////  *** FOAM1
+//TFile DiskFileF("../workFOAM1/histo.root"); // current
+//
+TFile DiskFileF("../workFOAM1/histo.root_88GeV_13G"); // Dec. 2018
 // Sept. 2017 runs
 //TFile DiskFileF("../workFOAM1/histo.root_95GeV_100M");
 
@@ -52,7 +56,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
-int    kGold=92, kBrune=46, kPine=71;
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
 int    gNbMax =0;          // for 100bins, gCosTheta = 45/50=0.90
 int    gNbMax2=0;          // for  50bins, gCosTheta = 45/50=0.90
@@ -244,7 +248,7 @@ void FigVV()
   double ycapt = 0.80;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  PlotSame(vdis_ISR2_FSR2, ycapt, kGreen,   "KKsem, IFI off ");
+  PlotSame(vdis_ISR2_FSR2, ycapt, kPine,   "KKsem, IFI off ");
   PlotSame(Hpro_vT_Ceex2n, ycapt, kRed,     "KKMC,  IFI off ");
   PlotSame(Hpro_vT_Ceex2 , ycapt, kBlack,   "KKMC,  IFI on ");
   PlotSame(HST_xx_Ord1n,   ycapt, kBlue,    "Foam1, IFI off ");
@@ -325,7 +329,7 @@ void FigVcum()
     CaptT->DrawLatex(0.40,ycapt,gTextEne);
     PlotSame2(HTot_vTcPL_Ceex2n, ycapt, kRed,    0.30, "(a)", "KKMC Ceex2  IFI off ");
     PlotSame2(HTot_vTcPL_Ceex2,  ycapt, kBlack,  0.40, "(b)", "KKMC Ceex2  IFI on ");
-    PlotSame2(vcum_ISR2_FSR2,    ycapt, kGreen,  0.60, "(c)", "KKsem eex2  IFI off ");
+    PlotSame2(vcum_ISR2_FSR2,    ycapt, kPine,  0.60, "(c)", "KKsem eex2  IFI off ");
     PlotSame2(HST_xxcum_Ord1n,   ycapt, kBlue,   0.60, "(d)", "Foam1 NoExp IFI off ");
     PlotSame2(HST_xxcum_Ord1,    ycapt, kGold,   0.70, "(e)", "Foam1 NoExp IFI on ");
     PlotSame2(HST_SigPRD,        ycapt, kMagenta,0.80, "(f)", "PRD41 NoExp IFI off ");
@@ -442,7 +446,7 @@ void FigAfb10()
   PlotSame2(HstPRD_diff,    ycapt, kCyan,    0.10, "(b)", "IFI off: Foam1-PRD41 ");
   PlotSame2(HST_AfbPL,      ycapt, kMagenta, 0.10, "(c)", "PLB219: IFI only ");
   PlotSame2(HST_xxAfb_Ird1, ycapt, kRed,     0.05, "(d)", "Foam1:  IFI only ");
-  //PlotSame2(Hst_Foam1_diff, ycapt, kGreen,   0.20, "(e)", "Foam1:  IFI only "); // stat. error to big?
+  //PlotSame2(Hst_Foam1_diff, ycapt, kPine,   0.20, "(e)", "Foam1:  IFI only "); // stat. error to big?
 
   hZero0->DrawCopy("hsame");
   cFigAfb10->cd();

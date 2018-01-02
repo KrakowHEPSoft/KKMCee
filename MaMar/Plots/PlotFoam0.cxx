@@ -32,21 +32,28 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
+// Jan. 2018
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_7G"); //
+//
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
-//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
-// Sept. 2017 runs
-TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_28G");
-//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
-//TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
+// Dec 2017 run
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
+// Sept. 2017 runs OBSOLETE
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G"); // OBSOLETE
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_28G"); // OBSOLETE
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G"); // OBSOLETE
+//TFile DiskFileF("../workFOAM/histo.root_91GeV_28G"); // OBSOLETE
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_25G"); // OBSOLETE
 
 //************************************************************************
 // Archive, obsolete
@@ -94,6 +101,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3, kCyan2=kCyan+2;
 //
 //int    gNbMax   =45;          // for 100bins, gCosTheta = 45/50=0.90
 //double gCosTheta=0.90;        // to be synchronized with gNbMax
@@ -317,7 +325,7 @@ void FigVdist()
   Htot_xmax_Ceex2n->SetLineColor(kBlue);   // blue ISR+FSR
   Htot_xmax_Ceex2n->DrawCopy("hsame");     // Foam sigma(vmax) scatt.
   //
-  Htot_xmax_Ceex2->SetLineColor(kGreen);   // green ISR+FSR+IFI
+  Htot_xmax_Ceex2->SetLineColor(kPine);   // green ISR+FSR+IFI
   Htot_xmax_Ceex2->DrawCopy("hsame");      // Foam sigma(vmax) scatt.
   //
   //vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
@@ -428,7 +436,7 @@ void FigAfb0()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
   PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC.0   IFIon ");
-  PlotSame2(Hafb2_xmax_Ceex0, ycapt, kGreen,     0.025, "(b)", "Foam5.0  IFIon ");
+  PlotSame2(Hafb2_xmax_Ceex0, ycapt, kPine,     0.025, "(b)", "Foam5.0  IFIon ");
   PlotSame2(afbv_ISR0_FSR0,   ycapt, kRed,       0.120, "(c)", "KKsem.0  IFIoff ");
   PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.0   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex0n,ycapt, kBlue,      0.150, "(e)", "Foam3.0  IFIoff ");
@@ -456,8 +464,8 @@ void FigAfb0()
 
   PlotSame2(Hst21_diff0,   ycapt, kBlack,     0.120, "(a)", "KKMC.0,   IFIon - IFIoff ");
   PlotSame2(HST21_diff0,   ycapt, kMagenta,   0.140, "(b)", "Foam5.0   IFIon - IFIoff ");
-  PlotSame2(HstPL_diff0,   ycapt, kRed,       0.100, "(c)", "KKMC.0_IFIon  - Foam5.0_IFIon ");
-  PlotSame2(HstKFn_diff0,  ycapt, kBlue,      0.160, "(d)", "KKMC.0_IFIoff - Foam3.0_IFIoff ");
+  PlotSame2(HstPL_diff0,   ycapt, kRed,       0.100, "(c)", "KKMC.0 - Foam5.0  IFIon ");
+  PlotSame2(HstKFn_diff0,  ycapt, kBlue,      0.160, "(d)", "KKMC.0 - Foam3.0 IFIoff ");
 
 // zero line
   TH1D *hZero0 = (TH1D*)Hst1->Clone("hZero0");  // zero line
@@ -501,7 +509,7 @@ void FigAfb2()
   //
   TH1D *HST_IFI4 =(TH1D*)HAfb2_vTcPL_Ceex2->Clone("HST_IFI4");
   LibSem.Ord1fill(HST_IFI4,105);   // PLB219 hard IFI
-  HST_IFI4->SetLineColor(kCyan);
+  HST_IFI4->SetLineColor(kCyan2);
 //
   //*****************************************************************************
   TLatex *CaptT = new TLatex();
@@ -544,17 +552,17 @@ void FigAfb2()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
   PlotSame2(Hst2,             ycapt, kMagenta,   0.015, "(a)", "KKMC.2   IFIon ");
-  PlotSame2(Hafb2_xmax_Ceex2, ycapt, kGreen,     0.025, "(b)", "Foam5.2  IFIon ");
+  PlotSame2(Hafb2_xmax_Ceex2, ycapt, kPine,      0.025, "(b)", "Foam5.2  IFIon ");
   PlotSame2(afbv_ISR2_FSR2,   ycapt, kRed,       0.120, "(c)", "KKsem.2  IFIoff ");
   PlotSame2(Hst1,             ycapt, kBlack,     0.135, "(d)", "KKMC.2   IFIoff ");
   PlotSame2(Hafb2_xmax_Ceex2n,ycapt, kBlue,      0.150, "(e)", "Foam3.2  IFIoff ");
-  //PlotSame2(HST_PLBZ2,        ycapt, kCyan,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
+  //PlotSame2(HST_PLBZ2,       ycapt, kCyan2,      0.100, "(f)", "PRD43, O(#alpha^{1}), IFIoff ");
 
   //[[[[[
-  //PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
+  //PlotSame2(AfbS_Ceex2,       ycapt, kGold,      0.100, "(x)", "XXXXX ");
   //PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
 
-  //PlotSame2(AfbS_Ceex2,       ycapt, kYellow,      0.100, "(x)", "XXXXX ");
+  //PlotSame2(AfbS_Ceex2,       ycapt, kGold,      0.100, "(x)", "XXXXX ");
   //PlotSame2(AfbS9_Ceex2,      ycapt, kRed,         0.100, "(y)", "XXXXX ");
   //]]]]]
 
@@ -564,13 +572,13 @@ void FigAfb2()
   TH1D *HST21_diff   = HstDiff("HST21_diff",    Hafb2_xmax_Ceex2,   Hafb2_xmax_Ceex2n,   kMagenta);
   TH1D *HstPL_diff   = HstDiff("HstPL_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kRed);
   TH1D *HstKFn_diff  = HstDiff("HstKFn_diff",   HAfb2_vTcPL_Ceex2n,  Hafb2_xmax_Ceex2n,  kBlue);
-  //  TH1D *HstKF_diff   = HstDiff("HstKF_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kGreen);
+  //  TH1D *HstKF_diff   = HstDiff("HstKF_diff",    HAfb2_vTcPL_Ceex2,  Hafb2_xmax_Ceex2,    kPine);
 
   if(fabs(gCMSene-95.0) <1.0) { Hst21_diff->SetMinimum(-0.004);  Hst21_diff->SetMaximum( 0.006);}  // 95GeV
   if(fabs(gCMSene-88.0) <1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.012);}// 88GeV
   if(fabs(gCMSene-91.0) <1.0) { Hst21_diff->SetMinimum(-0.0005); Hst21_diff->SetMaximum( 0.0045);} // 91GeV
   if(fabs(gCMSene-10.0) <1.0) { Hst21_diff->SetMinimum(-0.002);  Hst21_diff->SetMaximum( 0.006);}  // 10GeV
-
+  //Hst21_diff->SetMinimum(-0.001);  Hst21_diff->SetMaximum( 0.001);
 
   Hst21_diff->GetXaxis()->SetTitle("v_{max}");
   Hst21_diff->DrawCopy("h");
@@ -582,9 +590,9 @@ void FigAfb2()
 
   PlotSame2(Hst21_diff,   ycapt, kBlack,     0.120, "(a)", "KKMC.2,   IFIon - IFIoff ");
   PlotSame2(HST21_diff,   ycapt, kMagenta,   0.140, "(b)", "Foam5.2   IFIon - IFIoff ");
-  PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC.2_IFIon  - Foam5.2_IFIon ");
-  PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC.2_IFIoff - Foam3.2_IFIoff ");
-  //PlotSame2(HST_IFI4,     ycapt, kCyan,      0.020, "(e)", "PLB219: O(#alpha^{1}), IFI hard part ");
+  PlotSame2(HstPL_diff,   ycapt, kRed,       0.100, "(c)", "KKMC.2 - Foam5.2  IFIon ");
+  PlotSame2(HstKFn_diff,  ycapt, kBlue,      0.160, "(d)", "KKMC.2 - Foam3.2  IFIoff ");
+  PlotSame2(HST_IFI4,     ycapt, kCyan2,     0.020, "(e)", "PLB219: O(#alpha^{1}), IFI hard part ");
 
 
 // zero line
@@ -623,7 +631,7 @@ void FigAfb20()
   //
   TH1D *HST_IFI5 =(TH1D*)HAfb_vTcPL_Ceex2n->Clone("HST_IFI4");
   LibSem.Ord1fill(HST_IFI5,105);   // PLB219 hard IFI
-  HST_IFI5->SetLineColor(kCyan);
+  HST_IFI5->SetLineColor(kCyan2);
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -664,7 +672,7 @@ void FigAfb20()
   PlotSame2(HstN_diff,   ycapt, kBlack,     0.700, "(a)", "KKMC.2:  IFIon-IFIoff ");
   PlotSame2(HstN_diff2,  ycapt, kMagenta,   0.300, "(b)", "KKFoam.2:  IFIon-IFIoff ");
   PlotSame2(HstN_diff3,  ycapt, kRed,       0.100, "(c)", "KKMC.2 - Foam.2: IFIon");
-  PlotSame2(HST_IFI5,    ycapt, kCyan,      0.200, "(d)", "PLB219, O(#alpha^{1}), IFI hard part");
+  PlotSame2(HST_IFI5,    ycapt, kCyan2,     0.200, "(d)", "PLB219, O(#alpha^{1}), IFI hard part");
 
   // zero line
   TH1D *hZeroN = (TH1D*)HAfb_vTcPL_Ceex2->Clone("hZeroN");  // zero line
@@ -680,13 +688,11 @@ void FigAfb20()
 
   HstK_diff->SetStats(0);
   HstK_diff->SetTitle(0);
-  //if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
 
   if( fabs(gCMSene -95.0) < 1.0) { HstK_diff->SetMinimum(-0.004);  HstK_diff->SetMaximum( 0.004);}  // 95GeV
   if( fabs(gCMSene -88.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.008);}  // 88GeV
   if( fabs(gCMSene -91.0) < 1.0) { HstK_diff->SetMinimum(-0.001);  HstK_diff->SetMaximum(  0.003);} // 91GeV
   if( fabs(gCMSene -10.0) < 1.0) { HstK_diff->SetMinimum(-0.002);  HstK_diff->SetMaximum( 0.006);}  // 10GeV
-
 
   HstK_diff->GetXaxis()->SetTitle("v_{max}");
   HstK_diff->DrawCopy("h");
@@ -754,8 +760,8 @@ void FigSigAfb0()
   //====================plot1========================
   cFigSigAfb0->cd(1);
   TH1D *HstTech0_ratio  = HstRatio("HstTech0_ratio",   HTot2_vTcPL_Ceex0n, vcum_ISR0_FSR0, kBlack);
-  TH1D *HstTech0_ratio2 = HstRatio("HstTech0_ratio2",  Htot2_xmax_Ceex0n,  vcum_ISR0_FSR0, kGreen);
-  TH1D *HstTech0_ratio3 = HstRatio("HstTech0_ratio3",  Htot2_xmax_Ceex0,   vcum_ISR0_FSR0, kGreen);
+  TH1D *HstTech0_ratio2 = HstRatio("HstTech0_ratio2",  Htot2_xmax_Ceex0n,  vcum_ISR0_FSR0, kPine);
+  TH1D *HstTech0_ratio3 = HstRatio("HstTech0_ratio3",  Htot2_xmax_Ceex0,   vcum_ISR0_FSR0, kPine);
   TH1D *HstTech0_ratio4 = HstRatio("HstTech0_ratio4",  Htot2_xmax_EEX0,    vcum_ISR0_FSR0, kRed);
 
   HstTech0_ratio->SetStats(0);
@@ -766,9 +772,10 @@ void FigSigAfb0()
   HstTech0_ratio->DrawCopy("h");
 
   double ycapt = 0.40; // starting value, to be decremented below
-  PlotSame2(HstTech0_ratio,  ycapt, kBlack,    0.03, "(a)", "KKMC.0/KKsem.0  IFIoff");
-  PlotSame2(HstTech0_ratio2, ycapt, kGreen,    0.06, "(b)", "FOAM3.0_gps/KKsem.0 IFIoff");
-  PlotSame2(HstTech0_ratio4, ycapt, kMagenta,  0.09, "(c)", "FOAM3.0_eex/KKsem.0 IFIoff");
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  PlotSame2(HstTech0_ratio,  ycapt, kBlack,    0.03, "(a)", "KKMC_GPS0/KKsem0  IFIoff");
+  PlotSame2(HstTech0_ratio2, ycapt, kPine,     0.06, "(b)", "FOAM3_GPS0/KKsem0 IFIoff");
+  PlotSame2(HstTech0_ratio4, ycapt, kMagenta,  0.09, "(c)", "FOAM3_EEX0/KKsem0 IFIoff");
 //  PlotSame2(HstTech0_ratio3, ycapt, kBlue,     0.16, "(d)", "FOAM5.0/KKsem.0 IFIon");
 
   hOne2->DrawCopy("hsame");
@@ -777,7 +784,7 @@ void FigSigAfb0()
   //====================plot2========================
   cFigSigAfb0->cd(2);
   TH1D *HstTech0_diff2  = HstDiff("HstTech0_diff2",   HAfb2_vTcPL_Ceex0n, afbv_ISR0_FSR0, kBlack);
-  TH1D *HstTech0_diff1  = HstDiff("HstTech0_diff1",   Hafb2_xmax_Ceex0n,  afbv_ISR0_FSR0, kGreen);
+  TH1D *HstTech0_diff1  = HstDiff("HstTech0_diff1",   Hafb2_xmax_Ceex0n,  afbv_ISR0_FSR0, kPine);
   TH1D *HstTech0_diff3  = HstDiff("HstTech0_diff3",   Hafb2_xmax_EEX0,    afbv_ISR0_FSR0, kMagenta);
 
   TH1D *HstTech0_diff= HstTech0_diff2;
@@ -787,21 +794,21 @@ void FigSigAfb0()
   HstTech0_diff->GetXaxis()->SetTitle("v_{max}");
   HstTech0_diff->DrawCopy("h");
 
-  ycapt = 0.90; // starting value, to be decremented below
-  PlotSame2(HstTech0_diff2,   ycapt, kBlack,    0.140, "(a)", "KKMC.0  - KKsem.0 IFIoff ");
-  PlotSame2(HstTech0_diff1,   ycapt, kGreen,    0.180, "(b)", "Foam3.0_gps - KKsem.0 IFIoff ");
-  PlotSame2(HstTech0_diff3,   ycapt, kMagenta,  0.080, "(c)", "Foam3.0_eex - KKsem.0 IFIoff ");
+  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
+  //
+  ycapt = 0.35; // starting value, to be decremented below
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  PlotSame2(HstTech0_diff2,   ycapt, kBlack,    0.140, "(a)", "KKMC_GPS0  - KKsem0 IFIoff ");
+  PlotSame2(HstTech0_diff1,   ycapt, kPine,     0.180, "(b)", "Foam3_GPS0 - KKsem0 IFIoff ");
+  PlotSame2(HstTech0_diff3,   ycapt, kMagenta,  0.080, "(c)", "Foam3_EEX0 - KKsem0 IFIoff ");
+  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   TH1D *hZero2 = (TH1D*)HstTech0_diff->Clone("hZero2");  // unity line
   for(int i=1; i <= hZero2->GetNbinsX() ; i++) { hZero2->SetBinContent(i, 0); hZero2->SetBinError(i, 0);}
   hZero2->SetLineColor(kRed);
   hZero2->DrawCopy("hsame");
-
-  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
-  ycapt =0.30;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   //================================================
   cFigSigAfb0->SaveAs("cFigSigAfb0.pdf");
@@ -858,8 +865,8 @@ void FigSigAfb2()
   cFigSigAfb2->Divide( 2,  0);
   //====================plot1========================
   cFigSigAfb2->cd(1);
-  TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,    vcum_ISR2_FSR2, kGreen);
-  TH1D *HstTech_ratio1  = HstRatio("HstTech_ratio1",  Htot2_xmax_Ceex2n,  vcum_ISR2_FSR2, kGreen);
+  TH1D *HstTech_ratio0  = HstRatio("HstTech_ratio0",  Htot2_xmax_EEX2,    vcum_ISR2_FSR2, kPine);
+  TH1D *HstTech_ratio1  = HstRatio("HstTech_ratio1",  Htot2_xmax_Ceex2n,  vcum_ISR2_FSR2, kPine);
   TH1D *HstTech_ratio3  = HstRatio("HstTech_ratio3",  HST_txmax_Ceex2n,   vcum_ISR2_FSR2, kRed);
   TH1D *HstTech_ratio2  = HstRatio("HstTech_ratio2",  HTot2_vTcPR_Ceex2n, vcum_ISR2_FSR2, kBlack);
   TH1D *HstTech_ratio4  = HstRatio("HstTech_ratio4",  HTot2_vTcPR_EEX2,   vcum_ISR2_FSR2, kMagenta);
@@ -878,10 +885,11 @@ void FigSigAfb2()
   HstTech_ratio2->DrawCopy("hsame");      // KKMCceexn/KKsem IFIoff black
 
   double ycapt = 0.40; // starting value, to be decremented below
-  PlotSame2(HstTech_ratio4, ycapt, kBlue,    0.12, "(a)", "KKMC_EEX.2/KKsem.2   IFIoff ");
-  PlotSame2(HstTech_ratio2, ycapt, kBlack,   0.16, "(b)", "KKMC_CEEX.2/KKsem.2  IFIoff");
-  PlotSame2(HstTech_ratio0, ycapt, kMagenta, 0.04, "(c)", "Foam3.2_EEX/KKsem.2  IFIoff ");
-  PlotSame2(HstTech_ratio1, ycapt, kGreen,   0.08, "(d)", "Foam3.2_GPS/KKsem.2  IFIoff ");
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  PlotSame2(HstTech_ratio4, ycapt, kBlue,    0.12, "(a)", "KKMC_EEX2/KKsem2   IFIoff ");
+  PlotSame2(HstTech_ratio2, ycapt, kBlack,   0.16, "(b)", "KKMC_CEEX2/KKsem2  IFIoff");
+  PlotSame2(HstTech_ratio0, ycapt, kMagenta, 0.04, "(c)", "Foam3_EEX2/KKsem2  IFIoff ");
+  PlotSame2(HstTech_ratio1, ycapt, kPine,    0.08, "(d)", "Foam3_GPS2/KKsem2  IFIoff ");
 
   TH1D *hOne = (TH1D*)HstTech_ratio->Clone("hOne");  // unity line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
@@ -893,7 +901,7 @@ void FigSigAfb2()
   //====================plot2========================
   cFigSigAfb2->cd(2);
   TH1D *HstTech_diff0  = HstDiff("HstTech_diff0",   Hafb2_xmax_EEX2,    afbv_ISR2_FSR2, kMagenta);
-  TH1D *HstTech_diff1  = HstDiff("HstTech_diff1",   Hafb2_xmax_Ceex2n,  afbv_ISR2_FSR2, kGreen);
+  TH1D *HstTech_diff1  = HstDiff("HstTech_diff1",   Hafb2_xmax_Ceex2n,  afbv_ISR2_FSR2, kPine);
   TH1D *HstTech_diff2  = HstDiff("HstTech_diff2",   HAfb2_vTcPR_Ceex2n, afbv_ISR2_FSR2, kBlack);
   TH1D *HstTech_diff4  = HstDiff("HstTech_diff4",   HAfb2_vTcPR_EEX2,   afbv_ISR2_FSR2, kBlue);
 
@@ -905,22 +913,22 @@ void FigSigAfb2()
   HstTech_diff->GetXaxis()->SetTitle("v_{max}");
   HstTech_diff->DrawCopy("h");
 
-  ycapt = 0.90; // starting value, to be decremented below
-  PlotSame2(HstTech_diff4,   ycapt, kBlue,     0.120, "(a)", "KKMC_EEX.2  -KKsem.2 IFIoff ");
-  PlotSame2(HstTech_diff2,   ycapt, kBlack,    0.140, "(b)", "KKMC_CEEX.2 -KKsem.2 IFIoff ");
-  PlotSame2(HstTech_diff0,   ycapt, kMagenta,  0.160, "(c)", "Foam3_EEX.2 -KKsem.2 IFIoff ");
-  PlotSame2(HstTech_diff1,   ycapt, kGreen,    0.180, "(d)", "Foam3.2_GPS -KKsem.2 IFIoff ");
+  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
+  ycapt = 0.35; // starting value, to be decremented below
+  CaptT->DrawLatex(0.40,ycapt,gTextEne);
+  PlotSame2(HstTech_diff4,   ycapt, kBlue,     0.120, "(a)", "KKMC_EEX2  - KKsem2 IFIoff ");
+  PlotSame2(HstTech_diff2,   ycapt, kBlack,    0.140, "(b)", "KKMC_CEEX2 - KKsem2 IFIoff ");
+  PlotSame2(HstTech_diff0,   ycapt, kMagenta,  0.160, "(c)", "Foam3_EEX2 - KKsem2 IFIoff ");
+  PlotSame2(HstTech_diff1,   ycapt, kPine,     0.180, "(d)", "Foam3_GPS2 - KKsem2 IFIoff ");
+  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
+  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   TH1D *hZero = (TH1D*)HstTech_diff->Clone("hZero");  // unity line
   for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
   hZero->SetLineColor(kRed);
   hZero->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
-  ycapt =0.30;
-  CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
 
   cFigSigAfb2->cd();
   //================================================

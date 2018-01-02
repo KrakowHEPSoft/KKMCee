@@ -30,26 +30,35 @@ using namespace std;
 //=============================================================================
 // KKMC current
 //TFile DiskFileA("../workKKMC/histo.root");
-
+// Jan. 2018
+TFile DiskFileA("../workKKMC/histo.root_88GeV_6G"); // Jan. 2018
+//
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
-TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
+//TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
-//////  *** KKFOAM
-TFile DiskFileF("../workFOAM/histo.root"); // current
+//////  *** KKFOAM, bacis xcheck including IFI
+//TFile DiskFileF("../workFOAM/histo.root"); // current
 // Dec 2017 run
-//TFile DiskFileF("../workFOAM/histo.root_10GeV_45G");
+TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
+
 // Sept. 2017 runs
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
-//////  *** KKFOAM1
-TFile DiskFileF2("../workFOAM1/histo.root"); // current
-//TFile DiskFileF2("../workFOAM1/histo.root_10GeV_14G"); // dec.2017
+//////  *** KKFOAM1  Soft limit study
+//TFile DiskFileF2("../workFOAM1/histo.root"); // current
+// Dec 2017 run
+TFile DiskFileF2("../workFOAM1/histo.root_88GeV_13G"); //
+//TFile DiskFileF2("../workFOAM1/histo.root_95GeV_14G"); //
+//TFile DiskFileF2("../workFOAM1/histo.root_10GeV_14G"); //
 
-//////////////////OBSOLETE///////////////////
+//////////////////OBSOLETE Oldies ///////////////////
 //TFile DiskFileA("../workAFB/rmain.root");
 // archive obsolete!
 //TFile DiskFileA("../workAFB/rmain.root_95GeV_100M");
@@ -66,7 +75,7 @@ KKplot LibSem("KKplot");
 ///////////////////////////////////////////////////////////////////////////////////
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
-int    kGold=92, kBrune=46, kPine=71;
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
 //
 float  gXcanv = 10, gYcanv = 10;
@@ -553,7 +562,7 @@ void FigVtest()
   hst_vTrueCeex2->SetMinimum(1e-4*hst_vTrueCeex2->GetMaximum());
   hst_vTrueCeex2->DrawCopy("h");  // black
   // MC vtrue from scatergram
-  Hpro_vT_Ceex2->SetLineColor(kGreen); // green
+  Hpro_vT_Ceex2->SetLineColor(kPine); // green
   Hpro_vT_Ceex2->DrawCopy("same");
   // KKsem ISR+FSR
   vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta
@@ -786,7 +795,7 @@ void FigVprod()
   HAfb2_vTcPR_Ceex2->SetStats(0);
   HAfb2_vTcPR_Ceex2->DrawCopy("h");
   //
-  HAfb2_vTcPR_Ceex2n->SetLineColor(kGreen); // green
+  HAfb2_vTcPR_Ceex2n->SetLineColor(kPine); // green
   HAfb2_vTcPR_Ceex2n->SetLineWidth(2);
   HAfb2_vTcPR_Ceex2n->DrawCopy("hsame");
   //
@@ -860,7 +869,7 @@ void FigCprod()
   Hst->GetXaxis()->SetTitleSize(0.04);
   Hst->GetXaxis()->SetTitle("cos(#theta)");
   Hst->SetMinimum(0);
-  Hst->SetLineColor(kGreen);
+  Hst->SetLineColor(kPine);
   Hst->SetLineWidth(2);
   Hst->DrawCopy("h");
   // EW off
@@ -892,7 +901,7 @@ void FigCprod()
   //
   //gPad->DrawFrame(0.7, 0.0,   1.0, 0.8);
   gPad->DrawFrame(15./25., 0.0,   1.0, 0.6, " (b); cos(#theta_{max}) ; A_{FB}");
-  Hst->SetLineColor(kGreen);
+  Hst->SetLineColor(kPine);
   Hst->SetLineWidth(2);
   Hst->DrawCopy("hsame");
   //
@@ -930,7 +939,7 @@ void FigCprod()
   Hcth_vTcPR_Ceex2_vmax30->SetLineColor(kRed);
   Hcth_vTcPR_Ceex2_vmax30->DrawCopy("hsame");
   //
-  Hcth_vTcPR_Ceex2_vmax10->SetLineColor(kGreen);
+  Hcth_vTcPR_Ceex2_vmax10->SetLineColor(kPine);
   Hcth_vTcPR_Ceex2_vmax10->DrawCopy("hsame");
   //
   Hcth_vTcPR_Ceex2_vmax02->SetLineColor(kBlue);
@@ -955,7 +964,7 @@ void FigCprod()
   Hcas_vTcPR_Ceex2n_vmax02->SetLineColor(kCyan);
   Hcas_vTcPR_Ceex2n_vmax02->DrawCopy("hsame");
   //
-  Hcas_vTcPR_Ceex2_vmax10->SetLineColor(kGreen);
+  Hcas_vTcPR_Ceex2_vmax10->SetLineColor(kPine);
   Hcas_vTcPR_Ceex2_vmax10->DrawCopy("hsame");
   //
   Hcas_vTcPR_Ceex2_vmax30->SetLineColor(kRed);
@@ -1067,7 +1076,7 @@ void FigCosThe2()
   PlotSame2(Hcth_vTcPL_Ceex2n_vmax002, ycapt, kBlack,  -0.80, "(c)", "KKMC,   IFI off ");
   PlotSame2(Hcth_foam_Ceex2n_vmax002,  ycapt, kGold,   -0.70, "(d)", "KKfoam, IFI off ");
   //
-  PlotSame2(HST_cs_ceex2_vmax002,      ycapt, kGreen,  -0.50, "(s)", "KKfoam2, IFIon ");
+  PlotSame2(HST_cs_ceex2_vmax002,      ycapt, kPine,  -0.50, "(s)", "KKfoam2, IFIon ");
 
   //====================plot2========================
   cFigCosThe2->cd(2);
@@ -1091,7 +1100,7 @@ void FigCosThe2()
   PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(a)", "KKMC/KKfoam3   IFIoff");
   PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(b)", "KKMC/KKfoam5   IFIon");
   //
-  PlotSame2(Hst_ratio5,  ycapt, kGreen,    0.40, "(x)", "KKfoam2/KKfoam5 IFIon");
+  PlotSame2(Hst_ratio5,  ycapt, kPine,    0.40, "(x)", "KKfoam2/KKfoam5 IFIon");
 
   //================================================
   cFigCosThe2->SaveAs("cFigCosThe2.pdf");
@@ -1158,9 +1167,9 @@ void FigCtheSoft()
   PlotSame2(HST_cc_EEX2_vmax002,       ycapt, kRed,   -0.40, "(c2)", "foam3: IFIoff, v<0.002 (hst)");
   PlotSame2(HST_cc_EEX2_vmax0002,      ycapt, kRed,   -0.40, "(c3)", "foam3: IFIoff, v<0.0002(hst)");
   //
-  PlotSame2(HST_cs_EEX2_vmax02,       ycapt, kGreen,  -0.70, "(d1)", "foam2, IFIoff, v<0.02   soft");
-  PlotSame2(HST_cs_EEX2_vmax002,      ycapt, kGreen,  -0.70, "(d2)", "foam2, IFIoff, v<0.002  soft");
-  PlotSame2(HST_cs_EEX2_vmax0002,     ycapt, kGreen,  -0.70, "(d3)", "foam2, IFIoff, v<0.0002 soft");
+  PlotSame2(HST_cs_EEX2_vmax02,       ycapt, kPine,  -0.70, "(d1)", "foam2, IFIoff, v<0.02   soft");
+  PlotSame2(HST_cs_EEX2_vmax002,      ycapt, kPine,  -0.70, "(d2)", "foam2, IFIoff, v<0.002  soft");
+  PlotSame2(HST_cs_EEX2_vmax0002,     ycapt, kPine,  -0.70, "(d3)", "foam2, IFIoff, v<0.0002 soft");
 //
   PlotSame2(Hcth_foam3_Ceex2n_vmax02,  ycapt, kGold,  -0.20, "(f1)", "foam3: ceex2n, v<0.02  (scat)");
   PlotSame2(Hcth_foam3_Ceex2n_vmax002, ycapt, kGold,  -0.20, "(f2)", "foam3: ceex2n, v<0.002 (scat)");
@@ -1172,7 +1181,7 @@ void FigCtheSoft()
   cFigCtheSoft->cd(2);
   TH1D *Hst_rats1  = HstRatio("Hst_rats1",   HST_cc_EEX2_vmax02,   HST_cs_EEX2_vmax02,  kBlack);
   TH1D *Hst_rats2  = HstRatio("Hst_rats2",   HST_cc_EEX2_vmax002,  HST_cs_EEX2_vmax002, kBlue);
-  TH1D *Hst_rats3  = HstRatio("Hst_rats3",   HST_cc_EEX2_vmax0002, HST_cs_EEX2_vmax0002,kGreen);
+  TH1D *Hst_rats3  = HstRatio("Hst_rats3",   HST_cc_EEX2_vmax0002, HST_cs_EEX2_vmax0002,kPine);
 
   TH1D *Hst_rats10 = HstRatio("Hst_rats10", Hcth_foam3_Ceex2n_vmax02,  HST_cs_ceex2n_vmax02,  kBlack);
   TH1D *Hst_rats20 = HstRatio("Hst_rats20", Hcth_foam3_Ceex2n_vmax002, HST_cs_ceex2n_vmax002, kBlack);
@@ -1186,7 +1195,7 @@ void FigCtheSoft()
   ycapt = 0.90;
   PlotSame2(Hst_rats1,    ycapt, kBlack,  -0.80, "(e1)", "foam2/3, eex, v<0.02  ");
   PlotSame2(Hst_rats2,    ycapt, kBlue,   -0.80, "(e2)", "foam2/3, eex, v<0.002 ");
-  PlotSame2(Hst_rats3,    ycapt, kGreen,  -0.80, "(e3)", "foam2/3, eex, v<0.0002");
+  PlotSame2(Hst_rats3,    ycapt, kPine,  -0.80, "(e3)", "foam2/3, eex, v<0.0002");
 
   PlotSame2(Hst_rats10,   ycapt, kGold,   -0.60, "(v1)", "foam2/3 ceex2n, v<0.02  ");
   PlotSame2(Hst_rats20,   ycapt, kRed,    -0.60, "(v2)", "foam2/3 ceex2n, v<0.002 ");

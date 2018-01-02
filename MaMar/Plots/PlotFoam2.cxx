@@ -32,11 +32,13 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
-
+//
+TFile DiskFileA("../workKKMC/histo.root_88GeV_6G");  // jan.2018
+//
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
@@ -48,10 +50,12 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 
 ////  *** FOAM 5dim
 //TFile DiskFileF("../workFOAM/histo.root"); // current
+// Dec 2017 run
+//TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 // Sept. 2017 runs
-TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
-//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
+TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
@@ -70,7 +74,7 @@ TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 double gCMSene, gNevTot, gNevTot2; // from KKMC and KKfoam MC runs (histograms)
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
-int  kGold=92, kBrune=46, kPine=71;
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
 //int    gNbMax   =45;          // for 100bins, gCosTheta = 45/50=0.90
 //double gCosTheta=0.90;        // to be synchronized with gNbMax, NOT USED
