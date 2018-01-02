@@ -172,16 +172,14 @@ void TRobolKKMC::Hbooker()
   sct_vAcPR_Ceex2->Sumw2();
   sct_vAcPR_Ceex2n= new TH2D("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vAcPR_Ceex2n->Sumw2();
-  sct_vTcPL_Ceex2= new TH2D("sct_vTcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPL_Ceex2->Sumw2();
-  sct_vTcPL_Ceex2n= new TH2D("sct_vTcPL_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPL_Ceex2n->Sumw2();
-
-  sct_vTcPL_Ceex0 = new TH2D("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPL_Ceex0 ->Sumw2();
-  sct_vTcPL_Ceex0n= new TH2D("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPL_Ceex0n->Sumw2();
-
+/////////////////
+  sct_vTcPL_Ceex2 = TH2D_UP("sct_vTcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex2n= TH2D_UP("sct_vTcPL_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex1 = TH2D_UP("sct_vTcPL_Ceex1",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex1n= TH2D_UP("sct_vTcPL_Ceex1n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex0 = TH2D_UP("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPL_Ceex0n= TH2D_UP("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+/////////////////
   sct_vKcPL_Ceex2= new TH2D("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vKcPL_Ceex2->Sumw2();
   sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -423,12 +421,14 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vAcPR_Ceex2->Fill(   vvA, CosPRD,   WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   sct_vAcPR_Ceex2n->Fill(  vvA, CosPRD,   WtCEEX2n); // IFI  off
   sct_vKcPL_Ceex2->Fill(   vvK, CosThePL, WtCEEX2);  // vv of Karlud (unphysical, pure ISR) thetaPL
+////////////////////
   sct_vTcPL_Ceex2->Fill(    vv, CosThePL, WtCEEX2);  // vv bare muons
   sct_vTcPL_Ceex2n->Fill(   vv, CosThePL, WtCEEX2n); // vv bare muons
-// New
+  sct_vTcPL_Ceex1->Fill(    vv, CosThePL, WtCEEX1);  // vv bare muons, IFIon
+  sct_vTcPL_Ceex1n->Fill(   vv, CosThePL, WtCEEX1n); // vv bare muons, IFIoff
   sct_vTcPL_Ceex0->Fill(    vv, CosThePL, WtCEEX0);  // vv bare muons, IFIon
   sct_vTcPL_Ceex0n->Fill(   vv, CosThePL, WtCEEX0n); // vv bare muons, IFIoff
-//
+////////////////////
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   //-------------------------------
   // dsigma/dv, any theta, no cut

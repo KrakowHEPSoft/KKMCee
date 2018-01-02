@@ -72,8 +72,11 @@ class TRobolKKMC : public TRobol
   TH2D   *sct_vAcPR_Ceex2;    //! Main CEEX2 KKMC , ISR+FSR+IFI
   TH2D   *sct_vAcPR_Ceex2n;   //! IFI  off
   TH2D   *sct_vKcPL_Ceex2;    //! vv from Karlud (pure ISR) thetaPL
+
   TH2D   *sct_vTcPL_Ceex2;    //! vv bare muons
   TH2D   *sct_vTcPL_Ceex2n;   //! vv bare muons
+  TH2D   *sct_vTcPL_Ceex1;    //! vv bare muons
+  TH2D   *sct_vTcPL_Ceex1n;   //! vv bare muons
   TH2D   *sct_vTcPL_Ceex0;    //! vv bare muons
   TH2D   *sct_vTcPL_Ceex0n;   //! vv bare muons
 
