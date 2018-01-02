@@ -31,7 +31,7 @@ using namespace std;
 // KKMC current
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
-TFile DiskFileA("../workKKMC/histo.root_88GeV_6G"); // Jan. 2018
+TFile DiskFileA("../workKKMC/histo.root_88GeV_7G"); // Jan. 2018
 //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
