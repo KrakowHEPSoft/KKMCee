@@ -32,7 +32,7 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_6G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_7G");  // jan.2018
 //
 TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017
