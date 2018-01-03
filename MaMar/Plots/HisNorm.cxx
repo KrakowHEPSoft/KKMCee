@@ -534,6 +534,14 @@ Hd12->SetLineColor(kolor);
 return Hd12;
 }//HstDiff
 
+TH1D *HstAddi(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor)
+{
+TH1D *Hd12 = (TH1D*)HST1->Clone(title);
+Hd12->Add(HST1, HST2,    1.0,  1.0);
+Hd12->SetLineColor(kolor);
+return Hd12;
+}//HstAddi
+
 TH1D *HstRatio(TString title, TH1D *HST1, TH1D *HST2, Int_t kolor)
 {
 TH1D *Hd12 = (TH1D*)HST1->Clone(title);

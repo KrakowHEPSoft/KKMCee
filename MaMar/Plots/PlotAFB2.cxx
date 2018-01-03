@@ -32,13 +32,13 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
 //
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
 TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
@@ -86,7 +86,7 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
 //  ycapt += -0.050;
-  ycapt += -0.040;
+  ycapt += -0.045;
   double xcapt = 0.50;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.07,ycapt, label);
@@ -144,20 +144,24 @@ void ReMakeMChisto(){
   TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2");
   TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2n");
   //
+  /*
   //[[[[[[[[[[[[[[[[[[[
   TH2D *sct9_vTcPL_Ceex0  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0");
   TH2D *sct9_vTcPL_Ceex0n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0n");
   TH2D *sct9_vTcPL_Ceex1  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1");
   TH2D *sct9_vTcPL_Ceex1n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1n");
   //]]]]]]]]]]]]]]]]]]]
+  */
   TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2");
   TH2D *sct9_vTcPL_Ceex2n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2n");
+  /*
   //[[[[[[[[[[[[[[[[[[[
   TH2D *sct8_vTcPL_Ceex0  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0");
   TH2D *sct8_vTcPL_Ceex0n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0n");
   TH2D *sct8_vTcPL_Ceex1  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1");
   TH2D *sct8_vTcPL_Ceex1n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1n");
   //]]]]]]]]]]]]]]]]]]]
+  */
   TH2D *sct8_vTcPL_Ceex2  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2");
   TH2D *sct8_vTcPL_Ceex2n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2n");
   //
@@ -204,6 +208,7 @@ void ReMakeMChisto(){
 
   // Warning! scattergrams for vTcPL noIFI were missing in Rome version
   // ---------------------- 95GeV ----------------------------------
+/*
   //[[[[[[[[
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex0  = HstProjV("Hsig9_vTcPL_Ceex0", sct9_vTcPL_Ceex0, nbMax);
@@ -218,6 +223,7 @@ void ReMakeMChisto(){
   TH1D  *Hsig9_vTcPL_Ceex1n  = HstProjV("Hsig9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex1n  = HstProjA("Hafb9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   //]]]]]]]]
+ */
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex2  = HstProjV("Hsig9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2  = HstProjA("Hafb9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
@@ -227,6 +233,7 @@ void ReMakeMChisto(){
   //
   // ---------------------- 88GeV ----------------------------------
   //[[[[[[[
+  /*
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex0  = HstProjV("Hsig8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex0  = HstProjA("Hafb8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
@@ -244,6 +251,7 @@ void ReMakeMChisto(){
   TH1D  *Hafb8_vTcPL_Ceex1n  = HstProjA("Hafb8_vTcPL_Ceex1n", sct8_vTcPL_Ceex1n, nbMax);
   Hafb8_vTcPL_Ceex1n->Scale(-1.0);
   //]]]]]]]
+   */
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex2  = HstProjV("Hsig8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex2  = HstProjA("Hafb8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
@@ -574,6 +582,12 @@ void AfbIFIvT2()
   //
   TH1D *Hafb1_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb1_vTcPL_Ceex2");
   TH1D *Hafb1_vTcPL_Ceex2n     = (TH1D*)DiskFileB.Get("Hafb1_vTcPL_Ceex2n");
+
+  TH1D *Hafb9m8_IFI_ceex2   = HstAddi("Hafb9m8_IFI_ceex2",  Hafb9_vTcPL_Ceex2,  Hafb8_vTcPL_Ceex2,  kBlack);
+  TH1D *Hafb9m8_IFI_ceex2n  = HstAddi("Hafb9m8_IFI_ceex2n", Hafb9_vTcPL_Ceex2n, Hafb8_vTcPL_Ceex2n, kBlack);
+  Hafb9m8_IFI_ceex2->Scale(0.5);
+  Hafb9m8_IFI_ceex2n->Scale(0.5);
+
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
@@ -586,26 +600,27 @@ void AfbIFIvT2()
   cAfbIFIvT2->Divide( 2,  1);
 //*****************************************************************************
   cAfbIFIvT2->cd(1);
-  Hafb9_vTcPL_Ceex2->SetTitle(0);
-  Hafb9_vTcPL_Ceex2->SetStats(0);
-  Hafb9_vTcPL_Ceex2->GetXaxis()->SetTitle("v_{max}");
-  //Hafb9_vTcPL_Ceex2->GetYaxis()->SetTitle("A_{FB}(v_{max})");
-  Hafb9_vTcPL_Ceex2->SetLineColor(kBlue);
-  Hafb9_vTcPL_Ceex2->SetMaximum( 0.33);
-  Hafb9_vTcPL_Ceex2->SetMinimum( 0.15);
-  Hafb9_vTcPL_Ceex2->DrawCopy("h");
+  TH1D *HST = Hafb9_vTcPL_Ceex2;
+  HST->SetTitle(0); HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  //
+  HST->SetMaximum( 0.32); HST->SetMinimum( 0.15);
+  HST->DrawCopy("h");
 
   CaptT->DrawLatex(0.02,0.95," KKMC: A_{FB}(v_{max}), |cos(#theta|<0.9");
-  CaptT->DrawLatex(0.50,0.25," #sqrt{s_{+}}=94.3GeV ");
-  CaptT->DrawLatex(0.50,0.83," #sqrt{s_{-}}=87.9GeV ");
+  CaptT->DrawLatex(0.50,0.78," #sqrt{s_{-}}=87.9GeV ");
+  CaptT->DrawLatex(0.50,0.22," #sqrt{s_{+}}=94.3GeV ");
 
   double ycapt =0.70;
-  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,   0.010, "(a)", "A_{FB}(v_{max},s_{+}), IFI on");
-  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack,  0.010, "(b)", "A_{FB}(v_{max},s_{+}), IFI off");
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "[a+]", "= A_{FB}^{IFIon}(v_{max},s_{+})");
+  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "[a-]", "=-A_{FB}^{IFIon}(v_{max},s_{-})");
   //
-  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,   0.050, "(c)", "-A_{FB}(v_{max},s_{-}), IFI on");
-  PlotSame2(Hafb8_vTcPL_Ceex2n,ycapt, kBlack,  0.050, "(d)", "-A_{FB}(v_{max},s_{-}), IFI off");
-
+  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack, 0.010, "[b+]", "= A_{FB}^{IFIoff}(v_{max},s_{+})");
+  PlotSame2(Hafb8_vTcPL_Ceex2n,ycapt, kBlack, 0.050, "[b-]", "=-A_{FB}^{IFIoff}(v_{max},s_{-})");
+  //
+  ycapt = 0.40;
+  PlotSame2(Hafb9m8_IFI_ceex2,ycapt,  kBlue,   0.065, "(A)", "=([a+]+[a-])/2, IFI on");
+  PlotSame2(Hafb9m8_IFI_ceex2n,ycapt, kBlack,  0.055, "(B)", "=([b+]+[b-])/2, IFI off");
   //*****************************************************************************
   cAfbIFIvT2->cd(2);
   TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2n->Clone("hZero");  // zero line
@@ -631,13 +646,13 @@ void AfbIFIvT2()
   CaptT->DrawLatex(0.01, 0.95,
     "A^{IFI}_{FB}(v_{max}) = A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}), |cos(#theta|<0.9");
   ycapt =0.33;
-  PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.040, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.065, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(Hafb9_vTcPL_IFIdiff, ycapt, kBlack,   0.040, "(a)", "= [a+]-[b+],  #sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_vTcPL_IFIdiff, ycapt, kBlue,    0.065, "(b)", "=-[a-]+[b-],  #sqrt{s}=87.9GeV");
   if( gTogEne ){
   PlotSame2(HafbZ_vTcPL_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
-  PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kPine,   0.090, "(d)", "#sqrt{s}=10GeV");
+  PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kPine,    0.090, "(d)", "#sqrt{s}=10GeV");
   }
-  PlotSame2(HDifPat_vTcPL,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
+  PlotSame2(HDifPat_vTcPL,       ycapt, kRed,     0.030, "(e)", "= (a) - (b) = (A) - (B)");
   //
   hZero->DrawCopy("hsame");
   cAfbIFIvT2->cd();
@@ -728,6 +743,15 @@ void AfbDifPat()
   ////////////////////////////////////////////////////////////////////////////////
   TH1D *HDifPat_vTcPL     = (TH1D*)DiskFileB.Get("HDifPat_vTcPL");
   TH1D *HDifPat_xmax      = (TH1D*)DiskFileB.Get("HDifPat_xmax");
+  TH1D *Hafb9m8_IFI_ceex2 = (TH1D*)DiskFileB.Get("Hafb9m8_IFI_ceex2");
+  Hafb9m8_IFI_ceex2->Scale(2.0);
+
+  TH1D *Hafb_IFI_diff_Pat = HstDiff("Hafb_IFI_diff_Pat", HDifPat_vTcPL, HDifPat_xmax,  kRed);
+  //
+  TH1D *Hafb_IFI_rat_Pat= HstRatio("Hafb_IFI_rat_Pat", Hafb_IFI_diff_Pat, Hafb9m8_IFI_ceex2, kBlack);
+  //
+  HDifPat_vTcPL->Scale(0.10);
+  HDifPat_xmax->Scale(0.10);
   //
   TH1D *hZero7 = (TH1D*)HDifPat_xmax->Clone("hZero7");  // zero line
   for(int i=1; i <= hZero7->GetNbinsX() ; i++) { hZero7->SetBinContent(i, 0); hZero7->SetBinError(i, 0);}
@@ -744,27 +768,27 @@ void AfbDifPat()
 
   cAfbDifPat->cd();
 
-  TH1D *Hafb_IFI_diff_Pat = HstDiff("Hafb_IFI_diff_Pat", HDifPat_vTcPL, HDifPat_xmax,  kRed);
-  Hafb_IFI_diff_Pat->Scale(10.0);
-
   TH1D *HDif1 = HDifPat_vTcPL;
-  HDif1->SetMaximum( 0.006); HDif1->SetMinimum(-0.012);
+  HDif1->SetMaximum( 0.0006); HDif1->SetMinimum(-0.0012);
 
-  HDif1->SetTitle(0);
-  HDif1->SetStats(0);
+  HDif1->SetTitle(0); HDif1->SetStats(0);
+  HDif1->GetXaxis()->SetTitle("v_{max}");
+
   HDif1->DrawCopy("h");
 
   double ycapt =0.90;
-  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack,   0.170, "(a)", "KKMC");
-  PlotSame2(HDifPat_xmax,      ycapt, kBlue,    0.140, "(b)", "KKFoam");
-  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,     0.040, "(c)", "= [(a)-(b)]x10");
+  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "#Delta A_{FB}^{IFI}x10^{-1},  KKMC");
+  PlotSame2(HDifPat_xmax,      ycapt, kBlue,  0.120, "(b)", "#Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
+  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,   0.010, "(c)", "#Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
+  //
+  PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "#Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
 
   HDifPat_xmax->DrawCopy("hsame");
 
   hZero7->SetLineColor(kBlack);
   hZero7->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}^{IFI}(v_{max},s_{+} ) - A_{FB}^{IFI}(v_{max},s_{-} )");
+  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}^{IFI}(v_{max}) = A_{FB}^{IFI}(v_{max},s_{+} ) - A_{FB}^{IFI}(v_{max},s_{-} )");
   //
   cAfbDifPat->cd();
   cAfbDifPat->SaveAs("cAfbDifPat.pdf");
@@ -968,8 +992,8 @@ int main(int argc, char **argv)
   //
   AfbDifPat();
   //
-  AfbIFI_KKmc2();
-  AfbIFI_KKmc4();
+  //AfbIFI_KKmc2();
+  //AfbIFI_KKmc4();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();
