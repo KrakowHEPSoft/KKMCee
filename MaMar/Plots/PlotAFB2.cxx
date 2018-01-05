@@ -32,13 +32,13 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
 //
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
 TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
@@ -86,7 +86,7 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
 //  ycapt += -0.050;
-  ycapt += -0.045;
+  ycapt += -0.047;
   double xcapt = 0.50;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.07,ycapt, label);
@@ -144,24 +144,20 @@ void ReMakeMChisto(){
   TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2");
   TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2n");
   //
-  /*
   //[[[[[[[[[[[[[[[[[[[
   TH2D *sct9_vTcPL_Ceex0  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0");
   TH2D *sct9_vTcPL_Ceex0n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0n");
   TH2D *sct9_vTcPL_Ceex1  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1");
   TH2D *sct9_vTcPL_Ceex1n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1n");
   //]]]]]]]]]]]]]]]]]]]
-  */
   TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2");
   TH2D *sct9_vTcPL_Ceex2n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2n");
-  /*
   //[[[[[[[[[[[[[[[[[[[
   TH2D *sct8_vTcPL_Ceex0  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0");
   TH2D *sct8_vTcPL_Ceex0n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0n");
   TH2D *sct8_vTcPL_Ceex1  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1");
   TH2D *sct8_vTcPL_Ceex1n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1n");
   //]]]]]]]]]]]]]]]]]]]
-  */
   TH2D *sct8_vTcPL_Ceex2  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2");
   TH2D *sct8_vTcPL_Ceex2n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2n");
   //
@@ -208,7 +204,6 @@ void ReMakeMChisto(){
 
   // Warning! scattergrams for vTcPL noIFI were missing in Rome version
   // ---------------------- 95GeV ----------------------------------
-/*
   //[[[[[[[[
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex0  = HstProjV("Hsig9_vTcPL_Ceex0", sct9_vTcPL_Ceex0, nbMax);
@@ -223,7 +218,6 @@ void ReMakeMChisto(){
   TH1D  *Hsig9_vTcPL_Ceex1n  = HstProjV("Hsig9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex1n  = HstProjA("Hafb9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   //]]]]]]]]
- */
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex2  = HstProjV("Hsig9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2  = HstProjA("Hafb9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
@@ -233,7 +227,6 @@ void ReMakeMChisto(){
   //
   // ---------------------- 88GeV ----------------------------------
   //[[[[[[[
-  /*
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex0  = HstProjV("Hsig8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex0  = HstProjA("Hafb8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
@@ -251,7 +244,6 @@ void ReMakeMChisto(){
   TH1D  *Hafb8_vTcPL_Ceex1n  = HstProjA("Hafb8_vTcPL_Ceex1n", sct8_vTcPL_Ceex1n, nbMax);
   Hafb8_vTcPL_Ceex1n->Scale(-1.0);
   //]]]]]]]
-   */
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex2  = HstProjV("Hsig8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex2  = HstProjA("Hafb8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
@@ -611,16 +603,16 @@ void AfbIFIvT2()
   CaptT->DrawLatex(0.50,0.78," #sqrt{s_{-}}=87.9GeV ");
   CaptT->DrawLatex(0.50,0.22," #sqrt{s_{+}}=94.3GeV ");
 
-  double ycapt =0.70;
-  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "[a+]", "= A_{FB}^{IFIon}(v_{max},s_{+})");
-  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "[a-]", "=-A_{FB}^{IFIon}(v_{max},s_{-})");
+  double ycapt =0.73;
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "[a+]", "=  A_{FB}^{IFIon}(v_{max},s_{+})");
+  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "[a-]", "= -A_{FB}^{IFIon}(v_{max},s_{-})");
   //
-  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack, 0.010, "[b+]", "= A_{FB}^{IFIoff}(v_{max},s_{+})");
-  PlotSame2(Hafb8_vTcPL_Ceex2n,ycapt, kBlack, 0.050, "[b-]", "=-A_{FB}^{IFIoff}(v_{max},s_{-})");
+  PlotSame2(Hafb9_vTcPL_Ceex2n,ycapt, kBlack, 0.010, "[b+]", "=  A_{FB}^{IFIoff}(v_{max},s_{+})");
+  PlotSame2(Hafb8_vTcPL_Ceex2n,ycapt, kBlack, 0.050, "[b-]", "= -A_{FB}^{IFIoff}(v_{max},s_{-})");
   //
   ycapt = 0.40;
-  PlotSame2(Hafb9m8_IFI_ceex2,ycapt,  kBlue,   0.065, "(A)", "=([a+]+[a-])/2, IFI on");
-  PlotSame2(Hafb9m8_IFI_ceex2n,ycapt, kBlack,  0.055, "(B)", "=([b+]+[b-])/2, IFI off");
+  PlotSame2(Hafb9m8_IFI_ceex2,ycapt,  kBlue,   0.065, "(A)", "= ([a+]+[a-])/2, IFI on");
+  PlotSame2(Hafb9m8_IFI_ceex2n,ycapt, kBlack,  0.055, "(B)", "= ([b+]+[b-])/2, IFI off");
   //*****************************************************************************
   cAfbIFIvT2->cd(2);
   TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2n->Clone("hZero");  // zero line
@@ -967,6 +959,10 @@ void AfbIFI_KKmc4()
   PlotSame2(Hafb88_IFI1m0, ycapt, kPine,    0.17, "(b-)", "O(#alpha^{1})-O(#alpha^{0}), #sqrt{s_{-}}=87.9GeV");
   //PlotSame2(Hafb88_IFI2m0, ycapt, kBrune,   0.19, "(c-)", "O(#alpha^{2})-O(#alpha^{0}) ");
 
+  cAfbIFI_KKmc4->cd();
+
+  cAfbIFI_KKmc4->SaveAs("cAfbIFI_KKmc4.pdf");
+
   //
 }// AfbIFI_KKmc4
 
@@ -992,8 +988,8 @@ int main(int argc, char **argv)
   //
   AfbDifPat();
   //
-  //AfbIFI_KKmc2();
-  //AfbIFI_KKmc4();
+  AfbIFI_KKmc2();
+  AfbIFI_KKmc4();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();

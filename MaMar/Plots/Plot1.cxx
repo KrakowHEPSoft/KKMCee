@@ -1033,15 +1033,19 @@ void FigCosThe2()
 //------------------------------------------------------------------------
   cout<<" ========================= FigCosThe2 =========================== "<<endl;
  //
-  TH1D *Hcth_vTcPL_Ceex2_vmax002 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax002");
-  TH1D *Hcth_vTcPL_Ceex2n_vmax002= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax002");
+  TH1D *Hcth_vTcPL_Ceex2_vmax002 = (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2_vmax02");
+  TH1D *Hcth_vTcPL_Ceex2n_vmax002= (TH1D*)DiskFileB.Get("Hcth_vTcPL_Ceex2n_vmax02");
   //
-  TH1D *Hcth_foam_Ceex2_vmax002  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax002");
-  TH1D *Hcth_foam_Ceex2n_vmax002 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax002");
+  TH1D *Hcth_foam_Ceex2_vmax002  = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2_vmax02");
+  TH1D *Hcth_foam_Ceex2n_vmax002 = (TH1D*)DiskFileB.Get("Hcth_foam_Ceex2n_vmax02");
 
-  TH1D *HST_cs_ceex2_vmax002     = (TH1D*)DiskFileF2.Get("HST_cs_ceex2_vmax002");
+  TH1D *HST_cs_ceex2_vmax002     = (TH1D*)DiskFileF2.Get("HST_cs_ceex2_vmax02");
 
-  //////////////////////////////////////////////
+  //////
+  TH1D *hOne = (TH1D*)Hcth_foam_Ceex2_vmax002->Clone("hOne");  // zero line
+  for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
+
+////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
@@ -1055,7 +1059,7 @@ void FigCosThe2()
   //====================plot1========================
   cFigCosThe2->cd(1);
 //  TH1D *Hst=Hcth_vTcPR_Ceex2_vmax002;
-  TH1D *Hst=Hcth_vTcPL_Ceex2_vmax002;
+  TH1D *Hst=Hcth_vTcPL_Ceex2n_vmax002;
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->CenterTitle();
@@ -1074,9 +1078,9 @@ void FigCosThe2()
   PlotSame2(Hcth_vTcPL_Ceex2_vmax002,  ycapt, kBlue,   +0.80, "(a)", "KKMC,   IFI on ");
   PlotSame2(Hcth_foam_Ceex2_vmax002,   ycapt, kRed,    +0.70, "(b)", "KKfoam, IFI on ");
   PlotSame2(Hcth_vTcPL_Ceex2n_vmax002, ycapt, kBlack,  -0.80, "(c)", "KKMC,   IFI off ");
-  PlotSame2(Hcth_foam_Ceex2n_vmax002,  ycapt, kGold,   -0.70, "(d)", "KKfoam, IFI off ");
+  PlotSame2(Hcth_foam_Ceex2n_vmax002,  ycapt, kPine,   -0.70, "(d)", "KKfoam, IFI off ");
   //
-  PlotSame2(HST_cs_ceex2_vmax002,      ycapt, kPine,  -0.50, "(s)", "KKfoam2, IFIon ");
+  //PlotSame2(HST_cs_ceex2_vmax002,      ycapt, kPine,  -0.50, "(s)", "KKfoam2, IFIon ");
 
   //====================plot2========================
   cFigCosThe2->cd(2);
@@ -1087,6 +1091,7 @@ void FigCosThe2()
   Hst=Hst_ratio1;
   Hst->SetStats(0);
   Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("cos #theta");
 
   Hst->SetMinimum(1.0 -0.01); Hst->SetMaximum(1.0 +0.01);
   Hst->DrawCopy("h");
@@ -1095,12 +1100,15 @@ void FigCosThe2()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev2); ycapt += -0.04;
-  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.002");
+  CaptT->DrawLatex(0.40,ycapt,"vmax = 0.02");
   //
   PlotSame2(Hst_ratio2,  ycapt, kBlue,     0.60, "(a)", "KKMC/KKfoam3   IFIoff");
   PlotSame2(Hst_ratio1,  ycapt, kBlack,    0.30, "(b)", "KKMC/KKfoam5   IFIon");
   //
-  PlotSame2(Hst_ratio5,  ycapt, kPine,    0.40, "(x)", "KKfoam2/KKfoam5 IFIon");
+  //PlotSame2(Hst_ratio5,  ycapt, kPine,    0.40, "(x)", "KKfoam2/KKfoam5 IFIon");
+
+  hOne->SetLineColor(kBlack);
+  hOne->DrawCopy("hsame");
 
   //================================================
   cFigCosThe2->SaveAs("cFigCosThe2.pdf");
