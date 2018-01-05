@@ -32,13 +32,13 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
 //
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
 TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
@@ -72,6 +72,7 @@ float  gXcanv = 50, gYcanv = 50;
 //
 //int    gTogEne = 1;   // 10 GeV and MZ included
 int    gTogEne = 0; // 10 GeV and MZ exluded
+int    gTogle  = 0;  // excluding old data files
 
 //Double_t sqr( const Double_t x ){ return x*x;};
 
@@ -144,20 +145,19 @@ void ReMakeMChisto(){
   TH2D *sct1_vAcPR_Ceex2  = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2");
   TH2D *sct1_vAcPR_Ceex2n = (TH2D*)DiskFileA10.Get("sct_vAcPR_Ceex2n");
   //
-  //[[[[[[[[[[[[[[[[[[[
   TH2D *sct9_vTcPL_Ceex0  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0");
   TH2D *sct9_vTcPL_Ceex0n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex0n");
   TH2D *sct9_vTcPL_Ceex1  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1");
   TH2D *sct9_vTcPL_Ceex1n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex1n");
-  //]]]]]]]]]]]]]]]]]]]
+  //
   TH2D *sct9_vTcPL_Ceex2  = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2");
   TH2D *sct9_vTcPL_Ceex2n = (TH2D*)DiskFileA95.Get("sct_vTcPL_Ceex2n");
-  //[[[[[[[[[[[[[[[[[[[
+  //
   TH2D *sct8_vTcPL_Ceex0  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0");
   TH2D *sct8_vTcPL_Ceex0n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex0n");
   TH2D *sct8_vTcPL_Ceex1  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1");
   TH2D *sct8_vTcPL_Ceex1n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex1n");
-  //]]]]]]]]]]]]]]]]]]]
+  //
   TH2D *sct8_vTcPL_Ceex2  = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2");
   TH2D *sct8_vTcPL_Ceex2n = (TH2D*)DiskFileA88.Get("sct_vTcPL_Ceex2n");
   //
@@ -206,6 +206,7 @@ void ReMakeMChisto(){
   // ---------------------- 95GeV ----------------------------------
   //[[[[[[[[
   //******** IFI on
+  if( gTogle){
   TH1D  *Hsig9_vTcPL_Ceex0  = HstProjV("Hsig9_vTcPL_Ceex0", sct9_vTcPL_Ceex0, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex0  = HstProjA("Hafb9_vTcPL_Ceex0", sct9_vTcPL_Ceex0, nbMax);
   //******** IFI off
@@ -217,7 +218,7 @@ void ReMakeMChisto(){
   //******** IFI off
   TH1D  *Hsig9_vTcPL_Ceex1n  = HstProjV("Hsig9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex1n  = HstProjA("Hafb9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
-  //]]]]]]]]
+  }//]]]]]]]]
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex2  = HstProjV("Hsig9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2  = HstProjA("Hafb9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
@@ -227,6 +228,7 @@ void ReMakeMChisto(){
   //
   // ---------------------- 88GeV ----------------------------------
   //[[[[[[[
+  if( gTogle){
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex0  = HstProjV("Hsig8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex0  = HstProjA("Hafb8_vTcPL_Ceex0", sct8_vTcPL_Ceex0, nbMax);
@@ -243,7 +245,7 @@ void ReMakeMChisto(){
   TH1D  *Hsig8_vTcPL_Ceex1n  = HstProjV("Hsig8_vTcPL_Ceex1n", sct8_vTcPL_Ceex1n, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex1n  = HstProjA("Hafb8_vTcPL_Ceex1n", sct8_vTcPL_Ceex1n, nbMax);
   Hafb8_vTcPL_Ceex1n->Scale(-1.0);
-  //]]]]]]]
+  }//]]]]]]]
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex2  = HstProjV("Hsig8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex2  = HstProjA("Hafb8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
@@ -769,11 +771,11 @@ void AfbDifPat()
   HDif1->DrawCopy("h");
 
   double ycapt =0.90;
-  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "#Delta A_{FB}^{IFI}x10^{-1},  KKMC");
-  PlotSame2(HDifPat_xmax,      ycapt, kBlue,  0.120, "(b)", "#Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
-  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,   0.010, "(c)", "#Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
+  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKMC");
+  PlotSame2(HDifPat_xmax,      ycapt, kBlue,  0.120, "(b)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
+  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,   0.010, "(c)", "= #Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
   //
-  PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "#Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
+  PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "= #Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
 
   HDifPat_xmax->DrawCopy("hsame");
 
@@ -988,8 +990,10 @@ int main(int argc, char **argv)
   //
   AfbDifPat();
   //
+  if( gTogle){
   AfbIFI_KKmc2();
   AfbIFI_KKmc4();
+  }
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();
