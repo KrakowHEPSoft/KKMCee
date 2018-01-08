@@ -110,112 +110,100 @@ void TRobolKKMC::Hbooker()
   //  ************* user histograms  *************
   double CMSene = m_xpar[1];
   int nbin=1000;
-  hst_weight  = new TH1D("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
-  //hst_Mff     = new TH1D("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
-  hst_weight->Sumw2();
-  //hst_Mff->Sumw2();
-  hst_nPhAll  = new TH1D("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
-  hst_nPhVis  = new TH1D("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
-  hst_nPhAll->Sumw2();
-  hst_nPhVis->Sumw2();
+  hst_weight  = TH1D_UP("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
+  //hst_Mff     = TH1D_UP("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
+  hst_nPhAll  = TH1D_UP("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
+  hst_nPhVis  = TH1D_UP("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
   int nbv = 50;
-  hst_vTrueMain    = new TH1D("hst_vTrueMain",   "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vTrueCeex2   = new TH1D("hst_vTrueCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vXGenCeex2   = new TH1D("hst_vXGenCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vTrueMain->Sumw2();
-  hst_vTrueCeex2->Sumw2();
-  hst_vXGenCeex2->Sumw2();
-  hst_vAlepCeex2   = new TH1D("hst_vAlepCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
-  hst_vAlepCeex2->Sumw2();
+  hst_vTrueMain    = TH1D_UP("hst_vTrueMain",   "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vTrueCeex2   = TH1D_UP("hst_vTrueCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vXGenCeex2   = TH1D_UP("hst_vXGenCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
+  hst_vAlepCeex2   = TH1D_UP("hst_vAlepCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
   int nbc =50;
-  hst_Cost1Ceex2= new TH1D("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
-  hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
-  hst_CosPRCeex2= new TH1D("hst_CosPRCeex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_Cost1Ceex2->Sumw2();
-  hst_CosPLCeex2->Sumw2();
-  hst_CosPRCeex2->Sumw2();
-  hst_CosPREex2= new TH1D("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_CosPREex2->Sumw2();
+  hst_Cost1Ceex2= TH1D_UP("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
+  hst_CosPLCeex2= TH1D_UP("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
+  hst_CosPRCeex2= TH1D_UP("hst_CosPRCeex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
+  hst_CosPREex2 = TH1D_UP("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
   // scatergrams unrestricted vmax<1.0
-  sca_vTcPL_Ceex0  = new TH2D("sca_vTcPL_Ceex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPL_Ceex0n = new TH2D("sca_vTcPL_Ceex0n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPL_Ceex0->Sumw2();
-  sca_vTcPL_Ceex0n->Sumw2();
-  sca_vTcPL_Ceex2  = new TH2D("sca_vTcPL_Ceex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPL_Ceex2n = new TH2D("sca_vTcPL_Ceex2n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPL_Eex2   = new TH2D("sca_vTcPL_Eex2",     "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPL_Ceex2->Sumw2();
-  sca_vTcPL_Ceex2n->Sumw2();
-  sca_vTcPL_Eex2->Sumw2();
-  sca_vTcPR_Ceex2 = new TH2D("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Ceex2n= new TH2D("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Eex2  = new TH2D("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vTcPR_Ceex2->Sumw2();
-  sca_vTcPR_Eex2->Sumw2();
-  sca_vTcPR_Ceex2n->Sumw2();
-  sca_vXcPR_Ceex2= new TH2D("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-  sca_vXcPR_Ceex2->Sumw2();
-  sca_vXcPR_Eex2->Sumw2();
+  sca_vTcPL_Ceex0  = TH2D_UP("sca_vTcPL_Ceex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex0n = TH2D_UP("sca_vTcPL_Ceex0n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex2  = TH2D_UP("sca_vTcPL_Ceex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Ceex2n = TH2D_UP("sca_vTcPL_Ceex2n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPL_Eex2   = TH2D_UP("sca_vTcPL_Eex2",     "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2  = TH2D_UP("sca_vTcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2n = TH2D_UP("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Eex2   = TH2D_UP("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vXcPR_Ceex2  = TH2D_UP("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vXcPR_Eex2   = TH2D_UP("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   ///////////////////////////////////////////////////////////////////////////
   //  New bigger scatergrams, restricted vmax<0.2
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
-  sct_vTcPR_Ceex2 = new TH2D("sct_vTcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPR_Ceex2n= new TH2D("sct_vTcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPR_EEX2  = new TH2D("sct_vTcPR_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vTcPR_Ceex2->Sumw2();
-  sct_vTcPR_Ceex2n->Sumw2();
-  sct_vTcPR_EEX2->Sumw2();
+  sct_vTcPR_Ceex2 = TH2D_UP("sct_vTcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPR_Ceex2n= TH2D_UP("sct_vTcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vTcPR_EEX2  = TH2D_UP("sct_vTcPR_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   //
-  sct_vAcPR_Ceex2= new TH2D("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vAcPR_Ceex2->Sumw2();
-  sct_vAcPR_Ceex2n= new TH2D("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vAcPR_Ceex2n->Sumw2();
-/////////////////
+  sct_vAcPR_Ceex2= TH2D_UP("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPR_Ceex2n= TH2D_UP("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  //
+  sct_vKcPL_Ceex2= TH2D_UP("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPL_Ceex2= TH2D_UP("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+///////////////// vTcPL series
   sct_vTcPL_Ceex2 = TH2D_UP("sct_vTcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex2n= TH2D_UP("sct_vTcPL_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex1 = TH2D_UP("sct_vTcPL_Ceex1",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex1n= TH2D_UP("sct_vTcPL_Ceex1n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0 = TH2D_UP("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0n= TH2D_UP("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-/////////////////
-  sct_vKcPL_Ceex2= new TH2D("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vKcPL_Ceex2->Sumw2();
-  sct_vAcPL_Ceex2= new TH2D("sct_vAcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-  sct_vAcPL_Ceex2->Sumw2();
+////////////////////////////////////
   // for special test, any cost(theta)
-  hst_vT_Ceex2 = new TH1D(  "hst_vT_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2->Sumw2();
-  //
-  hst_vT_Ceex2n = new TH1D( "hst_vT_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2n->Sumw2();
-  // for special AFB from <costheta PL>
-  hst_vTcPL_Ceex2 = new TH1D(  "hst_vTcPL_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vTcPL_Ceex2->Sumw2();
-  // for special AFB from <costheta PL>
-  hst_vTcPL_Ceex2n = new TH1D( "hst_vTcPL_Ceex2n","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vTcPL_Ceex2n->Sumw2();
-  // for standard AFB from (F-B)/(F+B) |cost(theta|<1.0
-  hst_vTcPLforw_Ceex2 = new TH1D(  "hst_vTcPLforw_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vTcPLforw_Ceex2->Sumw2();
-  // for standard AFB from (F-B)/(F+B) |cost(theta|<0.9
-  hst_vTcPL9_Ceex2 = new TH1D( "hst_vTcPL9_Ceex2","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vTcPL9_Ceex2->Sumw2();
-  // forward
-  hst_vTcPL9forw_Ceex2 = new TH1D( "hst_vTcPL9forw_Ceex2","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vTcPL9forw_Ceex2->Sumw2();
-  // for xcheck and h.o ISR
-  hst_vACeex2   = new TH1D("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vACeex21F = new TH1D("hst_vACeex21F","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vACeex21B = new TH1D("hst_vACeex21B","dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vACeex2->Sumw2();
-  hst_vACeex21F->Sumw2();
-  hst_vACeex21B->Sumw2();
+  hst_vT_Ceex2  = TH1D_UP( "hst_vT_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n = TH1D_UP( "hst_vT_Ceex2n", "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+// for special AFB based on <costheta PL>
+  hst_vT_Ceex2_xcPL    = TH1D_UP( "hst_vT_Ceex2_xcPL",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n_xcPL   = TH1D_UP( "hst_vT_Ceex2n_xcPL",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2_cPLr90  = TH1D_UP( "hst_vT_Ceex2_cPLr90",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+// for standard AFB from (F-B)/(F+B) |cost(theta|<1.0
+  hst_vT_Ceex2_cPL_forw    = TH1D_UP( "hst_vT_Ceex2_cPL_forw",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2_cPLr90_forw = TH1D_UP( "hst_vT_Ceex2_cPLr90_forw", "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  /////////////////////////////////////
+  // CEEX series
+  hst_vT_ceex1    = TH1D_UP( "hst_vT_ceex1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex2    = TH1D_UP( "hst_vT_ceex2",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex21   = TH1D_UP( "hst_vT_ceex21",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex1_F  = TH1D_UP( "hst_vT_ceex1_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex2_F  = TH1D_UP( "hst_vT_ceex2_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex21_F = TH1D_UP( "hst_vT_ceex21_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  // CEEXn series
+  hst_vT_ceex1n   = TH1D_UP( "hst_vT_ceex1n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex2n   = TH1D_UP( "hst_vT_ceex2n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex21n  = TH1D_UP( "hst_vT_ceex21n",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex1n_F = TH1D_UP( "hst_vT_ceex1n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex2n_F = TH1D_UP( "hst_vT_ceex2n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_ceex21n_F= TH1D_UP( "hst_vT_ceex21n_F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  // EEX series
+  hst_vT_EEX1     = TH1D_UP( "hst_vT_EEX1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX2     = TH1D_UP( "hst_vT_EEX2",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX3     = TH1D_UP( "hst_vT_EEX3",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX21    = TH1D_UP( "hst_vT_EEX21",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX32    = TH1D_UP( "hst_vT_EEX32",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX1_F   = TH1D_UP( "hst_vT_EEX1_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX2_F   = TH1D_UP( "hst_vT_EEX2_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX3_F   = TH1D_UP( "hst_vT_EEX3_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX21_F  = TH1D_UP( "hst_vT_EEX21_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_EEX32_F  = TH1D_UP( "hst_vT_EEX32_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  // older quasi-realistic
+  hst_vACeex1   = TH1D_UP("hst_vACeex1",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex2   = TH1D_UP("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex21F = TH1D_UP("hst_vACeex21F","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex21B = TH1D_UP("hst_vACeex21B","dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex1F  = TH1D_UP("hst_vACeex1F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex2F  = TH1D_UP("hst_vACeex2F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vACeex21  = TH1D_UP("hst_vACeex21",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
 
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
-  HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
+  HST_KKMC_NORMA = TH1D_UP("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
     HST_KKMC_NORMA->SetBinContent(j,m_xpar[j]);    // xpar encoded
 */
@@ -364,6 +352,7 @@ void TRobolKKMC::Production(double &iEvent)
   // *********************************************************************
   //          Most of histogramming starts here
   // *********************************************************************
+  double WtEEX1  = KKMC_generator->GetWtAlter( 72);    //  Second ord. EEX2 O(alf2)
   double WtEEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
@@ -382,16 +371,43 @@ void TRobolKKMC::Production(double &iEvent)
   hst_vXGenCeex2->Fill(  vvK, WtCEEX2);         // M^star from MC (illegal)
   // semirealistic
   hst_vAlepCeex2->Fill(  vvA, WtCEEX2);         // M^star guessed
-  //****[[[
-  hst_vACeex2->Fill(       vvA, WtCEEX2);         // M^star guessed
-  //hst_vACeex2->Fill(       vv, WtEEX3);         // M^star guessed
-  if( CosPRD>0)
-      hst_vACeex21F->Fill( vvA, WtCEEX2n-WtCEEX1); // M^star guessed
-      //hst_vACeex21F->Fill( vv, WtEEX3-WtEEX2); // M^star guessed
-  else
-      hst_vACeex21B->Fill( vvA, WtCEEX2n-WtCEEX1); // M^star guessed
-      //hst_vACeex21B->Fill( vv, WtEEX3-WtEEX2); // M^star guessed
-  //****]]]
+  /////////////////////////
+  // older histos for quasi-experimental variables
+  hst_vACeex1->Fill(     vvA, WtCEEX1);         // M^star guessed
+  hst_vACeex2->Fill(     vvA, WtCEEX2);         // M^star guessed
+  hst_vACeex21->Fill(    vvA, WtCEEX2-WtCEEX1); // M^star guessed
+  if( CosPRD > 0) hst_vACeex1F->Fill(  vvA, WtCEEX1);
+  if( CosPRD > 0) hst_vACeex2F->Fill(  vvA, WtCEEX2);
+  if( CosPRD > 0) hst_vACeex21F->Fill( vvA, WtCEEX2-WtCEEX1); // M^star guessed
+  if( CosPRD < 0) hst_vACeex21B->Fill( vvA, WtCEEX2-WtCEEX1); // spurious
+  //[[[[[[[[[[[[[[[[[[[[
+  // New histos for academic variables
+  // CEEX series
+  hst_vT_ceex1->Fill(   vv, WtCEEX1);
+  hst_vT_ceex2->Fill(   vv, WtCEEX2);
+  hst_vT_ceex21->Fill(  vv, WtCEEX2-WtCEEX1);
+  if( CosThePL > 0.0) hst_vT_ceex1_F->Fill(  vv, WtCEEX1);
+  if( CosThePL > 0.0) hst_vT_ceex2_F->Fill(  vv, WtCEEX2);
+  if( CosThePL > 0.0) hst_vT_ceex21_F->Fill( vv, WtCEEX2-WtCEEX1);
+  // CEEXn series
+  hst_vT_ceex1n->Fill(   vv, WtCEEX1n);
+  hst_vT_ceex2n->Fill(   vv, WtCEEX2n);
+  hst_vT_ceex21n->Fill(  vv, WtCEEX2n-WtCEEX1n);
+  if( CosThePL > 0.0) hst_vT_ceex1n_F->Fill(  vv, WtCEEX1n);
+  if( CosThePL > 0.0) hst_vT_ceex2n_F->Fill(  vv, WtCEEX2n);
+  if( CosThePL > 0.0) hst_vT_ceex21n_F->Fill( vv, WtCEEX2n-WtCEEX1n);
+  // EEX series
+  hst_vT_EEX1->Fill(   vv, WtEEX1);
+  hst_vT_EEX2->Fill(   vv, WtEEX2);
+  hst_vT_EEX3->Fill(   vv, WtEEX3);
+  hst_vT_EEX21->Fill(  vv, WtEEX2-WtEEX1);
+  hst_vT_EEX32->Fill(  vv, WtEEX3-WtEEX2);
+  if( CosThePL > 0.0) hst_vT_EEX1_F->Fill(   vv, WtEEX1);
+  if( CosThePL > 0.0) hst_vT_EEX2_F->Fill(   vv, WtEEX2);
+  if( CosThePL > 0.0) hst_vT_EEX3_F->Fill(   vv, WtEEX3);
+  if( CosThePL > 0.0) hst_vT_EEX21_F->Fill(  vv, WtEEX2-WtEEX1);
+  if( CosThePL > 0.0) hst_vT_EEX32_F->Fill(  vv, WtEEX3-WtEEX2);
+  //]]]]]]]]]]]]]]]]]]]]
   if(vv<0.9){
     hst_Cost1Ceex2->Fill( CosThe1, WtCEEX2);
     hst_CosPLCeex2->Fill(CosThePL, WtCEEX2);
@@ -432,16 +448,16 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   //-------------------------------
   // dsigma/dv, any theta, no cut
-  hst_vT_Ceex2->Fill(    vv, WtCEEX2);
-  hst_vTcPL_Ceex2->Fill( vv, WtCEEX2*CosThePL);
-  // specials for AFB from <costheta_PL>
-  hst_vT_Ceex2n->Fill(   vv, WtCEEX2n);
-  hst_vTcPL_Ceex2n->Fill(vv, WtCEEX2n*CosThePL);
+  hst_vT_Ceex2->Fill(      vv, WtCEEX2);
+  hst_vT_Ceex2n->Fill(     vv, WtCEEX2n);
+ // specials for AFB from <costheta_PL>
+  hst_vT_Ceex2_xcPL->Fill( vv, WtCEEX2*CosThePL);
+  hst_vT_Ceex2n_xcPL->Fill(vv, WtCEEX2n*CosThePL);
   // AFB from (F-B)/(F+B), cos(theta)>0, cmax=1
-  if( CosThePL> 0.0)                      hst_vTcPLforw_Ceex2->Fill(  vv, WtCEEX2);
+  if( CosThePL > 0.0)  hst_vT_Ceex2_cPL_forw->Fill( vv, WtCEEX2);
   // AFB from (F-B)/(F+B) with |cos(theta)| < 0.9 cut
-  if( fabs(CosThePL) < 0.9 )              hst_vTcPL9_Ceex2->Fill(     vv, WtCEEX2);
-  if( CosThePL>0.0 && CosThePL < 0.9)     hst_vTcPL9forw_Ceex2->Fill( vv, WtCEEX2);
+  if( fabs(CosThePL) < 0.9 )          hst_vT_Ceex2_cPLr90->Fill(      vv, WtCEEX2);
+  if( CosThePL>0.0 && CosThePL < 0.9) hst_vT_Ceex2_cPLr90_forw->Fill( vv, WtCEEX2);
   //
   // Miscelaneous
   m_YSum  += WtMain;
@@ -485,13 +501,11 @@ void TRobolKKMC::Finalize()
   Double_t Fact = nbt*XsNormPb/1000/(tmax-tmin)/m_NevGen; // now [nb]
   // **** re-normalized histogram as a clone
   TH1D *hstC_Mff =(TH1D*)hst_Mff->Clone();
-  hstC_Mff->Sumw2();               // is it necessary???
   hstC_Mff->SetName("hstC_Mff"); // otherwise you get 2 histograms with same name
   hstC_Mff->SetTitle("dsigma/dQ2 [nb/GeV^2] ");
   hstC_Mff->Scale(Fact);
   // **** alternatively, re-normalized histo can be defined as a new one ****
-  TH1D *hstN_Mff =new TH1D("hstN_Mff","dsigma/dQ2 [nb/GeV^2]",nbt,tmin,tmax);
-  hstN_Mff->Sumw2();
+  TH1D *hstN_Mff =TH1D_UP("hstN_Mff","dsigma/dQ2 [nb/GeV^2]",nbt,tmin,tmax);
   hstN_Mff->Add(hstN_Mff, Fact);
   */
   // *********************************************************************

@@ -36,9 +36,10 @@ using namespace std;
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_10G");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_3G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
 TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
@@ -72,7 +73,9 @@ float  gXcanv = 50, gYcanv = 50;
 //
 //int    gTogEne = 1;   // 10 GeV and MZ included
 int    gTogEne = 0; // 10 GeV and MZ exluded
-int    gTogle  = 0;  // excluding old data files
+//
+//int    gTogle  = 0;  // excluding new data files
+int    gTogle  = 1;  // including new data files
 
 //Double_t sqr( const Double_t x ){ return x*x;};
 
@@ -548,7 +551,7 @@ void AfbIFIvT1()
   PlotSame2(HafbZ_vTcPL_IFIdiff, ycapt, kMagenta, 0.060, "(c)", "#sqrt{s}=M_{Z}");
   PlotSame2(Hafb1_vTcPL_IFIdiff, ycapt, kPine,    0.090, "(d)", "#sqrt{s}=10GeV");
   }
-  //PlotSame2(HDifPat_vTcPL,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
+  PlotSame2(HDifPat_vTcPL,             ycapt, kRed,     0.030, "(e)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
   cAfbIFIvT1->cd();
@@ -763,7 +766,8 @@ void AfbDifPat()
   cAfbDifPat->cd();
 
   TH1D *HDif1 = HDifPat_vTcPL;
-  HDif1->SetMaximum( 0.0006); HDif1->SetMinimum(-0.0012);
+//  HDif1->SetMaximum( 0.0006); HDif1->SetMinimum(-0.0012);
+  HDif1->SetMaximum( 0.0005); HDif1->SetMinimum(-0.0009);
 
   HDif1->SetTitle(0); HDif1->SetStats(0);
   HDif1->GetXaxis()->SetTitle("v_{max}");
@@ -772,10 +776,10 @@ void AfbDifPat()
 
   double ycapt =0.90;
   PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKMC");
-  PlotSame2(HDifPat_xmax,      ycapt, kBlue,  0.120, "(b)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
-  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kRed,   0.010, "(c)", "= #Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
+  PlotSame2(HDifPat_xmax,      ycapt, kRed,   0.120, "(b)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
+  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kBlue,  0.010, "(c)", "= #Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
   //
-  PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "= #Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
+  //PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "= #Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
 
   HDifPat_xmax->DrawCopy("hsame");
 
@@ -945,20 +949,25 @@ void AfbIFI_KKmc4()
 //*****************************************************************************
   cAfbIFI_KKmc4->cd(2);
 
-  Ddiff = Hafb95_IFI2m1;
+  Ddiff = Hafb88_IFI2m1;
   Ddiff->SetTitle(0); Ddiff->SetStats(0);
-  Ddiff->SetMaximum( 0.002); Ddiff->SetMinimum(-0.003);
-//  Ddiff->SetMaximum( 0.008); Ddiff->SetMinimum(-0.008);
+//  Ddiff->SetMaximum( 0.002); Ddiff->SetMinimum(-0.003);
+  Ddiff->SetMaximum( 0.0002); Ddiff->SetMinimum(-0.0003);
   Ddiff->DrawCopy("h");
 
   CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{IFI}_{FB}(v_{max})");
   ycapt =0.50;
-  PlotSame2(Hafb95_IFI2m1, ycapt, kBlack,   0.07, "(a+)", "O(#alpha^{2})-O(#alpha^{1}), #sqrt{s_{+}}=94.3GeV ");
-  PlotSame2(Hafb95_IFI1m0, ycapt, kGold ,   0.09, "(b+)", "O(#alpha^{1})-O(#alpha^{0}), #sqrt{s_{+}}=94.3GeV ");
-  //PlotSame2(Hafb95_IFI2m0, ycapt, kMagenta,    0.11, "(c+)", "O(#alpha^{2})-O(#alpha^{0}) ");
+  //Hafb95_IFI2m1->Scale(10);
+  //Hafb88_IFI2m1->Scale(10);
+  PlotSame2(Hafb95_IFI2m1, ycapt, kBlue,   0.07, "(a+)", "=O(#alpha^{2})-O(#alpha^{1}),  #sqrt{s_{+}}");
+  PlotSame2(Hafb88_IFI2m1, ycapt, kRed,    0.15, "(a-)", "=O(#alpha^{2})-O(#alpha^{1}),  #sqrt{s_{-}}");
   //
-  PlotSame2(Hafb88_IFI2m1, ycapt, kBlue,    0.15, "(a-)", "O(#alpha^{2})-O(#alpha^{1}), #sqrt{s_{-}}=87.9GeV");
-  PlotSame2(Hafb88_IFI1m0, ycapt, kPine,    0.17, "(b-)", "O(#alpha^{1})-O(#alpha^{0}), #sqrt{s_{-}}=87.9GeV");
+  Hafb95_IFI1m0->Scale(0.1);
+  Hafb88_IFI1m0->Scale(0.1);
+  PlotSame2(Hafb95_IFI1m0, ycapt, kBlack , 0.09, "(b+)", "=(O(#alpha^{1})-O(#alpha^{0}))x10^{-1},  #sqrt{s_{+}}");
+  PlotSame2(Hafb88_IFI1m0, ycapt, kPine,   0.17, "(b-)", "=(O(#alpha^{1})-O(#alpha^{0}))x10^{-1},  #sqrt{s_{-}}");
+  //
+  //PlotSame2(Hafb95_IFI2m0, ycapt, kMagenta, 0.11, "(c+)", "O(#alpha^{2})-O(#alpha^{0}) ");
   //PlotSame2(Hafb88_IFI2m0, ycapt, kBrune,   0.19, "(c-)", "O(#alpha^{2})-O(#alpha^{0}) ");
 
   cAfbIFI_KKmc4->cd();

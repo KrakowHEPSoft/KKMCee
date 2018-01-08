@@ -33,7 +33,7 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
-TFile DiskFileA("../workKKMC/histo.root_88GeV_10G"); //
+TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
 //
 // Sept. 2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last

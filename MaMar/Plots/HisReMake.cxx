@@ -134,22 +134,22 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
 
   ///****************************************************************************************
   //      AFB from <cos(theta)>
-  TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2"),
+  TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA->Get("hst_vT_Ceex2_xcPL"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
-  TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2n"),
+  TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA->Get("hst_vT_Ceex2n_xcPL"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2n")  );
 
   //[[[[[[[[[[[[[[[[[[ new
   ///****************************************************************************************
   //   Xcheck for   AFB=(F-B)/(F+B)
   /*
-  TH1D *AfbS_Ceex2  = HstAFB("AfbS_Ceex2",  (TH1D*)DiskFileA->Get("hst_vTcPLforw_Ceex2"),
+  TH1D *AfbS_Ceex2  = HstAFB("AfbS_Ceex2",  (TH1D*)DiskFileA->Get("hst_vT_Ceex2_cPL_forw"),
                                             (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
-  TH1D *AfbS9_Ceex2 = HstAFB("AfbS9_Ceex2", (TH1D*)DiskFileA->Get("hst_vTcPL9forw_Ceex2"),
-                                            (TH1D*)DiskFileA->Get("hst_vTcPL9_Ceex2")  );
+  TH1D *AfbS9_Ceex2 = HstAFB("AfbS9_Ceex2", (TH1D*)DiskFileA->Get("hst_vT_Ceex2_cPLr90_forw"),
+                                            (TH1D*)DiskFileA->Get("hst_vTcPL_Ceex2_90")  );
   */
   //]]]]]]]]]]]]]]]]]]
-cout<<"================ HisReMakeKKMC ENDs  ============================="<<endl;
+cout<<"================ HisReMakeKKMC ENDs  =============================="<<endl;
 cout<<"==================================================================="<<endl;
 
 }//HisReMakeKKMC

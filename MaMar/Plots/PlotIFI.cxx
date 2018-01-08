@@ -566,8 +566,8 @@ int main(int argc, char **argv)
 /////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
-  KKsemMakeHisto();    // prepare histos from KKsem
   ReMakeMChisto();     // reprocessing MC histos
+  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   // Some comparisons with KKsem
   FigVdist();  // sigma(v) and sigma(vmax) KKMC/KKsem

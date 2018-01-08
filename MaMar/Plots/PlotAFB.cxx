@@ -28,9 +28,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // New MainKKMC
-//TFile DiskFileA("../workKKMC/histo.root");  // current
+TFile DiskFileA("../workKKMC/histo.root");  // current
+//
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 // Archive
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); // newest!
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
 ///////////////////////////
@@ -136,17 +138,6 @@ void ReMakeMChisto(){
   Hsig_vAcPL_Ceex2->SetName("Hsig_vAcPL_Ceex2");
   Hafb_vAcPL_Ceex2->SetName("Hafb_vAcPL_Ceex2");
   //if(CMSene < 91.0 ) Hafb_vAcPL_Ceex2->Scale(-1.0);
-
-  // ****************************************************************************************
-  // *********  distributions of cos(theta) and limited v *************
-  nbMax=0; // it is cut on vv, =0 no cut
-  nbMax=100;   // vMax = 0.2*100/100=0.200
-  TH1D                    *Hcos_vAcPR_Ceex2_vmax200, *Hasy_vAcPR_Ceex2_vmax200;
-  ProjC( sct_vAcPR_Ceex2,  Hcos_vAcPR_Ceex2_vmax200,  Hasy_vAcPR_Ceex2_vmax200, nbMax);
-  Hcos_vAcPR_Ceex2_vmax200->SetName("Hcos_vAcPR_Ceex2_vmax200");
-  Hasy_vAcPR_Ceex2_vmax200->SetName("Hasy_vAcPR_Ceex2_vmax200");
-  //if(CMSene < 91.0 ) Hasy_vAcPR_Ceex2_vmax200->Scale(-1.0);
-  //
 
 }//ReMakeMChisto
 
@@ -463,18 +454,15 @@ void FigDifCeex()
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
   // sig(vmax) from BIG scatergram
   TH1D *Hsig_vAcPR_Ceex2      = (TH1D*)DiskFileB.Get("Hsig_vAcPR_Ceex2");// total CEEX2
-  // dsig/dv standard
+// dsig/dv standard
   TH1D *hst_vACeex2    = (TH1D*)DiskFileA.Get("hst_vACeex2");   // total CEEX2
   TH1D *hst_vACeex21F  = (TH1D*)DiskFileA.Get("hst_vACeex21F"); // CEEX2-CEEX1 Forward
   TH1D *hst_vACeex21B  = (TH1D*)DiskFileA.Get("hst_vACeex21B"); // CEEX2-CEEX1 Backard
-  // Constructing AFB(vmax) for CEEX2-CEEX1
-  TH1D *HSig_vACeex2,*HSigF_vACeex21,*HSigB_vACeex21 ;
-  MakeCumul(hst_vACeex2,  HSig_vACeex2);
-  MakeCumul(hst_vACeex21F,HSigF_vACeex21);
-  MakeCumul(hst_vACeex21B,HSigB_vACeex21);
-  HSig_vACeex2->SetName("HSig_vACeex2");
-  HSigF_vACeex21->SetName("HSigF_vACeex21");
-  HSigB_vACeex21->SetName("HSigb_vACeex21");
+//
+  TH1D *HSig_vACeex2    = HstCumul("HSig_vACeex2",  hst_vACeex2);
+  TH1D *HSigF_vACeex21  = HstCumul("HSig_vACeex21", hst_vACeex21F);
+  TH1D *HSigB_vACeex21  = HstCumul("HSig_vACeex21", hst_vACeex21B);
+
   TH1D *HAfb_vACeex21= (TH1D*)hst_vACeex2->Clone("HAfb_vACeex21"); HAfb_vACeex21->Reset();
   HAfb_vACeex21->Add(HSigF_vACeex21,HSigB_vACeex21,1.0,-1.0);
   HAfb_vACeex21->Divide(hst_vACeex2);
@@ -483,9 +471,9 @@ void FigDifCeex()
   TH1D *hZeroPlus  = (TH1D*)hst_vACeex2->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)hst_vACeex2->Clone("hZeroMinus");  //
   for(int i=1; i <= hZero->GetNbinsX() ; i++) {
-    hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);
-    hZeroPlus->SetBinContent(i,  4e-5);  hZeroPlus->SetBinError(i, 0);
-    hZeroMinus->SetBinContent(i,-4e-5); hZeroMinus->SetBinError(i, 0);
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
     }
 
   //////////////////////////////////////////////
@@ -507,8 +495,8 @@ void FigDifCeex()
   TH1D *Hst = HAfb_vACeex21;
   Hst->SetStats(0);
   Hst->SetTitle(0);
-  Hst->SetMaximum( 0.3e-3);
-  Hst->SetMinimum(-0.3e-3);
+  Hst->SetMaximum( 0.3e-3); Hst->SetMinimum(-0.3e-3);
+//  Hst->SetMaximum( 0.0015); Hst->SetMinimum(-0.0015);
   Hst->GetXaxis()->SetTitleSize(0.05);
   //Hst->GetXaxis()->SetTitle("v_{max}");
   Hst->GetXaxis()->SetTitle("v_{max,ALEPH}");
@@ -526,7 +514,7 @@ void FigDifCeex()
 //  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}(v_{max}),    CEEX2-CEEX1,    KKMC ISR+FSR, IFI off");
 //  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}(v_{max}),    EEX3-EEX2,    KKMC ISR only");
   CaptT->DrawLatex(0.25,0.85,TextEne);
-  CaptT->DrawLatex(0.12,0.56," #delta#alpha/#alpha = 10^{-4}");
+  CaptT->DrawLatex(0.12,0.55," #delta#alpha/#alpha = 10^{-4}");
   //-------------------------------------
   //cDifCeex->cd(2);
   //gPad->SetLogy(); // !!!!!!

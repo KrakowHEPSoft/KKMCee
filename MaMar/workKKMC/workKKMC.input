@@ -7,9 +7,9 @@ BeginX
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0           1000      1k   NEVT = number of events
 *    0        1000000      1M   NEVT = number of events
-    0     1000000000      1G NEVT = number of events
+    0      100000000      100M NEVT = number of events
 * Center-of-mass energy [GeV]
-    1        94.30e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1        87.90e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events

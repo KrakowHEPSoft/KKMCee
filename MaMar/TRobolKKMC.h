@@ -81,20 +81,51 @@ class TRobolKKMC : public TRobol
   TH2D   *sct_vTcPL_Ceex0n;   //! vv bare muons
 
   TH2D   *sct_vAcPL_Ceex2;    //! Main CEEX2 KKMC , ISR+FSR
-    //
-  TH1D   *hst_vT_Ceex2;       //!  No streamer!!!
-  TH1D   *hst_vT_Ceex2n;      //!  No streamer!!!
-  TH1D   *hst_vTcPL_Ceex2;    //!  No streamer!!!
-  TH1D   *hst_vTcPL_Ceex2n;   //!  No streamer!!!
   //
-  TH1D   *hst_vTcPLforw_Ceex2;   //!  No streamer!!!
-  TH1D   *hst_vTcPL9_Ceex2;      //!  No streamer!!!
-  TH1D   *hst_vTcPL9forw_Ceex2;  //!  No streamer!!!
-
+  TH1D   *hst_vT_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_vT_Ceex2n;        //!  No streamer!!!
+  TH1D   *hst_vT_Ceex2_cPLr90;  //!  No streamer!!!
+  //
+  TH1D   *hst_vT_Ceex2_xcPL;    //!  No streamer!!!
+  TH1D   *hst_vT_Ceex2n_xcPL;   //!  No streamer!!!
+  //
+  TH1D   *hst_vT_Ceex2_cPL_forw;      //!  No streamer!!!
+  TH1D   *hst_vT_Ceex2_cPLr90_forw;  //!  No streamer!!!
+  /////////////// NEW!!!!
+  // CEEX series
+  TH1D   *hst_vT_ceex1;       //!  No streamer!!!
+  TH1D   *hst_vT_ceex2;       //!  No streamer!!!
+  TH1D   *hst_vT_ceex21;      //!  No streamer!!!
+  TH1D   *hst_vT_ceex1_F;     //!  No streamer!!!
+  TH1D   *hst_vT_ceex2_F;     //!  No streamer!!!
+  TH1D   *hst_vT_ceex21_F;    //!  No streamer!!!
+  // CEEXn series
+  TH1D   *hst_vT_ceex1n;       //!  No streamer!!!
+  TH1D   *hst_vT_ceex2n;       //!  No streamer!!!
+  TH1D   *hst_vT_ceex21n;      //!  No streamer!!!
+  TH1D   *hst_vT_ceex1n_F;     //!  No streamer!!!
+  TH1D   *hst_vT_ceex2n_F;     //!  No streamer!!!
+  TH1D   *hst_vT_ceex21n_F;    //!  No streamer!!!
+  // EEX series
+  TH1D   *hst_vT_EEX1;        //!  No streamer!!!
+  TH1D   *hst_vT_EEX2;        //!  No streamer!!!
+  TH1D   *hst_vT_EEX3;        //!  No streamer!!!
+  TH1D   *hst_vT_EEX21;       //!  No streamer!!!
+  TH1D   *hst_vT_EEX32;       //!  No streamer!!!
+  TH1D   *hst_vT_EEX1_F;      //!  No streamer!!!
+  TH1D   *hst_vT_EEX2_F;      //!  No streamer!!!
+  TH1D   *hst_vT_EEX3_F;      //!  No streamer!!!
+  TH1D   *hst_vT_EEX21_F;     //!  No streamer!!!
+  TH1D   *hst_vT_EEX32_F;     //!  No streamer!!!
+  // Older quasi-realistic
+  TH1D   *hst_vACeex1;        //!  No streamer!!!
   TH1D   *hst_vACeex2;        //!  No streamer!!!
+  TH1D   *hst_vACeex1F;       //!  No streamer!!!
+  TH1D   *hst_vACeex2F;       //!  No streamer!!!
+  TH1D   *hst_vACeex21;       //!  No streamer!!!
   TH1D   *hst_vACeex21F;      //!  No streamer!!!
   TH1D   *hst_vACeex21B;      //!  No streamer!!!
- //
+ //]]]]]]]]]]]]
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
 ///////////////////////////////////////////
