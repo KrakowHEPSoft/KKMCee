@@ -70,12 +70,14 @@ void HistNormalize(){
   DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   // 1-dim histos
+  /*
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21F") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21B") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21") );
+  */
   //
   //  BIG scatergrams
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
@@ -446,10 +448,10 @@ void FigAfbKin()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigDifCeex()
+void Fig_vA_Ceex21()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigDifCeex =========================== "<<endl;
+  cout<<" ========================= Fig_vA_Ceex21 =========================== "<<endl;
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
@@ -465,7 +467,7 @@ void FigDifCeex()
 // crudely approximate
   //TH1D *HAfb_vACeex21 = HstAFB3( "HAfb_vACeex21", hst_vACeex21F, hst_vACeex21, hst_vACeex2 );
 // well approximate
-  TH1D *HAfb_vACeex21 = HstAFB4( "HAfb_vACeex21e", hst_vACeex21F, hst_vACeex21, hst_vACeex2F, hst_vACeex2 );
+  TH1D *HAfb_vACeex21 = HstAFB4( "HAfb_vACeex21", hst_vACeex21F, hst_vACeex21, hst_vACeex2F, hst_vACeex2 );
 
   TH1D *hZero      = (TH1D*)hst_vACeex2->Clone("hZero");  // zero line
   TH1D *hZeroPlus  = (TH1D*)hst_vACeex2->Clone("hZeroPlus");  //
@@ -495,7 +497,7 @@ void FigDifCeex()
   TH1D *Hst = HAfb_vACeex21;
   Hst->SetStats(0);
   Hst->SetTitle(0);
-  Hst->SetMaximum( 0.3e-3); Hst->SetMinimum(-0.3e-3);
+//  Hst->SetMaximum( 0.3e-3); Hst->SetMinimum(-0.3e-3);
 //  Hst->SetMaximum( 0.0015); Hst->SetMinimum(-0.0015);
   Hst->GetXaxis()->SetTitleSize(0.05);
   //Hst->GetXaxis()->SetTitle("v_{max}");
@@ -521,7 +523,83 @@ void FigDifCeex()
   //
   cDifCeex->cd();
 //
-}// FigDifCeex
+}// Fig_vA_Ceex21
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void Fig_vT_Ceex21()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= Fig_vT_Ceex21 =========================== "<<endl;
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
+  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
+
+// AFB with v_Aleph and ThetaPRD
+  TH1D *hst_vT_Ceex1    = (TH1D*)DiskFileA.Get("hst_vT_Ceex1");    // total CEEX1
+  TH1D *hst_vT_Ceex2    = (TH1D*)DiskFileA.Get("hst_vT_Ceex2");    // total CEEX2
+  TH1D *hst_vT_Ceex2_F  = (TH1D*)DiskFileA.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
+  TH1D *hst_vT_Ceex21   = (TH1D*)DiskFileA.Get("hst_vT_Ceex21");   // total CEEX2
+  TH1D *hst_vT_Ceex21_F = (TH1D*)DiskFileA.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+// Approximate formula for AFB from weight differences
+  TH1D *HAfb_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst_vT_Ceex21_F, hst_vT_Ceex21, hst_vT_Ceex2_F, hst_vT_Ceex2 );
+//
+  TH1D *hZero      = (TH1D*)hst_vT_Ceex2->Clone("hZero");  // zero line
+  TH1D *hZeroPlus  = (TH1D*)hst_vT_Ceex2->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)hst_vT_Ceex2->Clone("hZeroMinus");  //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cDifCeex = new TCanvas("cDifCeex","cDifCeex",gXcanv, gXcanv,   600,  500);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cDifCeex->SetFillColor(10);
+  cDifCeex->Divide( 1,  0);
+  //cDifCeex->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  cDifCeex->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+
+  TH1D *Hst = HAfb_vT_Ceex21;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+//  Hst->SetMaximum( 0.3e-3); Hst->SetMinimum(-0.3e-3);
+  Hst->SetMaximum( 1.0e-4); Hst->SetMinimum(-1.0e-4);
+  Hst->GetXaxis()->SetTitleSize(0.05);
+  //Hst->GetXaxis()->SetTitle("v_{max}");
+  Hst->GetXaxis()->SetTitle("v_{max,ALEPH}");
+  Hst->DrawCopy("h");
+
+  hZero->SetLineColor(kBlack);
+  hZero->DrawCopy("hsame");
+  hZeroPlus->SetLineColor(kRed);
+  hZeroPlus->DrawCopy("hsame");
+  hZeroMinus->SetLineColor(kRed);
+  hZeroMinus->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}(v_{max}),    CEEX2-CEEX1,    KKMC ISR+FSR+IFI");
+  CaptT->DrawLatex(0.25,0.85,TextEne);
+  CaptT->DrawLatex(0.12,0.55," #delta#alpha/#alpha = 10^{-4}");
+  //-------------------------------------
+  //cDifCeex->cd(2);
+  //gPad->SetLogy(); // !!!!!!
+  //
+  cDifCeex->cd();
+//
+}// Fig_vT_Ceex21
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -540,7 +618,8 @@ int main(int argc, char **argv)
   FigVsig();
   FigAfbIFI();
   FigAfbKin();
-  FigDifCeex();
+  //
+  Fig_vT_Ceex21();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

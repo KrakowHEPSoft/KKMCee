@@ -180,6 +180,49 @@ TH1D *HstProjV(TString title, TH2D *&Scat, int NbMax)
 }// HstProjV
 
 
+TH1D *HstProjF(TString title, TH2D *&Scat, int NbMax)
+{ // makes cumulative distribution in sigma(Vmax)
+  // integrating over cos(theta) bins up to NbMax.
+  // FORWARD hemisphere only!!!
+  cout<<"Entering HstProjV for TH2D ";
+  cout<< Scat->GetName() <<endl;
+  //  Projection onto v axis, suming over Y=cos(theta) up to a limit
+  int      nbX  = Scat->GetNbinsX();
+  int      nbY  = Scat->GetNbinsY();
+  Double_t Xmax = Scat->GetXaxis()->GetXmax();
+  Double_t Xmin = Scat->GetXaxis()->GetXmin();
+  Double_t Ymax = Scat->GetYaxis()->GetXmax();
+  Double_t Ymin = Scat->GetYaxis()->GetXmin();
+  //
+  TH1D *hxForw = (TH1D*)Scat->ProjectionX(title,1,nbX,"e");
+  hxForw->Reset();
+  //
+  double forw,forw2, dx,dy;
+  double Forw,Forw2;
+  dx= (Xmax-Xmin)/nbX; // integration over X
+  dy= (Ymax-Ymin)/nbY; // integration over Y
+  Forw=0.0; Forw2=0.0;
+  int nbYhalf = nbY/2;
+  int nbY2;
+  if( (NbMax>0) && (NbMax<nbYhalf) )
+    nbY2 = NbMax;
+  else
+    nbY2 = nbYhalf;
+  for(int ix=0; ix <= nbX+1; ix++){
+    forw=0.0; forw2=0.0;
+    // loop over cos(theta) bins
+    for(int iy=1; iy <= nbY2; iy++){
+      forw  += Scat->GetBinContent(  ix, nbYhalf+iy);
+      forw2 += sqr(Scat->GetBinError(ix, nbYhalf+iy));
+    }// iy
+    Forw  += forw;  Forw2 += forw2;
+    hxForw->SetBinContent(ix, dx*dy*    (Forw));
+    hxForw->SetBinError(  ix, dx*dy*sqrt(Forw2));
+  }
+  return hxForw;
+}// HstProjV
+
+
 TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax)
 { // makes AFB(Vmax), integrating over cos(theta) bins up to NbMax.
   cout<<"Entering HstProjA for  ";
@@ -591,8 +634,6 @@ Hst1->Divide(Hst3); // (F-B)/Deno
 return Hst1;
 }//HstAFB3
 
-//TH1D *HAfb_vACeex21e = HstAFB4( "HAfb_vACeex21e", hst_vACeex21F, hst_vACeex21, hst_vACeex2F, hst_vACeex2 );
-
 TH1D *HstAFB4(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2)
 {
 TH1D *Hst21F = HstCumul(title,      HST21F);  // forward dF21
@@ -601,19 +642,32 @@ TH1D *Hst2F  = HstCumul("hst_test3",HST2F);   // F2
 TH1D *Hst2   = HstCumul("hst_test4",HST2);    // F2+B2
 Hst21F->Add(Hst21F, Hst21,    2.0, -1.0);     // 2dF21-(dF21+dB21)=dF21-dB21
 Hst21F->Divide(Hst2); // (dF21-dB21)/(F2+B2)
-//
-//TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
-//Hafb2->Add(Hafb2, Hst2,    2.0, -1.0);        // 2F-(F+B)=F-B
-//Hafb2->Divide(Hst2);   // AFB2 ready to go
-//
-//Hafb2->Multiply(Hafb2, Hst21, 1.0, 1.0);
-//Hafb2->Multiply(Hst21);
-TH1D *Hafb2 = HstCumul("hst_test22",HST21);
+///////////////////////////////////////////////////
+// Constructing second term approximately
+TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
+Hafb2->Add(Hafb2, Hst2,    2.0, -1.0);        // 2F-(F+B)=F-B
+Hafb2->Divide(Hst2);   // AFB2 ready to go
+// Second term, approximate, AFB1->AFB2
+Hafb2->Multiply(Hst21);;
 Hafb2->Divide(Hst2);
-//
-Hst21F->Add(Hst21F, Hafb2,    1.0, -1.0);
-//return Hst21F;
-return Hafb2;
+// Subtract approximate second term
+//Hst21F->Add(Hst21F, Hafb2,    1.0, -1.0);
+///////////////////////////////////////////////////
+// Constructing second term exactly
+TH1D *Hafb1  = HstCumul("hst_test6",HST2F);  // Sig2F
+Hafb1->Add(Hafb1, Hst2,    2.0, -1.0);       // numerator of AFB2, 2F-(F+B)
+Hafb1->Add(Hafb1, Hst21F,  1.0, -2.0);       // correcting
+Hafb1->Add(Hafb1, Hst21,   1.0,  1.0);       // numerator of AFB1
+TH1D *Hsig1  = HstCumul("hst_test6",HST2);   // denominator  AFB1
+Hsig1->Add(Hsig1, Hst21,   1.0, -1.0);       // denominator  AFB1
+Hafb1->Divide(Hsig1);                        // AFB1 completed
+// Second term, exact
+Hafb1->Multiply(Hst21);;
+Hafb1->Divide(Hst2);
+// Subtract exact second term
+Hst21F->Add(Hst21F, Hafb1,    1.0, -1.0);
+///////////////////////////////////////////////////
+return Hst21F;
 }//HstAFB3
 
 void PlInitialize(FILE *ltx, int lint)

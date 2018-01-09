@@ -54,6 +54,8 @@ TH1D *HstProjV(TString title, TH2D *&Scat, int NbMax);
 
 TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax);
 
+TH1D *HstProjF(TString title, TH2D *&Scat, int NbMax);
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB);

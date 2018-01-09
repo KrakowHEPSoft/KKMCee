@@ -218,6 +218,7 @@ void ReMakeMChisto(){
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex1  = HstProjV("Hsig9_vTcPL_Ceex1", sct9_vTcPL_Ceex1, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex1  = HstProjA("Hafb9_vTcPL_Ceex1", sct9_vTcPL_Ceex1, nbMax);
+  TH1D  *Hsig9_vTcPL_Ceex1F = HstProjF("Hsig9_vTcPL_Ceex1F",sct9_vTcPL_Ceex1, nbMax);
   //******** IFI off
   TH1D  *Hsig9_vTcPL_Ceex1n  = HstProjV("Hsig9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex1n  = HstProjA("Hafb9_vTcPL_Ceex1n", sct9_vTcPL_Ceex1n, nbMax);
@@ -225,6 +226,7 @@ void ReMakeMChisto(){
   //******** IFI on
   TH1D  *Hsig9_vTcPL_Ceex2  = HstProjV("Hsig9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2  = HstProjA("Hafb9_vTcPL_Ceex2", sct9_vTcPL_Ceex2, nbMax);
+  TH1D  *Hsig9_vTcPL_Ceex2F = HstProjF("Hsig9_vTcPL_Ceex2F",sct9_vTcPL_Ceex2, nbMax);
   //******** IFI off
   TH1D  *Hsig9_vTcPL_Ceex2n  = HstProjV("Hsig9_vTcPL_Ceex2n", sct9_vTcPL_Ceex2n, nbMax);
   TH1D  *Hafb9_vTcPL_Ceex2n  = HstProjA("Hafb9_vTcPL_Ceex2n", sct9_vTcPL_Ceex2n, nbMax);
@@ -243,6 +245,7 @@ void ReMakeMChisto(){
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex1  = HstProjV("Hsig8_vTcPL_Ceex1", sct8_vTcPL_Ceex1, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex1  = HstProjA("Hafb8_vTcPL_Ceex1", sct8_vTcPL_Ceex1, nbMax);
+  TH1D  *Hsig8_vTcPL_Ceex1F = HstProjF("Hsig8_vTcPL_Ceex1F",sct8_vTcPL_Ceex1, nbMax);
   Hafb8_vTcPL_Ceex1->Scale(-1.0);
   //******** IFI off
   TH1D  *Hsig8_vTcPL_Ceex1n  = HstProjV("Hsig8_vTcPL_Ceex1n", sct8_vTcPL_Ceex1n, nbMax);
@@ -252,6 +255,7 @@ void ReMakeMChisto(){
   //******** IFI on
   TH1D  *Hsig8_vTcPL_Ceex2  = HstProjV("Hsig8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
   TH1D  *Hafb8_vTcPL_Ceex2  = HstProjA("Hafb8_vTcPL_Ceex2", sct8_vTcPL_Ceex2, nbMax);
+  TH1D  *Hsig8_vTcPL_Ceex2F = HstProjF("Hsig8_vTcPL_Ceex2F",sct8_vTcPL_Ceex2, nbMax);
   Hafb8_vTcPL_Ceex2->Scale(-1.0);
   //******** IFI off
   TH1D  *Hsig8_vTcPL_Ceex2n  = HstProjV("Hsig8_vTcPL_Ceex2n", sct8_vTcPL_Ceex2n, nbMax);
@@ -1037,22 +1041,29 @@ void Afb_ceex21()
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigTest1()
-{
+{// Obsolete test
 //------------------------------------------------------------------------
   cout<<" ========================= FigTest1 =========================== "<<endl;
   //
   TH1D *Hsig9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex2");
   TH1D *Hsig9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex1");
-  //
   TH1D *Hsig8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex2");
   TH1D *Hsig8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex1");
-  //
+//
+  TH1D *Hsig9_vTcPL_Ceex2F     = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex2F");
+  TH1D *Hsig9_vTcPL_Ceex1F     = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex1F");
+  TH1D *Hsig8_vTcPL_Ceex2F     = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex2F");
+  TH1D *Hsig8_vTcPL_Ceex1F     = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex1F");
+//
   TH1D *Hsig9_ceex21 = HstDiff("Hsig9_ceex21",  Hsig9_vTcPL_Ceex2, Hsig9_vTcPL_Ceex1,  kBlack);
   Hsig9_ceex21->Divide(Hsig9_vTcPL_Ceex2);
-  //
   TH1D *Hsig8_ceex21 = HstDiff("Hsig8_ceex21",  Hsig8_vTcPL_Ceex2, Hsig8_vTcPL_Ceex1,  kBlack);
   Hsig8_ceex21->Divide(Hsig8_vTcPL_Ceex2);
-
+  //
+  TH1D *Hsig9_ceex21F = HstDiff("Hsig9_ceex21F",  Hsig9_vTcPL_Ceex2F, Hsig9_vTcPL_Ceex1F,  kBlack);
+  Hsig9_ceex21F->Divide(Hsig9_vTcPL_Ceex2);
+  TH1D *Hsig8_ceex21F = HstDiff("Hsig8_ceex21F",  Hsig8_vTcPL_Ceex2F, Hsig8_vTcPL_Ceex1F,  kBlack);
+  Hsig8_ceex21F->Divide(Hsig8_vTcPL_Ceex2);
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
@@ -1066,17 +1077,25 @@ void FigTest1()
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   cTempl->cd(1);
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
-  //-------------------------------------
-  cTempl->cd(2);
+  //CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
   TH1D *HST = Hsig8_ceex21;
   HST->SetTitle(0); HST->SetStats(0);
   HST->GetXaxis()->SetTitle("v_{max}");
   HST->DrawCopy("h");
-
   double ycapt =0.70;
-  PlotSame2(Hsig8_ceex21, ycapt, kBlue,   0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
-  PlotSame2(Hsig9_ceex21, ycapt, kBlack,  0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
+  PlotSame2(Hsig8_ceex21, ycapt,  kBlue,    0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
+  PlotSame2(Hsig9_ceex21, ycapt,  kBlack,   0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
+
+  //-------------------------------------
+  cTempl->cd(2);
+
+  HST = Hsig9_ceex21F;
+  HST->SetTitle(0); HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->DrawCopy("h");
+  ycapt =0.70;
+  PlotSame2(Hsig8_ceex21F, ycapt, kRed,     0.020, "(c)", "(ceex2F-ceex1F)/ceex2, 88GeV");
+  PlotSame2(Hsig9_ceex21F, ycapt, kMagenta, 0.050, "(d)", "(ceex2F-ceex1F)/ceex2, 95GeV");
   //
   cTempl->cd();
 //
@@ -1140,7 +1159,7 @@ int main(int argc, char **argv)
   }
   Afb_ceex21();
   //
-  FigTest1();
+  //FigTest1();  // obsolete test
   //
   // Template empty canvas  with 2 figures
   //FigTempl();

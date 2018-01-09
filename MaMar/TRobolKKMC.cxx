@@ -155,32 +155,21 @@ void TRobolKKMC::Hbooker()
   sct_vTcPL_Ceex1n= TH2D_UP("sct_vTcPL_Ceex1n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0 = TH2D_UP("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0n= TH2D_UP("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-////////////////////////////////////
-  // for special test, any cost(theta)
-  hst_vT_Ceex2  = TH1D_UP( "hst_vT_Ceex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2n = TH1D_UP( "hst_vT_Ceex2n", "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-// for special AFB based on <costheta PL>
-  hst_vT_Ceex2_xcPL    = TH1D_UP( "hst_vT_Ceex2_xcPL",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2n_xcPL   = TH1D_UP( "hst_vT_Ceex2n_xcPL",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2_cPLr90  = TH1D_UP( "hst_vT_Ceex2_cPLr90",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-// for standard AFB from (F-B)/(F+B) |cost(theta|<1.0
-  hst_vT_Ceex2_cPL_forw    = TH1D_UP( "hst_vT_Ceex2_cPL_forw",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_Ceex2_cPLr90_forw = TH1D_UP( "hst_vT_Ceex2_cPLr90_forw", "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   /////////////////////////////////////
   // CEEX series
-  hst_vT_ceex1    = TH1D_UP( "hst_vT_ceex1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex2    = TH1D_UP( "hst_vT_ceex2",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex21   = TH1D_UP( "hst_vT_ceex21",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex1_F  = TH1D_UP( "hst_vT_ceex1_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex2_F  = TH1D_UP( "hst_vT_ceex2_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex21_F = TH1D_UP( "hst_vT_ceex21_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex1    = TH1D_UP( "hst_vT_Ceex1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2    = TH1D_UP( "hst_vT_Ceex2",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex21   = TH1D_UP( "hst_vT_Ceex21",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex1_F  = TH1D_UP( "hst_vT_Ceex1_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2_F  = TH1D_UP( "hst_vT_Ceex2_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex21_F = TH1D_UP( "hst_vT_Ceex21_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   // CEEXn series
-  hst_vT_ceex1n   = TH1D_UP( "hst_vT_ceex1n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex2n   = TH1D_UP( "hst_vT_ceex2n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex21n  = TH1D_UP( "hst_vT_ceex21n",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex1n_F = TH1D_UP( "hst_vT_ceex1n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex2n_F = TH1D_UP( "hst_vT_ceex2n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  hst_vT_ceex21n_F= TH1D_UP( "hst_vT_ceex21n_F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex1n   = TH1D_UP( "hst_vT_Ceex1n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n   = TH1D_UP( "hst_vT_Ceex2n",     "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex21n  = TH1D_UP( "hst_vT_Ceex21n",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex1n_F = TH1D_UP( "hst_vT_Ceex1n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n_F = TH1D_UP( "hst_vT_Ceex2n_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex21n_F= TH1D_UP( "hst_vT_Ceex21n_F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   // EEX series
   hst_vT_EEX1     = TH1D_UP( "hst_vT_EEX1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vT_EEX2     = TH1D_UP( "hst_vT_EEX2",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
@@ -192,6 +181,13 @@ void TRobolKKMC::Hbooker()
   hst_vT_EEX3_F   = TH1D_UP( "hst_vT_EEX3_F",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vT_EEX21_F  = TH1D_UP( "hst_vT_EEX21_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vT_EEX32_F  = TH1D_UP( "hst_vT_EEX32_F",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+////////////////////////////////////
+// for special AFB based on <costheta PL>
+  hst_vT_Ceex2_xcPL    = TH1D_UP( "hst_vT_Ceex2_xcPL",   "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2n_xcPL   = TH1D_UP( "hst_vT_Ceex2n_xcPL",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);   hst_vT_Ceex2_cPLr90  = TH1D_UP( "hst_vT_Ceex2_cPLr90",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+// for standard AFB from (F-B)/(F+B) |cost(theta|<1.0
+  hst_vT_Ceex2_cPL_forw    = TH1D_UP( "hst_vT_Ceex2_cPL_forw",    "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  hst_vT_Ceex2_cPLr90_forw = TH1D_UP( "hst_vT_Ceex2_cPLr90_forw", "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   // older quasi-realistic
   hst_vACeex1   = TH1D_UP("hst_vACeex1",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex2   = TH1D_UP("hst_vACeex2",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
@@ -383,19 +379,19 @@ void TRobolKKMC::Production(double &iEvent)
   //[[[[[[[[[[[[[[[[[[[[
   // New histos for academic variables
   // CEEX series
-  hst_vT_ceex1->Fill(   vv, WtCEEX1);
-  hst_vT_ceex2->Fill(   vv, WtCEEX2);
-  hst_vT_ceex21->Fill(  vv, WtCEEX2-WtCEEX1);
-  if( CosThePL > 0.0) hst_vT_ceex1_F->Fill(  vv, WtCEEX1);
-  if( CosThePL > 0.0) hst_vT_ceex2_F->Fill(  vv, WtCEEX2);
-  if( CosThePL > 0.0) hst_vT_ceex21_F->Fill( vv, WtCEEX2-WtCEEX1);
+  hst_vT_Ceex1->Fill(   vv, WtCEEX1);
+  hst_vT_Ceex2->Fill(   vv, WtCEEX2);
+  hst_vT_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);
+  if( CosThePL > 0.0) hst_vT_Ceex1_F->Fill(  vv, WtCEEX1);
+  if( CosThePL > 0.0) hst_vT_Ceex2_F->Fill(  vv, WtCEEX2);
+  if( CosThePL > 0.0) hst_vT_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1);
   // CEEXn series
-  hst_vT_ceex1n->Fill(   vv, WtCEEX1n);
-  hst_vT_ceex2n->Fill(   vv, WtCEEX2n);
-  hst_vT_ceex21n->Fill(  vv, WtCEEX2n-WtCEEX1n);
-  if( CosThePL > 0.0) hst_vT_ceex1n_F->Fill(  vv, WtCEEX1n);
-  if( CosThePL > 0.0) hst_vT_ceex2n_F->Fill(  vv, WtCEEX2n);
-  if( CosThePL > 0.0) hst_vT_ceex21n_F->Fill( vv, WtCEEX2n-WtCEEX1n);
+  hst_vT_Ceex1n->Fill(   vv, WtCEEX1n);
+  hst_vT_Ceex2n->Fill(   vv, WtCEEX2n);
+  hst_vT_Ceex21n->Fill(  vv, WtCEEX2n-WtCEEX1n);
+  if( CosThePL > 0.0) hst_vT_Ceex1n_F->Fill(  vv, WtCEEX1n);
+  if( CosThePL > 0.0) hst_vT_Ceex2n_F->Fill(  vv, WtCEEX2n);
+  if( CosThePL > 0.0) hst_vT_Ceex21n_F->Fill( vv, WtCEEX2n-WtCEEX1n);
   // EEX series
   hst_vT_EEX1->Fill(   vv, WtEEX1);
   hst_vT_EEX2->Fill(   vv, WtEEX2);
@@ -448,9 +444,7 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
   //-------------------------------
   // dsigma/dv, any theta, no cut
-  hst_vT_Ceex2->Fill(      vv, WtCEEX2);
-  hst_vT_Ceex2n->Fill(     vv, WtCEEX2n);
- // specials for AFB from <costheta_PL>
+  // specials for AFB from <costheta_PL>
   hst_vT_Ceex2_xcPL->Fill( vv, WtCEEX2*CosThePL);
   hst_vT_Ceex2n_xcPL->Fill(vv, WtCEEX2n*CosThePL);
   // AFB from (F-B)/(F+B), cos(theta)>0, cmax=1
