@@ -175,7 +175,7 @@ void ReMakeMChisto(){
   //  without cutoff on c=cos(thetaPRD)
   int nbMax=0;   // cosThetaMax = 1.0, no cut
   //nbMax=50;      // cosThetaMax = 50/50=1.00
-  nbMax=45;      // cosThetaMax = 45/50=0.90
+  //nbMax=45;      // cosThetaMax = 45/50=0.90
   // ---------------------- 95GeV ----------------------------------
   TH1D  *Hsig9_vAcPR_Ceex2  = HstProjV("Hsig9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
   TH1D  *Hafb9_vAcPR_Ceex2  = HstProjA("Hafb9_vAcPR_Ceex2", sct9_vAcPR_Ceex2, nbMax);
@@ -274,7 +274,7 @@ void ReMakeMChisto(){
 //======================================================================================
 // FOAM corner
   int    NbMax   =0;          // for 100bins, default=0 for gCosTheta = 1.00
-  NbMax=45;      // cosThetaMax = 45/50=0.90
+  //NbMax=45;      // cosThetaMax = 45/50=0.90
   //////////////  95GeV /////////////////
   TH1D *HST_FOAM_NORMA3_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA3");
   TH1D *HST_FOAM_NORMA5_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA5");
@@ -313,39 +313,6 @@ void ReMakeMChisto(){
 
 
 }//ReMakeMChisto
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigTempl()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigTempl =========================== "<<endl;
-  // renormalize histograms in nanobarns
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA95.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  //
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
-  ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
-  gXcanv += 50; gYcanv += 50;
-  cTempl->SetFillColor(10);
-  cTempl->Divide( 2,  0);
-  //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
-  //////////////////////////////////////////////
-  cTempl->cd(1);
-  CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
-  //-------------------------------------
-  cTempl->cd(2);
-  //
-  cTempl->cd();
-//
-}// FigTempl
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -730,94 +697,6 @@ void AfbIFI_Foam()
 }// AfbIFI_Foam
 
 
-///////////////////////////////////////////////////////////////////////////////////
-void Afb_ceex21()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= Afb_ceex21 =========================== "<<endl;
-  ////////////////////////////////////////////////////////////////////////////////
-  TH1D *Hafb9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2");
-  TH1D *Hafb9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex1");
-  //
-  TH1D *Hafb8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2");
-  TH1D *Hafb8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex1");
-
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-  ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cAfb_ceex21 = new TCanvas("cAfb_ceex21","cAfb_ceex21", gXcanv,  gYcanv,   1200,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////
-  gXcanv += 50; gYcanv += 50;
-  cAfb_ceex21->SetFillColor(10);
-  cAfb_ceex21->Divide( 2,  1);
-//*****************************************************************************
-  cAfb_ceex21->cd(1);
-  TH1D *HST = Hafb9_vTcPL_Ceex2;
-  HST->SetTitle(0);
-  HST->SetStats(0);
-  HST->GetXaxis()->SetTitle("v_{max}");
-  HST->DrawCopy("h");
-
-  double ycapt =0.70;
-  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "(a)", "A_{FB}(v_{max},s_{+}), ceex2");
-  PlotSame2(Hafb9_vTcPL_Ceex1, ycapt, kBlack, 0.020, "(b)", "A_{FB}(v_{max},s_{+}), ceex1");
-  //
-  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), ceex2");
-  PlotSame2(Hafb8_vTcPL_Ceex1, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), ceex1");
-
-  //*****************************************************************************
-  cAfb_ceex21->cd(2);
-
-  TH1D *Hafb9_xmax_IFIdiff = HstDiff("Hafb9_xmax_IFIdiff",  Hafb9_vTcPL_Ceex2, Hafb9_vTcPL_Ceex1,  kBlack);
-  TH1D *Hafb8_xmax_IFIdiff = HstDiff("Hafb8_xmax_IFIdiff",  Hafb8_vTcPL_Ceex2, Hafb8_vTcPL_Ceex1,  kBlue);
-  Hafb8_xmax_IFIdiff->Scale(-1.0); // undoing sign change
-  TH1D *HDifPat_xmax             = HstDiff("HDifPat_xmax",  Hafb9_xmax_IFIdiff, Hafb8_xmax_IFIdiff,  kRed);
-  //HDifPat_xmax->SetLineWidth(2);
-
-  TH1D *Ddiff = Hafb9_xmax_IFIdiff;
-  Ddiff->SetLineColor(kBlack);
-
-//  TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2->Clone("hZero");  // zero line
-//  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
-
-  TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");  // zero line
-  TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
-  TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus");  //
-  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
-    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
-    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
-    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
-    }
-
-  Ddiff->SetTitle(0);
-  Ddiff->SetStats(0);
-
-  Ddiff->SetMaximum( 1.0e-4); Ddiff->SetMinimum(-1.0e-4);
-  Ddiff->DrawCopy("h");
-
-  CaptT->SetTextColor(kBlack);
-  CaptT->DrawLatex(0.01, 0.95, "  #delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}) ");
-  ycapt =0.33;
-  PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.045, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
-  PlotSame2(HDifPat_xmax,       ycapt, kRed,     0.035, "(e)", "= (a) - (b) ");
-  //
-  hZero->DrawCopy("hsame");
-  hZeroPlus->DrawCopy("hsame");
-  hZeroMinus->DrawCopy("hsame");
-
-  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
-
-  cAfb_ceex21->SaveAs("cAfb_ceex21.pdf");
-
-  cAfb_ceex21->cd();
-//
-}// Afb_ceex21
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////
 void AfbDifPat()
@@ -880,6 +759,8 @@ void AfbDifPat()
 
 //
 }// AfbDifPat
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1064,6 +945,175 @@ void AfbIFI_KKmc4()
   //
 }// AfbIFI_KKmc4
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void Afb_ceex21()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= Afb_ceex21 =========================== "<<endl;
+  ////////////////////////////////////////////////////////////////////////////////
+  TH1D *Hafb9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2");
+  TH1D *Hafb9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex1");
+  //
+  TH1D *Hafb8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2");
+  TH1D *Hafb8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex1");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfb_ceex21 = new TCanvas("cAfb_ceex21","cAfb_ceex21", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfb_ceex21->SetFillColor(10);
+  cAfb_ceex21->Divide( 2,  1);
+//*****************************************************************************
+  cAfb_ceex21->cd(1);
+  TH1D *HST = Hafb9_vTcPL_Ceex2;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->DrawCopy("h");
+
+  double ycapt =0.70;
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "(a)", "A_{FB}(v_{max},s_{+}), ceex2");
+  PlotSame2(Hafb9_vTcPL_Ceex1, ycapt, kBlack, 0.020, "(b)", "A_{FB}(v_{max},s_{+}), ceex1");
+  //
+  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), ceex2");
+  PlotSame2(Hafb8_vTcPL_Ceex1, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), ceex1");
+
+  //*****************************************************************************
+  cAfb_ceex21->cd(2);
+
+  TH1D *Hafb9_xmax_ceex21 = HstDiff("Hafb9_xmax_ceex21",  Hafb9_vTcPL_Ceex2, Hafb9_vTcPL_Ceex1,  kBlack);
+  TH1D *Hafb8_xmax_ceex21 = HstDiff("Hafb8_xmax_ceex21",  Hafb8_vTcPL_Ceex2, Hafb8_vTcPL_Ceex1,  kBlue);
+  Hafb8_xmax_ceex21->Scale(-1.0); // undoing sign change
+  TH1D *HafbDifPat_xmax   = HstDiff("HafbDifPat_xmax",  Hafb9_xmax_ceex21, Hafb8_xmax_ceex21,  kRed);
+  //HafbDifPat_xmax->SetLineWidth(2);
+
+  TH1D *Ddiff = Hafb9_xmax_ceex21;
+  Ddiff->SetLineColor(kBlack);
+
+//  TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2->Clone("hZero");  // zero line
+//  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
+
+  TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");  // zero line
+  TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus");  //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }
+
+  Ddiff->SetTitle(0);
+  Ddiff->SetStats(0);
+
+  Ddiff->SetMaximum( 1.0e-4); Ddiff->SetMinimum(-1.0e-4);
+  Ddiff->DrawCopy("h");
+
+  CaptT->SetTextColor(kBlack);
+  CaptT->DrawLatex(0.01, 0.95, "  #delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}) ");
+  ycapt =0.33;
+  PlotSame2(Hafb9_xmax_ceex21, ycapt, kBlack,   0.045, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_xmax_ceex21, ycapt, kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(HafbDifPat_xmax,   ycapt, kRed,     0.035, "(e)", "= (a) - (b) ");
+  //
+  hZero->DrawCopy("hsame");
+  hZeroPlus->DrawCopy("hsame");
+  hZeroMinus->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
+
+  cAfb_ceex21->SaveAs("cAfb_ceex21.pdf");
+
+  cAfb_ceex21->cd();
+//
+}// Afb_ceex21
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigTest1()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigTest1 =========================== "<<endl;
+  //
+  TH1D *Hsig9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex2");
+  TH1D *Hsig9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex1");
+  //
+  TH1D *Hsig8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex2");
+  TH1D *Hsig8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex1");
+  //
+  TH1D *Hsig9_ceex21 = HstDiff("Hsig9_ceex21",  Hsig9_vTcPL_Ceex2, Hsig9_vTcPL_Ceex1,  kBlack);
+  Hsig9_ceex21->Divide(Hsig9_vTcPL_Ceex2);
+  //
+  TH1D *Hsig8_ceex21 = HstDiff("Hsig8_ceex21",  Hsig8_vTcPL_Ceex2, Hsig8_vTcPL_Ceex1,  kBlack);
+  Hsig8_ceex21->Divide(Hsig8_vTcPL_Ceex2);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cTempl->SetFillColor(10);
+  cTempl->Divide( 2,  0);
+  //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  cTempl->cd(1);
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
+  //-------------------------------------
+  cTempl->cd(2);
+  TH1D *HST = Hsig8_ceex21;
+  HST->SetTitle(0); HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->DrawCopy("h");
+
+  double ycapt =0.70;
+  PlotSame2(Hsig8_ceex21, ycapt, kBlue,   0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
+  PlotSame2(Hsig9_ceex21, ycapt, kBlack,  0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
+  //
+  cTempl->cd();
+//
+}// FigTest1
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigTempl()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigTempl =========================== "<<endl;
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cTempl->SetFillColor(10);
+  cTempl->Divide( 2,  0);
+  //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  cTempl->cd(1);
+  CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
+  //-------------------------------------
+  cTempl->cd(2);
+  //
+  cTempl->cd();
+//
+}// FigTempl
+
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -1074,8 +1124,6 @@ int main(int argc, char **argv)
   //KKsemMakeHisto();    // prepare histos for plotting
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
-  // Template empty canvas  with 2 figures
-  //FigTempl();
   //AfbIFIvA1();
   //AfbIFIvA2();
   //
@@ -1091,6 +1139,11 @@ int main(int argc, char **argv)
   AfbIFI_KKmc4();
   }
   Afb_ceex21();
+  //
+  FigTest1();
+  //
+  // Template empty canvas  with 2 figures
+  //FigTempl();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();
