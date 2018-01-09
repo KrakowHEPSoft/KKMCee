@@ -659,8 +659,6 @@ void AfbIFIvT2()
 }// AfbIFIvT2
 
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 void AfbIFI_Foam()
 {
@@ -730,6 +728,95 @@ void AfbIFI_Foam()
   cAfbIFI_Foam->cd();
 //
 }// AfbIFI_Foam
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void Afb_ceex21()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= Afb_ceex21 =========================== "<<endl;
+  ////////////////////////////////////////////////////////////////////////////////
+  TH1D *Hafb9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2");
+  TH1D *Hafb9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex1");
+  //
+  TH1D *Hafb8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2");
+  TH1D *Hafb8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex1");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfb_ceex21 = new TCanvas("cAfb_ceex21","cAfb_ceex21", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfb_ceex21->SetFillColor(10);
+  cAfb_ceex21->Divide( 2,  1);
+//*****************************************************************************
+  cAfb_ceex21->cd(1);
+  TH1D *HST = Hafb9_vTcPL_Ceex2;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->DrawCopy("h");
+
+  double ycapt =0.70;
+  PlotSame2(Hafb9_vTcPL_Ceex2, ycapt, kBlue,  0.010, "(a)", "A_{FB}(v_{max},s_{+}), ceex2");
+  PlotSame2(Hafb9_vTcPL_Ceex1, ycapt, kBlack, 0.020, "(b)", "A_{FB}(v_{max},s_{+}), ceex1");
+  //
+  PlotSame2(Hafb8_vTcPL_Ceex2, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), ceex2");
+  PlotSame2(Hafb8_vTcPL_Ceex1, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), ceex1");
+
+  //*****************************************************************************
+  cAfb_ceex21->cd(2);
+
+  TH1D *Hafb9_xmax_IFIdiff = HstDiff("Hafb9_xmax_IFIdiff",  Hafb9_vTcPL_Ceex2, Hafb9_vTcPL_Ceex1,  kBlack);
+  TH1D *Hafb8_xmax_IFIdiff = HstDiff("Hafb8_xmax_IFIdiff",  Hafb8_vTcPL_Ceex2, Hafb8_vTcPL_Ceex1,  kBlue);
+  Hafb8_xmax_IFIdiff->Scale(-1.0); // undoing sign change
+  TH1D *HDifPat_xmax             = HstDiff("HDifPat_xmax",  Hafb9_xmax_IFIdiff, Hafb8_xmax_IFIdiff,  kRed);
+  //HDifPat_xmax->SetLineWidth(2);
+
+  TH1D *Ddiff = Hafb9_xmax_IFIdiff;
+  Ddiff->SetLineColor(kBlack);
+
+//  TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2->Clone("hZero");  // zero line
+//  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
+
+  TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");  // zero line
+  TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus");  //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }
+
+  Ddiff->SetTitle(0);
+  Ddiff->SetStats(0);
+
+  Ddiff->SetMaximum( 1.0e-4); Ddiff->SetMinimum(-1.0e-4);
+  Ddiff->DrawCopy("h");
+
+  CaptT->SetTextColor(kBlack);
+  CaptT->DrawLatex(0.01, 0.95, "  #delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}) ");
+  ycapt =0.33;
+  PlotSame2(Hafb9_xmax_IFIdiff, ycapt, kBlack,   0.045, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb8_xmax_IFIdiff, ycapt, kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(HDifPat_xmax,       ycapt, kRed,     0.035, "(e)", "= (a) - (b) ");
+  //
+  hZero->DrawCopy("hsame");
+  hZeroPlus->DrawCopy("hsame");
+  hZeroMinus->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
+
+  cAfb_ceex21->SaveAs("cAfb_ceex21.pdf");
+
+  cAfb_ceex21->cd();
+//
+}// Afb_ceex21
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1003,6 +1090,7 @@ int main(int argc, char **argv)
   AfbIFI_KKmc2();
   AfbIFI_KKmc4();
   }
+  Afb_ceex21();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA95.ls();
   DiskFileB.ls();

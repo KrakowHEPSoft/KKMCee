@@ -28,8 +28,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // New MainKKMC
-TFile DiskFileA("../workKKMC/histo.root");  // current
+//TFile DiskFileA("../workKKMC/histo.root");  // current
 //
+TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 // Archive
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
@@ -70,9 +71,11 @@ void HistNormalize(){
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   // 1-dim histos
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21F") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21B") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vACeex21") );
   //
   //  BIG scatergrams
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sct_vAcPR_Ceex2") );
@@ -452,22 +455,19 @@ void FigDifCeex()
   CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
   CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
-  // sig(vmax) from BIG scatergram
-  TH1D *Hsig_vAcPR_Ceex2      = (TH1D*)DiskFileB.Get("Hsig_vAcPR_Ceex2");// total CEEX2
-// dsig/dv standard
+
+// AFB with v_Aleph and ThetaPRD
+  TH1D *hst_vACeex1    = (TH1D*)DiskFileA.Get("hst_vACeex1");   // total CEEX1
   TH1D *hst_vACeex2    = (TH1D*)DiskFileA.Get("hst_vACeex2");   // total CEEX2
+  TH1D *hst_vACeex2F   = (TH1D*)DiskFileA.Get("hst_vACeex2F");  // total CEEX2 Forward
+  TH1D *hst_vACeex21   = (TH1D*)DiskFileA.Get("hst_vACeex21");  // total CEEX2
   TH1D *hst_vACeex21F  = (TH1D*)DiskFileA.Get("hst_vACeex21F"); // CEEX2-CEEX1 Forward
-  TH1D *hst_vACeex21B  = (TH1D*)DiskFileA.Get("hst_vACeex21B"); // CEEX2-CEEX1 Backard
-//
-  TH1D *HSig_vACeex2    = HstCumul("HSig_vACeex2",  hst_vACeex2);
-  TH1D *HSigF_vACeex21  = HstCumul("HSig_vACeex21", hst_vACeex21F);
-  TH1D *HSigB_vACeex21  = HstCumul("HSig_vACeex21", hst_vACeex21B);
+// crudely approximate
+  //TH1D *HAfb_vACeex21 = HstAFB3( "HAfb_vACeex21", hst_vACeex21F, hst_vACeex21, hst_vACeex2 );
+// well approximate
+  TH1D *HAfb_vACeex21 = HstAFB4( "HAfb_vACeex21e", hst_vACeex21F, hst_vACeex21, hst_vACeex2F, hst_vACeex2 );
 
-  TH1D *HAfb_vACeex21= (TH1D*)hst_vACeex2->Clone("HAfb_vACeex21"); HAfb_vACeex21->Reset();
-  HAfb_vACeex21->Add(HSigF_vACeex21,HSigB_vACeex21,1.0,-1.0);
-  HAfb_vACeex21->Divide(hst_vACeex2);
-
-  TH1D *hZero = (TH1D*)hst_vACeex2->Clone("hZero");  // zero line
+  TH1D *hZero      = (TH1D*)hst_vACeex2->Clone("hZero");  // zero line
   TH1D *hZeroPlus  = (TH1D*)hst_vACeex2->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)hst_vACeex2->Clone("hZeroMinus");  //
   for(int i=1; i <= hZero->GetNbinsX() ; i++) {

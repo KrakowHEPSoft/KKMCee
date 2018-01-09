@@ -580,7 +580,41 @@ Hst1->Divide(Hst2);
 return Hst1;
 }//HstAFB
 
+TH1D *HstAFB3(TString title, TH1D *HST1, TH1D *HST2, TH1D *HST3)
+{
+TH1D *Hst1 = HstCumul(title,HST1);        // forward F
+TH1D *Hst2 = HstCumul("hst_test2",HST2);  // total F+B
+TH1D *Hst3 = HstCumul("hst_test3",HST3);  // Deno
+Hst1->Add(Hst1, Hst2,    2.0, -1.0);      // 2F-(F+B)=F-B
+//
+Hst1->Divide(Hst3); // (F-B)/Deno
+return Hst1;
+}//HstAFB3
 
+//TH1D *HAfb_vACeex21e = HstAFB4( "HAfb_vACeex21e", hst_vACeex21F, hst_vACeex21, hst_vACeex2F, hst_vACeex2 );
+
+TH1D *HstAFB4(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2)
+{
+TH1D *Hst21F = HstCumul(title,      HST21F);  // forward dF21
+TH1D *Hst21  = HstCumul("hst_test2",HST21);   // total   dF21+dB21
+TH1D *Hst2F  = HstCumul("hst_test3",HST2F);   // F2
+TH1D *Hst2   = HstCumul("hst_test4",HST2);    // F2+B2
+Hst21F->Add(Hst21F, Hst21,    2.0, -1.0);     // 2dF21-(dF21+dB21)=dF21-dB21
+Hst21F->Divide(Hst2); // (dF21-dB21)/(F2+B2)
+//
+//TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
+//Hafb2->Add(Hafb2, Hst2,    2.0, -1.0);        // 2F-(F+B)=F-B
+//Hafb2->Divide(Hst2);   // AFB2 ready to go
+//
+//Hafb2->Multiply(Hafb2, Hst21, 1.0, 1.0);
+//Hafb2->Multiply(Hst21);
+TH1D *Hafb2 = HstCumul("hst_test22",HST21);
+Hafb2->Divide(Hst2);
+//
+Hst21F->Add(Hst21F, Hafb2,    1.0, -1.0);
+//return Hst21F;
+return Hafb2;
+}//HstAFB3
 
 void PlInitialize(FILE *ltx, int lint)
 {
