@@ -32,12 +32,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_3G");  // jan.2018
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV_3G");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
@@ -76,6 +76,9 @@ int    gTogEne = 0; // 10 GeV and MZ exluded
 //
 //int    gTogle  = 0;  // excluding new data files
 int    gTogle  = 1;  // including new data files
+//
+int  gNBmax =45;    // for |cos(theta)|<0.90
+//int  gNBmax =0;    // for |cos(theta)|<1.00
 
 //Double_t sqr( const Double_t x ){ return x*x;};
 
@@ -173,7 +176,7 @@ void ReMakeMChisto(){
   // ****************************************************************************************
   /// Distributions of v with limited c=cos(theta)
   //  without cutoff on c=cos(thetaPRD)
-  int nbMax=0;   // cosThetaMax = 1.0, no cut
+  int nbMax=gNBmax;
   //nbMax=50;      // cosThetaMax = 50/50=1.00
   //nbMax=45;      // cosThetaMax = 45/50=0.90
   // ---------------------- 95GeV ----------------------------------
@@ -277,8 +280,9 @@ void ReMakeMChisto(){
 
 //======================================================================================
 // FOAM corner
-  int    NbMax   =0;          // for 100bins, default=0 for gCosTheta = 1.00
-  //NbMax=45;      // cosThetaMax = 45/50=0.90
+  int    NbMax  = gNBmax;
+  //NbMax =0;       // for 100bins, default=0 for gCosTheta = 1.00
+  //NbMax =45;      // cosThetaMax = 45/50=0.90
   //////////////  95GeV /////////////////
   TH1D *HST_FOAM_NORMA3_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA3");
   TH1D *HST_FOAM_NORMA5_95 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA5");
@@ -1045,25 +1049,23 @@ void FigTest1()
 //------------------------------------------------------------------------
   cout<<" ========================= FigTest1 =========================== "<<endl;
   //
-  TH1D *Hsig9_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex2");
-  TH1D *Hsig9_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex1");
-  TH1D *Hsig8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex2");
-  TH1D *Hsig8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex1");
-//
-  TH1D *Hsig9_vTcPL_Ceex2F     = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex2F");
-  TH1D *Hsig9_vTcPL_Ceex1F     = (TH1D*)DiskFileB.Get("Hsig9_vTcPL_Ceex1F");
-  TH1D *Hsig8_vTcPL_Ceex2F     = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex2F");
-  TH1D *Hsig8_vTcPL_Ceex1F     = (TH1D*)DiskFileB.Get("Hsig8_vTcPL_Ceex1F");
-//
-  TH1D *Hsig9_ceex21 = HstDiff("Hsig9_ceex21",  Hsig9_vTcPL_Ceex2, Hsig9_vTcPL_Ceex1,  kBlack);
-  Hsig9_ceex21->Divide(Hsig9_vTcPL_Ceex2);
-  TH1D *Hsig8_ceex21 = HstDiff("Hsig8_ceex21",  Hsig8_vTcPL_Ceex2, Hsig8_vTcPL_Ceex1,  kBlack);
-  Hsig8_ceex21->Divide(Hsig8_vTcPL_Ceex2);
+  // AFB with v_true and costhetaPL
+  TH1D *hst8_vT_Ceex1    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1");    // total CEEX1
+  TH1D *hst8_vT_Ceex2    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2");    // total CEEX2
+  TH1D *hst8_vT_Ceex2_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
+  TH1D *hst8_vT_Ceex21   = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21");   // total CEEX2
+  TH1D *hst8_vT_Ceex21_F = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+  // Exact formula for AFB from weight differences
+  TH1D *HAfb8_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst8_vT_Ceex21_F, hst8_vT_Ceex21, hst8_vT_Ceex2_F, hst8_vT_Ceex2 );
   //
-  TH1D *Hsig9_ceex21F = HstDiff("Hsig9_ceex21F",  Hsig9_vTcPL_Ceex2F, Hsig9_vTcPL_Ceex1F,  kBlack);
-  Hsig9_ceex21F->Divide(Hsig9_vTcPL_Ceex2);
-  TH1D *Hsig8_ceex21F = HstDiff("Hsig8_ceex21F",  Hsig8_vTcPL_Ceex2F, Hsig8_vTcPL_Ceex1F,  kBlack);
-  Hsig8_ceex21F->Divide(Hsig8_vTcPL_Ceex2);
+  TH1D *hst9_vT_Ceex1    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1");    // total CEEX1
+  TH1D *hst9_vT_Ceex2    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2");    // total CEEX2
+  TH1D *hst9_vT_Ceex2_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
+  TH1D *hst9_vT_Ceex21   = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21");   // total CEEX2
+  TH1D *hst9_vT_Ceex21_F = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+  // Exact formula for AFB from weight differences
+  TH1D *HAfb9_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst9_vT_Ceex21_F, hst9_vT_Ceex21, hst9_vT_Ceex2_F, hst9_vT_Ceex2 );
+
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
@@ -1077,26 +1079,40 @@ void FigTest1()
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
   cTempl->cd(1);
-  //CaptT->DrawLatex(0.12,0.95,"A_{FB}(v_{max}), ????");
-  TH1D *HST = Hsig8_ceex21;
+  TH1D *HST = HAfb9_vT_Ceex21;
+
+  TH1D *hZero      = (TH1D*)HST->Clone("hZero");  // zero line
+  TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus");  //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }
+
   HST->SetTitle(0); HST->SetStats(0);
   HST->GetXaxis()->SetTitle("v_{max}");
+  HST->SetMaximum( 1.0e-4); HST->SetMinimum(-1.0e-4);
   HST->DrawCopy("h");
-  double ycapt =0.70;
-  PlotSame2(Hsig8_ceex21, ycapt,  kBlue,    0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
-  PlotSame2(Hsig9_ceex21, ycapt,  kBlack,   0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
+  double ycapt =0.40;
+  PlotSame2(HAfb8_vT_Ceex21, ycapt,  kBlue,    0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
+  PlotSame2(HAfb9_vT_Ceex21, ycapt,  kBlack,   0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
+  //
+  hZero->DrawCopy("hsame");
+  hZeroPlus->DrawCopy("hsame");
+  hZeroMinus->DrawCopy("hsame");
 
   //-------------------------------------
   cTempl->cd(2);
-
+/*
   HST = Hsig9_ceex21F;
   HST->SetTitle(0); HST->SetStats(0);
   HST->GetXaxis()->SetTitle("v_{max}");
-  HST->DrawCopy("h");
+  //HST->DrawCopy("h");
   ycapt =0.70;
   PlotSame2(Hsig8_ceex21F, ycapt, kRed,     0.020, "(c)", "(ceex2F-ceex1F)/ceex2, 88GeV");
   PlotSame2(Hsig9_ceex21F, ycapt, kMagenta, 0.050, "(d)", "(ceex2F-ceex1F)/ceex2, 95GeV");
-  //
+  */
   cTempl->cd();
 //
 }// FigTest1
@@ -1159,7 +1175,7 @@ int main(int argc, char **argv)
   }
   Afb_ceex21();
   //
-  //FigTest1();  // obsolete test
+  FigTest1();  // obsolete test
   //
   // Template empty canvas  with 2 figures
   //FigTempl();

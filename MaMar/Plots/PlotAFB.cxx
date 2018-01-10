@@ -538,13 +538,13 @@ void Fig_vT_Ceex21()
   CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
   char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
 
-// AFB with v_Aleph and ThetaPRD
+// AFB with v_true and costhetaPL
   TH1D *hst_vT_Ceex1    = (TH1D*)DiskFileA.Get("hst_vT_Ceex1");    // total CEEX1
   TH1D *hst_vT_Ceex2    = (TH1D*)DiskFileA.Get("hst_vT_Ceex2");    // total CEEX2
   TH1D *hst_vT_Ceex2_F  = (TH1D*)DiskFileA.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
   TH1D *hst_vT_Ceex21   = (TH1D*)DiskFileA.Get("hst_vT_Ceex21");   // total CEEX2
   TH1D *hst_vT_Ceex21_F = (TH1D*)DiskFileA.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
-// Approximate formula for AFB from weight differences
+// Exact formula for AFB from weight differences
   TH1D *HAfb_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst_vT_Ceex21_F, hst_vT_Ceex21, hst_vT_Ceex2_F, hst_vT_Ceex2 );
 //
   TH1D *hZero      = (TH1D*)hst_vT_Ceex2->Clone("hZero");  // zero line
@@ -614,7 +614,7 @@ int main(int argc, char **argv)
   // Template empty canvas  with 2 figures
   //FigTempl();
   // Raw MC double distr. of v and cost(theta)
-  //FigScatA();
+  FigScatA();
   FigVsig();
   FigAfbIFI();
   FigAfbKin();
