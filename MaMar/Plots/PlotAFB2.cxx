@@ -32,12 +32,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV_3G");  // jan.2018
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
@@ -69,7 +69,7 @@ TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
-float  gXcanv = 50, gYcanv = 50;
+float  gXcanv = 0, gYcanv = 0;
 //
 //int    gTogEne = 1;   // 10 GeV and MZ included
 int    gTogEne = 0; // 10 GeV and MZ exluded
@@ -837,12 +837,12 @@ void AfbIFI_KKmc2()
   CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{IFI}_{FB}(v_{max}) = A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
   double ycapt =0.80;
   PlotSame2(Hafb9_vTcPL_IFI2, ycapt, kBlack,   0.10, "(a2)", "O(#alpha^{2}) #sqrt{s_{+}}=94.3GeV");
-  PlotSame2(Hafb9_vTcPL_IFI1, ycapt, kGold,    0.14, "(a1)", "O(#alpha^{1}) #sqrt{s_{+}}=94.3GeV");
+  PlotSame2(Hafb9_vTcPL_IFI1, ycapt, kRed,    0.14, "(a1)", "O(#alpha^{1}) #sqrt{s_{+}}=94.3GeV");
   PlotSame2(Hafb9_vTcPL_IFI0, ycapt, kPine,    0.18, "(a0)", "O(#alpha^{0}) #sqrt{s_{+}}=94.3GeV");
   //
   ycapt += -0.04;
   PlotSame2(Hafb8_vTcPL_IFI2, ycapt, kBlack,   0.10, "(b2)", "O(#alpha^{2}) #sqrt{s_{-}}=87.9GeV");
-  PlotSame2(Hafb8_vTcPL_IFI1, ycapt, kGold,    0.14, "(b1)", "O(#alpha^{1}) #sqrt{s_{-}}=87.9GeV");
+  PlotSame2(Hafb8_vTcPL_IFI1, ycapt, kRed,    0.14, "(b1)", "O(#alpha^{1}) #sqrt{s_{-}}=87.9GeV");
   PlotSame2(Hafb8_vTcPL_IFI0, ycapt, kPine,    0.18, "(b0)", "O(#alpha^{0}) #sqrt{s_{-}}=87.9GeV");
 
   hZero7->DrawCopy("hsame");
@@ -858,7 +858,7 @@ void AfbIFI_KKmc2()
   CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{+-}_{FB}(v_{max}) = A^{IFI}_{FB}(v_{max},s_{+}) - A^{IFI}_{FB}(v_{max},s_{-}) ");
   ycapt =0.80;
   PlotSame2(Hafb9m8_vTcPL_IFI2, ycapt, kBlack,   0.10, "(2)", "O(#alpha^{2}), a2-b2 ");
-  PlotSame2(Hafb9m8_vTcPL_IFI1, ycapt, kGold,    0.10, "(1)", "O(#alpha^{1}), a1-b1 ");
+  PlotSame2(Hafb9m8_vTcPL_IFI1, ycapt, kRed,    0.10, "(1)", "O(#alpha^{1}), a1-b1 ");
   PlotSame2(Hafb9m8_vTcPL_IFI0, ycapt, kPine,    0.10, "(0)", "O(#alpha^{0}), a0-b0 ");
 
   hZero7->DrawCopy("hsame");
@@ -913,12 +913,12 @@ void AfbIFI_KKmc4()
   CaptT->DrawLatex(0.01, 0.95, "KKMC:  A^{IFI}_{FB}(v_{max}) = A^{IFIon}_{FB}(v_{max}) - A^{IFIoff}_{FB}(v_{max}) ");
   double ycapt =0.80;
   PlotSame2(Hafb9_vTcPL_IFI2, ycapt, kBlack,   0.10, "(a2)", "O(#alpha^{2}) #sqrt{s_{+}}=94.3GeV");
-  PlotSame2(Hafb9_vTcPL_IFI1, ycapt, kGold,    0.14, "(a1)", "O(#alpha^{1}) #sqrt{s_{+}}=94.3GeV");
+  PlotSame2(Hafb9_vTcPL_IFI1, ycapt, kRed,     0.14, "(a1)", "O(#alpha^{1}) #sqrt{s_{+}}=94.3GeV");
   PlotSame2(Hafb9_vTcPL_IFI0, ycapt, kPine,    0.18, "(a0)", "O(#alpha^{0}) #sqrt{s_{+}}=94.3GeV");
   //
   ycapt += -0.04;
   PlotSame2(Hafb8_vTcPL_IFI2, ycapt, kBlack,   0.10, "(b2)", "O(#alpha^{2}) #sqrt{s_{-}}=87.9GeV");
-  PlotSame2(Hafb8_vTcPL_IFI1, ycapt, kGold,    0.14, "(b1)", "O(#alpha^{1}) #sqrt{s_{-}}=87.9GeV");
+  PlotSame2(Hafb8_vTcPL_IFI1, ycapt, kRed,    0.14, "(b1)", "O(#alpha^{1}) #sqrt{s_{-}}=87.9GeV");
   PlotSame2(Hafb8_vTcPL_IFI0, ycapt, kPine,    0.18, "(b0)", "O(#alpha^{0}) #sqrt{s_{-}}=87.9GeV");
 
   hZero7->DrawCopy("hsame");
@@ -947,6 +947,7 @@ void AfbIFI_KKmc4()
   //PlotSame2(Hafb95_IFI2m0, ycapt, kMagenta, 0.11, "(c+)", "O(#alpha^{2})-O(#alpha^{0}) ");
   //PlotSame2(Hafb88_IFI2m0, ycapt, kBrune,   0.19, "(c-)", "O(#alpha^{2})-O(#alpha^{0}) ");
 
+  Ddiff->SetLineColor(kBlack);
   TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");      // zero line
   TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus"); //
@@ -957,7 +958,7 @@ void AfbIFI_KKmc4()
     }// for i
   hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
   hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
-  CaptT->DrawLatex(0.12,0.50," #delta#alpha/#alpha = 10^{-4}");
+  CaptT->DrawLatex(0.20,0.50," #delta#alpha/#alpha = 10^{-4}");
 
   cAfbIFI_KKmc4->cd();
 
@@ -1136,7 +1137,11 @@ void Afb_ceex21_wtd()
   PlotSame2(HAfb8_vT_Ceex2, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), ceex2");
   PlotSame2(HAfb8_vT_Ceex1, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), ceex1");
 
-  CaptT->DrawLatex(0.30, 0.95, "  |cos(#theta)| < 1 ");
+  if( IFItoggle){
+    CaptT->DrawLatex(0.20, 0.95, " KKMC CEEX, IFI on,  |cos(#theta)| < 1 ");
+  } else {
+	CaptT->DrawLatex(0.20, 0.95, " KKMC CEEX, IFI off, |cos(#theta)| < 1 ");
+  }
   //********************************************************************************
   cAfb_ceex21_wtd->cd(2);
   HST = HAfb9_vT_Ceex21;
@@ -1147,9 +1152,9 @@ void Afb_ceex21_wtd()
   HST->DrawCopy("h");
 
   ycapt =0.33;
-  PlotSame2(HAfb9_vT_Ceex21,       ycapt,  kBlack,   0.100, "(a)", "#sqrt{s}=94.3GeV");
-  PlotSame2(HAfb8_vT_Ceex21,       ycapt,  kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
-  PlotSame2(HAfb_Diff_vT_Ceex21,   ycapt,  kRed,     0.035, "(c)", "= (a) - (b) ");
+  PlotSame2(HAfb9_vT_Ceex21,       ycapt,  kBlack,   0.18, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(HAfb8_vT_Ceex21,       ycapt,  kBlue,    0.14, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(HAfb_Diff_vT_Ceex21,   ycapt,  kRed,     0.10, "(c)", "= (a) - (b) ");
 
   TH1D *hZero      = (TH1D*)HST->Clone("hZero");      // zero line
   TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
@@ -1161,19 +1166,116 @@ void Afb_ceex21_wtd()
     }// for i
   hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
   hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
-  CaptT->DrawLatex(0.12,0.62," #delta#alpha/#alpha = 10^{-4}");
+  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
 
-  if( IFItoggle){
-  CaptT->DrawLatex(0.10, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}), IFI on ");
-  } else {
-  CaptT->DrawLatex(0.10, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}), IFI off ");
-  }// if IFItoggle
+  CaptT->DrawLatex(0.20, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max})");
 
   cAfb_ceex21_wtd->SaveAs("cAfb_ceex21_wtd.pdf");
 
   cAfb_ceex21_wtd->cd();
 //
 }// Afb_ceex21_wtd
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void Afb_eex32_wtd()
+{// New!!!
+//------------------------------------------------------------------------
+  cout<<" ========================= Afb_eex32_wtd =========================== "<<endl;
+  int IFItoggle = 0;
+  //--------------------------
+  // AFB with v_true and costhetaPL
+  TH1D *hst8_vT_EEX2    = (TH1D*)DiskFileA88.Get("hst_vT_EEX2");    // total EEX2
+  TH1D *hst8_vT_EEX2_F  = (TH1D*)DiskFileA88.Get("hst_vT_EEX2_F");  // total EEX2 Forward
+  TH1D *hst8_vT_EEX3    = (TH1D*)DiskFileA88.Get("hst_vT_EEX3");    // total EEX3
+  TH1D *hst8_vT_EEX3_F  = (TH1D*)DiskFileA88.Get("hst_vT_EEX3_F");  // total EEX3 Forward
+  TH1D *hst8_vT_EEX32   = (TH1D*)DiskFileA88.Get("hst_vT_EEX32");   // total EEX3-EEX2
+  TH1D *hst8_vT_EEX32_F = (TH1D*)DiskFileA88.Get("hst_vT_EEX32_F"); // EEX3-EEX2 Forward
+  //
+  TH1D *hst9_vT_EEX2    = (TH1D*)DiskFileA95.Get("hst_vT_EEX2");    // total EEX2
+  TH1D *hst9_vT_EEX2_F  = (TH1D*)DiskFileA95.Get("hst_vT_EEX2_F");  // total EEX2 Forward
+  TH1D *hst9_vT_EEX3    = (TH1D*)DiskFileA95.Get("hst_vT_EEX3");    // total EEX3
+  TH1D *hst9_vT_EEX3_F  = (TH1D*)DiskFileA95.Get("hst_vT_EEX3_F");  // total EEX3 Forward
+  TH1D *hst9_vT_EEX32   = (TH1D*)DiskFileA95.Get("hst_vT_EEX32");   // total EEX3-EEX2
+  TH1D *hst9_vT_EEX32_F = (TH1D*)DiskFileA95.Get("hst_vT_EEX32_F"); // EEX3-EEX2 Forward
+  //------------------------------
+  // Exact formula for AFB from weight differences
+  TH1D *HAfb8_vT_EEX32 = HstAFB4( "HAfb_vT_EEX32", hst8_vT_EEX32_F, hst8_vT_EEX32, hst8_vT_EEX3_F, hst8_vT_EEX3 );
+  TH1D *HAfb9_vT_EEX32 = HstAFB4( "HAfb_vT_EEX32", hst9_vT_EEX32_F, hst9_vT_EEX32, hst9_vT_EEX3_F, hst9_vT_EEX3 );
+//--------------------
+  TH1D *HAfb_Diff_vT_EEX32   = HstDiff("HAfb_Diff_vT_EEX32", HAfb9_vT_EEX32, HAfb8_vT_EEX32,  kRed);
+  //HAfb_Diff_vT_EEX32->SetLineWidth(2);
+//
+  TH1D *HAfb9_vT_EEX3 = HstAFB("HAfb9_vT_EEX3",hst9_vT_EEX3_F,hst9_vT_EEX3);
+  TH1D *HAfb8_vT_EEX3 = HstAFB("HAfb8_vT_EEX3",hst8_vT_EEX3_F,hst8_vT_EEX3);
+  HAfb8_vT_EEX3->Scale(-1.0);
+  TH1D *HAfb9_vT_EEX2 = HstAFB("HAfb9_vT_EEX2",hst9_vT_EEX2_F,hst9_vT_EEX2);
+  TH1D *HAfb8_vT_EEX2 = HstAFB("HAfb8_vT_EEX2",hst8_vT_EEX2_F,hst8_vT_EEX2);
+  HAfb8_vT_EEX2->Scale(-1.0);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfb_eex32_wtd = new TCanvas("cAfb_eex32_wtd","cAfb_eex32_wtd", gXcanv,  gYcanv,   1200,  600);
+  //                                                 Name    Title            xoff,    yoff,  WidPix, HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfb_eex32_wtd->SetFillColor(10);
+  cAfb_eex32_wtd->Divide( 2,  0);
+  //********************************************************************************
+  cAfb_eex32_wtd->cd(1);
+
+  TH1D *HST = HAfb9_vT_EEX3;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->SetMinimum(0.15);HST->SetMaximum(0.35);
+  HST->DrawCopy("h");
+
+  double ycapt =0.63;
+  PlotSame2(HAfb9_vT_EEX3, ycapt, kBlue,  0.010, "(a)", "A_{FB}(v_{max},s_{+}), EEX3");
+  PlotSame2(HAfb9_vT_EEX2, ycapt, kBlack, 0.025, "(b)", "A_{FB}(v_{max},s_{+}), EEX2");
+  //
+  PlotSame2(HAfb8_vT_EEX3, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), EEX3");
+  PlotSame2(HAfb8_vT_EEX2, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), EEx2");
+
+  CaptT->DrawLatex(0.20, 0.95, " KKMC EEX without IFI,  |cos(#theta)| < 1, ");
+  //********************************************************************************
+  cAfb_eex32_wtd->cd(2);
+  HST = HAfb9_vT_EEX32;
+
+  HST->SetTitle(0); HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->SetMaximum( 1.0e-4); HST->SetMinimum(-1.0e-4);
+  HST->DrawCopy("h");
+
+  ycapt =0.33;
+  PlotSame2(HAfb9_vT_EEX32,       ycapt,  kBlack,   0.18, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(HAfb8_vT_EEX32,       ycapt,  kBlue,    0.14, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(HAfb_Diff_vT_EEX32,   ycapt,  kRed,     0.10, "(c)", "= (a) - (b) ");
+
+  TH1D *hZero      = (TH1D*)HST->Clone("hZero");      // zero line
+  TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus"); //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }// for i
+  hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+  hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
+  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
+
+  CaptT->DrawLatex(0.20, 0.95, "#delta A_{FB}(v_{max})= A^{eex3}_{FB}(v_{max}) - A^{eex2}_{FB}(v_{max})");
+
+  cAfb_eex32_wtd->SaveAs("cAfb_eex32_wtd.pdf");
+
+  cAfb_eex32_wtd->cd();
+//
+}// Afb_eex32_wtd
 
 
 
@@ -1231,9 +1333,10 @@ int main(int argc, char **argv)
   AfbIFI_KKmc2();
   AfbIFI_KKmc4();
   }
-  Afb_ceex21();
-  //
-  Afb_ceex21_wtd();  // using wt differences
+  // new plots on ISR
+  //Afb_ceex21();
+  //Afb_ceex21_wtd(); // using wt differences
+  //Afb_eex32_wtd();  // using wt differences
   //
   // Template empty canvas  with 2 figures
   //FigTempl();
