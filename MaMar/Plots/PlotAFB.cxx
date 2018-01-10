@@ -30,8 +30,8 @@ using namespace std;
 // New MainKKMC
 //TFile DiskFileA("../workKKMC/histo.root");  // current
 //
-TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+//TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
+TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 // Archive
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); // newest!
@@ -573,13 +573,13 @@ void Fig_vT_Ceex21()
   //gPad->SetLogy(); // !!!!!!
 
   TH1D *Hst = HAfb_vT_Ceex21;
-  Hst->SetStats(0);
+//  Hst->SetStats(0);
   Hst->SetTitle(0);
 //  Hst->SetMaximum( 0.3e-3); Hst->SetMinimum(-0.3e-3);
   Hst->SetMaximum( 1.0e-4); Hst->SetMinimum(-1.0e-4);
   Hst->GetXaxis()->SetTitleSize(0.05);
   //Hst->GetXaxis()->SetTitle("v_{max}");
-  Hst->GetXaxis()->SetTitle("v_{max,ALEPH}");
+  Hst->GetXaxis()->SetTitle("v_{max}");
   Hst->DrawCopy("h");
 
   hZero->SetLineColor(kBlack);

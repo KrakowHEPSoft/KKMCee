@@ -929,9 +929,10 @@ void AfbIFI_KKmc4()
   Ddiff->SetTitle(0); Ddiff->SetStats(0);
 //  Ddiff->SetMaximum( 0.002); Ddiff->SetMinimum(-0.003);
   Ddiff->SetMaximum( 0.0002); Ddiff->SetMinimum(-0.0003);
+  Ddiff->SetLineColor(kBlack);
   Ddiff->DrawCopy("h");
 
-  CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{IFI}_{FB}(v_{max})");
+  CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{IFI}_{FB}(v_{max}),    |cos(#theta)|<0.90");
   ycapt =0.50;
   //Hafb95_IFI2m1->Scale(10);
   //Hafb88_IFI2m1->Scale(10);
@@ -945,6 +946,18 @@ void AfbIFI_KKmc4()
   //
   //PlotSame2(Hafb95_IFI2m0, ycapt, kMagenta, 0.11, "(c+)", "O(#alpha^{2})-O(#alpha^{0}) ");
   //PlotSame2(Hafb88_IFI2m0, ycapt, kBrune,   0.19, "(c-)", "O(#alpha^{2})-O(#alpha^{0}) ");
+
+  TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");      // zero line
+  TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus"); //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }// for i
+  hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+  hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
+  CaptT->DrawLatex(0.12,0.50," #delta#alpha/#alpha = 10^{-4}");
 
   cAfbIFI_KKmc4->cd();
 
@@ -1005,9 +1018,6 @@ void Afb_ceex21()
   TH1D *Ddiff = Hafb9_xmax_ceex21;
   Ddiff->SetLineColor(kBlack);
 
-//  TH1D *hZero = (TH1D*)Hafb8_vTcPL_Ceex2->Clone("hZero");  // zero line
-//  for(int i=1; i <= hZero->GetNbinsX() ; i++) { hZero->SetBinContent(i, 0); hZero->SetBinError(i, 0);}
-
   TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");  // zero line
   TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus");  //
@@ -1016,7 +1026,7 @@ void Afb_ceex21()
     hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
     hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
     }
-
+  //
   Ddiff->SetTitle(0);
   Ddiff->SetStats(0);
 
@@ -1026,13 +1036,13 @@ void Afb_ceex21()
   CaptT->SetTextColor(kBlack);
   CaptT->DrawLatex(0.01, 0.95, "  #delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}) ");
   ycapt =0.33;
-  PlotSame2(Hafb9_xmax_ceex21, ycapt, kBlack,   0.045, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(Hafb9_xmax_ceex21, ycapt, kBlack,   0.100, "(a)", "#sqrt{s}=94.3GeV");
   PlotSame2(Hafb8_xmax_ceex21, ycapt, kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
-  PlotSame2(HafbDifPat_xmax,   ycapt, kRed,     0.035, "(e)", "= (a) - (b) ");
+  PlotSame2(HafbDifPat_xmax,   ycapt, kRed,     0.035, "(c)", "= (a) - (b) ");
   //
   hZero->DrawCopy("hsame");
-  hZeroPlus->DrawCopy("hsame");
-  hZeroMinus->DrawCopy("hsame");
+  hZeroPlus->SetLineStyle(9);   hZeroPlus->DrawCopy("hsame");
+  hZeroMinus->SetLineStyle(9);  hZeroMinus->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
 
@@ -1044,78 +1054,126 @@ void Afb_ceex21()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigTest1()
-{// Obsolete test
+void Afb_ceex21_wtd()
+{// New!!!
 //------------------------------------------------------------------------
-  cout<<" ========================= FigTest1 =========================== "<<endl;
-  //
+  cout<<" ========================= Afb_ceex21_wtd =========================== "<<endl;
+  int IFItoggle = 0;
+  //--------------------------
+  TH1D *hst8_vT_Ceex1, *hst8_vT_Ceex1_F, *hst8_vT_Ceex2, *hst8_vT_Ceex2_F, *hst8_vT_Ceex21, *hst8_vT_Ceex21_F;
+  TH1D *hst9_vT_Ceex1, *hst9_vT_Ceex1_F, *hst9_vT_Ceex2, *hst9_vT_Ceex2_F, *hst9_vT_Ceex21, *hst9_vT_Ceex21_F;
+  if( IFItoggle ){
   // AFB with v_true and costhetaPL
-  TH1D *hst8_vT_Ceex1    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1");    // total CEEX1
-  TH1D *hst8_vT_Ceex2    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2");    // total CEEX2
-  TH1D *hst8_vT_Ceex2_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
-  TH1D *hst8_vT_Ceex21   = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21");   // total CEEX2
-  TH1D *hst8_vT_Ceex21_F = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+  hst8_vT_Ceex1    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1");    // total CEEX1
+  hst8_vT_Ceex1_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1_F");  // total CEEX1
+  hst8_vT_Ceex2    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2");    // total CEEX2
+  hst8_vT_Ceex2_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
+  hst8_vT_Ceex21   = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21");   // total CEEX2
+  hst8_vT_Ceex21_F = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+  //
+  hst9_vT_Ceex1    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1");    // total CEEX1
+  hst9_vT_Ceex1_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1_F");   // total CEEX1
+  hst9_vT_Ceex2    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2");    // total CEEX2
+  hst9_vT_Ceex2_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
+  hst9_vT_Ceex21   = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21");   // total CEEX2
+  hst9_vT_Ceex21_F = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
+  } else {
+  // AFB with v_true and costhetaPL
+  hst8_vT_Ceex1    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1n");    // total CEEX1
+  hst8_vT_Ceex1_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex1n_F");  // total CEEX1
+  hst8_vT_Ceex2    = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2n");    // total CEEX2
+  hst8_vT_Ceex2_F  = (TH1D*)DiskFileA88.Get("hst_vT_Ceex2n_F");  // total CEEX2 Forward
+  hst8_vT_Ceex21   = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21n");   // total CEEX2
+  hst8_vT_Ceex21_F = (TH1D*)DiskFileA88.Get("hst_vT_Ceex21n_F"); // CEEX2-CEEX1 Forward
+  //
+  hst9_vT_Ceex1    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1n");    // total CEEX1
+  hst9_vT_Ceex1_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1n_F");   // total CEEX1
+  hst9_vT_Ceex2    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2n");    // total CEEX2
+  hst9_vT_Ceex2_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2n_F");  // total CEEX2 Forward
+  hst9_vT_Ceex21   = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21n");   // total CEEX2
+  hst9_vT_Ceex21_F = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21n_F"); // CEEX2-CEEX1 Forward
+  }// if IFItoggle
+//------------------------------
   // Exact formula for AFB from weight differences
   TH1D *HAfb8_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst8_vT_Ceex21_F, hst8_vT_Ceex21, hst8_vT_Ceex2_F, hst8_vT_Ceex2 );
-  //
-  TH1D *hst9_vT_Ceex1    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex1");    // total CEEX1
-  TH1D *hst9_vT_Ceex2    = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2");    // total CEEX2
-  TH1D *hst9_vT_Ceex2_F  = (TH1D*)DiskFileA95.Get("hst_vT_Ceex2_F");  // total CEEX2 Forward
-  TH1D *hst9_vT_Ceex21   = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21");   // total CEEX2
-  TH1D *hst9_vT_Ceex21_F = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21_F"); // CEEX2-CEEX1 Forward
-  // Exact formula for AFB from weight differences
   TH1D *HAfb9_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst9_vT_Ceex21_F, hst9_vT_Ceex21, hst9_vT_Ceex2_F, hst9_vT_Ceex2 );
+//--------------------
+  TH1D *HAfb_Diff_vT_Ceex21   = HstDiff("HAfb_Diff_vT_Ceex21", HAfb9_vT_Ceex21, HAfb8_vT_Ceex21,  kRed);
+  //HAfb_Diff_vT_Ceex21->SetLineWidth(2);
+//
+  TH1D *HAfb9_vT_Ceex2 = HstAFB("HAfb9_vT_Ceex2",hst9_vT_Ceex2_F,hst9_vT_Ceex2);
+  TH1D *HAfb8_vT_Ceex2 = HstAFB("HAfb8_vT_Ceex2",hst8_vT_Ceex2_F,hst8_vT_Ceex2);
+  HAfb8_vT_Ceex2->Scale(-1.0);
+  TH1D *HAfb9_vT_Ceex1 = HstAFB("HAfb9_vT_Ceex1",hst9_vT_Ceex1_F,hst9_vT_Ceex1);
+  TH1D *HAfb8_vT_Ceex1 = HstAFB("HAfb8_vT_Ceex1",hst8_vT_Ceex1_F,hst8_vT_Ceex1);
+  HAfb8_vT_Ceex1->Scale(-1.0);
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cTempl = new TCanvas("cTempl","cTempl", gXcanv,  gYcanv,   1200,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  TCanvas *cAfb_ceex21_wtd = new TCanvas("cAfb_ceex21_wtd","cAfb_ceex21_wtd", gXcanv,  gYcanv,   1200,  600);
+  //                                                 Name    Title            xoff,    yoff,  WidPix, HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
-  cTempl->SetFillColor(10);
-  cTempl->Divide( 2,  0);
-  //cTempl->Divide( 2,  0,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
-  //////////////////////////////////////////////
-  cTempl->cd(1);
-  TH1D *HST = HAfb9_vT_Ceex21;
+  cAfb_ceex21_wtd->SetFillColor(10);
+  cAfb_ceex21_wtd->Divide( 2,  0);
+  //********************************************************************************
+  cAfb_ceex21_wtd->cd(1);
 
-  TH1D *hZero      = (TH1D*)HST->Clone("hZero");  // zero line
-  TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
-  TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus");  //
-  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
-    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
-    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
-    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
-    }
+  TH1D *HST = HAfb9_vT_Ceex2;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("v_{max}");
+  HST->SetMinimum(0.15);HST->SetMaximum(0.35);
+  HST->DrawCopy("h");
+
+  double ycapt =0.63;
+  PlotSame2(HAfb9_vT_Ceex2, ycapt, kBlue,  0.010, "(a)", "A_{FB}(v_{max},s_{+}), ceex2");
+  PlotSame2(HAfb9_vT_Ceex1, ycapt, kBlack, 0.025, "(b)", "A_{FB}(v_{max},s_{+}), ceex1");
+  //
+  PlotSame2(HAfb8_vT_Ceex2, ycapt, kBlue,  0.050, "(c)", "-A_{FB}(v_{max},s_{-}), ceex2");
+  PlotSame2(HAfb8_vT_Ceex1, ycapt, kBlack, 0.070, "(d)", "-A_{FB}(v_{max},s_{-}), ceex1");
+
+  CaptT->DrawLatex(0.30, 0.95, "  |cos(#theta)| < 1 ");
+  //********************************************************************************
+  cAfb_ceex21_wtd->cd(2);
+  HST = HAfb9_vT_Ceex21;
 
   HST->SetTitle(0); HST->SetStats(0);
   HST->GetXaxis()->SetTitle("v_{max}");
   HST->SetMaximum( 1.0e-4); HST->SetMinimum(-1.0e-4);
   HST->DrawCopy("h");
-  double ycapt =0.40;
-  PlotSame2(HAfb8_vT_Ceex21, ycapt,  kBlue,    0.010, "(a)", "(ceex2-ceex1)/ceex2, 88GeV");
-  PlotSame2(HAfb9_vT_Ceex21, ycapt,  kBlack,   0.040, "(b)", "(ceex2-ceex1)/ceex2, 95GeV");
-  //
-  hZero->DrawCopy("hsame");
-  hZeroPlus->DrawCopy("hsame");
-  hZeroMinus->DrawCopy("hsame");
 
-  //-------------------------------------
-  cTempl->cd(2);
-/*
-  HST = Hsig9_ceex21F;
-  HST->SetTitle(0); HST->SetStats(0);
-  HST->GetXaxis()->SetTitle("v_{max}");
-  //HST->DrawCopy("h");
-  ycapt =0.70;
-  PlotSame2(Hsig8_ceex21F, ycapt, kRed,     0.020, "(c)", "(ceex2F-ceex1F)/ceex2, 88GeV");
-  PlotSame2(Hsig9_ceex21F, ycapt, kMagenta, 0.050, "(d)", "(ceex2F-ceex1F)/ceex2, 95GeV");
-  */
-  cTempl->cd();
+  ycapt =0.33;
+  PlotSame2(HAfb9_vT_Ceex21,       ycapt,  kBlack,   0.100, "(a)", "#sqrt{s}=94.3GeV");
+  PlotSame2(HAfb8_vT_Ceex21,       ycapt,  kBlue,    0.070, "(b)", "#sqrt{s}=87.9GeV");
+  PlotSame2(HAfb_Diff_vT_Ceex21,   ycapt,  kRed,     0.035, "(c)", "= (a) - (b) ");
+
+  TH1D *hZero      = (TH1D*)HST->Clone("hZero");      // zero line
+  TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
+  TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus"); //
+  for(int i=1; i <= hZero->GetNbinsX() ; i++) {
+    hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    }// for i
+  hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+  hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
+  CaptT->DrawLatex(0.12,0.62," #delta#alpha/#alpha = 10^{-4}");
+
+  if( IFItoggle){
+  CaptT->DrawLatex(0.10, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}), IFI on ");
+  } else {
+  CaptT->DrawLatex(0.10, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max}), IFI off ");
+  }// if IFItoggle
+
+  cAfb_ceex21_wtd->SaveAs("cAfb_ceex21_wtd.pdf");
+
+  cAfb_ceex21_wtd->cd();
 //
-}// FigTest1
+}// Afb_ceex21_wtd
 
 
 
@@ -1175,7 +1233,7 @@ int main(int argc, char **argv)
   }
   Afb_ceex21();
   //
-  FigTest1();  // obsolete test
+  Afb_ceex21_wtd();  // using wt differences
   //
   // Template empty canvas  with 2 figures
   //FigTempl();
