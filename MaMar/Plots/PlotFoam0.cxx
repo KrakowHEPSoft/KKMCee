@@ -33,11 +33,16 @@ using namespace std;
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
-TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
+//TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+//
+TFile DiskFileA("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+//
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
 //
 // Sept. 2017 runs
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_12G");  //
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // for IFI off still OK
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
@@ -45,8 +50,8 @@ TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
 ////  *** FOAM
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Dec 2017 run
-TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 // Sept. 2017 runs OBSOLETE
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G"); // OBSOLETE
@@ -458,7 +463,7 @@ void FigAfb0()
   Hst21_diff0->GetXaxis()->SetTitle("v_{max}");
   Hst21_diff0->DrawCopy("h");
 
-  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  CaptT->DrawLatex(0.06,0.95, "#delta A_{FB}(v_{max}) ");
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
 
@@ -583,7 +588,7 @@ void FigAfb2()
   Hst21_diff->GetXaxis()->SetTitle("v_{max}");
   Hst21_diff->DrawCopy("h");
 
-  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  CaptT->DrawLatex(0.06,0.95, "#delta A_{FB}(v_{max}) ");
   ycapt = 0.99; // starting value, to be decremented below
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
@@ -779,7 +784,7 @@ void FigSigAfb0()
 //  PlotSame2(HstTech0_ratio3, ycapt, kBlue,     0.16, "(d)", "FOAM5.0/KKsem.0 IFIon");
 
   hOne2->DrawCopy("hsame");
-  CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max}) ");
+  CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max})/#sigma^{KKsem}(v_{max}) ");
 
   //====================plot2========================
   cFigSigAfb0->cd(2);
@@ -794,7 +799,7 @@ void FigSigAfb0()
   HstTech0_diff->GetXaxis()->SetTitle("v_{max}");
   HstTech0_diff->DrawCopy("h");
 
-  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
+  CaptT->DrawLatex(0.00,0.96,"#delta A_{FB}^{IFIoff}(v_{max})");
   //
   ycapt = 0.35; // starting value, to be decremented below
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
@@ -896,7 +901,7 @@ void FigSigAfb2()
   hOne->SetLineColor(kBlack);
   hOne->DrawCopy("hsame");
 
-  CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max}) ");
+  CaptT->DrawLatex(0.00,0.96,"#sigma^{IFIoff}(v_{max})/#sigma^{KKsem}(v_{max}) ");
 
   //====================plot2========================
   cFigSigAfb2->cd(2);
@@ -913,7 +918,7 @@ void FigSigAfb2()
   HstTech_diff->GetXaxis()->SetTitle("v_{max}");
   HstTech_diff->DrawCopy("h");
 
-  CaptT->DrawLatex(0.00,0.96,"A_{FB}^{IFIoff}(v_{max})");
+  CaptT->DrawLatex(0.00,0.96,"#delta A_{FB}^{IFIoff}(v_{max})");
   ycapt = 0.35; // starting value, to be decremented below
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
   PlotSame2(HstTech_diff4,   ycapt, kBlue,     0.120, "(a)", "KKMC_EEX2  - KKsem2 IFIoff ");
@@ -982,7 +987,6 @@ int main(int argc, char **argv)
   TestNorm();          // special test of normalizaion
   HisReMakeKKMC(  &DiskFileA, gNbMax, gNbMax2);   // reprocessing MC histos from KKC
   HisReMakeFoam35(&DiskFileF, gNbMax, gNbMax2);   // reprocessing MC histos from Foam
-
   KKsemMakeHisto();    // prepare histos from KKsem
 //========== PLOTTING ==========
 // vmax=1, sigma(v) and sigma(vmax) KKMC/Foam
@@ -990,7 +994,7 @@ int main(int argc, char **argv)
   FigInfo();     // weight distribution
   FigAfb0();     // vmax =0.2
   FigAfb2();     // vmax =0.2
-  FigAfb20();    // vmax =1.0
+  //FigAfb20();    // vmax =1.0
   FigSigAfb2();  // vmax =0.2
   FigSigAfb0();  // vmax =0.2
   //++++++++++++++++++++++++++++++++++++++++

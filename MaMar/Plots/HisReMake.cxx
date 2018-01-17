@@ -119,6 +119,7 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
   TH1D  *HTot_vTcPL_Ceex0 = HstProjV("HTot_vTcPL_Ceex0",sca_vTcPL_Ceex0,NbMax2);
   TH1D  *HAfb_vTcPL_Ceex0 = HstProjA("HAfb_vTcPL_Ceex0",sca_vTcPL_Ceex0,NbMax2);
   //
+  cout<<"[1]"<<endl;
   TH1D  *HTot_vTcPL_Ceex0n = HstProjV("HTot_vTcPL_Ceex0n",sca_vTcPL_Ceex0n,NbMax2);
   TH1D  *HAfb_vTcPL_Ceex0n = HstProjA("HAfb_vTcPL_Ceex0n",sca_vTcPL_Ceex0n,NbMax2);
   //****************************************************************************************
@@ -131,14 +132,17 @@ void HisReMakeKKMC(TFile *DiskFileA, int NbMax, int NbMax2){
   TH1D *Hpro_vT_Ceex2n;
   ProjX1(sca_vTcPR_Ceex2n, Hpro_vT_Ceex2n);
   Hpro_vT_Ceex2n->SetName("Hpro_vT_Ceex2n");
+  cout<<"[2]"<<endl;
 
+  /*
   ///****************************************************************************************
   //      AFB from <cos(theta)>
   TH1D *AfbT_Ceex2  = HstTildeAFB("AfbT_Ceex2", (TH1D*)DiskFileA->Get("hst_vT_Ceex2_xcPL"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2")   );
   TH1D *AfbT_Ceex2n = HstTildeAFB("AfbT_Ceex2n",(TH1D*)DiskFileA->Get("hst_vT_Ceex2n_xcPL"),
                                                 (TH1D*)DiskFileA->Get("hst_vT_Ceex2n")  );
-
+  */
+  cout<<"[3]"<<endl;
   //[[[[[[[[[[[[[[[[[[ new
   ///****************************************************************************************
   //   Xcheck for   AFB=(F-B)/(F+B)

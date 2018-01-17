@@ -32,8 +32,12 @@ using namespace std;
 //=============================================================================
 ////  *** KKMC
 //TFile DiskFileA("../workKKMC/histo.root");
+// Jan. 2018
+//TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
+TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 //
-TFile DiskFileA("../workKKMC/histo.root_88GeV_6G");  // jan.2018
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_6G");  // jan.2018
 //
 // Sept. 2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
@@ -51,11 +55,13 @@ TFile DiskFileA("../workKKMC/histo.root_88GeV_6G");  // jan.2018
 ////  *** FOAM 5dim
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Dec 2017 run
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 // Sept. 2017 runs
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");  // last
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_57G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_4G");
-TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_15G");
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_28G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_25G");
 
@@ -115,7 +121,7 @@ void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,
   HST->SetLineColor(kolor);
   HST->DrawCopy("hsame");      // Magenta
   CaptT->SetTextColor(kolor);
-  ycapt += -0.04;
+  ycapt += -0.045;
   double xcapt = 0.40;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.05,ycapt, label);
@@ -262,12 +268,13 @@ void FigAfb4()
   double ycapt = 0.90; // starting value, to be decremented below
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextEne);
-  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  CaptT->DrawLatex(0.06,0.95, "#Delta A_{FB}(v_{max}) ");
 
-  PlotSame2(HstPL1_diff,   ycapt, kBlue,      0.020, "(a)", "KKMC:    #tilde{A}_{FB} - A_{FB}, IFIoff ");
-  PlotSame2(HstKF1_diff,   ycapt, kMagenta,   0.030, "(b)", "Foam5:   #tilde{A}_{FB} - A_{FB}, IFIon ");
-  PlotSame2(HstPL0_diff,   ycapt, kBlack,     0.040, "(c)", "KKMC:    #tilde{A}_{FB} - A_{FB}, IFIon ");
-  PlotSame2(HstKFX_diff,   ycapt, kRed,       0.100, "(d)", "KKMC-Foam5:   #tilde{A}_{FB},   IFIon ");
+  PlotSame2(HstPL1_diff,   ycapt, kBlue,    0.080, "(a)", "#Delta A_{FB}=#tilde{A}_{FB} - A_{FB}, KKMC  IFIoff ");
+  PlotSame2(HstKF1_diff,   ycapt, kMagenta, 0.030, "(b)", "#Delta A_{FB}=#tilde{A}_{FB} - A_{FB}, Foam5 IFIon ");
+  PlotSame2(HstPL0_diff,   ycapt, kBlack,   0.040, "(c)", "#Delta A_{FB}=#tilde{A}_{FB} - A_{FB}, KKMC  IFIon ");
+  ycapt += -0.010;
+  PlotSame2(HstKFX_diff,   ycapt, kRed,     0.100, "(d)", "#Delta A_{FB}=#tilde{A}_{FB}^{KKMC}- #tilde{A}_{FB}^{KKfoam}, IFIon ");
 
   hZero2->DrawCopy("hsame");
 

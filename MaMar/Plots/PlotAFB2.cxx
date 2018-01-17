@@ -32,12 +32,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_10G");  // jan.2018
-TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
@@ -932,7 +932,7 @@ void AfbIFI_KKmc4()
   Ddiff->SetLineColor(kBlack);
   Ddiff->DrawCopy("h");
 
-  CaptT->DrawLatex(0.01, 0.95, "KKMC: A^{IFI}_{FB}(v_{max}),    |cos(#theta)|<0.90");
+  CaptT->DrawLatex(0.01, 0.95, "KKMC:    #Delta A^{IFI}_{FB}(v_{max}),    |cos(#theta)|<0.90");
   ycapt =0.50;
   //Hafb95_IFI2m1->Scale(10);
   //Hafb88_IFI2m1->Scale(10);
@@ -1059,7 +1059,7 @@ void Afb_ceex21_wtd()
 {// New!!!
 //------------------------------------------------------------------------
   cout<<" ========================= Afb_ceex21_wtd =========================== "<<endl;
-  int IFItoggle = 0;
+  int IFItoggle = 1;
   //--------------------------
   TH1D *hst8_vT_Ceex1, *hst8_vT_Ceex1_F, *hst8_vT_Ceex2, *hst8_vT_Ceex2_F, *hst8_vT_Ceex21, *hst8_vT_Ceex21_F;
   TH1D *hst9_vT_Ceex1, *hst9_vT_Ceex1_F, *hst9_vT_Ceex2, *hst9_vT_Ceex2_F, *hst9_vT_Ceex21, *hst9_vT_Ceex21_F;
@@ -1180,10 +1180,9 @@ void Afb_ceex21_wtd()
 
 ///////////////////////////////////////////////////////////////////////////////////
 void Afb_eex32_wtd()
-{// New!!!
+{
 //------------------------------------------------------------------------
   cout<<" ========================= Afb_eex32_wtd =========================== "<<endl;
-  int IFItoggle = 0;
   //--------------------------
   // AFB with v_true and costhetaPL
   TH1D *hst8_vT_EEX2    = (TH1D*)DiskFileA88.Get("hst_vT_EEX2");    // total EEX2
@@ -1316,7 +1315,6 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   HistNormalize();     // Renormalization of MC histograms
-  //KKsemMakeHisto();    // prepare histos for plotting
   ReMakeMChisto();     // reprocessing MC histos
   //========== PLOTTING ==========
   //AfbIFIvA1();
@@ -1334,9 +1332,9 @@ int main(int argc, char **argv)
   AfbIFI_KKmc4();
   }
   // new plots on ISR
-  //Afb_ceex21();
-  //Afb_ceex21_wtd(); // using wt differences
-  //Afb_eex32_wtd();  // using wt differences
+  Afb_ceex21();
+  Afb_ceex21_wtd(); // using wt differences
+  Afb_eex32_wtd();  // using wt differences
   //
   // Template empty canvas  with 2 figures
   //FigTempl();

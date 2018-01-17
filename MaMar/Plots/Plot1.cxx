@@ -32,11 +32,8 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
 TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); // Jan. 2018
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_7G"); // Jan. 2018
 //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 //////  *** KKFOAM, bacis xcheck including IFI
@@ -1006,12 +1003,13 @@ void FigCosThe()
 
   cFigCosThe->cd();
 
-  TH1D *Hst=Hcth_vTcPR_Ceex2_vmax02;
+  TH1D *Hst=Hcth_vTcPR_Ceex2n_vmax02;
+
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->CenterTitle();
-  Hst->GetYaxis()->SetTitleSize(0.04);
-  Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
+  //Hst->GetYaxis()->SetTitleSize(0.04);
+  //Hst->GetYaxis()->SetTitle("d#sigma/dcos(#theta) [nb]");
   Hst->GetXaxis()->SetTitleSize(0.04);
   Hst->GetXaxis()->SetTitle("cos(#theta)");
 
@@ -1023,6 +1021,8 @@ void FigCosThe()
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   PlotSame2(Hcth_vTcPR_Ceex2_vmax02,  ycapt, kBlue,   +0.80, "(a)", "KKMC, IFI on ");
   PlotSame2(Hcth_vTcPR_Ceex2n_vmax02, ycapt, kBlack,  -0.80, "(b)", "KKMC, IFI off ");
+
+  CaptT->DrawLatex(0.00,0.96,"d#sigma/d(cos #theta)");
 
   //================================================
 }//FigCosThe
@@ -1246,19 +1246,18 @@ int main(int argc, char **argv)
   cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
   //cout<< "FOAM: No. of farm nodes="<< Nodes2 << "  Tot no. of events = "<<gNevTot2<<endl;
 //////////////////////////////////////////////////////////////////////////
-
+//
   HistNormalize();     // Renormalization of MC histograms
   ReMakeKKMC();        // reprocessing KKMC histos
-  //
-  KKsemMakeHisto();    // prepare histos from KKsem
   HisReMakeFoam35();   // prepare histos from KKfoam
+  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
   //FigScatA();
   //FigInfo();
 
-  FigVtest();  // introduct. tests/calibrations
-  FigCtest();  // introduct. tests/calibrations
+  //FigVtest();  // introduct. tests/calibrations
+  //FigCtest();  // introduct. tests/calibrations
 
   FigVprod();
   FigCprod();
@@ -1266,7 +1265,7 @@ int main(int argc, char **argv)
   FigCosThe();
   FigCosThe2();
   //
-  FigCtheSoft();
+  //FigCtheSoft();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
