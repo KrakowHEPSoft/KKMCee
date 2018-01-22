@@ -32,12 +32,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // Latest from /workKKMC
-TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-//TFile DiskFileA95("../workKKMC/histo.root_95GeV_10G");  // jan.2018
-//TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_13G");  // jan.2018
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
@@ -706,70 +706,6 @@ void AfbIFI_Foam()
 
 
 
-///////////////////////////////////////////////////////////////////////////////////
-void AfbDifPat()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= AfbDifPat =========================== "<<endl;
-  ////////////////////////////////////////////////////////////////////////////////
-  TH1D *HDifPat_vTcPL     = (TH1D*)DiskFileB.Get("HDifPat_vTcPL");
-  TH1D *HDifPat_xmax      = (TH1D*)DiskFileB.Get("HDifPat_xmax");
-  TH1D *Hafb9m8_IFI_ceex2 = (TH1D*)DiskFileB.Get("Hafb9m8_IFI_ceex2");
-  Hafb9m8_IFI_ceex2->Scale(2.0);
-
-  TH1D *Hafb_IFI_diff_Pat = HstDiff("Hafb_IFI_diff_Pat", HDifPat_vTcPL, HDifPat_xmax,  kRed);
-  //
-  TH1D *Hafb_IFI_rat_Pat= HstRatio("Hafb_IFI_rat_Pat", Hafb_IFI_diff_Pat, Hafb9m8_IFI_ceex2, kBlack);
-  //
-  HDifPat_vTcPL->Scale(0.10);
-  HDifPat_xmax->Scale(0.10);
-  //
-  TH1D *hZero7 = (TH1D*)HDifPat_xmax->Clone("hZero7");  // zero line
-  for(int i=1; i <= hZero7->GetNbinsX() ; i++) { hZero7->SetBinContent(i, 0); hZero7->SetBinError(i, 0);}
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-
-  ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cAfbDifPat = new TCanvas("cAfbDifPat","cAfbDifPat", gXcanv,  gYcanv,   600,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
-  gXcanv += 50; gYcanv += 50;
-  cAfbDifPat->SetFillColor(10);
-
-  cAfbDifPat->cd();
-
-  TH1D *HDif1 = HDifPat_vTcPL;
-//  HDif1->SetMaximum( 0.0006); HDif1->SetMinimum(-0.0012);
-  HDif1->SetMaximum( 0.0005); HDif1->SetMinimum(-0.0009);
-
-  HDif1->SetTitle(0); HDif1->SetStats(0);
-  HDif1->GetXaxis()->SetTitle("v_{max}");
-
-  HDif1->DrawCopy("h");
-
-  double ycapt =0.90;
-  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKMC");
-  PlotSame2(HDifPat_xmax,      ycapt, kRed,   0.120, "(b)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
-  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kBlue,  0.010, "(c)", "= #Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
-  //
-  //PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "= #Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
-
-  HDifPat_xmax->DrawCopy("hsame");
-
-  hZero7->SetLineColor(kBlack);
-  hZero7->DrawCopy("hsame");
-
-  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}^{IFI}(v_{max}) = A_{FB}^{IFI}(v_{max},s_{+} ) - A_{FB}^{IFI}(v_{max},s_{-} )");
-  //
-  cAfbDifPat->cd();
-  cAfbDifPat->SaveAs("cAfbDifPat.pdf");
-
-//
-}// AfbDifPat
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////
 void AfbIFI_KKmc2()
@@ -812,7 +748,9 @@ void AfbIFI_KKmc2()
   TH1D *Hafb9m8_vTcPL_IFI1 = HstDiff("Hafb9m8_vTcPL_IFI1",  Hafb9_vTcPL_IFI1,  Hafb8_vTcPL_IFI1,  kBlack);
   TH1D *Hafb9m8_vTcPL_IFI0 = HstDiff("Hafb9m8_vTcPL_IFI0",  Hafb9_vTcPL_IFI0,  Hafb8_vTcPL_IFI0,  kBlack);
 
-  TH1D *hZero7      = (TH1D*)DiskFileB.Get("hZero7");
+  //
+  TH1D *hZero7 = (TH1D*)Hafb8_vTcPL_Ceex1->Clone("hZero7");  // zero line
+  for(int i=1; i <= hZero7->GetNbinsX() ; i++) { hZero7->SetBinContent(i, 0); hZero7->SetBinError(i, 0);}
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
@@ -933,7 +871,7 @@ void AfbIFI_KKmc4()
   Ddiff->DrawCopy("h");
 
   CaptT->DrawLatex(0.01, 0.95, "KKMC:    #Delta A^{IFI}_{FB}(v_{max}),    |cos(#theta)|<0.90");
-  ycapt =0.50;
+  ycapt =0.48;
   //Hafb95_IFI2m1->Scale(10);
   //Hafb88_IFI2m1->Scale(10);
   PlotSame2(Hafb95_IFI2m1, ycapt, kBlue,   0.07, "(a+)", "=O(#alpha^{2})-O(#alpha^{1}),  #sqrt{s_{+}}");
@@ -953,12 +891,13 @@ void AfbIFI_KKmc4()
   TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus"); //
   for(int i=1; i <= hZero->GetNbinsX() ; i++) {
     hZero->SetBinContent(i, 0);          hZero->SetBinError(i, 0);
-    hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
-    hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
+    hZeroPlus->SetBinContent(i,  0.57e-4*1.10);  hZeroPlus->SetBinError(i, 0);
+    hZeroMinus->SetBinContent(i,-0.57e-4*1.10);  hZeroMinus->SetBinError(i, 0);
     }// for i
   hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+  hZeroPlus->SetLineWidth(2); hZeroMinus->SetLineWidth(2);
   hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
-  CaptT->DrawLatex(0.20,0.50," #delta#alpha/#alpha = 10^{-4}");
+  CaptT->DrawLatex(0.20,0.49," #delta#alpha/#alpha = 1.1x10^{-4}");
 
   cAfbIFI_KKmc4->cd();
 
@@ -980,6 +919,10 @@ void Afb_ceex21()
   //
   TH1D *Hafb8_vTcPL_Ceex2      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2");
   TH1D *Hafb8_vTcPL_Ceex1      = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex1");
+  //
+  TH1D *hZero        = (TH1D*)DiskFileB.Get("hZero");
+  TH1D *hZeroPlus    = (TH1D*)DiskFileB.Get("hZeroPlus");
+  TH1D *hZeroMinus   = (TH1D*)DiskFileB.Get("hZeroMinus");
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
@@ -1018,7 +961,7 @@ void Afb_ceex21()
 
   TH1D *Ddiff = Hafb9_xmax_ceex21;
   Ddiff->SetLineColor(kBlack);
-
+  /*
   TH1D *hZero      = (TH1D*)Ddiff->Clone("hZero");  // zero line
   TH1D *hZeroPlus  = (TH1D*)Ddiff->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)Ddiff->Clone("hZeroMinus");  //
@@ -1027,6 +970,7 @@ void Afb_ceex21()
     hZeroPlus->SetBinContent(i,  3e-5);  hZeroPlus->SetBinError(i, 0);
     hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
     }
+  */
   //
   Ddiff->SetTitle(0);
   Ddiff->SetStats(0);
@@ -1094,6 +1038,7 @@ void Afb_ceex21_wtd()
   hst9_vT_Ceex21   = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21n");   // total CEEX2
   hst9_vT_Ceex21_F = (TH1D*)DiskFileA95.Get("hst_vT_Ceex21n_F"); // CEEX2-CEEX1 Forward
   }// if IFItoggle
+
 //------------------------------
   // Exact formula for AFB from weight differences
   TH1D *HAfb8_vT_Ceex21 = HstAFB4( "HAfb_vT_Ceex21", hst8_vT_Ceex21_F, hst8_vT_Ceex21, hst8_vT_Ceex2_F, hst8_vT_Ceex2 );
@@ -1108,6 +1053,11 @@ void Afb_ceex21_wtd()
   TH1D *HAfb9_vT_Ceex1 = HstAFB("HAfb9_vT_Ceex1",hst9_vT_Ceex1_F,hst9_vT_Ceex1);
   TH1D *HAfb8_vT_Ceex1 = HstAFB("HAfb8_vT_Ceex1",hst8_vT_Ceex1_F,hst8_vT_Ceex1);
   HAfb8_vT_Ceex1->Scale(-1.0);
+
+  //
+  TH1D *hZero        = (TH1D*)DiskFileB.Get("hZero");
+  TH1D *hZeroPlus    = (TH1D*)DiskFileB.Get("hZeroPlus");
+  TH1D *hZeroMinus   = (TH1D*)DiskFileB.Get("hZeroMinus");
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
@@ -1151,11 +1101,11 @@ void Afb_ceex21_wtd()
   HST->SetMaximum( 1.0e-4); HST->SetMinimum(-1.0e-4);
   HST->DrawCopy("h");
 
-  ycapt =0.33;
+  ycapt =0.47;
   PlotSame2(HAfb9_vT_Ceex21,       ycapt,  kBlack,   0.18, "(a)", "#sqrt{s}=94.3GeV");
   PlotSame2(HAfb8_vT_Ceex21,       ycapt,  kBlue,    0.14, "(b)", "#sqrt{s}=87.9GeV");
   PlotSame2(HAfb_Diff_vT_Ceex21,   ycapt,  kRed,     0.10, "(c)", "= (a) - (b) ");
-
+/*
   TH1D *hZero      = (TH1D*)HST->Clone("hZero");      // zero line
   TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus"); //
@@ -1165,8 +1115,10 @@ void Afb_ceex21_wtd()
     hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
     }// for i
   hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+*/
   hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
-  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
+
+  CaptT->DrawLatex(0.12,0.76," #delta#alpha/#alpha = 1.1x10^{-4}");
 
   CaptT->DrawLatex(0.20, 0.95, "#delta A_{FB}(v_{max})= A^{ceex2}_{FB}(v_{max}) - A^{ceex1}_{FB}(v_{max})");
 
@@ -1216,6 +1168,10 @@ void Afb_eex32_wtd()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
+  //
+  TH1D *hZero        = (TH1D*)DiskFileB.Get("hZero");
+  TH1D *hZeroPlus    = (TH1D*)DiskFileB.Get("hZeroPlus");
+  TH1D *hZeroMinus   = (TH1D*)DiskFileB.Get("hZeroMinus");
 
   ////////////////////////////////////////////////////////////////////////////////
   TCanvas *cAfb_eex32_wtd = new TCanvas("cAfb_eex32_wtd","cAfb_eex32_wtd", gXcanv,  gYcanv,   1200,  600);
@@ -1251,11 +1207,11 @@ void Afb_eex32_wtd()
   HST->SetMaximum( 1.0e-4); HST->SetMinimum(-1.0e-4);
   HST->DrawCopy("h");
 
-  ycapt =0.33;
+  ycapt =0.47;
   PlotSame2(HAfb9_vT_EEX32,       ycapt,  kBlack,   0.18, "(a)", "#sqrt{s}=94.3GeV");
   PlotSame2(HAfb8_vT_EEX32,       ycapt,  kBlue,    0.14, "(b)", "#sqrt{s}=87.9GeV");
   PlotSame2(HAfb_Diff_vT_EEX32,   ycapt,  kRed,     0.10, "(c)", "= (a) - (b) ");
-
+/*
   TH1D *hZero      = (TH1D*)HST->Clone("hZero");      // zero line
   TH1D *hZeroPlus  = (TH1D*)HST->Clone("hZeroPlus");  //
   TH1D *hZeroMinus = (TH1D*)HST->Clone("hZeroMinus"); //
@@ -1265,8 +1221,10 @@ void Afb_eex32_wtd()
     hZeroMinus->SetBinContent(i,-3e-5);  hZeroMinus->SetBinError(i, 0);
     }// for i
   hZeroPlus->SetLineStyle(9); hZeroMinus->SetLineStyle(9);
+*/
+
   hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
-  CaptT->DrawLatex(0.12,0.63," #delta#alpha/#alpha = 10^{-4}");
+  CaptT->DrawLatex(0.12,0.76," #delta#alpha/#alpha = 1.1x10^{-4}");
 
   CaptT->DrawLatex(0.20, 0.95, "#delta A_{FB}(v_{max})= A^{eex3}_{FB}(v_{max}) - A^{eex2}_{FB}(v_{max})");
 
@@ -1275,6 +1233,146 @@ void Afb_eex32_wtd()
   cAfb_eex32_wtd->cd();
 //
 }// Afb_eex32_wtd
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void AfbDifPat()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= AfbDifPat =========================== "<<endl;
+  ////////////////////////////////////////////////////////////////////////////////
+  TH1D *HDifPat_vTcPL     = (TH1D*)DiskFileB.Get("HDifPat_vTcPL");
+  TH1D *HDifPat_xmax      = (TH1D*)DiskFileB.Get("HDifPat_xmax");
+  TH1D *Hafb9m8_IFI_ceex2 = (TH1D*)DiskFileB.Get("Hafb9m8_IFI_ceex2");
+  Hafb9m8_IFI_ceex2->Scale(2.0);
+
+  TH1D *Hafb_IFI_diff_Pat = HstDiff("Hafb_IFI_diff_Pat", HDifPat_vTcPL, HDifPat_xmax,  kRed);
+  //
+  TH1D *Hafb_IFI_rat_Pat= HstRatio("Hafb_IFI_rat_Pat", Hafb_IFI_diff_Pat, Hafb9m8_IFI_ceex2, kBlack);
+  //
+  HDifPat_vTcPL->Scale(0.10);
+  HDifPat_xmax->Scale(0.10);
+  //
+  //TH1D *hZero7 = (TH1D*)HDifPat_xmax->Clone("hZero7");  // zero line
+  //for(int i=1; i <= hZero7->GetNbinsX() ; i++) { hZero7->SetBinContent(i, 0); hZero7->SetBinError(i, 0);}
+
+  TH1D *hZero7      = (TH1D*)DiskFileB.Get("hZero7");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfbDifPat = new TCanvas("cAfbDifPat","cAfbDifPat", gXcanv,  gYcanv,   600,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfbDifPat->SetFillColor(10);
+
+  cAfbDifPat->cd();
+
+  TH1D *HDif1 = HDifPat_vTcPL;
+//  HDif1->SetMaximum( 0.0006); HDif1->SetMinimum(-0.0012);
+  HDif1->SetMaximum( 0.0005); HDif1->SetMinimum(-0.0009);
+
+  HDif1->SetTitle(0); HDif1->SetStats(0);
+  HDif1->GetXaxis()->SetTitle("v_{max}");
+
+  HDif1->DrawCopy("h");
+
+  double ycapt =0.90;
+  PlotSame2(HDifPat_vTcPL,     ycapt, kBlack, 0.155, "(a)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKMC");
+  PlotSame2(HDifPat_xmax,      ycapt, kRed,   0.120, "(b)", "= #Delta A_{FB}^{IFI}x10^{-1},  KKFoam");
+  PlotSame2(Hafb_IFI_diff_Pat, ycapt, kBlue,  0.010, "(c)", "= #Delta A_{FB}^{IFI}(a) - #Delta A_{FB}^{IFI}(b)");
+  //
+  //PlotSame2(Hafb_IFI_rat_Pat,  ycapt, kPine,  0.010, "(d)", "= #Delta A_{FB}^{IFI}(c)/(A_{FB}(+)-A_{FB}(-))");
+
+  HDifPat_xmax->DrawCopy("hsame");
+
+  hZero7->SetLineColor(kBlack);
+  hZero7->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"#Delta A_{FB}^{IFI}(v_{max}) = A_{FB}^{IFI}(v_{max},s_{+} ) - A_{FB}^{IFI}(v_{max},s_{-} )");
+  //
+  cAfbDifPat->cd();
+  cAfbDifPat->SaveAs("cAfbDifPat.pdf");
+
+//
+}// AfbDifPat
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void AfbDeltaMF()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= AfbDeltaMF =========================== "<<endl;
+  ////////////////////////////////////////////////////////////////////////////////
+
+  TH1D *Hafb9_vTcPL_Ceex2 = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2"); // KKMC IFI on
+  TH1D *Hafb8_vTcPL_Ceex2 = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2"); // KKMC IFI on
+  Hafb8_vTcPL_Ceex2->Scale(-1.0); // undoing
+  //
+  TH1D *HHafb9_xmax_Ceex2 = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2"); // KKfoam IFI on
+  TH1D *HHafb8_xmax_Ceex2 = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2"); // KKfoam IFI on
+  HHafb8_xmax_Ceex2->Scale(-1.0); // undoing
+  //
+  TH1D *Hafb9_diff_MC_FM = HstDiff("Hafb9_diff_MC_FM", Hafb9_vTcPL_Ceex2, HHafb9_xmax_Ceex2,  kBlack);
+  TH1D *Hafb8_diff_MC_FM = HstDiff("Hafb8_diff_MC_FM", Hafb8_vTcPL_Ceex2, HHafb8_xmax_Ceex2,  kBlack);
+  //
+  TH1D *Hafb98_diff_MC_FM = HstDiff("Hafb8_diff_MC_FM", Hafb9_diff_MC_FM, Hafb8_diff_MC_FM,   kBlack);
+  //
+  TH1D *hZero7      = (TH1D*)DiskFileB.Get("hZero7");
+  //
+  TH1D *hZero        = (TH1D*)DiskFileB.Get("hZero");
+  TH1D *hZeroPlus    = (TH1D*)DiskFileB.Get("hZeroPlus");
+  TH1D *hZeroMinus   = (TH1D*)DiskFileB.Get("hZeroMinus");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAfbDeltaMF = new TCanvas("cAfbDeltaMF","cAfbDeltaMF", gXcanv,  gYcanv,   600,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAfbDeltaMF->SetFillColor(10);
+
+  cAfbDeltaMF->cd();
+
+  TH1D *HDif1 = Hafb9_diff_MC_FM;
+  HDif1->SetMaximum( 0.0009); HDif1->SetMinimum(-0.0006);
+
+  HDif1->SetTitle(0); HDif1->SetStats(0);
+  HDif1->GetXaxis()->SetTitle("v_{max}");
+
+  HDif1->DrawCopy("h");
+
+  //Hafb8_vTcPL_Ceex2->DrawCopy("h");
+  //HHafb8_xmax_Ceex2->DrawCopy("hsame");
+
+  double ycapt =0.90;
+  PlotSame2(Hafb9_diff_MC_FM,     ycapt, kBlack, 0.155, "(a)", "#delta A_{FB} for #sqrt{s_{+}} = 94.3GeV");
+  PlotSame2(Hafb8_diff_MC_FM,     ycapt, kBlue,  0.120, "(b)", "#delta A_{FB} for #sqrt{s_{-}} = 87.9GeV");
+  //
+  PlotSame2(Hafb98_diff_MC_FM,    ycapt, kRed,   0.160, "(c)", "#Delta #delta A_{FB} = (a) - (b)");
+
+  //hZero7->SetLineColor(kBlack);
+  //hZero7->DrawCopy("hsame");
+
+  hZero->DrawCopy("hsame"); hZeroPlus->DrawCopy("hsame"); hZeroMinus->DrawCopy("hsame");
+  CaptT->DrawLatex(0.62,0.35," #delta#alpha/#alpha = 1.1x10^{-4}");
+
+
+  CaptT->DrawLatex(0.18,0.95,"#delta A_{FB}(v_{max}), KKMC - KKfoam,  IFIon");
+  //
+  cAfbDeltaMF->cd();
+  cAfbDeltaMF->SaveAs("cAfbDeltaMF.pdf");
+
+//
+}// AfbDeltaMF
+
 
 
 
@@ -1325,8 +1423,6 @@ int main(int argc, char **argv)
   //
   AfbIFI_Foam();
   //
-  AfbDifPat();
-  //
   if( gTogle){
   AfbIFI_KKmc2();
   AfbIFI_KKmc4();
@@ -1335,6 +1431,9 @@ int main(int argc, char **argv)
   Afb_ceex21();
   Afb_ceex21_wtd(); // using wt differences
   Afb_eex32_wtd();  // using wt differences
+  //
+  AfbDifPat();
+  AfbDeltaMF();
   //
   // Template empty canvas  with 2 figures
   //FigTempl();

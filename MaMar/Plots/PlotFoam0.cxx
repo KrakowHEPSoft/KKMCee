@@ -34,9 +34,9 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 //
-TFile DiskFileA("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_10G");  // jan.2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
