@@ -36,7 +36,7 @@ using namespace std;
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 //
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_13G");  // jan.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_21G");  // jan.2018
 TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
@@ -1308,7 +1308,7 @@ void AfbDeltaMF()
 //------------------------------------------------------------------------
   cout<<" ========================= AfbDeltaMF =========================== "<<endl;
   ////////////////////////////////////////////////////////////////////////////////
-
+  // IFI on
   TH1D *Hafb9_vTcPL_Ceex2 = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2"); // KKMC IFI on
   TH1D *Hafb8_vTcPL_Ceex2 = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2"); // KKMC IFI on
   Hafb8_vTcPL_Ceex2->Scale(-1.0); // undoing
@@ -1317,17 +1317,28 @@ void AfbDeltaMF()
   TH1D *HHafb8_xmax_Ceex2 = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2"); // KKfoam IFI on
   HHafb8_xmax_Ceex2->Scale(-1.0); // undoing
   //
-  TH1D *Hafb9_diff_MC_FM = HstDiff("Hafb9_diff_MC_FM", Hafb9_vTcPL_Ceex2, HHafb9_xmax_Ceex2,  kBlack);
-  TH1D *Hafb8_diff_MC_FM = HstDiff("Hafb8_diff_MC_FM", Hafb8_vTcPL_Ceex2, HHafb8_xmax_Ceex2,  kBlack);
-  //
+  TH1D *Hafb9_diff_MC_FM  = HstDiff("Hafb9_diff_MC_FM", Hafb9_vTcPL_Ceex2, HHafb9_xmax_Ceex2,  kBlack);
+  TH1D *Hafb8_diff_MC_FM  = HstDiff("Hafb8_diff_MC_FM", Hafb8_vTcPL_Ceex2, HHafb8_xmax_Ceex2,  kBlack);
   TH1D *Hafb98_diff_MC_FM = HstDiff("Hafb8_diff_MC_FM", Hafb9_diff_MC_FM, Hafb8_diff_MC_FM,   kBlack);
+  // IFI off
+  TH1D *Hafb9_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("Hafb9_vTcPL_Ceex2n"); // KKMC IFI off
+  TH1D *Hafb8_vTcPL_Ceex2n = (TH1D*)DiskFileB.Get("Hafb8_vTcPL_Ceex2n"); // KKMC IFI off
+  Hafb8_vTcPL_Ceex2n->Scale(-1.0); // undoing
   //
+  TH1D *HHafb9_xmax_Ceex2n = (TH1D*)DiskFileB.Get("HHafb9_xmax_Ceex2n"); // KKfoam IFI on
+  TH1D *HHafb8_xmax_Ceex2n = (TH1D*)DiskFileB.Get("HHafb8_xmax_Ceex2n"); // KKfoam IFI on
+  HHafb8_xmax_Ceex2n->Scale(-1.0); // undoing
+  //
+  TH1D *Hafb9n_diff_MC_FM  = HstDiff("Hafb9n_diff_MC_FM", Hafb9_vTcPL_Ceex2n, HHafb9_xmax_Ceex2n,  kBlack);
+  TH1D *Hafb8n_diff_MC_FM  = HstDiff("Hafb8n_diff_MC_FM", Hafb8_vTcPL_Ceex2n, HHafb8_xmax_Ceex2n,  kBlack);
+  TH1D *Hafb98n_diff_MC_FM = HstDiff("Hafb8n_diff_MC_FM", Hafb9n_diff_MC_FM, Hafb8n_diff_MC_FM,   kBlack);
+
+
   TH1D *hZero7      = (TH1D*)DiskFileB.Get("hZero7");
   //
   TH1D *hZero        = (TH1D*)DiskFileB.Get("hZero");
   TH1D *hZeroPlus    = (TH1D*)DiskFileB.Get("hZeroPlus");
   TH1D *hZeroMinus   = (TH1D*)DiskFileB.Get("hZeroMinus");
-
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
@@ -1353,10 +1364,13 @@ void AfbDeltaMF()
   //HHafb8_xmax_Ceex2->DrawCopy("hsame");
 
   double ycapt =0.90;
-  PlotSame2(Hafb9_diff_MC_FM,     ycapt, kBlack, 0.155, "(a)", "#delta A_{FB} for #sqrt{s_{+}} = 94.3GeV");
-  PlotSame2(Hafb8_diff_MC_FM,     ycapt, kBlue,  0.120, "(b)", "#delta A_{FB} for #sqrt{s_{-}} = 87.9GeV");
-  //
-  PlotSame2(Hafb98_diff_MC_FM,    ycapt, kRed,   0.160, "(c)", "#Delta #delta A_{FB} = (a) - (b)");
+  PlotSame2(Hafb9_diff_MC_FM,     ycapt, kBlack, 0.155, "(a)", "#delta A_{FB}^{IFIon} for #sqrt{s_{+}} = 94.3GeV");
+  ycapt += -0.01;
+  PlotSame2(Hafb8_diff_MC_FM,     ycapt, kBlue,  0.140, "(b)", "#delta A_{FB}^{IFIon} for #sqrt{s_{-}} = 87.9GeV");
+  ycapt += -0.01;
+  PlotSame2(Hafb98_diff_MC_FM,    ycapt, kRed,   0.160, "(c)", "#Delta #delta A_{FB}^{IFIon} = (a) - (b)");
+  ycapt += -0.01;
+  PlotSame2(Hafb98n_diff_MC_FM,   ycapt, kPine,  0.170, "(d)", "#Delta #delta A_{FB}^{IFIoff} ");
 
   //hZero7->SetLineColor(kBlack);
   //hZero7->DrawCopy("hsame");
@@ -1365,7 +1379,7 @@ void AfbDeltaMF()
   CaptT->DrawLatex(0.62,0.35," #delta#alpha/#alpha = 1.1x10^{-4}");
 
 
-  CaptT->DrawLatex(0.18,0.95,"#delta A_{FB}(v_{max}), KKMC - KKfoam,  IFIon");
+  CaptT->DrawLatex(0.18,0.95,"#delta A_{FB}(v_{max}), KKMC - KKfoam");
   //
   cAfbDeltaMF->cd();
   cAfbDeltaMF->SaveAs("cAfbDeltaMF.pdf");
