@@ -34,12 +34,10 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
-TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_10G");  // jan.2018
+TFile DiskFileA("../workKKMC/histo.root_95GeV_21G");  // jan.2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_11G");  // jan.2018
-//
-//TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); //
 //
 // Sept. 2017 runs
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // for IFI off still OK
