@@ -1254,8 +1254,8 @@ int main(int argc, char **argv)
   KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
-  //FigScatA();
-  //FigInfo();
+  FigScatA();
+  FigInfo();
 
   //FigVtest();  // introduct. tests/calibrations
   //FigCtest();  // introduct. tests/calibrations
