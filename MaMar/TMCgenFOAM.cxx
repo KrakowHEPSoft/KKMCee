@@ -550,6 +550,7 @@ double TMCgenFOAM::RhoIFI2(double costhe, double uu, double eps){
 ///________________________________________________________________________
 double TMCgenFOAM::Density(int nDim, double *Xarg){
 	//
+	m_count++;  // counter for debug
 	if( abs(m_Mode) == 5 ){
 	    return Density5(nDim, Xarg);
 	} else if( abs(m_Mode) == 3 ){
@@ -567,7 +568,6 @@ double TMCgenFOAM::Density(int nDim, double *Xarg){
 ///////////////////////////////////////////////////////////////
 double TMCgenFOAM::Density5(int nDim, double *Xarg)
 { // density distribution for Foam
-	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
 	double svar = sqr(m_CMSene);
@@ -779,7 +779,6 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
 ///////////////////////////////////////////////////////////////
 Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 { // density distribution for Foam
-	m_count++;  // counter for debug
 	//
 	Double_t Dist=1;
 	double svar = sqr(m_CMSene);
@@ -934,7 +933,6 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 ///////////////////////////////////////////////////////////////
 Double_t TMCgenFOAM::Density1(int nDim, Double_t *Xarg)
 { // density distribution for Foam
-	m_count++;  // counter for debug
 	//
 	Double_t Dist, xDist, yDist, xDist1, yDist1;
 	double svar = sqr(m_CMSene);
