@@ -1,5 +1,5 @@
 //    make PlotAFB2-run
-//    Plot for FCC week 2016 in Rome and "Beyond precision..." paper
+//    Plots for IFJ-PAN-2017-11 paper
 
 // This is only AFB study for several energies,
 // renomalizing scattergrams is no necesssary!
@@ -38,11 +38,12 @@ using namespace std;
 //
 TFile DiskFileA95("../workKKMC/histo.root_95GeV_21G");  // jan.2018
 TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
+TFile DiskFileA10("../workKKMC/histo.root_10GeV_10G");  // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
 ////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
 TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
-TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
+//TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
 //
 //TFile DiskFileA88("../workKKMC/histo.root"); // actual
 //
