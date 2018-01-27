@@ -3,7 +3,7 @@ INCLUDES = -I$(top_srcdir)/KKsem  \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2 PlotBorn PlotKKsem
+bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2 PlotBorn PlotKKsem PlotPlay
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -88,6 +88,11 @@ PlotBorn_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran -no-install -g
 PlotKKsem_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotKKsem.cxx
 PlotKKsem_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotKKsem_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+PlotPlay_SOURCES =  PlotPlay.cxx
+PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS)
+PlotPlay_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
 
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
