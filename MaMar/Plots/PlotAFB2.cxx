@@ -39,10 +39,11 @@ using namespace std;
 TFile DiskFileA95("../workKKMC/histo.root_95GeV_21G");  // jan.2018
 TFile DiskFileA88("../workKKMC/histo.root_88GeV_11G");  // jan.2018
 TFile DiskFileA10("../workKKMC/histo.root_10GeV_10G");  // jan.2018
+TFile DiskFileA91("../workKKMC/histo.root_91GeV_7G");   // jan.2018
 //
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_26G");   // oct.2017
-////TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
-TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV_2.5G");  // oct.2017 OBSOLETE
+//TFile DiskFileA91("../workKKMC/histo.root_91GeV_3.5G");  // oct.2017
 //TFile DiskFileA10("../workKKMC/histo.root_10GeV_5.8G");  // oct.2017
 //
 //TFile DiskFileA88("../workKKMC/histo.root"); // actual
@@ -72,8 +73,8 @@ int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
 float  gXcanv = 0, gYcanv = 0;
 //
-//int    gTogEne = 1;   // 10 GeV and MZ included
-int    gTogEne = 0; // 10 GeV and MZ exluded
+int    gTogEne = 1;   // 10 GeV and MZ included
+//int    gTogEne = 0; // 10 GeV and MZ exluded
 //
 //int    gTogle  = 0;  // excluding new data files
 int    gTogle  = 1;  // including new data files

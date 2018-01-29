@@ -41,30 +41,37 @@ void FigPrag2()
 //------------------------------------------------------------------------
   int nbx=5, nby = 5;
   cout<<" ========================= FigPrag2 =========================== "<<endl;
-  TH2D *QEDord = new TH2D("QEDord",    " QEDord ", nbx, 0.0 ,5.0, nby, 0.0 ,5.0);
+  TH2D *ISRee = new TH2D("ISRee",    " ISRee ", nbx, 0.0 ,5.0, nby, 0.0 ,5.0);
+  TH2D *ISRmu = new TH2D("ISRmu",    " ISRmu ", nbx, 0.0 ,5.0, nby, 0.0 ,5.0);
 
   double alfpi = 1.0/400.0;
   double MZ = 91;
-  double m_e = 0.000501;
-  double Le = 2*log(MZ/m_e);
+  double m_e  = 0.000501;
+  double m_mu = 0.105;
+  double Le  = 2*log(MZ/m_e);
+  double Lmu = 2*log(MZ/m_mu);
   cout<<"FigPrag2:  Le="<< Le<<endl;
-  double A;
+  double A,B;
 //
   for(int n=0; n <= 5; n++)
 	  for(int j=0; j <= 5; j++)
 	  {
-		  if(j <= n)
-		  	  A = exp(n*log(alfpi)) * exp(j*log(Le));
-		  else
+		  if(j <= n){
+    	  	  A = exp(n*log(alfpi)) * exp(j*log(Le));
+    	  	  B = exp(n*log(alfpi)) * exp(j*log(Lmu));
+		  }else{
 			  A= 1.0e-100;
-		  QEDord->Fill(0.5+n,0.5+j, A);
-		  cout<<"n,j ="<< n <<"  " << j << "  A ="<< A <<endl;
+			  B= 1.0e-100;
+		  }
+		  ISRee->Fill(0.5+n,0.5+j, A);
+		  ISRmu->Fill(0.5+n,0.5+j, B);
+		  cout<<"n,j ="<< n <<"  " << j << "  A ="<< A << "  B ="<< B <<endl;
 	  }
 
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cPrag2 = new TCanvas("cPrag2","cPrag2", gXcanv,  gYcanv,   1200,  600);
+  TCanvas *cPrag2 = new TCanvas("cPrag2","cPrag2", gXcanv,  gYcanv,   1600,  800);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
@@ -90,28 +97,64 @@ void FigPrag2()
   //-------------------------------------
   //
   gPad->SetLogz(); // !!!!!!
-  gPad->SetTheta(25);
-//  gPad->SetPhi( -38);
-  gPad->SetPhi(-138);
+  gPad->SetTheta(11);
+  gPad->SetPhi(-117);
   //
-  QEDord->SetStats(0);
-  QEDord->SetTitle(0);
+  ISRee->SetStats(0);
+  ISRee->SetTitle(0);
   double zmax = 1.0;
-  //zmax= QEDord->GetMaximum();
-  QEDord->SetMaximum(zmax*1.1);
-  QEDord->SetMinimum(zmax*1e-7);
+  //zmax= ISRee->GetMaximum();
+  ISRee->SetMaximum(zmax*1.1);
+  ISRee->SetMinimum(zmax*1e-7);
   //
-  QEDord->GetXaxis()->SetTitle("n");
-  QEDord->GetXaxis()->SetNdivisions(5);
+  ISRee->GetXaxis()->SetTitle("n");
+  ISRee->GetXaxis()->CenterTitle();
+  //ISRee->GetXaxis()->SetTitleOffset(1.5);
+  ISRee->GetXaxis()->SetTitleSize(0.045);
+  ISRee->GetXaxis()->SetNdivisions(5);
   //
-  QEDord->GetYaxis()->SetTitle("r");
-  QEDord->GetYaxis()->SetNdivisions(5);
+  ISRee->GetYaxis()->SetTitle("r");
+  ISRee->GetYaxis()->CenterTitle();
+  //ISRee->GetYaxis()->SetTitleOffset(1.5);
+  ISRee->GetYaxis()->SetTitleSize(0.045);
+  ISRee->GetYaxis()->SetNdivisions(5);
   //
-  QEDord->DrawCopy(OptSurf);
-  //-------------------------------------
-  //cPrag2->cd(2);
+  ISRee->DrawCopy(OptSurf);
   //
+  CaptT->DrawLatex(0.10,0.96,"QED strength, ISR e^{+}e^{-}");
+
+  ///////////////////////////////////////////////////////
+  cPrag2->cd(2);
+  gPad->SetLogz(); // !!!!!!
+  gPad->SetTheta(11);
+  gPad->SetPhi(-117);
+  //
+  ISRmu->SetStats(0);
+  ISRmu->SetTitle(0);
+  //zmax= ISRmu->GetMaximum();
+  ISRmu->SetMaximum(zmax*1.1);
+  ISRmu->SetMinimum(zmax*1e-7);
+  //
+  ISRmu->GetXaxis()->SetTitle("n");
+  ISRmu->GetXaxis()->CenterTitle();
+  //ISRmu->GetXaxis()->SetTitleOffset(1.5);
+  ISRmu->GetXaxis()->SetTitleSize(0.045);
+  ISRmu->GetXaxis()->SetNdivisions(5);
+  //
+  ISRmu->GetYaxis()->SetTitle("r");
+  ISRmu->GetYaxis()->CenterTitle();
+  //ISRmu->GetYaxis()->SetTitleOffset(1.5);
+  ISRmu->GetYaxis()->SetTitleSize(0.045);
+  ISRmu->GetYaxis()->SetNdivisions(5);
+  //
+  ISRmu->DrawCopy(OptSurf);
+  //
+  CaptT->DrawLatex(0.10,0.96,"QED strength, FSR #mu^{+}#mu^{-}");
   cPrag2->cd();
+  //================================================
+  cPrag2->SaveAs("cPrag2.pdf");
+  cPrag2->SaveAs("cPrag2.jpg");
+  cPrag2->SaveAs("cPrag2.png");
 //
 }// FigTempl
 
