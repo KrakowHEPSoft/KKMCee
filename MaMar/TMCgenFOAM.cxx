@@ -582,6 +582,10 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 	double RhoIsr0 = RhoISR(0,svar,m_vv,m_eps);
 	svarCum *= (1-m_vv);
 	double svar2 = svar*(1-m_vv);
+    // ******** mapping for polar angle *******
+    double cmax = 0.99999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
+//    Dist *= 2.0*cmax;
     // ******** mapping for IFI variable *******
     double gamint = gamIFI(m_CosTheta);
     double dJacInt1, dJacInt2;
@@ -602,10 +606,6 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
  	double DistFSR = dJacFSR *RhoFsr;
  	double RhoFsr0 = RhoFSR(0, svar2,m_uu,m_eps);
     svarCum *= (1-m_uu);
-    // ******** mapping for polar angle *******
-    double cmax = 0.99999;
-    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
-//    Dist *= 2.0*cmax;
 // ******* MC event *******
     double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
     m_xx = 1-zz;
