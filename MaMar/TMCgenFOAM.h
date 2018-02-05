@@ -143,7 +143,7 @@ class TMCgenFOAM :public TMCgen
   double m_p4[4];         //!
   // Model Weights
   double m_WTmodel[100];  //!
-  long   m_count;
+  double m_count;
 ///////////////////////////////////////////////////////////
 /// methods obligatory
   void Initialize(TRandom*, ofstream*, TH1D*);

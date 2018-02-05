@@ -640,7 +640,7 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double dBorn_GPS0 = gps_makerhofoam_(Yint);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && fabs(svar/svar2-1)>0.20 ){  // debug
-    if( m_count <1000 ){  // debug
+    if( m_count <100 ){  // debug
     	double Rat;
 //    	Rat = dSig_GPSF1/( dSig_GPSF2 );
     	cout<<" =============================================== "<< m_count<< endl;

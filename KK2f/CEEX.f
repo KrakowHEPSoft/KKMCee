@@ -205,9 +205,9 @@
       INTEGER               BornV_GetColor, NCf
       INTEGER               iSaveCPU
 *-----------------------------------------------
-      INTEGER   Icont
+      DOUBLE PRECISION   Icont
       SAVE      Icont
-      DATA      Icont /0/
+      DATA      Icont /0d0/
 *-----------------------------------------------
       CALL GPS_Initialize
 *
@@ -784,8 +784,8 @@ C]]]]]]]]]]
 *-----------------------------------------------------------------------------
       DOUBLE PRECISION        PP(4),QQ(4),dummy
 c[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-c      INTEGER    icont
-c      DATA       icont /0/
+c      DOUBLE PRECISION    icont
+c      DATA       icont /0d0/
 c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *-----------------------------------------------------------------------------
       Fleps =  1d-100
@@ -1098,8 +1098,8 @@ C--------
 *-----------------------------------------------------------------------------
       DOUBLE PRECISION        dummy
 c[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-c      INTEGER    icont
-c      DATA       icont /0/
+c      DOUBLE PRECISION    icont
+c      DATA       icont /0d0/
 c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *-----------------------------------------------------------------------------
       IF (level.EQ.1) THEN
@@ -1244,8 +1244,8 @@ c]]]]
       DOUBLE COMPLEX     RhoEW, VPgamma, CorEle, CorFin, CorEleFin, VVCef, CosThetD
       DOUBLE PRECISION   Deno,  dummy,row,Dum1,Dum2,Dum3,Dum4,Dum5,Dum6
       DOUBLE COMPLEX     GSW(100)
-      INTEGER icont
-      DATA icont /0/
+      DOUBLE PRECISION icont
+      DATA icont /0d0/
       icont = icont +1
 *===============================================================================
 C we do it like for photon. I was unable to properly understand normalization
@@ -1635,8 +1635,8 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       DOUBLE PRECISION  dummy, BornSum, Mini, Mfin, Ene, Pini, Pfin, CosThetD
       DOUBLE PRECISION  s,t,u, MasPhot, alfpmix, BVR_TForFac
 c[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      INTEGER    icont
-      DATA       icont /0/
+      DOUBLE PRECISION    icont
+      DATA       icont /0d0/
 c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *-----------------------------------------------------------------------------
       CALL GPS_Initialize
@@ -1680,11 +1680,11 @@ c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      $        *BVR_TForFac(-alfpmix, p1,Mini, p4,Mfin, Ene, MasPhot)
      $        *BVR_TForFac(-alfpmix, p2,Mini, p3,Mfin, Ene, MasPhot)
 c[[[[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      icont=icont+1
-      IF(icont.LE.10) THEN
-         write(*,*) ' //////////////////////GPS_BornFoam///////////////////////////////////////'
-         write(*,*) 'GPS_BornFoam: Yint= ',Yint
-      ENDIF
+c     icont=icont+1
+c      IF(icont.LE.10) THEN
+c         write(*,*) ' //////////////////////GPS_BornFoam///////////////////////////////////////'
+c         write(*,*) 'GPS_BornFoam: Yint= ',Yint
+c      ENDIF
 c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *=============================================================
 * Basic spinor products
