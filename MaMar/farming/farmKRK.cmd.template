@@ -1,14 +1,15 @@
-#!/bin/csh
-# @ notify_user = stanislaw.jadach@cern.ch
-# @ class = <class>
-# @ preferences=(Feature=="lowio")
+#!/bin/bash -l
+#SBATCH -J <dset>-<farmindex>
+#SBATCH -N 1
+#SBATCH --ntasks-per-node 1
+#SBATCH --mem 100
+#SBATCH -t 48:00:00
+#SBATCH -p ifj
+#SBATCH --output='kkmc.out'
 #######################################
-#
 cd <pthfarm>/<farmindex>
-# ========= EXECUTION ========= 
-#
+# ========= EXECUTION =========
 cp ./<dset>.input ./pro.input
 time ../<dset>.exe < ./<dset>.input
-#
-#
-exit 0          
+
+exit 0

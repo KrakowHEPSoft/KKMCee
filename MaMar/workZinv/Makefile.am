@@ -1,10 +1,10 @@
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 #-----------------------------------------------------------------------
-#  Template for makefile in production directory test2
-#  make farm6-KRK    make qsubmit6      myqstatall
-#  make q-nev        make q-semaphore   make combine
-#  make stop6        make combine       make CLEAN
+#  FARMING on NZ42 farm
+#  make CLEAN     make farm24-KRK    make SLsubmit
+#  make q-nev     make q-semaphore   make combine
+#  make stop6     make combine       make CLEAN
 #-----------------------------------------------------------------------
 MCMD=ProdZinv
 DSET=workZinv
@@ -147,6 +147,10 @@ stop24:
 cphst24:
 	(csh ../farming/farm-cphst   ${DSET} "1 2 3 4 5 6 7 8 9 10 11 12 \
 	                13 14 15 16 17 18 19 20 21 22 23 24 ")
+########################################################################
+SLsubmit:
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",200)' )
+########################################################################
 #-----------------------------------------------------------------------
 #--------- cobmine (add) results from several subdirectories -----------
 combine:

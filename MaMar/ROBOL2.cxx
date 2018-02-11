@@ -126,7 +126,7 @@ void ROBOL2::KKMC_NORMA()
   KKMC_generator->GetPrimaNorma(XsPrim, NevPrim);
   HST_KKMC_NORMA->SetBinContent(0,XsPrim*NevPrim);
   HST_KKMC_NORMA->SetEntries(NevPrim);
-  cout<<" ROBOL2::KKMC_NORMA: XsPrim, NevPrim ="<< XsPrim <<"  "<<NevPrim << endl;
+  //cout<<" ROBOL2::KKMC_NORMA: XsPrim, NevPrim ="<< XsPrim <<"  "<<NevPrim << endl;
 }
 ///////////////////////////////////////////////////////////////////////////////
 void ROBOL2::Production(long &iEvent)
