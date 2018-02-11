@@ -30,8 +30,17 @@ TFile DiskFileA("../workZinv/rmain.root");
 //=============================================================================
 
 //Double_t sqr( const Double_t x ){ return x*x;};
-// Auxiliary procedures for plotting
-//#include "Marker.h"
+///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+double gCMSene, gNevTot; // from KKMC run
+char   gTextEne[100], gTextNev[100], gTextNev2[100];
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
+//
+float  gXcanv = 0, gYcanv = 0;
+///////////////////////////////////////////////////////////////////////////////////
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
@@ -81,7 +90,7 @@ void FigInfo()
   // renormalize histograms in nanobarns
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  Double_t CMSene = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  Double_t CMSene = HST_KKMC_NORMA->GetBinContent(1)/HST_KKMC_NORMA->GetBinContent(511);
   char capt1[100];
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
@@ -191,7 +200,7 @@ void FigCEEX21()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1)/HST_KKMC_NORMA->GetBinContent(511);
   ///
   TH1D *hst_vPhotCeex1     = (TH1D*)DiskFileA.Get("hst_vPhotCeex1");
   TH1D *hst_vPhotCeex2     = (TH1D*)DiskFileA.Get("hst_vPhotCeex2");
@@ -264,7 +273,7 @@ void FigCEEX21mu()
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1)/HST_KKMC_NORMA->GetBinContent(511);
   ///
   TH1D *hst_mPhotCeex1     = (TH1D*)DiskFileA.Get("hst_mPhotCeex1");
   TH1D *hst_mPhotCeex2     = (TH1D*)DiskFileA.Get("hst_mPhotCeex2");
@@ -338,7 +347,7 @@ void FigNuDiff()
   // renormalize histograms in nanobarns
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  Double_t CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  Double_t CMSene  = HST_KKMC_NORMA->GetBinContent(1)/HST_KKMC_NORMA->GetBinContent(511);
   char capt1[100];
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   ///
@@ -433,7 +442,7 @@ void FigCEEX21rat()
   // renormalize histograms in nanobarns
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   ///
-  Double_t CMSene = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  Double_t CMSene = HST_KKMC_NORMA->GetBinContent(1)/HST_KKMC_NORMA->GetBinContent(511);
   char capt1[100];
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   ///
@@ -460,25 +469,21 @@ void FigCEEX21rat()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.060);
 //!////////////////////////////////////////////
-  double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
-  double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
-  cout<<" //////// vmin,vmax = "<<vmin<<" "<<vmax<<endl;
-  //TH1D *H_Vline12  = new TH1D("H_Vline12","one",  1, vmin, vmax);
-  TH1D *H_Vline12  = new TH1D("H_Vline12","one",  1, vmin*CMSene/2, vmax*CMSene/2);
-  //H_Vline12->SetBinContent(1,1);
-  H_Vline12->SetBinContent(1,0);
+
   /// nu/mu ratios, CEEX1 and CEEX2
   TH1D *RAT1 = (TH1D*)hst_vPhotCeex1->Clone("RAT1");
   RAT1->Divide(hst_mPhotCeex1);
   TH1D *RAT2 = (TH1D*)hst_vPhotCeex2->Clone("RAT2");
   RAT2->Divide(hst_mPhotCeex2);
-  /// (CEEX1-CEEX2(/CEEX2 ratios for nu and mu
+
+  /// (CEEX1-CEEX2)/CEEX2 ratios for nu and mu
   TH1D *DELnu = (TH1D*)hst_vPhotCeex12->Clone("DELnu");
   DELnu->Divide(hst_vPhotCeex2);
   TH1D *DELmu = (TH1D*)hst_mPhotCeex12->Clone("DELmu");
   DELmu->Divide(hst_mPhotCeex2);
   DELmu->Scale(-1e0);
   DELnu->Add(DELmu);
+
   /// another (CEEX1-CEEX2(/CEEX2 ratios for nu and mu
   TH1D *DELnu2 = (TH1D*)hst_nPhotCeex12->Clone("DELnu");
   DELnu2->Divide(hst_nPhotCeex2);
@@ -486,6 +491,10 @@ void FigCEEX21rat()
   DELmu2->Divide(hst_lPhotCeex2);
   DELmu2->Scale(-1e0);
   DELnu2->Add(DELmu2);
+
+  TH1D *hZero = (TH1D*)hst_nPhotCeex12->Clone("hZero"); // zero line
+  hZero->Reset();
+
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
   Float_t  WidPix, HeiPix;
@@ -519,37 +528,37 @@ void FigCEEX21rat()
   CaptE->DrawLatex(0.80,0.85, capt1);
  //!-----------------------------
   cCeex21rat->cd(2);
-  H_Vline12->SetStats(0);
-  H_Vline12->SetTitle(0);
-  H_Vline12->GetYaxis()->SetTitleSize(0.06);
-  H_Vline12->GetYaxis()->SetTitleOffset(1.2);
-  H_Vline12->GetYaxis()->CenterTitle();
-  H_Vline12->GetYaxis()->SetLabelSize(0.05);
-  H_Vline12->GetXaxis()->SetLabelSize(0.05);
-  H_Vline12->GetXaxis()->CenterTitle();
-  H_Vline12->GetXaxis()->SetTitle("E_{#gamma} [GeV]");
-  H_Vline12->GetXaxis()->SetTitleSize(0.07);
-  H_Vline12->GetXaxis()->SetTitleOffset(-0.6); // does not work???
-  //H_Vline12->SetMaximum( 1+0.001);
-  //H_Vline12->SetMinimum( 1-0.001);
-  H_Vline12->SetMaximum(  +0.001);
-  H_Vline12->SetMinimum(  -0.001);
-  H_Vline12->SetMaximum(  +0.0002);
-  H_Vline12->SetMinimum(  -0.0002);
-  H_Vline12->GetXaxis()->SetTitleOffset(0.6);
-  H_Vline12->GetXaxis()->SetTitleSize(0.07);
-  H_Vline12->DrawCopy("h");
+  TH1D *HST2 = DELnu2;
+  HST2->SetStats(0);
+  HST2->SetTitle(0);
+  HST2->GetYaxis()->SetTitleSize(0.06);
+  HST2->GetYaxis()->SetTitleOffset(1.2);
+  HST2->GetYaxis()->CenterTitle();
+  HST2->GetYaxis()->SetLabelSize(0.05);
+  HST2->GetXaxis()->SetLabelSize(0.05);
+  HST2->GetXaxis()->CenterTitle();
+  HST2->GetXaxis()->SetTitle("E_{#gamma} [GeV]");
+  HST2->GetXaxis()->SetTitleSize(0.07);
+  HST2->GetXaxis()->SetTitleOffset(-0.6); // does not work???
+  //HST2->SetMaximum( 1+0.001); HST2->SetMinimum( 1-0.001);
+  //HST2->SetMaximum(  +0.001);   HST2->SetMinimum(  -0.001);
+  HST2->SetMaximum(  +0.0002);  HST2->SetMinimum(  -0.0002);  // !!!
+  HST2->GetXaxis()->SetTitleOffset(0.6);
+  HST2->GetXaxis()->SetTitleSize(0.07);
+
+  HST2->SetLineColor(kBlue);
+  HST2->DrawCopy("h");
+
+  hZero->DrawCopy("hsame");
+
   /// OBSOLETE errors are huge
-  TH1D *RAT_21 = (TH1D*)RAT2->Clone("RAT2");
-  RAT_21->Divide(RAT1);             /// divide over CEEX2
-  RAT_21->SetLineColor(kRed);
+  //TH1D *RAT_21 = (TH1D*)RAT2->Clone("RAT2");
+  //RAT_21->Divide(RAT1);             /// divide over CEEX2
+  //RAT_21->SetLineColor(kRed);
   //RAT_21->DrawCopy("hsame");  /// errors are huge
   /// errors ok
   //DELnu->SetLineColor(kBlue);
   //DELnu->DrawCopy("hsame");
-  ///
-  DELnu2->SetLineColor(kBlue);
-  DELnu2->DrawCopy("hsame");
   //
   CaptT->DrawLatex(0.10,0.92,"         h.o. QED effect (#Delta R)/R,     (CEEX1-CEEX2)/CEEX2");
   CaptE->DrawLatex(0.80,0.85, capt1);
@@ -568,6 +577,17 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+
+  /////////////////////////////////////////////////////////
+  // Reading directly KKMC input (farming)
+  int Nodes;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  Nodes    = HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
+  gCMSene  = HST_KKMC_NORMA->GetBinContent(1)/Nodes;   // CMSene=xpar(1), farn adjusted
+  gNevTot  = HST_KKMC_NORMA->GetEntries();             // MC statistics from KKMC
+  sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
+  sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
+
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
   FigInfo();
@@ -577,6 +597,10 @@ int main(int argc, char **argv)
   FigCEEX21rat(); /// h.o. QED
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
+  //
+  cout<< "CMSene[GeV] = "<< gCMSene<< endl;
+  cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
+//
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
