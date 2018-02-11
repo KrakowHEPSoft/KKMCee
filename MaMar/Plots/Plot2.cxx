@@ -571,8 +571,8 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
   FigInfo();
-  //FigCEEX21();
-  //FigCEEX21mu();
+  FigCEEX21();
+  FigCEEX21mu();
   FigNuDiff();    /// t-chanel cotrib.
   FigCEEX21rat(); /// h.o. QED
   //++++++++++++++++++++++++++++++++++++++++
