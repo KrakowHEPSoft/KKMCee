@@ -159,8 +159,8 @@ void ROBOL2::Production(long &iEvent)
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
     cout<<" VSumPhot= "; MomPrint( VSumPhot );
-    KKMC_generator->Print1();
-    KKMC_generator->PyList(2);
+    //KKMC_generator->Print1();
+    //KKMC_generator->PyList(2);
     PyPrint(1);
   }
   // ****************************************************************
