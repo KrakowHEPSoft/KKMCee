@@ -12,7 +12,7 @@ BeginX
 * Center-of-mass energy [GeV]
     1          126e0      CMSene =xpar( 1) Center of mass energy [GeV] Higgs
     1          161e0      CMSene =xpar( 1) Center of mass energy [GeV] WW thresh.
-*    1          105e0      CMSene =xpar( 1) Center of mass energy [GeV] optimal
+    1          105e0      CMSene =xpar( 1) Center of mass energy [GeV] optimal
 * Beam spread
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
