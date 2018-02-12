@@ -1,10 +1,10 @@
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 #-----------------------------------------------------------------------
-#  FARMING on NZ42 farm
+#########  FARMING on NZ42 farm ###########
 #  make CLEAN         make prepare
 #  make farm24-KRK    make SLsubmit
-#  make q-nev         make q-semaphore      make Combine
+#  make q-semaphore   make combine
 #-----------------------------------------------------------------------
 MCMD=ProdZinv
 DSET=workZinv
@@ -150,12 +150,12 @@ cphst24:
 ########################################################################
 SLsubmit:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",200)' )
-Combine:
+combine:
 	(hadd -f ./rmain.root ./farm/*/rmain.root)
 ########################################################################
 #-----------------------------------------------------------------------
 #--------- cobmine (add) results from several subdirectories -----------
-combine:
+Combine:
 	(cd ../../glibk; make  -f KKMakefile combine.exe)
 combine6:  combine
 	(sed -e 's#?.hst#pro.hst#' -e 's#?#6#' ../combine.list \
