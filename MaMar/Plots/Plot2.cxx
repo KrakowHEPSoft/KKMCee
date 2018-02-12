@@ -540,9 +540,9 @@ void FigCEEX21rat()
   HST2->GetXaxis()->SetTitle("E_{#gamma} [GeV]");
   HST2->GetXaxis()->SetTitleSize(0.07);
   HST2->GetXaxis()->SetTitleOffset(-0.6); // does not work???
-  //HST2->SetMaximum( 1+0.001); HST2->SetMinimum( 1-0.001);
+  //HST2->SetMaximum( 1+0.01); HST2->SetMinimum( 1-0.01);
   //HST2->SetMaximum(  +0.001);   HST2->SetMinimum(  -0.001);
-  HST2->SetMaximum(  +0.0002);  HST2->SetMinimum(  -0.0002);  // !!!
+  //HST2->SetMaximum(  +0.0002);  HST2->SetMinimum(  -0.0002);  // !!!
   HST2->GetXaxis()->SetTitleOffset(0.6);
   HST2->GetXaxis()->SetTitleSize(0.07);
 
