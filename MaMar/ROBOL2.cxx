@@ -266,7 +266,7 @@ if( NuYes==1 ){
   ///         various QED models, muon channel
   /// *********************************************************************
   int inAngMu =0;    /// angular limits on muon-pairs
-  if (CosThe1<CosTheMumax &&  CosThe2<CosTheMumax ) inAngMu =1;
+  if (fabs(CosThe1)<CosTheMumax &&  fabs(CosThe2)<CosTheMumax ) inAngMu =1;
 if( KF==13 ) {
   hst_vTrueMu->Fill(  vv, WtMain);   /// true mu-pair mass distribution
 /// mu_pair+gammas, both visible (in the detector)
