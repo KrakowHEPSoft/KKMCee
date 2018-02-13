@@ -155,7 +155,7 @@ void ROBOL2::Production(long &iEvent)
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
     VSumPhot+= m_phot[iphot];
   }
-  if(iEvent<10){
+  if(iEvent<20){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
     cout<<" VSumPhot= "; MomPrint( VSumPhot );
@@ -176,6 +176,9 @@ void ROBOL2::Production(long &iEvent)
   double phEne,phTheta,phCosth,phPT,yy;
   /// muon acceptance data
   double CosTheMumax = 0.95;
+  //[[[
+  CosTheMumax = 0.50;
+  //]]]
   /// photon acceptance data
   double XEneMin = 0.10;  /// Emin/Ebeam  for visible photon
   double XTraMin = 0.02;  /// kTmin/Ebeam for visible photon
@@ -290,7 +293,7 @@ if( KF==13 ) {
   hst_weight->Fill(WtMain);     /// weight
   hst_Mff->Fill(Mff,WtMain);    /// fermion-pair mass
   // debug debug debug debug debug debug debug
-  if(iEvent<15){
+  if(iEvent<20){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
     cout<< "vv, vvk         = "<<     vv<<"  "<<vvk<<endl;
