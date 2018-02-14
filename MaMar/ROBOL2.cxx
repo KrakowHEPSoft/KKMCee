@@ -244,9 +244,15 @@ void ROBOL2::Production(long &iEvent)
   /// *********************************************************************
   double WtEEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double WtEEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
-  //cout<< "&&&&&& WtEEX2,3= "<<WtEEX2<<"  "<<WtEEX3<<endl;
+  //
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
+  //[[[[[[
+  // IFI off
+  WtCEEX1 = KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
+  WtCEEX2 = KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2)
+  //]]]]]
+  //
 /// All 3 types of nu+nubar
 if( NuYes==1 ){
   hst_vTrueMain->Fill(       vv, WtMain);  /// true nu-pair mass distribution
