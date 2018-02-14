@@ -219,10 +219,6 @@ void FigCEEX21()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
 
-  //double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
-  //double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
-  //TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, vmin, vmax);
-
   TH1D *H_Vline0  = (TH1D*)hst_vPhotCeex12->Clone("H_Vline0");  // zero line
   H_Vline0->Reset();
 
@@ -300,10 +296,6 @@ void FigCEEX21mu()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-
-  //double vmin = hst_mPhotCeex12->GetXaxis()->GetXmin();
-  //double vmax = hst_mPhotCeex12->GetXaxis()->GetXmax();
-  //TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, vmin, vmax);
 
   TH1D *H_Vline10  = (TH1D*)hst_mPhotCeex12->Clone("H_Vline10");  // zero line
   H_Vline10->Reset();
@@ -399,10 +391,6 @@ void FigNuDiff()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.06);
-
-  //double vmin = hst_vPhotNuel->GetXaxis()->GetXmin();
-  //double vmax = hst_vPhotNuel->GetXaxis()->GetXmax();
-  //TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, vmin, vmax);
 
   TH1D *H_Vline1  = (TH1D*)hst_vPhotNuel->Clone("H_Vline1");  // zero line
   H_Vline1->Reset();
