@@ -177,7 +177,7 @@ void ROBOL2::Production(long &iEvent)
   /// muon acceptance data
   double CosTheMumax = 0.95;
   //[[[
-  CosTheMumax = 0.50;
+  //CosTheMumax = 0.50;
   //]]]
   /// photon acceptance data
   double XEneMin = 0.10;  /// Emin/Ebeam  for visible photon

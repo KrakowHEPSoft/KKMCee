@@ -27,6 +27,8 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 TFile DiskFileA("../workZinv/rmain.root");
+//
+TFile DiskFileB("Plot2.root","RECREATE","histograms");
 //=============================================================================
 
 //Double_t sqr( const Double_t x ){ return x*x;};
@@ -37,7 +39,7 @@ double gCMSene, gNevTot; // from KKMC run
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
-float  gXcanv = 0, gYcanv = 0;
+float  gXcanv = 0, gYcanv = 0, gDcanv = 30;
 ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -118,8 +120,9 @@ void FigInfo()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.060);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ", 50, 50,    1000,  800);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ",  gXcanv,  gYcanv,    1000,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   cFigInfo->Divide( 2,  2);
@@ -189,6 +192,9 @@ void FigInfo()
   CaptE->DrawLatex(0.70,0.85, capt1);
   //
   cFigInfo->cd();
+
+  cFigInfo->SaveAs("cFigInfo.pdf");
+
 }//FigInfo
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -212,15 +218,22 @@ void FigCEEX21()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
-  double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
-  TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, vmin, vmax);
+
+  //double vmin = hst_vPhotCeex12->GetXaxis()->GetXmin();
+  //double vmax = hst_vPhotCeex12->GetXaxis()->GetXmax();
+  //TH1D *H_Vline0  = new TH1D("H_Vline0","one",  1, vmin, vmax);
+
+  TH1D *H_Vline0  = (TH1D*)hst_vPhotCeex12->Clone("H_Vline0");  // zero line
+  H_Vline0->Reset();
+
   H_Vline0->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cCeex21 = new TCanvas("cCeex21","cCeex21",75,75, WidPix,HeiPix);
+  TCanvas *cCeex21 = new TCanvas("cCeex21","cCeex21", gXcanv,  gYcanv,  WidPix,HeiPix);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+
   cCeex21->SetFillColor(10);
   cCeex21->Draw();
   cCeex21->SetFillColor(10);
@@ -260,6 +273,8 @@ void FigCEEX21()
   //!-----------------------------
   cCeex21->Update();
   cCeex21->cd();
+
+  cCeex21->SaveAs("cCeex21.pdf");
   //!-----------------------------
 }//FigCEEX21
 
@@ -285,15 +300,23 @@ void FigCEEX21mu()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
-  double vmin = hst_mPhotCeex12->GetXaxis()->GetXmin();
-  double vmax = hst_mPhotCeex12->GetXaxis()->GetXmax();
-  TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, vmin, vmax);
+
+  //double vmin = hst_mPhotCeex12->GetXaxis()->GetXmin();
+  //double vmax = hst_mPhotCeex12->GetXaxis()->GetXmax();
+  //TH1D *H_Vline10  = new TH1D("H_Vline10","one",  1, vmin, vmax);
+
+  TH1D *H_Vline10  = (TH1D*)hst_mPhotCeex12->Clone("H_Vline10");  // zero line
+  H_Vline10->Reset();
+
+
   H_Vline10->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cCeex21mu = new TCanvas("cCeex21mu","cCeex21mu",100,100, WidPix,HeiPix);
+  TCanvas *cCeex21mu = new TCanvas("cCeex21mu","cCeex21mu", gXcanv,  gYcanv,  WidPix,HeiPix);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+
   cCeex21mu->SetFillColor(10);
   cCeex21mu->Draw();
   cCeex21mu->SetFillColor(10);
@@ -334,6 +357,9 @@ void FigCEEX21mu()
   //!-----------------------------
   cCeex21mu->Update();
   cCeex21mu->cd();
+
+  cCeex21mu->SaveAs("cCeex21mu.pdf");
+
   //!-----------------------------
 }///FigCEEX21mu
 
@@ -373,15 +399,23 @@ void FigNuDiff()
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.06);
-  double vmin = hst_vPhotNuel->GetXaxis()->GetXmin();
-  double vmax = hst_vPhotNuel->GetXaxis()->GetXmax();
-  TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, vmin, vmax);
+
+  //double vmin = hst_vPhotNuel->GetXaxis()->GetXmin();
+  //double vmax = hst_vPhotNuel->GetXaxis()->GetXmax();
+  //TH1D *H_Vline1  = new TH1D("H_Vline1","one",  1, vmin, vmax);
+
+  TH1D *H_Vline1  = (TH1D*)hst_vPhotNuel->Clone("H_Vline1");  // zero line
+  H_Vline1->Reset();
+
+
   H_Vline1->SetBinContent(1,0);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff",125,125, WidPix,HeiPix);
+  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff", gXcanv,  gYcanv,  WidPix,HeiPix);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+
   cNuDiff->SetFillColor(10);
   cNuDiff->Draw();
   cNuDiff->SetFillColor(10);
@@ -432,6 +466,9 @@ void FigNuDiff()
  //!-----------------------------
   cNuDiff->Update();
   cNuDiff->cd();
+
+  cNuDiff->SaveAs("cNuDiff.pdf");
+
 }//FigNuDiff
 
 //!/////////////////////////////////////////////////////////////////////////////////
@@ -499,7 +536,9 @@ void FigCEEX21rat()
   int ndiv=2;
   Float_t  WidPix, HeiPix;
   WidPix = 800; HeiPix =  400*ndiv;
-  TCanvas *cCeex21rat = new TCanvas("cCeex21rat","cCeex21rat",150,150, WidPix,HeiPix);
+  TCanvas *cCeex21rat = new TCanvas("cCeex21rat","cCeex21rat", gXcanv,  gYcanv,  WidPix,HeiPix);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+
   cCeex21rat->SetFillColor(10);
   cCeex21rat->Draw();
   cCeex21rat->SetFillColor(10);
@@ -516,8 +555,7 @@ void FigCEEX21rat()
   RAT1->GetXaxis()->CenterTitle();
   RAT1->GetXaxis()->SetTitleSize(0.06);
   RAT1->GetXaxis()->SetTitleOffset(-0.6);
-  RAT1->SetMaximum(7.0);
-  RAT1->SetMinimum(5.5);
+  RAT1->SetMaximum(8.0); RAT1->SetMinimum(5.0);
   RAT1->SetLineColor(kBlue);
   RAT1->DrawCopy("h");
   RAT2->SetLineColor(kRed);
@@ -565,6 +603,9 @@ void FigCEEX21rat()
   //!-----------------------------
   cCeex21rat->Update();
   cCeex21rat->cd();
+
+  cCeex21rat->SaveAs("cCeex21rat.pdf");
+
   //!-----------------------------
 }///FigCEEX21mu
 
