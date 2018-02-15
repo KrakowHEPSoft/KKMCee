@@ -43,23 +43,32 @@ class ROBOL2{
   TH1D   *hst_vTrueCeex2;
   ///
   TH1D   *hst_vPhotMain;
-  TH1D   *hst_vPhotCeex1;
-  TH1D   *hst_vPhotCeex2;
-  TH1D   *hst_vPhotCeex12;
+  TH1D   *hst_vvNuCeex1;
+  TH1D   *hst_vvNuCeex2;
+  TH1D   *hst_vvNuCeex12;
   ///
   TH1D   *hst_vPhotNuel;
   TH1D   *hst_vPhotNumu;
   ///
-  TH1D   *hst_mPhotCeex1;
-  TH1D   *hst_mPhotCeex2;
-  TH1D   *hst_mPhotCeex12;
+  TH1D   *hst_vvMuCeex1;
+  TH1D   *hst_vvMuCeex2;
+  TH1D   *hst_vvMuCeex12;
   ///
-  TH1D   *hst_nPhotCeex1;
-  TH1D   *hst_nPhotCeex2;
-  TH1D   *hst_nPhotCeex12;
-  TH1D   *hst_lPhotCeex1;
-  TH1D   *hst_lPhotCeex2;
-  TH1D   *hst_lPhotCeex12;
+  TH1D   *hst_evNuCeex1;
+  TH1D   *hst_evNuCeex2;
+  TH1D   *hst_evNuCeex12;
+  ///
+  TH1D   *hst_evNuCeex1n;
+  TH1D   *hst_evNuCeex2n;
+  TH1D   *hst_evNuCeex12n;
+  ///
+  TH1D   *hst_evMuCeex1;
+  TH1D   *hst_evMuCeex2;
+  TH1D   *hst_evMuCeex12;
+  ///
+  TH1D   *hst_evMuCeex1n;
+  TH1D   *hst_evMuCeex2n;
+  TH1D   *hst_evMuCeex12n;
   ///
   TH1D   *hst_CosPLCeex2;
   ///

@@ -68,38 +68,44 @@ void ROBOL2::Initialize(long &NevTot)
   hst_vPhotMain->Sumw2();
   ///
   int nbv2 =40;   // small range
-  hst_vPhotCeex1 = new TH1D("hst_vPhotCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
-  hst_vPhotCeex2 = new TH1D("hst_vPhotCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
-  hst_vPhotCeex12= new TH1D("hst_vPhotCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
-  hst_vPhotCeex1->Sumw2();
-  hst_vPhotCeex2->Sumw2();
-  hst_vPhotCeex12->Sumw2();
+  hst_vvNuCeex1 = new TH1D("hst_vvNuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vvNuCeex2 = new TH1D("hst_vvNuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_vvNuCeex12= new TH1D("hst_vvNuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
+  hst_vvNuCeex1->Sumw2();
+  hst_vvNuCeex2->Sumw2();
+  hst_vvNuCeex12->Sumw2();
   /// electron neutrino
   hst_vPhotNuel = new TH1D("hst_vPhotNuel", "dSig/dv CEEX1",         nbv2, vv1 , vv2);
   hst_vPhotNumu = new TH1D("hst_vPhotNumu", "dSig/dv CEEX2",         nbv2, vv1 , vv2);
   /// Muon channel
-  hst_mPhotCeex1 = new TH1D("hst_mPhotCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
-  hst_mPhotCeex2 = new TH1D("hst_mPhotCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
-  hst_mPhotCeex12= new TH1D("hst_mPhotCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
-  hst_mPhotCeex1->Sumw2();
-  hst_mPhotCeex2->Sumw2();
-  hst_mPhotCeex12->Sumw2();
+  hst_vvMuCeex1 = new TH1D("hst_vvMuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vvMuCeex2 = new TH1D("hst_vvMuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_vvMuCeex12= new TH1D("hst_vvMuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
+  hst_vvMuCeex1->Sumw2();
+  hst_vvMuCeex2->Sumw2();
+  hst_vvMuCeex12->Sumw2();
   /// wider beams, energy in GeV
   double Eg2= vv2*CMSene/2;
   double Eg1= vv1*CMSene/2;
   int nb4 =10;   /// small range, wider bins
-  hst_nPhotCeex1 = new TH1D("hst_nPhotCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_nPhotCeex2 = new TH1D("hst_nPhotCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_nPhotCeex12= new TH1D("hst_nPhotCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_nPhotCeex1->Sumw2();
-  hst_nPhotCeex2->Sumw2();
-  hst_nPhotCeex12->Sumw2();
-  hst_lPhotCeex1 = new TH1D("hst_lPhotCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_lPhotCeex2 = new TH1D("hst_lPhotCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_lPhotCeex12= new TH1D("hst_lPhotCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_lPhotCeex1->Sumw2();
-  hst_lPhotCeex2->Sumw2();
-  hst_lPhotCeex12->Sumw2();
+  hst_evNuCeex1 = new TH1D("hst_evNuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evNuCeex2 = new TH1D("hst_evNuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evNuCeex12= new TH1D("hst_evNuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evNuCeex1->Sumw2();
+  hst_evNuCeex2->Sumw2();
+  hst_evNuCeex12->Sumw2();
+  hst_evMuCeex1 = new TH1D("hst_evMuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evMuCeex2 = new TH1D("hst_evMuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evMuCeex12= new TH1D("hst_evMuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex1->Sumw2();
+  hst_evMuCeex2->Sumw2();
+  hst_evMuCeex12->Sumw2();
+  hst_evMuCeex1n = new TH1D("hst_evMuCeex1n", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evMuCeex2n = new TH1D("hst_evMuCeex2n", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evMuCeex12n= new TH1D("hst_evMuCeex12n","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex1n->Sumw2();
+  hst_evMuCeex2n->Sumw2();
+  hst_evMuCeex12n->Sumw2();
   ///
   int nbc =50;
   hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
@@ -247,11 +253,9 @@ void ROBOL2::Production(long &iEvent)
   //
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
-  //[[[[[[
-  // IFI off
-  WtCEEX1 = KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
-  WtCEEX2 = KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2)
-  //]]]]]
+  //
+  double WtCEEX1n = KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
+  double WtCEEX2n = KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2)
   //
 /// All 3 types of nu+nubar
 if( NuYes==1 ){
@@ -260,13 +264,13 @@ if( NuYes==1 ){
   /// nu+nubar + visible photons
   if( nph_vis >= 1 ) hst_vPhotMain->Fill(  vPhot, WtMain); /// full v-range
   /// histos with restricted v-range
-  if( nph_vis >= 1 ) hst_vPhotCeex1->Fill( vPhot, WtCEEX1);
-  if( nph_vis >= 1 ) hst_vPhotCeex2->Fill( vPhot, WtCEEX2);
-  if( nph_vis >= 1 ) hst_vPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
+  if( nph_vis >= 1 ) hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
+  if( nph_vis >= 1 ) hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
+  if( nph_vis >= 1 ) hst_vvNuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
   /// wider bins, absolute energy
-  if( nph_vis >= 1 ) hst_nPhotCeex1->Fill( phEneVis, WtCEEX1);
-  if( nph_vis >= 1 ) hst_nPhotCeex2->Fill( phEneVis, WtCEEX2);
-  if( nph_vis >= 1 ) hst_nPhotCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+  if( nph_vis >= 1 ) hst_evNuCeex1->Fill( phEneVis, WtCEEX1);
+  if( nph_vis >= 1 ) hst_evNuCeex2->Fill( phEneVis, WtCEEX2);
+  if( nph_vis >= 1 ) hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
   /// comparing Nuel with Numu
   if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
   if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtMain);
@@ -282,13 +286,17 @@ if( KF==13 ) {
   if( nph_vis>=1 && inAngMu==1 ){
     hst_CosPLCeex2->Fill(CosThePL, WtCEEX2); /// Ang. distr.
     /// histos with restricted v-range
-    hst_mPhotCeex1->Fill( vPhot, WtCEEX1);
-    hst_mPhotCeex2->Fill( vPhot, WtCEEX2);
-    hst_mPhotCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
+    hst_vvMuCeex1->Fill( vPhot, WtCEEX1);
+    hst_vvMuCeex2->Fill( vPhot, WtCEEX2);
+    hst_vvMuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
     /// wider bins, absolute energy
-    hst_lPhotCeex1->Fill( phEneVis, WtCEEX1);
-    hst_lPhotCeex2->Fill( phEneVis, WtCEEX2);
-    hst_lPhotCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+    hst_evMuCeex1->Fill( phEneVis, WtCEEX1);
+    hst_evMuCeex2->Fill( phEneVis, WtCEEX2);
+    hst_evMuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+    /// wider bins, absolute energy IFI off!!!
+    hst_evMuCeex1n->Fill( phEneVis, WtCEEX1n);
+    hst_evMuCeex2n->Fill( phEneVis, WtCEEX2n);
+    hst_evMuCeex12n->Fill(phEneVis, WtCEEX1n-WtCEEX2n);
   }/// visible phot and mu-pair
 }/// KF=13
 
