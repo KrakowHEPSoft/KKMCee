@@ -71,19 +71,16 @@ void ROBOL2::Initialize(long &NevTot)
   //[[[
   cout<<"ROBOL2::Initialize:  [1] "<<endl;
   //]]]
-  hst_weight  = TH1D_UP("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
-  hst_Mff     = TH1D_UP("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
+  hst_weight  = TH1D_UP("hst_weight" , "MC weight",      100, 0.000 , 2.0);
+  hst_Mff     = TH1D_UP("hst_Mff"    , "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
   hst_nPhAll  = TH1D_UP("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
   hst_nPhVis  = TH1D_UP("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
-  //[[[
-  cout<<"ROBOL2::Initialize:  [2] "<<endl;
-  //]]]
-  ///
+ ///
   int nbv =150;   // too small
-  hst_vTrueMain = TH1D_UP("hst_vTrueMain",  "dSig/dvTrue nu ",nbv, 0.000 ,1.000);
-  hst_vTrueMu   = TH1D_UP("hst_vTrueMu",    "dSig/dvTrue mu ",nbv, 0.000 ,1.000);
-  hst_vTrueCeex2= TH1D_UP("hst_vTrueCeex2", "dSig/dvTrue ",   nbv, 0.000 ,1.000);
-  hst_vPhotMain= TH1D_UP("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vtMuCeex2 = TH1D_UP("hst_vtMuCeex2",  "dSig/dvTrue mu ", nbv, 0.000 ,1.000);
+  hst_vaMuCeex2 = TH1D_UP("hst_vaMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vtNuCeex2 = TH1D_UP("hst_vtNuCeex2",  "dSig/dvTrue ",    nbv, 0.000 ,1.000);
+  hst_vaNuCeex2 = TH1D_UP("hst_vaNuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   ///
   int nbv2 =40;   // small range
   hst_vvNuCeex1 = TH1D_UP("hst_vvNuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
@@ -260,10 +257,9 @@ void ROBOL2::Production(long &iEvent)
   //
 /// All 3 types of nu+nubar
 if( NuYes==1 ){
-  hst_vTrueMain->Fill(       vv, WtMain);  /// true nu-pair mass distribution
-  hst_vTrueCeex2->Fill(      vv, WtCEEX2); /// true nu-pair mass distribution
+  hst_vtNuCeex2->Fill(       vv, WtCEEX2); /// true nu-pair mass, full range
   /// nu+nubar + visible photons
-  if( nph_vis >= 1 ) hst_vPhotMain->Fill(  vPhot, WtMain); /// full v-range
+  if( nph_vis >= 1 ) hst_vaNuCeex2->Fill( vPhot, WtCEEX2); /// tagged, full v-range
   /// histos with restricted v-range
   if( nph_vis >= 1 ) hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
   if( nph_vis >= 1 ) hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
@@ -273,8 +269,8 @@ if( NuYes==1 ){
   if( nph_vis >= 1 ) hst_evNuCeex2->Fill( phEneVis, WtCEEX2);
   if( nph_vis >= 1 ) hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
   /// comparing Nuel with Numu
-  if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtMain);
-  if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtMain);
+  if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtCEEX2);
+  if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtCEEX2);
 }/// NuYes
   /// *********************************************************************
   ///         various QED models, muon channel
@@ -282,7 +278,8 @@ if( NuYes==1 ){
   int inAngMu =0;    /// angular limits on muon-pairs
   if (fabs(CosThe1)<CosTheMumax &&  fabs(CosThe2)<CosTheMumax ) inAngMu =1;
 if( KF==13 ) {
-  hst_vTrueMu->Fill(  vv, WtMain);   /// true mu-pair mass distribution
+  hst_vtMuCeex2->Fill(      vv, WtCEEX2);   /// true mu-pair mass distribution
+  if( nph_vis >= 1 ) hst_vaMuCeex2->Fill( vPhot, WtCEEX2); /// full v-range
 /// mu_pair+gammas, both visible (in the detector)
   if( nph_vis>=1 && inAngMu==1 ){
     hst_CosPLCeex2->Fill(CosThePL, WtCEEX2); /// Ang. distr.

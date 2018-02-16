@@ -80,11 +80,11 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_LnThPhAll") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_LnThPhVis") );
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMain") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotMain") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vtNuCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaNuCeex2") );
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueCeex2") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vTrueMu") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vtMuCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaMuCeex2") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvNuCeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvNuCeex2") );
@@ -194,11 +194,10 @@ void FigVPhont()
 //------------------------------------------------------------------------
   cout<<" ========================= FigVPhont =========================== "<<endl;
  //
-  TH1D *hst_vTrueMain  = (TH1D*)DiskFileA.Get("hst_vTrueMain");
-  TH1D *hst_vPhotMain  = (TH1D*)DiskFileA.Get("hst_vPhotMain");
-  TH1D *hst_vTrueMu    = (TH1D*)DiskFileA.Get("hst_vTrueMu");
- //
-  TH1D *hst_vvMuCeex2  = (TH1D*)DiskFileA.Get("hst_vvMuCeex2");
+  TH1D *hst_vtNuCeex2  = (TH1D*)DiskFileA.Get("hst_vtNuCeex2");  // Phot. untaged
+  TH1D *hst_vaNuCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuCeex2");  // Phot. tagged
+  TH1D *hst_vtMuCeex2  = (TH1D*)DiskFileA.Get("hst_vtMuCeex2");  // Phot. untaged
+  TH1D *hst_vaMuCeex2  = (TH1D*)DiskFileA.Get("hst_vaMuCeex2");  // Phot. tagged
 
  ////////////////////////////////////////
    TLatex *CaptT = new TLatex();
@@ -214,7 +213,7 @@ void FigVPhont()
    //====================plot1========================
    cFigVPhont->cd(1);
    gPad->SetLogy(); // !!!!!!
-   TH1D *Hst=hst_vTrueMain;
+   TH1D *Hst=hst_vtNuCeex2;
    Hst->SetStats(0);
    Hst->SetTitle(0);
    Hst->GetXaxis()->CenterTitle();
@@ -229,14 +228,14 @@ void FigVPhont()
    double ycapt = 0.80;
    CaptT->DrawLatex(0.40, ycapt,gTextEne);
 //
-   PlotSame2(hst_vTrueMain,  ycapt, kBlue,  +2.0, "(a)", "All photons");
-   PlotSame2(hst_vPhotMain,  ycapt, kRed,   +1.0, "(b)", "Tagged photons");
+   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue,  +2.0, "(a)", "nunu untaged");
+   PlotSame2(hst_vaNuCeex2,  ycapt, kRed,   +1.0, "(b)", "nunu Tagged");
 
    //====================plot2========================
    cFigVPhont->cd(2);
 
    gPad->SetLogy(); // !!!!!!
-   Hst=hst_vTrueMain;
+   Hst=hst_vtNuCeex2;
    Hst->SetStats(0);
    Hst->SetTitle(0);
    Hst->GetXaxis()->CenterTitle();
@@ -251,9 +250,10 @@ void FigVPhont()
    ycapt = 0.80;
    CaptT->DrawLatex(0.40, ycapt,gTextEne);
 //
-   PlotSame2(hst_vTrueMain,  ycapt, kBlue,  +2.0, "(a)", "All photons");
-   PlotSame2(hst_vvMuCeex2,    ycapt, kRed, +1.0, "(b)", "muons tagged");
-//   PlotSame2(hst_vTrueMu,    ycapt, kRed,   +1.0, "(b)", "muons untagged");
+   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue,  +2.0, "(a)", "nunu untaged");
+   hst_vaMuCeex2->Scale(3.0);
+   PlotSame2(hst_vaMuCeex2,  ycapt, kRed,   +1.0, "(b)", "3*mu  tagged");
+   hst_vaMuCeex2->Scale(0.33333333);
 
   //================================================
   cFigVPhont->SaveAs("cFigVPhont.pdf");
