@@ -22,6 +22,26 @@ extern "C" void  hepevt_setphotosflagtrue_(int&);
 extern "C" void  hepevt_getnhep_(int&);
 ///////////////////////////////////////////////////////////////////////////////
 
+
+//______________________________________________________________________________
+TH1D *ROBOL2::TH1D_UP(const char* name, const char* title,
+                       int nbins, double xmin, double xmax)
+{
+  TH1D *h = new TH1D(name,title,nbins,xmin,xmax);
+  h->Sumw2();
+  return h;
+}
+
+//______________________________________________________________________________
+TH2D *ROBOL2::TH2D_UP(const char* name, const char* title,
+                       int nbinx, double xmin, double xmax,
+                       int nbiny, double ymin, double ymax)
+{
+  TH2D *h = new TH2D(name,title,nbinx,xmin,xmax,nbiny,ymin,ymax);
+  h->Sumw2();
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 void ROBOL2::Initialize(long &NevTot)
 {
@@ -48,75 +68,56 @@ void ROBOL2::Initialize(long &NevTot)
   double vv1    = vvZ-0.020;
   int nbin =NevTot/100;
   if(nbin>1000) nbin=1000;
-  hst_weight  = new TH1D("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
-  hst_Mff     = new TH1D("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);  
-  hst_weight->Sumw2();
-  hst_Mff->Sumw2();
-  hst_nPhAll  = new TH1D("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
-  hst_nPhVis  = new TH1D("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
-  hst_nPhAll->Sumw2();
-  hst_nPhVis->Sumw2();
+  //[[[
+  cout<<"ROBOL2::Initialize:  [1] "<<endl;
+  //]]]
+  hst_weight  = TH1D_UP("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
+  hst_Mff     = TH1D_UP("hst_Mff"    ,  "Mass(f-fbar)",  nbin, 0.000 ,CMSene);
+  hst_nPhAll  = TH1D_UP("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
+  hst_nPhVis  = TH1D_UP("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
+  //[[[
+  cout<<"ROBOL2::Initialize:  [2] "<<endl;
+  //]]]
   ///
   int nbv =150;   // too small
-  hst_vTrueMain = new TH1D("hst_vTrueMain",  "dSig/dvTrue nu ",nbv, 0.000 ,1.000);
-  hst_vTrueMu   = new TH1D("hst_vTrueMu",    "dSig/dvTrue mu ",nbv, 0.000 ,1.000);
-  hst_vTrueCeex2= new TH1D("hst_vTrueCeex2", "dSig/dvTrue ",   nbv, 0.000 ,1.000);
-  hst_vTrueMu->Sumw2();
-  hst_vTrueMain->Sumw2();
-  hst_vTrueCeex2->Sumw2();
-  hst_vPhotMain= new TH1D("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
-  hst_vPhotMain->Sumw2();
+  hst_vTrueMain = TH1D_UP("hst_vTrueMain",  "dSig/dvTrue nu ",nbv, 0.000 ,1.000);
+  hst_vTrueMu   = TH1D_UP("hst_vTrueMu",    "dSig/dvTrue mu ",nbv, 0.000 ,1.000);
+  hst_vTrueCeex2= TH1D_UP("hst_vTrueCeex2", "dSig/dvTrue ",   nbv, 0.000 ,1.000);
+  hst_vPhotMain= TH1D_UP("hst_vPhotMain",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   ///
   int nbv2 =40;   // small range
-  hst_vvNuCeex1 = new TH1D("hst_vvNuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
-  hst_vvNuCeex2 = new TH1D("hst_vvNuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
-  hst_vvNuCeex12= new TH1D("hst_vvNuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
-  hst_vvNuCeex1->Sumw2();
-  hst_vvNuCeex2->Sumw2();
-  hst_vvNuCeex12->Sumw2();
+  hst_vvNuCeex1 = TH1D_UP("hst_vvNuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vvNuCeex2 = TH1D_UP("hst_vvNuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_vvNuCeex12= TH1D_UP("hst_vvNuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
   /// electron neutrino
-  hst_vPhotNuel = new TH1D("hst_vPhotNuel", "dSig/dv CEEX1",         nbv2, vv1 , vv2);
-  hst_vPhotNumu = new TH1D("hst_vPhotNumu", "dSig/dv CEEX2",         nbv2, vv1 , vv2);
+  hst_vPhotNuel = TH1D_UP("hst_vPhotNuel", "dSig/dv CEEX1",         nbv2, vv1 , vv2);
+  hst_vPhotNumu = TH1D_UP("hst_vPhotNumu", "dSig/dv CEEX2",         nbv2, vv1 , vv2);
   /// Muon channel
-  hst_vvMuCeex1 = new TH1D("hst_vvMuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
-  hst_vvMuCeex2 = new TH1D("hst_vvMuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
-  hst_vvMuCeex12= new TH1D("hst_vvMuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
-  hst_vvMuCeex1->Sumw2();
-  hst_vvMuCeex2->Sumw2();
-  hst_vvMuCeex12->Sumw2();
+  hst_vvMuCeex1 = TH1D_UP("hst_vvMuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vvMuCeex2 = TH1D_UP("hst_vvMuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  hst_vvMuCeex12= TH1D_UP("hst_vvMuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
   /// wider beams, energy in GeV
   double Eg2= vv2*CMSene/2;
   double Eg1= vv1*CMSene/2;
   int nb4 =10;   /// small range, wider bins
-  hst_evNuCeex1 = new TH1D("hst_evNuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evNuCeex2 = new TH1D("hst_evNuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evNuCeex12= new TH1D("hst_evNuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_evNuCeex1->Sumw2();
-  hst_evNuCeex2->Sumw2();
-  hst_evNuCeex12->Sumw2();
-  hst_evMuCeex1 = new TH1D("hst_evMuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evMuCeex2 = new TH1D("hst_evMuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evMuCeex12= new TH1D("hst_evMuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_evMuCeex1->Sumw2();
-  hst_evMuCeex2->Sumw2();
-  hst_evMuCeex12->Sumw2();
-  hst_evMuCeex1n = new TH1D("hst_evMuCeex1n", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evMuCeex2n = new TH1D("hst_evMuCeex2n", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evMuCeex12n= new TH1D("hst_evMuCeex12n","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_evMuCeex1n->Sumw2();
-  hst_evMuCeex2n->Sumw2();
-  hst_evMuCeex12n->Sumw2();
+  hst_evNuCeex1 = TH1D_UP("hst_evNuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evNuCeex2 = TH1D_UP("hst_evNuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evNuCeex12= TH1D_UP("hst_evNuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex1 = TH1D_UP("hst_evMuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evMuCeex2 = TH1D_UP("hst_evMuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evMuCeex12= TH1D_UP("hst_evMuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex2ifi= TH1D_UP("hst_evMuCeex2ifi","dSig/dE CEEX2 IFI", nb4, Eg1 , Eg2);
+  hst_evMuCeex1n = TH1D_UP("hst_evMuCeex1n", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evMuCeex2n = TH1D_UP("hst_evMuCeex2n", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evMuCeex12n= TH1D_UP("hst_evMuCeex12n","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
   ///
   int nbc =50;
-  hst_CosPLCeex2= new TH1D("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
-  hst_CosPLCeex2->Sumw2();
-  // ln10(sin(theta))
-  hst_LnThPhAll = new TH1D("hst_LnThPhAll", "ln10(sin(theta)) all phot.",  60, -6.0 ,0.0);
-  hst_LnThPhVis = new TH1D("hst_LnThPhVis", "ln10(sin(theta)) vis. phot.", 60, -6.0 ,0.0);
-  hst_LnThPhAll->Sumw2();
-  hst_LnThPhVis->Sumw2();
+  hst_CosPLCeex2= TH1D_UP("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
+ // ln10(sin(theta))
+  hst_LnThPhAll = TH1D_UP("hst_LnThPhAll", "ln10(sin(theta)) all phot.",  60, -6.0 ,0.0);
+  hst_LnThPhVis = TH1D_UP("hst_LnThPhVis", "ln10(sin(theta)) vis. phot.", 60, -6.0 ,0.0);
   //  ************* special histo  *************
-  HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
+  HST_KKMC_NORMA = TH1D_UP("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
     HST_KKMC_NORMA->SetBinContent(j,m_xpar[j]);    // xpar encoded
   m_YSum= 0.0;
@@ -293,10 +294,12 @@ if( KF==13 ) {
     hst_evMuCeex1->Fill( phEneVis, WtCEEX1);
     hst_evMuCeex2->Fill( phEneVis, WtCEEX2);
     hst_evMuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
-    /// wider bins, absolute energy IFI off!!!
+    /// wider bins, absolute energy IFI off!
     hst_evMuCeex1n->Fill( phEneVis, WtCEEX1n);
     hst_evMuCeex2n->Fill( phEneVis, WtCEEX2n);
     hst_evMuCeex12n->Fill(phEneVis, WtCEEX1n-WtCEEX2n);
+    /// wider bins, absolute energy IFI
+    hst_evMuCeex2ifi->Fill( phEneVis, WtCEEX2n-WtCEEX2);
   }/// visible phot and mu-pair
 }/// KF=13
 
@@ -344,8 +347,7 @@ void ROBOL2::Finalize()
   hstC_Mff->SetTitle("dsigma/dQ2 [nb/GeV^2] ");
   hstC_Mff->Scale(Fact);
   // **** alternatively, re-normalized histo can be defined as a new one ****
-  TH1D *hstN_Mff =new TH1D("hstN_Mff","dsigma/dQ2 [nb/GeV^2]",nbt,tmin,tmax);
-  hstN_Mff->Sumw2();
+  TH1D *hstN_Mff =TH1D_UP("hstN_Mff","dsigma/dQ2 [nb/GeV^2]",nbt,tmin,tmax);
   hstN_Mff->Add(hstN_Mff, Fact);
   // *********************************************************************
   // **** alternatively HST_KKMC_NORMA is used at later stage (plotting)

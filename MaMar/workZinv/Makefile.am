@@ -2,8 +2,9 @@ INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 #-----------------------------------------------------------------------
 #########  FARMING on NZ42 farm ###########
-#  make CLEAN         make prepare
-#  make farm24-KRK    make SLsubmit
+#  make prepare
+#  (make CLEAN;   make farm24-KRK)
+#  make SLsubmit
 #  make q-semaphore   make combine
 #-----------------------------------------------------------------------
 MCMD=ProdZinv
@@ -171,7 +172,7 @@ combine24:  combine
 	| ../../glibk/combine.exe; more pro.hst)
 #-----------------------------------------------------------------------
 #---- query
-q-semaphore:
+q-sem:
 	(ls -altr farm/*/semaphore)
 q-nev:
 	(cat farm/*/semaphore | grep nev)

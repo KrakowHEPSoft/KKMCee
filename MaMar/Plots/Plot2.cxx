@@ -107,14 +107,11 @@ void FigInfo()
   TH1D *hst_LnThPhAll  = (TH1D*)DiskFileA.Get("hst_LnThPhAll");
   TH1D *hst_LnThPhVis  = (TH1D*)DiskFileA.Get("hst_LnThPhVis");
 
-  TH1D *hst_vvNuCeex2 = (TH1D*)DiskFileA.Get("hst_vvNuCeex2");
   TH1D *hst_vTrueMain  = (TH1D*)DiskFileA.Get("hst_vTrueMain");
   TH1D *hst_vTrueMu    = (TH1D*)DiskFileA.Get("hst_vTrueMu");
-  //
   TH1D *hst_vPhotMain  = (TH1D*)DiskFileA.Get("hst_vPhotMain");
 
-  TH1D *hst_CosPLCeex2 = (TH1D*)DiskFileA.Get("hst_CosPLCeex2");
-//------------------------------------------------------------------------  
+  //------------------------------------------------------------------------
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
   CaptE->SetNDC(); // !!!

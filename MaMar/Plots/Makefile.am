@@ -3,7 +3,8 @@ INCLUDES = -I$(top_srcdir)/KKsem  \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-bin_PROGRAMS = Plot1 Plot2 PlotFSR PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2 PlotBorn PlotKKsem PlotPlay
+bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
+   PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2 PlotBorn PlotKKsem PlotPlay
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -49,6 +50,14 @@ Plot1_SOURCES = KKplot.cxx HisNorm.cxx Plot1.cxx
 Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
+Plot2_SOURCES =  HisNorm.cxx Plot2.cxx
+Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
+Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+PlotZinv_SOURCES =  HisNorm.cxx PlotZinv.cxx
+PlotZinv_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
+PlotZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
 PlotAFB_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB.cxx
 PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
@@ -56,10 +65,6 @@ PlotAFB_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 PlotAFB2_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB2.cxx
 PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotAFB2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
-
-Plot2_SOURCES =  HisNorm.cxx Plot2.cxx
-Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
 PlotFSR_SOURCES = KKplot.cxx HisNorm.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
@@ -109,6 +114,8 @@ plot1: Plot1
 #################
 Plot1-run: Plot1
 	./Plot1
+PlotZinv-run: PlotZinv
+	./PlotZinv
 PlotIFI-run: PlotIFI
 	./PlotIFI
 PlotAFB-run: PlotAFB

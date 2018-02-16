@@ -65,6 +65,7 @@ class ROBOL2{
   TH1D   *hst_evMuCeex1;
   TH1D   *hst_evMuCeex2;
   TH1D   *hst_evMuCeex12;
+  TH1D   *hst_evMuCeex2ifi;
   ///
   TH1D   *hst_evMuCeex1n;
   TH1D   *hst_evMuCeex2n;
@@ -84,6 +85,8 @@ class ROBOL2{
   }
  public:
 // Methods
+  TH1D *TH1D_UP(const char*, const char*, int , double, double );
+  TH2D *TH2D_UP(const char*, const char*, int , double, double, int, double, double);
   void Initialize(long&);
   void Production(long&);
   void KKMC_NORMA();
