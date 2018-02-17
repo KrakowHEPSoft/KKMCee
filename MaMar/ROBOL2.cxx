@@ -87,8 +87,8 @@ void ROBOL2::Initialize(long &NevTot)
   hst_vvNuCeex2 = TH1D_UP("hst_vvNuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
   hst_vvNuCeex12= TH1D_UP("hst_vvNuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
   /// electron neutrino
-  hst_vPhotNuel = TH1D_UP("hst_vPhotNuel", "dSig/dv CEEX1",         nbv2, vv1 , vv2);
-  hst_vPhotNumu = TH1D_UP("hst_vPhotNumu", "dSig/dv CEEX2",         nbv2, vv1 , vv2);
+  hst_vPhotNuel = TH1D_UP("hst_vPhotNuel", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vPhotNumu = TH1D_UP("hst_vPhotNumu", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
   /// Muon channel
   hst_vvMuCeex1 = TH1D_UP("hst_vvMuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
   hst_vvMuCeex2 = TH1D_UP("hst_vvMuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
@@ -96,17 +96,17 @@ void ROBOL2::Initialize(long &NevTot)
   /// wider beams, energy in GeV
   double Eg2= vv2*CMSene/2;
   double Eg1= vv1*CMSene/2;
-  int nb4 =10;   /// small range, wider bins
-  hst_evNuCeex1 = TH1D_UP("hst_evNuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evNuCeex2 = TH1D_UP("hst_evNuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evNuCeex12= TH1D_UP("hst_evNuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_evMuCeex1 = TH1D_UP("hst_evMuCeex1", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evMuCeex2 = TH1D_UP("hst_evMuCeex2", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evMuCeex12= TH1D_UP("hst_evMuCeex12","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
-  hst_evMuCeex2ifi= TH1D_UP("hst_evMuCeex2ifi","dSig/dE CEEX2 IFI", nb4, Eg1 , Eg2);
-  hst_evMuCeex1n = TH1D_UP("hst_evMuCeex1n", "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
-  hst_evMuCeex2n = TH1D_UP("hst_evMuCeex2n", "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
-  hst_evMuCeex12n= TH1D_UP("hst_evMuCeex12n","dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  int nb4 = 40;   /// small range
+  hst_evNuCeex1  = TH1D_UP("hst_evNuCeex1",  "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evNuCeex2  = TH1D_UP("hst_evNuCeex2",  "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evNuCeex12 = TH1D_UP("hst_evNuCeex12", "dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex1  = TH1D_UP("hst_evMuCeex1",  "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
+  hst_evMuCeex2  = TH1D_UP("hst_evMuCeex2",  "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
+  hst_evMuCeex12 = TH1D_UP("hst_evMuCeex12", "dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  hst_evMuCeex2ifi=TH1D_UP("hst_evMuCeex2ifi","dSig/dE CEEX2 IFI",  nb4, Eg1 , Eg2);
+  hst_evMuCeex1n = TH1D_UP("hst_evMuCeex1n",  "dSig/dE CEEX1",      nb4, Eg1 , Eg2);
+  hst_evMuCeex2n = TH1D_UP("hst_evMuCeex2n",  "dSig/dE CEEX2",      nb4, Eg1 , Eg2);
+  hst_evMuCeex12n= TH1D_UP("hst_evMuCeex12n", "dSig/dE CEEX1-CEEX2",nb4, Eg1 , Eg2);
   ///
   int nbc =50;
   hst_CosPLCeex2= TH1D_UP("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
