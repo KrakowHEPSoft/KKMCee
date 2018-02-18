@@ -27,12 +27,17 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-TFile DiskFileA("../workZinv/rmain.root");
+//TFile DiskFileA("../workZinv/rmain.root");
 //
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_3G");
-
-TFile DiskFileB("Plot2.root","RECREATE","histograms");
+TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
+//
+// FSR off, pure ISR
+TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_New");
+//
+//+++++++++++++++++++++++++++
+TFile DiskFileX("Plot2.root","RECREATE","histograms");
 //=============================================================================
 
 //Double_t sqr( const Double_t x ){ return x*x;};
@@ -339,24 +344,20 @@ void FigNuDiff()
 }//FigNuDiff
 
 
+
+
 ///////////////////////////////////////////////////////////////////////////////////
-void FigCeex21nu()
+void FigCeex12nu()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigCeex21nu =========================== "<<endl;
-  ///
-  TH1D *hst_vvNuCeex1     = (TH1D*)DiskFileA.Get("hst_vvNuCeex1");
-  TH1D *hst_vvNuCeex2     = (TH1D*)DiskFileA.Get("hst_vvNuCeex2");
-  TH1D *hst_vvNuCeex12    = (TH1D*)DiskFileA.Get("hst_vvNuCeex12");
-  //
+  cout<<" ========================= FigCeex12nu =========================== "<<endl;
+//
   TH1D *hst_evNuCeex1     = (TH1D*)DiskFileA.Get("hst_evNuCeex1");
   TH1D *hst_evNuCeex2     = (TH1D*)DiskFileA.Get("hst_evNuCeex2");
   TH1D *hst_evNuCeex12    = (TH1D*)DiskFileA.Get("hst_evNuCeex12");
-
 ///////////////////////////////////////////////
   TH1D *RAT_ceex12 = HstRatio("RAT_ceex12", hst_evNuCeex12, hst_evNuCeex2, kBlack );
-
-  //!////////////////////////////////////////////
+//////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
@@ -364,14 +365,14 @@ void FigCeex21nu()
   TH1D *H_Eline0  = (TH1D*)hst_evNuCeex1->Clone("H_Eline0");  // zero line
   H_Eline0->Reset();
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  TCanvas *cCeex21nu = new TCanvas("cCeex21nu","cCeex21nu", gXcanv,  gYcanv,  1200, 600);
+  TCanvas *cCeex12nu = new TCanvas("cCeex12nu","cCeex12nu", gXcanv,  gYcanv,  1200, 600);
   gXcanv += gDcanv; gYcanv += gDcanv;
 //
-  cCeex21nu->SetFillColor(10);
-  cCeex21nu->Draw();
-  cCeex21nu->Divide(2, 0);
+  cCeex12nu->SetFillColor(10);
+  cCeex12nu->Draw();
+  cCeex12nu->Divide(2, 0);
 /////////////////////////////////////////////
-  cCeex21nu->cd(1);
+  cCeex12nu->cd(1);
   TH1D *Hst=hst_evNuCeex1;
   Hst->SetStats(0);
   Hst->SetTitle(0);
@@ -379,32 +380,282 @@ void FigCeex21nu()
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
-//  double vcapt = 1.0 - sqr(89.3/gCMSene);
-  double vcapt = 1.0 - sqr(90.5/gCMSene);
+  double vvZ    = 1-sqr(91.2/gCMSene) +0.01;
+  double vcapt  = vvZ *gCMSene/2;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
-  PlotSame2(hst_evNuCeex1,  ycapt, kBlue, vcapt,       "(a)"," CEEX1");
-  PlotSame2(hst_evNuCeex2,  ycapt, kRed,  vcapt+0.003, "(b)"," CEEX2");
-
+  PlotSame2(hst_evNuCeex1,  ycapt, kBlue, vcapt,      "(a)"," CEEX1");
+  PlotSame2(hst_evNuCeex2,  ycapt, kRed,  vcapt+0.25, "(b)"," CEEX2");
 //
-  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma},   e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's taged");
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma};  "
+		  "e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,  #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}     #gamma's taged");
 ////////////////////////////////////////////
-  cCeex21nu->cd(2);
-
+  cCeex12nu->cd(2);
   H_Eline0->SetStats(0);
   H_Eline0->SetTitle(0);
   H_Eline0->SetMaximum( +0.05); H_Eline0->SetMinimum( -0.05);
   H_Eline0->SetLineWidth(2);
   H_Eline0->GetXaxis()->SetTitle("E_{#gamma}");
   H_Eline0->DrawCopy("h");
-
   RAT_ceex12->DrawCopy("hsame");
-  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma},   (CEEX1-CEEX2)/CEEX2");
-
-  cCeex21nu->Update();
-  cCeex21nu->cd();
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma};     (CEEX1-CEEX2)/CEEX2");
+  cCeex12nu->Update();
+  cCeex12nu->cd();
 //
-  cCeex21nu->SaveAs("cCeex21nu.pdf");
-}//FigCeex21nu
+  cCeex12nu->SaveAs("cCeex12nu.pdf");
+}//FigCeex12nu
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCeex12mu()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCeex12mu =========================== "<<endl;
+//
+  TH1D *hst_evMuCeex1     = (TH1D*)DiskFileA.Get("hst_evMuCeex1");
+  TH1D *hst_evMuCeex2     = (TH1D*)DiskFileA.Get("hst_evMuCeex2");
+  TH1D *hst_evMuCeex12    = (TH1D*)DiskFileA.Get("hst_evMuCeex12");
+///////////////////////////////////////////////
+  TH1D *RAT_ceex12 = HstRatio("RAT_ceex12", hst_evMuCeex12, hst_evMuCeex2, kBlack );
+//////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  TH1D *H_Eline0  = (TH1D*)hst_evMuCeex1->Clone("H_Eline0");  // zero line
+  H_Eline0->Reset();
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cCeex12mu = new TCanvas("cCeex12mu","cCeex12mu", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cCeex12mu->SetFillColor(10);
+  cCeex12mu->Draw();
+  cCeex12mu->Divide(2, 0);
+/////////////////////////////////////////////
+  cCeex12mu->cd(1);
+  TH1D *Hst=hst_evMuCeex1;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.40;
+  double vvZ    = 1-sqr(91.2/gCMSene) +0.01;
+  double vcapt  = vvZ *gCMSene/2;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  PlotSame2(hst_evMuCeex1,  ycapt, kBlue, vcapt,      "(a)"," CEEX1");
+  PlotSame2(hst_evMuCeex2,  ycapt, kRed,  vcapt+0.25, "(b)"," CEEX2");
+//
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma};  "
+		  "e^{+}e^{-} -> #mu^{+}#mu^{-}+N#gamma,       #gamma's taged");
+////////////////////////////////////////////
+  cCeex12mu->cd(2);
+  H_Eline0->SetStats(0);
+  H_Eline0->SetTitle(0);
+  H_Eline0->SetMaximum( +0.09); H_Eline0->SetMinimum( -0.09);
+  H_Eline0->SetLineWidth(2);
+  H_Eline0->GetXaxis()->SetTitle("E_{#gamma}");
+  H_Eline0->DrawCopy("h");
+  RAT_ceex12->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma};     (CEEX1-CEEX2)/CEEX2");
+  cCeex12mu->Update();
+  cCeex12mu->cd();
+//
+  cCeex12mu->SaveAs("cCeex12mu.pdf");
+}//FigCeex12mu
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCeex12rat()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCeex12rat =========================== "<<endl;
+//
+  TH1D *hst_evNuCeex1     = (TH1D*)DiskFileA.Get("hst_evNuCeex1");
+  TH1D *hst_evNuCeex2     = (TH1D*)DiskFileA.Get("hst_evNuCeex2");
+  TH1D *hst_evNuCeex12    = (TH1D*)DiskFileA.Get("hst_evNuCeex12");
+//
+  TH1D *hst_evMuCeex1     = (TH1D*)DiskFileA.Get("hst_evMuCeex1");
+  TH1D *hst_evMuCeex2     = (TH1D*)DiskFileA.Get("hst_evMuCeex2");
+  TH1D *hst_evMuCeex12    = (TH1D*)DiskFileA.Get("hst_evMuCeex12");
+//
+  TH1D *hst_evMuCeex1n     = (TH1D*)DiskFileA.Get("hst_evMuCeex1n");
+  TH1D *hst_evMuCeex2n     = (TH1D*)DiskFileA.Get("hst_evMuCeex2n");
+  TH1D *hst_evMuCeex12n    = (TH1D*)DiskFileA.Get("hst_evMuCeex12n");
+//
+  TH1D *hst_evMuCeex2ifi   = (TH1D*)DiskFileA.Get("hst_evMuCeex2ifi");
+///////////////////////////////////////////////
+  TH1D *RAT_ceex1 = HstRatio("RAT_ceex1", hst_evNuCeex1, hst_evMuCeex1, kBlack );  // R=nu/mu
+  TH1D *RAT_ceex2 = HstRatio("RAT_ceex2", hst_evNuCeex2, hst_evMuCeex2, kBlack );  // R=nu/mu
+  RAT_ceex1->Scale(1.0/3.0); // R=nu/(3*mu)
+  RAT_ceex2->Scale(1.0/3.0); // R=nu/(3*mu)
+  // (CEEX1-CEEX2)/CEEX2
+  TH1D *RAT_ceex12 = HstDiff("RAT_ceex12", RAT_ceex1, RAT_ceex2, kBlack );
+  RAT_ceex12->Divide(RAT_ceex2);
+  // (CEEX1-CEEX2)/CEEX2
+  TH1D *DELnu12 = HstRatio("DELnu12", hst_evNuCeex12, hst_evNuCeex2, kBlack );  // nu
+  TH1D *DELmu12 = HstRatio("DELmu12", hst_evMuCeex12, hst_evMuCeex2, kBlack );  // mu
+  TH1D *DEL12   = HstDiff("DEL12",    DELnu12, DELmu12, kBlack );  // nu-mu
+  //
+  // ****** IFI off for muons, for neutrinos the same pure ISR
+  TH1D *RAT_ceex1n = HstRatio("RAT_ceex1", hst_evNuCeex1, hst_evMuCeex1n, kBlack );  // R=nu/mu
+  TH1D *RAT_ceex2n = HstRatio("RAT_ceex2", hst_evNuCeex2, hst_evMuCeex2n, kBlack );  // R=nu/mu
+  RAT_ceex1n->Scale(1.0/3.0); // R=nu/(3*mu)
+  RAT_ceex2n->Scale(1.0/3.0); // R=nu/(3*mu)
+  // direct
+  TH1D *RAT_ceex12n = HstDiff("RAT_ceex12n", RAT_ceex1n, RAT_ceex2n, kBlack );
+  RAT_ceex12n->Divide(RAT_ceex2n);
+  // shortcut
+  TH1D *DELmu12n = HstRatio("DELmu12n", hst_evMuCeex12n, hst_evMuCeex2n, kBlack );  // mu
+  TH1D *DEL12n   = HstDiff("DEL12n",    DELnu12, DELmu12n, kBlack );  // nu-mu
+  // IFI
+  TH1D *DEL_IFI  = HstRatio("DEL_IFI",  hst_evMuCeex2ifi, hst_evMuCeex2n, kBlack );  // IFI
+
+//////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  TH1D *H_Eline0  = (TH1D*)DiskFileX.Get("H_Eline0");
+
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cCeex12rat = new TCanvas("cCeex12rat","cCeex12rat", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cCeex12rat->SetFillColor(10);
+  cCeex12rat->Draw();
+  cCeex12rat->Divide(2, 0);
+/////////////////////////////////////////////
+  cCeex12rat->cd(1);
+  TH1D *Hst=RAT_ceex2;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.40;
+  double vvZ    = 1-sqr(91.2/gCMSene) +0.01;
+  double vcapt  = vvZ *gCMSene/2;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  RAT_ceex1->SetLineWidth(2); RAT_ceex2->SetLineWidth(2);
+  PlotSame2(RAT_ceex1,  ycapt, kBlue, vcapt,      "(a)"," CEEX1");
+  PlotSame2(RAT_ceex2,  ycapt, kRed,  vcapt+0.25, "(b)"," CEEX2");
+  //
+  PlotSame2(RAT_ceex1n, ycapt, kPine, vcapt,      "(c)"," CEEX1, IFIoff");
+  PlotSame2(RAT_ceex2n, ycapt, kBrune,vcapt+0.25, "(d)"," CEEX2, IFIoff");
+//
+  CaptT->DrawLatex(0.10,0.92,
+   "     R=d#sigma_{#nu#nu#gamma}/3d#sigma_{#mu#mu#gamma},     #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+////////////////////////////////////////////
+  cCeex12rat->cd(2);
+  Hst = RAT_ceex12; // direct
+  Hst = DEL12;      // Small staticical errors:
+  //
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->SetMaximum( +0.09); Hst->SetMinimum( -0.09);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->SetLineColor(kBlack);
+  Hst->DrawCopy("h");
+
+  // **** Direct
+  //RAT_ceex12->SetLineColor(kRed);
+  //RAT_ceex12->DrawCopy("hsame");
+  // ***** Small staticical errors:
+  //DEL12->SetLineColor(kBlack);
+  //DEL12->DrawCopy("hsame");
+
+  ycapt = 0.85;
+  DEL12->SetLineWidth(2);
+  PlotSame2(DEL12,   ycapt, kBlack, vcapt,      "(a)"," (CEEX1-CEEX2)/CEEX2");
+  PlotSame2(DEL12n,  ycapt, kRed,   vcapt+0.25, "(b)"," (CEEX1-CEEX2)/CEEX2, IFI off");
+//  PlotSame2(RAT_ceex12n, ycapt,  kRed,   vcapt+0.25, "(b)"," (CEEX1-CEEX2)/CEEX2, IFI off");
+  PlotSame2(DEL_IFI, ycapt, kBlue,  vcapt-0.25, "(c)"," IFI/CEEX2");
+
+  H_Eline0->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.92,"    QED effects:  #Delta R/R ");
+
+  cCeex12rat->cd();
+//
+  cCeex12rat->SaveAs("cCeex12rat.pdf");
+}//FigCeex12rat
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCeex12isr()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCeex12isr =========================== "<<endl;
+// FSR off
+  TH1D *hst_evNuCeex1b     = (TH1D*)DiskFileB.Get("hst_evNuCeex1");
+  TH1D *hst_evNuCeex2b     = (TH1D*)DiskFileB.Get("hst_evNuCeex2");
+  TH1D *hst_evNuCeex12b    = (TH1D*)DiskFileB.Get("hst_evNuCeex12");
+//
+  TH1D *hst_evMuCeex1b     = (TH1D*)DiskFileB.Get("hst_evMuCeex1");
+  TH1D *hst_evMuCeex2b     = (TH1D*)DiskFileB.Get("hst_evMuCeex2");
+  TH1D *hst_evMuCeex12b    = (TH1D*)DiskFileB.Get("hst_evMuCeex12");
+
+///////////////////////////////////////////////
+  TH1D *RAT_ceex1b = HstRatio("RAT_ceex1b", hst_evNuCeex1b, hst_evMuCeex1b, kBlack );  // R=nu/mu
+  TH1D *RAT_ceex2b = HstRatio("RAT_ceex2b", hst_evNuCeex2b, hst_evMuCeex2b, kBlack );  // R=nu/mu
+  RAT_ceex1b->Scale(1.0/3.0); // R=nu/(3*mu)
+  RAT_ceex2b->Scale(1.0/3.0); // R=nu/(3*mu)
+
+// (CEEX1-CEEX2)/CEEX2
+  TH1D *DELnu12b = HstRatio("DELnu12b", hst_evNuCeex12b, hst_evNuCeex2b, kBlack );  // nu
+  TH1D *DELmu12b = HstRatio("DELmu12b", hst_evMuCeex12b, hst_evMuCeex2b, kBlack );  // mu
+  TH1D *DEL12b   = HstDiff("DEL12b",    DELnu12b, DELmu12b, kBlack );  // nu-mu
+
+//////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  TH1D *H_Eline0  = (TH1D*)DiskFileX.Get("H_Eline0");
+
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cCeex12isr = new TCanvas("cCeex12isr","cCeex12isr", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cCeex12isr->SetFillColor(10);
+  cCeex12isr->Draw();
+  cCeex12isr->Divide(2, 0);
+/////////////////////////////////////////////
+  cCeex12isr->cd(1);
+  TH1D *Hst=RAT_ceex2b;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.40;
+  double vvZ    = 1-sqr(91.2/gCMSene) +0.01;
+  double vcapt  = vvZ *gCMSene/2;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  RAT_ceex1b->SetLineWidth(2); RAT_ceex2b->SetLineWidth(2);
+  PlotSame2(RAT_ceex1b,  ycapt, kBlue, vcapt,      "(a)"," CEEX1 FSR off");
+  PlotSame2(RAT_ceex2b,  ycapt, kRed,  vcapt+0.25, "(b)"," CEEX2 FSR off");
+//
+  CaptT->DrawLatex(0.10,0.92,
+     "     R=d#sigma_{#nu#nu#gamma}/3d#sigma_{#mu#mu#gamma},     #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+/////////////////////////////////////////////
+  cCeex12isr->cd(2);
+  Hst = DEL12b;      // Small staticical errors:
+  //
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->SetMaximum( +0.001); Hst->SetMinimum( -0.001);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->SetLineColor(kBlack);
+  Hst->DrawCopy("h");
+
+  H_Eline0->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.92,"    RSR off:  #Delta R/R,  (CEEX1-CEEX2)/CEEX2 ");
+
+  cCeex12isr->cd();
+//
+  cCeex12isr->SaveAs("cCeex12isr.pdf");
+}//FigCeex12rat
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -429,7 +680,10 @@ int main(int argc, char **argv)
   FigNPhont();
   FigVPhont();
   FigNuDiff();
-  FigCeex21nu();
+  FigCeex12nu();
+  FigCeex12mu();
+  FigCeex12rat();
+  FigCeex12isr();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   //
