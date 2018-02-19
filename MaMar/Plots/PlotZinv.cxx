@@ -32,9 +32,11 @@ using namespace std;
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_3G");
 TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
+//TFile DiskFileA("../workZinv/rmain.root_E105GeV_New");
 //
 // FSR off, pure ISR
-TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_New");
+//TFile DiskFileB("../workZinv/rmain.root");
+TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //
 //+++++++++++++++++++++++++++
 TFile DiskFileX("Plot2.root","RECREATE","histograms");
@@ -47,6 +49,7 @@ TFile DiskFileX("Plot2.root","RECREATE","histograms");
 double gCMSene, gNevTot; // from KKMC run
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
+int    g161GeVyes =0, g105GeVyes=0;
 //
 float  gXcanv = 20, gYcanv = 20, gDcanv = 30;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +123,17 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNumu") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPLCeex2") );
+
+  TH1D *HST_KKMC_NORMB = (TH1D*)DiskFileB.Get("HST_KKMC_NORMA");
+  //
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evNuCeex1") );
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evNuCeex2") );
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evNuCeex12") );
+  //
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evMuCeex1") );
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evMuCeex2") );
+  HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evMuCeex12") );
+
   //
 }
 
@@ -192,7 +206,8 @@ void FigNPhont()
   //
 
   //================================================
-  cFigNPhont->SaveAs("cFigNPhont.pdf");
+  if( g161GeVyes) cFigNPhont->SaveAs("cFigNPhont_161GeV.pdf");
+  if( g105GeVyes) cFigNPhont->SaveAs("cFigNPhont_105GeV.pdf");
 
 }//FigNPhont
 
@@ -265,7 +280,8 @@ void FigVPhont()
    hst_vaMuCeex2->Scale(0.33333333);
 
   //================================================
-  cFigVPhont->SaveAs("cFigVPhont.pdf");
+   if( g161GeVyes) cFigVPhont->SaveAs("cFigVPhont_161GeV.pdf");
+   if( g105GeVyes) cFigVPhont->SaveAs("cFigVPhont_105GeV.pdf");
 
 }//FigVPhont
 
@@ -340,7 +356,8 @@ void FigNuDiff()
   cNuDiff->Update();
   cNuDiff->cd();
 //
-  cNuDiff->SaveAs("cNuDiff.pdf");
+  if( g161GeVyes) cNuDiff->SaveAs("cNuDiff_161GeV.pdf");
+  if( g105GeVyes) cNuDiff->SaveAs("cNuDiff_105GeV.pdf");
 }//FigNuDiff
 
 
@@ -401,7 +418,8 @@ void FigCeex12nu()
   cCeex12nu->Update();
   cCeex12nu->cd();
 //
-  cCeex12nu->SaveAs("cCeex12nu.pdf");
+  if( g161GeVyes) cCeex12nu->SaveAs("cCeex12nu_161GeV.pdf");
+  if( g105GeVyes) cCeex12nu->SaveAs("cCeex12nu_105GeV.pdf");
 }//FigCeex12nu
 
 
@@ -460,7 +478,8 @@ void FigCeex12mu()
   cCeex12mu->Update();
   cCeex12mu->cd();
 //
-  cCeex12mu->SaveAs("cCeex12mu.pdf");
+  if( g161GeVyes) cCeex12mu->SaveAs("cCeex12mu_161GeV.pdf");
+  if( g105GeVyes) cCeex12mu->SaveAs("cCeex12mu_105GeV.pdf");
 }//FigCeex12mu
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -529,10 +548,12 @@ void FigCeex12rat()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("E_{#gamma}");
-  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
+//  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
+  if( g161GeVyes) {Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);}
+  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
   Hst->DrawCopy("h");
   ///
-  double ycapt = 0.40;
+  double ycapt = 0.30;
   double vvZ    = 1-sqr(91.2/gCMSene) +0.01;
   double vcapt  = vvZ *gCMSene/2;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
@@ -576,7 +597,8 @@ void FigCeex12rat()
 
   cCeex12rat->cd();
 //
-  cCeex12rat->SaveAs("cCeex12rat.pdf");
+  if( g161GeVyes) cCeex12rat->SaveAs("cCeex12rat_161GeV.pdf");
+  if( g105GeVyes) cCeex12rat->SaveAs("cCeex12rat_105GeV.pdf");
 }//FigCeex12rat
 
 
@@ -603,15 +625,13 @@ void FigCeex12isr()
 // (CEEX1-CEEX2)/CEEX2
   TH1D *DELnu12b = HstRatio("DELnu12b", hst_evNuCeex12b, hst_evNuCeex2b, kBlack );  // nu
   TH1D *DELmu12b = HstRatio("DELmu12b", hst_evMuCeex12b, hst_evMuCeex2b, kBlack );  // mu
-  TH1D *DEL12b   = HstDiff("DEL12b",    DELnu12b, DELmu12b, kBlack );  // nu-mu
+  TH1D *DEL12b   = HstDiff( "DEL12b",    DELnu12b, DELmu12b, kBlack );  // nu-mu
 
 //////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
-
   TH1D *H_Eline0  = (TH1D*)DiskFileX.Get("H_Eline0");
-
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   TCanvas *cCeex12isr = new TCanvas("cCeex12isr","cCeex12isr", gXcanv,  gYcanv,  1200, 600);
   gXcanv += gDcanv; gYcanv += gDcanv;
@@ -625,7 +645,8 @@ void FigCeex12isr()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("E_{#gamma}");
-  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
+  if( g161GeVyes) {Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);}
+  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
@@ -650,11 +671,85 @@ void FigCeex12isr()
   Hst->DrawCopy("h");
 
   H_Eline0->DrawCopy("hsame");
-  CaptT->DrawLatex(0.10,0.92,"    RSR off:  #Delta R/R,  (CEEX1-CEEX2)/CEEX2 ");
+  CaptT->DrawLatex(0.10,0.92,"    FSR off:  #Delta R/R,  (CEEX1-CEEX2)/CEEX2 ");
 
   cCeex12isr->cd();
 //
-  cCeex12isr->SaveAs("cCeex12isr.pdf");
+  if( g161GeVyes) cCeex12isr->SaveAs("cCeex12isr_161GeV.pdf");
+  if( g105GeVyes) cCeex12isr->SaveAs("cCeex12isr_105GeV.pdf");
+}//FigCeex12rat
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCeex2fsr()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCeex2fsr =========================== "<<endl;
+// FSR off
+  TH1D *hst_evNuCeex2      = (TH1D*)DiskFileA.Get("hst_evNuCeex2"); // ISR+FSR+IFI
+//
+  TH1D *hst_evMuCeex2      = (TH1D*)DiskFileA.Get("hst_evMuCeex2"); // ISR+FSR+IFI
+  TH1D *hst_evMuCeex2b     = (TH1D*)DiskFileB.Get("hst_evMuCeex2"); // ISR
+//
+///////////////////////////////////////////////
+  TH1D *RAT_ceex2a = HstRatio("RAT_ceex2",  hst_evNuCeex2, hst_evMuCeex2,  kBlack );  // R=nu/mu
+  TH1D *RAT_ceex2b = HstRatio("RAT_ceex2b", hst_evNuCeex2, hst_evMuCeex2b, kBlack );  // R=nu/mu
+  RAT_ceex2a->Scale(1.0/3.0); // R=nu/(3*mu)
+  RAT_ceex2b->Scale(1.0/3.0); // R=nu/(3*mu)
+
+  TH1D *DELfsr   = HstDiff( "DELfsr",    hst_evMuCeex2, hst_evMuCeex2b, kBlack );  // nu-mu
+  DELfsr->Divide(hst_evMuCeex2b);
+
+//////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  TH1D *H_Eline0  = (TH1D*)DiskFileX.Get("H_Eline0");
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cCeex2fsr = new TCanvas("cCeex2fsr","cCeex2fsr", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cCeex2fsr->SetFillColor(10);
+  cCeex2fsr->Draw();
+  cCeex2fsr->Divide(2, 0);
+/////////////////////////////////////////////
+  cCeex2fsr->cd(1);
+  TH1D *Hst= RAT_ceex2a;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  if( g161GeVyes) {Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);}
+  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.35;
+  double vvZ    = 1-sqr(92.2/gCMSene) +0.01;
+  double vcapt  = vvZ *gCMSene/2;
+  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  //RAT_ceex1b->SetLineWidth(2); RAT_ceex2b->SetLineWidth(2);
+  PlotSame2(RAT_ceex2a,  ycapt, kBlue, vcapt,      "(a)"," CEEX2 FSR on");
+  PlotSame2(RAT_ceex2b,  ycapt, kRed,  vcapt+0.25, "(b)"," CEEX2 FSR off");
+  CaptT->DrawLatex(0.10,0.92,
+     "     R=d#sigma_{#nu#nu#gamma}/3d#sigma_{#mu#mu#gamma},     #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+///////////////////////////////////////////
+  cCeex2fsr->cd(2);
+  Hst = DELfsr;      // Small staticical errors:
+  //
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  if(g105GeVyes) Hst->SetMinimum( -0.05); Hst->SetMaximum( +0.25);
+  if(g161GeVyes) Hst->SetMinimum( -0.10); Hst->SetMaximum( +0.10);
+  Hst->GetXaxis()->SetTitle("E_{#gamma}");
+  Hst->SetLineColor(kBlack);
+  Hst->DrawCopy("h");
+
+  H_Eline0->DrawCopy("hsame");
+  CaptT->DrawLatex(0.10,0.92,"    (FSRon-FSRoff)/FSRoff ");
+//
+  cCeex2fsr->cd();
+//
+  if(g161GeVyes) cCeex2fsr->SaveAs("cCeex2fsr_161GeV.pdf");
+  if(g105GeVyes) cCeex2fsr->SaveAs("cCeex2fsr_105GeV.pdf");
 }//FigCeex12rat
 
 
@@ -667,13 +762,24 @@ int main(int argc, char **argv)
 
   /////////////////////////////////////////////////////////
   // Reading directly KKMC input (farming)
-  int Nodes;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  Nodes    = HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
+  int Nodes= HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
   gCMSene  = HST_KKMC_NORMA->GetBinContent(1)/Nodes;   // CMSene=xpar(1), farn adjusted
   gNevTot  = HST_KKMC_NORMA->GetEntries();             // MC statistics from KKMC
   sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
   sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
+  if( fabs(gCMSene-161)<0.01) g161GeVyes = 1;
+  if( fabs(gCMSene-105)<0.01) g105GeVyes = 1;
+  //
+  TH1D *HST_KKMC_NORMB = (TH1D*)DiskFileB.Get("HST_KKMC_NORMA");
+  int Nodes2       = HST_KKMC_NORMB->GetBinContent(511);       // No of farm nodes (trick)
+  double gCMSene2  = HST_KKMC_NORMB->GetBinContent(1)/Nodes2;   // CMSene=xpar(1), farn adjusted
+  double gNevTot2  = HST_KKMC_NORMB->GetEntries();             // MC statistics from KKMC
+  //
+  if( fabs(gCMSene2-gCMSene)>0.01 ){
+	  cout<< "STOP: different CMSene =" << gCMSene << "GeV  "<< gCMSene2 <<"GeV  " <<endl;
+	  exit(13);
+  }
 
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
@@ -684,11 +790,13 @@ int main(int argc, char **argv)
   FigCeex12mu();
   FigCeex12rat();
   FigCeex12isr();
+  FigCeex2fsr();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   //
-  cout<< "CMSene[GeV] = "<< gCMSene<< endl;
+  cout<< "CMSene[GeV] = "<< gCMSene<< "GeV"<<endl;
   cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
+  cout<< "KKMC: No. of farm nodes="<< Nodes2 << "  Tot no. of events = "<<gNevTot2<< endl;
 //
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();
