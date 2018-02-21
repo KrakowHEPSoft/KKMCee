@@ -30,13 +30,13 @@ using namespace std;
 //TFile DiskFileA("../workZinv/rmain.root");
 //
 //  Febr. 2018
-//TFile DiskFileA("../workZinv/rmain.root_E105GeV_3G");
 TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
-//TFile DiskFileA("../workZinv/rmain.root_E105GeV_New");
+//TFile DiskFileA("../workZinv/rmain.root_E105GeV_4G");
 //
 // FSR off, pure ISR
 //TFile DiskFileB("../workZinv/rmain.root");
 TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
+//TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
 //
 //+++++++++++++++++++++++++++
 TFile DiskFileX("Plot2.root","RECREATE","histograms");
@@ -139,10 +139,10 @@ void HistNormalize(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigNPhont()
+void FigNPhot()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigNPhont =========================== "<<endl;
+  cout<<" ========================= FigNPhot =========================== "<<endl;
  //
 
   TH1D *hst_nPhAll     = (TH1D*)DiskFileA.Get("hst_nPhAll");
@@ -156,14 +156,14 @@ void FigNPhont()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigNPhont = new TCanvas("cFigNPhont","cFigNPhont", gXcanv, gYcanv,    1200, 600);
+  TCanvas *cFigNPhot = new TCanvas("cFigNPhot","cFigNPhot", gXcanv, gYcanv,    1200, 600);
   //                                      Name    Title        xoff,yoff, WidPix,HeiPix
   gXcanv += 25, gYcanv += 25;
-  cFigNPhont->SetFillColor(10);
+  cFigNPhot->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigNPhont->Divide( 2,  0);
+  cFigNPhot->Divide( 2,  0);
   //====================plot1========================
-  cFigNPhont->cd(1);
+  cFigNPhot->cd(1);
   gPad->SetLogy(); // !!!!!!
   TH1D *Hst=hst_nPhAll;
   Hst->SetStats(0);
@@ -179,7 +179,7 @@ void FigNPhont()
   Hst->DrawCopy("h");
 
   CaptT->DrawLatex(0.10,0.94,"d#sigma/N;        KKMC  e^{+}e^{-} -> #nu#bar{#nu}+N#gamma");
-  double ycapt = 0.30;
+  double ycapt = 0.40;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   hst_nPhAll->SetLineWidth(2);
   hst_nPhVis->SetLineWidth(2);
@@ -187,7 +187,7 @@ void FigNPhont()
   PlotSame2(hst_nPhVis,  ycapt, kRed,   +1.0, "(b)", "Tagged photons");
 
   //====================plot2========================
-  cFigNPhont->cd(2);
+  cFigNPhot->cd(2);
 
   Hst=hst_LnThPhAll;
   Hst->SetStats(0);
@@ -206,17 +206,17 @@ void FigNPhont()
   //
 
   //================================================
-  if( g161GeVyes) cFigNPhont->SaveAs("cFigNPhont_161GeV.pdf");
-  if( g105GeVyes) cFigNPhont->SaveAs("cFigNPhont_105GeV.pdf");
+  if( g161GeVyes) cFigNPhot->SaveAs("cFigNPhot_161GeV.pdf");
+  if( g105GeVyes) cFigNPhot->SaveAs("cFigNPhot_105GeV.pdf");
 
-}//FigNPhont
+}//FigNPhot
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigVPhont()
+void FigVPhot()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigVPhont =========================== "<<endl;
+  cout<<" ========================= FigVPhot =========================== "<<endl;
  //
   TH1D *hst_vtNuCeex2  = (TH1D*)DiskFileA.Get("hst_vtNuCeex2");  // Phot. untaged
   TH1D *hst_vaNuCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuCeex2");  // Phot. tagged
@@ -228,14 +228,14 @@ void FigVPhont()
    CaptT->SetNDC(); // !!!
    CaptT->SetTextSize(0.04);
  ///////////////////////////////////////////////////////////////////////////////
-   TCanvas *cFigVPhont = new TCanvas("cFigVPhont","cFigVPhont", gXcanv, gYcanv,    1200, 600);
+   TCanvas *cFigVPhot = new TCanvas("cFigVPhot","cFigVPhot", gXcanv, gYcanv,    1200, 600);
  //                                      Name    Title        xoff,yoff, WidPix,HeiPix
    gXcanv += 25, gYcanv += 25;
-   cFigVPhont->SetFillColor(10);
+   cFigVPhot->SetFillColor(10);
 ////////////////////////////////////////////////////////////////////////////////
-   cFigVPhont->Divide( 2,  0);
+   cFigVPhot->Divide( 2,  0);
    //====================plot1========================
-   cFigVPhont->cd(1);
+   cFigVPhot->cd(1);
    gPad->SetLogy(); // !!!!!!
    TH1D *Hst=hst_vtNuCeex2;
    Hst->SetStats(0);
@@ -256,7 +256,7 @@ void FigVPhont()
    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.6, "(b)", "#gamma's tagged");
 
    //====================plot2========================
-   cFigVPhont->cd(2);
+   cFigVPhot->cd(2);
 
    gPad->SetLogy(); // !!!!!!
    Hst=hst_vtNuCeex2;
@@ -280,10 +280,10 @@ void FigVPhont()
    hst_vaMuCeex2->Scale(0.33333333);
 
   //================================================
-   if( g161GeVyes) cFigVPhont->SaveAs("cFigVPhont_161GeV.pdf");
-   if( g105GeVyes) cFigVPhont->SaveAs("cFigVPhont_105GeV.pdf");
+   if( g161GeVyes) cFigVPhot->SaveAs("cFigVPhot_161GeV.pdf");
+   if( g105GeVyes) cFigVPhot->SaveAs("cFigVPhot_105GeV.pdf");
 
-}//FigVPhont
+}//FigVPhot
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -737,8 +737,8 @@ void FigCeex2fsr()
   //
   Hst->SetStats(0);
   Hst->SetTitle(0);
-  if(g105GeVyes) Hst->SetMinimum( -0.05); Hst->SetMaximum( +0.25);
-  if(g161GeVyes) Hst->SetMinimum( -0.10); Hst->SetMaximum( +0.10);
+  if(g105GeVyes) {Hst->SetMinimum( -0.05); Hst->SetMaximum( +0.25);}
+  if(g161GeVyes) {Hst->SetMinimum( -0.10); Hst->SetMaximum( +0.10);}
   Hst->GetXaxis()->SetTitle("E_{#gamma}");
   Hst->SetLineColor(kBlack);
   Hst->DrawCopy("h");
@@ -783,8 +783,8 @@ int main(int argc, char **argv)
 
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
-  FigNPhont();
-  FigVPhont();
+  FigNPhot();
+  FigVPhot();
   FigNuDiff();
   FigCeex12nu();
   FigCeex12mu();
