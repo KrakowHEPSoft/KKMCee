@@ -30,12 +30,13 @@ using namespace std;
 //TFile DiskFileA("../workZinv/rmain.root");
 //
 //  Febr. 2018
-TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
+TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
+//TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_4G");
 //
 // FSR off, pure ISR
-//TFile DiskFileB("../workZinv/rmain.root");
-TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
+TFile DiskFileB("../workZinv/rmain.root");
+//TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
 //
 //+++++++++++++++++++++++++++
@@ -688,8 +689,9 @@ void FigCeex2fsr()
 // FSR off
   TH1D *hst_evNuCeex2      = (TH1D*)DiskFileA.Get("hst_evNuCeex2"); // ISR+FSR+IFI
 //
-  TH1D *hst_evMuCeex2      = (TH1D*)DiskFileA.Get("hst_evMuCeex2"); // ISR+FSR+IFI
-  TH1D *hst_evMuCeex2b     = (TH1D*)DiskFileB.Get("hst_evMuCeex2"); // ISR
+//  TH1D *hst_evMuCeex2      = (TH1D*)DiskFileA.Get("hst_evMuCeex2"); // ISR+FSR+IFI
+  TH1D *hst_evMuCeex2      = (TH1D*)DiskFileA.Get("hst_evMuCeex2n"); // ISR+FSR, IFIoff!
+  TH1D *hst_evMuCeex2b     = (TH1D*)DiskFileB.Get("hst_evMuCeex2"); // ISR only
 //
 ///////////////////////////////////////////////
   TH1D *RAT_ceex2a = HstRatio("RAT_ceex2",  hst_evNuCeex2, hst_evMuCeex2,  kBlack );  // R=nu/mu
