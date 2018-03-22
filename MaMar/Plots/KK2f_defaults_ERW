@@ -72,7 +72,7 @@ BeginX
 **    Coupling constants etc.
    30  137.0359895e0      alfinv=xpar(30)  Inverse of alpha_QED at q^2=0
    31    389.37966e3      gnanob=xpar(31)  GeV^(-2)  --> NanoBarn conversion
-   32     1.16639e-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2)])
+   32    1.166397e-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2)])
 ********************************************************************************
 **     Technical cuts and internal parameters
 **\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\

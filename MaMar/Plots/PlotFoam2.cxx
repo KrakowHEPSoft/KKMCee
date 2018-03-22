@@ -375,7 +375,7 @@ int main(int argc, char **argv)
 
 //========== PLOTTING ==========
   FigAfb3a();
-  FigAfb4();
+  //FigAfb4();
   FigAfb5();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();

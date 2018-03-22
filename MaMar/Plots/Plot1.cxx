@@ -29,9 +29,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // KKMC current
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
-TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); // Jan. 2018
+//TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_10G"); // Jan. 2018
 //
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
@@ -40,8 +40,8 @@ TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); // Jan. 2018
 //////  *** KKFOAM, bacis xcheck including IFI
 //TFile DiskFileF("../workFOAM/histo.root"); // current
 // Dec 2017 run
-TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
-//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+//TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
+TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 
@@ -53,8 +53,8 @@ TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
 //////  *** KKFOAM1  Soft limit study
 //TFile DiskFileF2("../workFOAM1/histo.root"); // current
 // Dec 2017 run
-TFile DiskFileF2("../workFOAM1/histo.root_88GeV_13G"); //
-//TFile DiskFileF2("../workFOAM1/histo.root_95GeV_14G"); //
+//TFile DiskFileF2("../workFOAM1/histo.root_88GeV_13G"); //
+TFile DiskFileF2("../workFOAM1/histo.root_95GeV_14G"); //
 //TFile DiskFileF2("../workFOAM1/histo.root_10GeV_14G"); //
 
 //////////////////OBSOLETE Oldies ///////////////////
@@ -380,6 +380,88 @@ void HisReMakeFoam35(){
   cout<<"================ ReMakeFoam35 ENDs  ==============================="<<endl;
   cout<<"==================================================================="<<endl;
 }//ReMakeFoam35
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigScatV()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigScat =========================== "<<endl;
+  //
+  TH2D *sca_vTvA_Eex2  = (TH2D*)DiskFileA.Get("sca_vTvA_Eex2");
+  TH2D *sca_vKvA_Eex2  = (TH2D*)DiskFileA.Get("sca_vKvA_Eex2");
+  //
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.04);
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cScatV = new TCanvas("cScatV","cScatV", gXcanv,  gYcanv,   1600,  800);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  gXcanv += 25, gYcanv += 25;
+  cScatV->SetFillColor(10);
+  cScatV->Divide( 2,  0);
+  //cScatV->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  TString OptSurf;
+  //OptSurf="      "; // 2D scatergram, points
+  //OptSurf="col   "; // 2D histogram, color
+  OptSurf="colz  "; // 2D kolorowe paski, ze skala
+  //OptSurf="surf1 "; // 3D surface color
+  //OptSurf="lego2 "; // 3D histogram color
+  //OptSurf="surf3 "; // 3D histogram, z plotem "na dachu"
+  //OptSurf="surf2z"; // 3D kolorowe paski, ze skala
+  //OptSurf="surf2 "; // 3D kolorowe paski bez skali
+  //OptSurf="surf4 "; // 3D gladka powierchnia
+  //-------------------------------------
+  cScatV->cd(1);
+  gPad->SetLogz(); // !!!!!!
+  gPad->SetTheta(25);
+  gPad->SetPhi( -38);
+  //
+  sca_vTvA_Eex2->GetYaxis()->CenterTitle();
+  sca_vTvA_Eex2->GetYaxis()->SetTitleOffset(1.4);
+  sca_vTvA_Eex2->GetYaxis()->SetTitleSize(0.035);
+  sca_vTvA_Eex2->GetYaxis()->SetNdivisions(5);
+  sca_vTvA_Eex2->GetYaxis()->SetTitle("vA=1-z_{ALEPH}");
+  sca_vTvA_Eex2->GetXaxis()->CenterTitle();
+  sca_vTvA_Eex2->GetXaxis()->SetNdivisions(5);
+  sca_vTvA_Eex2->GetXaxis()->SetTitle("vT=1-M^{2}/s");
+  //
+  sca_vTvA_Eex2->Draw(OptSurf);
+  //
+  CaptT->DrawLatex(0.20,0.75, "KKMC ISR+FSR");
+//  CaptT->DrawLatex(0.20,0.75, "KKMC ISR, FSR off");
+  //-------------------------------------
+  cScatV->cd(2);
+  gPad->SetLogz(); // !!!!!!
+
+  gPad->SetTheta(25);
+  gPad->SetPhi( -38);
+  //
+  //
+  sca_vKvA_Eex2->GetYaxis()->CenterTitle();
+  sca_vKvA_Eex2->GetYaxis()->SetTitleOffset(1.4);
+  sca_vKvA_Eex2->GetYaxis()->SetTitleSize(0.035);
+  sca_vKvA_Eex2->GetYaxis()->SetNdivisions(5);
+  sca_vKvA_Eex2->GetYaxis()->SetTitle("vAleph=1-z_{AEPH}");
+  sca_vKvA_Eex2->GetXaxis()->CenterTitle();
+  sca_vKvA_Eex2->GetXaxis()->SetNdivisions(5);
+  sca_vKvA_Eex2->GetXaxis()->SetTitle("vK=1-M^{2}_{ISR}/s");
+  //
+  sca_vKvA_Eex2->Draw(OptSurf);
+  //
+  CaptT->DrawLatex(0.20,0.75, "KKMC ISR+FSR");
+//  CaptT->DrawLatex(0.20,0.75, "KKMC ISR, FSR off");
+
+  cScatV->cd();
+
+  cScatV->SaveAs("cScatV.pdf");
+
+}
+// FigScatV()
 
 
 
@@ -1251,12 +1333,13 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   ReMakeKKMC();        // reprocessing KKMC histos
   HisReMakeFoam35();   // prepare histos from KKfoam
-  KKsemMakeHisto();    // prepare histos from KKsem
+//  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
+  FigScatV();
+/*
   FigScatA();
   FigInfo();
-
   //FigVtest();  // introduct. tests/calibrations
   //FigCtest();  // introduct. tests/calibrations
 
@@ -1267,6 +1350,8 @@ int main(int argc, char **argv)
   FigCosThe2();
   //
   //FigCtheSoft();
+
+*/
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

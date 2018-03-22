@@ -21,6 +21,8 @@ using namespace std;
 #include "TApplication.h"
 #include "TObjString.h"
 #include "TFile.h"
+//
+#include "TLine.h"
 
 #include "HisNorm.h"
 #include "KKplot.h"
@@ -31,6 +33,21 @@ KKplot LibSem("kkplot");
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DFile;
 
+///////////////////////////////////////////////////////////////////////////////////
+//              GLOBAL stuff
+///////////////////////////////////////////////////////////////////////////////////
+double m_xpar[10001];      // complete input of KKMC run
+double gCMSene, gNevTot; // from KKMC run
+char   gTextEne[100], gTextNev[100], gTextNev2[100];
+int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
+//
+float  gXcanv = 20, gYcanv = 20, gDcanv = 30;
+
+#define SP21 setw(21)<<setprecision(13)
+#define SP15 setw(15)<<setprecision(9)
+#define SP10 setw(10)<<setprecision(5)
+
+///////////////////////////////////////////////////////////////////////////////////
 
 void Vdef(double v[4], const double v1, const double v2, const double v3, const double v4)
   { // define a 4-vector (avoids initialization warnings)
@@ -45,7 +62,6 @@ cout<<"================ InitBorn BEGIN ============================"<<endl;
 //////////////////////////////////////////////////////////////
 //   Initialize MC generator and analysis programs          //
 //////////////////////////////////////////////////////////////
-double   m_xpar[10001];      // complete input of KKMC run
 const int jmax =10000;
 // in the input below only AMH=125e0, AMTOP=173e0 are actualized
 LibSem.ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // AMH AMTOP actualized
@@ -184,8 +200,10 @@ for(int ix=1; ix <= nPt; ix++){
 }//ix
 //------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
-TCanvas *cFigBorn3 = new TCanvas("cFigBorn3","cFigBorn3: sigma(CMSene) ", 50, 100,    500,  500);
-//                                      Name    Title                  xoff,yoff, WidPix,HeiPix
+TCanvas *cFigBorn3 = new TCanvas("cFigBorn3","cFigBorn3: sigma(CMSene) ", gXcanv, gYcanv,    500,  500);
+//                                      Name    Title                     xoff,     yoff, WidPix,HeiPix
+gXcanv += 25, gYcanv += 25;
+//
 cFigBorn3->SetFillColor(10);
 TH1D *Hst1 = hst_sigma3;
 cFigBorn3->cd();
@@ -202,12 +220,12 @@ cout<<"================ FigBorn3 END   ==========================="<<endl;
 void FigBorn1(){
 cout<<"==========================================================="<<endl;
 cout<<"================ FigBorn1 BEGIN ==========================="<<endl;
-int    nPt  = 200;
+int    nPt  = 160;
 double CosTheta = 0; // for some reason 0 no allowed!!!
 CosTheta = 0.01;
-double Emin = 85;
-double Emax = 95;
-Emin=30;
+double Emin =  70;
+double Emax = 150;
+//Emin=30;
 //
 //Emin=0.250;
 //Emax = 10;
@@ -237,7 +255,6 @@ for(int ix=1; ix <= nPt; ix++){
    //
    bornv_interpogsw_(KFf,svar2, CosTheta);
    double dSig_EEX = bornv_dizet_( 1, KFini, KFf, svar2, CosTheta, 0.0, 0.0, 0.0, 0.0);
-   cout<< "CMSene= "<<CMSene<< "   dSig_EEX= "<<dSig_EEX<<endl;
    //
    // =============== Sigm/dOmega from spin amplitudes ===============
    // Effective 4-momenta, KKMC convention: p={px,py,pz,E)
@@ -256,19 +273,27 @@ for(int ix=1; ix <= nPt; ix++){
    gps_bornf_(KFini, KFf ,PX, CosTheta, m_p1,m_beam, m_p2, -m_beam,
                                         m_p3,m_fin,  m_p4, -m_fin,   dSig_GPS);
    /////////////////////////////////////////////////////////////////
-    cout<< "CMSene= "<<CMSene<< "  dSig_GPS= "<<dSig_GPS<<"  ratio="<< dSig_GPS/dSig_EEX  <<endl;
+   cout<< "CMSene= "<<CMSene<< "  dSig_EEX= "<<dSig_EEX;
+   cout<<                      "  dSig_GPS= "<<dSig_GPS<<"  ratio="<< dSig_GPS/dSig_EEX  <<endl;
 
-    hst_sigEEX->SetBinContent(  ix, dSig_EEX );
-    hst_sigEEX->SetBinError(    ix, 0.0 );
-    hst_sigGPS->SetBinContent(  ix, dSig_GPS );
-    hst_sigGPS->SetBinError(    ix, 0.0 );
-
+   hst_sigEEX->SetBinContent(  ix, dSig_EEX );
+   hst_sigEEX->SetBinError(    ix, 0.0 );
+   hst_sigGPS->SetBinContent(  ix, dSig_GPS );
+   hst_sigGPS->SetBinError(    ix, 0.0 );
+/*
+   double corQED;
+   bornv_getqedcor_( corQED ); // after calling bornv_interpogsw_ !
+   double AlfRunInv = 137.04/corQED;
+   cout<< "CMSene= "<<CMSene<< "  corQED= "<<corQED << "   AlfRunInv= "<< AlfRunInv <<  endl;
+*/
 }//ix
 
 //------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
-TCanvas *cFigBorn1 = new TCanvas("cFigBorn1","cFigBorn1: sigma(CMSene) ", 250, 200,    900,  600);
+TCanvas *cFigBorn1 = new TCanvas("cFigBorn1","cFigBorn1: sigma(CMSene) ", gXcanv, gYcanv, 900,  600);
 //                                      Name    Title                  xoff,yoff, WidPix,HeiPix
+gXcanv += 25, gYcanv += 25;
+//
 cFigBorn1->SetFillColor(10);
 TPad*    UpperPad = new TPad("upperPad", "upperPad",
 			       .005, .3525, .995, .995);
@@ -322,25 +347,317 @@ cout<<"================ FigBorn1 END   ==========================="<<endl;
 }//FigBorn1
 
 
+////////////////////////////////////////////////////////////////////////////////
+// reproducing benchmarks of Elzbieta Richter-Was
+////////////////////////////////////////////////////////////////////////////////
+void FigAlfE1(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigAlfE1 BEGIN ==========================="<<endl;
+int    nPt  = 160;
+double CosTheta = 0; // for some reason 0 no allowed!!!
+CosTheta = 0.01;
+double Emin =  70;
+double Emax = 150;
+double MZ = 91.187e0;
+//
+TH1D *hst_AlfRun = new TH1D("hst_AlfRun" ,  " Alfa(sqrt(s))",    nPt, Emin, Emax);
+hst_AlfRun->Sumw2();
+TH1D *hst_AlfRat = new TH1D("hst_AlfRat" , "Alfa(s)/Alfa(0)=1/(2-GSW6)",    nPt, Emin, Emax);
+hst_AlfRat->Sumw2();
+
+int KFf =13, KFini=11;
+double CMSene, xBorn, svar2, GSW6, AlfRatio, alfinv0;
+for(int ix=1; ix <= nPt; ix++){
+   CMSene = Emin +(ix-1)*((Emax-Emin)/nPt);
+   svar2 = CMSene*CMSene;
+   bornv_interpogsw_(KFf,svar2, CosTheta);
+   bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+   alfinv0 = 137.0359895e0;
+   double AlfRun    = AlfRatio/alfinv0;
+   double AlfRunInv = alfinv0/AlfRatio;
+   cout<< "CMSene= "<<CMSene<< " AlfRatio= "<< AlfRatio << "   AlfRunInv= "<< AlfRunInv <<  endl;
+   hst_AlfRat->SetBinContent(  ix, AlfRatio );
+   hst_AlfRat->SetBinError(    ix, 0.0 );
+   hst_AlfRun->SetBinContent(  ix, AlfRun );
+   hst_AlfRun->SetBinError(    ix, 0.0 );
+}//ix
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cAlfE1 = new TCanvas("cAlfE1","cAlfE1", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cAlfE1->SetFillColor(10);
+  cAlfE1->Draw();
+  cAlfE1->Divide(2, 0);
+/////////////////////////////////////////////
+  cAlfE1->cd(1);
+  hst_AlfRat->SetStats(0);
+  hst_AlfRat->SetMinimum(1.00); hst_AlfRat->SetMaximum(1.14);
+  hst_AlfRat->DrawCopy("h");
+  /////////////////////////////////////////////
+  cAlfE1->cd(2);
+  hst_AlfRun->SetStats(0);
+  hst_AlfRun->SetMinimum(0.0077); hst_AlfRun->SetMaximum(0.0079);
+  hst_AlfRun->DrawCopy("h");
+  cAlfE1->cd();
+//
+  cAlfE1->SaveAs("cAlfE1.pdf");
+cout<<"================ FigAlfE1 END   ==========================="<<endl;
+}//FigAlfE1
 
 
+////////////////////////////////////////////////////////////////////////////////
+void FigAlfE2(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigAlfE2 BEGIN ==========================="<<endl;
+int    nPt  = 100;
+double CosTheta = 0.001; // for some reason 0 no allowed!!!
+CosTheta = 0.01;
+double MZ = 91.187e0;
+double E1 =  87.90e0, E2 =  94.30e0;
+double Emin   =  MZ-4.0,  Emax  =  MZ+4.0;
+//
+TH1D *hst_AlfRun = new TH1D("hst_AlfRun" ,  " Alfa(sqrt(s))",   nPt, Emin, Emax);
+hst_AlfRun->Sumw2();
+TH1D *hst_AlfInv = new TH1D("hst_AlfInv" , " 1/Alfa(sqrt(s)) ", nPt, Emin, Emax);
+hst_AlfInv->Sumw2();
+//
+int KFf =13, KFini=11;
+double CMSene, xBorn, svar2, GSW6, AlfRatio, AlfEst,xi;
+double alfinv0 = 137.0359895e0;
+double AlfRun;
+// at Z peak
+bornv_interpogsw_(KFf,MZ*MZ, CosTheta);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+double AlfRunMZ    = AlfRatio/alfinv0;
+// at E1
+bornv_interpogsw_(KFf,E1*E1, CosTheta);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+double AlfRun1    = AlfRatio/alfinv0;
+// at E2
+bornv_interpogsw_(KFf,E2*E2, CosTheta);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+double AlfRun2    = AlfRatio/alfinv0;
+double xres[1];
+//
+for(int ix=1; ix <= nPt; ix++){
+   CMSene = Emin +(ix-0.5)*((Emax-Emin)/nPt);
+   svar2 = CMSene*CMSene;
+   bornv_interpogsw_(KFf,svar2, CosTheta);
+   bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+   AlfRun    = AlfRatio/alfinv0;
+//[[[
+//   double sig0,afb0; int KeyDist=0;
+//   kksem_born_calc_(KFini,KFf,CMSene, AlfRun,xres);
+//   sig0 = xres[1]; afb0 = xres[2];
+//   cout<< ">>>>>>>>>>>>> From kksem_born_calc: sig0,afb0= "<<  sig0<<" ,   " << afb0 << endl;
+//]]]
+   //
+   cout<< "CMSene= "<<CMSene<< " AlfRatio= "<< AlfRatio << "   AlfRunInv= "<< 1/AlfRun <<  endl;
+   //
+   xi = log(E1*E2/CMSene/CMSene)/log(E1/E2);       // interpolation based on RGE
+   AlfEst = 2/( (1-xi)/AlfRun1 +(1+xi)/AlfRun2 );
+   cout<< "Log. Estim: xi= "<<  xi << "  1/AlfEst ="<< 1/AlfEst <<"  Ratio ="<< AlfEst/AlfRun <<endl;
+   xi = (CMSene*CMSene-E1*E1)/(E2*E2-E1*E1);       // interpolation in s=E*E
+   xi = (CMSene-E1)/(E2-E1);                       // interpolation in E
+   xi = (log(CMSene)-log(E1))/(log(E2)-(log(E1))); // interpolation in ln(E)
+   AlfEst = (1-xi)*AlfRun1 +xi*AlfRun2;
+   cout<< "Lin. Estim: xi= "<<  xi << "  1/AlfEst ="<< 1/AlfEst <<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun-1 <<endl;
+   //
+   hst_AlfInv->SetBinContent(  ix, 1/AlfRun ); hst_AlfInv->SetBinError(    ix, 0.0 );
+//   hst_AlfRun->SetBinContent(  ix, AlfRun );   hst_AlfRun->SetBinError(    ix, 0.0 );
+   hst_AlfRun->SetBinContent(  ix, AlfEst/AlfRun-1 );   hst_AlfRun->SetBinError(    ix, 0.0 );
+//   hst_AlfRun->SetBinContent(  ix, afb0 );   hst_AlfRun->SetBinError(    ix, 0.0 );
+}//ix
+double betaLN = (AlfRun2-AlfRun1)/AlfRunMZ/(2*log(E2/E1));
+cout<< "Ln(s) interpol. betaLN= "<<  betaLN << endl;
+double betaE  = (AlfRun2-AlfRun1)/AlfRunMZ/( (E2-E1)/MZ );
+cout<< "interpol.in E,   betaE= "<<  betaE << endl;
+double betaEE = (AlfRun2-AlfRun1)/AlfRunMZ/( (E2*E2-E1*E1)/MZ/MZ );
+cout<< "interpol.in E*E, betaEE="<<  betaEE << endl;
+double beta   = (AlfRun2-AlfRun1)/(2*log(E2/E1))/AlfRunMZ/AlfRunMZ;
+cout<< "beta from alpha(s)= "<<  beta << endl;
+double beta0  = ( 3*3*(1./9.) +3*2*(4./9.) +3)/(3*3.141594);
+cout<< "O(alf1) RGE beta0 = "<<  beta0 << endl;
+cout<< "zeta of Patrick:  log(E1*E2/MZ/MZ)/log(E1/E2) = "<<  log(E1*E2/MZ/MZ)/log(E1/E2) <<endl;
+cout<< "ratio of factors  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1) = "<<  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1)<< endl;
+
+char  TextAlfInv[100];
+sprintf(TextAlfInv,"#alpha^{-1}_{QED}(M_{Z}) =%4.4f", 1/AlfRunMZ);
+
+//////////////////////////////////////////////
+  TLatex *CaptNDC = new TLatex();
+  CaptNDC->SetNDC(); // !!!
+  CaptNDC->SetTextSize(0.035);
+//////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetTextSize(0.035);
+  //
+  double alfmin=128.80,  alfmax = 129.00;
+  TLine *lineMZ = new TLine(MZ, alfmin, MZ, alfmax);
+  lineMZ->SetLineStyle(2);
+  TLine *line88 = new TLine(E1, alfmin, E1, alfmax);
+  line88->SetLineStyle(2);
+  TLine *line94 = new TLine(E2, alfmin, E2, alfmax);
+  line94->SetLineStyle(2);
+
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cAlfE2 = new TCanvas("cAlfE2","cAlfE2", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cAlfE2->SetFillColor(10);
+  cAlfE2->Draw();
+  cAlfE2->Divide(2, 0);
+/////////////////////////////////////////////
+  cAlfE2->cd(1);
+  hst_AlfInv->SetStats(0);
+  hst_AlfInv->SetTitle(0);
+  hst_AlfInv->SetMinimum(alfmin);
+  hst_AlfInv->SetMaximum(alfmax);
+  hst_AlfInv->SetLineColor(kBlack);
+  hst_AlfInv->DrawCopy("h");
+
+  hst_AlfInv->Scale(1.0001);
+  hst_AlfInv->SetLineColor(kRed);
+  hst_AlfInv->DrawCopy("hsame");
+
+  hst_AlfInv->Scale(1/1.0001/1.0001);
+  hst_AlfInv->DrawCopy("hsame");
+
+  lineMZ->Draw(); line88->Draw(); line94->Draw();
+
+  CaptT->DrawLatex(MZ+0.1,    alfmax-0.01,"M_{Z}");
+  CaptT->DrawLatex(E2 -0.6,alfmax-0.01,"94.3 GeV");
+  CaptT->DrawLatex(E1 -0.5,alfmax-0.01,"87.9 GeV");
+
+  CaptNDC->DrawLatex(0.03,0.95,"#alpha^{-1}_{QED}(s^{1/2})");
+  CaptNDC->DrawLatex(0.50,0.02,"s^{1/2} [GeV]");
+
+  CaptNDC->DrawLatex(0.20,0.20,TextAlfInv);
+
+  /////////////////////////////////////////////
+  cAlfE2->cd(2);
+  hst_AlfRun->SetStats(0);
+  hst_AlfRun->SetTitle(0);
+  //hst_AlfRun->SetMinimum(0.0077); hst_AlfRun->SetMaximum(0.0079);
+  hst_AlfRun->DrawCopy("h");
+
+  CaptNDC->DrawLatex(0.03,0.95," Testing linear approximation ");
+//
+  cAlfE2->cd();
+//
+  cAlfE2->SaveAs("cAlfE2.pdf");
+cout<<"================ FigAlfE2 END   ==========================="<<endl;
+}//FigAlfE2
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+void FigAlfE3(){
+cout<<"   "<<endl;
+cout<<"==========================================================="<<endl;
+cout<<"================ FigAlfE3 BEGIN ==========================="<<endl;
+
+double CosTheta = 0.001;    // for some reason 0 no allowed!!!
+//
+double MZ = 91.187e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double E1 =  87.90e0, E2 =  94.30e0;
+double Emin   =  MZ-4.0,  Emax  =  MZ+4.0;
+double GFermi = 1.166397e-5;  // one digit less in KKdefaults!
+double Pi =3.1415926535897932;
+//
+//
+int KFf =13, KFini=11;
+double CMSene, xBorn, svar2, GSW6, AlfRatio, AlfEst,xi;
+double alfinv0 = 137.0359895e0;
+double AlfRun[3];
+double AFBclc[3];
+double xres[100];
+
+for(int ix=0; ix <= 2; ix++){
+  if( ix == 0) CMSene = MZ;
+  if( ix == 1) CMSene = E1;
+  if( ix == 2) CMSene = E2;
+  svar2 = CMSene*CMSene;
+  bornv_interpogsw_(KFf,svar2, CosTheta);
+  bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+  AlfRun[ix]    = AlfRatio/alfinv0;
+  //
+  cout<< " ix= "<< ix <<endl;
+  cout<< "CMSene= "<<CMSene<< " AlfRatio= "<< AlfRatio << "   AlfRunInv= "<< 1/AlfRun[ix] <<  endl;
+
+  double sig0,afb0;
+  kksem_afb_calc_(0,KFini,KFf,CMSene,0.1,sig0);
+  kksem_afb_calc_(1,KFini,KFf,CMSene,0.1,afb0);
+  cout<< "+++ kksem_afb_calc:  sig0,afb0= "<<  sig0<<" ,   " << afb0 << endl;
+  //
+  kksem_born_calc_(KFini,KFf,CMSene, AlfRun[ix],xres);
+  sig0= xres[0]; afb0=xres[1];
+  cout<< "%%% kksem_born_cal:  sig0,afb0= "<<  sig0<<" ,   " << afb0 << endl;
+  AFBclc[ix] = afb0;  // from ksem_born_cal
+}//ix
+double SinW2 =  m_xpar[503];
+cout<< " SinW2 = m_xpar[503]=" << SP15 << m_xpar[503] << endl; // swsq=xpar[503]
+
+cout<< "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+cout<< "*****  Checking quality of the interpolation of alfQED(E) in ln(E) " << endl;
+xi = (log(MZ)-log(E1))/(log(E2)-(log(E1))); // interpolation in ln(E)
+AlfEst = (1-xi)*AlfRun[1] +xi*AlfRun[2];
+cout<< "xi= "<<  xi << "   1/AlfEst(MZ) ="<< 1/AlfEst <<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun[0]-1 <<endl;
+double chi2=log(E2/MZ), chi1=log(MZ/E1);
+AlfEst = (chi2*AlfRun[1] +chi1*AlfRun[2])/(chi1+chi2);
+cout<<"chi1,2/(1+2)= "<<chi1/(chi1+chi2) <<" "<< chi2/(chi1+chi2)<<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun[0]-1 <<endl;
+
+double svar = MZ*MZ;
+double ga = -1.0/2.0;
+double gv = ga*(1-4*SinW2);
+double cG = AlfRun[0];
+double cZ = MZ*MZ*GFermi/(2*sqrt(2)*Pi);
+double BW = sqr(svar-MZ*MZ)+ sqr(svar*GammZ/MZ);
+// coefficiets of (1+cos_theta**2)
+double xGG =   cG*cG;
+double xGZ = 2*cG*cZ *sqr(gv) *(svar-MZ*MZ)*svar/BW;
+double xZZ =   cZ*cZ *sqr(ga*ga+gv*gv)*sqr(svar)/BW;
+// coefficiets of 2*cos_theta
+double yGZ = 2*cG*cZ*ga*ga    *(svar-MZ*MZ)*svar/BW;
+double yZZ = cZ*cZ*4* ga*ga*gv*gv     *sqr(svar)/BW;
+// complete AFB
+double AFB = 3.0/4.0*(yGZ+yZZ)/(xGG+xGZ+xZZ);
+cout<< "*****  variations on AFB " << endl;
+cout<<" local AFB(MZ)= "<< AFB <<" from  kksem_afb_calc AFB="<< AFBclc[0] <<endl;
+cout<<" PURE Z: AFB = 0.75*4*sqr(gv*ga)/sqr(sqr(gv)+sqr(ga)) = "<< 0.75*4*sqr(gv*ga)/sqr(sqr(gv)+sqr(ga)) <<endl;
+
+//cout<<" 2*gv,2*ga = "<<  2*gv <<" "<< 2*ga <<" SinW2= " << SinW2<<endl;
+//cout<<" cZ/4 ="<< cZ/4<<endl;
+//cout<<" xGG, xZZ, yZZ= "<< xGG <<"  "<< xZZ <<"  "<< yZZ <<endl;
+//cout<<" sqr(svar)/BW= "<< sqr(svar)/BW <<endl;
+//cout<<" GammZ= " <<  GammZ <<endl;
+
+
+
+kksem_born_calc_(KFini,KFf,MZ, AlfRun[0],xres);
+
+cout<<"================ FigAlfE3 END   ==========================="<<endl;
+}//FigAlfE3
 
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   //++++++++++++++++++++++++++++++++++++++++
-//  TApplication theApp("theApp", &argc, argv);
+  TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   //
   DiskFileB.cd();
   //
   InitBorn();
-  //
   TabBorn();
-  //
-  //FigBorn3();
   //FigBorn1();
+  //FigBorn3();
+  //
+  FigAlfE1();
+  FigAlfE2();
+  FigAlfE3();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
@@ -348,7 +665,7 @@ int main(int argc, char **argv)
   DiskFileB.Close();
 
   //++++++++++++++++++++++++++++++++++++++++
-//  theApp.Run();
+  theApp.Run();
   //++++++++++++++++++++++++++++++++++++++++
 }
 

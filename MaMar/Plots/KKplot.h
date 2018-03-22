@@ -52,8 +52,10 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
-//      SUBROUTINE KKsem_Afb_IFI(KFi,KFf,CMSene,vv,AfbIFI)
+//      SUBROUTINE KKsem_Afb_Calc(KeyDist,KFi,KFf,CMSene,vv,Result)
 extern "C" void kksem_afb_calc_(const int&, const int&, const int&, const double& , const double& , const double&);
+//      KKsem_Born_Calc(KFi,KFf, AlfRun, CMSene, xres)
+extern "C" void kksem_born_calc_(const int&, const int&, const double&, const double& , double[]);
 //---------------------------------
 //      DOUBLE PRECISION  FUNCTION BornV_Sig0nb(CMSene)
 extern "C" double bornv_sig0nb_(const double&);
@@ -68,9 +70,11 @@ extern "C" double bornv_interpogsw_( const int&,  const double&, const double&);
 extern "C" double bornv_dizet_(const int&, const int&, const int&,
 		const double&, const double&, const double&, const double&, const double&, const double& );
 //      SUBROUTINE BornV_GetGammZ(GammZ)
-extern "C" void bornv_getgammz( const double& );
+extern "C" void bornv_getgammz_( const double& );
 //      SUBROUTINE BornV_GetMZ(MZ)
-extern "C" void bornv_getmz( const double& );
+extern "C" void bornv_getmz_( const double& );
+//      SUBROUTINE BornV_GetQEDcor(QEDcor)
+extern "C" void bornv_getqedcor_( const double& );
 //------------------------------------------------------------
 //      SUBROUTINE GPS_BornF(KFi,KFf,PX,CosThe,p1,m1,p2,m2,p3,m3,p4,m4,Xborn)
 extern "C" void gps_bornf_(const int&, const int&, double[], const double&,
