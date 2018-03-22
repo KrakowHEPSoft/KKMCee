@@ -50,6 +50,13 @@ BeginX
  501              1\\\\\\KeyZet=xpar(501)  default is 1\\\\\\\\\\\\\\\\\\\\\\\\
 ***  501              0   Z propagator = 0
 ***  501              9   Z only, gamma=0
+*indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+** Mass and width of Z-boson [GeV]
+  502       91.187e0      MZ  =xpar(502)  PDG 1996
+**     sin(thetaW)**2 where thetaW is electroweak mixing angle
+**  503    .22276773e0      SwSq  =xpar(503) sin_squared of EW angle, from Dizet
+  503      0.23152e0      SwSq  =xpar(503) effective from LEP
+  504   2.50072032e0      GammZ =xpar(504) Z width, from Dizet
 ********************************************************************************
   638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
 ********************************************************************************

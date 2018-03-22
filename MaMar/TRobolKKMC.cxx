@@ -121,9 +121,9 @@ void TRobolKKMC::Hbooker()
   hst_vAlepCeex2   = TH1D_UP("hst_vAlepCeex2",  "dSig/dvTrue ", nbv, 0.000 ,1.000);
   int nbc =50;
   hst_Cost1Ceex2= TH1D_UP("hst_Cost1Ceex2",  "dSig/cThet1   ", nbc, -1.000 ,1.000);
-  hst_CosPLCeex2= TH1D_UP("hst_CosPLCeex2", "dSig/cThetPL  ", nbc, -1.000 ,1.000);
-  hst_CosPRCeex2= TH1D_UP("hst_CosPRCeex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
-  hst_CosPREex2 = TH1D_UP("hst_CosPREex2", "dSig/cThetPRD ", nbc, -1.000 ,1.000);
+  hst_CosPLCeex2= TH1D_UP("hst_CosPLCeex2",  "dSig/cThetPL  ", nbc, -1.000 ,1.000);
+  hst_CosPRCeex2= TH1D_UP("hst_CosPRCeex2",  "dSig/cThetPRD ", nbc, -1.000 ,1.000);
+  hst_CosPREex2 = TH1D_UP("hst_CosPREex2",   "dSig/cThetPRD ", nbc, -1.000 ,1.000);
   // scatergrams unrestricted vmax<1.0
   sca_vTcPL_Ceex0  = TH2D_UP("sca_vTcPL_Ceex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPL_Ceex0n = TH2D_UP("sca_vTcPL_Ceex0n",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
@@ -135,6 +135,9 @@ void TRobolKKMC::Hbooker()
   sca_vTcPR_Eex2   = TH2D_UP("sca_vTcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Ceex2  = TH2D_UP("sca_vXcPR_Ceex2",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Eex2   = TH2D_UP("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  // Miscelaneous
+  sca_vTvA_Eex2    = TH2D_UP("sca_vTvA_Eex2",   "dSig/dvT/dvA ", 100, 0.0 ,0.2, 100, 0.0 ,0.2);
+  sca_vKvA_Eex2    = TH2D_UP("sca_vKvA_Eex2",   "dSig/dvK/dvA ", 100, 0.0 ,0.2, 100, 0.0 ,0.2);
   ///////////////////////////////////////////////////////////////////////////
   //  New bigger scatergrams, restricted vmax<0.2
   int NBv =100; int NBc = 100;
@@ -320,10 +323,15 @@ void TRobolKKMC::Production(double &iEvent)
 
   double CosThe1 = m_pfer1.CosTheta();
   double Theta1  = m_pfer1.Theta();
+  double Phi1    = m_pfer1.Phi();
   double E1      = m_pfer1.Energy();
+
   double CosThe2 = m_pfer2.CosTheta();
+  double Phi2    = m_pfer2.Phi();
   double Theta2  = m_pfer2.Theta();
   double E2      = m_pfer2.Energy();
+
+  double Acol    = fabs(Phi1-(Phi2+3.141594));
 
   double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph;
 //--------------------------------------------------------------------
@@ -344,7 +352,8 @@ void TRobolKKMC::Production(double &iEvent)
   s1Aleph  = s*zAleph;
   //
   double vvK,x1,x2;
-  karlud_getvvxx_(vvK,x1,x2);
+  karlud_getvvxx_(vvK,x1,x2);    // vv of ISR from MC (illegal in case IFI on)
+  double vvF  = 1-(1-vv)/(1-vvK);  // vv of FSR
   // *********************************************************************
   //          Most of histogramming starts here
   // *********************************************************************
@@ -452,7 +461,18 @@ void TRobolKKMC::Production(double &iEvent)
   // AFB from (F-B)/(F+B) with |cos(theta)| < 0.9 cut
   if( fabs(CosThePL) < 0.9 )          hst_vT_Ceex2_cPLr90->Fill(      vv, WtCEEX2);
   if( CosThePL>0.0 && CosThePL < 0.9) hst_vT_Ceex2_cPLr90_forw->Fill( vv, WtCEEX2);
-  //
+///////////////////////////////////////////////////////////////////////
+// Introductory exercises on experimenta cut-oofs
+///////////////////////////////////////////////////////////////////////
+// Acoplanarity < 0.35 mrad (i.e., ~3 sigma of the angular resolution).
+// Of course, this cut can be relaxed a little bit, but not too much.
+//  if( m_Nphot == 1){
+  if( Acol < 0.00035){
+//  if( Acol < 0.001){
+    sca_vTvA_Eex2->Fill(   vv, vvA, WtEEX2); // vv bare vs vALEPH
+//    sca_vKvA_Eex2->Fill(  vvK, vvA, WtEEX2); // vv bare vs vALEPH
+    sca_vKvA_Eex2->Fill(  vvF, vvA, WtEEX2); // vv bare vs vALEPH
+  }// Cuts
   // Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
