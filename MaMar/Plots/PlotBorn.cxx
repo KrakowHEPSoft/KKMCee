@@ -608,6 +608,7 @@ double chi2=log(E2/MZ), chi1=log(MZ/E1);
 AlfEst = (chi2*AlfRun[1] +chi1*AlfRun[2])/(chi1+chi2);
 cout<<"chi1,2/(1+2)= "<<chi1/(chi1+chi2) <<" "<< chi2/(chi1+chi2)<<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun[0]-1 <<endl;
 
+cout<< "**********  Playing with AFB(MZ) ********** " << endl;
 double svar = MZ*MZ;
 double ga = -1.0/2.0;
 double gv = ga*(1-4*SinW2);
@@ -619,16 +620,15 @@ double xGG =   cG*cG;
 double xGZ = 2*cG*cZ *sqr(gv) *(svar-MZ*MZ)*svar/BW;
 double xZZ =   cZ*cZ *sqr(ga*ga+gv*gv)*sqr(svar)/BW;
 // coefficiets of 2*cos_theta
-double yGZ = 2*cG*cZ*ga*ga    *(svar-MZ*MZ)*svar/BW;
+double yGZ = 2*cG*cZ *sqr(ga) *(svar-MZ*MZ)*svar/BW;
 double yZZ = cZ*cZ*4* ga*ga*gv*gv     *sqr(svar)/BW;
 // complete AFB
 double AFB = 3.0/4.0*(yGZ+yZZ)/(xGG+xGZ+xZZ);
-cout<< "*****  variations on AFB " << endl;
 cout<<" local AFB(MZ)= "<< AFB <<" from  kksem_afb_calc AFB="<< AFBclc[0] <<endl;
 cout<<" PURE Z: AFB = 0.75*4*sqr(gv*ga)/sqr(sqr(gv)+sqr(ga)) = "<< 0.75*4*sqr(gv*ga)/sqr(sqr(gv)+sqr(ga)) <<endl;
+cout<<" cG=AlfRun(MZ) ="<< cG << "    cZ= MZ^2*GFermi/(2*sqrt(2)*Pi)="<< cZ<<endl;
 
 //cout<<" 2*gv,2*ga = "<<  2*gv <<" "<< 2*ga <<" SinW2= " << SinW2<<endl;
-//cout<<" cZ/4 ="<< cZ/4<<endl;
 //cout<<" xGG, xZZ, yZZ= "<< xGG <<"  "<< xZZ <<"  "<< yZZ <<endl;
 //cout<<" sqr(svar)/BW= "<< sqr(svar)/BW <<endl;
 //cout<<" GammZ= " <<  GammZ <<endl;
