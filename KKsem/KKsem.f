@@ -2943,7 +2943,7 @@ c]]]]]
       DOUBLE PRECISION  FD_fin, WD_ini, FN_fin, WN_ini
       DOUBLE PRECISION  Mini, Mfin, LGini, LGfin, zz, gz, zz2
       DOUBLE PRECISION  AfbIFI1, AfbIFI2, AfbIFI5, AfbIFI56, AFB_PRD, AFB_PRD_PL, AFB_PRD_PL2
-      DOUBLE PRECISION  vvmax, AFBborn
+      DOUBLE PRECISION  vvmax, AFBborn, SIGborn
       DOUBLE COMPLEX    Agg, AgZ, Hgg5, HgZ5, C_FB4, C_FB5, C_FB56
       DOUBLE PRECISION  Sw2, RaZ, deno
       DOUBLE PRECISION  sig0, sig_PRD
@@ -3000,6 +3000,7 @@ c]]]]]
       X_born  =  DREAL(C0 +2d0*C1/Zeta +C2/Zeta/DCONJG(Zeta) ) ! pure Born
       Y_Born  =  DREAL(D0 +2d0*D1/Zeta +D2/Zeta/DCONJG(Zeta) )
       AFBborn = 3d0/4d0* Y_Born/X_born
+      SIGborn =    sig0* X_born
 *      IF( icont .LE. 10) write(*,*) "||||KKsem_Afb_Calc||| c1,c2,d1,d2, Y/X=", c1,c2, d1,d2, Y_Born/X_born
 ***************************************************************
 *     Non-interf. sigma_tot(vmax) and AFB from PRD41 (1990)
@@ -3081,7 +3082,7 @@ c]]]]]
 *      AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_born
       AfbIFI2 = (3d0/4d0)* Y_ifi2 / X_tot
 ***********************************
-      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
+*      WRITE(*,*) "%%%%% AfbIFI1/AfbIFI2=",    AfbIFI1/AfbIFI2
 ***********************************
       AFB_PRD_PL =  ( (3d0/4d0)*Y_tot+ (3d0/4d0)*Y_ifi)/X_tot  ! Xtot lacks IFI!!!
 *********************************************
@@ -3112,7 +3113,9 @@ c]]]]]
       AFB_PRD_PL2 =  ( (3d0/4d0)*Y_tot+ AfbIFI56)/X_tot  ! Xtot lacks IFI!!!
       AfbIFI56 = AfbIFI56/X_tot
 ********************************************
-      IF(      KeyDist .EQ. 1 ) THEN
+      IF(      KeyDist .EQ. 0 ) THEN
+         Result = SIGborn       ! just Born for calibration
+      ELSE IF( KeyDist .EQ. 1 ) THEN
          Result = AFBborn       ! just Born for calibration
       ELSE IF( KeyDist .EQ. 100 ) THEN
          Result = AFB_PRD_PL    ! PRD41 and PLB219 combined
@@ -3133,6 +3136,84 @@ c]]]]]
       ENDIF
       END ! KKsem_AfbIFI
 
+
+      SUBROUTINE KKsem_Born_Calc(KFi,KFf, CMSene, AlfRun, xres)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//      New                                                                        //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE "KKsem.h"
+*
+      INTEGER           KFi,KFf             ! Input
+      DOUBLE PRECISION  CMSene, AlfRun      ! Input, vv=vmax
+      DOUBLE PRECISION  xres(*)             ! Output
+      DOUBLE PRECISION  Pi, T3e,Qe, T3f,Qf, MZ, GammZ
+      INTEGER           NCf,NCe
+      DOUBLE PRECISION  Mini, Mfin, zz, gz, zz2
+
+      DOUBLE PRECISION  Ve,Vf,Ae,Af
+      DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
+      DOUBLE COMPLEX    X0,X1,X2, Y0,Y1,Y2, Zeta
+      DOUBLE PRECISION  AFBborn, sigNor, svar
+      DOUBLE PRECISION  Sw2, cZ, cG, deno, RaZ
+      DOUBLE PRECISION  X_born, Y_Born
+      DOUBLE PRECISION  alfRunMZ, QEDcor, Alf0
+      INTEGER    icont
+      DATA icont /0/
+      icont = icont+1
+*=============================================================
+      Pi =3.1415926535897932d0
+* Import GammZ from BornV, possibly redeined there
+      CALL BornV_GetMZ(    mZ)
+      CALL BornV_GetGammZ( GammZ)
+      CALL BornV_GetSwsq(Sw2) ! from DIZET
+* Input directly from xpar
+      Sw2  =   m_xpar(503)       ! from xpar(503)
+      GammZ =  m_xpar(504)       ! from xpar(504)
+* Get charges, izospin, color
+      CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
+      CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
+      IF( icont .LE. 0) write(*,*) "////KKsem_Born_Calc/// icont,Qe,T3e,Qf,T3f=", icont,Qe,T3e,Qf,T3f
+* Propagators, with s-dependent width
+      svar    =    CMSene**2
+      zz   = 1d0 - MZ**2/svar
+      gz   = GammZ*MZ/svar
+      Zeta =    DCMPLX(zz,gz)
+      zz2  = zz**2 +gz**2
+      sigNor = 4*Pi/(3d0*svar )*m_gnanob
+      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
+***************************************************************
+*      CALL BornV_InterpoGSW(KFf,svar, 0.001e0);
+*      CALL BornV_GetQEDcor(QEDcor)
+*      alfRunMZ = QEDcor/m_AlfInv
+*      RaZ  = (m_GFermi *MZ**2 *deno**2 *m_AlfInv )/( DSQRT(2d0) *8d0 *m_pi ) !
+*      IF( icont .LE. 0) write(*,*) "@@@@ KKsem_Born_Calc||| RaZ=", RaZ
+***************************************************************
+      cG = 1/m_AlfInv                  ! alphaQED(0)
+      IF( AlfRun .GT. 0 ) cG = AlfRun  ! from input argument
+      cZ = (m_GFermi *MZ**2 )/( DSQRT(2d0) *8d0 *m_pi ) ! Alf0/Deno**2 *RaZ
+      Ve =  (2*T3e -4*Qe*Sw2)
+      Ae =  2*T3e
+      Vf =  (2*T3f -4*Qf*Sw2)
+      Af =  2*T3f
+      IF(icont .LE. 0) write(*,*) "@@@@ KKsem_Born_Calc: 1/AlfRun,Sw2 =", 1/AlfRun, Sw2
+      IF(icont .LE. 0) write(*,*) "@@@@ KKsem_Born_Calc:  Ve,Vf,Ae,Af =", Ve,Vf,Ae,Af
+      C0 = (Qe*Qf)**2
+      C1 = Qe*Qf*Ve*Vf
+      C2 = (Ve**2+Ae**2)*(Vf**2+Af**2)
+      D0 = 0d0
+      D1 = Qe*Qf*Ae*Af
+      D2 = 4*Ve*Ae*Vf*Af
+***************************************************************
+      X_born  =  DREAL(C0*cG**2 +2d0*C1/Zeta*cG*cZ +C2/Zeta/DCONJG(Zeta)*cZ**2 ) ! pure Born
+      Y_Born  =  DREAL(D0*cG**2 +2d0*D1/Zeta*cG*cZ +D2/Zeta/DCONJG(Zeta)*cZ**2 )
+      IF( icont .LE. 0) write(*,*) "||||KKsem_Born_Calc||| c1,c2,d1,d2, Y/X=", c1,c2, d1,d2, Y_Born/X_born
+***************************************************************
+      xres(1) = X_born*sigNor            ! Sigma [nb]
+      xres(2) = 3d0/4d0* Y_Born/X_born   ! AFB
+      END ! KKsem_Born_Calc
 
 
 *////////////////////////////////////////////////////////////////////////
