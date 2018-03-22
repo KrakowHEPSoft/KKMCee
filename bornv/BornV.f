@@ -1678,6 +1678,21 @@ c]]]]]]]]]]]]]
       QCDcor = m_QCDcor
       END
 
+
+      SUBROUTINE BornV_GetQEDcor(QEDcor)
+*//////////////////////////////////////////////////////////////////////////////
+*//                                                                          //
+*//   Get QED correction factor, provided by Dizet                           //
+*//   Note that BornV_InterpoGSW has to be called before this                //
+*//                                                                          //
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'BornV.h'
+      DOUBLE PRECISION    QEDcor
+      QEDcor = 1d0/(2d0-DREAL(m_GSW(6)) )
+      END
+
+
       SUBROUTINE BornV_SetQCDcor(QCDcor)
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //
