@@ -633,6 +633,11 @@ cout<<" cG=AlfRun(MZ) ="<< cG << "    cZ= MZ^2*GFermi/(2*sqrt(2)*Pi)="<< cZ<<end
 //cout<<" sqr(svar)/BW= "<< sqr(svar)/BW <<endl;
 //cout<<" GammZ= " <<  GammZ <<endl;
 
+cout<< "**********  Crude estimator ********** " << endl;
+AlfEst = (AFBclc[2]-AFBclc[1])*4.0/3.0 *(sqr(gv)*sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
+cout<<" AlfEst  = " <<  AlfEst    <<"    1/AlfEst  = " <<  1/AlfEst << endl;
+cout<<" AlfTrue = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
+
 
 
 kksem_born_calc_(KFini,KFf,MZ, AlfRun[0],xres);
