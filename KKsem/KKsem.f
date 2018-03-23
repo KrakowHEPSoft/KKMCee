@@ -3179,7 +3179,8 @@ c]]]]]
 * Propagators, with s-dependent width
       svar    =    CMSene**2
       zz   = 1d0 - MZ**2/svar
-      gz   = GammZ*MZ/svar
+      gz   = GammZ*MZ/svar     ! non-runing
+      gz   = GammZ/MZ          ! runing
       Zeta =    DCMPLX(zz,gz)
       zz2  = zz**2 +gz**2
       sigNor = 4*Pi/(3d0*svar )*m_gnanob

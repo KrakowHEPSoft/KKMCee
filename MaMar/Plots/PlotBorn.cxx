@@ -549,7 +549,13 @@ sprintf(TextAlfInv,"#alpha^{-1}_{QED}(M_{Z}) =%4.4f", 1/AlfRunMZ);
 cout<<"================ FigAlfE2 END   ==========================="<<endl;
 }//FigAlfE2
 
-
+////////////////////////////////////////////////////////////////////////////////
+double BWR(double E, double M, double G)
+{
+	double s = E*E;
+	return sqr(s)/(sqr(s-M*M)+ sqr(s*G/M)); // runing
+//	return sqr(s)/(sqr(s-M*M)+ sqr(G*M));  // non-runing
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void FigAlfE3(){
@@ -609,19 +615,19 @@ AlfEst = (chi2*AlfRun[1] +chi1*AlfRun[2])/(chi1+chi2);
 cout<<"chi1,2/(1+2)= "<<chi1/(chi1+chi2) <<" "<< chi2/(chi1+chi2)<<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun[0]-1 <<endl;
 
 cout<< "**********  Playing with AFB(MZ) ********** " << endl;
-double svar = MZ*MZ;
+double E0   = MZ;
+double svar = E0*E0;
 double ga = -1.0/2.0;
 double gv = ga*(1-4*SinW2);
 double cG = AlfRun[0];
 double cZ = MZ*MZ*GFermi/(2*sqrt(2)*Pi);
-double BW = sqr(svar-MZ*MZ)+ sqr(svar*GammZ/MZ);
 // coefficiets of (1+cos_theta**2)
 double xGG =   cG*cG;
-double xGZ = 2*cG*cZ *sqr(gv) *(svar-MZ*MZ)*svar/BW;
-double xZZ =   cZ*cZ *sqr(ga*ga+gv*gv)*sqr(svar)/BW;
+double xGZ = 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E0))*BWR(E0,MZ,GammZ);
+double xZZ =   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E0,MZ,GammZ);
 // coefficiets of 2*cos_theta
-double yGZ = 2*cG*cZ *sqr(ga) *(svar-MZ*MZ)*svar/BW;
-double yZZ = cZ*cZ*4* ga*ga*gv*gv     *sqr(svar)/BW;
+double yGZ = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E0))*BWR(E0,MZ,GammZ);
+double yZZ = cZ*cZ*4* ga*ga*gv*gv            *BWR(E0,MZ,GammZ);
 // complete AFB
 double AFB = 3.0/4.0*(yGZ+yZZ)/(xGG+xGZ+xZZ);
 cout<<" local AFB(MZ)= "<< AFB <<" from  kksem_afb_calc AFB="<< AFBclc[0] <<endl;
@@ -630,17 +636,104 @@ cout<<" cG=AlfRun(MZ) ="<< cG << "    cZ= MZ^2*GFermi/(2*sqrt(2)*Pi)="<< cZ<<end
 
 //cout<<" 2*gv,2*ga = "<<  2*gv <<" "<< 2*ga <<" SinW2= " << SinW2<<endl;
 //cout<<" xGG, xZZ, yZZ= "<< xGG <<"  "<< xZZ <<"  "<< yZZ <<endl;
-//cout<<" sqr(svar)/BW= "<< sqr(svar)/BW <<endl;
 //cout<<" GammZ= " <<  GammZ <<endl;
 
-cout<< "**********  Crude estimator ********** " << endl;
-AlfEst = (AFBclc[2]-AFBclc[1])*4.0/3.0 *(sqr(gv)*sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
-cout<<" AlfEst  = " <<  AlfEst    <<"    1/AlfEst  = " <<  1/AlfEst << endl;
-cout<<" AlfTrue = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
+cout<<"+++++++++++  Crude estimator ++++++++++ " << endl;
+cout<<"+++ AlfTrue(MZ) = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
+//
+AlfEst = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
+cout<<"+++ AlfEst      = " <<  AlfEst    <<"    1/AlfEst  = " <<  1/AlfEst << endl;
 
+cout<< "**********  debug1 ********** " << endl;
+double afb1,x1,y1, afb2,x2,y2;
+cG  = AlfRun[1];
+x1  =   cG*cG
+    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+afb1 = 0.75*y1/x1;
+cout << "E1: local AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
 
+cout<< "**********  debug3 non-runing alpha ********** " << endl;
+cG  = AlfRun[0];
+x1  =   cG*cG
+    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+afb1 = 0.75*y1/x1;
+cout << "E1: approx AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
+x2  =   cG*cG
+    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E2,MZ,GammZ);
+y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
+afb2 = 0.75*y2/x2;
+double Dafb21 = AFBclc[2]-AFBclc[1];
+cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
+cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 <<endl;
+cout << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
 
-kksem_born_calc_(KFini,KFf,MZ, AlfRun[0],xres);
+cout<< "**********  debug4 neglect G*G ********** " << endl;
+cG  = AlfRun[0];
+x1  = 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+afb1 = 0.75*y1/x1;
+cout << "E1: approx AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
+x2  = 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E2,MZ,GammZ);
+y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
+afb2 = 0.75*y2/x2;
+cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
+cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 <<endl;
+cout << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
+
+cout<< "**********  debug5 neglect G*G and Z ********** " << endl;
+cG  = AlfRun[0];
+x1  =
+		//2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
+    //+ cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+afb1 = 0.75*y1/x1;
+cout << "E1: approx AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
+x2  =
+		//2*cG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E2,MZ,GammZ);
+y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ);
+    //+ cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
+afb2 = 0.75*y2/x2;
+cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
+cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+afb1 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E1)) / (cZ*cZ *sqr(ga*ga+gv*gv));
+afb2 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E2)) / (cZ*cZ *sqr(ga*ga+gv*gv));
+cout << "Approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+double afb21 = 0.75* 2*cG *sqr(ga)*(sqr(MZ/E1)-sqr(MZ/E2)) / (cZ *sqr(ga*ga+gv*gv));
+cout << "APprox DelAFB =" <<     afb21 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+
+/*
+cout<< "**********  debug2 ********** " << endl;
+double x1GG,x1GZ,x1ZZ,  y1GZ,y1ZZ;
+cG  = AlfRun[1];
+x1GG  =   cG*cG;
+x1GZ  =   2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
+x1ZZ  =   cZ*cZ *sqr(ga*ga+gv*gv)         *BWR(E1,MZ,GammZ);
+y1GZ  =   2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
+y1ZZ  =   cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+y1 = y1GZ+y1ZZ; x1 = x1GG+x1GZ+x1ZZ;
+afb1 = 0.75*y1/x1;
+cout << "+++ E1: AFB eprox. =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
+cout << "+++ x1= " << x1 <<"   y1 = "<< y1 <<endl;
+cout << "+++ x1GG, x1GZ, x1ZZ =" << x1GG <<"   "<< x1GZ <<"  "<< x1ZZ <<endl;
+cout << "+++ y1GZ, y1ZZ =" << y1GZ <<"  "<< y1ZZ <<endl;
+cout << "+++ BWR(E1,MZ,GammZ) =" << BWR(E1,MZ,GammZ) <<endl;
+*/
+
+kksem_born_calc_(KFini,KFf,E1, AlfRun[1],xres);
 
 cout<<"================ FigAlfE3 END   ==========================="<<endl;
 }//FigAlfE3
