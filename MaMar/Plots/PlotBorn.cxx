@@ -638,24 +638,27 @@ cout<<" cG=AlfRun(MZ) ="<< cG << "    cZ= MZ^2*GFermi/(2*sqrt(2)*Pi)="<< cZ<<end
 //cout<<" xGG, xZZ, yZZ= "<< xGG <<"  "<< xZZ <<"  "<< yZZ <<endl;
 //cout<<" GammZ= " <<  GammZ <<endl;
 
-cout<<"+++++++++++  Crude estimator ++++++++++ " << endl;
+cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
+cout<<"+++++++++++++++++++++++++++++++++  Crude estimator ++++++++++++++++++++++++++++++++ " << endl;
 cout<<"+++ AlfTrue(MZ) = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
 //
 AlfEst = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
 cout<<"+++ AlfEst      = " <<  AlfEst    <<"    1/AlfEst  = " <<  1/AlfEst << endl;
+cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
 
-cout<< "**********  debug1 ********** " << endl;
+cout<< "************************************************************************* " << endl;
+cout<< "***********************  debug1 two exact formulas*********************** " << endl;
 double afb1,x1,y1, afb2,x2,y2;
 cG  = AlfRun[1];
-x1  =   cG*cG
-    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
-    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
-y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
-    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+x1  =   cG*cG                                             // GG*(1+c*c)
+    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)   // GZ*(1+c*c)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);  // ZZ*(1+c*c)
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)   // GZ*2*c
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);  // ZZ*2*c
 afb1 = 0.75*y1/x1;
 cout << "E1: local AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
-
-cout<< "**********  debug3 non-runing alpha ********** " << endl;
+cout<< "************************************************************************* " << endl;
+cout<< "***********************  debug2 non-runing alpha  *********************** " << endl;
 cG  = AlfRun[0];
 x1  =   cG*cG
     + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
@@ -672,10 +675,9 @@ y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
 afb2 = 0.75*y2/x2;
 double Dafb21 = AFBclc[2]-AFBclc[1];
 cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
-cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 <<endl;
-cout << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
-
-cout<< "**********  debug4 neglect G*G ********** " << endl;
+cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
+cout<< "************************************************************************** " << endl;
+cout<< "********************  debug3 neglect G*G*(1+c*c) ************************* " << endl;
 cG  = AlfRun[0];
 x1  = 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
     +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
@@ -689,31 +691,48 @@ y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
     + cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
 afb2 = 0.75*y2/x2;
 cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
-cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 <<endl;
-cout << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
-
-cout<< "**********  debug5 neglect G*G and Z ********** " << endl;
+cout << "approx DelAFB  =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
+cout<< "************************************************************************** " << endl;
+cout<< "********************  debug4 neglect GZ*(1+c*c) and ZZ*2*c *************** " << endl;
 cG  = AlfRun[0];
-x1  =
-		//2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
-    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
-y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
-    //+ cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
+x1  =   cG*cG
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);    // ZZ
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);    // GZ
 afb1 = 0.75*y1/x1;
 cout << "E1: approx AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
-x2  =
-		//2*cG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+x2  =   cG*cG
     +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E2,MZ,GammZ);
 y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ);
-    //+ cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
 afb2 = 0.75*y2/x2;
 cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
-cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
-afb1 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E1)) / (cZ*cZ *sqr(ga*ga+gv*gv));
-afb2 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E2)) / (cZ*cZ *sqr(ga*ga+gv*gv));
-cout << "Approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+cout << "approx DelAFB  =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+cout<< "****************************   debug4 extras **************************** " << endl;
+afb1 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E1)) / (cZ*cZ *sqr(ga*ga+gv*gv) +cG*cG/BWR(E1,MZ,GammZ));
+afb2 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E2)) / (cZ*cZ *sqr(ga*ga+gv*gv) +cG*cG/BWR(E2,MZ,GammZ));
+cout << "Approx1 DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+afb1 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E1)) / (cZ*cZ *sqr(ga*ga+gv*gv) +cG*cG*sqr(1-sqr(MZ/E1)) );
+afb2 = 0.75* 2*cG*cZ *sqr(ga)*(1-sqr(MZ/E2)) / (cZ*cZ *sqr(ga*ga+gv*gv) +cG*cG*sqr(1-sqr(MZ/E2)) );
+cout << "Approx2 DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
 double afb21 = 0.75* 2*cG *sqr(ga)*(sqr(MZ/E1)-sqr(MZ/E2)) / (cZ *sqr(ga*ga+gv*gv));
-cout << "APprox DelAFB =" <<     afb21 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb2-afb1-Dafb21 <<endl;
+cout << "APprox3 DelAFB =" <<     afb21 <<"  DelAFB exact ="<< Dafb21 << "  diff=" << afb21-Dafb21 <<endl;
+cout<< "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " << endl;
+cout<< "xxxxxxxxxxxxxxxxxxxxxxx  debug5, eq 2.11 of Patrick xxxxxxxxxxxxxxxxxxxxx " << endl;
+double afb0,x0,y0;
+cG  = AlfRun[1];
+//cG  = AlfRun[0];
+x1  =   cG*cG                                             // GG*(1+c*c)
+//  + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)   // GZ*(1+c*c)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);  // ZZ*(1+c*c)
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);  // GZ*2*c
+//  + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);  // ZZ*2*c
+afb1 = 0.75*y1/x1;
+cG  = AlfRun[0];
+x0  =  cG*cG                                              // GG*(1+c*c)
+    +  cZ*cZ *sqr(ga*ga+gv*gv)        *BWR(MZ,MZ,GammZ);  // ZZ*(1+c*c)
+y0  =  cZ*cZ*4* ga*ga*gv*gv           *BWR(MZ,MZ,GammZ);  // ZZ*2*c
+afb0 = 0.75*y0/x0;
+double Dafb10 = AFBclc[1]-AFBclc[0];
+cout << "E1: AFB(E1)-AFB(MZ) =" << afb1-afb0 <<"  exact ="<< Dafb10 <<"  diff="<< afb1-afb0 -Dafb10 <<endl;
 
 /*
 cout<< "**********  debug2 ********** " << endl;
