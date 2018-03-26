@@ -554,14 +554,34 @@ double BWR(double E, double M, double G)
 {
 	double s = E*E;
 	return sqr(s)/(sqr(s-M*M)+ sqr(s*G/M)); // runing
-//	return sqr(s)/(sqr(s-M*M)+ sqr(G*M));  // non-runing
+//	return sqr(s)/(sqr(s-M*M)+ sqr(G*M));   // non-runing
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void FigAlfE3(){
+double AFBc(double E1, double MZ, double GamZ, double SinW2, double AlfRun)
+{
+double GFermi = 1.166397e-5;  // one digit more than in old KKdefaults!
+double Pi =3.1415926535897932;
+double ga,gv,cG,cZ;
+ga = -1.0/2.0;
+gv = ga*(1-4*SinW2);
+cG = AlfRun;
+cZ = MZ*MZ*GFermi/(2*sqrt(2.0)*Pi);
+double afb1,x1,y1;
+x1  =   cG*cG                                             // GG*(1+c*c)
+    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GamZ)   // GZ*(1+c*c)
+    +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GamZ);  // ZZ*(1+c*c)
+y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GamZ)   // GZ*2*c
+    + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GamZ);  // ZZ*2*c
+afb1 = 0.75*y1/x1;
+return afb1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void TestAfb3(){
 cout<<"   "<<endl;
 cout<<"==========================================================="<<endl;
-cout<<"================ FigAlfE3 BEGIN ==========================="<<endl;
+cout<<"================ TestAfb3 BEGIN ==========================="<<endl;
 
 double CosTheta = 0.001;    // for some reason 0 no allowed!!!
 //
@@ -642,8 +662,16 @@ cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 cout<<"+++++++++++++++++++++++++++++++++  Crude estimator ++++++++++++++++++++++++++++++++ " << endl;
 cout<<"+++ AlfTrue(MZ) = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
 //
-AlfEst = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
-cout<<"+++ AlfEst      = " <<  AlfEst    <<"    1/AlfEst  = " <<  1/AlfEst << endl;
+double Dafb21 = AFBclc[2]-AFBclc[1];
+double AlfEst0, AlfEst1, eps1,eps2;
+AlfEst0 = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
+cout<<"+++ AlfEst0 from DelAFB21= " <<  AlfEst0    <<"    1/AlfEst0  = " <<  1/AlfEst0 << endl;
+eps1 = 1/sqr(sqr(gv)+sqr(ga))/sqr(cZ)*1/BWR(E1,MZ,GammZ);
+eps2 = 1/sqr(sqr(gv)+sqr(ga))/sqr(cZ)*1/BWR(E2,MZ,GammZ);
+AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)*(eps1+eps2)/2);
+AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)*( eps2*AFBclc[2]/Dafb21 -eps1*AFBclc[1]/Dafb21) ); // better
+cout<<"+++ AlfEst1 from DelAFB21= " <<  AlfEst1    <<"    1/AlfEst1  = " <<  1/AlfEst1 << endl;
+cout<<"+++ relative= " <<  (AlfEst1-AlfRun[0])/AlfRun[0] << endl;
 cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
 
 cout<< "************************************************************************* " << endl;
@@ -656,24 +684,28 @@ x1  =   cG*cG                                             // GG*(1+c*c)
 y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)   // GZ*2*c
     + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);  // ZZ*2*c
 afb1 = 0.75*y1/x1;
-cout << "E1: local AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
-cout<< "************************************************************************* " << endl;
-cout<< "***********************  debug2 non-runing alpha  *********************** " << endl;
+cout << "E1: local   AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
+double afbNew = AFBc(E1, MZ, GammZ, SinW2, AlfRun[1]);
+cout << "Testing New AFB =" << afbNew <<endl;
+cout<< "///////////////////////////////////////////////////////////////////////// " << endl;
+cout<< "///////////////////////  debug2 non-runing alpha  /////////////////////// " << endl;
+double eG = AlfEst1;
+//eG  = AlfRun[0];
 cG  = AlfRun[0];
-x1  =   cG*cG
-    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
+x1  =   eG*eG
+    + 2*eG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
     +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E1,MZ,GammZ);
 y1  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ)
     + cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
 afb1 = 0.75*y1/x1;
 cout << "E1: approx AFB =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
-x2  =   cG*cG
-    + 2*cG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
+cG  = AlfRun[0];
+x2  =   eG*eG
+    + 2*eG*cZ *sqr(gv) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
     +   cZ*cZ *sqr(ga*ga+gv*gv)       *BWR(E2,MZ,GammZ);
 y2  = 2*cG*cZ *sqr(ga) *(1-sqr(MZ/E2))*BWR(E2,MZ,GammZ)
     + cZ*cZ*4* ga*ga*gv*gv            *BWR(E2,MZ,GammZ);
 afb2 = 0.75*y2/x2;
-double Dafb21 = AFBclc[2]-AFBclc[1];
 cout << "E2: approx AFB =" << afb2 <<"  AFB exact ="<< AFBclc[2] <<"  diff="<< afb2-AFBclc[2] <<endl;
 cout << "approx DelAFB =" << afb2-afb1 <<"  DelAFB exact ="<< Dafb21 << "  diff DelAFB =" << afb2-afb1-Dafb21 <<endl;
 cout<< "************************************************************************** " << endl;
@@ -734,28 +766,86 @@ afb0 = 0.75*y0/x0;
 double Dafb10 = AFBclc[1]-AFBclc[0];
 cout << "E1: AFB(E1)-AFB(MZ) =" << afb1-afb0 <<"  exact ="<< Dafb10 <<"  diff="<< afb1-afb0 -Dafb10 <<endl;
 
-/*
-cout<< "**********  debug2 ********** " << endl;
-double x1GG,x1GZ,x1ZZ,  y1GZ,y1ZZ;
-cG  = AlfRun[1];
-x1GG  =   cG*cG;
-x1GZ  =   2*cG*cZ *sqr(gv) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
-x1ZZ  =   cZ*cZ *sqr(ga*ga+gv*gv)         *BWR(E1,MZ,GammZ);
-y1GZ  =   2*cG*cZ *sqr(ga) *(1-sqr(MZ/E1))*BWR(E1,MZ,GammZ);
-y1ZZ  =   cZ*cZ*4* ga*ga*gv*gv            *BWR(E1,MZ,GammZ);
-y1 = y1GZ+y1ZZ; x1 = x1GG+x1GZ+x1ZZ;
-afb1 = 0.75*y1/x1;
-cout << "+++ E1: AFB eprox. =" << afb1 <<"  AFB exact ="<< AFBclc[1] <<"  diff="<< afb1-AFBclc[1] <<endl;
-cout << "+++ x1= " << x1 <<"   y1 = "<< y1 <<endl;
-cout << "+++ x1GG, x1GZ, x1ZZ =" << x1GG <<"   "<< x1GZ <<"  "<< x1ZZ <<endl;
-cout << "+++ y1GZ, y1ZZ =" << y1GZ <<"  "<< y1ZZ <<endl;
-cout << "+++ BWR(E1,MZ,GammZ) =" << BWR(E1,MZ,GammZ) <<endl;
-*/
-
 kksem_born_calc_(KFini,KFf,E1, AlfRun[1],xres);
 
-cout<<"================ FigAlfE3 END   ==========================="<<endl;
-}//FigAlfE3
+cout<<"================ TestAfb3 END   ==========================="<<endl;
+}//TestAfb3
+
+////////////////////////////////////////////////////////////////////////////////
+void FigAlfa3(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigAlfa3 BEGIN ==========================="<<endl;
+int    nPt  = 100;
+double MZ = 91.187e0;
+double alfinv0 = 137.0359895e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double SinW2 =  m_xpar[503];
+cout<< " SinW2 = m_xpar[503]=" << SP15 << m_xpar[503] << endl; // swsq=xpar[503]
+
+double E1 =  87.90e0, E2 =  94.30e0;
+//
+double AlfRatio, AlfRunMZ, AlfRunE1, AlfRunE2;
+//
+bornv_interpogsw_(13,MZ*MZ, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunMZ    = AlfRatio/alfinv0;
+cout << " AlfRun(MZ) =" << AlfRunMZ <<"   1/AlfRun="<< 1/AlfRunMZ <<endl;
+//
+bornv_interpogsw_(13,E1*E1, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunE1    = AlfRatio/alfinv0;
+cout << " AlfRun(E1) =" << AlfRunE1 <<"   1/AlfRun="<< 1/AlfRunE1 <<endl;
+//
+bornv_interpogsw_(13,E2*E2, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunE2    = AlfRatio/alfinv0;
+cout << " AlfRun(E2) =" << AlfRunE2 <<"   1/AlfRun="<< 1/AlfRunE2 <<endl;
+//
+double Amin, Amax;
+Amin = AlfRunMZ*0.999, Amax=AlfRunMZ*1.001;
+Amin = AlfRunE1*0.999, Amax=AlfRunE2*1.001;
+Amin = AlfRunE1*0.950, Amax=AlfRunE2*1.050;
+cout << " AlfMin =" << Amin <<"  AlfMax ="<< Amax <<endl;
+//
+TH1D *hst_Afb1 = new TH1D("hst_Afb1" ,  " AFB(alpha)",   nPt, Amin, Amax);
+hst_Afb1->Sumw2();
+//
+double afb1Min = AFBc(E1, MZ, GammZ, SinW2, Amin);
+double afb1Max = AFBc(E1, MZ, GammZ, SinW2, Amax);
+
+double CMSene, afb1, AlfRun,afbI;
+for(int ix=1; ix <= nPt; ix++){
+   AlfRun = Amin +(ix-0.5)/nPt*(Amax-Amin);
+   afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfRun);
+   cout << " AlfRun =" << AlfRun <<"  afb1 ="<< afb1 <<endl;
+   afbI = afb1Max*(AlfRun-Amin)/(Amax-Amin) + afb1Min*(Amax-AlfRun)/(Amax-Amin);
+   cout << " Interpolation  afbI ="<< afbI <<"   diff=" << afbI-afb1 <<endl;
+//
+   hst_Afb1->SetBinContent(  ix, afb1 );
+   hst_Afb1->SetBinError(    ix, 0.0 );
+
+}//ix
+
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cAlfa3 = new TCanvas("cAlfa3","cAlfa3", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cAlfa3->SetFillColor(10);
+  cAlfa3->Draw();
+  cAlfa3->Divide(2, 0);
+/////////////////////////////////////////////
+  cAlfa3->cd(1);
+  hst_Afb1->SetStats(0);
+  hst_Afb1->SetTitle(0);
+
+  hst_Afb1->DrawCopy("h");
+  //
+  cAlfa3->cd();
+  //
+  cAlfa3->SaveAs("cAlfa3.pdf");
+//
+cout<<"================ FigAlfa3 END   ==========================="<<endl;
+}//TestAfb3
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -772,9 +862,10 @@ int main(int argc, char **argv)
   //FigBorn1();
   //FigBorn3();
   //
-  FigAlfE1();
-  FigAlfE2();
-  FigAlfE3();
+  FigAlfE1();  // alph(s) wide range, plots of ERW
+  FigAlfE2();  // 1/alpha(s) narrow range, interpolation
+  TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
+  //FigAlfa3();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
