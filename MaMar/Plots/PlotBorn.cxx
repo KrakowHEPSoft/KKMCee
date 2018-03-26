@@ -639,6 +639,12 @@ double E0   = MZ;
 double svar = E0*E0;
 double ga = -1.0/2.0;
 double gv = ga*(1-4*SinW2);
+double c0 = 1.0;
+double c1 = sqr(gv);
+double c2 = sqr(sqr(gv)+sqr(ga));
+double d0 = 0;
+double d1 = sqr(ga);
+double d2 = 4.0*sqr(gv)*sqr(ga);
 double cG = AlfRun[0];
 double cZ = MZ*MZ*GFermi/(2*sqrt(2)*Pi);
 // coefficiets of (1+cos_theta**2)
@@ -663,15 +669,25 @@ cout<<"+++++++++++++++++++++++++++++++++  Crude estimator ++++++++++++++++++++++
 cout<<"+++ AlfTrue(MZ) = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
 //
 double Dafb21 = AFBclc[2]-AFBclc[1];
-double AlfEst0, AlfEst1, eps1,eps2;
+double AlfEst0, AlfEst1, AlfEst2, AlfEst3;
 AlfEst0 = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
+AlfEst0 = (AFBclc[2]-AFBclc[1])*4.0/3.0 *cZ *c2/( 2.0*d1*(sqr(MZ/E1)-sqr(MZ/E2)) );
 cout<<"+++ AlfEst0 from DelAFB21= " <<  AlfEst0    <<"    1/AlfEst0  = " <<  1/AlfEst0 << endl;
-eps1 = 1/sqr(sqr(gv)+sqr(ga))/sqr(cZ)*1/BWR(E1,MZ,GammZ);
-eps2 = 1/sqr(sqr(gv)+sqr(ga))/sqr(cZ)*1/BWR(E2,MZ,GammZ);
-AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)*(eps1+eps2)/2);
-AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)*( eps2*AFBclc[2]/Dafb21 -eps1*AFBclc[1]/Dafb21) ); // better
-cout<<"+++ AlfEst1 from DelAFB21= " <<  AlfEst1    <<"    1/AlfEst1  = " <<  1/AlfEst1 << endl;
-cout<<"+++ relative= " <<  (AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+double RW1 = 1/BWR(E1,MZ,GammZ);
+double RW2 = 1/BWR(E2,MZ,GammZ);
+double AR1 = AFBclc[1]/Dafb21;
+double AR2 = AFBclc[2]/Dafb21;
+AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1) ); // better
+cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+AlfEst1 = AlfEst0*( 1 +sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
+                          +AlfEst0/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
+cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+AlfEst2 = AlfEst0*( 1 +sqr(AlfEst1)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
+                          +AlfEst1/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
+cout<<"+++ AlfEst2= "<< AlfEst2<<"    1/AlfEst2= "<<1/AlfEst2<<" relat= " <<(AlfEst2-AlfRun[0])/AlfRun[0] << endl;
+AlfEst3 = AlfEst0*( 1 +sqr(AlfEst2)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
+                          +AlfEst2/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
+cout<<"+++ AlfEst3= "<< AlfEst3<<"    1/AlfEst3= "<<1/AlfEst3<<" relat= " <<(AlfEst3-AlfRun[0])/AlfRun[0] << endl;
 cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
 
 cout<< "************************************************************************* " << endl;
