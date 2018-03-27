@@ -55,9 +55,9 @@ void Vdef(double v[4], const double v1, const double v2, const double v3, const 
   }
 
 
-void InitBorn(){
+void Initialize(){
 cout<<"==========================================================="<<endl;
-cout<<"================ InitBorn BEGIN ============================"<<endl;
+cout<<"================ Initialize BEGIN ============================"<<endl;
 
 //////////////////////////////////////////////////////////////
 //   Initialize MC generator and analysis programs          //
@@ -86,9 +86,9 @@ LibSem.Initialize(m_xpar);
 DFile = fopen("TableBorn.txt","w");
 //************************************
 
-cout<<"================ InitBorn END   ============================"<<endl;
+cout<<"================ Initialize END   ============================"<<endl;
 
-}//InitBorn
+}//Initialize
 
 
 void TabBorn(){
@@ -439,6 +439,9 @@ bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
 double AlfRun2    = AlfRatio/alfinv0;
 double xres[1];
 //
+double betaRG  = ( 3*3*(1./9.) +3*2*(4./9.) +3)/(3*3.141594);
+betaRG  = 20.0/(9*3.141594);
+double betaDZ  = (AlfRun2-AlfRun1)/(2*log(E2/E1))/AlfRunMZ/AlfRunMZ;
 for(int ix=1; ix <= nPt; ix++){
    CMSene = Emin +(ix-0.5)*((Emax-Emin)/nPt);
    svar2 = CMSene*CMSene;
@@ -461,6 +464,9 @@ for(int ix=1; ix <= nPt; ix++){
    xi = (CMSene-E1)/(E2-E1);                       // interpolation in E
    xi = (log(CMSene)-log(E1))/(log(E2)-(log(E1))); // interpolation in ln(E)
    AlfEst = (1-xi)*AlfRun1 +xi*AlfRun2;
+   //
+   AlfEst = AlfRunMZ* (1 +2*(log(CMSene)-log(MZ))*AlfRunMZ*betaDZ );
+   AlfEst = AlfRunMZ* (1 +2*(log(CMSene)-log(MZ))*AlfRunMZ*betaRG );
    cout<< "Lin. Estim: xi= "<<  xi << "  1/AlfEst ="<< 1/AlfEst <<"  AlfEst/AlfRun-1 ="<< AlfEst/AlfRun-1 <<endl;
    //
    hst_AlfInv->SetBinContent(  ix, 1/AlfRun ); hst_AlfInv->SetBinError(    ix, 0.0 );
@@ -468,18 +474,19 @@ for(int ix=1; ix <= nPt; ix++){
    hst_AlfRun->SetBinContent(  ix, AlfEst/AlfRun-1 );   hst_AlfRun->SetBinError(    ix, 0.0 );
 //   hst_AlfRun->SetBinContent(  ix, afb0 );   hst_AlfRun->SetBinError(    ix, 0.0 );
 }//ix
-double betaLN = (AlfRun2-AlfRun1)/AlfRunMZ/(2*log(E2/E1));
-cout<< "Ln(s) interpol. betaLN= "<<  betaLN << endl;
+cout<< "zeta of Patrick:  log(E1*E2/MZ/MZ)/log(E1/E2) = "<<  log(E1*E2/MZ/MZ)/log(E1/E2) <<endl;
+cout<< "ratio of factors  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1) = "<<  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1)<< endl;
+//
 double betaE  = (AlfRun2-AlfRun1)/AlfRunMZ/( (E2-E1)/MZ );
 cout<< "interpol.in E,   betaE= "<<  betaE << endl;
 double betaEE = (AlfRun2-AlfRun1)/AlfRunMZ/( (E2*E2-E1*E1)/MZ/MZ );
 cout<< "interpol.in E*E, betaEE="<<  betaEE << endl;
-double beta   = (AlfRun2-AlfRun1)/(2*log(E2/E1))/AlfRunMZ/AlfRunMZ;
-cout<< "beta from alpha(s)= "<<  beta << endl;
-double beta0  = ( 3*3*(1./9.) +3*2*(4./9.) +3)/(3*3.141594);
-cout<< "O(alf1) RGE beta0 = "<<  beta0 << endl;
-cout<< "zeta of Patrick:  log(E1*E2/MZ/MZ)/log(E1/E2) = "<<  log(E1*E2/MZ/MZ)/log(E1/E2) <<endl;
-cout<< "ratio of factors  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1) = "<<  (E2*E2-MZ*MZ)/(MZ*MZ-E1*E1)<< endl;
+//
+double betaLN = (AlfRun2-AlfRun1)/AlfRunMZ/(2*log(E2/E1));
+cout<< "Ln(s) interpol. betaLN= "<<  betaLN << endl;
+//
+cout<< "beta from alpha(s) of DIZET= "<<  betaDZ << endl;
+cout<< "O(alf1)  RGE betaRG        = "<<  betaRG << endl;
 
 char  TextAlfInv[100];
 sprintf(TextAlfInv,"#alpha^{-1}_{QED}(M_{Z}) =%4.4f", 1/AlfRunMZ);
@@ -529,7 +536,7 @@ sprintf(TextAlfInv,"#alpha^{-1}_{QED}(M_{Z}) =%4.4f", 1/AlfRunMZ);
   CaptT->DrawLatex(E2 -0.6,alfmax-0.01,"94.3 GeV");
   CaptT->DrawLatex(E1 -0.5,alfmax-0.01,"87.9 GeV");
 
-  CaptNDC->DrawLatex(0.03,0.95,"#alpha^{-1}_{QED}(s^{1/2})");
+  CaptNDC->DrawLatex(0.03,0.95,"#alpha^{-1}_{QED}(s)");
   CaptNDC->DrawLatex(0.50,0.02,"s^{1/2} [GeV]");
 
   CaptNDC->DrawLatex(0.20,0.20,TextAlfInv);
@@ -541,7 +548,8 @@ sprintf(TextAlfInv,"#alpha^{-1}_{QED}(M_{Z}) =%4.4f", 1/AlfRunMZ);
   //hst_AlfRun->SetMinimum(0.0077); hst_AlfRun->SetMaximum(0.0079);
   hst_AlfRun->DrawCopy("h");
 
-  CaptNDC->DrawLatex(0.03,0.95," Testing linear approximation ");
+  CaptNDC->DrawLatex(0.20,0.95," #alpha^{aprox.}_{QED}(s)/#alpha_{QED}(s) - 1 ");
+  CaptNDC->DrawLatex(0.50,0.02,"s^{1/2} [GeV]");
 //
   cAlfE2->cd();
 //
@@ -873,12 +881,13 @@ int main(int argc, char **argv)
   //
   DiskFileB.cd();
   //
-  InitBorn();
-  TabBorn();
+  Initialize();
+  //
+  //TabBorn();
   //FigBorn1();
   //FigBorn3();
   //
-  FigAlfE1();  // alph(s) wide range, plots of ERW
+  //FigAlfE1();  // alph(s) wide range, plots of ERW
   FigAlfE2();  // 1/alpha(s) narrow range, interpolation
   TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
   //FigAlfa3();
