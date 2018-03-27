@@ -826,30 +826,41 @@ AlfRunE2    = AlfRatio/alfinv0;
 cout << " AlfRun(E2) =" << AlfRunE2 <<"   1/AlfRun="<< 1/AlfRunE2 <<endl;
 //
 double Amin, Amax;
-Amin = AlfRunMZ*0.999, Amax=AlfRunMZ*1.001;
-Amin = AlfRunE1*0.999, Amax=AlfRunE2*1.001;
-Amin = AlfRunE1*0.950, Amax=AlfRunE2*1.050;
+Amin = AlfRunMZ*(1-1e-3), Amax=AlfRunMZ*(1+1e-3);
+Amin = AlfRunMZ*(1-5e-4), Amax=AlfRunMZ*(1+5e-4);
+//Amin = AlfRunMZ*(1-1e-2), Amax=AlfRunMZ*(1+1e-2);
 cout << " AlfMin =" << Amin <<"  AlfMax ="<< Amax <<endl;
 //
-TH1D *hst_Afb1 = new TH1D("hst_Afb1" ,  " AFB(alpha)",   nPt, Amin, Amax);
-hst_Afb1->Sumw2();
+TH1D *hst_DelAfb = new TH1D("hst_DelAfb" ,  " AFB(alpha)",   nPt, Amin, Amax);
+hst_DelAfb->Sumw2();
+TH1D *hst_ErrAfb = new TH1D("hst_ErrAfb" ,  " interp. err. AFB",   nPt, Amin, Amax);
+hst_ErrAfb->Sumw2();
 //
-double afb1Min = AFBc(E1, MZ, GammZ, SinW2, Amin);
-double afb1Max = AFBc(E1, MZ, GammZ, SinW2, Amax);
+double DelAfbMin = AFBc(E2, MZ, GammZ, SinW2, Amin) -AFBc(E1, MZ, GammZ, SinW2, Amin) ;
+double DelAfbMax = AFBc(E2, MZ, GammZ, SinW2, Amax) -AFBc(E1, MZ, GammZ, SinW2, Amax);
 
-double CMSene, afb1, AlfRun,afbI;
+double CMSene, afb1, afb2,DelAfb, AlfRun,DafbIntp,Err;
 for(int ix=1; ix <= nPt; ix++){
    AlfRun = Amin +(ix-0.5)/nPt*(Amax-Amin);
    afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfRun);
-   cout << " AlfRun =" << AlfRun <<"  afb1 ="<< afb1 <<endl;
-   afbI = afb1Max*(AlfRun-Amin)/(Amax-Amin) + afb1Min*(Amax-AlfRun)/(Amax-Amin);
-   cout << " Interpolation  afbI ="<< afbI <<"   diff=" << afbI-afb1 <<endl;
+   afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfRun);
+   DelAfb = afb2-afb1;
+   cout<<" AlfRun ="<< AlfRun <<" afb1="<< afb1 <<" afb2="<< afb2<< " DelAfb="<< DelAfb <<endl;
+   DafbIntp = DelAfbMax*(AlfRun-Amin)/(Amax-Amin) + DelAfbMin*(Amax-AlfRun)/(Amax-Amin);
+   Err = (DafbIntp-DelAfb)/DelAfb;
+   cout << " Interpolation DafbIntp ="<< DafbIntp <<"   diff=" << Err <<endl;
 //
-   hst_Afb1->SetBinContent(  ix, afb1 );
-   hst_Afb1->SetBinError(    ix, 0.0 );
+   hst_DelAfb->SetBinContent(  ix, DelAfb );
+   hst_DelAfb->SetBinError(    ix, 0.0 );
+   hst_ErrAfb->SetBinContent(  ix, Err );
+   hst_ErrAfb->SetBinError(    ix, 0.0 );
 
 }//ix
 
+//////////////////////////////////////////////
+  TLatex *CaptNDC = new TLatex();
+  CaptNDC->SetNDC(); // !!!
+  CaptNDC->SetTextSize(0.035);
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   TCanvas *cAlfa3 = new TCanvas("cAlfa3","cAlfa3", gXcanv,  gYcanv,  1200, 600);
   gXcanv += gDcanv; gYcanv += gDcanv;
@@ -859,11 +870,41 @@ for(int ix=1; ix <= nPt; ix++){
   cAlfa3->Divide(2, 0);
 /////////////////////////////////////////////
   cAlfa3->cd(1);
-  hst_Afb1->SetStats(0);
-  hst_Afb1->SetTitle(0);
+  hst_DelAfb->SetStats(0);
+  hst_DelAfb->SetTitle(0);
 
-  hst_Afb1->DrawCopy("h");
-  //
+  double afbMin = DelAfbMin-0.1*(DelAfbMax-DelAfbMin);
+  double afbMax = DelAfbMax+0.1*(DelAfbMax-DelAfbMin);
+  cout<<"afbMin,max= "<< afbMin << "  "<< afbMax <<endl;
+  hst_DelAfb->SetMinimum(afbMin);
+  hst_DelAfb->SetMaximum(afbMax);
+  hst_DelAfb->GetXaxis()->SetNdivisions(4);
+  hst_DelAfb->DrawCopy("h");
+
+  TLine *line0 = new TLine(AlfRunMZ, afbMin, AlfRunMZ, afbMax);
+  line0->SetLineStyle(2);line0->SetLineWidth(2);
+  line0->Draw();
+  TLine *line2 = new TLine(AlfRunMZ*(1+1e-4), afbMin, AlfRunMZ*(1+1e-4), afbMax);
+  line2->SetLineStyle(4);line2->SetLineColor(kRed);line2->SetLineWidth(2);
+  line2->Draw();
+  TLine *line1 = new TLine(AlfRunMZ*(1-1e-4), afbMin, AlfRunMZ*(1-1e-4), afbMax);
+  line1->SetLineStyle(4);line1->SetLineColor(kRed);line1->SetLineWidth(2);
+  line1->Draw();
+
+  CaptNDC->DrawLatex(0.10,0.95," #Delta A_{FB}(#alpha_{0}) = A_{FB}(s_{+}, #alpha_{0}) - A_{FB}(s_{-}, #alpha_{0})");
+  CaptNDC->DrawLatex(0.60,0.02," #alpha_{0} = #alpha_{QED}(M_{Z}^{2})");
+
+/////////////////////////////////////////////
+  cAlfa3->cd(2);
+  hst_ErrAfb->SetStats(0);
+  hst_ErrAfb->SetTitle(0);
+  hst_ErrAfb->GetXaxis()->SetNdivisions(4);
+
+  hst_ErrAfb->DrawCopy("h");
+
+  CaptNDC->DrawLatex(0.20,0.95," #Delta A_{FB}^{interp.}/ #Delta A_{FB} - 1");
+  CaptNDC->DrawLatex(0.60,0.02," #alpha_{0} = #alpha_{QED}(M_{Z}^{2})");
+ //
   cAlfa3->cd();
   //
   cAlfa3->SaveAs("cAlfa3.pdf");
@@ -890,7 +931,7 @@ int main(int argc, char **argv)
   //FigAlfE1();  // alph(s) wide range, plots of ERW
   FigAlfE2();  // 1/alpha(s) narrow range, interpolation
   TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
-  //FigAlfa3();
+  FigAlfa3();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
