@@ -691,6 +691,8 @@ double AlfR1 = AlfMZ*(1-Y1*AlfMZ );
 double AlfR2 = AlfMZ*(1+Y2*AlfMZ );
 double Afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfR1);
 double Afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfR2);
+//Afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfMZ);
+//Afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfMZ);
 double Dafb = Afb2-Afb1;
 double AR1  = Afb1/Dafb,   AR2 = Afb2/Dafb;
 //
@@ -701,7 +703,7 @@ cout<<"+++ Alf0= "<< Alf0<<"    1/Alf0= "<<1/Alf0<<" relat= " <<Alf0/AlfMZ -1 <<
 double Alfu = AlfMZ; // crosscheck!!!! /////////////
 Alfx = Alf0*( 1 +(sqr(Alfu*(1+Alfu*Y2))*AR2*RW2 -sqr(Alfu*(1-Alfu*Y1))*AR1*RW1 )/sqr(cZ)/c2
                + (    Alfu*(1+Alfu*Y2) *AR2*X2      -Alfu*(1-Alfu*Y1) *AR1*X1  )/cZ *2*c1/c2
-//               - 1.5*sqr(Alfu)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)
+               - 1.5*sqr(Alfu)/Dafb  *d1/(c2*cZ)*(X1*Y1+X2*Y2)
                ); // even better
 cout<<"***xcheck*** Alfx= "<< Alfx<<"    1/Alfx= "<<1/Alfx<<" relat= " <<Alfx/AlfMZ-1 << endl;
 /////////////////////////////////////////////
@@ -714,24 +716,24 @@ cout<<"+++ Alf1= "<< Alf1<<"    1/Alf1= "<<1/Alf1<<" relat= " <<Alf1/AlfMZ-1 << 
 //
 Alf1 = Alf0*( 1 +(sqr(Alf0*(1+Alf0*Y2))*AR2*RW2 -sqr(Alf0*(1-Alf0*Y1))*AR1*RW1 )/sqr(cZ)/c2
                + (    Alf0*(1+Alf0*Y2) *AR2*X2      -Alf0*(1-Alf0*Y1) *AR1*X1  )/cZ *2*c1/c2
-               - 1.5*sqr(Alf0)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+               - 1.5*sqr(Alf0)/Dafb  *d1/(c2*cZ)*(X1*Y1+X2*Y2)     ); // even better
 cout<<"*** Alf1= "<< Alf1<<"    1/Alf1= "<<1/Alf1<<" relat= " <<Alf1/AlfMZ-1 << endl;
 //////////////////////////////
 // iterate
 Alf2 = Alf0*( 1 +(sqr(Alf1*(1+Alf1*Y2))*AR2*RW2 -sqr(Alf1*(1-Alf1*Y1))*AR1*RW1 )/sqr(cZ)/c2
                + (    Alf1*(1+Alf1*Y2) *AR2*X2      -Alf1*(1-Alf1*Y1) *AR1*X1  )/cZ *2*c1/c2
-               - 1.5*sqr(Alf1)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+               - 1.5*sqr(Alf1)/Dafb  *d1/(c2*cZ)*(X1*Y1+X2*Y2)     ); // even better
 cout<<"*** Alf2= "<< Alf2<<"    1/Alf2= "<<1/Alf2<<" relat= " <<Alf2/AlfMZ-1 << endl;
 //
 Alf3 = Alf0*( 1 +(sqr(Alf2*(1+Alf2*Y2))*AR2*RW2 -sqr(Alf2*(1-Alf2*Y1))*AR1*RW1 )/sqr(cZ)/c2
                + (    Alf2*(1+Alf2*Y2) *AR2*X2      -Alf2*(1-Alf2*Y1) *AR1*X1  )/cZ *2*c1/c2
-               - 1.5*sqr(Alf2)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+               - 1.5*sqr(Alf2)/Dafb  *d1/(c2*cZ)*(X1*Y1+X2*Y2)     ); // even better
 cout<<"*** Alf3= "<< Alf3<<"    1/Alf3= "<<1/Alf3<<" relat= " <<Alf3/AlfMZ-1 << endl;
 //
-Alf3 = Alf0*( 1 +(sqr(Alf2*(1+Alf2*Y2))*AR2*RW2 -sqr(Alf2*(1-Alf2*Y1))*AR1*RW1 )/sqr(cZ)/c2
-               + (    Alf2*(1+Alf2*Y2) *AR2*X2      -Alf2*(1-Alf2*Y1) *AR1*X1  )/cZ *2*c1/c2
-               - 1.5*sqr(Alf2)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
-cout<<"*** Alf3= "<< Alf3<<"    1/Alf3= "<<1/Alf3<<" relat= " <<Alf3/AlfMZ-1 << endl;
+Alf4 = Alf0*( 1 +(sqr(Alf3*(1+Alf3*Y2))*AR2*RW2 -sqr(Alf3*(1-Alf3*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf3*(1+Alf3*Y2) *AR2*X2      -Alf3*(1-Alf3*Y1) *AR1*X1  )/cZ *2*c1/c2
+               - 1.5*sqr(Alf3)/Dafb  *d1/(c2*cZ)*(X1*Y1+X2*Y2)     ); // even better
+cout<<"*** Alf4= "<< Alf4<<"    1/Alf4= "<<1/Alf4<<" relat= " <<Alf4/AlfMZ-1 << endl;
 cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
 
 cout<< "************************************************************************* " << endl;
