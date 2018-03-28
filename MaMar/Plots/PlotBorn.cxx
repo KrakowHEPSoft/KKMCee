@@ -681,15 +681,24 @@ double AlfEst0, AlfEst1, AlfEst2, AlfEst3;
 AlfEst0 = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1)-sqr(MZ/E2))*cZ;
 AlfEst0 = (AFBclc[2]-AFBclc[1])*4.0/3.0 *cZ *c2/( 2.0*d1*(sqr(MZ/E1)-sqr(MZ/E2)) );
 cout<<"+++ AlfEst0 from DelAFB21= " <<  AlfEst0    <<"    1/AlfEst0  = " <<  1/AlfEst0 << endl;
-double RW1 = 1/BWR(E1,MZ,GammZ);
-double RW2 = 1/BWR(E2,MZ,GammZ);
-double AR1 = AFBclc[1]/Dafb21;
-double AR2 = AFBclc[2]/Dafb21;
+//
+double RW1 = 1/BWR(E1,MZ,GammZ), RW2 = 1/BWR(E2,MZ,GammZ);
+double AR1 = AFBclc[1]/Dafb21,   AR2 = AFBclc[2]/Dafb21;
+double X1  = 1-sqr(MZ/E1),       X2  = 1-sqr(MZ/E2);
+double beta = 20.0/(9.0*3.141593);
+//
 AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1) ); // better
 cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+//
 AlfEst1 = AlfEst0*( 1 +sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
                           +AlfEst0/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
 cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+//
+AlfEst1 = AlfEst0*( 1 +(sqr(AlfEst0)* AR2*RW2 -sqr(AlfEst0) *AR1*RW1 )/sqr(cZ)/c2
+                     + ( AlfEst0*AR2*X2              -AlfEst0*AR1*X1 )/cZ *2*c1/c2 ); // even better
+cout<<"*** AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+//////////////////////////////
+// iterate
 AlfEst2 = AlfEst0*( 1 +sqr(AlfEst1)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
                           +AlfEst1/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
 cout<<"+++ AlfEst2= "<< AlfEst2<<"    1/AlfEst2= "<<1/AlfEst2<<" relat= " <<(AlfEst2-AlfRun[0])/AlfRun[0] << endl;
