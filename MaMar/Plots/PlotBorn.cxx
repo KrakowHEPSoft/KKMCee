@@ -673,7 +673,7 @@ cout<<" cG=AlfRun(MZ) ="<< cG << "    cZ= MZ^2*GFermi/(2*sqrt(2)*Pi)="<< cZ<<end
 //cout<<" GammZ= " <<  GammZ <<endl;
 
 cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
-cout<<"+++++++++++++++++++++++++++++++++  Crude estimator ++++++++++++++++++++++++++++++++ " << endl;
+cout<<"+++++++++++++++++++  Exact/approximate estimator of alpha(AFB) ++++++++++++++++++++ " << endl;
 cout<<"+++ AlfTrue(MZ) = " <<  AlfRun[0] <<"    1/AlfTrue = " <<  1/AlfRun[0] << endl;
 //
 double Dafb21 = AFBclc[2]-AFBclc[1];
@@ -682,29 +682,56 @@ AlfEst0 = (AFBclc[2]-AFBclc[1])*2.0/3.0 *sqr(sqr(gv)+sqr(ga))/sqr(ga)/(sqr(MZ/E1
 AlfEst0 = (AFBclc[2]-AFBclc[1])*4.0/3.0 *cZ *c2/( 2.0*d1*(sqr(MZ/E1)-sqr(MZ/E2)) );
 cout<<"+++ AlfEst0 from DelAFB21= " <<  AlfEst0    <<"    1/AlfEst0  = " <<  1/AlfEst0 << endl;
 //
-double RW1 = 1/BWR(E1,MZ,GammZ), RW2 = 1/BWR(E2,MZ,GammZ);
-double AR1 = AFBclc[1]/Dafb21,   AR2 = AFBclc[2]/Dafb21;
-double X1  = 1-sqr(MZ/E1),       X2  = 1-sqr(MZ/E2);
+double X1   = 1-sqr(MZ/E1),       X2  = 1-sqr(MZ/E2);
+double RW1  = 1/BWR(E1,MZ,GammZ), RW2 = 1/BWR(E2,MZ,GammZ);
 double beta = 20.0/(9.0*3.141593);
+double Y1  = beta* 2*log(MZ/E1),  Y2  = beta* 2*log(E2/MZ);
+double AlfMZ = AlfRun[0];
+double AlfR1 = AlfMZ*(1-Y1*AlfMZ );
+double AlfR2 = AlfMZ*(1+Y2*AlfMZ );
+double Afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfR1);
+double Afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfR2);
+double Dafb = Afb2-Afb1;
+double AR1  = Afb1/Dafb,   AR2 = Afb2/Dafb;
 //
-AlfEst1 = AlfEst0*( 1+ sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1) ); // better
-cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+double Alf1, Alf2, Alf3, Alf4, Alfx;
+double Alf0 = Dafb* 2*cZ*c2/(3*d1*(X2-X1));
+cout<<"+++ Alf0= "<< Alf0<<"    1/Alf0= "<<1/Alf0<<" relat= " <<Alf0/AlfMZ -1 << endl;
+// XCHECK!!!!
+double Alfu = AlfMZ; // crosscheck!!!! /////////////
+Alfx = Alf0*( 1 +(sqr(Alfu*(1+Alfu*Y2))*AR2*RW2 -sqr(Alfu*(1-Alfu*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alfu*(1+Alfu*Y2) *AR2*X2      -Alfu*(1-Alfu*Y1) *AR1*X1  )/cZ *2*c1/c2
+//               - 1.5*sqr(Alfu)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)
+               ); // even better
+cout<<"***xcheck*** Alfx= "<< Alfx<<"    1/Alfx= "<<1/Alfx<<" relat= " <<Alfx/AlfMZ-1 << endl;
+/////////////////////////////////////////////
+Alf1 = Alf0*( 1+ sqr(Alf0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1) ); // better
+cout<<"+++ Alf1= "<< Alf1<<"    1/Alf1= "<<1/Alf1<<" relat= " <<Alf1/AlfMZ -1 << endl;
 //
-AlfEst1 = AlfEst0*( 1 +sqr(AlfEst0)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
-                          +AlfEst0/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
-cout<<"+++ AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+Alf1 = Alf0*( 1 +(sqr(Alf0)* AR2*RW2 -sqr(Alf0) *AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf0  *AR2*X2      -Alf0 *AR1*X1  )/cZ *2*c1/c2 ); // even better
+cout<<"+++ Alf1= "<< Alf1<<"    1/Alf1= "<<1/Alf1<<" relat= " <<Alf1/AlfMZ-1 << endl;
 //
-AlfEst1 = AlfEst0*( 1 +(sqr(AlfEst0)* AR2*RW2 -sqr(AlfEst0) *AR1*RW1 )/sqr(cZ)/c2
-                     + ( AlfEst0*AR2*X2              -AlfEst0*AR1*X1 )/cZ *2*c1/c2 ); // even better
-cout<<"*** AlfEst1= "<< AlfEst1<<"    1/AlfEst1= "<<1/AlfEst1<<" relat= " <<(AlfEst1-AlfRun[0])/AlfRun[0] << endl;
+Alf1 = Alf0*( 1 +(sqr(Alf0*(1+Alf0*Y2))*AR2*RW2 -sqr(Alf0*(1-Alf0*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf0*(1+Alf0*Y2) *AR2*X2      -Alf0*(1-Alf0*Y1) *AR1*X1  )/cZ *2*c1/c2
+               - 1.5*sqr(Alf0)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+cout<<"*** Alf1= "<< Alf1<<"    1/Alf1= "<<1/Alf1<<" relat= " <<Alf1/AlfMZ-1 << endl;
 //////////////////////////////
 // iterate
-AlfEst2 = AlfEst0*( 1 +sqr(AlfEst1)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
-                          +AlfEst1/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
-cout<<"+++ AlfEst2= "<< AlfEst2<<"    1/AlfEst2= "<<1/AlfEst2<<" relat= " <<(AlfEst2-AlfRun[0])/AlfRun[0] << endl;
-AlfEst3 = AlfEst0*( 1 +sqr(AlfEst2)/sqr(cZ)/c2*( AR2*RW2 -AR1*RW1)
-                          +AlfEst2/cZ *2*c1/c2* ( AR2*(1-sqr(MZ/E2))-AR1*(1-sqr(MZ/E1)) ) ); // even better
-cout<<"+++ AlfEst3= "<< AlfEst3<<"    1/AlfEst3= "<<1/AlfEst3<<" relat= " <<(AlfEst3-AlfRun[0])/AlfRun[0] << endl;
+Alf2 = Alf0*( 1 +(sqr(Alf1*(1+Alf1*Y2))*AR2*RW2 -sqr(Alf1*(1-Alf1*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf1*(1+Alf1*Y2) *AR2*X2      -Alf1*(1-Alf1*Y1) *AR1*X1  )/cZ *2*c1/c2
+               - 1.5*sqr(Alf1)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+cout<<"*** Alf2= "<< Alf2<<"    1/Alf2= "<<1/Alf2<<" relat= " <<Alf2/AlfMZ-1 << endl;
+//
+Alf3 = Alf0*( 1 +(sqr(Alf2*(1+Alf2*Y2))*AR2*RW2 -sqr(Alf2*(1-Alf2*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf2*(1+Alf2*Y2) *AR2*X2      -Alf2*(1-Alf2*Y1) *AR1*X1  )/cZ *2*c1/c2
+               - 1.5*sqr(Alf2)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+cout<<"*** Alf3= "<< Alf3<<"    1/Alf3= "<<1/Alf3<<" relat= " <<Alf3/AlfMZ-1 << endl;
+//
+Alf3 = Alf0*( 1 +(sqr(Alf2*(1+Alf2*Y2))*AR2*RW2 -sqr(Alf2*(1-Alf2*Y1))*AR1*RW1 )/sqr(cZ)/c2
+               + (    Alf2*(1+Alf2*Y2) *AR2*X2      -Alf2*(1-Alf2*Y1) *AR1*X1  )/cZ *2*c1/c2
+               - 1.5*sqr(Alf2)/Dafb21  *d1/(c2*cZ)*(X1*Y1+X1*Y2)     ); // even better
+cout<<"*** Alf3= "<< Alf3<<"    1/Alf3= "<<1/Alf3<<" relat= " <<Alf3/AlfMZ-1 << endl;
 cout<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " << endl;
 
 cout<< "************************************************************************* " << endl;
@@ -854,10 +881,10 @@ for(int ix=1; ix <= nPt; ix++){
    afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfRun);
    afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfRun);
    DelAfb = afb2-afb1;
-   cout<<" AlfRun ="<< AlfRun <<" afb1="<< afb1 <<" afb2="<< afb2<< " DelAfb="<< DelAfb <<endl;
+//   cout<<" AlfRun ="<< AlfRun <<" afb1="<< afb1 <<" afb2="<< afb2<< " DelAfb="<< DelAfb <<endl;
    DafbIntp = DelAfbMax*(AlfRun-Amin)/(Amax-Amin) + DelAfbMin*(Amax-AlfRun)/(Amax-Amin);
    Err = (DafbIntp-DelAfb)/DelAfb;
-   cout << " Interpolation DafbIntp ="<< DafbIntp <<"   diff=" << Err <<endl;
+//   cout << " Interpolation DafbIntp ="<< DafbIntp <<"   diff=" << Err <<endl;
 //
    hst_DelAfb->SetBinContent(  ix, DelAfb );
    hst_DelAfb->SetBinError(    ix, 0.0 );
