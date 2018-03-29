@@ -646,6 +646,62 @@
       ENDIF
       END                       !!! end of KK2f_Make !!!
 
+
+      SUBROUTINE KK2f_Make_WT
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//=============================================================
+*//              Recalculate Model weight
+*//=============================================================
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KK2f.h'
+      INCLUDE 'BXformat.h'
+      INTEGER           i,j,k
+      INTEGER           KFfin
+      DOUBLE PRECISION  CMSE, vv, svar1, Exe, SvarQ
+      DOUBLE PRECISION  MminCEEX, BornV_Sig0nb
+      DOUBLE PRECISION  WtSetNew(200), WtBest, WtBest1, WtBest2
+      DOUBLE PRECISION  BornV_Differential, BornV_GetAuxPar
+
+* Actual KFcode of final fermion
+      CALL MBrA_GetKF(KFfin)
+
+      m_WtMain  =m_WtCrud
+      IF(m_WtCrud .NE. 0d0) THEN
+         CALL BornV_GetVV(vv)
+         CALL KarLud_GetXXXene(CMSE)            !<-- It is this realy OK, see above
+         svar1     = CMSE**2*(1d0-vv)
+         m_BornCru = 4d0/3d0*BornV_Differential(0,KFfin,svar1,0d0,0d0,0d0,0d0,0d0)
+         CALL QED3_Make                         !<-- EEX
+* WtSet from QED3 is filled in the range (1:200)
+         CALL QED3_GetWtSet(WtBest,m_WtSet)     !<-- WtBest initialized
+* New CEEX matrix element is now default for leptons and for quarks.
+* Its use is controled by auxiliary parameter MinMassCEEX variable [GeV]
+* CEEX is calculated twice, with ISR*FSR interference OFF and ON
+         CALL  KarFin_GetSvarQ(SvarQ)
+         MminCEEX = BornV_GetAuxPar(KFfin)
+         IF( m_KeyGPS.NE.0 .AND. SvarQ.GT.MminCEEX**2 ) THEN
+            CALL GPS_ZeroWtSet                 !<-- zeroing GPS weights
+            CALL GPS_SetKeyINT( 0)             !<-- ISR*FSR interfer. OFF
+            CALL GPS_Make                      !<-- CEEX    interfer. OFF
+            IF( m_KeyINT .NE. 0 ) THEN
+               CALL GPS_SetKeyINT( m_KeyINT)   !<-- ISR*FSR interfer. ON
+               CALL GPS_Make                   !<-- CEEX    interfer. ON
+            ENDIF
+            CALL GPS_GetWtSet(WtBest,WtSetNew) !<-- WtBest redefined !!!
+* m_WtSet appended with WtSetNew
+            DO j=1,200
+               m_WtSet(j+200) = WtSetNew(j)
+            ENDDO
+         ENDIF
+         m_WtMain  = m_WtMain*WtBest
+      ENDIF
+      END                       !!! end of KK2f_Make_WT !!!
+
+
+
       SUBROUTINE KK2f_ZBoostAll(exe)
 *///////////////////////////////////////////////////////////////////////////////
 *//                                                                           //

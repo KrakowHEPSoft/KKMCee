@@ -145,6 +145,7 @@ BeginX
   504   2.50072032e0      GammZ =xpar(504) Z width, from Dizet
   505     80.37787e0      MW    =xpar(505) W mass,  from Dizet
   506   2.08825837e0      GammW =xpar(506) W width, from Dizet
+  509            1e0      QED constant modifiction factor\\\\\\ special tests
   510          1e-60      MasPhot=xpar(510) photon mass, IR regulator 
 ********************************************************************************
 **     PROPERTIES of Quarks and Leptons

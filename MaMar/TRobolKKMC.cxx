@@ -486,6 +486,28 @@ void TRobolKKMC::Production(double &iEvent)
     cout<< "CosThe1,CosThe2 = "<<CosThe1<<"  "<<CosThe2<<endl;
     cout<< "CosThePL,CosPRD = "<<CosThePL<<"  "<<CosPRD<<endl;
   }
+  // NEW!!!  NEW!!!  NEW!!!  NEW!!!
+  double lambda = 1.10e0;
+  bornv_resetalfqed_( lambda);
+  // recalculating WC weight
+  kk2f_make_wt_();
+  ////////////////////////////////////
+  double Wt2CEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
+  double Wt2CEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
+  double Wt2CEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
+  double Wt2CEEX2n= KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2) IFI off
+  double Wt2EEX1  = KKMC_generator->GetWtAlter( 72);    //  Second ord. EEX2 O(alf2)
+  double Wt2EEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
+  double Wt2EEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
+  if(iEvent<50){
+    cout<<"============================================================="<<iEvent;
+    cout<<"============================================================="<<endl;
+//    cout<< "Wt2CEEX2 = "<<  Wt2CEEX2<<" WtCEEX2 "<<  WtCEEX2<<endl;
+    cout<< " CEEX2 ratio = "<<  Wt2CEEX2/WtCEEX2 ;
+    cout<< "  EEX2 ratio = "<<  Wt2EEX2/WtEEX2 <<endl;
+  }
+
+
 } //
 
 

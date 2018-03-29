@@ -53,6 +53,8 @@
       m_gammz  = xpar_input(504)        ! Z width
       m_MW     = xpar_input(505)        ! W mass [GeV]
       m_GammW  = xpar_input(506)        ! W width[GeV]
+* for special tests
+      m_QEDmodif = xpar_input(506)      ! QED constant modifiction factor
 
 *               <<< Static Table of ALL fermion parameters >>>
       DO j=1,20
@@ -1690,6 +1692,19 @@ c]]]]]]]]]]]]]
       INCLUDE 'BornV.h'
       DOUBLE PRECISION    QEDcor
       QEDcor = 1d0/(2d0-DREAL(m_GSW(6)) )
+      END
+
+
+      SUBROUTINE BornV_ResetAlfQED(lambda)
+*//////////////////////////////////////////////////////////////////////////////
+*//                                                                          //
+*//   Rescale QED coupling constant (provided by Dizet) by factor  lambda    //
+*//                                                                          //
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'BornV.h'
+      DOUBLE PRECISION   lambda
+      m_GSW(6) = 2d0 -(2d0 - m_GSW(6) )/lambda
       END
 
 
