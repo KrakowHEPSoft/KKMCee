@@ -698,6 +698,10 @@
          ENDIF
          m_WtMain  = m_WtMain*WtBest
       ENDIF
+* collection of the weights for the advanced user (variable weights)
+      DO j=1,m_lenwt
+         m_WtList(j) = m_WtSet(j)*m_WtCrud
+      ENDDO
       END                       !!! end of KK2f_Make_WT !!!
 
 
