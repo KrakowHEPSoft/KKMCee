@@ -40,8 +40,8 @@ extern "C" void kk2f_getxsnormpb_( double&, double&);
 extern "C" void kk2f_getwtalter_( int&, double&);
 //      SUBROUTINE KK2f_Make_WT
 extern "C" void kk2f_make_wt_();
-//         SUBROUTINE BornV_ResetAlfQED(lambda)
-extern "C" void bornv_resetalfqed_( double&);
+//         SUBROUTINE BornV_SetQEDmodif(lambda)
+extern "C" void bornv_setqedmodif_( double&);
 ///////////////////////////////////////////////////////////////////////////////
 extern "C" void karlud_getfermions_(double [], double []);
 ///////////////////////////////////////////////////////////////////////////////

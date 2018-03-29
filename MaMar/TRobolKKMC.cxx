@@ -486,12 +486,14 @@ void TRobolKKMC::Production(double &iEvent)
     cout<< "CosThe1,CosThe2 = "<<CosThe1<<"  "<<CosThe2<<endl;
     cout<< "CosThePL,CosPRD = "<<CosThePL<<"  "<<CosPRD<<endl;
   }
-  // NEW!!!  NEW!!!  NEW!!!  NEW!!!
+// NEW!!!  NEW!!!  NEW!!!  NEW!!!
   double lambda = 1.10e0;
-  bornv_resetalfqed_( lambda);
-  // recalculating WC weight
+  bornv_setqedmodif_( lambda);
+// recalculating WC weight
   kk2f_make_wt_();
-  ////////////////////////////////////
+  lambda = 1.0e0;
+  bornv_setqedmodif_( lambda);
+ ///////////////////////////////////
   double Wt2CEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double Wt2CEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double Wt2CEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
