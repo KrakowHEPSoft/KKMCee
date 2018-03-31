@@ -634,7 +634,9 @@ Hst1->Divide(Hst3); // (F-B)/Deno
 return Hst1;
 }//HstAFB3
 
+
 TH1D *HstAFB4(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2)
+// Exact AFB for weight differences with in flight cumulating
 {
 TH1D *Hst21F = HstCumul(title,      HST21F);  // forward dF21
 TH1D *Hst21  = HstCumul("hst_test2",HST21);   // total   dF21+dB21
@@ -668,7 +670,46 @@ Hafb1->Divide(Hst2);
 Hst21F->Add(Hst21F, Hafb1,    1.0, -1.0);
 ///////////////////////////////////////////////////
 return Hst21F;
-}//HstAFB3
+}//HstAFB4
+
+
+
+TH1D *HstAFB4cl(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2)
+// Exact AFB for weight differences with cloning (no cumulation)
+{
+TH1D *Hst21F = (TH1D*)HST21F->Clone(title);        // forward dF21
+TH1D *Hst21  = (TH1D*)HST21->Clone( "hst_Test2" ); // total   dF21+dB21
+TH1D *Hst2F  = (TH1D*)HST2F->Clone( "hst_Test3");  // F2
+TH1D *Hst2   = (TH1D*)HST2->Clone(  "hst_Test4");  // F2+B2
+Hst21F->Add(Hst21F, Hst21,    2.0, -1.0);     // 2dF21-(dF21+dB21)=dF21-dB21
+Hst21F->Divide(Hst2); // (dF21-dB21)/(F2+B2)
+///////////////////////////////////////////////////
+// Constructing second term approximately
+TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
+Hafb2->Add(Hafb2, Hst2,    2.0, -1.0);        // 2F-(F+B)=F-B
+Hafb2->Divide(Hst2);   // AFB2 ready to go
+// Second term, approximate, AFB1->AFB2
+Hafb2->Multiply(Hst21);;
+Hafb2->Divide(Hst2);
+// Subtract approximate second term
+//Hst21F->Add(Hst21F, Hafb2,    1.0, -1.0);
+///////////////////////////////////////////////////
+// Constructing second term exactly
+TH1D *Hafb1  = HstCumul("hst_test6",HST2F);  // Sig2F
+Hafb1->Add(Hafb1, Hst2,    2.0, -1.0);       // numerator of AFB2, 2F-(F+B)
+Hafb1->Add(Hafb1, Hst21F,  1.0, -2.0);       // correcting
+Hafb1->Add(Hafb1, Hst21,   1.0,  1.0);       // numerator of AFB1
+TH1D *Hsig1  = HstCumul("hst_test6",HST2);   // denominator  AFB1
+Hsig1->Add(Hsig1, Hst21,   1.0, -1.0);       // denominator  AFB1
+Hafb1->Divide(Hsig1);                        // AFB1 completed
+// Second term, exact
+Hafb1->Multiply(Hst21);;
+Hafb1->Divide(Hst2);
+// Subtract exact second term
+Hst21F->Add(Hst21F, Hafb1,    1.0, -1.0);
+///////////////////////////////////////////////////
+return Hst21F;
+}//HstAFB4cl
 
 void PlInitialize(FILE *ltx, int lint)
 {
