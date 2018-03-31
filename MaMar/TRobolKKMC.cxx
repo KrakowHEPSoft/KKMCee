@@ -199,6 +199,19 @@ void TRobolKKMC::Hbooker()
   hst_vACeex1F  = TH1D_UP("hst_vACeex1F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex2F  = TH1D_UP("hst_vACeex2F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex21  = TH1D_UP("hst_vACeex21",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
+  ////////////////////////////////////
+  // New section for alpha dependence
+  double DelAlf = 1e-3;   // relative variation of alphaQED
+  int NBalf = 8;
+  hst_Al0CutA_Ceex2    = TH1D_UP("hst_Al0CutA_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_Al0CutA_Ceex2F   = TH1D_UP("hst_Al0CutA_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_AlfCutA_Ceex2    = TH1D_UP("hst_AlfCutA_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_AlfCutA_Ceex2F   = TH1D_UP("hst_AlfCutA_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  //
+  hst_Al0CutB_Ceex2    = TH1D_UP("hst_Al0CutB_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_Al0CutB_Ceex2F   = TH1D_UP("hst_Al0CutB_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_AlfCutB_Ceex2    = TH1D_UP("hst_AlfCutB_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_AlfCutB_Ceex2F   = TH1D_UP("hst_AlfCutB_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
 
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
@@ -333,7 +346,7 @@ void TRobolKKMC::Production(double &iEvent)
 
   double Acol    = fabs(Phi1-(Phi2+3.141594));
 
-  double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph;
+  double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph,xe1,xe2;
 //--------------------------------------------------------------------
 //* Various definitions of Theta and s-propagator
 //*--------------------------------------------------------------------
@@ -345,6 +358,8 @@ void TRobolKKMC::Production(double &iEvent)
   yy1 = SinThe2/(SinThe1+SinThe2);
   yy2 = SinThe1/(SinThe1+SinThe2);
   CosPRD = yy1*CosThe1 - yy2*CosThe2;
+  xe1 = 2*E1/CMSene;
+  xe2 = 2*E2/CMSene;
 //*-------------------------------
 //* LL formula for s'/s from angles according to ALEPH note 1996
   zAleph =  (sin(Theta1)+sin(Theta2) -fabs(sin(Theta1+Theta2)))
@@ -451,18 +466,18 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vTcPL_Ceex0n->Fill(   vv, CosThePL, WtCEEX0n); // vv bare muons, IFIoff
 ////////////////////
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
-  //-------------------------------
-  // dsigma/dv, any theta, no cut
-  // specials for AFB from <costheta_PL>
+//-------------------------------
+// dsigma/dv, any theta, no cut
+// specials for AFB from <costheta_PL>
   hst_vT_Ceex2_xcPL->Fill( vv, WtCEEX2*CosThePL);
   hst_vT_Ceex2n_xcPL->Fill(vv, WtCEEX2n*CosThePL);
-  // AFB from (F-B)/(F+B), cos(theta)>0, cmax=1
+// AFB from (F-B)/(F+B), cos(theta)>0, cmax=1
   if( CosThePL > 0.0)  hst_vT_Ceex2_cPL_forw->Fill( vv, WtCEEX2);
-  // AFB from (F-B)/(F+B) with |cos(theta)| < 0.9 cut
+// AFB from (F-B)/(F+B) with |cos(theta)| < 0.9 cut
   if( fabs(CosThePL) < 0.9 )          hst_vT_Ceex2_cPLr90->Fill(      vv, WtCEEX2);
   if( CosThePL>0.0 && CosThePL < 0.9) hst_vT_Ceex2_cPLr90_forw->Fill( vv, WtCEEX2);
 ///////////////////////////////////////////////////////////////////////
-// Introductory exercises on experimenta cut-oofs
+// Introductory exercises on experimental cut-offs
 ///////////////////////////////////////////////////////////////////////
 // Acoplanarity < 0.35 mrad (i.e., ~3 sigma of the angular resolution).
 // Of course, this cut can be relaxed a little bit, but not too much.
@@ -470,15 +485,16 @@ void TRobolKKMC::Production(double &iEvent)
   if( Acol < 0.00035){
 //  if( Acol < 0.001){
     sca_vTvA_Eex2->Fill(   vv, vvA, WtEEX2); // vv bare vs vALEPH
-//    sca_vKvA_Eex2->Fill(  vvK, vvA, WtEEX2); // vv bare vs vALEPH
+//  sca_vKvA_Eex2->Fill(  vvK, vvA, WtEEX2); // vv bare vs vALEPH
     sca_vKvA_Eex2->Fill(  vvF, vvA, WtEEX2); // vv bare vs vALEPH
   }// Cuts
-  // Miscelaneous
+///////////////////////////////////////////////////////////////////////
+// Miscelaneous
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
   hst_weight->Fill(WtMain);              // histogramming
-  //hst_Mff->Fill(Mff,WtMain);             // histogramming
-  // debug debug debug debug debug debug debug
+//hst_Mff->Fill(Mff,WtMain);             // histogramming
+// debug debug debug debug debug debug debug
   if(iEvent<15){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
@@ -486,14 +502,27 @@ void TRobolKKMC::Production(double &iEvent)
     cout<< "CosThe1,CosThe2 = "<<CosThe1<<"  "<<CosThe2<<endl;
     cout<< "CosThePL,CosPRD = "<<CosThePL<<"  "<<CosPRD<<endl;
   }
-// NEW!!!  NEW!!!  NEW!!!  NEW!!!
-  double lambda = 1.10e0;
-  bornv_setqedmodif_( lambda);
+///////////////////////////////////////////////////////////////////////
+// !!!!!!!!!NEW!!!  NEW!!!  NEW!!!  NEW!!!
+///////////////////////////////////////////////////////////////////////
+  double vvcut2 = 0.02;
+  double dalf, RN, xmodif = 1.0;
+
+  double Xmax = hst_AlfCutA_Ceex2->GetXaxis()->GetXmax();
+  double Xmin = hst_AlfCutA_Ceex2->GetXaxis()->GetXmin();
+//
+  RN = KKMC_generator->f_RNgen->Rndm();
+  dalf =Xmin + (Xmax-Xmin)*RN;
+//
+// Modifying alpha_QED
+  xmodif = 1+dalf;
+  bornv_setqedmodif_(xmodif);
 // recalculating WC weight
   kk2f_make_wt_();
-  lambda = 1.0e0;
-  bornv_setqedmodif_( lambda);
- ///////////////////////////////////
+// Back to normal alpha !!!
+  xmodif = 1.0e0;  // Back to normal !!!
+  bornv_setqedmodif_( xmodif);
+ /////////////////////////////
   double Wt2CEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double Wt2CEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double Wt2CEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
@@ -501,10 +530,23 @@ void TRobolKKMC::Production(double &iEvent)
   double Wt2EEX1  = KKMC_generator->GetWtAlter( 72);    //  Second ord. EEX2 O(alf2)
   double Wt2EEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double Wt2EEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
+  // (B) Classic cut on "bare" vv from muon pair mass
+  if( vv<vvcut2 && fabs(CosThePL)<0.9 ){
+	                    hst_AlfCutB_Ceex2->Fill( dalf,Wt2CEEX2);
+	  if( CosThePL>0.0) hst_AlfCutB_Ceex2F->Fill(dalf,Wt2CEEX2);
+  }// Cut (B)
+  //
+  // (A) ALEPHI-like cut on vv_Aleph, acoplanarity and muon energies
+  if( vvA<vvcut2 && fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.98 && xe2>0.98){
+	                  hst_AlfCutA_Ceex2->Fill( dalf,Wt2CEEX2);
+	  if( CosPRD>0.0) hst_AlfCutA_Ceex2F->Fill(dalf,Wt2CEEX2);
+  }// Cut (A)
+
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;
     cout<<"============================================================="<<endl;
 //    cout<< "Wt2CEEX2 = "<<  Wt2CEEX2<<" WtCEEX2 "<<  WtCEEX2<<endl;
+    cout<< " dalf= "<<  dalf << "  xmodif= "<<  1+dalf ;
     cout<< " CEEX2 ratio = "<<  Wt2CEEX2/WtCEEX2 ;
     cout<< "  EEX2 ratio = "<<  Wt2EEX2/WtEEX2 <<endl;
   }

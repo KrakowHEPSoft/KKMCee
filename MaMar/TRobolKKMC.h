@@ -127,6 +127,18 @@ class TRobolKKMC : public TRobol
   //
   TH1D   *hst_vT_Ceex2_cPL_forw;      //!  No streamer!!!
   TH1D   *hst_vT_Ceex2_cPLr90_forw;  //!  No streamer!!!
+//
+  TH1D   *hst_Al0CutB_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Al0CutB_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_AlfCutB_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_AlfCutB_Ceex2F;        //!  No streamer!!!
+  //
+  TH1D   *hst_Al0CutA_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Al0CutA_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_AlfCutA_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_AlfCutA_Ceex2F;        //!  No streamer!!!
+
+
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
 ///////////////////////////////////////////
