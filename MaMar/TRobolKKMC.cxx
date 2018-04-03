@@ -249,8 +249,8 @@ void TRobolKKMC::Hbooker()
   hst_vB_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vB_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
-  hst_vA_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vA_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2i      = TH1D_UP("hst_vA_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2i_F    = TH1D_UP("hst_vA_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
 /////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
