@@ -202,7 +202,7 @@ void TRobolKKMC::Hbooker()
   ////////////////////////////////////
   // New section for alpha dependence
   m_vvcut2 = 0.02;   // photon energy cut
-  m_DelAlf = 1e-3;   // relative variation of alphaQED
+  m_DelAlf = 5e-4;   // relative variation of alphaQED
   int NBalf = 8;
   hst_Al20CutA_Ceex2    = TH1D_UP("hst_Al20CutA_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
   hst_Al20CutA_Ceex2F   = TH1D_UP("hst_Al20CutA_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );

@@ -34,10 +34,10 @@ using namespace std;
 // Latest from /workKKMC
 
 TFile DiskFileA88("../workKKMC/histo.root");  // apr.2018
-//TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
+TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
 
 //TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
 
 // current new histos
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
@@ -265,7 +265,7 @@ void FigAlf1()
   PlotSame3(hst9_DelAfb,   xcapt, ycapt, kPine,     0, 3, "Born");
 
   CaptNDC->DrawLatex(0.04,0.95,"#delta A_{FB}(#alpha)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"#delta #alpha / #alpha ");
+  CaptNDC->DrawLatex(0.60,0.02,"#delta#alpha/#alpha ");
   ///////////////////////////////////////////////
   cAlf1->cd(2);
   TH1D *HST2 = hst9_DelAfb;
@@ -283,13 +283,81 @@ void FigAlf1()
   PlotSame3(hst9_DelAfb,    xcapt, ycapt, kPine,     0, 3, "Born");
 
   CaptNDC->DrawLatex(0.12,0.95,"A_{FB}(#alpha) ");
-  CaptNDC->DrawLatex(0.60,0.02,"#delta #alpha / #alpha ");
+  CaptNDC->DrawLatex(0.60,0.02,"#delta#alpha/#alpha ");
 
   //
   cAlf1->cd();
 //
-}// FigTempl
+}// FigAlf1
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigAlf2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAlf2 =========================== "<<endl;
+
+  TH1D *HAfb_9A_Ceex2 = (TH1D*)DiskFileB.Get("HAfb_9A_Ceex2");
+  TH1D *HAfb_9B_Ceex2 = (TH1D*)DiskFileB.Get("HAfb_9B_Ceex2");
+  TH1D *HAfb_9A_Ceex2n= (TH1D*)DiskFileB.Get("HAfb_9A_Ceex2n");
+  TH1D *HAfb_9B_Ceex2n= (TH1D*)DiskFileB.Get("HAfb_9A_Ceex2n");
+  TH1D *hst9_DelAfb   = (TH1D*)DiskFileB.Get("hst9_DelAfb");
+
+  TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
+  CaptNDC->SetTextSize(0.037);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cAlf2 = new TCanvas("cAlf2","cAlf2", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cAlf2->SetFillColor(10);
+  cAlf2->Divide( 2,  0);
+  //cAlf2->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  cAlf2->cd(1);
+  TH1D *HST1 = HAfb_9A_Ceex2;
+  HST1 =hst9_DelAfb;
+
+  HST1->SetStats(0);
+  HST1->SetTitle(0);
+  HST1->GetXaxis()->SetNdivisions(8);
+  HST1->DrawCopy("h");
+
+  double ycapt =0.80, xcapt=0.3;
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, (A) Realistic");
+  ycapt += -0.047;
+  PlotSame3(hst9_DelAfb,   xcapt, ycapt, kPine,     0, 3, "Born");
+  PlotSame3(HAfb_9A_Ceex2, xcapt, ycapt, kMagenta, 24, 1, "IFI on");
+  PlotSame3(HAfb_9A_Ceex2n,xcapt, ycapt, kBlue,    25, 1, "IFI off");
+
+  CaptNDC->DrawLatex(0.04,0.95,"#delta A_{FB}(#alpha)  ");
+  CaptNDC->DrawLatex(0.60,0.02,"#delta#alpha/#alpha ");
+
+  ///////////////////////////////////////////////
+  cAlf2->cd(2);
+  TH1D *HST2 = HAfb_9B_Ceex2;
+  HST2 =hst9_DelAfb;
+
+  HST2->SetStats(0);
+  HST2->SetTitle(0);
+  HST2->GetXaxis()->SetNdivisions(8);
+  HST2->DrawCopy("h");
+
+  ycapt =0.80, xcapt=0.3;
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, (B) Idealized,");
+  ycapt += -0.047;
+  PlotSame3(hst9_DelAfb,   xcapt, ycapt, kPine,     0, 3, "Born");
+  PlotSame3(HAfb_9B_Ceex2, xcapt, ycapt, kMagenta, 24, 1, "IFI on");
+  PlotSame3(HAfb_9B_Ceex2n,xcapt, ycapt, kBlue,    25, 1, "IFI off");
+
+  CaptNDC->DrawLatex(0.04,0.95,"#delta A_{FB}(#alpha)  ");
+  CaptNDC->DrawLatex(0.60,0.02,"#delta#alpha/#alpha ");
+
+  //
+  cAlf2->cd();
+//
+}// FigAlf2
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -331,6 +399,7 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   //
   FigAlf1();
+  FigAlf2();
   // Template empty canvas  with 2 figures
   //FigTempl();
   //++++++++++++++++++++++++++++++++++++++++
