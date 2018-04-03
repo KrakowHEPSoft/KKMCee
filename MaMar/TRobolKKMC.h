@@ -128,19 +128,34 @@ class TRobolKKMC : public TRobol
   TH1D   *hst_vT_Ceex2_cPL_forw;      //!  No streamer!!!
   TH1D   *hst_vT_Ceex2_cPLr90_forw;  //!  No streamer!!!
 //
-  TH1D   *hst_Al0CutB_Ceex2;         //!  No streamer!!!
-  TH1D   *hst_Al0CutB_Ceex2F;        //!  No streamer!!!
-  TH1D   *hst_AlfCutB_Ceex2;         //!  No streamer!!!
-  TH1D   *hst_AlfCutB_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_Alf0CutB_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Alf0CutB_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_Alf2CutB_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Alf2CutB_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_Al20CutB_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Al20CutB_Ceex2F;        //!  No streamer!!!
   //
-  TH1D   *hst_Al0CutA_Ceex2;         //!  No streamer!!!
-  TH1D   *hst_Al0CutA_Ceex2F;        //!  No streamer!!!
-  TH1D   *hst_AlfCutA_Ceex2;         //!  No streamer!!!
-  TH1D   *hst_AlfCutA_Ceex2F;        //!  No streamer!!!
-
-
+  TH1D   *hst_Alf0CutA_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Alf0CutA_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_Alf2CutA_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Alf2CutA_Ceex2F;        //!  No streamer!!!
+  TH1D   *hst_Al20CutA_Ceex2;         //!  No streamer!!!
+  TH1D   *hst_Al20CutA_Ceex2F;        //!  No streamer!!!
+  //
+  TH1D   *hst_Alf2CutB_Ceex2n;         //!  No streamer!!!
+  TH1D   *hst_Alf2CutB_Ceex2nF;        //!  No streamer!!!
+  TH1D   *hst_Al20CutB_Ceex2n;         //!  No streamer!!!
+  TH1D   *hst_Al20CutB_Ceex2nF;        //!  No streamer!!!
+  //
+  TH1D   *hst_Alf2CutA_Ceex2n;         //!  No streamer!!!
+  TH1D   *hst_Alf2CutA_Ceex2nF;        //!  No streamer!!!
+  TH1D   *hst_Al20CutA_Ceex2n;         //!  No streamer!!!
+  TH1D   *hst_Al20CutA_Ceex2nF;        //!  No streamer!!!
+  //
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
+  double m_DelAlf; // range of AlphaQED (relative)
+  double m_vvcut2; // photon energy cut
 ///////////////////////////////////////////
 /// mandatory constructors and destructors
   public:

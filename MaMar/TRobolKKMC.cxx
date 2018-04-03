@@ -201,17 +201,32 @@ void TRobolKKMC::Hbooker()
   hst_vACeex21  = TH1D_UP("hst_vACeex21",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   ////////////////////////////////////
   // New section for alpha dependence
-  double DelAlf = 1e-3;   // relative variation of alphaQED
+  m_vvcut2 = 0.02;   // photon energy cut
+  m_DelAlf = 1e-3;   // relative variation of alphaQED
   int NBalf = 8;
-  hst_Al0CutA_Ceex2    = TH1D_UP("hst_Al0CutA_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_Al0CutA_Ceex2F   = TH1D_UP("hst_Al0CutA_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_AlfCutA_Ceex2    = TH1D_UP("hst_AlfCutA_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_AlfCutA_Ceex2F   = TH1D_UP("hst_AlfCutA_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_Al20CutA_Ceex2    = TH1D_UP("hst_Al20CutA_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Al20CutA_Ceex2F   = TH1D_UP("hst_Al20CutA_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf0CutA_Ceex2    = TH1D_UP("hst_Alf0CutA_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf0CutA_Ceex2F   = TH1D_UP("hst_Alf0CutA_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutA_Ceex2    = TH1D_UP("hst_Alf2CutA_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutA_Ceex2F   = TH1D_UP("hst_Alf2CutA_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
   //
-  hst_Al0CutB_Ceex2    = TH1D_UP("hst_Al0CutB_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_Al0CutB_Ceex2F   = TH1D_UP("hst_Al0CutB_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_AlfCutB_Ceex2    = TH1D_UP("hst_AlfCutB_Ceex2",   " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
-  hst_AlfCutB_Ceex2F   = TH1D_UP("hst_AlfCutB_Ceex2F",  " dsig/dAlf ", NBalf, -DelAlf , DelAlf );
+  hst_Al20CutB_Ceex2    = TH1D_UP("hst_Al20CutB_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Al20CutB_Ceex2F   = TH1D_UP("hst_Al20CutB_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf0CutB_Ceex2    = TH1D_UP("hst_Alf0CutB_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf0CutB_Ceex2F   = TH1D_UP("hst_Alf0CutB_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutB_Ceex2    = TH1D_UP("hst_Alf2CutB_Ceex2",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutB_Ceex2F   = TH1D_UP("hst_Alf2CutB_Ceex2F",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+//
+  hst_Al20CutA_Ceex2n    = TH1D_UP("hst_Al20CutA_Ceex2n",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Al20CutA_Ceex2nF   = TH1D_UP("hst_Al20CutA_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutA_Ceex2n    = TH1D_UP("hst_Alf2CutA_Ceex2n",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutA_Ceex2nF   = TH1D_UP("hst_Alf2CutA_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+//
+  hst_Al20CutB_Ceex2n    = TH1D_UP("hst_Al20CutB_Ceex2n",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Al20CutB_Ceex2nF   = TH1D_UP("hst_Al20CutB_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutB_Ceex2n    = TH1D_UP("hst_Alf2CutB_Ceex2n",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
+  hst_Alf2CutB_Ceex2nF   = TH1D_UP("hst_Alf2CutB_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
 
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
@@ -505,17 +520,16 @@ void TRobolKKMC::Production(double &iEvent)
 ///////////////////////////////////////////////////////////////////////
 // !!!!!!!!!NEW!!!  NEW!!!  NEW!!!  NEW!!!
 ///////////////////////////////////////////////////////////////////////
-  double vvcut2 = 0.02;
-  double dalf, RN, xmodif = 1.0;
 
-  double Xmax = hst_AlfCutA_Ceex2->GetXaxis()->GetXmax();
-  double Xmin = hst_AlfCutA_Ceex2->GetXaxis()->GetXmin();
-//
-  RN = KKMC_generator->f_RNgen->Rndm();
-  dalf =Xmin + (Xmax-Xmin)*RN;
+//  double Xmax = hst_Alf0CutA_Ceex2->GetXaxis()->GetXmax();
+//  double Xmin = hst_Alf0CutA_Ceex2->GetXaxis()->GetXmin();
+//  dalf = Xmin + (Xmax-Xmin)*RN;
+
+  double RN = KKMC_generator->f_RNgen->Rndm();
+  double dalf = -m_DelAlf + 2*m_DelAlf*RN;
 //
 // Modifying alpha_QED
-  xmodif = 1+dalf;
+  double xmodif = 1 + dalf;
   bornv_setqedmodif_(xmodif);
 // recalculating WC weight
   kk2f_make_wt_();
@@ -531,15 +545,34 @@ void TRobolKKMC::Production(double &iEvent)
   double Wt2EEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double Wt2EEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
   // (B) Classic cut on "bare" vv from muon pair mass
-  if( vv<vvcut2 && fabs(CosThePL)<0.9 ){
-	                    hst_AlfCutB_Ceex2->Fill( dalf,Wt2CEEX2);
-	  if( CosThePL>0.0) hst_AlfCutB_Ceex2F->Fill(dalf,Wt2CEEX2);
+  if( vv< m_vvcut2 && fabs(CosThePL)<0.9 ){
+	                    hst_Al20CutB_Ceex2->Fill( dalf,Wt2CEEX2-WtCEEX2);
+	  if( CosThePL>0.0) hst_Al20CutB_Ceex2F->Fill(dalf,Wt2CEEX2-WtCEEX2);
+	                    hst_Alf0CutB_Ceex2->Fill( dalf,WtCEEX2);
+      if( CosThePL>0.0) hst_Alf0CutB_Ceex2F->Fill(dalf,WtCEEX2);
+                        hst_Alf2CutB_Ceex2->Fill( dalf,Wt2CEEX2);
+      if( CosThePL>0.0) hst_Alf2CutB_Ceex2F->Fill(dalf,Wt2CEEX2);
+  ///////////////////////
+                        hst_Al20CutB_Ceex2n->Fill( dalf,Wt2CEEX2n-WtCEEX2n);
+      if( CosThePL>0.0) hst_Al20CutB_Ceex2nF->Fill(dalf,Wt2CEEX2n-WtCEEX2n);
+                        hst_Alf2CutB_Ceex2n->Fill( dalf,Wt2CEEX2n);
+      if( CosThePL>0.0) hst_Alf2CutB_Ceex2nF->Fill(dalf,Wt2CEEX2n);
+
   }// Cut (B)
   //
   // (A) ALEPHI-like cut on vv_Aleph, acoplanarity and muon energies
-  if( vvA<vvcut2 && fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.98 && xe2>0.98){
-	                  hst_AlfCutA_Ceex2->Fill( dalf,Wt2CEEX2);
-	  if( CosPRD>0.0) hst_AlfCutA_Ceex2F->Fill(dalf,Wt2CEEX2);
+  if( vvA< m_vvcut2 && fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
+	                  hst_Al20CutA_Ceex2->Fill( dalf,Wt2CEEX2-WtCEEX2);
+	  if( CosPRD>0.0) hst_Al20CutA_Ceex2F->Fill(dalf,Wt2CEEX2-WtCEEX2);
+                      hst_Alf0CutA_Ceex2->Fill( dalf,WtCEEX2);
+      if( CosPRD>0.0) hst_Alf0CutA_Ceex2F->Fill(dalf,WtCEEX2);
+                      hst_Alf2CutA_Ceex2->Fill( dalf,Wt2CEEX2);
+      if( CosPRD>0.0) hst_Alf2CutA_Ceex2F->Fill(dalf,Wt2CEEX2);
+  ///////////////////////
+                      hst_Al20CutA_Ceex2n->Fill( dalf,Wt2CEEX2n-WtCEEX2n);
+      if( CosPRD>0.0) hst_Al20CutA_Ceex2nF->Fill(dalf,Wt2CEEX2n-WtCEEX2n);
+                      hst_Alf2CutA_Ceex2n->Fill( dalf,Wt2CEEX2n);
+      if( CosPRD>0.0) hst_Alf2CutA_Ceex2nF->Fill(dalf,Wt2CEEX2n);
   }// Cut (A)
 
   if(iEvent<50){
