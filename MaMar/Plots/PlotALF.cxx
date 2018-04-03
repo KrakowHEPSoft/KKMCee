@@ -323,9 +323,9 @@ void ReMakeHistoMC()
   TH1D *hst8_vA_Ceex2i       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2i");     //
   TH1D *hst8_vA_Ceex2i_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2i_F");   //
 //
-//  TH1D *HAfb8_vA_Ceex2_IFI = HstAFB4( "HAfb8_vA_Ceex2_IFI",hst8_vA_Ceex2i_F, hst8_vA_Ceex2i,
-//  		                                                   hst8_vA_Ceex2_F,  hst8_vA_Ceex2 );
-  TH1D *HAfb8_vB_Ceex2_IFI = HstAFB4( "HAfb8_vA_Ceex2_IFI",hst8_vB_Ceex2i_F, hst8_vB_Ceex2i,
+  TH1D *HAfb8_vA_Ceex2_IFI = HstAFB4( "HAfb8_vA_Ceex2_IFI",hst8_vA_Ceex2i_F, hst8_vA_Ceex2i,
+  		                                                   hst8_vA_Ceex2_F,  hst8_vA_Ceex2 );
+  TH1D *HAfb8_vB_Ceex2_IFI = HstAFB4( "HAfb8_vB_Ceex2_IFI",hst8_vB_Ceex2i_F, hst8_vB_Ceex2i,
   		                                                   hst8_vB_Ceex2_F,  hst8_vB_Ceex2 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -335,6 +335,11 @@ void ReMakeHistoMC()
   TH1D *hst9_vB_Ceex2i_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2i_F");   //
   TH1D *hst9_vA_Ceex2i       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i");     //
   TH1D *hst9_vA_Ceex2i_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i_F");   //
+//
+    TH1D *HAfb9_vA_Ceex2_IFI = HstAFB4( "HAfb9_vA_Ceex2_IFI",hst9_vA_Ceex2i_F, hst9_vA_Ceex2i,
+    		                                                 hst9_vA_Ceex2_F,  hst9_vA_Ceex2 );
+    TH1D *HAfb9_vB_Ceex2_IFI = HstAFB4( "HAfb9_vB_Ceex2_IFI",hst9_vB_Ceex2i_F, hst9_vB_Ceex2i,
+                                                             hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
 
   cout<<" ===================== End of ReMakeHistoMC ======================== "<<endl;
 
@@ -785,7 +790,12 @@ void FigIFI2()
   TH1D *HAfb8_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2_IFI");
   TH1D *HAfb8_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2_IFI");
 
-//  TH1D *HAfbDel_B_Ceex21 = HstDiff( "HAfbDel_B_Ceex21", HAfb9_vB_Ceex21, HAfb8_vB_Ceex21, kBlue);
+  TH1D *HAfb9_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2_IFI");
+  TH1D *HAfb9_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2_IFI");
+
+
+  TH1D *HAfbDel_A_CeexIFI = HstDiff( "HAfbDel_A_CeexIFI", HAfb9_vA_Ceex2_IFI, HAfb8_vA_Ceex2_IFI, kBlue);
+  TH1D *HAfbDel_B_CeexIFI = HstDiff( "HAfbDel_B_CeexIFI", HAfb9_vB_Ceex2_IFI, HAfb8_vB_Ceex2_IFI, kBlue);
 
 
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
@@ -802,7 +812,7 @@ void FigIFI2()
   //////////////////////////////////////////////
   cIFI2->cd(1);
   TH1D *HST1;
-  HST1 = HAfb8_vA_Ceex2_IFI;
+  HST1 = HAfbDel_A_CeexIFI;
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
@@ -820,12 +830,12 @@ void FigIFI2()
   ///////////////////////////////////////////////
   cIFI2->cd(2);
   TH1D *HST2;
-  HST2 = HAfb8_vA_Ceex2_IFI;
+  HST2 = HAfbDel_B_CeexIFI;
 
   HST2->SetStats(0);
   HST2->SetTitle(0);
   HST2->GetXaxis()->SetNdivisions(8);
-  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
+//  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
   HST2->DrawCopy("h");
 
   ycapt =0.85, xcapt=0.5;

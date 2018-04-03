@@ -231,26 +231,34 @@ void TRobolKKMC::Hbooker()
 // New section for alpha dependence and experim. cuts
   int NBexp =40;
   hst_vA_Ceex1       = TH1D_UP("hst_vA_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vA_Ceex2       = TH1D_UP("hst_vA_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vA_Ceex21      = TH1D_UP("hst_vA_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-//
   hst_vA_Ceex1_F     = TH1D_UP("hst_vA_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vA_Ceex2       = TH1D_UP("hst_vA_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex2_F     = TH1D_UP("hst_vA_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vA_Ceex2n      = TH1D_UP("hst_vA_Ceex2n",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2n_F    = TH1D_UP("hst_vA_Ceex2n_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vA_Ceex21      = TH1D_UP("hst_vA_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex21_F    = TH1D_UP("hst_vA_Ceex21_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-//
-  hst_vB_Ceex1       = TH1D_UP("hst_vB_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vB_Ceex2       = TH1D_UP("hst_vB_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vB_Ceex21      = TH1D_UP("hst_vB_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-//
-  hst_vB_Ceex1_F     = TH1D_UP("hst_vB_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vB_Ceex2_F     = TH1D_UP("hst_vB_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vB_Ceex21_F    = TH1D_UP("hst_vB_Ceex21_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-//
-  hst_vB_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-  hst_vB_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
   hst_vA_Ceex2i      = TH1D_UP("hst_vA_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex2i_F    = TH1D_UP("hst_vA_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//////////////////////////////////
+  hst_vB_Ceex1       = TH1D_UP("hst_vB_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex1_F     = TH1D_UP("hst_vB_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex2       = TH1D_UP("hst_vB_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2_F     = TH1D_UP("hst_vB_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex2n      = TH1D_UP("hst_vB_Ceex2n",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2n_F    = TH1D_UP("hst_vB_Ceex2n_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex21      = TH1D_UP("hst_vB_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex21_F    = TH1D_UP("hst_vB_Ceex21_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+////////
+  hst_vB_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
 /////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
@@ -588,10 +596,12 @@ void TRobolKKMC::Production(double &iEvent)
   if( fabs(CosThePL)<0.9 ){
     hst_vB_Ceex1->Fill(   vv, WtCEEX1);
     hst_vB_Ceex2->Fill(   vv, WtCEEX2);
+    hst_vB_Ceex2n->Fill(  vv, WtCEEX2n);
     hst_vB_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
     hst_vB_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
     if( CosThePL > 0.0) hst_vB_Ceex1_F->Fill(  vv, WtCEEX1);
     if( CosThePL > 0.0) hst_vB_Ceex2_F->Fill(  vv, WtCEEX2);
+    if( CosThePL > 0.0) hst_vB_Ceex2n_F->Fill( vv, WtCEEX2n);
     if( CosThePL > 0.0) hst_vB_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
     if( CosThePL > 0.0) hst_vB_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
   }// Cut (B)
@@ -613,10 +623,12 @@ void TRobolKKMC::Production(double &iEvent)
   if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
     hst_vA_Ceex1->Fill(   vv, WtCEEX1);
     hst_vA_Ceex2->Fill(   vv, WtCEEX2);
+    hst_vA_Ceex2n->Fill(  vv, WtCEEX2n);
     hst_vA_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
     hst_vA_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
     if( CosThePL > 0.0) hst_vA_Ceex1_F->Fill(  vv, WtCEEX1);
     if( CosThePL > 0.0) hst_vA_Ceex2_F->Fill(  vv, WtCEEX2);
+    if( CosThePL > 0.0) hst_vA_Ceex2n_F->Fill( vv, WtCEEX2n);
     if( CosThePL > 0.0) hst_vA_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
     if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
   }
