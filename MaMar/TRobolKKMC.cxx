@@ -199,8 +199,8 @@ void TRobolKKMC::Hbooker()
   hst_vACeex1F  = TH1D_UP("hst_vACeex1F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex2F  = TH1D_UP("hst_vACeex2F",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
   hst_vACeex21  = TH1D_UP("hst_vACeex21",  "dSig/dvTrue ", NBv, 0.000 ,vmx2);
-  ////////////////////////////////////
-  // New section for alpha dependence
+////////////////////////////////////
+// New section for alpha dependence
   m_vvcut2 = 0.02;   // photon energy cut
   m_DelAlf = 5e-4;   // relative variation of alphaQED
   int NBalf = 8;
@@ -227,7 +227,32 @@ void TRobolKKMC::Hbooker()
   hst_Al20CutB_Ceex2nF   = TH1D_UP("hst_Al20CutB_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
   hst_Alf2CutB_Ceex2n    = TH1D_UP("hst_Alf2CutB_Ceex2n",   " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
   hst_Alf2CutB_Ceex2nF   = TH1D_UP("hst_Alf2CutB_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
-
+//////////////////////////////////////
+// New section for alpha dependence and experim. cuts
+  int NBexp =40;
+  hst_vA_Ceex1       = TH1D_UP("hst_vA_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2       = TH1D_UP("hst_vA_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex21      = TH1D_UP("hst_vA_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vA_Ceex1_F     = TH1D_UP("hst_vA_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2_F     = TH1D_UP("hst_vA_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex21_F    = TH1D_UP("hst_vA_Ceex21_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex1       = TH1D_UP("hst_vB_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2       = TH1D_UP("hst_vB_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex21      = TH1D_UP("hst_vB_Ceex21", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex1_F     = TH1D_UP("hst_vB_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2_F     = TH1D_UP("hst_vB_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex21_F    = TH1D_UP("hst_vB_Ceex21_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vA_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+/////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
   HST_KKMC_NORMA = TH1D_UP("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
@@ -544,6 +569,7 @@ void TRobolKKMC::Production(double &iEvent)
   double Wt2EEX1  = KKMC_generator->GetWtAlter( 72);    //  Second ord. EEX2 O(alf2)
   double Wt2EEX2  = KKMC_generator->GetWtAlter( 73);    //  Second ord. EEX2 O(alf2)
   double Wt2EEX3  = KKMC_generator->GetWtAlter( 74);    //  Third order EEX3 O(alf3)
+  ////////////////////////////////////////////////////////////////////////////
   // (B) Classic cut on "bare" vv from muon pair mass
   if( vv< m_vvcut2 && fabs(CosThePL)<0.9 ){
 	                    hst_Al20CutB_Ceex2->Fill( dalf,Wt2CEEX2-WtCEEX2);
@@ -559,7 +585,17 @@ void TRobolKKMC::Production(double &iEvent)
       if( CosThePL>0.0) hst_Alf2CutB_Ceex2nF->Fill(dalf,Wt2CEEX2n);
 
   }// Cut (B)
-  //
+  if( fabs(CosThePL)<0.9 ){
+    hst_vB_Ceex1->Fill(   vv, WtCEEX1);
+    hst_vB_Ceex2->Fill(   vv, WtCEEX2);
+    hst_vB_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
+    hst_vB_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
+    if( CosThePL > 0.0) hst_vB_Ceex1_F->Fill(  vv, WtCEEX1);
+    if( CosThePL > 0.0) hst_vB_Ceex2_F->Fill(  vv, WtCEEX2);
+    if( CosThePL > 0.0) hst_vB_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
+    if( CosThePL > 0.0) hst_vB_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
+  }// Cut (B)
+  ////////////////////////////////////////////////////////////////////////////
   // (A) ALEPHI-like cut on vv_Aleph, acoplanarity and muon energies
   if( vvA< m_vvcut2 && fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
 	                  hst_Al20CutA_Ceex2->Fill( dalf,Wt2CEEX2-WtCEEX2);
@@ -574,7 +610,16 @@ void TRobolKKMC::Production(double &iEvent)
                       hst_Alf2CutA_Ceex2n->Fill( dalf,Wt2CEEX2n);
       if( CosPRD>0.0) hst_Alf2CutA_Ceex2nF->Fill(dalf,Wt2CEEX2n);
   }// Cut (A)
-
+  if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
+    hst_vA_Ceex1->Fill(   vv, WtCEEX1);
+    hst_vA_Ceex2->Fill(   vv, WtCEEX2);
+    hst_vA_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
+    hst_vA_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
+    if( CosThePL > 0.0) hst_vA_Ceex1_F->Fill(  vv, WtCEEX1);
+    if( CosThePL > 0.0) hst_vA_Ceex2_F->Fill(  vv, WtCEEX2);
+    if( CosThePL > 0.0) hst_vA_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
+    if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
+  }
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;
     cout<<"============================================================="<<endl;
