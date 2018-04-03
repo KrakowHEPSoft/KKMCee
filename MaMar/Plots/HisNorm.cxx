@@ -673,6 +673,16 @@ return Hst21F;
 }//HstAFB4
 
 
+TH1D *HstAFB2cl(TString title, TH1D *HST1F, TH1D *HST1)
+{
+TH1D *Hst1 = (TH1D*)HST1F->Clone(title);  // total F+B
+//
+Hst1->Add(Hst1, HST1,    2.0, -1.0);      // 2F-(F+B)=F-B
+//
+Hst1->Divide(HST1);
+return Hst1;
+}//HstAFB
+
 
 TH1D *HstAFB4cl(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2)
 // Exact AFB for weight differences with cloning (no cumulation)
@@ -685,7 +695,8 @@ Hst21F->Add(Hst21F, Hst21,    2.0, -1.0);     // 2dF21-(dF21+dB21)=dF21-dB21
 Hst21F->Divide(Hst2); // (dF21-dB21)/(F2+B2)
 ///////////////////////////////////////////////////
 // Constructing second term approximately
-TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
+//TH1D *Hafb2  = HstCumul("hst_test5",HST2F);   // F2
+TH1D *Hafb2  = (TH1D*)HST2F->Clone("hst_Test5"); // F2
 Hafb2->Add(Hafb2, Hst2,    2.0, -1.0);        // 2F-(F+B)=F-B
 Hafb2->Divide(Hst2);   // AFB2 ready to go
 // Second term, approximate, AFB1->AFB2
@@ -695,11 +706,13 @@ Hafb2->Divide(Hst2);
 //Hst21F->Add(Hst21F, Hafb2,    1.0, -1.0);
 ///////////////////////////////////////////////////
 // Constructing second term exactly
-TH1D *Hafb1  = HstCumul("hst_test6",HST2F);  // Sig2F
+//TH1D *Hafb1  = HstCumul("hst_test6",HST2F);  // Sig2F
+TH1D *Hafb1  = (TH1D*)HST2F->Clone("hst_Test6");
 Hafb1->Add(Hafb1, Hst2,    2.0, -1.0);       // numerator of AFB2, 2F-(F+B)
 Hafb1->Add(Hafb1, Hst21F,  1.0, -2.0);       // correcting
 Hafb1->Add(Hafb1, Hst21,   1.0,  1.0);       // numerator of AFB1
-TH1D *Hsig1  = HstCumul("hst_test6",HST2);   // denominator  AFB1
+//TH1D *Hsig1  = HstCumul("hst_test6",HST2);   // denominator  AFB1
+TH1D *Hsig1  = (TH1D*)HST2->Clone("hst_test6");
 Hsig1->Add(Hsig1, Hst21,   1.0, -1.0);       // denominator  AFB1
 Hafb1->Divide(Hsig1);                        // AFB1 completed
 // Second term, exact

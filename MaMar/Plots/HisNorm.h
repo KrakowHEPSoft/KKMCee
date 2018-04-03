@@ -76,6 +76,8 @@ TH1D *HstAFB3(TString title, TH1D *HST1, TH1D *HST2, TH1D *HST3);
 
 TH1D *HstAFB4(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2);
 
+TH1D *HstAFB2cl(TString title, TH1D *HST1F, TH1D *HST1);
+
 TH1D *HstAFB4cl(TString title, TH1D *HST21F, TH1D *HST21, TH1D *HST2F, TH1D *HST2);
 
 ///////////////////////////////////////////////////////////////////////////////////

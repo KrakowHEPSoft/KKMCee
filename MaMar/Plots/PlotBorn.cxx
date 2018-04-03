@@ -863,10 +863,10 @@ bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
 AlfRunE2    = AlfRatio/alfinv0;
 cout << " AlfRun(E2) =" << AlfRunE2 <<"   1/AlfRun="<< 1/AlfRunE2 <<endl;
 //
+
 double Amin, Amax;
 Amin = AlfRunMZ*(1-1e-3), Amax=AlfRunMZ*(1+1e-3);
 Amin = AlfRunMZ*(1-5e-4), Amax=AlfRunMZ*(1+5e-4);
-//Amin = AlfRunMZ*(1-1e-2), Amax=AlfRunMZ*(1+1e-2);
 cout << " AlfMin =" << Amin <<"  AlfMax ="<< Amax <<endl;
 //
 TH1D *hst_DelAfb = new TH1D("hst_DelAfb" ,  " AFB(alpha)",   nPt, Amin, Amax);
@@ -874,17 +874,24 @@ hst_DelAfb->Sumw2();
 TH1D *hst_ErrAfb = new TH1D("hst_ErrAfb" ,  " interp. err. AFB",   nPt, Amin, Amax);
 hst_ErrAfb->Sumw2();
 //
-double DelAfbMin = AFBc(E2, MZ, GammZ, SinW2, Amin) -AFBc(E1, MZ, GammZ, SinW2, Amin) ;
-double DelAfbMax = AFBc(E2, MZ, GammZ, SinW2, Amax) -AFBc(E1, MZ, GammZ, SinW2, Amax);
-
-double CMSene, afb1, afb2,DelAfb, AlfRun,DafbIntp,Err;
+double beta = 20.0/(9.0*3.141593);
+double Y1  = beta* 2*log(MZ/E1),  Y2  = beta* 2*log(E2/MZ);
+//
+double DelAfbMin = AFBc(E2, MZ, GammZ, SinW2, Amin*(1+Y2*Amin ))
+		          -AFBc(E1, MZ, GammZ, SinW2, Amin*(1-Y1*Amin ));
+double DelAfbMax = AFBc(E2, MZ, GammZ, SinW2, Amax*(1+Y2*Amax ))
+		          -AFBc(E1, MZ, GammZ, SinW2, Amax*(1-Y1*Amax ));
+//
+double CMSene, afb1, afb2,DelAfb, AlfMZ, AlfR1,AlfR2, DafbIntp,Err;
 for(int ix=1; ix <= nPt; ix++){
-   AlfRun = Amin +(ix-0.5)/nPt*(Amax-Amin);
-   afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfRun);
-   afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfRun);
+   AlfMZ = Amin +(ix-0.5)/nPt*(Amax-Amin);
+   AlfR1 = AlfMZ*(1-Y1*AlfMZ );
+   AlfR2 = AlfMZ*(1+Y2*AlfMZ );
+   afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfR1);
+   afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfR2);
    DelAfb = afb2-afb1;
 //   cout<<" AlfRun ="<< AlfRun <<" afb1="<< afb1 <<" afb2="<< afb2<< " DelAfb="<< DelAfb <<endl;
-   DafbIntp = DelAfbMax*(AlfRun-Amin)/(Amax-Amin) + DelAfbMin*(Amax-AlfRun)/(Amax-Amin);
+   DafbIntp = DelAfbMax*(AlfMZ-Amin)/(Amax-Amin) + DelAfbMin*(Amax-AlfMZ)/(Amax-Amin);
    Err = (DafbIntp-DelAfb)/DelAfb;
 //   cout << " Interpolation DafbIntp ="<< DafbIntp <<"   diff=" << Err <<endl;
 //
@@ -892,7 +899,7 @@ for(int ix=1; ix <= nPt; ix++){
    hst_DelAfb->SetBinError(    ix, 0.0 );
    hst_ErrAfb->SetBinContent(  ix, Err );
    hst_ErrAfb->SetBinError(    ix, 0.0 );
-
+//
 }//ix
 
 //////////////////////////////////////////////
@@ -948,7 +955,109 @@ for(int ix=1; ix <= nPt; ix++){
   cAlfa3->SaveAs("cAlfa3.pdf");
 //
 cout<<"================ FigAlfa3 END   ==========================="<<endl;
-}//TestAfb3
+}//FigAlfa3
+
+
+////////////////////////////////////////////////////////////////////////////////
+void FigAlfa4(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigAlfa4 BEGIN ==========================="<<endl;
+int    nPt  = 8;
+double MZ = 91.187e0;
+double alfinv0 = 137.0359895e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double SinW2 =  m_xpar[503];
+cout<< " SinW2 = m_xpar[503]=" << SP15 << m_xpar[503] << endl; // swsq=xpar[503]
+
+double E1 =  87.90e0, E2 =  94.30e0;
+//
+double AlfRatio, AlfRunMZ, AlfRunE1, AlfRunE2;
+//
+bornv_interpogsw_(13,MZ*MZ, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunMZ    = AlfRatio/alfinv0;
+cout << " AlfRun(MZ) =" << AlfRunMZ <<"   1/AlfRun="<< 1/AlfRunMZ <<endl;
+//
+bornv_interpogsw_(13,E1*E1, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunE1    = AlfRatio/alfinv0;
+cout << " AlfRun(E1) =" << AlfRunE1 <<"   1/AlfRun="<< 1/AlfRunE1 <<endl;
+//
+bornv_interpogsw_(13,E2*E2, 0.1);
+bornv_getqedcor_( AlfRatio ); // must be after calling bornv_interpogsw_ !
+AlfRunE2    = AlfRatio/alfinv0;
+cout << " AlfRun(E2) =" << AlfRunE2 <<"   1/AlfRun="<< 1/AlfRunE2 <<endl;
+//
+double DelAlf = 1e-3;   // relative variation of alphaQED
+double Amin, Amax;
+Amin = AlfRunMZ*(1-DelAlf), Amax=AlfRunMZ*(1+DelAlf);
+//
+cout << " AlfMin =" << Amin <<"  AlfMax ="<< Amax <<endl;
+//
+TH1D *hst_DelAfb1 = new TH1D("hst_DelAfb1" ,  " AFB(alpha,E1)",   nPt, -DelAlf, DelAlf);
+hst_DelAfb1->Sumw2();
+TH1D *hst_DelAfb2 = new TH1D("hst_DelAfb2" ,  " AFB(alpha,E2)",   nPt, -DelAlf, DelAlf);
+hst_DelAfb2->Sumw2();
+
+double CMSene, afb1, afb2,DelAfb, AlfRun1,AlfRun2;
+for(int ix=1; ix <= nPt; ix++){
+   AlfRun1 = AlfRunE1*(1 -DelAlf +(ix-0.5)/nPt* 2*DelAlf);
+   AlfRun2 = AlfRunE2*(1 -DelAlf +(ix-0.5)/nPt* 2*DelAlf);
+   afb1 = AFBc(E1, MZ, GammZ, SinW2, AlfRun1) - AFBc(E1, MZ, GammZ, SinW2, AlfRunE1);
+   afb2 = AFBc(E2, MZ, GammZ, SinW2, AlfRun2) - AFBc(E2, MZ, GammZ, SinW2, AlfRunE2) ;
+//
+   hst_DelAfb1->SetBinContent(  ix, afb1 );
+   hst_DelAfb1->SetBinError(    ix, 0.0 );
+   hst_DelAfb2->SetBinContent(  ix, afb2 );
+   hst_DelAfb2->SetBinError(    ix, 0.0 );
+}//ix
+
+//////////////////////////////////////////////
+  TLatex *CaptNDC = new TLatex();
+  CaptNDC->SetNDC(); // !!!
+  CaptNDC->SetTextSize(0.035);
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cAlfa4 = new TCanvas("cAlfa4","cAlfa4", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cAlfa4->SetFillColor(10);
+  cAlfa4->Draw();
+  cAlfa4->Divide(2, 0);
+/////////////////////////////////////////////
+  cAlfa4->cd(1);
+  hst_DelAfb1->SetStats(0);
+  hst_DelAfb1->SetTitle(0);
+  hst_DelAfb1->GetXaxis()->SetNdivisions(4);
+
+  hst_DelAfb1->Scale(-1);
+  hst_DelAfb1->SetLineColor(kRed);
+  hst_DelAfb1->DrawCopy("h");
+
+  hst_DelAfb2->DrawCopy("hsame");
+
+  CaptNDC->DrawLatex(0.10,0.95," A_{FB}(#alpha, s_{+})  and  -A_{FB}(#alpha, s_{-})");
+  CaptNDC->DrawLatex(0.60,0.02," #alpha(M_{Z})/#alpha_{0}(M_{Z}) - 1");
+
+/////////////////////////////////////////////
+  cAlfa4->cd(2);
+  hst_DelAfb2->SetStats(0);
+  hst_DelAfb2->SetTitle(0);
+
+  hst_DelAfb2->GetXaxis()->SetNdivisions(4);
+
+  hst_DelAfb2->Add(hst_DelAfb1);
+  hst_DelAfb2->DrawCopy("h");
+
+  CaptNDC->DrawLatex(0.10,0.95," A_{FB}(#alpha, s_{+}) - A_{FB}(#alpha, s_{-})");
+  CaptNDC->DrawLatex(0.60,0.02," #alpha(M_{Z})/#alpha_{0}(M_{Z}) - 1");
+ //
+  cAlfa4->cd();
+  //
+  cAlfa4->SaveAs("cAlfa4.pdf");
+//
+cout<<"================ FigAlfa4 END   ==========================="<<endl;
+}//FigAlfa4
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -970,6 +1079,7 @@ int main(int argc, char **argv)
   FigAlfE2();  // 1/alpha(s) narrow range, interpolation
   TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
   FigAlfa3();
+  FigAlfa4();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
