@@ -233,6 +233,9 @@ void TRobolKKMC::Hbooker()
   hst_vA_Ceex1       = TH1D_UP("hst_vA_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex1_F     = TH1D_UP("hst_vA_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
+  hst_vA_Ceex1i      = TH1D_UP("hst_vA_Ceex1i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vA_Ceex1i_F    = TH1D_UP("hst_vA_Ceex1i_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
   hst_vA_Ceex2       = TH1D_UP("hst_vA_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex2_F     = TH1D_UP("hst_vA_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
@@ -247,6 +250,9 @@ void TRobolKKMC::Hbooker()
 //////////////////////////////////
   hst_vB_Ceex1       = TH1D_UP("hst_vB_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vB_Ceex1_F     = TH1D_UP("hst_vB_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+//
+  hst_vB_Ceex1i      = TH1D_UP("hst_vB_Ceex1i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
+  hst_vB_Ceex1i_F    = TH1D_UP("hst_vB_Ceex1i_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
   hst_vB_Ceex2       = TH1D_UP("hst_vB_Ceex2",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vB_Ceex2_F     = TH1D_UP("hst_vB_Ceex2_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
@@ -598,11 +604,13 @@ void TRobolKKMC::Production(double &iEvent)
     hst_vB_Ceex2->Fill(   vv, WtCEEX2);
     hst_vB_Ceex2n->Fill(  vv, WtCEEX2n);
     hst_vB_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
+    hst_vB_Ceex1i->Fill(  vv, WtCEEX1-WtCEEX1n); // IFI
     hst_vB_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
     if( CosThePL > 0.0) hst_vB_Ceex1_F->Fill(  vv, WtCEEX1);
     if( CosThePL > 0.0) hst_vB_Ceex2_F->Fill(  vv, WtCEEX2);
     if( CosThePL > 0.0) hst_vB_Ceex2n_F->Fill( vv, WtCEEX2n);
     if( CosThePL > 0.0) hst_vB_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
+    if( CosThePL > 0.0) hst_vB_Ceex1i_F->Fill( vv, WtCEEX1-WtCEEX1n);// IFI
     if( CosThePL > 0.0) hst_vB_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
   }// Cut (B)
   ////////////////////////////////////////////////////////////////////////////
@@ -625,11 +633,13 @@ void TRobolKKMC::Production(double &iEvent)
     hst_vA_Ceex2->Fill(   vv, WtCEEX2);
     hst_vA_Ceex2n->Fill(  vv, WtCEEX2n);
     hst_vA_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
+    hst_vA_Ceex1i->Fill(  vv, WtCEEX1-WtCEEX1n); // IFI
     hst_vA_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
     if( CosThePL > 0.0) hst_vA_Ceex1_F->Fill(  vv, WtCEEX1);
     if( CosThePL > 0.0) hst_vA_Ceex2_F->Fill(  vv, WtCEEX2);
     if( CosThePL > 0.0) hst_vA_Ceex2n_F->Fill( vv, WtCEEX2n);
     if( CosThePL > 0.0) hst_vA_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
+    if( CosThePL > 0.0) hst_vA_Ceex1i_F->Fill( vv, WtCEEX1-WtCEEX1n);// IFI
     if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
   }
   if(iEvent<50){

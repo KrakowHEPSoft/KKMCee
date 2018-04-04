@@ -153,19 +153,23 @@ class TRobolKKMC : public TRobol
   TH1D   *hst_Al20CutA_Ceex2nF;        //!  No streamer!!!
   //
   TH1D   *hst_vA_Ceex1;           //!  No streamer!!!
+  TH1D   *hst_vA_Ceex1i;           //!  No streamer!!!
   TH1D   *hst_vA_Ceex2;           //!  No streamer!!!
   TH1D   *hst_vA_Ceex2n;          //!  No streamer!!!
   TH1D   *hst_vA_Ceex21;          //!  No streamer!!!
   TH1D   *hst_vA_Ceex1_F;         //!  No streamer!!!
+  TH1D   *hst_vA_Ceex1i_F;         //!  No streamer!!!
   TH1D   *hst_vA_Ceex2_F;         //!  No streamer!!!
   TH1D   *hst_vA_Ceex2n_F;        //!  No streamer!!!
   TH1D   *hst_vA_Ceex21_F;        //!  No streamer!!!
 
   TH1D   *hst_vB_Ceex1;           //!  No streamer!!!
+  TH1D   *hst_vB_Ceex1i;           //!  No streamer!!!
   TH1D   *hst_vB_Ceex2;           //!  No streamer!!!
   TH1D   *hst_vB_Ceex2n;          //!  No streamer!!!
   TH1D   *hst_vB_Ceex21;          //!  No streamer!!!
   TH1D   *hst_vB_Ceex1_F;         //!  No streamer!!!
+  TH1D   *hst_vB_Ceex1i_F;         //!  No streamer!!!
   TH1D   *hst_vB_Ceex2_F;         //!  No streamer!!!
   TH1D   *hst_vB_Ceex2n_F;        //!  No streamer!!!
   TH1D   *hst_vB_Ceex21_F;        //!  No streamer!!!

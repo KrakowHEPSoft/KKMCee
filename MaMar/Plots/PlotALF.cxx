@@ -327,6 +327,16 @@ void ReMakeHistoMC()
   		                                                   hst8_vA_Ceex2_F,  hst8_vA_Ceex2 );
   TH1D *HAfb8_vB_Ceex2_IFI = HstAFB4( "HAfb8_vB_Ceex2_IFI",hst8_vB_Ceex2i_F, hst8_vB_Ceex2i,
   		                                                   hst8_vB_Ceex2_F,  hst8_vB_Ceex2 );
+///////////////
+  TH1D *hst8_vB_Ceex1i       = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1i");     //
+  TH1D *hst8_vB_Ceex1i_F     = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1i_F");   //
+  TH1D *hst8_vA_Ceex1i       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1i");     //
+  TH1D *hst8_vA_Ceex1i_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1i_F");   //
+//
+  TH1D *HAfb8_vA_Ceex1_IFI = HstAFB4( "HAfb8_vA_Ceex1_IFI",hst8_vA_Ceex1i_F, hst8_vA_Ceex1i,
+   	                                                       hst8_vA_Ceex1_F,  hst8_vA_Ceex1 );
+  TH1D *HAfb8_vB_Ceex1_IFI = HstAFB4( "HAfb8_vB_Ceex1_IFI",hst8_vB_Ceex1i_F, hst8_vB_Ceex1i,
+   	                                                       hst8_vB_Ceex1_F,  hst8_vB_Ceex1 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // IFI
@@ -336,10 +346,20 @@ void ReMakeHistoMC()
   TH1D *hst9_vA_Ceex2i       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i");     //
   TH1D *hst9_vA_Ceex2i_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i_F");   //
 //
-    TH1D *HAfb9_vA_Ceex2_IFI = HstAFB4( "HAfb9_vA_Ceex2_IFI",hst9_vA_Ceex2i_F, hst9_vA_Ceex2i,
-    		                                                 hst9_vA_Ceex2_F,  hst9_vA_Ceex2 );
-    TH1D *HAfb9_vB_Ceex2_IFI = HstAFB4( "HAfb9_vB_Ceex2_IFI",hst9_vB_Ceex2i_F, hst9_vB_Ceex2i,
-                                                             hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
+  TH1D *HAfb9_vA_Ceex2_IFI = HstAFB4( "HAfb9_vA_Ceex2_IFI",hst9_vA_Ceex2i_F, hst9_vA_Ceex2i,
+  		                                                   hst9_vA_Ceex2_F,  hst9_vA_Ceex2 );
+  TH1D *HAfb9_vB_Ceex2_IFI = HstAFB4( "HAfb9_vB_Ceex2_IFI",hst9_vB_Ceex2i_F, hst9_vB_Ceex2i,
+                                                           hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
+//////////////
+  TH1D *hst9_vB_Ceex1i       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1i");     //
+  TH1D *hst9_vB_Ceex1i_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1i_F");   //
+  TH1D *hst9_vA_Ceex1i       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1i");     //
+  TH1D *hst9_vA_Ceex1i_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1i_F");   //
+//
+  TH1D *HAfb9_vA_Ceex1_IFI = HstAFB4( "HAfb9_vA_Ceex1_IFI",hst9_vA_Ceex1i_F, hst9_vA_Ceex1i,
+  		                                                   hst9_vA_Ceex1_F,  hst9_vA_Ceex1 );
+  TH1D *HAfb9_vB_Ceex1_IFI = HstAFB4( "HAfb9_vB_Ceex1_IFI",hst9_vB_Ceex1i_F, hst9_vB_Ceex1i,
+                                                           hst9_vB_Ceex1_F,  hst9_vB_Ceex1 );
 
   cout<<" ===================== End of ReMakeHistoMC ======================== "<<endl;
 
@@ -786,17 +806,24 @@ void FigIFI2()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigIFI2 =========================== "<<endl;
-
+//////////////////////
   TH1D *HAfb8_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2_IFI");
   TH1D *HAfb8_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2_IFI");
-
+//
   TH1D *HAfb9_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2_IFI");
   TH1D *HAfb9_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2_IFI");
-
-
-  TH1D *HAfbDel_A_CeexIFI = HstDiff( "HAfbDel_A_CeexIFI", HAfb9_vA_Ceex2_IFI, HAfb8_vA_Ceex2_IFI, kBlue);
-  TH1D *HAfbDel_B_CeexIFI = HstDiff( "HAfbDel_B_CeexIFI", HAfb9_vB_Ceex2_IFI, HAfb8_vB_Ceex2_IFI, kBlue);
-
+///////
+  TH1D *HAfbDel_A_Ceex2_IFI = HstDiff( "HAfbDel_A_Ceex2_IFI", HAfb9_vA_Ceex2_IFI, HAfb8_vA_Ceex2_IFI, kBlue);
+  TH1D *HAfbDel_B_Ceex2_IFI = HstDiff( "HAfbDel_B_Ceex2_IFI", HAfb9_vB_Ceex2_IFI, HAfb8_vB_Ceex2_IFI, kBlue);
+/////////////////////
+  TH1D *HAfb8_vA_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex1_IFI");
+  TH1D *HAfb8_vB_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex1_IFI");
+//
+  TH1D *HAfb9_vA_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex1_IFI");
+  TH1D *HAfb9_vB_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex1_IFI");
+///////
+  TH1D *HAfbDel_A_Ceex1_IFI = HstDiff( "HAfbDel_A_Ceex1_IFI", HAfb9_vA_Ceex1_IFI, HAfb8_vA_Ceex1_IFI, kBlue);
+  TH1D *HAfbDel_B_Ceex1_IFI = HstDiff( "HAfbDel_B_Ceex1_IFI", HAfb9_vB_Ceex1_IFI, HAfb8_vB_Ceex1_IFI, kBlue);
 
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
@@ -812,7 +839,7 @@ void FigIFI2()
   //////////////////////////////////////////////
   cIFI2->cd(1);
   TH1D *HST1;
-  HST1 = HAfbDel_A_CeexIFI;
+  HST1 = HAfbDel_A_Ceex2_IFI;
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
@@ -820,17 +847,18 @@ void FigIFI2()
   HST1->DrawCopy("h");
 
   double ycapt =0.85, xcapt=0.5;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt," Ceex2, IFI on");
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
   ycapt += -0.047;
-//  PlotSame3(HAfbDel_B_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) Idealized");
+  PlotSame3(HAfbDel_A_Ceex2_IFI,     xcapt, ycapt, kBlack,     24, 1, "(A) Ceex2");
+  PlotSame3(HAfbDel_A_Ceex1_IFI,     xcapt, ycapt, kBlue,      25, 1, "(A) Ceex1");
 
-  CaptNDC->DrawLatex(0.04,0.95,"#Delta A_{FB}(v) = A_{FB}(v,s_{+})- A_{FB}(v,s_{-})");
+  CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v)");
   CaptNDC->DrawLatex(0.60,0.02,"v ");
 
   ///////////////////////////////////////////////
   cIFI2->cd(2);
   TH1D *HST2;
-  HST2 = HAfbDel_B_CeexIFI;
+  HST2 = HAfbDel_B_Ceex2_IFI;
 
   HST2->SetStats(0);
   HST2->SetTitle(0);
@@ -839,11 +867,12 @@ void FigIFI2()
   HST2->DrawCopy("h");
 
   ycapt =0.85, xcapt=0.5;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"  Ceex2-Ceex1, IFI on");
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
   ycapt += -0.047;
-//  PlotSame3(HAfbDel_B_Ceex21,   xcapt, ycapt, kBlue,     25, 1, "(B) Idealized");
+  PlotSame3(HAfbDel_B_Ceex2_IFI,   xcapt, ycapt, kBlue,     24, 1, "(B) Ceex2");
+  PlotSame3(HAfbDel_B_Ceex1_IFI,   xcapt, ycapt, kBlue,     25, 1, "(B) Ceex1");
 
-  CaptNDC->DrawLatex(0.04,0.95,"#delta #Delta A_{FB}(v)  ");
+  CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v)  ");
   CaptNDC->DrawLatex(0.60,0.02,"v ");
 //
   cIFI2->cd();
