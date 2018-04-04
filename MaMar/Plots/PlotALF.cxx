@@ -617,7 +617,7 @@ void FigExp1()
   PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
   cExp1->cd(2);
@@ -637,7 +637,7 @@ void FigExp1()
   PlotSame3(HAfb9_vA_Ceex21,   xcapt, ycapt, kBlack,    25, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"#delta A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   //
   cExp1->cd();
@@ -689,7 +689,7 @@ void FigExp2()
   PlotSame3(HAfb8_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
   cExp2->cd(2);
@@ -709,7 +709,7 @@ void FigExp2()
   PlotSame3(HAfb8_vA_Ceex21,   xcapt, ycapt, kBlack,    25, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"#delta A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   //
   cExp2->cd();
@@ -771,7 +771,7 @@ void FigExp3()
   PlotSame3(HAfbDel_A_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"#Delta A_{FB}(v) = A_{FB}(v,s_{+})- A_{FB}(v,s_{-})");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
   cExp3->cd(2);
@@ -791,7 +791,7 @@ void FigExp3()
   PlotSame3(HAfbDel_A_Ceex21,   xcapt, ycapt, kBlack,    25, 1, "(A) Realistic");
 
   CaptNDC->DrawLatex(0.04,0.95,"#delta #Delta A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 //
   cExp3->cd();
 //
@@ -824,6 +824,9 @@ void FigIFI2()
 ///////
   TH1D *HAfbDel_A_Ceex1_IFI = HstDiff( "HAfbDel_A_Ceex1_IFI", HAfb9_vA_Ceex1_IFI, HAfb8_vA_Ceex1_IFI, kBlue);
   TH1D *HAfbDel_B_Ceex1_IFI = HstDiff( "HAfbDel_B_Ceex1_IFI", HAfb9_vB_Ceex1_IFI, HAfb8_vB_Ceex1_IFI, kBlue);
+///////
+  TH1D *HAfbDel_A_Ceex21_IFI = HstDiff( "HAfbDel_A_Ceex21_IFI", HAfbDel_A_Ceex2_IFI, HAfbDel_A_Ceex1_IFI, kBlue);
+  TH1D *HAfbDel_B_Ceex21_IFI = HstDiff( "HAfbDel_B_Ceex21_IFI", HAfbDel_B_Ceex2_IFI, HAfbDel_B_Ceex1_IFI, kBlue);
 
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
@@ -839,41 +842,44 @@ void FigIFI2()
   //////////////////////////////////////////////
   cIFI2->cd(1);
   TH1D *HST1;
-  HST1 = HAfbDel_A_Ceex2_IFI;
+  HST1 = HAfbDel_B_Ceex2_IFI;
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
   HST1->GetXaxis()->SetNdivisions(8);
   HST1->DrawCopy("h");
 
-  double ycapt =0.85, xcapt=0.5;
+  double ycapt =0.35, xcapt=0.3;
   CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
   ycapt += -0.047;
-  PlotSame3(HAfbDel_A_Ceex2_IFI,     xcapt, ycapt, kBlack,     24, 1, "(A) Ceex2");
+  PlotSame3(HAfbDel_B_Ceex2_IFI,     xcapt, ycapt, kBlack,     26, 1, "(B) Ceex2");
+  PlotSame3(HAfbDel_B_Ceex1_IFI,     xcapt, ycapt, kBlack,     27, 1, "(B) Ceex1");
+  PlotSame3(HAfbDel_A_Ceex2_IFI,     xcapt, ycapt, kBlue,      24, 1, "(A) Ceex2");
   PlotSame3(HAfbDel_A_Ceex1_IFI,     xcapt, ycapt, kBlue,      25, 1, "(A) Ceex1");
 
-  CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v)");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.04,0.95,"#Delta A_{FB}^{IFI}(v) = A_{FB}^{IFI}(v,s_{+}) -A_{FB}^{IFI}(v,s_{-})");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
   cIFI2->cd(2);
   TH1D *HST2;
-  HST2 = HAfbDel_B_Ceex2_IFI;
+  HST2 = HAfbDel_A_Ceex21_IFI;
 
   HST2->SetStats(0);
   HST2->SetTitle(0);
   HST2->GetXaxis()->SetNdivisions(8);
-//  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
+  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
   HST2->DrawCopy("h");
 
   ycapt =0.85, xcapt=0.5;
   CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
   ycapt += -0.047;
-  PlotSame3(HAfbDel_B_Ceex2_IFI,   xcapt, ycapt, kBlue,     24, 1, "(B) Ceex2");
-  PlotSame3(HAfbDel_B_Ceex1_IFI,   xcapt, ycapt, kBlue,     25, 1, "(B) Ceex1");
+  PlotSame3(HAfbDel_B_Ceex21_IFI,   xcapt, ycapt, kBlack,    24, 1, "(B) IFI Ceex2-Ceex1");
+  PlotSame3(HAfbDel_A_Ceex21_IFI,   xcapt, ycapt, kBlue,     25, 1, "(A) IFI Ceex2-Ceex1");
 
-  CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v ");
+  CaptNDC->DrawLatex(0.04,0.95,
+		  "#delta #Delta A_{FB}^{IFI}(v) = Delta A_{FB}^{IFI}(v)|_{ceex2} - Delta A_{FB}^{IFI}(v)|_{ceex2} ");
+  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 //
   cIFI2->cd();
 //
