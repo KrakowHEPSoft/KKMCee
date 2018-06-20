@@ -99,20 +99,20 @@ MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 #/////////////////////////////////////////////////////////////////////////
 # Local executables witout ROOT persistency
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
-Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Prod0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Prod0_LDFLAGS = -L$(ROOTLIBDIR)
 
 ProdZinv_SOURCES = ProdZinv.cxx KKMC.cxx PartLund.cxx ROBOL2.cxx Semaph.cxx
-ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-ProdZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+ProdZinv_LDFLAGS = -L$(ROOTLIBDIR)
 
 ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
-ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+ProdFSR_LDFLAGS = -L$(ROOTLIBDIR)
 
 ProdFoam0_SOURCES =  ProdFoam0.cxx KKMC.cxx KKfoam.cxx  RoboFoam.cxx Semaph.cxx
-ProdFoam0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-ProdFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdFoam0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
+ProdFoam0_LDFLAGS = -L$(ROOTLIBDIR)
 
 ########################################################################
 ###                   USER PART

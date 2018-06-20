@@ -48,60 +48,60 @@ KK2f_Libs= \
 	$(top_builddir)/KKsem/libKKsem.a
 
 Plot1_SOURCES = KKplot.cxx HisNorm.cxx Plot1.cxx
-Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot1_LDFLAGS = -L$(ROOTLIBDIR)
 
 Plot2_SOURCES =  HisNorm.cxx Plot2.cxx
-Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Plot2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot2_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotZinv_SOURCES =  HisNorm.cxx PlotZinv.cxx
-PlotZinv_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotZinv_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotZinv_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotAFB_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB.cxx
-PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotAFB_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotAFB_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotAFB_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotAFB2_SOURCES = KKplot.cxx HisNorm.cxx PlotAFB2.cxx
-PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotAFB2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotAFB2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotAFB2_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotFSR_SOURCES = KKplot.cxx HisNorm.cxx PlotFSR.cxx
-PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-PlotFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
+PlotFSR_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
-PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotIFI_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotIFI_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotFoam0_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotFoam0.cxx
-PlotFoam0_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotFoam0_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
+PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotFoam1_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotFoam1.cxx
-PlotFoam1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-PlotFoam1_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotFoam1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
+PlotFoam1_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotFoam2_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotFoam2.cxx
-PlotFoam2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam
-PlotFoam2_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotFoam2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
+PlotFoam2_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotBorn_SOURCES = KKplot.cxx HisNorm.cxx PlotBorn.cxx
-PlotBorn_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotBorn_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran -no-install -g
+PlotBorn_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotBorn_LDFLAGS = -L$(ROOTLIBDIR) -no-install -g
 
 PlotKKsem_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotKKsem.cxx
-PlotKKsem_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotKKsem_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotKKsem_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotKKsem_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotPlay_SOURCES =  PlotPlay.cxx
-PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotPlay_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotPlay_LDFLAGS = -L$(ROOTLIBDIR)
 
 PlotALF_SOURCES = KKplot.cxx HisNorm.cxx PlotALF.cxx
-PlotALF_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS)
-PlotALF_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+PlotALF_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotALF_LDFLAGS = -L$(ROOTLIBDIR)
 
 
 ######################### private #############################
