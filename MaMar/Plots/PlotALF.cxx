@@ -36,8 +36,11 @@ using namespace std;
 //TFile DiskFileA88("../workKKMC/histo.root");  // apr.2018
 //TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
 
-TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // jan.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // jan.2018
+//TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // recent
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // recent
+
+TFile DiskFileA88("../workKKMC/histo.root_88GeV_apr_13G");  // apr.2018
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_apr_38G");  // apr.2018
 
 // current new histos
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
@@ -868,7 +871,7 @@ void FigIFI2()
   HST2->SetStats(0);
   HST2->SetTitle(0);
   HST2->GetXaxis()->SetNdivisions(8);
-  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
+  HST2->SetMaximum(1.1e-4); HST2->SetMinimum(-1.1e-4);
   HST2->DrawCopy("h");
 
   ycapt =0.85, xcapt=0.5;
