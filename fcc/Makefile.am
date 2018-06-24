@@ -39,7 +39,7 @@ bin_PROGRAMS = MainDEV
 AM_FFLAGS = @MY_F77_FLAGS@
 #---------------------------------------------------------------
 MainDEV_SOURCES = MainDEV.cxx 
-MainDEV_LDADD = $(KK2f_Libs) \
-				$(top_builddir)/fcc/libDEV.la \
-				$(ROOTAUXLIBS) $(ROOTGLIBS) $(FLIBS)
+MainDEV_LDADD = $(top_builddir)/fcc/libDEV.la \
+				$(ROOTAUXLIBS) $(ROOTGLIBS) $(FLIBS) \
+				$(KK2f_Libs)
 MainDEV_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
