@@ -55,4 +55,5 @@ MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile 
                MaMar/workKKMC/Makefile \
                yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
 RHadr/Makefile RHadr/Plots/Makefile \
+fcc/Makefile fcc/workDEV/Makefile \
 )
