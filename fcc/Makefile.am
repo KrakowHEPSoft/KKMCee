@@ -32,7 +32,7 @@ nodist_libDEV_la_SOURCES = $(dict1C)
 libDEV_la_SOURCES = TMCgenDEV.cxx TRobolDEV.cxx
 libDEV_la_LIBADD  = $(top_builddir)/MCdev/libMCdev.la \
     				$(ROOTAUXLIBS) $(ROOTGLIBS) $(FLIBS)
-libDEV_la_LDFLAGS = -L$(ROOTLIBDIR)
+libDEV_la_LDFLAGS = -L$(ROOTLIBDIR)-no-install -g
 #///////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
 bin_PROGRAMS = MainDEV
