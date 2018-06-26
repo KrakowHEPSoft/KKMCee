@@ -43,9 +43,9 @@ void TRobolDEV::Initialize(
   TRobol::Initialize(OutFile,GenFile,HstFile);
   ///
   //[[[[[[[[[[[[[[[[
-    const char *output_file = "./kkmc.output";
-    long stl2 = strlen(output_file);
-    kk2f_fort_open_(16,output_file,stl2);
+  const char *output_file = "./kkmc.output";
+  long stl2 = strlen(output_file);
+  kk2f_fort_open_(16,output_file,stl2);
   //]]]]]]]]]]]]]]]]
 
   /// Book histograms or read them from the disk
