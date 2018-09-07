@@ -64,9 +64,9 @@ cout<<"================ Initialize BEGIN ============================"<<endl;
 //////////////////////////////////////////////////////////////
 const int jmax =10000;
 // in the input below only AMH=125e0, AMTOP=173e0 are actualized
-LibSem.ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // AMH AMTOP actualized
+//LibSem.ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // AMH AMTOP actualized
 // standard old input file
-//LibSem.ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
+LibSem.ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
 // User input data with AMH AMTOP aclualized
 //LibSem.ReaData("../workKKMC/workKKMC_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
 LibSem.ReaData("../workKKMC/PlotBorn_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
@@ -174,6 +174,95 @@ cout<<"================ TabBorn END   ============================"<<endl;
 }//TabBorn
 
 
+void TabBorn2(){
+cout<<"============================================================"<<endl;
+cout<<"================ TabBorn2 BEGIN ============================"<<endl;
+double MZ = 91.187e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double E1 =  87.90e0, E2 =  94.30e0;
+double KeyFob;
+KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+kksem_setkeyfob_( KeyFob );
+//
+cout<<" KeyFob= 0, EW of BornV_Dizet and cos(theta) integration ==="<<endl;
+double xBorn,xBornF,xBornB;
+double Ene, svar2, CMSene;
+double AFB[3];
+for(int ix=0; ix <= 2; ix++){
+  if( ix == 0) CMSene = MZ;
+  if( ix == 1) CMSene = E1;
+  if( ix == 2) CMSene = E2;
+  svar2 = CMSene*CMSene;
+  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+  kksem_setkeyfob_( KeyFob );
+  kksem_makeborn_( svar2, xBorn);
+  KeyFob=    -1; // With EW (BornV_Dizet) Backward
+  kksem_setkeyfob_( KeyFob );
+  kksem_makeborn_( svar2, xBornB);
+  KeyFob=     1; // With EW (BornV_Dizet) Forward
+  kksem_setkeyfob_( KeyFob );
+  kksem_makeborn_( svar2, xBornF);
+//
+  cout<< "************ CMSene= "<< CMSene<< " *************** "<< endl;
+  cout<< " xBorn  [nb]= "<< SP15 << xBorn <<endl;
+  cout<< " xBornF [nb]= "<< SP15 << xBornF << "  xBornB [nb]= "<< SP15 << xBornB <<endl;
+  cout<< " (xBornF+xBornB)/xBorn = "<< SP15 << (xBornF+xBornB)/xBorn << " <- testing integration" << endl;
+  double AFBix = (xBornF-xBornB)/(xBornF+xBornB);
+  cout<< " AFB=(xBornF-xBornB)/(xBornF+xBornB)= "<< SP15 << AFBix <<endl;
+  AFB[ix]= AFBix;
+//
+}//for
+cout << "AFB(s+) - AFB(s-) = " << SP15 << AFB[2]-AFB[1] << endl;
+cout<<"================ TabBorn2 END   ============================"<<endl;
+}//TabBorn2
+
+
+void TabBorn3(){
+cout<<"============================================================"<<endl;
+cout<<"================ TabBorn3 BEGIN ============================"<<endl;
+double MZ = 91.187e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double E1 =  87.90e0, E2 =  94.30e0;
+double KeyFob;
+KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+//
+KeyFob= -100; // Primitive KKsem_BornV, NO EW, with theta integration
+//
+cout<<" KeyFob= -100 Primitive KKsem_BornV, NO EW, with theta integration ==="<<endl;
+double xBorn,xBornF,xBornB;
+double Ene, svar2, CMSene;
+double AFB[3];
+for(int ix=0; ix <= 2; ix++){
+  if( ix == 0) CMSene = MZ;
+  if( ix == 1) CMSene = E1;
+  if( ix == 2) CMSene = E2;
+  svar2 = CMSene*CMSene;
+  kksem_setkeyfob_( KeyFob );
+  kksem_makeborn_( svar2, xBorn);
+  kksem_setkeyfob_( KeyFob +1 ); // Backward
+  kksem_makeborn_( svar2, xBornB);
+  kksem_setkeyfob_( KeyFob -1 ); // Forward
+  kksem_makeborn_( svar2, xBornF);
+//
+  cout<< "************ CMSene= "<< CMSene<< " *************** "<< endl;
+  cout<< " xBorn  [nb]= "<< SP15 << xBorn <<endl;
+  cout<< " xBornF [nb]= "<< SP15 << xBornF << "  xBornB [nb]= "<< SP15 << xBornB <<endl;
+  cout<< " (xBornF+xBornB)/xBorn = "<< SP15 << (xBornF+xBornB)/xBorn << " <- testing integration" << endl;
+  double AFBix = (xBornF-xBornB)/(xBornF+xBornB);
+  cout<< " AFB=(xBornF-xBornB)/(xBornF+xBornB)= "<< SP15 << AFBix <<endl;
+  AFB[ix]= AFBix;
+//
+}//for
+cout << "AFB(s+) - AFB(s-) = " << SP15 << AFB[2]-AFB[1] << endl;
+cout<<"================ TabBorn3 END   ============================"<<endl;
+}//TabBorn3
+
+
+
 void FigBorn3(){
 cout<<"==========================================================="<<endl;
 cout<<"================ FigBorn3 BEGIN ==========================="<<endl;
@@ -190,7 +279,7 @@ KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
 KeyFob=    0; // BornV_Dizet, with EW and with integration
 kksem_setkeyfob_( KeyFob );
 double xBorn, svar2;
-for(int ix=1; ix <= nPt; ix++){
+for(int ix=0; ix <= nPt; ix++){
    Ene = Emin +(ix-1)*((Emax-Emin)/nPt);
    svar2 = Ene*Ene;
    kksem_makeborn_( svar2, xBorn);
@@ -367,7 +456,7 @@ hst_AlfRat->Sumw2();
 
 int KFf =13, KFini=11;
 double CMSene, xBorn, svar2, GSW6, AlfRatio, alfinv0;
-for(int ix=1; ix <= nPt; ix++){
+for(int ix=0; ix <= nPt; ix++){
    CMSene = Emin +(ix-1)*((Emax-Emin)/nPt);
    svar2 = CMSene*CMSene;
    bornv_interpogsw_(KFf,svar2, CosTheta);
@@ -442,7 +531,7 @@ double xres[1];
 double betaRG  = ( 3*3*(1./9.) +3*2*(4./9.) +3)/(3*3.141594);
 betaRG  = 20.0/(9*3.141594);
 double betaDZ  = (AlfRun2-AlfRun1)/(2*log(E2/E1))/AlfRunMZ/AlfRunMZ;
-for(int ix=1; ix <= nPt; ix++){
+for(int ix=0; ix <= nPt; ix++){
    CMSene = Emin +(ix-0.5)*((Emax-Emin)/nPt);
    svar2 = CMSene*CMSene;
    bornv_interpogsw_(KFf,svar2, CosTheta);
@@ -1076,10 +1165,14 @@ int main(int argc, char **argv)
   //FigBorn3();
   //
   //FigAlfE1();  // alph(s) wide range, plots of ERW
-  FigAlfE2();  // 1/alpha(s) narrow range, interpolation
+  //
+  // New ones for draft with Patrick
+  TabBorn2();  // EW from Dizet
+  TabBorn3();   // Effective Born
+  //FigAlfE2();  // 1/alpha(s) narrow range, interpolation
   TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
-  FigAlfa3();
-  FigAlfa4();
+  //FigAlfa3();
+  //FigAlfa4();
   //
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileB.ls();
