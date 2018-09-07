@@ -882,11 +882,11 @@ c[[   BWD = (ss-m_MZ**2)**2 + (m_gammz*m_MZ)**2   !!! <--! fixed width
 *//               Coupling constants                                   //
 *////////////////////////////////////////////////////////////////////////
 c[[[[[[[[[[[[[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!
-c      icont=icont+1
-c      IF(icont.LE.200) THEN
+c      IF(icont.LE.20) THEN
 c         write(*,*) '|||||||||||||||||||||BornV|||||||||||||||||||||||||||||||||||||'
-c         write(*,'(a,8g22.14)') 'sqrt(svar),costhe=',sqrt(svar),costhe
-c         write(*,'(a,8g22.14)') 'QCDcor=',m_QCDcor
+c         write(*,'(a,8g22.14)') '@@@@@@ BornV_Dizet: sqrt(svar),costhe=',sqrt(svar),costhe
+c         write(*,'(a,8g22.14)') '@@@@@@ BornV_Dizet: QCDcor= ',m_QCDcor
+c         write(*,'(a,8g22.14)') '@@@@@@ BornV_Dizet: m_swsq= ', m_swsq
 c      ENDIF
 c]]]]]]]]]]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!
          amin  = m_amferm(ABS(KFi))
@@ -949,9 +949,7 @@ c[[[[[[[[[[[[[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!
 c            IF(icont.LE.200) THEN
 c               write(*,*) '|||||||||||||||||||||BornV|||||||||||||||||||||||||||||||||||||'
 c               write(*,'(a,8g22.14)') 'sqrt(svar),costhe=',sqrt(svar),costhe
-c               write(*,'(a,8g22.14)') 'xfem=',xfem
-c               write(*,'(a,8g22.14)') 'RSQV,RSQA=',RSQV,RSQA
-c               xfem  =0d0       !!!!!!!!!!!!!!!!!!!!
+c               write(*,'(a,8g22.14)') 'xfem,RSQV,RSQA   =',xfem,RSQV,RSQA
 c            ELSE
 c               STOP
 c            ENDIF
@@ -961,6 +959,16 @@ c]]]]]]]]]]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!
             xke  =xff(2)
             xkf  =xff(3)
             xkef =xff(4)
+c[[[[[[[
+c  This should reproduce Gmu scheme with running alphaQED
+C  but AFB is slightly different (sigma is ok)
+c            xrho =1d0
+c            xke  =1d0
+c            xkf  =1d0
+c            xkef =1d0
+c            RSQA =1d0
+c            RSQV =1d0
+c]]]]]]]
             qfm =dabs(qf)
             qem =dabs(qe)
             xe   =  1.d0 -4.d0*m_swsq*qem
