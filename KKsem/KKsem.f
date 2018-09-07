@@ -1575,6 +1575,10 @@ c]]]]]
 *// This routine provides unsophisticated Born differential cross section //
 *// at the crude x-section level, with Z and gamma s-chanel exchange.     //
 *// It is ising heavily xpar input inherited from the main program        //
+*// ************************************************************************
+*//          Upgraded version Sept. 7th 2018                              //
+*// This is now Gmu scheme with SinW2 and AlphaQED taken from DIZET       //
+*//                                                                       //
 *///////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE "KKsem.h"
@@ -1583,6 +1587,7 @@ c]]]]]
       DOUBLE PRECISION   sum,T3e,t3f,qf,Qe,deno,Ve,Ae,thresh
       DOUBLE PRECISION   xe,yf,xf,ye,ff0,ff1,amx2,amfin,vf,af
       DOUBLE PRECISION   ReChiZ,SqChiZ,RaZ,RaW,ReChiW,SqChiW
+      DOUBLE PRECISION   AlfRatio, cG, costhe0
       DOUBLE PRECISION   Born, BornS, BornST, BornT
       DOUBLE PRECISION   RRes_CorQQ
       INTEGER  KeyZet,HadMin,KFbeam,KeyRes
@@ -1626,6 +1631,10 @@ c]]]]]
             Ve=  2*T3e -4*Qe*Sw2
             Ae=  2*T3e
 *------ final fermion couplings
+*       Running alphaQED
+*           AlfRatio = 1.06322729     ! QED running alpha at MZ
+            CALL BornV_interpoGSW(KFfin,svar, costhe)
+            CALL BornV_Getqedcor( AlfRatio ); ! must be after calling bornv_interpoGSW !
             kf = 500+10*KFfin
             amfin = m_xpar(kf+6)
             NCf   = m_xpar(kf+2)
@@ -1649,10 +1658,12 @@ c]]]]]
             MW2  = MW**2
 ****            RaZ  = (m_GFermi *s *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
 ****            RaW  = (m_GFermi *s *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
+****            RaZ  = (m_GFermi *MZ2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
+****            RaW  = (m_GFermi *MW2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
             RaZ  = (m_GFermi *MZ2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
             RaW  = (m_GFermi *MW2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
-            RaZ  = 1/(16D0*Sw2*(1d0-Sw2))
-            RaW  = 1/(16D0*Sw2*(1d0-Sw2))
+***            RaZ  = 1/(16D0*Sw2*(1d0-Sw2))
+***            RaW  = 1/(16D0*Sw2*(1d0-Sw2))
             KeyWidFix = 1       ! fixed width
             KeyWidFix = 0       ! variable width
             IF( KeyWidFix .EQ. 0 ) THEN
@@ -1668,10 +1679,18 @@ c]]]]]
             xf= Vf**2 +Af**2
             ye= 2*Ve*Ae
             yf= 2*Vf*Af
-            ff0= qe**2*qf**2 +2*ReChiZ*qe*qf*Ve*Vf +SqChiZ*xe*xf
-            ff1=             +2*ReChiZ*qe*qf*Ae*Af +SqChiZ*ye*yf
+***            ff0= qe**2*qf**2 +2*ReChiZ*qe*qf*Ve*Vf +SqChiZ*xe*xf
+***            ff1=             +2*ReChiZ*qe*qf*Ae*Af +SqChiZ*ye*yf
+            cG  = AlfRatio
+            ff0= qe**2*qf**2*cG**2 +2*ReChiZ*qe*qf*Ve*Vf*cG +SqChiZ*xe*xf
+            ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG +SqChiZ*ye*yf
             BornS    = (1d0+ costhe**2)*ff0 +2d0*costhe*ff1
-*[[[[[[[[[[[[[[
+*[[[[[[[[[[[[[[[
+*      if(icont .le. 1 ) THEN
+*         write(*,*) "**** KKsem_BornV: sw2, m_AlfInv = ", sw2, m_AlfInv, m_AlfInv*cG
+*         write(*,*) "**** KKsem_BornV: Ve,Vf,Ae,Af   = ", Ve,Vf,Ae,Af
+*         write(*,*) "**** KKsem_BornV: sqrt(s), AFB  = ", DSQRT(s), 0.75d0*ff1/ff0
+*      ENDIF
 *            if( iflag .eq. 1) THEN
 *              write(*,*) "|||| Qe,Qf, T3e,T3f  = ", Qe,Qf,T3e,T3f
 *              write(*,*) "|||| Ve,Vf, Ae,Af  = ", Ve*DSQRT(RaZ), Vf*DSQRT(RaZ), Ae*DSQRT(RaZ),Af*DSQRT(RaZ)
@@ -2957,7 +2976,8 @@ c]]]]]
 * It is better to import GammZ from BornV, possibly redeined there
       CALL BornV_GetMZ(    mZ)
       CALL BornV_GetGammZ( GammZ)
-      Sw2  = m_sinw2                       ! from xpar
+      CALL BornV_GetSwsq(Sw2)
+*      Sw2  = m_sinw2                       ! from xpar
 *     MZ    = mZ*100d0         ! sending MZ to infinity, doesnt work?
       Eps = DCMPLX(-1.D0,0.D0)
 * Get charges, izospin, color
@@ -3140,7 +3160,8 @@ c]]]]]
       SUBROUTINE KKsem_Born_Calc(KFi,KFf, CMSene, AlfRun, xres)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
-*//      New                                                                        //
+*//   It is now implementing Gmu scheme with SinW2 and AlfQED of DIZET              //
+*//   Similarly as KKsem_BornV                                                      //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
@@ -3170,8 +3191,8 @@ c]]]]]
       CALL BornV_GetGammZ( GammZ)
       CALL BornV_GetSwsq(Sw2) ! from DIZET
 * Input directly from xpar
-      Sw2  =   m_xpar(503)       ! from xpar(503)
-      GammZ =  m_xpar(504)       ! from xpar(504)
+*      Sw2  =   m_xpar(503)       ! from xpar(503)
+*      GammZ =  m_xpar(504)       ! from xpar(504)
 * Get charges, izospin, color
       CALL BornV_GetParticle(KFi, Mini, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, Mfin, Qf,T3f,NCf)
@@ -3210,7 +3231,11 @@ c]]]]]
 ***************************************************************
       X_born  =  DREAL(C0*cG**2 +2d0*C1/Zeta*cG*cZ +C2/Zeta/DCONJG(Zeta)*cZ**2 ) ! pure Born
       Y_Born  =  DREAL(D0*cG**2 +2d0*D1/Zeta*cG*cZ +D2/Zeta/DCONJG(Zeta)*cZ**2 )
-      IF( icont .LE. 0) write(*,*) "||||KKsem_Born_Calc||| c1,c2,d1,d2, Y/X=", c1,c2, d1,d2, Y_Born/X_born
+*      IF( icont .LE. 1) write(*,*) "||||KKsem_Born_Calc||| c1,c2,d1,d2          =", c1,c2, d1,d2
+*      IF( icont .LE. 1) write(*,*) "||||KKsem_Born_Calc||| X_born, Y_Born, 3Y/4X=", X_born, Y_Born, 0.75*Y_Born/X_born
+*      IF( icont .LE. 1) write(*,*) "||||KKsem_Born_Calc||| X_born, Y_Born /cG**2=", X_born/cG**2, Y_Born/cG**2
+*      IF( icont .LE. 1) write(*,*) "||||KKsem_Born_Calc||| Z part =", DREAL(1d0/Zeta/DCONJG(Zeta))*C2
+*      IF( icont .LE. 1) write(*,*) "||||KKsem_Born_Calc||| Z part =", DREAL(1d0/Zeta/DCONJG(Zeta))*C2 *cZ**2 /cG**2
 ***************************************************************
       xres(1) = X_born*sigNor            ! Sigma [nb]
       xres(2) = 3d0/4d0* Y_Born/X_born   ! AFB
