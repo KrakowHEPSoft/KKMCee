@@ -1446,8 +1446,8 @@ cc            write(*,*) '--- v1,distr= ',v1,distr
       DOUBLE PRECISION    alfa, CosThe, BornY, BornV, DiFB
       DOUBLE PRECISION    BornV_Simple, KKsem_BornV
       DOUBLE PRECISION    BornV_Dizet,  BornV_Crude
-      DOUBLE PRECISION    KKsem_DTheTab,KKsem_DTheTap
-      EXTERNAL            KKsem_DTheTab,KKsem_DTheTap
+      DOUBLE PRECISION    KKsem_DTheTab,KKsem_DTheTap,KKsem_DTheTai
+      EXTERNAL            KKsem_DTheTab,KKsem_DTheTap,KKsem_DTheTai
 *---------------------------------------------------------------
       alfa=1/m_alfinv
       m_svar1 = svar
@@ -1470,7 +1470,7 @@ cc            write(*,*) '--- v1,distr= ',v1,distr
          CALL BornV_InterpoGSW( ABS(m_KFfin),   svar, CosThe)
          BornY= BornV_Dizet( 1,m_KFini,m_KFfin, svar, CosThe, m_eps1,m_eps2,m_ta1,m_ta2) !
 *//////////////////////////////////////////////////////////
-*// PRIMITIVE KKsem_BornV, NO EW, with theta integration //
+*// KKsem_BornV,   Gmu scheme, with theta integration    //
 *//////////////////////////////////////////////////////////
       ELSEIF( m_KeYFoB .EQ. -100) THEN  ! KKsem_BornV, KF-summed, CosTh-integrated
          CALL Mathlib_Gaus16( KKsem_DTheTap,  m_cmin,  m_cmax, BornY) !!! 16-point gauss
@@ -1480,6 +1480,11 @@ cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forw
       ELSEIF( m_KeYFoB .EQ.  -99) THEN
 cc         CALL Mathlib_Gaus8(  KKsem_DTheTap,     0d0,  m_cmax, BornY)   ! forward
          CALL Mathlib_Gaus16(  KKsem_DTheTap,   m_cmin,    0d0, BornY)   ! backward
+*//////////////////////////////////////////////////////////
+*// KKsem_BornV, Gmu scheme +IFI, with IFI contribution  //
+*//////////////////////////////////////////////////////////
+      ELSEIF( m_KeYFoB .EQ. -200) THEN  ! KKsem_BornV, KF-summed, CosTh-integrated
+         CALL Mathlib_Gaus16( KKsem_DTheTai,  m_cmin,  m_cmax, BornY) !!! 16-point gauss
 */////////////////////////////////////////////////////////////////
 *// PRIMITIVE BornV_Simple, without EW, no integration KeyLib=0 //
 */////////////////////////////////////////////////////////////////
@@ -1562,6 +1567,28 @@ c]]]]]
          IF(IsGenerated .NE. 0) THEN
             Born= KKsem_BornV(svar,CosThe) ! WRONG! Double KF summation!!!
             KKsem_DTheTap = KKsem_DTheTap  + 3d0/8d0 *Born
+         ENDIF
+      ENDDO
+      END
+
+
+      DOUBLE PRECISION FUNCTION KKsem_DTheTai(CosThe)
+*/////////////////////////////////////////////////////////////////////////////////
+*//                                                                             //
+*/////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KKsem.h'
+      DOUBLE PRECISION    CosThe,svar,Born
+      DOUBLE PRECISION    KKsem_BornVi
+      INTEGER             IsGenerated, KFfin, icont
+*     ---------------------------------------------------------
+      svar     = m_svar1
+      KKsem_DTheTai = 0d0
+      DO KFfin=1,20
+         CALL BornV_GetIsGenerated(KFfin,IsGenerated)
+         IF(IsGenerated .NE. 0) THEN
+            Born= KKsem_BornVi(svar,CosThe) ! WRONG! Double KF summation!!!
+            KKsem_DTheTai = KKsem_DTheTai  + 3d0/8d0 *Born
          ENDIF
       ENDDO
       END
@@ -1686,11 +1713,11 @@ c]]]]]
             ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG +SqChiZ*ye*yf
             BornS    = (1d0+ costhe**2)*ff0 +2d0*costhe*ff1
 *[[[[[[[[[[[[[[[
-*      if(icont .le. 1 ) THEN
-*         write(*,*) "**** KKsem_BornV: sw2, m_AlfInv = ", sw2, m_AlfInv, m_AlfInv*cG
+      if(icont .le. 1 ) THEN
+         write(*,*) "**** KKsem_BornV: sw2, m_AlfInv = ", sw2, m_AlfInv, m_AlfInv*cG
 *         write(*,*) "**** KKsem_BornV: Ve,Vf,Ae,Af   = ", Ve,Vf,Ae,Af
 *         write(*,*) "**** KKsem_BornV: sqrt(s), AFB  = ", DSQRT(s), 0.75d0*ff1/ff0
-*      ENDIF
+      ENDIF
 *            if( iflag .eq. 1) THEN
 *              write(*,*) "|||| Qe,Qf, T3e,T3f  = ", Qe,Qf,T3e,T3f
 *              write(*,*) "|||| Ve,Vf, Ae,Af  = ", Ve*DSQRT(RaZ), Vf*DSQRT(RaZ), Ae*DSQRT(RaZ),Af*DSQRT(RaZ)
@@ -1735,6 +1762,193 @@ c]]]]]
          sum = sum +Born
       ENDDO
       KKsem_BornV = sum
+      END
+
+
+      DOUBLE PRECISION FUNCTION KKsem_BornVi(svar,costhe)
+*///////////////////////////////////////////////////////////////////////////
+*//                                                                       //
+*// Similar to KKsem_BornVi  for testing formula with IFI                 //
+*//                                                                       //
+*// This routine provides unsophisticated Born differential cross section //
+*// at the crude x-section level, with Z and gamma s-chanel exchange.     //
+*// It is ising heavily xpar input inherited from the main program        //
+*// ************************************************************************
+*//          Upgraded version Sept. 7th 2018                              //
+*// This is now Gmu scheme with SinW2 and AlphaQED taken from DIZET       //
+*//                                                                       //
+*///////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE "KKsem.h"
+      DOUBLE PRECISION   svar,costhe
+      DOUBLE PRECISION   s,t,Sw2,MZ,MZ2,GammZ,MW,MW2
+      DOUBLE PRECISION   sum,T3e,t3f,qf,Qe,deno,Ve,Ae,thresh
+      DOUBLE PRECISION   xe,yf,xf,ye,ff0,ff1,amx2,amfin,vf,af
+      DOUBLE PRECISION   ReChiZ,SqChiZ,RaZ,RaW,ReChiW,SqChiW
+      DOUBLE PRECISION   AlfRatio, cG, costhe0
+      DOUBLE PRECISION   Born, BornS, BornST, BornT
+      DOUBLE PRECISION   RRes_CorQQ
+
+      DOUBLE COMPLEX     Eps,Zeta, SS, CMZ2, YZ
+      DOUBLE COMPLEX     IntReson, BVR_CDLN
+
+      DOUBLE PRECISION   f0, f1, Fi0, Fi1, vvx
+
+      INTEGER  KeyZet,HadMin,KFbeam,KeyRes
+      INTEGER  i,ke,KFfin,ncf,kf,IsGenerated,iKF
+      INTEGER  KeyWidFix
+      INTEGER  icont, iflag
+      DATA     icont /0/
+      icont = icont+1
+      iflag = 0
+*      if( icont .LE.  20 ) iflag=1
+*      if( icont .LE.  200  .and. DSQRT(svar) .GT. m_CMSene -0.02e0 ) iflag=1
+*      if( iflag .eq. 1) write(*,*) "********************** KKsem_BornV, icont, cmsene =",icont, DSQRT(svar)
+*--------------------------------------------------------------------
+      s = svar
+      t =-svar*(1d0-costhe)/2d0
+      KeyZet = m_KeyZet         ! defined in initialization
+      MZ     = m_Zmass          ! defined in initialization
+      GammZ  = m_Zgamma         ! defined in initialization
+      Sw2    = m_sinw2          ! defined in initialization
+      HadMin = m_xpar(51)
+*------------------------------
+*     EW paratemetrs taken from BornV
+      CALL  BornV_GetMZ(MZ)
+      CALL  BornV_GetGammZ(GammZ)
+      CALL  BornV_GetSwsq(Sw2)
+      CALL  BornV_GetMW(MW)
+*------------------------------
+* Z and gamma couplings to beams (electrons)
+* Z and gamma couplings to final fermions
+* Loop over all flavours defined in m_xpar(400+i)
+      sum = 0d0
+      DO KFfin=1,20
+         Born =0d0
+         CALL BornV_GetIsGenerated(KFfin,IsGenerated)
+         IF(IsGenerated .NE. 0) THEN
+*------ electron has to be inside loop!
+            KFbeam = 11         ! KF=11 is electron
+            ke = 500+10*KFbeam
+            T3e = m_xpar(ke+4)/2d0 ! isospin, L-hand component
+            Qe  = m_xpar(ke+3)/3d0 ! electric charge
+            Ve=  2*T3e -4*Qe*Sw2
+            Ae=  2*T3e
+*------ final fermion couplings
+*       Running alphaQED
+*           AlfRatio = 1.06322729     ! QED running alpha at MZ
+            CALL BornV_interpoGSW(KFfin,svar, costhe)
+            CALL BornV_Getqedcor( AlfRatio ); ! must be after calling bornv_interpoGSW !
+            kf = 500+10*KFfin
+            amfin = m_xpar(kf+6)
+            NCf   = m_xpar(kf+2)
+            T3f   = m_xpar(kf+4)/2d0 ! isospin, L-hand component
+            Qf    = m_xpar(kf+3)/3d0 ! electric charge
+            Vf =  2*T3f -4*Qf*Sw2
+            Af =  2*T3f
+            IF(KeyZet .LE. 0) THEN
+               Ve=0d0
+               Ae=0d0
+            ENDIF
+            IF(KeyZet .EQ. 9) THEN
+               Qe=0d0
+               Qf=0d0
+            ENDIF
+            IF(abs(costhe) .GT. 1d0) THEN
+               WRITE(*,*) '+++++STOP in KKsem_BornV: costhe>0 =',costhe
+               STOP
+            ENDIF
+            MZ2  = MZ**2
+            MW2  = MW**2
+            RaZ  = (m_GFermi *MZ2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
+            RaW  = (m_GFermi *MW2 *m_AlfInv  )/( DSQRT(2d0) *8d0 *m_pi) !
+            KeyWidFix = 1       ! fixed width
+            KeyWidFix = 0       ! variable width
+            IF( KeyWidFix .EQ. 0 ) THEN
+               ReChiZ=(s-MZ2)*s/((s-MZ2)**2+(GammZ*s/MZ)**2) *RaZ    ! variable width
+               SqChiZ=     s**2/((s-MZ2)**2+(GammZ*s/MZ)**2) *RaZ**2 ! variable width
+            ELSE
+               ReChiZ=(s-MZ2)*s/((s-MZ2)**2+(GammZ*MZ)**2) *RaZ    ! fixed width
+               SqChiZ=     s**2/((s-MZ2)**2+(GammZ*MZ)**2) *RaZ**2 ! fixed width
+            ENDIF
+            xe= Ve**2 +Ae**2
+            xf= Vf**2 +Af**2
+            ye= 2*Ve*Ae
+            yf= 2*Vf*Af
+            cG  = AlfRatio
+            ff0= qe**2*qf**2*cG**2 +2*ReChiZ*qe*qf*Ve*Vf*cG +SqChiZ*xe*xf
+            ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG +SqChiZ*ye*yf
+            BornS    = (1d0+ costhe**2)*ff0 +2d0*costhe*ff1
+*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+*      Another trial, also usuccesful
+***              X_born =  DREAL(C0*cG**2 +2d0*C1/Zeta*cG*cZ +C2/Zeta/DCONJG(Zeta)*cZ**2 ) ! pure Born
+***              Y_Born =  DREAL(D0*cG**2 +2d0*D1/Zeta*cG*cZ +D2/Zeta/DCONJG(Zeta)*cZ**2 )
+*            vvx = 1d0-svar/m_CMSene**2 +1d-9
+*            Fi0 = exp( 4d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(vvx) )
+*            Eps  = DCMPLX(-1.D0,0.D0)
+*            CMZ2 = DCMPLX(MZ**2, -MZ*GammZ)
+*            SS   = DCMPLX(svar)
+*            IntReson = -2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe)) *BVR_CDLN( ((CMZ2-SS)/CMZ2 ) ,Eps)
+*            YZ   = EXP(IntReson)
+*            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ*MZ/svar)  ! non-runing
+*            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ/MZ)       ! runing
+*            f0= DREAL(qe**2*qf**2*cG**2 +2d0*YZ/Zeta*qe*qf*Ve*Vf*cG*RaZ +xe*xf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
+*            f1= DREAL(                  +2d0*YZ/Zeta*qe*qf*Ae*Af*cG*RaZ +ye*yf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
+*            BornS    = (1d0+ costhe**2)*f0 +2d0*costhe*f1
+*            BornS    = BornS * Fi0
+*            if(icont .le. 10) write(*,*) "%%%%%%% KKsem_BornVi: ", f0/FF0, f1/ff1
+**************************************************
+*     Not succesful
+*            vvx = 1d0-svar/m_CMSene**2 +1d-9
+*            Fi0 = exp( 4d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(vvx) )
+*            Fi1 = exp(-2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(DSQRT((MZ**2-svar)**2+MZ**2*GammZ**2)/MZ**2))
+*            ff0= qe**2*qf**2*cG**2 +2*ReChiZ*qe*qf*Ve*Vf*cG*Fi1 +SqChiZ*xe*xf*Fi1**2
+*            ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG*Fi1 +SqChiZ*ye*yf*Fi1**2
+*            BornS    = BornS *Fi0
+**************************************************
+*[[[[[[[[[[[[[[[
+      if(icont .le. 1 ) THEN
+         write(*,*) "**** KKsem_BornVi: sw2, m_AlfInv = ", sw2, m_AlfInv, m_AlfInv*cG
+*         write(*,*) "**** KKsem_BornV: Ve,Vf,Ae,Af   = ", Ve,Vf,Ae,Af
+*         write(*,*) "**** KKsem_BornV: sqrt(s), AFB  = ", DSQRT(s), 0.75d0*ff1/ff0
+      endif
+*]]]]]]]]]]]]]]
+*     Electron neutrino, t-chanel W-exchange
+            ReChiW=      s/(-t+MW2)    *RaW
+            SqChiW=   s**2/(-t+MW2)**2 *RaW**2
+            IF(ABS(KFfin).EQ.12) THEN
+               BornT  = 16d0*SqChiW*(1d0+costhe)**2
+               BornST = -8d0*ReChiZ*ReChiW*(Ae+Ve)*(1d0+costhe)**2
+            ELSE
+               BornT  =0d0
+               BornST =0d0
+            ENDIF
+            Born = BornS + BornT + BornST
+* Colour factor
+            Born = NCf*Born
+* Crude method of correcting threshold, cos(theta) depencence incorrect!!!
+            IF(    svar .LE.  4d0*amfin**2) THEN
+               thresh=0d0
+            ELSEIF(svar .LE. 160d0*amfin**2) THEN
+               amx2=4d0*amfin**2/svar
+               thresh=sqrt(1d0-amx2)*(1d0+amx2/2d0)
+            ELSE
+               thresh=1d0
+            ENDIF
+            Born= Born*thresh
+* Below is the modification of hadronic cross sercion according to experiemntal R
+            CALL BornV_GetKeyRes(KeyRes)
+            IF( KeyRes.EQ.1 .AND. KFfin.LE.5 )  THEN
+               Born= Born * RRes_CorQQ(DSQRT(svar),KFfin,amfin)
+            ENDIF
+         ENDIF
+* For light quarks u,d,s, special cut on mass (just in case)
+         IF( (KFfin .GE. 1) .AND. (KFfin .LE. 3)) THEN
+            IF( svar .LE. HadMin**2) Born=0d0
+         ENDIF
+         sum = sum +Born
+      ENDDO
+      KKsem_BornVi = sum
       END
 
       SUBROUTINE KKsem_vvrhoS(KeyIni,svar,vv,vvmin,distr)
@@ -3172,7 +3386,7 @@ c]]]]]
       DOUBLE PRECISION  xres(*)             ! Output
       DOUBLE PRECISION  Pi, T3e,Qe, T3f,Qf, MZ, GammZ
       INTEGER           NCf,NCe
-      DOUBLE PRECISION  Mini, Mfin, zz, gz, zz2
+      DOUBLE PRECISION  Mini, Mfin, zz, gz
 
       DOUBLE PRECISION  Ve,Vf,Ae,Af
       DOUBLE PRECISION  C0,C1,C2,D0,D1,D2
@@ -3203,10 +3417,9 @@ c]]]]]
       gz   = GammZ*MZ/svar     ! non-runing
       gz   = GammZ/MZ          ! runing
       Zeta =    DCMPLX(zz,gz)
-      zz2  = zz**2 +gz**2
       sigNor = 4*Pi/(3d0*svar )*m_gnanob
-      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
 ***************************************************************
+*      deno = DSQRT(16D0*Sw2*(1d0-Sw2))
 *      CALL BornV_InterpoGSW(KFf,svar, 0.001e0);
 *      CALL BornV_GetQEDcor(QEDcor)
 *      alfRunMZ = QEDcor/m_AlfInv
