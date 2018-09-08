@@ -1,4 +1,4 @@
-//    make PlotALF-run
+//    make PlotALF2-run
 //    Plots for new second paper on AFB
 
 // This is only AFB study for several energies,
@@ -233,35 +233,41 @@ void KKsemMakeHisto(){
   //------------------------------------------------------------------------
   cout<<"==================================================================="<<endl;
   cout<<"================ KKsem MakeHisto  BEGIN ============================"<<endl;
+  // MuMu  Sigma(vmax) and AFB(vmax) with limited c=cos(theta)
   //
   long KF=13; // muon
   long KeyDis, KeyFob;
   char chak[5];
-  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
 //------------------------------------------------------------------------
-// Tempate is for vmax<0.20 and 100 bins in cos(theta)
+// Tempate is for 0<vmax<0.02,  cos(theta) < gCosTheta=0.90
   TH1D *hstVtemplate = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2");
 //------------------------------------------------------------------------
-//   MuMu  Sigma(vmax) and AFB(vmax) with ulimited c=cos(theta)
+//  sprintf(chak,"XCHI2");  // ISR*FSR Mff
+//  KeyDis = 302302;        // ISR*FSR O(alf2)
 //
-  sprintf(chak,"XCHI2");  // ISR*FSR Mff
-  KeyDis = 302302;        // ISR*FSR O(alf2)
-//
-//  sprintf(chak,"VCHI2");  // ISR only Mff
-//  KeyDis = 302;   // ISR O(alf2)
+  sprintf(chak,"VCHI2");  // ISR only Mff
+  KeyDis = 302;   // ISR O(alf2)
   //  KeyDis = 303;   // ISR O(alf3)
 
   // ************ 95GeV ************
   KKplot LibSem9("LibSem9");
   LibSem9.Initialize(DiskFileA95);  // for non-farm case
-  //
+  // Classic test KKMC-KKsem for IFI off
+  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
   TH1D *vcum_KKsem_95 =(TH1D*)hstVtemplate->Clone("vcum_KKsem_95");
   TH1D *afbv_KKsem_95 =(TH1D*)hstVtemplate->Clone("afbv_KKsem_95");
   LibSem9.VVmake( vcum_KKsem_95, afbv_KKsem_95, KF, chak, KeyDis, KeyFob, gCosTheta);
+  // New test KKMC-KKsem for IFI off based on KKsem_Born Gmu scheme
+  KeyFob=  -100; //
+  KeyFob=  -200; //
+  TH1D *vcum_KKsem_95b =(TH1D*)hstVtemplate->Clone("vcum_KKsem_95b");
+  TH1D *afbv_KKsem_95b =(TH1D*)hstVtemplate->Clone("afbv_KKsem_95b");
+  LibSem9.VVmake( vcum_KKsem_95b, afbv_KKsem_95b, KF, chak, KeyDis, KeyFob, gCosTheta);
   // ************  88GeV ************
   KKplot LibSem8("LibSem8");
   LibSem8.Initialize(DiskFileA88);  // for non-farm case
-  //
+  // Classic test KKMC-KKsem for IFI off
+  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
   TH1D *vcum_KKsem_88 =(TH1D*)hstVtemplate->Clone("vcum_KKsem_88");
   TH1D *afbv_KKsem_88 =(TH1D*)hstVtemplate->Clone("afbv_KKsem_88");
   LibSem8.VVmake( vcum_KKsem_88, afbv_KKsem_88, KF, chak, KeyDis, KeyFob, gCosTheta);
@@ -291,6 +297,7 @@ void FigExp1()
   TH1D *HAfb9_vB_Ceex2n = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2n");
 
   TH1D *afbv_KKsem_95  = (TH1D*)DiskFileB.Get("afbv_KKsem_95");
+  TH1D *afbv_KKsem_95b = (TH1D*)DiskFileB.Get("afbv_KKsem_95b");
 
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
@@ -310,21 +317,26 @@ void FigExp1()
 
   HST1 =HAfb9_vB_Ceex2n;
 
+//  HST1 =afbv_KKsem_95b;
+
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
   HST1->GetXaxis()->SetNdivisions(8);
-  HST1->SetMaximum(0.350); HST1->SetMinimum(0.250); // 95GeV
+  HST1->SetMaximum(0.350);
+  HST1->SetMinimum(0.250); // 95GeV
   HST1->DrawCopy("h");
 
   double ycapt =0.91, xcapt=0.3;
   CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, Ceex2, IFI on");
   ycapt += -0.047;
-  PlotSame3(HAfb9_vB_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) Idealized");
-  PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) Realistic");
+  PlotSame3(HAfb9_vB_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) KKMC Idealized");
+  PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) KKMC Realistic");
 
-  PlotSame3(HAfb9_vB_Ceex2n,    xcapt, ycapt, kRed,       27, 1, "(B) noIFI vtr");
-  PlotSame3(afbv_KKsem_95,     xcapt, ycapt, kGreen,     24, 1, "(X) KKsem");
+  PlotSame3(HAfb9_vB_Ceex2n,    xcapt, ycapt, kRed,       27, 1, "(N) KKMC noIFI");
+
+  PlotSame3(afbv_KKsem_95,      xcapt, ycapt, kGreen,     24, 1, "(D) KKsem DIZET");
+  PlotSame3(afbv_KKsem_95b,     xcapt, ycapt, kMagenta,   26, 1, "(G) KKsem Gmu");
 
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
