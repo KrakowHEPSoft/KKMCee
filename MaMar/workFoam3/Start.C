@@ -43,18 +43,11 @@ TMCgenFOAM *MCgen = new TMCgenFOAM("MCgen");
 //########### Overwrite default input parameters ###########
 MCgen->m_nSampl  = 100000;   // MC evts/cell (200)  ##
 MCgen->m_nCells  = 10000;
-//[[[[
-MCgen->m_nSampl  = 20000;   // MC evts/cell (200)  ##
-MCgen->m_nCells  = 2000;
-//]]]]
 MCgen->m_IsFoam5 = 0;   // Foam5 OFF
 MCgen->m_IsFoam3 = 0;   // Foam3 OFF
 MCgen->m_IsFoam3i= 1;   // Foam3i ON
 MCgen->m_IsFoam1 = 0;   // Foam1 OFF
 MCgen->m_IsFoam2 = 0;   // Foam0 OFF
-MCgen->m_eps  =   1e-3; // IR regulator
-MCgen->m_eps  =   1e-5; // IR regulator
-MCgen->m_vvcut = 0.020; // IR cut for soft limit test
 //##########################################################
 MCgen->ls();
 MCgen->Write("MCgen",TObject::kOverwrite);
