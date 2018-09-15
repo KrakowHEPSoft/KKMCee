@@ -1880,31 +1880,28 @@ c]]]]]
             ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG +SqChiZ*ye*yf
             BornS    = (1d0+ costhe**2)*ff0 +2d0*costhe*ff1
 *$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-*      Another trial, also usuccesful
 ***              X_born =  DREAL(C0*cG**2 +2d0*C1/Zeta*cG*cZ +C2/Zeta/DCONJG(Zeta)*cZ**2 ) ! pure Born
 ***              Y_Born =  DREAL(D0*cG**2 +2d0*D1/Zeta*cG*cZ +D2/Zeta/DCONJG(Zeta)*cZ**2 )
-*            vvx = 1d0-svar/m_CMSene**2 +1d-9
-*            Fi0 = exp( 4d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(vvx) )
-*            Eps  = DCMPLX(-1.D0,0.D0)
-*            CMZ2 = DCMPLX(MZ**2, -MZ*GammZ)
-*            SS   = DCMPLX(svar)
-*            IntReson = -2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe)) *BVR_CDLN( ((CMZ2-SS)/CMZ2 ) ,Eps)
-*            YZ   = EXP(IntReson)
-*            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ*MZ/svar)  ! non-runing
-*            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ/MZ)       ! runing
-*            f0= DREAL(qe**2*qf**2*cG**2 +2d0*YZ/Zeta*qe*qf*Ve*Vf*cG*RaZ +xe*xf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
-*            f1= DREAL(                  +2d0*YZ/Zeta*qe*qf*Ae*Af*cG*RaZ +ye*yf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
-*            BornS    = (1d0+ costhe**2)*f0 +2d0*costhe*f1
-*            BornS    = BornS * Fi0
-*            if(icont .le. 10) write(*,*) "%%%%%%% KKsem_BornVi: ", f0/FF0, f1/ff1
+            vvx = 1d0-svar/m_CMSene**2 +1d-9
+            Eps  = DCMPLX(-1.D0,0.D0)
+            CMZ2 = DCMPLX(MZ**2, -MZ*GammZ)
+            SS   = DCMPLX(svar)
+            IntReson = -2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe)) *BVR_CDLN( ((CMZ2-SS)/CMZ2 ) ,Eps)
+            YZ   = EXP(IntReson)
+*            YZ   = DCMPLX(1.0) !!!!!!!!!!!!
+            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ*MZ/svar)  ! non-runing
+            Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ/MZ)       ! runing
+            f0= DREAL(qe**2*qf**2*cG**2 +2d0*YZ/Zeta*qe*qf*Ve*Vf*cG*RaZ +xe*xf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
+            f1= DREAL(                  +2d0*YZ/Zeta*qe*qf*Ae*Af*cG*RaZ +ye*yf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
+            BornS    = (1d0+ costhe**2)*f0 +2d0*costhe*f1
+            if(icont .le. 10) write(*,*) "%%%%%%% KKsem_BornVi: ", f0/FF0, f1/ff1
 **************************************************
-*     Not succesful
+*  Pure REAL version, seems to work well
 *            vvx = 1d0-svar/m_CMSene**2 +1d-9
-*            Fi0 = exp( 4d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(vvx) )
 *            Fi1 = exp(-2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe))*DLOG(DSQRT((MZ**2-svar)**2+MZ**2*GammZ**2)/MZ**2))
 *            ff0= qe**2*qf**2*cG**2 +2*ReChiZ*qe*qf*Ve*Vf*cG*Fi1 +SqChiZ*xe*xf*Fi1**2
 *            ff1=                   +2*ReChiZ*qe*qf*Ae*Af*cG*Fi1 +SqChiZ*ye*yf*Fi1**2
-*            BornS    = BornS *Fi0
+*            BornS    = BornS
 **************************************************
 *[[[[[[[[[[[[[[[
       if(icont .le. 1 ) THEN
