@@ -55,6 +55,10 @@ void TRobolFOAM::Initialize(
     for(int j=1; j<=jmax; j++) HST_FOAM_NORMA3->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
     HST_FOAM_NORMA3->SetEntries(0); // Important!!!
   }
+  if( MCgen->m_IsFoam3i == 1) {
+    for(int j=1; j<=jmax; j++) HST_FOAM_NORMA3i->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
+    HST_FOAM_NORMA3i->SetEntries(0); // Important!!!
+  }
   if( MCgen->m_IsFoam1 == 1) {
     for(int j=1; j<=jmax; j++) HST_FOAM_NORMA1->SetBinContent(j,  MCgen->m_xpar[j]  );    // xpar encoded
     HST_FOAM_NORMA1->SetEntries(0);
@@ -97,25 +101,35 @@ void TRobolFOAM::Hbooker()
     HST_xx_Ceex2  = TH1D_UP("HST_xx_Ceex2" ,   "dSig/dv",   nbv, 0.0, 1.0);
     HST_xx_Ceex2n = TH1D_UP("HST_xx_Ceex2n" ,  "dSig/dv",   nbv, 0.0, 1.0);
     nbv = 50;
-    // scatergrams
+// scatergrams
     int nbc = 50;
     SCA_xc_Ceex2  = TH2D_UP("SCA_xc_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
     SCA_xc_Ceex2n = TH2D_UP("SCA_xc_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-
+//
     SCA_xc_Ceex0  = TH2D_UP("SCA_xc_Ceex0",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
     SCA_xc_Ceex0n = TH2D_UP("SCA_xc_Ceex0n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-
-    //  New bigger scatergrams, restricted vmax<0.20
+//
+//  New bigger scatergrams, restricted vmax<0.20
     int NBv =100; int NBc = 100;
     double vmx2= 0.20;
     SCT_xc_Ceex2=  TH2D_UP("SCT_xc_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex2n= TH2D_UP("SCT_xc_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-
+//
     SCT_xc_Ceex0=  TH2D_UP("SCT_xc_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_Ceex0n= TH2D_UP("SCT_xc_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
-
+// EEX series ------------------
     SCT_xc_EEX2 =  TH2D_UP("SCT_xc_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
     SCT_xc_EEX0 =  TH2D_UP("SCT_xc_EEX0",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+// Adding IFI to ISR, vmax<0.20
+    SCT_xc_EEX2i =  TH2D_UP("SCT_xc_EEX2i", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+    SCT_xc_EEX2n =  TH2D_UP("SCT_xc_EEX2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+//  The same but restricted vmax<0.02
+    double vmx3= 0.02;
+    SCN_xc_EEX2  =  TH2D_UP("SCN_xc_EEX2",  "dSig/dc/dv ", NBv, 0.0 ,vmx3, NBc, -1.0 ,1.0);
+    SCN_xc_EEX0  =  TH2D_UP("SCN_xc_EEX0",  "dSig/dc/dv ", NBv, 0.0 ,vmx3, NBc, -1.0 ,1.0);
+// Adding IFI to ISR, vmax<0.02
+    SCN_xc_EEX2i =  TH2D_UP("SCN_xc_EEX2i", "dSig/dc/dv ", NBv, 0.0 ,vmx3, NBc, -1.0 ,1.0);
+    SCN_xc_EEX2n =  TH2D_UP("SCN_xc_EEX2n", "dSig/dc/dv ", NBv, 0.0 ,vmx3, NBc, -1.0 ,1.0);
 
     // special histos for AFB from average cos(theta) for IFI on
     HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
@@ -150,6 +164,7 @@ void TRobolFOAM::Hbooker()
     //************* special normalization histos  *************
     int jmax = ((TMCgenFOAM*)f_MCgen)->m_jmax;
     HST_FOAM_NORMA3 = TH1D_UP("HST_FOAM_NORMA3","Normalization and xpar",jmax,0.0,10000.0);
+    HST_FOAM_NORMA3i= TH1D_UP("HST_FOAM_NORMA3i","Normalization and xpar",jmax,0.0,10000.0);
     HST_FOAM_NORMA1 = TH1D_UP("HST_FOAM_NORMA1","Normalization and xpar",jmax,0.0,10000.0);
     HST_FOAM_NORMA2 = TH1D_UP("HST_FOAM_NORMA2","Normalization and xpar",jmax,0.0,10000.0);
 
@@ -169,7 +184,7 @@ void TRobolFOAM::Hbooker()
 void TRobolFOAM::Production(double &iEvent)
 {
 /////////////////////////////////////////////////////////////
-  double wt1, wt2, wt3, wt5, xx, CosTheta;
+  double wt1, wt2, wt3, wt5, xx, vv, CosTheta;
   TMCgenFOAM *MCgen = (TMCgenFOAM*)f_MCgen;
 
 /////////////////////////////////////////////////////////////
@@ -236,6 +251,33 @@ if( MCgen->m_IsFoam3 == 1) {
   ///  Fill in special normalization histogram
   double Xnorm3 = MCgen->m_Xsav3;
   HST_FOAM_NORMA3->Fill(-1, Xnorm3);      // Normal*Nevtot, new style
+}// m_IsFoam
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+if( MCgen->m_IsFoam3i == 1) {
+  /// MC generation in user class, ISR+FSR no IFI
+  MCgen->m_Mode = -31;
+  MCgen->m_Foam3i->MakeEvent();         // Additional Foam of the user class
+  xx  = MCgen->m_xx;
+  vv  = MCgen->m_vv;
+  CosTheta = MCgen->m_CosTheta;
+  // filling in histos
+  double wtmain;
+  MCgen->m_Foam3i->GetMCwt(wtmain);
+  double WTeex2i, WTeex0i, WTeex2n, WTeex0n;
+  WTeex2i   = wtmain;                       // O(alf2) IFI on
+  WTeex0i   = wtmain *MCgen->m_WTmodel[ 3]; // O(alf2) IFI on
+  WTeex2n   = wtmain *MCgen->m_WTmodel[ 6]; // O(alf2) IFI off
+  WTeex0n   = wtmain *MCgen->m_WTmodel[ 7]; // O(alf2) IFI off
+  SCT_xc_EEX2i->Fill(xx,CosTheta,WTeex2i);  // xmax<0.20
+  SCT_xc_EEX2n->Fill(xx,CosTheta,WTeex2n);  // xmax<0.20
+  //
+  SCN_xc_EEX2i->Fill(xx,CosTheta,WTeex2i);  // xmax<0.02
+  SCN_xc_EEX2n->Fill(xx,CosTheta,WTeex2n);  // xmax<0.02
+  ///  Fill in special normalization histogram
+  double Xnorm3i = MCgen->m_Xsav3i;
+  HST_FOAM_NORMA3i->Fill(-1, Xnorm3i);      // Normal*Nevtot, new style
 }// m_IsFoam
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -307,6 +349,10 @@ void TRobolFOAM::Finalize()
   if( MCgen->m_IsFoam3 == 1) {
     MCgen->m_Foam3->Finalize(MCnorm, Errel);  // Additional Foam of the user class
     MCgen->m_Foam3->GetIntegMC( MCresult, MCerror);  //! get MC integral
+  }// m_IsFoam
+  if( MCgen->m_IsFoam3i == 1) {
+    MCgen->m_Foam3i->Finalize(MCnorm, Errel);  // Additional Foam of the user class
+    MCgen->m_Foam3i->GetIntegMC( MCresult, MCerror);  //! get MC integral
   }// m_IsFoam
   if( MCgen->m_IsFoam1 == 1) {
     MCgen->m_Foam1->Finalize(MCnorm, Errel);  // Additional Foam of the user class

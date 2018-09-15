@@ -53,16 +53,25 @@ class TRobolFOAM : public TRobol {
   TH2D   *SCT_xc_Ceex0;          //! no streamer
   TH2D   *SCT_xc_Ceex0n;         //! no streamer
 
-  TH2D   *SCT_xc_EEX2;           //!
-  TH2D   *SCT_xc_EEX0;           //!
+  TH2D   *SCT_xc_EEX2;           //! no streamer
+  TH2D   *SCT_xc_EEX0;           //! no streamer
 
+  TH2D   *SCT_xc_EEX2i;          //! no streamer
+  TH2D   *SCT_xc_EEX2n;          //! no streamer
+
+  TH2D   *SCN_xc_EEX2;           //! no streamer
+  TH2D   *SCN_xc_EEX0;           //! no streamer
+
+  TH2D   *SCN_xc_EEX2i;          //! no streamer
+  TH2D   *SCN_xc_EEX2n;          //! no streamer
+/////////////////////////////////////////////////////////
   TH1D   *HST5_xx_Ceex2;         //! no streamer
   TH1D   *HST5_xc_Ceex2;         //! no streamer
   TH1D   *HST5_xx_forw_Ceex2;    //! no streamer
 
   TH1D   *HST5_xx9_Ceex2;        //! no streamer
   TH1D   *HST5_xx9_forw_Ceex2;   //! no streamer
-
+/////////////////////////////////////////////////////////
   TH1D   *HST_cc_EEX2_vmax02;    //! no streamer
   TH1D   *HST_cc_EEX2_vmax002;   //! no streamer
   TH1D   *HST_cc_EEX2_vmax0002;  //! no streamer
@@ -84,6 +93,7 @@ class TRobolFOAM : public TRobol {
   TH1D   *HST_cs_ceex2_vmax0002;  //! no streamer
 
   TH1D   *HST_FOAM_NORMA3;       //! no streamer
+  TH1D   *HST_FOAM_NORMA3i;       //! no streamer
   TH1D   *HST_FOAM_NORMA1;       //! no streamer
   TH1D   *HST_FOAM_NORMA2;       //! no streamer
 ////////////////////////////////////////////////////////////////////////////

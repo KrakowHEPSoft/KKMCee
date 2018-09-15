@@ -61,6 +61,11 @@ extern "C" void kksem_setcrange_(const double&, const double&);
 extern "C" void kksem_setkeyzet_( const int& );
 //      SUBROUTINE KKsem_MakeBorn(svar,Born)
 extern "C" void kksem_makeborn_(const double&, double&);
+//      DOUBLE PRECISION FUNCTION KKsem_BornV(svar,costhe)
+extern "C" double kksem_bornv_(const double&, const double&);
+//      DOUBLE PRECISION FUNCTION KKsem_BornVi(svar,costhe)
+extern "C" double kksem_bornvi_(const double&, const double&);
+//    New entries in KKsem
 //      SUBROUTINE KKsem_Ord1(KeyDist,KFi,KFf,CMSene,vv,Result)
 extern "C" void kksem_ord1v_(const int&, const int&, const int&, const double&, const double&, const double&);
 //      SUBROUTINE kksem_ord1c(KeyDist,KFi,KFf,CMSene,cc,reps,Result)
@@ -120,12 +125,15 @@ class TMCgenFOAM :public TMCgen
 // Additional Foam object for ISR+FSR without IFI
   int     m_IsFoam5;       //  ON/OFF switch 5-dim
   int     m_IsFoam3;       //  ON/OFF switch 3-dim
+  int     m_IsFoam3i;      //  ON/OFF switch 3-dim
   int     m_IsFoam2;       //  ON/OFF switch 2-dim
   int     m_IsFoam1;       //  ON/OFF switch 1-dim
   double  m_Xsav3;        //  normalization
+  double  m_Xsav3i;       //  normalization
   double  m_Xsav2;        //  normalization
   double  m_Xsav1;        //  normalization
   TFOAM  *m_Foam3;        //  Additional Foam object
+  TFOAM  *m_Foam3i;       //  Additional Foam object
   TFOAM  *m_Foam2;        //  Additional Foam object
   TFOAM  *m_Foam1;        //  Additional Foam object
 //******** MC EVENT ********
@@ -158,6 +166,7 @@ class TMCgenFOAM :public TMCgen
   double gamIFI( double );
   double RhoFSR(int, double, double, double );
   double RhoISR(int, double, double, double );
+  double RhoISRi(int, double, double, double, double );
   double RhoIFI(double, double, double );
   double RhoIFI2(double, double, double );
   void GetRhoFSR1(double, double, double&, double& );
@@ -170,7 +179,9 @@ class TMCgenFOAM :public TMCgen
   void MapMinus( double, double, double &, double &);
   void MapIFI(   double, double, double &, double &);
   double Density5(int, double *);   ///
+  double Density5i(int, double *);   ///
   double Density3(int, double *);   ///
+  double Density3i(int, double *);  ///
   double Density1(int, double *);   ///
   double Density2(int, double *);   ///
   /// methods auxiliary

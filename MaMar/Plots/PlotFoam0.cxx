@@ -48,9 +48,9 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_21G");  // jan.2018
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); // obsolete
 
 ////  ****************** FOAM ******************
-//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root"); // current
 //  Febr. 2018
-TFile DiskFileF("../workFOAM/histo.root_95GeV_22G_FSR_1-v"); // with s(1-v) in FSR
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_22G_FSR_1-v"); // with s(1-v) in FSR
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_21G_FSR_1-v"); // with s(1-v) in FSR
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_24G_FSR_1-v"); // with s(1-v) in FSR
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_73G_FSR_1-v"); // with s(1-v) in FSR

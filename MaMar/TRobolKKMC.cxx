@@ -629,18 +629,18 @@ void TRobolKKMC::Production(double &iEvent)
       if( CosPRD>0.0) hst_Alf2CutA_Ceex2nF->Fill(dalf,Wt2CEEX2n);
   }// Cut (A)
   if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
-    hst_vA_Ceex1->Fill(   vv, WtCEEX1);
-    hst_vA_Ceex2->Fill(   vv, WtCEEX2);
-    hst_vA_Ceex2n->Fill(  vv, WtCEEX2n);
-    hst_vA_Ceex21->Fill(  vv, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
-    hst_vA_Ceex1i->Fill(  vv, WtCEEX1-WtCEEX1n); // IFI
-    hst_vA_Ceex2i->Fill(  vv, WtCEEX2-WtCEEX2n); // IFI
-    if( CosThePL > 0.0) hst_vA_Ceex1_F->Fill(  vv, WtCEEX1);
-    if( CosThePL > 0.0) hst_vA_Ceex2_F->Fill(  vv, WtCEEX2);
-    if( CosThePL > 0.0) hst_vA_Ceex2n_F->Fill( vv, WtCEEX2n);
-    if( CosThePL > 0.0) hst_vA_Ceex21_F->Fill( vv, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
-    if( CosThePL > 0.0) hst_vA_Ceex1i_F->Fill( vv, WtCEEX1-WtCEEX1n);// IFI
-    if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vv, WtCEEX2-WtCEEX2n);// IFI
+    hst_vA_Ceex1->Fill(   vvA, WtCEEX1);
+    hst_vA_Ceex2->Fill(   vvA, WtCEEX2);
+    hst_vA_Ceex2n->Fill(  vvA, WtCEEX2n);
+    hst_vA_Ceex21->Fill(  vvA, WtCEEX2-WtCEEX1);  // CCEX2-CEEX1
+    hst_vA_Ceex1i->Fill(  vvA, WtCEEX1-WtCEEX1n); // IFI
+    hst_vA_Ceex2i->Fill(  vvA, WtCEEX2-WtCEEX2n); // IFI
+    if( CosThePL > 0.0) hst_vA_Ceex1_F->Fill(  vvA, WtCEEX1);
+    if( CosThePL > 0.0) hst_vA_Ceex2_F->Fill(  vvA, WtCEEX2);
+    if( CosThePL > 0.0) hst_vA_Ceex2n_F->Fill( vvA, WtCEEX2n);
+    if( CosThePL > 0.0) hst_vA_Ceex21_F->Fill( vvA, WtCEEX2-WtCEEX1); // CCEX2-CEEX1
+    if( CosThePL > 0.0) hst_vA_Ceex1i_F->Fill( vvA, WtCEEX1-WtCEEX1n);// IFI
+    if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vvA, WtCEEX2-WtCEEX2n);// IFI
   }
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;

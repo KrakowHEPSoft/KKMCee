@@ -12,6 +12,7 @@ TMCgenFOAM::TMCgenFOAM():
 {
   /// This constructor is for ROOT streamers ONLY
   cout<< "----> TMCgenFOAM Default Constructor (for ROOT only) "<<endl;
+  m_Foam3i= NULL;
   m_Foam3 = NULL;
   m_Foam2 = NULL;
   m_Foam1 = NULL;
@@ -30,11 +31,13 @@ TMCgenFOAM::TMCgenFOAM(const char* Name):
 {
 //! all defaults defined here can be changed by the user
 //! before calling TMCgen::Initialize
+  m_Foam3i= NULL;
   m_Foam3 = NULL;
   m_Foam2 = NULL;
   m_Foam1 = NULL;
   m_IsFoam5 = 1;   // Foam5 ON
   m_IsFoam3 = 1;   // Foam3 ON
+  m_IsFoam3i= 0;   // Foam3 ON
   m_IsFoam2 = 0;   // Foam2 OFF
   m_IsFoam1 = 0;   // Foam1 OFF
 ///////////////////////////////////////////////////
@@ -138,6 +141,21 @@ void TMCgenFOAM::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
     m_count =0;
     m_Foam3->Initialize( f_RNgen, this);     // Initialize FOAM
     m_Foam3->GetIntNorm(m_Xsav3,errel);
+  }// m_IsFoam3
+  //////////////////////////////////////////////////////////////
+  /// ******  SETTING UP additional FOAM of the user class *****
+  if( m_IsFoam3i == 1 ){
+    m_Foam3i   = new TFOAM("Foam3i");   // new instance of MC generator FOAM
+    m_kDim    = 3;
+    m_Foam3i->SetkDim(m_kDim);         // No. of dims. Obligatory!
+    m_Foam3i->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+    m_Foam3i->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+    m_Foam3i->SetnBin(        16);     // No. of bins default 8
+    m_Foam3i->SetOptRej(0);            // wted events (=0), default wt=1 events (=1)
+    m_Mode    = 31;
+    m_count =0;
+    m_Foam3i->Initialize( f_RNgen, this);     // Initialize FOAM
+    m_Foam3i->GetIntNorm(m_Xsav3i,errel);
   }// m_IsFoam3
   //////////////////////////////////////////////////////////////
   /// ******  SETTING UP additional FOAM of the user class *****
@@ -456,6 +474,43 @@ double TMCgenFOAM::RhoISR(int KeyISR, double svar, double vv, double eps){
 }//Rho_ISR
 
 
+///------------------------------------------------------------------------
+double TMCgenFOAM::RhoISRi(int KeyISR, double svar, double costhe, double vv, double eps){
+/// ISR rho-function for ISR
+  double alf1   = m_alfpi;
+  double gami   = gamISR(svar);
+  double gamii  = gami +2.0* gamIFI(costhe);
+  double gamfac = Fyfs(gamii);
+  double delb   = gami/4 +alf1*(-0.5  +sqr(m_pi)/3.0);
+  double ffact  = gamfac*exp(delb);
+  double ffact0 = Fyfs(gami)*exp(delb);
+//
+  double rho,dels,delh;
+  if(       KeyISR == 0){
+/// zero   order exponentiated
+	dels = 0;
+	delh = -gami/4.0 *log(1.0-vv);
+  }else if( KeyISR == 1){
+/// first  order
+	dels = gami/2;   /// NLO part =0 as for vector boson???
+    delh = vv*(-1 +vv/2);
+  }else if( KeyISR == 2){
+/// second order without NLO part
+    dels = gami/2 +sqr(gami)/8;
+    delh = vv*(-1+vv/2.0)
+          +gami*0.5*(-0.25*(4.0-6.0*vv+3.0*vv*vv)*log(1-vv)-vv);
+  }else{
+	 cout<<"+++++TMCgenFOAM::KKdistr: Wrong KeyISR = " << m_KeyISR<<endl; exit(5);
+  }
+  if( vv > eps){
+     rho = ffact*gamii* exp( log(vv)*(gamii-1) ) *(1 +dels +delh);
+  }else{
+	 rho = ffact* exp( log(eps)*(gamii) ) *(1 +dels);
+  }
+  return rho;
+}//Rho_ISR
+
+
 
 ///------------------------------------------------------------------------
 double TMCgenFOAM::RhoFSR(int KeyFSR, double svar, double uu, double eps){
@@ -553,8 +608,11 @@ double TMCgenFOAM::Density(int nDim, double *Xarg){
 	m_count++;  // counter for debug
 	if( abs(m_Mode) == 5 ){
 	    return Density5(nDim, Xarg);
+//	    return Density5i(nDim, Xarg); // testing approximate formula with ISR+IFI
 	} else if( abs(m_Mode) == 3 ){
 		return Density3(nDim, Xarg);
+	} else if( abs(m_Mode) == 31 ){
+		return Density3i(nDim, Xarg);
 	} else if( abs(m_Mode) == 1 ){
 		return Density1(nDim, Xarg);
 	} else if( abs(m_Mode) == 2 ){
@@ -680,6 +738,131 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
 }// Density5
 
 
+///////////////////////////////////////////////////////////////
+double TMCgenFOAM::Density5i(int nDim, double *Xarg)
+{ // density distribution for Foam
+//   For testing 3-dim. approximation with IFI combined with ISR
+	Double_t Dist=1;
+	double svar = sqr(m_CMSene);
+	double svarCum = svar;
+    // ******** mapping for polar angle *******
+    double cmax = 0.99999;
+    cmax = 0.999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[2] );
+//    Dist *= 2.0*cmax;
+// ******** mapping for ISR *******
+	double R= Xarg[0];
+	double gami = gamISR(svar);
+//[[[
+    gami +=  2*gamIFI(m_CosTheta);
+    if(gami < 0.0) cout<<"Density5i costhe, gami= "<< m_CosTheta<< "  "<<gami<<endl;
+//]]]
+	double dJacISR;
+	MapPlus(  R, gami, m_vv, dJacISR);
+//	double RhoIsr  = RhoISR(2,svar,m_vv,m_eps); // ISR+IFI
+	double RhoIsr  = RhoISRi(2,svar,m_CosTheta,m_vv,m_eps); // ISR+IFI
+	double DistISR = dJacISR * RhoIsr;
+	double RhoIsr0 = RhoISR(0,svar,m_vv,m_eps);
+	svarCum *= (1-m_vv);
+	double svar2 = svar*(1-m_vv);
+    // ******** mapping for IFI variable *******
+    double gamint = gamIFI(m_CosTheta);
+    double dJacInt1, dJacInt2;
+    MapIFI( Xarg[3], gamint, m_r1, dJacInt1);           // mapping eps-dependent !!!
+    MapIFI( Xarg[4], gamint, m_r2, dJacInt2);           // mapping eps-dependent !!!
+    double RhoInt1 = RhoIFI( m_CosTheta, m_r1,m_eps);  // implicitly eps-dependent !!!
+    double RhoInt2 = RhoIFI( m_CosTheta, m_r2,m_eps);  // implicitly eps-dependent !!!
+    double DistIFI1 = dJacInt1 *RhoInt1;
+    double DistIFI2 = dJacInt2 *RhoInt2;
+	DistIFI2 =1;
+	m_r2=0.0;
+	DistIFI1 =1;
+	m_r1=0.0;
+// ******** mapping for FSR *******
+    double rr= Xarg[1];
+//    double gamf   = gamFSR(svar2);
+    double gamf   = gamFSR(svar*(1-m_vv)*(1-m_r1)*(1-m_r2));
+    double dJacFSR;
+	MapPlus(  rr, gamf, m_uu, dJacFSR);
+ 	double RhoFsr  = RhoFSR(2, svar2,m_uu,m_eps);
+ 	double DistFSR = dJacFSR *RhoFsr;
+ 	double RhoFsr0 = RhoFSR(0, svar2,m_uu,m_eps);
+    svarCum *= (1-m_uu);
+// ******* MC event *******
+    double zz = (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
+    m_xx = 1-zz;
+//    m_xx = m_vv + m_uu - m_vv*m_uu;  // numerically more stable
+// effective masses
+	m_Mka = sqrt(svar2);   // after ISR obsolete !!!
+// =============== Sigm/dOmega from spin amplitudes ===============
+// Effective 4-momenta, KKMC convention: p={px,py,pz,E)
+	double Ene = sqrt(svar2)/2;
+	double CosTheta = m_CosTheta;
+	double Pmb  = sqrt( (Ene-m_beam)*(Ene+m_beam) ); // modulus
+	Vdef(m_p1, 0, 0 , Pmb, Ene);  // beam
+	Vdef(m_p2, 0, 0 ,-Pmb, Ene);  // beam
+	double Pmf  =sqrt( (Ene-m_fin)*(Ene+m_fin) ); // modulus
+	Vdef(m_p3, Pmf*sqrt(1-sqr(CosTheta)), 0 , Pmf*CosTheta,  Ene); // final
+	Vdef(m_p4,-Pmf*sqrt(1-sqr(CosTheta)), 0 ,-Pmf*CosTheta,  Ene); // final
+	double PX[4] = {0, 0, 0, 2*Ene};
+	double Yint, Misr1,Misr2;
+	Misr1 = sqrt((1-m_vv)*(1-m_r1)*svar);
+	Misr2 = sqrt((1-m_vv)*(1-m_r2)*svar);
+//	Misr1 = sqrt((1-m_vv)*(1-m_r1)*(1-m_r2)*svar);
+//	Misr2 = sqrt((1-m_vv)*(1-m_r1)*(1-m_r2)*svar);
+
+// Three-stroke calculation of Re(M M^*) including boxes
+	gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,CosTheta,Yint); // Yint is output
+	gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
+//
+// Re(M M^*) including only leading part of gamma-Z box
+    gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
+    gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    double dBorn_GPS0 = gps_makerhofoam_(Yint);
+//************ Debug*** Debug*** Debug*** Debug*** Debug ***********
+//    if( m_count <10 && fabs(svar/svar2-1)>0.20 ){  // debug
+    if( m_count <100 ){  // debug
+    	double Rat;
+//    	Rat = dSig_GPSF1/( dSig_GPSF2 );
+    	cout<<" =============================================== "<< m_count<< endl;
+    	cout<<" Density5i debug m_count= "<< m_count<< endl;
+    	cout<<" Yint    = "<< Yint;
+//    	cout<<" dSig_GPSF1    = "<< dSig_GPSF1;
+//   	cout<<" dSig_GPSF2    = "<< dSig_GPSF2;
+    	cout<<" svar/svar2 = "<< svar/svar2;
+    	cout<<" gami = "<< gami;
+    	cout<<" m_CosTheta = "<<m_CosTheta<<endl;
+    } //
+    if( m_count <10 ){  // debug
+//    if( m_count <1 && m_r1 > 0 && gamint <0 ){  // debug
+    	cout<<" Density5i debug m_count= "<< m_count<< endl;
+    	cout<<" m_r1= "<< m_r1 <<"  m_r2="<< m_r2<<"  m_xx="<< m_xx <<endl;
+//    	cout<<" m_CosTheta ="<< m_CosTheta <<" gamint= "<<gamint<<endl;
+    	cout<<" WT1 ="<< DistIFI1 <<"  WT2="<< DistIFI2<<endl;
+   }
+//   **********  end debug **********
+//	Dist *=  dBorn_GPS;  // This basic distr. includes boxes!!!
+    Dist = dJacISR*RhoIsr *dJacFSR*RhoFsr *DistIFI1*DistIFI2 *2.0*cmax *dBorn_GPS;
+//****************************************
+//          Model weights
+//****************************************
+// Pure CEEX alf^0 distribution without finite parts of boxes
+    double Dist0 = dJacISR*RhoIsr0 *dJacFSR*RhoFsr0 *DistIFI1*DistIFI2 *2.0*cmax *dBorn_GPS0;
+    m_WTmodel[50] = 0.0;
+    if( Dist != 0.0){
+      m_WTmodel[50] = Dist0/Dist; // Auxiliary model weight, pure CEEX0
+    }//
+//****************************************
+//*****  principal distribution for FOAM
+    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+	Dist *=  3.0/8.0 *sig0nb;
+	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
+	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+	return Dist;
+}// Density5i
+
+
 
 ///////////////////////////////////////////////////////////////
 Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
@@ -776,6 +959,166 @@ Double_t TMCgenFOAM::Density2(int nDim, Double_t *Xarg)
     return Dist; // principal distribution for FOAM
 }//Density2
 
+
+///////////////////////////////////////////////////////////////
+double TMCgenFOAM::Density3i(int nDim, double *Xarg)
+{ // density distribution for Foam
+//   For testing 3-dim. approximation with IFI combined with ISR
+	double svar = sqr(m_CMSene);
+    // ******** mapping for polar angle *******
+    double cmax = 0.99999;
+    cmax = 0.999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[0] );
+// ******** mapping for ISR *******
+	double R= Xarg[1];
+	double gami = gamISR(svar);
+//[[[
+    gami +=  2*gamIFI(m_CosTheta);
+    if(gami < 0.0) cout<<"Density3i costhe, gami= "<< m_CosTheta<< "  "<<gami<<endl;
+//]]]
+	double dJacISR;
+	MapPlus(  R, gami, m_vv, dJacISR);
+	double RhoIsr2n = RhoISR(2,svar,m_vv,m_eps); // ISR O(alf2) no IFI
+	double RhoIsr0n = RhoISR(0,svar,m_vv,m_eps); // ISR O(alf2) no IFI
+	double RhoIsr2i = RhoISRi(2,svar,m_CosTheta,m_vv,m_eps); // ISR +IFI
+	double RhoIsr0i = RhoISRi(0,svar,m_CosTheta,m_vv,m_eps); // ISR +IFI
+	double svar2 = svar*(1-m_vv);
+// ******** mapping for FSR *******
+    double rr= Xarg[2];
+    double gamf   = gamFSR(svar*(1-m_vv));
+    double dJacFSR;
+	MapPlus(  rr, gamf, m_uu, dJacFSR);
+ 	double RhoFsr2 = RhoFSR(2, svar2,m_uu,m_eps);
+ 	double RhoFsr0 = RhoFSR(0, svar2,m_uu,m_eps);
+// ******* MC event *******
+    double zz = (1-m_vv)*(1-m_uu);
+    m_xx = 1-zz;
+    double svarCum = svar*(1-m_vv)*(1-m_uu);
+// =============== Sigm/dOmega from spin amplitudes ===============
+//*** EEX Born of KKMC, no IFI, with EW
+    bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
+    double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);// Born of EEX
+//*** Born of KKsem, leading resonance virtual IFI, no EW (Gmu scheme), FAST!
+    double dSig_BornVi  = kksem_bornvi_(svar2, m_CosTheta);
+//*** pure Born from KKsem (no IFI, Gmu scheme)
+    double dSig_BornV   = kksem_bornv_(svar2, m_CosTheta);
+//=================================================================
+	double Yint, Misr1,Misr2;
+	Misr1 = sqrt((1-m_vv)*svar);
+	Misr2 = sqrt((1-m_vv)*svar);
+// Three-stroke calculation of Re(M M^*) including boxes, SLOW!
+//   gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,m_CosTheta,Yint); // Yint is output
+//   gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,m_CosTheta,Yint);
+//   double dBorn_GPS = gps_makerhofoam_(Yint);              // Yint is input
+//
+// Re(M M^*) including only leading part of gamma-Z box, SLOW!
+//   gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,m_CosTheta,Yint);
+//   gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,m_CosTheta,Yint);
+//   double dBorn_GPS0 = gps_makerhofoam_(Yint);
+//******
+    double Dist2i = dJacISR*RhoIsr2i *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornVi; // O(alf2) IFI on
+    double Dist0i = dJacISR*RhoIsr0i *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornVi; // O(alf0) IFI on
+    double Dist2n = dJacISR*RhoIsr2n *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornV;  // O(alf2) IFI off
+    double Dist0n = dJacISR*RhoIsr0n *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornV;  // O(alf0) IFI off
+    double Dist  = Dist2i;  // Principal weight
+//****************************************
+//          Model weights
+//****************************************
+    m_WTmodel[3] = 0.0;
+    m_WTmodel[6] = 0.0;
+    m_WTmodel[7] = 0.0;
+    if( Dist != 0.0){
+      m_WTmodel[3] = Dist0i/Dist; // O(alf0) IFI on
+      m_WTmodel[6] = Dist2n/Dist; // O(alf2) IFI off
+      m_WTmodel[7] = Dist0n/Dist; // O(alf0) IFI off
+    }//
+//****************************************
+//*****  principal distribution for FOAM
+    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+	Dist *=  3.0/8.0 *sig0nb;
+	if( svarCum < sqr(2*m_fin)) Dist = 1e-100;
+	if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+	return Dist;
+}// Density3i
+
+
+
+/*
+///////////////////////////////////////////////////////////////
+Double_t TMCgenFOAM::Density3i(int nDim, Double_t *Xarg)
+{ // density distribution for Foam
+  // IFI contribution approximated, pushed into ISR!
+/////////////////////////////////////////////////////////////////////////
+//!!! This version does not work for unknow reason for gps_bornfoam_!!!!!
+/////////////////////////////////////////////////////////////////////////
+	double svar = sqr(m_CMSene);
+// *************** mapping for polar angle *******
+    double cmax = 0.99999;
+    cmax = 0.999;
+    m_CosTheta = cmax*( -1.0 + 2.0* Xarg[0] );
+// ********************** mapping for ISR *********************
+	double R= Xarg[1];
+	double gami = gamISR(svar);      // ISR only
+    gami +=  2*gamIFI(m_CosTheta);   // IFI added, independently in RhoISRi !!!
+    if(gami < 0.0) cout<<"Density5i costhe, gami= "<< m_CosTheta<< "  "<<gami<<endl;
+	double dJacISR;
+	MapPlus(  R, gami, m_vv, dJacISR);
+	double DistISR2 = dJacISR * RhoISRi(2,svar,m_CosTheta,m_vv,m_eps); // ISR+IFI
+	double DistISR0 = dJacISR * RhoISRi(0,svar,m_CosTheta,m_vv,m_eps); // ISR+IFI
+
+	//double DistISR2 = dJacISR * RhoISR(2,svar,m_vv,m_eps); // ISR
+	//double DistISR0 = dJacISR * RhoISR(0,svar,m_vv,m_eps); // ISR
+
+	double svar2 = svar*(1-m_vv);
+// ********************** mapping for FSR *********************
+    double rr= Xarg[1];
+    double gamf   = gamFSR(svar2);
+    double dJacFSR;
+	MapPlus(  rr, gamf, m_uu, dJacFSR);
+ 	double DistFSR2 = dJacFSR *RhoFSR(2, svar2,m_uu,m_eps);
+ 	double DistFSR0 = dJacFSR *RhoFSR(0, svar2,m_uu,m_eps);
+//********************* MC event ****************************
+    double zz = (1-m_vv)*(1-m_uu);
+    m_xx = 1-zz;
+	m_Mka = sqrt(svar2);   // after ISR obsolete !!!
+//=============== Sigm/dOmega from spin amplitudes ===============
+    double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
+//*** EEX Born from KKMC, no IFI, with EW
+	bornv_interpogsw_(m_KFf,svar2, m_CosTheta);
+	double dSig_EEX  = bornv_dizet_( 1, m_KFini, m_KFf, svar2, m_CosTheta, 0.0, 0.0, 0.0, 0.0);// Born of EEX
+//*** EEX pure Born from KKsem (no IFI)
+	//dSig_EEX  = kksem_bornv_(svar2, m_CosTheta);
+//*** EEX Born of KKsem with leading resonance virtual IFI
+	dSig_EEX  = kksem_bornvi_(svar2, m_CosTheta);
+//*** Born of GPS with IFI and EW
+	double Yint;
+	double Misr = sqrt(svar2);
+	gps_bornfoam_( 20,m_KFini,m_KFf,Misr,m_CosTheta,Yint); // Yint is output
+	gps_bornfoam_( 21,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+//    gps_bornfoam_(  0,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+//    gps_bornfoam_(  1,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+    double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
+    dSig_EEX  = Yint; // Born of GPS/CEEX
+//******
+ 	double Dist_EEX2 = 2.0*cmax*DistISR2*DistFSR2 *dSig_EEX *3.0/8.0 *sig0nb; // QED O(alf2)
+ 	double Dist_EEX0 = 2.0*cmax*DistISR0*DistFSR0 *dSig_EEX *3.0/8.0 *sig0nb; // QED O(alf0)
+//====================================================================
+    double Dist = Dist_EEX2; // principal distribution for ISR+FSR+IFI
+//****************************************
+//          Model weights
+//****************************************
+    m_WTmodel[ 3] = 0.0;
+    if( Dist != 0.0){
+ 	    m_WTmodel[ 3] =  Dist_EEX0/Dist; // Auxiliary model weight for O(alf0)
+    }//
+////////////////////////////
+    if(m_Mode > 0 ) Dist = fabs(Dist); // For initialization mode
+    return Dist; // principal distribution for FOAM
+/////////////////////////////////////////////////////////
+}//Density3i
+*/
+
+
 ///////////////////////////////////////////////////////////////
 Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 { // density distribution for Foam
@@ -852,7 +1195,7 @@ Double_t TMCgenFOAM::Density3(int nDim, Double_t *Xarg)
 	Vdef(m_p3, Pmf*sqrt(1-sqr(m_CosTheta)), 0 , Pmf*m_CosTheta,  Ene); // final
 	Vdef(m_p4,-Pmf*sqrt(1-sqr(m_CosTheta)), 0 ,-Pmf*m_CosTheta,  Ene); // final
 	double PX[4] = {0, 0, 0, 2*Ene};
-//***** pure Born of CEEX
+//***** pure original Born of CEEX in KK2f
 	double BetaFin = sqrt(1-4*sqr(m_fin)/svar2 ); // missing phase space factor
 	double dSig_GPS;
     gps_bornf_(m_KFini, m_KFf ,PX, m_CosTheta, m_p1,m_beam, m_p2, -m_beam,

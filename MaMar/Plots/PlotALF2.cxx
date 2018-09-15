@@ -34,13 +34,13 @@ using namespace std;
 // Latest from /workKKMC
 
 //TFile DiskFileA88("../workKKMC/histo.root");  // apr.2018
-//TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
+TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
 
 //TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // recent
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // recent
 
 TFile DiskFileA88("../workKKMC/histo.root_88GeV_apr_13G");  // apr.2018
-TFile DiskFileA95("../workKKMC/histo.root_95GeV_apr_38G");  // apr.2018
+//TFile DiskFileA95("../workKKMC/histo.root_95GeV_apr_38G");  // apr.2018
 
 ////  ****************** FOAM ******************
 TFile DiskFileF95("../workFoam3/histo.root"); // current
@@ -116,17 +116,17 @@ void HisReMakeFOAMi()
   TH1D *HST_FOAM_NORMA3i9 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA3i");
 
   TH2D *SCT_xc_EEX2i9   = (TH2D*)DiskFileF95.Get("SCT_xc_EEX2i");    // FOAM small range x<0.20
-  TH2D *SCT_xc_EEX0i9   = (TH2D*)DiskFileF95.Get("SCT_xc_EEX0i");    // FOAM small range x<0.20
+  TH2D *SCT_xc_EEX2n9   = (TH2D*)DiskFileF95.Get("SCT_xc_EEX2n");    // FOAM small range x<0.20
 
   TH2D *SCN_xc_EEX2i9   = (TH2D*)DiskFileF95.Get("SCN_xc_EEX2i");    // FOAM small range x<0.02
-  TH2D *SCN_xc_EEX0i9   = (TH2D*)DiskFileF95.Get("SCN_xc_EEX0i");    // FOAM small range x<0.02
+  TH2D *SCN_xc_EEX2n9   = (TH2D*)DiskFileF95.Get("SCN_xc_EEX2n");    // FOAM small range x<0.02
 ////////////////////////////////////////////////////////////////
 // FOAM3i
 //   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX2i9 );    // normalizing
-//   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX0i9 );    // normalizing
+//   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX2n9 );    // normalizing
 
 //   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX2i9 );    // normalizing
-//   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX0i9 );    // normalizing
+//   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX2n9 );    // normalizing
 
 ///////////////////////////////////////////////////////////////
 // sigma(vmax) and AFB(vmax) from KKfoam scat.
@@ -136,15 +136,15 @@ void HisReMakeFOAMi()
    TH1D  *Htot2_xmax_EEX2i9 = HstProjV("Htot2_xmax_EEX2i9",SCT_xc_EEX2i9,NbMax); //  x<0.20
    TH1D  *Hafb2_xmax_EEX2i9 = HstProjA("Hafb2_xmax_EEX2i9",SCT_xc_EEX2i9,NbMax); //  x<0.20
 //
-   TH1D  *Htot2_xmax_EEX0i9 = HstProjV("Htot2_xmax_EEX0i9",SCT_xc_EEX0i9,NbMax); //  x<0.20
-   TH1D  *Hafb2_xmax_EEX0i9 = HstProjA("Hafb2_xmax_EEX0i9",SCT_xc_EEX0i9,NbMax); //  x<0.20
+   TH1D  *Htot2_xmax_EEX2n9 = HstProjV("Htot2_xmax_EEX2n9",SCT_xc_EEX2n9,NbMax); //  x<0.20
+   TH1D  *Hafb2_xmax_EEX2n9 = HstProjA("Hafb2_xmax_EEX2n9",SCT_xc_EEX2n9,NbMax); //  x<0.20
 //
-   // vmax<0.2, 100 bins in ctheta, 100 bins in vv
+   // vmax<0.02, 100 bins in ctheta, 100 bins in vv
    TH1D  *Htot2_vmax_EEX2i9 = HstProjV("Htot2_vmax_EEX2i9",SCN_xc_EEX2i9,NbMax); //  x<0.02
    TH1D  *Hafb2_vmax_EEX2i9 = HstProjA("Hafb2_vmax_EEX2i9",SCN_xc_EEX2i9,NbMax); //  x<0.02
 //
-   TH1D  *Htot2_vmax_EEX0i9 = HstProjV("Htot2_vmax_EEX0i9",SCN_xc_EEX0i9,NbMax); //  x<0.02
-   TH1D  *Hafb2_vmax_EEX0i9 = HstProjA("Hafb2_vmax_EEX0i9",SCN_xc_EEX0i9,NbMax); //  x<0.02
+   TH1D  *Htot2_vmax_EEX2n9 = HstProjV("Htot2_vmax_EEX2n9",SCN_xc_EEX2n9,NbMax); //  x<0.02
+   TH1D  *Hafb2_vmax_EEX2n9 = HstProjA("Hafb2_vmax_EEX2n9",SCN_xc_EEX2n9,NbMax); //  x<0.02
 
 
 }// HisReMakeFOAMi
@@ -165,6 +165,9 @@ void HisReMakeKKMCi()
   TH1D *hst9_vA_Ceex1_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1_F");   //
   TH1D *hst9_vA_Ceex2_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2_F");   //
   TH1D *hst9_vA_Ceex21_F    = (TH1D*)DiskFileA95.Get("hst_vA_Ceex21_F");  //
+
+  TH1D *hst9_vA_Ceex2n      = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2n");  //
+  TH1D *hst9_vA_Ceex2n_F    = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2n_F");  //
 //
   TH1D *hst9_vB_Ceex1       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1");     //
   TH1D *hst9_vB_Ceex2       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2");     //
@@ -186,6 +189,9 @@ void HisReMakeKKMCi()
 //
   TH1D *HAfb9_vA_Ceex2 = HstAFB("HAfb9_vA_Ceex2", hst9_vA_Ceex2_F, hst9_vA_Ceex2);
   TH1D *HAfb9_vA_Ceex1 = HstAFB("HAfb9_vA_Ceex1", hst9_vA_Ceex1_F, hst9_vA_Ceex1); // ???
+//
+  TH1D *HAfb9_vA_Ceex2n = HstAFB("HAfb9_vA_Ceex2n", hst9_vA_Ceex2n_F, hst9_vA_Ceex2n);
+
   // Exact formula for AFB from weight differences
   TH1D *HAfb9_vB_Ceex21 = HstAFB4( "HAfb9_vB_Ceex21", hst9_vB_Ceex21_F, hst9_vB_Ceex21,
 		                                              hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
@@ -218,7 +224,7 @@ void HisReMakeKKMCi()
   TH1D *HAfb8_vB_Ceex2 = HstAFB("HAfb8_vB_Ceex2", hst8_vB_Ceex2_F, hst8_vB_Ceex2);
   TH1D *HAfb8_vB_Ceex1 = HstAFB("HAfb8_vB_Ceex1", hst8_vB_Ceex1_F, hst8_vB_Ceex1); // ???
 //
-   TH1D *HAfb8_vB_Ceex2n = HstAFB("HAfb8_vB_Ceex2n", hst8_vB_Ceex2n_F, hst8_vB_Ceex2n);
+  TH1D *HAfb8_vB_Ceex2n = HstAFB("HAfb8_vB_Ceex2n", hst8_vB_Ceex2n_F, hst8_vB_Ceex2n);
 //
   TH1D *HAfb8_vA_Ceex2 = HstAFB("HAfb8_vA_Ceex2", hst8_vA_Ceex2_F, hst8_vA_Ceex2);
   TH1D *HAfb8_vA_Ceex1 = HstAFB("HAfb8_vA_Ceex1", hst8_vA_Ceex1_F, hst8_vA_Ceex1); // ???
@@ -310,7 +316,7 @@ void KKsemMakeHisto(){
   LibSem9.VVmake( vcum_KKsem_95, afbv_KKsem_95, KF, chak, KeyDis, KeyFob, gCosTheta);
   // New test KKMC-KKsem for IFI off based on KKsem_Born Gmu scheme
   KeyFob=  -100; //
-  KeyFob=  -200; //
+  //KeyFob=  -200; //
   TH1D *vcum_KKsem_95b =(TH1D*)hstVtemplate->Clone("vcum_KKsem_95b");
   TH1D *afbv_KKsem_95b =(TH1D*)hstVtemplate->Clone("afbv_KKsem_95b");
   LibSem9.VVmake( vcum_KKsem_95b, afbv_KKsem_95b, KF, chak, KeyDis, KeyFob, gCosTheta);
@@ -341,6 +347,7 @@ void FigExp1()
   TH1D *HAfb9_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2");
   TH1D *HAfb9_vA_Ceex1  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex1");
   TH1D *HAfb9_vA_Ceex21 = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex21");
+  TH1D *HAfb9_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2n");
 
   TH1D *HAfb9_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2");
   TH1D *HAfb9_vB_Ceex1  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex1");
@@ -351,6 +358,7 @@ void FigExp1()
   TH1D *afbv_KKsem_95b = (TH1D*)DiskFileB.Get("afbv_KKsem_95b");
 
   TH1D *Hafb2_vmax_EEX2i9 =(TH1D*)DiskFileB.Get("Hafb2_vmax_EEX2i9");
+  TH1D *Hafb2_vmax_EEX2n9 =(TH1D*)DiskFileB.Get("Hafb2_vmax_EEX2n9");
 
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
@@ -368,16 +376,16 @@ void FigExp1()
   TH1D *HST1;
   HST1 =HAfb9_vB_Ceex2;
 
-  HST1 =HAfb9_vB_Ceex2n;
+//  HST1 =HAfb9_vB_Ceex2n;
 
-  HST1 =Hafb2_vmax_EEX2i9;
+//  HST1 =Hafb2_vmax_EEX2i9;
 
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
   HST1->GetXaxis()->SetNdivisions(8);
-//  HST1->SetMaximum(0.350);
-//  HST1->SetMinimum(0.250); // 95GeV
+  HST1->SetMaximum(0.350);
+  HST1->SetMinimum(0.250); // 95GeV
   HST1->DrawCopy("h");
 
   double ycapt =0.91, xcapt=0.3;
@@ -386,13 +394,17 @@ void FigExp1()
 
 
   PlotSame3(HAfb9_vB_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) KKMC Idealized");
-  PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) KKMC Realistic");
+  PlotSame3(HAfb9_vB_Ceex2n,    xcapt, ycapt, kBlue,      27, 1, "(B) KKMC IFI off");
 
-  PlotSame3(HAfb9_vB_Ceex2n,    xcapt, ycapt, kRed,       27, 1, "(N) KKMC noIFI");
-/*
-  PlotSame3(afbv_KKsem_95,      xcapt, ycapt, kGreen,     24, 1, "(D) KKsem DIZET");
-  PlotSame3(afbv_KKsem_95b,     xcapt, ycapt, kMagenta,   26, 1, "(G) KKsem Gmu");
-*/
+  PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) KKMC Realistic");
+  PlotSame3(HAfb9_vA_Ceex2n,    xcapt, ycapt, kBlack,     25, 1, "(A) KKMC IFI off");
+
+//  PlotSame3(Hafb2_vmax_EEX2i9,  xcapt, ycapt, kRed,       29, 1, "(I) KKfoam3i IFI on");
+//  PlotSame3(Hafb2_vmax_EEX2n9,  xcapt, ycapt, kRed,       30, 1, "(E) KKfoam3i IFI off");
+
+//  PlotSame3(afbv_KKsem_95,      xcapt, ycapt, kGreen,     24, 1, "(D) KKsem DIZET");
+//  PlotSame3(afbv_KKsem_95b,     xcapt, ycapt, kMagenta,   26, 1, "(G) KKsem Gmu");
+
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
@@ -408,7 +420,7 @@ void FigExp1()
   HST2->DrawCopy("h");
 
   ycapt =0.91, xcapt=0.3;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, Ceex2-Ceex1, IFI on");
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, Ceex2-Ceex1, IFI");
   ycapt += -0.047;
   PlotSame3(HAfb9_vB_Ceex21,   xcapt, ycapt, kBlue,     25, 1, "(B) Idealized");
   PlotSame3(HAfb9_vA_Ceex21,   xcapt, ycapt, kBlack,    25, 1, "(A) Realistic");
