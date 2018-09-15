@@ -229,7 +229,8 @@ void TRobolKKMC::Hbooker()
   hst_Alf2CutB_Ceex2nF   = TH1D_UP("hst_Alf2CutB_Ceex2nF",  " dsig/dAlf ", NBalf, -m_DelAlf , m_DelAlf );
 //////////////////////////////////////
 // New section for alpha dependence and experim. cuts
-  int NBexp =40;
+//  int NBexp =40;
+  int NBexp =100;
   hst_vA_Ceex1       = TH1D_UP("hst_vA_Ceex1",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vA_Ceex1_F     = TH1D_UP("hst_vA_Ceex1_F", "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
 //
