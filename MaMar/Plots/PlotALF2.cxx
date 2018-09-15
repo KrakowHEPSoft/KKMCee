@@ -42,6 +42,12 @@ using namespace std;
 TFile DiskFileA88("../workKKMC/histo.root_88GeV_apr_13G");  // apr.2018
 TFile DiskFileA95("../workKKMC/histo.root_95GeV_apr_38G");  // apr.2018
 
+////  ****************** FOAM ******************
+TFile DiskFileF95("../workFoam3/histo.root"); // current
+//  Sept. 2018
+//TFile DiskFileF95("../workFoam3/histo.root_95GeV_2G"); //
+
+
 // current new histos
 TFile DiskFileB("RhoAFB.root","RECREATE","histograms");
 ///////////////////////////////////////////////////////////////////////////////////
@@ -98,12 +104,57 @@ void PlotSame3(TH1D *HST, double &xcapt, double &ycapt, Int_t kolor, int kMarker
 }// PlotSame3
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void HisReMakeFOAMi()
+{
+//
+  cout<<"==================================================================="<<endl;
+  cout<<"================ HisReMakeFOAMi  BEGIN   ============================"<<endl;
+//////////////////////////////////////////////////////////////////
+  cout<<"  Renormalizing  and reprocessing histograms from FOAM"<<endl;
+
+  TH1D *HST_FOAM_NORMA3i9 = (TH1D*)DiskFileF95.Get("HST_FOAM_NORMA3i");
+
+  TH2D *SCT_xc_EEX2i9   = (TH2D*)DiskFileF95.Get("SCT_xc_EEX2i");    // FOAM small range x<0.20
+  TH2D *SCT_xc_EEX0i9   = (TH2D*)DiskFileF95.Get("SCT_xc_EEX0i");    // FOAM small range x<0.20
+
+  TH2D *SCN_xc_EEX2i9   = (TH2D*)DiskFileF95.Get("SCN_xc_EEX2i");    // FOAM small range x<0.02
+  TH2D *SCN_xc_EEX0i9   = (TH2D*)DiskFileF95.Get("SCN_xc_EEX0i");    // FOAM small range x<0.02
+////////////////////////////////////////////////////////////////
+// FOAM3i
+//   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX2i9 );    // normalizing
+//   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX0i9 );    // normalizing
+
+//   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX2i9 );    // normalizing
+//   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX0i9 );    // normalizing
+
+///////////////////////////////////////////////////////////////
+// sigma(vmax) and AFB(vmax) from KKfoam scat.
+// vmax<0.2, 100 bins in ctheta, 100 bins in vv
+   int NbMax=45;
+//   NbMax=0;
+   TH1D  *Htot2_xmax_EEX2i9 = HstProjV("Htot2_xmax_EEX2i9",SCT_xc_EEX2i9,NbMax); //  x<0.20
+   TH1D  *Hafb2_xmax_EEX2i9 = HstProjA("Hafb2_xmax_EEX2i9",SCT_xc_EEX2i9,NbMax); //  x<0.20
+//
+   TH1D  *Htot2_xmax_EEX0i9 = HstProjV("Htot2_xmax_EEX0i9",SCT_xc_EEX0i9,NbMax); //  x<0.20
+   TH1D  *Hafb2_xmax_EEX0i9 = HstProjA("Hafb2_xmax_EEX0i9",SCT_xc_EEX0i9,NbMax); //  x<0.20
+//
+   // vmax<0.2, 100 bins in ctheta, 100 bins in vv
+   TH1D  *Htot2_vmax_EEX2i9 = HstProjV("Htot2_vmax_EEX2i9",SCN_xc_EEX2i9,NbMax); //  x<0.02
+   TH1D  *Hafb2_vmax_EEX2i9 = HstProjA("Hafb2_vmax_EEX2i9",SCN_xc_EEX2i9,NbMax); //  x<0.02
+//
+   TH1D  *Htot2_vmax_EEX0i9 = HstProjV("Htot2_vmax_EEX0i9",SCN_xc_EEX0i9,NbMax); //  x<0.02
+   TH1D  *Hafb2_vmax_EEX0i9 = HstProjA("Hafb2_vmax_EEX0i9",SCN_xc_EEX0i9,NbMax); //  x<0.02
+
+
+}// HisReMakeFOAMi
+
 
 ///////////////////////////////////////////////////////////////////////////////////
-void ReMakeHistoMC()
+void HisReMakeKKMCi()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= ReMakeHistoMC =========================== "<<endl;
+  cout<<" ========================= HisReMakeKKMCi =========================== "<<endl;
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // CEEX2-CEEX1   v-distributions
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,9 +273,9 @@ void ReMakeHistoMC()
   TH1D *HAfb9_vB_Ceex1_IFI = HstAFB4( "HAfb9_vB_Ceex1_IFI",hst9_vB_Ceex1i_F, hst9_vB_Ceex1i,
                                                            hst9_vB_Ceex1_F,  hst9_vB_Ceex1 );
 
-  cout<<" ===================== End of ReMakeHistoMC ======================== "<<endl;
+  cout<<" ===================== End of HisReMakeKKMCi ======================== "<<endl;
 
-}// ReMakeHistoMC
+}// HisReMakeKKMCi
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -299,6 +350,8 @@ void FigExp1()
   TH1D *afbv_KKsem_95  = (TH1D*)DiskFileB.Get("afbv_KKsem_95");
   TH1D *afbv_KKsem_95b = (TH1D*)DiskFileB.Get("afbv_KKsem_95b");
 
+  TH1D *Hafb2_vmax_EEX2i9 =(TH1D*)DiskFileB.Get("Hafb2_vmax_EEX2i9");
+
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
   ////////////////////////////////////////////////////////////////////////////////
@@ -317,27 +370,29 @@ void FigExp1()
 
   HST1 =HAfb9_vB_Ceex2n;
 
-//  HST1 =afbv_KKsem_95b;
+  HST1 =Hafb2_vmax_EEX2i9;
 
 
   HST1->SetStats(0);
   HST1->SetTitle(0);
   HST1->GetXaxis()->SetNdivisions(8);
-  HST1->SetMaximum(0.350);
-  HST1->SetMinimum(0.250); // 95GeV
+//  HST1->SetMaximum(0.350);
+//  HST1->SetMinimum(0.250); // 95GeV
   HST1->DrawCopy("h");
 
   double ycapt =0.91, xcapt=0.3;
   CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, Ceex2, IFI on");
   ycapt += -0.047;
+
+
   PlotSame3(HAfb9_vB_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) KKMC Idealized");
   PlotSame3(HAfb9_vA_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) KKMC Realistic");
 
   PlotSame3(HAfb9_vB_Ceex2n,    xcapt, ycapt, kRed,       27, 1, "(N) KKMC noIFI");
-
+/*
   PlotSame3(afbv_KKsem_95,      xcapt, ycapt, kGreen,     24, 1, "(D) KKsem DIZET");
   PlotSame3(afbv_KKsem_95b,     xcapt, ycapt, kMagenta,   26, 1, "(G) KKsem Gmu");
-
+*/
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
@@ -653,15 +708,15 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   /////////////////////////////////////////////////////////
-//  LibSem.Initialize(DiskFileA95);  // for non-farm case
+  //  LibSem.Initialize(DiskFileA95);  // for non-farm case
   /////////////////////////////////////////////////////////
-  //HistNormalize();     // Renormalization of MC histograms
-  ReMakeHistoMC();       // reprocessing MC histos
+  HisReMakeFOAMi();
+  HisReMakeKKMCi();       // reprocessing MC histos
   KKsemMakeHisto();
   //========== PLOTTING ==========
   //
   FigExp1(); // 94GeV
-  FigExp2(); // 88GeV
+  //FigExp2(); // 88GeV
   //FigExp3();  // differences
   //
   //FigIFI2();
