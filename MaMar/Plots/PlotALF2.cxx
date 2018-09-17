@@ -49,7 +49,7 @@ TFile DiskFileA91("../workKKMC/histo.root_91GeV.sept_180M");  // sep.2018
 ////  ****************** FOAM ******************
 TFile DiskFileF95("../workFoam3/histo.root_95GeV_new"); // current
 TFile DiskFileF88("../workFoam3/histo.root_88GeV_new"); // current
-TFile DiskFileF91("../workFoam3/histo.root"); // current
+TFile DiskFileF91("../workFoam3/histo.root_91GeV_new"); // current
 
 //  Sept. 2018
 //TFile DiskFileF95("../workFoam3/histo.root_95GeV_2G"); //
@@ -170,7 +170,8 @@ void HisReMakeFOAMi()
   TH2D *SCN_xc_EEX2iZ   = (TH2D*)DiskFileF91.Get("SCN_xc_EEX2i");    // FOAM small range x<0.02
   TH2D *SCN_xc_EEX2nZ   = (TH2D*)DiskFileF91.Get("SCN_xc_EEX2n");    // FOAM small range x<0.02
 
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+///////////// For AFB renormalizing not needed
 // FOAM3i
 //   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX2i9 );    // normalizing
 //   HisNorm2(HST_FOAM_NORMA3i9, SCT_xc_EEX2n9 );    // normalizing
@@ -178,7 +179,7 @@ void HisReMakeFOAMi()
 //   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX2i9 );    // normalizing
 //   HisNorm2(HST_FOAM_NORMA3i9, SCN_xc_EEX2n9 );    // normalizing
 
-///////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 // sigma(vmax) and AFB(vmax) from KKfoam scat.
 // vmax<0.2, 100 bins in ctheta, 100 bins in vv
    int NbMax=45;
@@ -234,148 +235,68 @@ void HisReMakeKKMCi()
 /////////////////////////////////////////////////////////////////////////////////////////////////
   TH1D *hst9_vA_Ceex1       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1");     // total CEEX2
   TH1D *hst9_vA_Ceex2       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2");     //
-  TH1D *hst9_vA_Ceex21      = (TH1D*)DiskFileA95.Get("hst_vA_Ceex21");    //
-//
   TH1D *hst9_vA_Ceex1_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1_F");   //
   TH1D *hst9_vA_Ceex2_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2_F");   //
-  TH1D *hst9_vA_Ceex21_F    = (TH1D*)DiskFileA95.Get("hst_vA_Ceex21_F");  //
-
   TH1D *hst9_vA_Ceex2n      = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2n");  //
   TH1D *hst9_vA_Ceex2n_F    = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2n_F");  //
 //
   TH1D *hst9_vB_Ceex1       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1");     //
   TH1D *hst9_vB_Ceex2       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2");     //
-  TH1D *hst9_vB_Ceex21      = (TH1D*)DiskFileA95.Get("hst_vB_Ceex21");    //
-//
   TH1D *hst9_vB_Ceex1_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1_F");   //
   TH1D *hst9_vB_Ceex2_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2_F");   //
-  TH1D *hst9_vB_Ceex21_F    = (TH1D*)DiskFileA95.Get("hst_vB_Ceex21_F");  //
-
   TH1D *hst9_vB_Ceex2n      = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2n");  //
   TH1D *hst9_vB_Ceex2n_F    = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2n_F");  //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // AFB calculated directly, 95GeV
-  TH1D *HAfb9_vB_Ceex2 = HstAFB("HAfb9_vB_Ceex2", hst9_vB_Ceex2_F, hst9_vB_Ceex2);
-  TH1D *HAfb9_vB_Ceex1 = HstAFB("HAfb9_vB_Ceex1", hst9_vB_Ceex1_F, hst9_vB_Ceex1); // ???
+  TH1D *HAfb9_vB_Ceex2  = HstAFB("HAfb9_vB_Ceex2", hst9_vB_Ceex2_F, hst9_vB_Ceex2);
+  TH1D *HAfb9_vB_Ceex1  = HstAFB("HAfb9_vB_Ceex1", hst9_vB_Ceex1_F, hst9_vB_Ceex1);
+  TH1D *HAfb9_vB_Ceex2n = HstAFB("HAfb9_vB_Ceex2n",hst9_vB_Ceex2n_F,hst9_vB_Ceex2n);
 //
-  TH1D *HAfb9_vB_Ceex2n = HstAFB("HAfb9_vB_Ceex2n", hst9_vB_Ceex2n_F, hst9_vB_Ceex2n);
-
-//
-  TH1D *HAfb9_vA_Ceex2 = HstAFB("HAfb9_vA_Ceex2", hst9_vA_Ceex2_F, hst9_vA_Ceex2);
-  TH1D *HAfb9_vA_Ceex1 = HstAFB("HAfb9_vA_Ceex1", hst9_vA_Ceex1_F, hst9_vA_Ceex1); // ???
-//
-  TH1D *HAfb9_vA_Ceex2n = HstAFB("HAfb9_vA_Ceex2n", hst9_vA_Ceex2n_F, hst9_vA_Ceex2n);
-
-  // Exact formula for AFB from weight differences, 95GeV
-  TH1D *HAfb9_vB_Ceex21 = HstAFB4( "HAfb9_vB_Ceex21", hst9_vB_Ceex21_F, hst9_vB_Ceex21,
-		                                              hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
-  TH1D *HAfb9_vA_Ceex21 = HstAFB4( "HAfb9_vA_Ceex21", hst9_vA_Ceex21_F, hst9_vA_Ceex21,
-		                                              hst9_vA_Ceex2_F,  hst9_vA_Ceex2 );
-//
+  TH1D *HAfb9_vA_Ceex2  = HstAFB("HAfb9_vA_Ceex2", hst9_vA_Ceex2_F, hst9_vA_Ceex2);
+  TH1D *HAfb9_vA_Ceex1  = HstAFB("HAfb9_vA_Ceex1", hst9_vA_Ceex1_F, hst9_vA_Ceex1); // ???
+  TH1D *HAfb9_vA_Ceex2n = HstAFB("HAfb9_vA_Ceex2n",hst9_vA_Ceex2n_F,hst9_vA_Ceex2n);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //  CEEX2-CEEX1 v-distributions, 88GeV
 /////////////////////////////////////////////////////////////////////////////////////////////////
   TH1D *hst8_vA_Ceex1       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1");     // total CEEX2
   TH1D *hst8_vA_Ceex2       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2");     //
-  TH1D *hst8_vA_Ceex21      = (TH1D*)DiskFileA88.Get("hst_vA_Ceex21");    //
-
-  TH1D *hst8_vA_Ceex2n      = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2n");  //
-  TH1D *hst8_vA_Ceex2n_F    = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2n_F");  //
-//
   TH1D *hst8_vA_Ceex1_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1_F");   //
   TH1D *hst8_vA_Ceex2_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2_F");   //
-  TH1D *hst8_vA_Ceex21_F    = (TH1D*)DiskFileA88.Get("hst_vA_Ceex21_F");  //
-//
+  TH1D *hst8_vA_Ceex2n      = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2n");  //
+  TH1D *hst8_vA_Ceex2n_F    = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2n_F");  //
+///////////////////
   TH1D *hst8_vB_Ceex1       = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1");     //
   TH1D *hst8_vB_Ceex2       = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2");     //
-  TH1D *hst8_vB_Ceex21      = (TH1D*)DiskFileA88.Get("hst_vB_Ceex21");    //
-//
   TH1D *hst8_vB_Ceex1_F     = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1_F");   //
   TH1D *hst8_vB_Ceex2_F     = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2_F");   //
-  TH1D *hst8_vB_Ceex21_F    = (TH1D*)DiskFileA88.Get("hst_vB_Ceex21_F");  //
-
   TH1D *hst8_vB_Ceex2n      = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2n");  //
   TH1D *hst8_vB_Ceex2n_F    = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2n_F");  //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // AFB calculated directly, 88GeV
   TH1D *HAfb8_vB_Ceex2 = HstAFB("HAfb8_vB_Ceex2", hst8_vB_Ceex2_F, hst8_vB_Ceex2);
   TH1D *HAfb8_vB_Ceex1 = HstAFB("HAfb8_vB_Ceex1", hst8_vB_Ceex1_F, hst8_vB_Ceex1); // ???
-//
-  TH1D *HAfb8_vB_Ceex2n = HstAFB("HAfb8_vB_Ceex2n", hst8_vB_Ceex2n_F, hst8_vB_Ceex2n);
+  TH1D *HAfb8_vB_Ceex2n= HstAFB("HAfb8_vB_Ceex2n",hst8_vB_Ceex2n_F,hst8_vB_Ceex2n);
 //
   TH1D *HAfb8_vA_Ceex2 = HstAFB("HAfb8_vA_Ceex2", hst8_vA_Ceex2_F, hst8_vA_Ceex2);
   TH1D *HAfb8_vA_Ceex1 = HstAFB("HAfb8_vA_Ceex1", hst8_vA_Ceex1_F, hst8_vA_Ceex1); // ???
-//
-  TH1D *HAfb8_vA_Ceex2n = HstAFB("HAfb8_vA_Ceex2n", hst8_vA_Ceex2n_F, hst8_vA_Ceex2n);
-
-// Exact formula for AFB from weight differences
-  TH1D *HAfb8_vB_Ceex21 = HstAFB4( "HAfb8_vB_Ceex21", hst8_vB_Ceex21_F, hst8_vB_Ceex21,
-    	                                              hst8_vB_Ceex2_F,  hst8_vB_Ceex2 );
-  TH1D *HAfb8_vA_Ceex21 = HstAFB4( "HAfb8_vA_Ceex21", hst8_vA_Ceex21_F, hst8_vA_Ceex21,
-  		                                              hst8_vA_Ceex2_F,  hst8_vA_Ceex2 );
+  TH1D *HAfb8_vA_Ceex2n= HstAFB("HAfb8_vA_Ceex2n",hst8_vA_Ceex2n_F,hst8_vA_Ceex2n);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // AFB calculated directly,  91GeV
 //  realistic cutoffs (A)
-  TH1D *hstZ_vA_Ceex2       = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2");     //
-  TH1D *hstZ_vA_Ceex2_F     = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2_F");   //
-  TH1D *HAfbZ_vA_Ceex2  = HstAFB("HAfbZ_vA_Ceex2", hstZ_vA_Ceex2_F, hstZ_vA_Ceex2);
-  TH1D *hstZ_vA_Ceex2n      = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2n");  //
-  TH1D *hstZ_vA_Ceex2n_F    = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2n_F");  //
-  TH1D *HAfbZ_vA_Ceex2n = HstAFB("HAfbZ_vA_Ceex2n", hstZ_vA_Ceex2n_F, hstZ_vA_Ceex2n);
+  TH1D *hstZ_vA_Ceex2      = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2");     //
+  TH1D *hstZ_vA_Ceex2_F    = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2_F");   //
+  TH1D *hstZ_vA_Ceex2n     = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2n");  //
+  TH1D *hstZ_vA_Ceex2n_F   = (TH1D*)DiskFileA91.Get("hst_vA_Ceex2n_F");  //
 // classic (B)
-  TH1D *hstZ_vB_Ceex2       = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2");     //
-  TH1D *hstZ_vB_Ceex2_F     = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2_F");   //
-  TH1D *HAfbZ_vB_Ceex2  = HstAFB("HAfbZ_vB_Ceex2", hstZ_vB_Ceex2_F, hstZ_vB_Ceex2);
-  TH1D *hstZ_vB_Ceex2n      = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2n");  //
-  TH1D *hstZ_vB_Ceex2n_F    = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2n_F");  //
+  TH1D *hstZ_vB_Ceex2      = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2");     //
+  TH1D *hstZ_vB_Ceex2_F    = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2_F");   //
+  TH1D *hstZ_vB_Ceex2n     = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2n");  //
+  TH1D *hstZ_vB_Ceex2n_F   = (TH1D*)DiskFileA91.Get("hst_vB_Ceex2n_F");  //
+
+  TH1D *HAfbZ_vA_Ceex2  = HstAFB("HAfbZ_vA_Ceex2",  hstZ_vA_Ceex2_F,  hstZ_vA_Ceex2);
+  TH1D *HAfbZ_vA_Ceex2n = HstAFB("HAfbZ_vA_Ceex2n", hstZ_vA_Ceex2n_F, hstZ_vA_Ceex2n);
+  TH1D *HAfbZ_vB_Ceex2  = HstAFB("HAfbZ_vB_Ceex2",  hstZ_vB_Ceex2_F,  hstZ_vB_Ceex2);
   TH1D *HAfbZ_vB_Ceex2n = HstAFB("HAfbZ_vB_Ceex2n", hstZ_vB_Ceex2n_F, hstZ_vB_Ceex2n);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// IFI, 88GeV
-////////////////////////////////////////////////////////////////////////////////////////////////////
-  TH1D *hst8_vB_Ceex2i       = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2i");     //
-  TH1D *hst8_vB_Ceex2i_F     = (TH1D*)DiskFileA88.Get("hst_vB_Ceex2i_F");   //
-  TH1D *hst8_vA_Ceex2i       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2i");     //
-  TH1D *hst8_vA_Ceex2i_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex2i_F");   //
-//
-  TH1D *HAfb8_vA_Ceex2_IFI = HstAFB4( "HAfb8_vA_Ceex2_IFI",hst8_vA_Ceex2i_F, hst8_vA_Ceex2i,
-  		                                                   hst8_vA_Ceex2_F,  hst8_vA_Ceex2 );
-  TH1D *HAfb8_vB_Ceex2_IFI = HstAFB4( "HAfb8_vB_Ceex2_IFI",hst8_vB_Ceex2i_F, hst8_vB_Ceex2i,
-  		                                                   hst8_vB_Ceex2_F,  hst8_vB_Ceex2 );
-///////////////
-  TH1D *hst8_vB_Ceex1i       = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1i");     //
-  TH1D *hst8_vB_Ceex1i_F     = (TH1D*)DiskFileA88.Get("hst_vB_Ceex1i_F");   //
-  TH1D *hst8_vA_Ceex1i       = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1i");     //
-  TH1D *hst8_vA_Ceex1i_F     = (TH1D*)DiskFileA88.Get("hst_vA_Ceex1i_F");   //
-//
-  TH1D *HAfb8_vA_Ceex1_IFI = HstAFB4( "HAfb8_vA_Ceex1_IFI",hst8_vA_Ceex1i_F, hst8_vA_Ceex1i,
-   	                                                       hst8_vA_Ceex1_F,  hst8_vA_Ceex1 );
-  TH1D *HAfb8_vB_Ceex1_IFI = HstAFB4( "HAfb8_vB_Ceex1_IFI",hst8_vB_Ceex1i_F, hst8_vB_Ceex1i,
-   	                                                       hst8_vB_Ceex1_F,  hst8_vB_Ceex1 );
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// IFI, 95GeV
-////////////////////////////////////////////////////////////////////////////////////////////////////
-  TH1D *hst9_vB_Ceex2i       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2i");     //
-  TH1D *hst9_vB_Ceex2i_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex2i_F");   //
-  TH1D *hst9_vA_Ceex2i       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i");     //
-  TH1D *hst9_vA_Ceex2i_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex2i_F");   //
-//
-  TH1D *HAfb9_vA_Ceex2_IFI = HstAFB4( "HAfb9_vA_Ceex2_IFI",hst9_vA_Ceex2i_F, hst9_vA_Ceex2i,
-  		                                                   hst9_vA_Ceex2_F,  hst9_vA_Ceex2 );
-  TH1D *HAfb9_vB_Ceex2_IFI = HstAFB4( "HAfb9_vB_Ceex2_IFI",hst9_vB_Ceex2i_F, hst9_vB_Ceex2i,
-                                                           hst9_vB_Ceex2_F,  hst9_vB_Ceex2 );
-//////////////
-  TH1D *hst9_vB_Ceex1i       = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1i");     //
-  TH1D *hst9_vB_Ceex1i_F     = (TH1D*)DiskFileA95.Get("hst_vB_Ceex1i_F");   //
-  TH1D *hst9_vA_Ceex1i       = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1i");     //
-  TH1D *hst9_vA_Ceex1i_F     = (TH1D*)DiskFileA95.Get("hst_vA_Ceex1i_F");   //
-//
-  TH1D *HAfb9_vA_Ceex1_IFI = HstAFB4( "HAfb9_vA_Ceex1_IFI",hst9_vA_Ceex1i_F, hst9_vA_Ceex1i,
-  		                                                   hst9_vA_Ceex1_F,  hst9_vA_Ceex1 );
-  TH1D *HAfb9_vB_Ceex1_IFI = HstAFB4( "HAfb9_vB_Ceex1_IFI",hst9_vB_Ceex1i_F, hst9_vB_Ceex1i,
-                                                           hst9_vB_Ceex1_F,  hst9_vB_Ceex1 );
 
   cout<<" ===================== End of HisReMakeKKMCi ======================== "<<endl;
 
@@ -431,6 +352,19 @@ void KKsemMakeHisto(){
   TH1D *vcum_KKsem_88b =(TH1D*)hstVtemplate->Clone("vcum_KKsem_88b");
   TH1D *afbv_KKsem_88b =(TH1D*)hstVtemplate->Clone("afbv_KKsem_88b");
   LibSem9.VVmake( vcum_KKsem_88b, afbv_KKsem_88b, KF, chak, KeyDis, KeyFob, gCosTheta);
+  // ************  88GeV ************
+  KKplot LibSemZ("LibSemZ");
+  LibSemZ.Initialize(DiskFileA91);  // for non-farm case
+  // Classic test KKMC-KKsem for IFI off
+  KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+  TH1D *vcum_KKsem_91 =(TH1D*)hstVtemplate->Clone("vcum_KKsem_91");
+  TH1D *afbv_KKsem_91 =(TH1D*)hstVtemplate->Clone("afbv_KKsem_91");
+  LibSemZ.VVmake( vcum_KKsem_91, afbv_KKsem_91, KF, chak, KeyDis, KeyFob, gCosTheta);
+  KeyFob=  -100; //
+  //KeyFob=  -200; //
+  TH1D *vcum_KKsem_91b =(TH1D*)hstVtemplate->Clone("vcum_KKsem_91b");
+  TH1D *afbv_KKsem_91b =(TH1D*)hstVtemplate->Clone("afbv_KKsem_91b");
+  LibSemZ.VVmake( vcum_KKsem_91b, afbv_KKsem_91b, KF, chak, KeyDis, KeyFob, gCosTheta);
 
   cout<<"================ KKsem MakeHisto ENDs ============================="<<endl;
   cout<<"==================================================================="<<endl;
@@ -448,13 +382,9 @@ void FigExp9()
   cout<<" ========================= FigExp9 =========================== "<<endl;
 
   TH1D *HAfb9_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2");
-  TH1D *HAfb9_vA_Ceex1  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex1");
-  TH1D *HAfb9_vA_Ceex21 = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex21");
   TH1D *HAfb9_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2n");
 
   TH1D *HAfb9_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2");
-  TH1D *HAfb9_vB_Ceex1  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex1");
-  TH1D *HAfb9_vB_Ceex21 = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex21");
   TH1D *HAfb9_vB_Ceex2n = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2n");
 
   TH1D *afbv_KKsem_95  = (TH1D*)DiskFileB.Get("afbv_KKsem_95");
@@ -552,13 +482,9 @@ void FigExp8()
   cout<<" ========================= FigExp8 =========================== "<<endl;
 
   TH1D *HAfb8_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2");
-  TH1D *HAfb8_vA_Ceex1  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex1");
-  TH1D *HAfb8_vA_Ceex21 = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex21");
   TH1D *HAfb8_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2n");
 
   TH1D *HAfb8_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2");
-  TH1D *HAfb8_vB_Ceex1  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex1");
-  TH1D *HAfb8_vB_Ceex21 = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex21");
   TH1D *HAfb8_vB_Ceex2n = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2n");
 
   TH1D *afbv_KKsem_88  = (TH1D*)DiskFileB.Get("afbv_KKsem_88");
@@ -656,12 +582,9 @@ void FigExpZ()
   cout<<" ========================= FigExpZ =========================== "<<endl;
 
   TH1D *HAfbZ_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfbZ_vA_Ceex2");
-  TH1D *HAfbZ_vA_Ceex1  = (TH1D*)DiskFileB.Get("HAfbZ_vA_Ceex21");
   TH1D *HAfbZ_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfbZ_vA_Ceex2n");
 
   TH1D *HAfbZ_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfbZ_vB_Ceex2");
-  TH1D *HAfbZ_vB_Ceex1  = (TH1D*)DiskFileB.Get("HAfbZ_vB_Ceex1");
-  TH1D *HAfbZ_vB_Ceex21 = (TH1D*)DiskFileB.Get("HAfbZ_vB_Ceex21");
   TH1D *HAfbZ_vB_Ceex2n = (TH1D*)DiskFileB.Get("HAfbZ_vB_Ceex2n");
 
   TH1D *afbv_KKsem_91  = (TH1D*)DiskFileB.Get("afbv_KKsem_91");
@@ -691,8 +614,8 @@ void FigExpZ()
   HST1->SetStats(0);
   HST1->SetTitle(0);
   HST1->GetXaxis()->SetNdivisions(8);
-//  HST1->SetMaximum(-0.190);
-//  HST1->SetMinimum(-0.280); // 88GeV
+  HST1->SetMaximum( 0.10);
+  HST1->SetMinimum( 0.00); // 88GeV
   HST1->DrawCopy("h");
 
   double ycapt =0.91, xcapt=0.3;
@@ -753,175 +676,6 @@ void FigExpZ()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigExp3()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigExp3 =========================== "<<endl;
-
-  TH1D *HAfb8_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2");
-  TH1D *HAfb8_vA_Ceex21 = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex21");
-  TH1D *HAfb8_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2");
-  TH1D *HAfb8_vB_Ceex21 = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex21");
-
-  TH1D *HAfb9_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2");
-  TH1D *HAfb9_vA_Ceex21 = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex21");
-  TH1D *HAfb9_vB_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2");
-  TH1D *HAfb9_vB_Ceex21 = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex21");
-
-  TH1D *HAfbDel_B_Ceex2 = HstDiff( "HAfbDel_B_Ceex2", HAfb9_vB_Ceex2, HAfb8_vB_Ceex2, kBlue);
-  TH1D *HAfbDel_A_Ceex2 = HstDiff( "HAfbDel_A_Ceex2", HAfb9_vA_Ceex2, HAfb8_vA_Ceex2, kBlue);
-
-  TH1D *HAfbDel_B_Ceex21 = HstDiff( "HAfbDel_B_Ceex21", HAfb9_vB_Ceex21, HAfb8_vB_Ceex21, kBlue);
-  TH1D *HAfbDel_A_Ceex21 = HstDiff( "HAfbDel_A_Ceex21", HAfb9_vA_Ceex21, HAfb8_vA_Ceex21, kBlue);
-
-
-  TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
-  CaptNDC->SetTextSize(0.037);
-  ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cExp3 = new TCanvas("cExp3","cExp3", gXcanv,  gYcanv,   1200,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
-  gXcanv += 50; gYcanv += 50;
-  cExp3->SetFillColor(10);
-  cExp3->Divide( 2,  0);
-  //cExp3->Divide( 2,  0,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
-  //////////////////////////////////////////////
-  cExp3->cd(1);
-  TH1D *HST1;
-  HST1 =HAfbDel_B_Ceex2;
-
-  HST1->SetStats(0);
-  HST1->SetTitle(0);
-  HST1->GetXaxis()->SetNdivisions(8);
-  HST1->DrawCopy("h");
-
-  double ycapt =0.85, xcapt=0.5;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt," Ceex2, IFI on");
-  ycapt += -0.047;
-  PlotSame3(HAfbDel_B_Ceex2,     xcapt, ycapt, kBlue,      25, 1, "(B) Idealized");
-  PlotSame3(HAfbDel_A_Ceex2,     xcapt, ycapt, kBlack,     24, 1, "(A) Realistic");
-
-  CaptNDC->DrawLatex(0.04,0.95,"#Delta A_{FB}(v) = A_{FB}(v,s_{+})- A_{FB}(v,s_{-})");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
-
-  ///////////////////////////////////////////////
-  cExp3->cd(2);
-  TH1D *HST2;
-  HST2 =HAfbDel_B_Ceex21;
-
-  HST2->SetStats(0);
-  HST2->SetTitle(0);
-  HST2->GetXaxis()->SetNdivisions(8);
-  HST2->SetMaximum(1.1e-5); HST2->SetMinimum(-1.1e-5);
-  HST2->DrawCopy("h");
-
-  ycapt =0.85, xcapt=0.5;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"  Ceex2-Ceex1, IFI on");
-  ycapt += -0.047;
-  PlotSame3(HAfbDel_B_Ceex21,   xcapt, ycapt, kBlue,     25, 1, "(B) Idealized");
-  PlotSame3(HAfbDel_A_Ceex21,   xcapt, ycapt, kBlack,    25, 1, "(A) Realistic");
-
-  CaptNDC->DrawLatex(0.04,0.95,"#delta #Delta A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
-//
-  cExp3->cd();
-//
-  cExp3->SaveAs("cExp3.pdf");
-//
-}// FigExp3
-
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigIFI2()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigIFI2 =========================== "<<endl;
-//////////////////////
-  TH1D *HAfb8_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2_IFI");
-  TH1D *HAfb8_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex2_IFI");
-//
-  TH1D *HAfb9_vA_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2_IFI");
-  TH1D *HAfb9_vB_Ceex2_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex2_IFI");
-///////
-  TH1D *HAfbDel_A_Ceex2_IFI = HstDiff( "HAfbDel_A_Ceex2_IFI", HAfb9_vA_Ceex2_IFI, HAfb8_vA_Ceex2_IFI, kBlue);
-  TH1D *HAfbDel_B_Ceex2_IFI = HstDiff( "HAfbDel_B_Ceex2_IFI", HAfb9_vB_Ceex2_IFI, HAfb8_vB_Ceex2_IFI, kBlue);
-/////////////////////
-  TH1D *HAfb8_vA_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex1_IFI");
-  TH1D *HAfb8_vB_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb8_vB_Ceex1_IFI");
-//
-  TH1D *HAfb9_vA_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex1_IFI");
-  TH1D *HAfb9_vB_Ceex1_IFI  = (TH1D*)DiskFileB.Get("HAfb9_vB_Ceex1_IFI");
-///////
-  TH1D *HAfbDel_A_Ceex1_IFI = HstDiff( "HAfbDel_A_Ceex1_IFI", HAfb9_vA_Ceex1_IFI, HAfb8_vA_Ceex1_IFI, kBlue);
-  TH1D *HAfbDel_B_Ceex1_IFI = HstDiff( "HAfbDel_B_Ceex1_IFI", HAfb9_vB_Ceex1_IFI, HAfb8_vB_Ceex1_IFI, kBlue);
-///////
-  TH1D *HAfbDel_A_Ceex21_IFI = HstDiff( "HAfbDel_A_Ceex21_IFI", HAfbDel_A_Ceex2_IFI, HAfbDel_A_Ceex1_IFI, kBlue);
-  TH1D *HAfbDel_B_Ceex21_IFI = HstDiff( "HAfbDel_B_Ceex21_IFI", HAfbDel_B_Ceex2_IFI, HAfbDel_B_Ceex1_IFI, kBlue);
-
-  TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
-  CaptNDC->SetTextSize(0.037);
-  ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cIFI2 = new TCanvas("cIFI2","cIFI2", gXcanv,  gYcanv,   1200,  600);
-  //                            Name    Title            xoff,yoff, WidPix,HeiPix
-  ////////////////////////////////////////////////////////////////////////////////
-  gXcanv += 50; gYcanv += 50;
-  cIFI2->SetFillColor(10);
-  cIFI2->Divide( 2,  0);
-  //cIFI2->Divide( 2,  0,     0.0,     0.0,   10);
-  //              nx, ny, xmargin, ymargin, color
-  //////////////////////////////////////////////
-  cIFI2->cd(1);
-  TH1D *HST1;
-  HST1 = HAfbDel_B_Ceex2_IFI;
-
-  HST1->SetStats(0);
-  HST1->SetTitle(0);
-  HST1->GetXaxis()->SetNdivisions(8);
-  HST1->DrawCopy("h");
-
-  double ycapt =0.35, xcapt=0.3;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
-  ycapt += -0.047;
-  PlotSame3(HAfbDel_B_Ceex2_IFI,     xcapt, ycapt, kBlack,     26, 1, "(B) Ceex2");
-  PlotSame3(HAfbDel_B_Ceex1_IFI,     xcapt, ycapt, kBlack,     27, 1, "(B) Ceex1");
-  PlotSame3(HAfbDel_A_Ceex2_IFI,     xcapt, ycapt, kBlue,      24, 1, "(A) Ceex2");
-  PlotSame3(HAfbDel_A_Ceex1_IFI,     xcapt, ycapt, kBlue,      25, 1, "(A) Ceex1");
-
-  CaptNDC->DrawLatex(0.04,0.95,"#Delta A_{FB}^{IFI}(v) = A_{FB}^{IFI}(v,s_{+}) -A_{FB}^{IFI}(v,s_{-})");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
-
-  ///////////////////////////////////////////////
-  cIFI2->cd(2);
-  TH1D *HST2;
-  HST2 = HAfbDel_A_Ceex21_IFI;
-
-  HST2->SetStats(0);
-  HST2->SetTitle(0);
-  HST2->GetXaxis()->SetNdivisions(8);
-  HST2->SetMaximum(1.1e-4); HST2->SetMinimum(-1.1e-4);
-  HST2->DrawCopy("h");
-
-  ycapt =0.85, xcapt=0.5;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt,"IFI  Ceex2,1");
-  ycapt += -0.047;
-  PlotSame3(HAfbDel_B_Ceex21_IFI,   xcapt, ycapt, kBlack,    24, 1, "(B) IFI Ceex2-Ceex1");
-  PlotSame3(HAfbDel_A_Ceex21_IFI,   xcapt, ycapt, kBlue,     25, 1, "(A) IFI Ceex2-Ceex1");
-
-  CaptNDC->DrawLatex(0.04,0.95,
-		  "#delta #Delta A_{FB}^{IFI}(v) = Delta A_{FB}^{IFI}(v)|_{ceex2} - Delta A_{FB}^{IFI}(v)|_{ceex2} ");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
-//
-  cIFI2->cd();
-//
-  cIFI2->SaveAs("cIFI2.pdf");
-//
-}// FigIFI2
-
-
-
-///////////////////////////////////////////////////////////////////////////////////
 void FigTempl()
 {
 //------------------------------------------------------------------------
@@ -967,7 +721,6 @@ int main(int argc, char **argv)
   FigExp8(); // 88GeV
   FigExpZ(); // 91GeV
   //
-  //FigIFI2();
   // Template empty canvas  with 2 figures
   //FigTempl();
   //++++++++++++++++++++++++++++++++++++++++
