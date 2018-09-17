@@ -49,15 +49,19 @@ qqsubmitall:
 sfarm6:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",6)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-sfarm24:	farm-clean check_all
+sfarm24:	farm-clean start_n
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",24)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-sfarm40:	farm-clean check_all
+sfarm40:	farm-clean start_n
 	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",40)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
-ssubmit6:
+sfarm80:	farm-clean start_n
+	(echo ">>>Set up MC gener:"; $(ROOTEXEC) -b -q -l ./Start.C)
+	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",80)' ;)
+	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
+ssubmitall:
 	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
 #########################################################################
 ####   version for CC1 cluster ####
