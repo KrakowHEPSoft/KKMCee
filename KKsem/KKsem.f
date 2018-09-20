@@ -1886,9 +1886,12 @@ c]]]]]
             Eps  = DCMPLX(-1.D0,0.D0)
             CMZ2 = DCMPLX(MZ**2, -MZ*GammZ)
             SS   = DCMPLX(svar)
+c[[[[[[[[[[[[[[[[[[[[[
+ccc            SS   = DCMPLX(m_CMSene**2) ! tiny difference
             IntReson = -2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe)) *BVR_CDLN( ((CMZ2-SS)/CMZ2 ) ,Eps)
+ccc         IntReson = -2d0/m_AlfInv/m_pi *DLOG((1-costhe)/(1+costhe)) *BVR_CDLN( ((CMZ2-SS)/SS )   ,Eps) ! tiny difference
             YZ   = EXP(IntReson)
-*            YZ   = DCMPLX(1.0) !!!!!!!!!!!!
+ccc         YZ   = DCMPLX(1.0) !!!!!!!!!!!! BIG difference
             Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ*MZ/svar)  ! non-runing
             Zeta =    DCMPLX(1d0 - MZ**2/svar,  GammZ/MZ)       ! runing
             f0= DREAL(qe**2*qf**2*cG**2 +2d0*YZ/Zeta*qe*qf*Ve*Vf*cG*RaZ +xe*xf*YZ/Zeta*DCONJG(YZ/Zeta)*RaZ**2)
