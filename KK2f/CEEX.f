@@ -1770,7 +1770,7 @@ c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       IF(m_KeyZet .EQ. 9) PropGam =  DCMPLX(0d0)
       IF(m_KeyZet .EQ.-1) PropZet =  1d0/DCMPLX(SvarX-m_MZ**2, m_GammZ*m_MZ)
 * Exponentiate Resonance BigLogs according to Greco et al.
-      IF(  m_KeyINT .EQ. 2 ) THEN
+      IF(  m_KeyINT .EQ. 2 .AND. MODE .GT. 1 ) THEN
           PropZet = PropZet * EXP(m_IntReson)
       ENDIF
 *////////////////////////////////////////////////////////////////////////////////////////////
@@ -1809,6 +1809,10 @@ c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                   IF(      Mode .EQ.  0 ) THEN
                     m_AmpBorn2(j1,j2,j3,j4) =AmpBorn
                   ELSE IF( Mode .EQ.  1 ) THEN
+                    m_AmpBorn1(j1,j2,j3,j4) =AmpBorn
+                  ELSE IF( Mode .EQ. 10 ) THEN
+                    m_AmpBorn2(j1,j2,j3,j4) =AmpBorn
+                  ELSE IF( Mode .EQ. 11 ) THEN
                     m_AmpBorn1(j1,j2,j3,j4) =AmpBorn
                   ELSE IF( Mode .EQ. 20 ) THEN
                     m_AmpBorn2(j1,j2,j3,j4) =AmpBorn+AmpBoxy
