@@ -146,7 +146,7 @@ void TRobolKKMC::Hbooker()
   sct_vTcPR_Ceex2n= TH2D_UP("sct_vTcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPR_EEX2  = TH2D_UP("sct_vTcPR_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   //
-  sct_vAcPR_Ceex2= TH2D_UP("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_vAcPR_Ceex2 = TH2D_UP("sct_vAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vAcPR_Ceex2n= TH2D_UP("sct_vAcPR_Ceex2n","dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   //
   sct_vKcPL_Ceex2= TH2D_UP("sct_vKcPL_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -158,6 +158,9 @@ void TRobolKKMC::Hbooker()
   sct_vTcPL_Ceex1n= TH2D_UP("sct_vTcPL_Ceex1n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0 = TH2D_UP("sct_vTcPL_Ceex0",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPL_Ceex0n= TH2D_UP("sct_vTcPL_Ceex0n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+// CutA series
+  sct_CutAcPR_Ceex2  = TH2D_UP("sct_CutAcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
+  sct_CutAcPR_Ceex2n = TH2D_UP("sct_CutAcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   /////////////////////////////////////
   // CEEX series
   hst_vT_Ceex1    = TH1D_UP( "hst_vT_Ceex1",      "dSig/dvTrue ", NBv, 0.000 ,vmx2);
@@ -629,6 +632,10 @@ void TRobolKKMC::Production(double &iEvent)
                       hst_Alf2CutA_Ceex2n->Fill( dalf,Wt2CEEX2n);
       if( CosPRD>0.0) hst_Alf2CutA_Ceex2nF->Fill(dalf,Wt2CEEX2n);
   }// Cut (A)
+  if( Acol<0.001 && xe1>0.90 && xe2>0.90){
+    sct_CutAcPR_Ceex2->Fill(   vvA, CosPRD, WtCEEX2);   // Main CEEX2 KKMC , ISR+FSR
+    sct_CutAcPR_Ceex2n->Fill(  vvA, CosPRD, WtCEEX2n);  // Main CEEX2 KKMC , ISR+FSR
+  }
   if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
     hst_vA_Ceex1->Fill(   vvA, WtCEEX1);
     hst_vA_Ceex2->Fill(   vvA, WtCEEX2);

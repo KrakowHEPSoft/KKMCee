@@ -82,9 +82,11 @@ class TRobolKKMC : public TRobol
   TH2D   *sct_vTcPL_Ceex1n;   //! vv bare muons
   TH2D   *sct_vTcPL_Ceex0;    //! vv bare muons
   TH2D   *sct_vTcPL_Ceex0n;   //! vv bare muons
-
   TH2D   *sct_vAcPL_Ceex2;    //! Main CEEX2 KKMC , ISR+FSR
-  /////////////// NEW!!!!
+
+  TH2D   *sct_CutAcPR_Ceex2;   //! vv PRD Cut(A)
+  TH2D   *sct_CutAcPR_Ceex2n;  //! vv PRD Cut(A)
+/////////////// NEW!!!!
   // CEEX series
   TH1D   *hst_vT_Ceex1;       //!  No streamer!!!
   TH1D   *hst_vT_Ceex2;       //!  No streamer!!!

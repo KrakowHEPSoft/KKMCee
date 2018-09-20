@@ -693,8 +693,8 @@ double TMCgenFOAM::Density5(int nDim, double *Xarg)
     double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
 //
 // Re(M M^*) including only leading part of gamma-Z box
-    gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
-    gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    gps_bornfoam_( 10,m_KFini,m_KFf,Misr1,CosTheta,Yint);
+    gps_bornfoam_( 11,m_KFini,m_KFf,Misr2,CosTheta,Yint);
     double dBorn_GPS0 = gps_makerhofoam_(Yint);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && fabs(svar/svar2-1)>0.20 ){  // debug
@@ -817,8 +817,8 @@ double TMCgenFOAM::Density5i(int nDim, double *Xarg)
     double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
 //
 // Re(M M^*) including only leading part of gamma-Z box
-    gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,CosTheta,Yint);
-    gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,CosTheta,Yint);
+    gps_bornfoam_( 10,m_KFini,m_KFf,Misr1,CosTheta,Yint);
+    gps_bornfoam_( 11,m_KFini,m_KFf,Misr2,CosTheta,Yint);
     double dBorn_GPS0 = gps_makerhofoam_(Yint);
 //************ Debug*** Debug*** Debug*** Debug*** Debug ***********
 //    if( m_count <10 && fabs(svar/svar2-1)>0.20 ){  // debug
@@ -1003,35 +1003,41 @@ double TMCgenFOAM::Density3i(int nDim, double *Xarg)
 //*** pure Born from KKsem (no IFI, Gmu scheme)
     double dSig_BornV   = kksem_bornv_(svar2, m_CosTheta);
 //=================================================================
-	double Yint, Misr1,Misr2;
-	Misr1 = sqrt((1-m_vv)*svar);
-	Misr2 = sqrt((1-m_vv)*svar);
+	double Yint, Misr;
+	Misr = sqrt((1-m_vv)*svar);
 // Three-stroke calculation of Re(M M^*) including boxes, SLOW!
-//   gps_bornfoam_( 20,m_KFini,m_KFf,Misr1,m_CosTheta,Yint); // Yint is output
-//   gps_bornfoam_( 21,m_KFini,m_KFf,Misr2,m_CosTheta,Yint);
-//   double dBorn_GPS = gps_makerhofoam_(Yint);              // Yint is input
+   gps_bornfoam_( 20,m_KFini,m_KFf,Misr,m_CosTheta,Yint); // Yint is output
+   gps_bornfoam_( 21,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+   double dBorn_GPSi = gps_makerhofoam_(Yint);              // Yint is input
 //
-// Re(M M^*) including only leading part of gamma-Z box, SLOW!
-//   gps_bornfoam_(  0,m_KFini,m_KFf,Misr1,m_CosTheta,Yint);
-//   gps_bornfoam_(  1,m_KFini,m_KFf,Misr2,m_CosTheta,Yint);
-//   double dBorn_GPS0 = gps_makerhofoam_(Yint);
+// Re(M M^*) without gamma-Z box, SLOW!
+   gps_bornfoam_(  0,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+   gps_bornfoam_(  1,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+   double dBorn_GPSn = gps_makerhofoam_(Yint);
 //******
-    double Dist2i = dJacISR*RhoIsr2i *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornVi; // O(alf2) IFI on
-    double Dist0i = dJacISR*RhoIsr0i *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornVi; // O(alf0) IFI on
-    double Dist2n = dJacISR*RhoIsr2n *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornV;  // O(alf2) IFI off
-    double Dist0n = dJacISR*RhoIsr0n *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornV;  // O(alf0) IFI off
-    double Dist  = Dist2i;  // Principal weight
+   double DistE2i = dJacISR*RhoIsr2i *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornVi; // O(alf2) IFI on
+   double DistE2n = dJacISR*RhoIsr2n *dJacFSR*RhoFsr2 *2.0*cmax *dSig_BornV;  // O(alf2) IFI off
+   double DistE0i = dJacISR*RhoIsr0i *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornVi; // O(alf0) IFI on
+   double DistE0n = dJacISR*RhoIsr0n *dJacFSR*RhoFsr0 *2.0*cmax *dSig_BornV;  // O(alf0) IFI off
+   //
+   double DistG2i = dJacISR*RhoIsr2i *dJacFSR*RhoFsr2 *2.0*cmax *dBorn_GPSi;  // O(alf2) IFI on
+   double DistG2n = dJacISR*RhoIsr2n *dJacFSR*RhoFsr2 *2.0*cmax *dBorn_GPSn;  // O(alf2) IFI off
 //****************************************
 //          Model weights
 //****************************************
-    m_WTmodel[3] = 0.0;
-    m_WTmodel[6] = 0.0;
-    m_WTmodel[7] = 0.0;
-    if( Dist != 0.0){
-      m_WTmodel[3] = Dist0i/Dist; // O(alf0) IFI on
-      m_WTmodel[6] = Dist2n/Dist; // O(alf2) IFI off
-      m_WTmodel[7] = Dist0n/Dist; // O(alf0) IFI off
-    }//
+//   double Dist  = DistE2i;  // Principal weight
+   double Dist  = DistG2i;  // Principal weight
+   m_WTmodel[3] = 0.0;
+   m_WTmodel[6] = 0.0;
+   m_WTmodel[7] = 0.0;
+   if( Dist != 0.0){
+//      m_WTmodel[3] = DistG0i/Dist; // O(alf0) IFI on
+      m_WTmodel[6] = DistG2n/Dist; // O(alf2) IFI off
+//      m_WTmodel[7] = DistG0n/Dist; // O(alf0) IFI off
+      m_WTmodel[13] = DistE0i/Dist; // O(alf0) IFI on
+      m_WTmodel[16] = DistE2n/Dist; // O(alf2) IFI off
+      m_WTmodel[17] = DistE0n/Dist; // O(alf0) IFI off
+   }//
 //****************************************
 //*****  principal distribution for FOAM
     double sig0nb = 4*m_pi* sqr(1/m_alfinv)/(3.0*svar2 )*m_gnanob;
@@ -1095,8 +1101,8 @@ Double_t TMCgenFOAM::Density3i(int nDim, Double_t *Xarg)
 	double Misr = sqrt(svar2);
 	gps_bornfoam_( 20,m_KFini,m_KFf,Misr,m_CosTheta,Yint); // Yint is output
 	gps_bornfoam_( 21,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
-//    gps_bornfoam_(  0,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
-//    gps_bornfoam_(  1,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+//    gps_bornfoam_( 10,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
+//    gps_bornfoam_( 11,m_KFini,m_KFf,Misr,m_CosTheta,Yint);
     double dBorn_GPS = gps_makerhofoam_(Yint);            // Yint is input
     dSig_EEX  = Yint; // Born of GPS/CEEX
 //******
