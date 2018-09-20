@@ -33,12 +33,12 @@ using namespace std;
 //=============================================================================
 // Latest from /workKKMC
 
+//TFile DiskFileA88("../workKKMC/histo.root");  // current
+//TFile DiskFileA95("../workKKMC/histo.root");  // current
+
 TFile DiskFileA95("../workKKMC/histo.root_95GeV.sept_200M");  // sep.2018
 TFile DiskFileA88("../workKKMC/histo.root_88GeV.sept_290M");  // sep.2018
 TFile DiskFileA91("../workKKMC/histo.root_91GeV.sept_180M");  // sep.2018
-
-//TFile DiskFileA88("../workKKMC/histo.root");  // apr.2018
-//TFile DiskFileA95("../workKKMC/histo.root");  // apr.2018
 
 //TFile DiskFileA88("../workKKMC/histo.root_88GeV.new");  // recent
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV.new");  // recent
@@ -47,9 +47,20 @@ TFile DiskFileA91("../workKKMC/histo.root_91GeV.sept_180M");  // sep.2018
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV_apr_38G");  // apr.2018
 
 ////  ****************** FOAM ******************
-TFile DiskFileF95("../workFoam3/histo.root_95GeV_new"); // current
-TFile DiskFileF88("../workFoam3/histo.root_88GeV_new"); // current
-TFile DiskFileF91("../workFoam3/histo.root_91GeV_new"); // current
+
+//TFile DiskFileF95("../workFoam3/histo.root"); // current
+
+//TFile DiskFileF95("../workFoam3/histo.root_95GeV_gps_58M");  // gps
+//TFile DiskFileF88("../workFoam3/histo.root_88GeV_gps_70M");  // gps
+//TFile DiskFileF91("../workFoam3/histo.root_91GeV_gps_94M");  // gps
+
+TFile DiskFileF91("../workFoam3/histo.root_91GeV_kksem_180M"); // kksem
+TFile DiskFileF95("../workFoam3/histo.root_95GeV_kksem_80M");  // kksem
+TFile DiskFileF88("../workFoam3/histo.root_88GeV_kksem_110M"); // ksem
+
+//TFile DiskFileF95("../workFoam3/histo.root_95GeV_new"); // current
+//TFile DiskFileF88("../workFoam3/histo.root_88GeV_new"); // current
+//TFile DiskFileF91("../workFoam3/histo.root_91GeV_new"); // current
 
 //  Sept. 2018
 //TFile DiskFileF95("../workFoam3/histo.root_95GeV_2G"); //
@@ -181,7 +192,7 @@ void HisReMakeFOAMi()
 
 ////////////////////////////////////////////////////////////////////////
 // sigma(vmax) and AFB(vmax) from KKfoam scat.
-// vmax<0.2, 100 bins in ctheta, 100 bins in vv
+// vmax<0.2 and/or <0.02, 100 bins in ctheta, 100 bins in vv
    int NbMax=45;
 //   NbMax=0;
 ////////////////------------------95GeV-------------------------------////////
@@ -376,10 +387,10 @@ void KKsemMakeHisto(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigExp9()
+void FigExp9r()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigExp9 =========================== "<<endl;
+  cout<<" ========================= FigExp9r =========================== "<<endl;
 
   TH1D *HAfb9_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2");
   TH1D *HAfb9_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfb9_vA_Ceex2n");
@@ -396,16 +407,16 @@ void FigExp9()
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cExp9 = new TCanvas("cExp9","cExp9", gXcanv,  gYcanv,   1200,  600);
+  TCanvas *cExp9r = new TCanvas("cExp9r","cExp9r", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
-  cExp9->SetFillColor(10);
-  cExp9->Divide( 2,  0);
-  //cExp9->Divide( 2,  0,     0.0,     0.0,   10);
+  cExp9r->SetFillColor(10);
+  cExp9r->Divide( 2,  0);
+  //cExp9r->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
-  cExp9->cd(1);
+  cExp9r->cd(1);
   TH1D *HST1;
   HST1 =HAfb9_vB_Ceex2;
 //  HST1 =HAfb9_vB_Ceex2n;
@@ -422,8 +433,8 @@ void FigExp9()
   CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV");
   ycapt += -0.047;
 
-  PlotSame2(HAfb9_vB_Ceex2,     ycapt, kBlue,      0.015, "(a)", "KKMC Bcut IFIon ");
-  PlotSame2(HAfb9_vB_Ceex2n,    ycapt, kBlue,      0.015, "(b)", "KKMC Bcut IFIoff");
+  PlotSame2(HAfb9_vB_Ceex2,     ycapt, kBlue,      0.010, "(a)", "KKMC Bcut IFIon ");
+  PlotSame2(HAfb9_vB_Ceex2n,    ycapt, kBlue,      0.010, "(b)", "KKMC Bcut IFIoff");
 
   PlotSame2(HAfb9_vA_Ceex2,     ycapt, kBlack,     0.015, "(c)", "KKMC Acut IFIon");
   PlotSame2(HAfb9_vA_Ceex2n,    ycapt, kBlack,     0.015, "(d)", "KKMC Acut IFIoff");
@@ -431,14 +442,14 @@ void FigExp9()
   PlotSame2(Hafb1_xmax_EEX2i9,  ycapt, kRed,       0.015, "(e)", "KKfoam3 IFIon");
   PlotSame2(Hafb1_xmax_EEX2n9,  ycapt, kRed,       0.015, "(f)", "KKfoam3 IFIoff");
 
-//  PlotSame2(afbv_KKsem_95,      ycapt, kGreen,     0.015, "(g)", "KKsem DIZET");
-//  PlotSame2(afbv_KKsem_95b,     ycapt, kMagenta,   0.015, "(h)", "KKsem Gmu");
+//  PlotSame2(afbv_KKsem_95,      ycapt, kGreen,     0.005, "(g)", "KKsem DIZET");
+//  PlotSame2(afbv_KKsem_95b,     ycapt, kMagenta,   0.005, "(h)", "KKsem Gmu");
 
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
-  cExp9->cd(2);
+  cExp9r->cd(2);
   TH1D *Hst9vB_IFI   = HstDiff("Hst9vB_IFI",   HAfb9_vB_Ceex2,   HAfb9_vB_Ceex2n,   kBlue);
   TH1D *Hst9vA_IFI   = HstDiff("Hst9vA_IFI",   HAfb9_vA_Ceex2,   HAfb9_vA_Ceex2n,   kBlack);
   TH1D *Hst9vE_IFI   = HstDiff("Hst9vE_IFI",   Hafb1_xmax_EEX2i9,Hafb1_xmax_EEX2n9, kRed);
@@ -467,19 +478,19 @@ void FigExp9()
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   //
-  cExp9->cd();
+  cExp9r->cd();
   //
-  cExp9->SaveAs("cExp9.pdf");
+  cExp9r->SaveAs("cExp9r.pdf");
 //
-}// FigExp9
+}// FigExp9r
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigExp8()
+void FigExp8r()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigExp8 =========================== "<<endl;
+  cout<<" ========================= FigExp8r =========================== "<<endl;
 
   TH1D *HAfb8_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2");
   TH1D *HAfb8_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfb8_vA_Ceex2n");
@@ -496,16 +507,16 @@ void FigExp8()
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cExp8 = new TCanvas("cExp8","cExp8", gXcanv,  gYcanv,   1200,  600);
+  TCanvas *cExp8r = new TCanvas("cExp8r","cExp8r", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
-  cExp8->SetFillColor(10);
-  cExp8->Divide( 2,  0);
-  //cExp8->Divide( 2,  0,     0.0,     0.0,   10);
+  cExp8r->SetFillColor(10);
+  cExp8r->Divide( 2,  0);
+  //cExp8r->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
-  cExp8->cd(1);
+  cExp8r->cd(1);
   TH1D *HST1;
   HST1 =HAfb8_vB_Ceex2;
 //  HST1 =HAfb8_vB_Ceex2n;
@@ -538,7 +549,7 @@ void FigExp8()
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
-  cExp8->cd(2);
+  cExp8r->cd(2);
   TH1D *Hst8vB_IFI   = HstDiff("Hst8vB_IFI",   HAfb8_vB_Ceex2,   HAfb8_vB_Ceex2n,   kBlue);
   TH1D *Hst8vA_IFI   = HstDiff("Hst8vA_IFI",   HAfb8_vA_Ceex2,   HAfb8_vA_Ceex2n,   kBlack);
   TH1D *Hst8vE_IFI   = HstDiff("Hst8vE_IFI",   Hafb1_xmax_EEX2i8,Hafb1_xmax_EEX2n8, kRed);
@@ -567,19 +578,19 @@ void FigExp8()
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   //
-  cExp8->cd();
+  cExp8r->cd();
   //
-  cExp8->SaveAs("cExp8.pdf");
+  cExp8r->SaveAs("cExp8r.pdf");
 //
-}// FigExp8
+}// FigExp8r
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigExpZ()
+void FigExpZr()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigExpZ =========================== "<<endl;
+  cout<<" ========================= FigExpZr =========================== "<<endl;
 
   TH1D *HAfbZ_vA_Ceex2  = (TH1D*)DiskFileB.Get("HAfbZ_vA_Ceex2");
   TH1D *HAfbZ_vA_Ceex2n = (TH1D*)DiskFileB.Get("HAfbZ_vA_Ceex2n");
@@ -596,16 +607,16 @@ void FigExpZ()
   TLatex *CaptNDC = new TLatex(); CaptNDC->SetNDC(); // !!!
   CaptNDC->SetTextSize(0.037);
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cExpZ = new TCanvas("cExpZ","cExpZ", gXcanv,  gYcanv,   1200,  600);
+  TCanvas *cExpZr = new TCanvas("cExpZr","cExpZr", gXcanv,  gYcanv,   1200,  600);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
-  cExpZ->SetFillColor(10);
-  cExpZ->Divide( 2,  0);
-  //cExpZ->Divide( 2,  0,     0.0,     0.0,   10);
+  cExpZr->SetFillColor(10);
+  cExpZr->Divide( 2,  0);
+  //cExpZr->Divide( 2,  0,     0.0,     0.0,   10);
   //              nx, ny, xmargin, ymargin, color
   //////////////////////////////////////////////
-  cExpZ->cd(1);
+  cExpZr->cd(1);
   TH1D *HST1;
   HST1 =HAfbZ_vB_Ceex2;
 //  HST1 =HAfbZ_vB_Ceex2n;
@@ -638,7 +649,7 @@ void FigExpZ()
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   ///////////////////////////////////////////////
-  cExpZ->cd(2);
+  cExpZr->cd(2);
   TH1D *HstZvB_IFI   = HstDiff("HstZvB_IFI",   HAfbZ_vB_Ceex2,   HAfbZ_vB_Ceex2n,   kBlue);
   TH1D *HstZvA_IFI   = HstDiff("HstZvA_IFI",   HAfbZ_vA_Ceex2,   HAfbZ_vA_Ceex2n,   kBlack);
   TH1D *HstZvE_IFI   = HstDiff("HstZvE_IFI",   Hafb1_xmax_EEX2iZ,Hafb1_xmax_EEX2nZ, kRed);
@@ -667,11 +678,11 @@ void FigExpZ()
   CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
 
   //
-  cExpZ->cd();
+  cExpZr->cd();
   //
-  cExpZ->SaveAs("cExpZ.pdf");
+  cExpZr->SaveAs("cExpZr.pdf");
 //
-}// FigExpZ
+}// FigExpZr
 
 
 
@@ -717,9 +728,9 @@ int main(int argc, char **argv)
   KKsemMakeHisto();
   //========== PLOTTING ==========
   //
-  FigExp9(); // 94GeV
-  FigExp8(); // 88GeV
-  FigExpZ(); // 91GeV
+  FigExp9r(); // 94GeV
+  FigExp8r(); // 88GeV
+  FigExpZr(); // 91GeV
   //
   // Template empty canvas  with 2 figures
   //FigTempl();
