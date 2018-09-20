@@ -5,7 +5,7 @@ METASOURCES = AUTO
 
 bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
    PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2\
-   PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2
+   PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -111,6 +111,10 @@ PlotALF2_SOURCES = KKplot.cxx HisNorm.cxx PlotALF2.cxx
 PlotALF2_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotALF2_LDFLAGS = -L$(ROOTLIBDIR)
 
+PlotALF3_SOURCES = KKplot.cxx HisNorm.cxx PlotALF3.cxx
+PlotALF3_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotALF3_LDFLAGS = -L$(ROOTLIBDIR)
+
 
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
@@ -151,6 +155,8 @@ PlotALF1-run: PlotALF1
 	./PlotALF1
 PlotALF2-run: PlotALF2
 	./PlotALF2
+PlotALF3-run: PlotALF3
+	./PlotALF3
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI

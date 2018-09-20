@@ -223,6 +223,63 @@ TH1D *HstProjF(TString title, TH2D *&Scat, int NbMax)
 }// HstProjV
 
 
+TH1D *HstProjAv(TString title, TH2D *&Scat, int NbMax)
+{ // makes AFB(V), integrating over cos(theta) bins up to NbMax.
+  cout<<"Entering HstProjA for  ";
+  cout<< Scat->GetName() <<endl;
+  //  Projection onto v axis, suming over Y=cos(theta) up to a limit
+  int      nbX  = Scat->GetNbinsX();
+  int      nbY  = Scat->GetNbinsY();
+  Double_t Xmax = Scat->GetXaxis()->GetXmax();
+  Double_t Xmin = Scat->GetXaxis()->GetXmin();
+  Double_t Ymax = Scat->GetYaxis()->GetXmax();
+  Double_t Ymin = Scat->GetYaxis()->GetXmin();
+  double deno;
+  //
+  TH1D *hxAfb = (TH1D*)Scat->ProjectionX(title,1,nbX,"e");
+  hxAfb->Reset();
+  //
+  double forw,forw2, back, back2;
+  double Forw,Forw2, Back, Back2;
+//  dx= (Xmax-Xmin)/nbX; // integration over X
+//  dy= (Ymax-Ymin)/nbY; // integration over Y
+  Forw=0.0; Forw2=0.0;
+  Back=0.0; Back2=0.0;
+  int nbYhalf = nbY/2;
+  int nbY2;
+  if( (NbMax>0) && (NbMax<nbYhalf) )
+    nbY2 = NbMax;
+  else
+    nbY2 = nbYhalf;
+  for(int ix=0; ix <= nbX+1; ix++){
+    forw=0.0; forw2=0.0;
+    back=0.0; back2=0.0;
+    // loop over cos(theta) bins
+    for(int iy=1; iy <= nbY2; iy++){
+      forw  += Scat->GetBinContent(  ix, nbYhalf+iy);
+      forw2 += sqr(Scat->GetBinError(ix, nbYhalf+iy));
+      back  += Scat->GetBinContent(  ix, nbYhalf-iy+1);
+      back2 += sqr(Scat->GetBinError(ix, nbYhalf-iy+1));
+    }// iy
+//    Forw  += forw;  Forw2 += forw2;
+//    Back  += back;  Back2 += back2;
+    Forw  = forw;  Forw2 = forw2;  // no cumulation in v
+    Back  = back;  Back2 = back2;  // no cumulation in v
+    deno = Forw +Back;
+    if( deno == 0.0 ) {
+        hxAfb->SetBinContent(ix, 0 );
+        hxAfb->SetBinError(  ix, 0 );
+    }else{
+       hxAfb->SetBinContent(ix,      (Forw -Back)/(Forw +Back) );
+       hxAfb->SetBinError(  ix, sqrt(Forw2+Back2)/(Forw +Back) );
+    }
+    cout<<"  afb="<< (Forw -Back)/(Forw +Back);
+  }//ix
+  return hxAfb;
+}// HstProjAv
+
+
+
 TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax)
 { // makes AFB(Vmax), integrating over cos(theta) bins up to NbMax.
   cout<<"Entering HstProjA for  ";
@@ -266,7 +323,7 @@ TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax)
     hxAfb->SetBinError(  ix, sqrt(Forw2+Back2)/(Forw +Back) );
   }//ix
   return hxAfb;
-}// HstProjV
+}// HstProjA
 
 
 

@@ -139,9 +139,21 @@ void TRobolKKMC::Hbooker()
   sca_vTvA_Eex2    = TH2D_UP("sca_vTvA_Eex2",   "dSig/dvT/dvA ", 100, 0.0 ,0.2, 100, 0.0 ,0.2);
   sca_vKvA_Eex2    = TH2D_UP("sca_vKvA_Eex2",   "dSig/dvK/dvA ", 100, 0.0 ,0.2, 100, 0.0 ,0.2);
   ///////////////////////////////////////////////////////////////////////////
+  // scattergram in log10(v)
+  int NBlv =70, NBlc=100;
+  sct_LvTcPR_Ceex2  = TH2D_UP("sct_LvTcPR_Ceex2",  "dSig/dc/log10v ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+  sct_LvTcPR_Ceex2n = TH2D_UP("sct_LvTcPR_Ceex2n", "dSig/dc/log10v ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+
+  sct_LvAcPR_Ceex2  = TH2D_UP("sct_LvAcPR_Ceex2",  "dSig/dc/log10v ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+  sct_LvAcPR_Ceex2n = TH2D_UP("sct_LvAcPR_Ceex2n", "dSig/dc/log10v ", NBlv, -9.0 ,-1.0, NBlc, -1.0 ,1.0);
+
+  sct_CutALcPR_Ceex2 = TH2D_UP("sct_CutALcPR_Ceex2", "dSig/dc/log10v ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+  sct_CutALcPR_Ceex2n= TH2D_UP("sct_CutALcPR_Ceex2n","dSig/dc/log10v ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+  ///////////////////////////////////////////////////////////////////////////
   //  New bigger scatergrams, restricted vmax<0.2
   int NBv =100; int NBc = 100;
   double vmx2= 0.20;
+
   sct_vTcPR_Ceex2 = TH2D_UP("sct_vTcPR_Ceex2",  "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPR_Ceex2n= TH2D_UP("sct_vTcPR_Ceex2n", "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
   sct_vTcPR_EEX2  = TH2D_UP("sct_vTcPR_EEX2",   "dSig/dc/dv ", NBv, 0.0 ,vmx2, NBc, -1.0 ,1.0);
@@ -524,6 +536,12 @@ void TRobolKKMC::Production(double &iEvent)
   sct_vTcPL_Ceex0n->Fill(   vv, CosThePL, WtCEEX0n); // vv bare muons, IFIoff
 ////////////////////
   sct_vAcPL_Ceex2->Fill(   vvA, CosThePL, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
+////////////////////
+  sct_LvTcPR_Ceex2->Fill(  log10(vv +1.01e-8),  CosPRD, WtCEEX2);  // true v, IFI on
+  sct_LvTcPR_Ceex2n->Fill( log10(vv +1.01e-8),  CosPRD, WtCEEX2n); // true v, IFI off
+  sct_LvAcPR_Ceex2->Fill(  log10(vvA+1.01e-8), CosPRD, WtCEEX2);  // Aleph v
+  sct_LvAcPR_Ceex2n->Fill( log10(vvA+1.01e-8), CosPRD, WtCEEX2n); // Aleph v
+
 //-------------------------------
 // dsigma/dv, any theta, no cut
 // specials for AFB from <costheta_PL>
@@ -635,6 +653,8 @@ void TRobolKKMC::Production(double &iEvent)
   if( Acol<0.001 && xe1>0.90 && xe2>0.90){
     sct_CutAcPR_Ceex2->Fill(   vvA, CosPRD, WtCEEX2);   // Main CEEX2 KKMC , ISR+FSR
     sct_CutAcPR_Ceex2n->Fill(  vvA, CosPRD, WtCEEX2n);  // Main CEEX2 KKMC , ISR+FSR
+    sct_CutALcPR_Ceex2->Fill( log10(vvA), CosPRD, WtCEEX2);  // Main CEEX2 KKMC , ISR+FSR
+    sct_CutALcPR_Ceex2n->Fill(log10(vvA), CosPRD, WtCEEX2n); // Main CEEX2 KKMC , ISR+FSR
   }
   if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
     hst_vA_Ceex1->Fill(   vvA, WtCEEX1);

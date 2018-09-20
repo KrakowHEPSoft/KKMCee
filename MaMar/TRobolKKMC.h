@@ -86,6 +86,17 @@ class TRobolKKMC : public TRobol
 
   TH2D   *sct_CutAcPR_Ceex2;   //! vv PRD Cut(A)
   TH2D   *sct_CutAcPR_Ceex2n;  //! vv PRD Cut(A)
+
+////////////   ln10(v) series
+  TH2D   *sct_LvTcPR_Ceex2;    //! ln10(vv) PRD
+  TH2D   *sct_LvTcPR_Ceex2n;   //! ln10(vv) PRD
+
+  TH2D   *sct_LvAcPR_Ceex2 ;   //! ln10(vv) PRD
+  TH2D   *sct_LvAcPR_Ceex2n;   //! ln10(vv) PRD
+
+  TH2D   *sct_CutALcPR_Ceex2 ;  //! ln10(vv PRD Cut(A)
+  TH2D   *sct_CutALcPR_Ceex2n;  //! ln10(vv PRD Cut(A)
+
 /////////////// NEW!!!!
   // CEEX series
   TH1D   *hst_vT_Ceex1;       //!  No streamer!!!

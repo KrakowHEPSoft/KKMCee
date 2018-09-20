@@ -52,6 +52,8 @@ TH1D *HstCumul(TString title, TH1D *hst1);
 
 TH1D *HstProjV(TString title, TH2D *&Scat, int NbMax);
 
+TH1D *HstProjAv(TString title, TH2D *&Scat, int NbMax);
+
 TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax);
 
 TH1D *HstProjF(TString title, TH2D *&Scat, int NbMax);
