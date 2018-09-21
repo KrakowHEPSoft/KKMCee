@@ -62,7 +62,7 @@ sfarm80:	farm-clean start_n
 	(echo ">>>Set up farm dir:"; $(ROOTEXEC) -b -q -l '../../MCdev/farming/SetFarmS.C("$(DSET)",80)' ;)
 	(ln -s ../../${MAIN} ./farm/${DSET}.exe; echo ">>>>>>>>... DONE!!!!!!!")
 ssubmitall:
-	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",6)' )
+	($(ROOTEXEC)  -b -q -l '../../MCdev/farming/SubmFarmS.C("sbatch",200)' )
 #########################################################################
 ####   version for CC1 cluster ####
 SLfarm6:	farm-clean start_n
