@@ -132,9 +132,10 @@ void TRobolFOAM::Hbooker()
     SCN_xc_EEX2n =  TH2D_UP("SCN_xc_EEX2n", "dSig/dc/dv ", NBv, 0.0 ,vmx3, NBc, -1.0 ,1.0);
 /////////////////////////////////////////////////////////////////////
 // scattergram in log10(v)
-    int NBlv =70, NBlc=100;
-    SCT_Lxc_EEX2i =  TH2D_UP("SCT_Lxc_EEX2i", "dSig/dc/dv ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
-    SCT_Lxc_EEX2n =  TH2D_UP("SCT_Lxc_EEX2n", "dSig/dc/dv ", NBlv, -8.0 ,-1.0, NBlc, -1.0 ,1.0);
+    m_vminL = 1e-6;
+    int NBlv =50, NBlc=100;
+    SCT_Lxc_EEX2i =  TH2D_UP("SCT_Lxc_EEX2i", "dSig/dc/dv ", NBlv, log10(m_vminL),-1.0, NBlc, -1.0 ,1.0);
+    SCT_Lxc_EEX2n =  TH2D_UP("SCT_Lxc_EEX2n", "dSig/dc/dv ", NBlv, log10(m_vminL),-1.0, NBlc, -1.0 ,1.0);
 /////////////////////////////////////////////////////////////////////
     // special histos for AFB from average cos(theta) for IFI on
     HST5_xx_Ceex2  = TH1D_UP("HST5_xx_Ceex2", "dSig/dv",   NBv, 0.0, vmx2);
@@ -278,8 +279,8 @@ if( MCgen->m_IsFoam3i == 1) {
   SCT_xc_EEX2i->Fill(xx,CosTheta,WTeex2i);  // xmax<0.20
   SCT_xc_EEX2n->Fill(xx,CosTheta,WTeex2n);  // xmax<0.20
   //
-  SCT_Lxc_EEX2i->Fill(log10(xx +1.01e-8),CosTheta,WTeex2i);  // log scale
-  SCT_Lxc_EEX2n->Fill(log10(xx +1.01e-8),CosTheta,WTeex2n);  // log scale
+  SCT_Lxc_EEX2i->Fill(log10(xx +1.001*m_vminL),CosTheta,WTeex2i);  // log scale
+  SCT_Lxc_EEX2n->Fill(log10(xx +1.001*m_vminL),CosTheta,WTeex2n);  // log scale
   //
   SCN_xc_EEX2i->Fill(xx,CosTheta,WTeex2i);  // xmax<0.02
   SCN_xc_EEX2n->Fill(xx,CosTheta,WTeex2n);  // xmax<0.02

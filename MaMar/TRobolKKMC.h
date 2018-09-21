@@ -196,6 +196,7 @@ class TRobolKKMC : public TRobol
   double m_YSum2;  // sum of weights^2
   double m_DelAlf; // range of AlphaQED (relative)
   double m_vvcut2; // photon energy cut
+  double m_vminL; // photon energy cut
 ///////////////////////////////////////////
 /// mandatory constructors and destructors
   public:

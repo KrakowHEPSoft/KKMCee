@@ -23,6 +23,7 @@ class TRobolFOAM : public TRobol {
 /// data members
   double    m_xmin;          // dummy
   double    m_xmax;          // dummy
+  double    m_vminL;          // dummy
 /// ============== Histograms follow =================================
   TH1D   *hst_weight1;           //! no streamer
   TH1D   *hst_weight3;           //! no streamer
