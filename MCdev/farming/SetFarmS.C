@@ -53,7 +53,7 @@ int SetFarmS(TString dname = "WORK", int nfarm = 6)
          OutFile<< "#SBATCH -N 1" <<endl;
          OutFile<< "#SBATCH --ntasks-per-node 1" <<endl;
          OutFile<< "#SBATCH --mem 100" <<endl;
-         OutFile<< "#SBATCH -t 48:00:00 " <<endl;
+         OutFile<< "#SBATCH -t 72:00:00 " <<endl;
          OutFile<< "#SBATCH -p ifj" <<endl;
          OutFile<< "#SBATCH --output='kkmc.out'" <<endl;
 ///----------------------------
