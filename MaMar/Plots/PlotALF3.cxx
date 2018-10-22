@@ -33,8 +33,11 @@ using namespace std;
 //=============================================================================
 // Latest from /workKKMC
 
-TFile DiskFileA95("../workKKMC/histo.root");  // current
+//TFile DiskFileA95("../workKKMC/histo.root");  // current
 //TFile DiskFileA88("../workKKMC/histo.root");  // current
+
+// new extra!!!
+TFile DiskFileA95("../workKKMC/histo.root_95GeV_vmin-6_650M");  // extra
 
 //TFile DiskFileA95("../workKKMC/histo.root_95GeV.sept_200M");  // sep.2018
 TFile DiskFileA88("../workKKMC/histo.root_88GeV.sept_290M");  // sep.2018
@@ -326,7 +329,7 @@ void FigExp9w()
 //  HST1->SetMinimum(0.250); // 95GeV
   HST1->DrawCopy("h");
 
-  double ycapt =0.91, xcapt=0.3;
+  double ycapt =0.51, xcapt=0.3;
   CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV");
   ycapt += -0.047;
 
@@ -339,8 +342,10 @@ void FigExp9w()
   PlotSame2(Hafb2_xmax_EEX2i9,  ycapt, kRed,       0.15, "(e)", "KKfoam3 IFIon");
   PlotSame2(Hafb2_xmax_EEX2n9,  ycapt, kRed,       0.15, "(f)", "KKfoam3 IFIoff");
 
+//  CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v_{max})  ");
+//  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
+  CaptNDC->DrawLatex(0.60,0.02,"v ");
 
   ///////////////////////////////////////////////
   cExp9w->cd(2);
@@ -360,15 +365,17 @@ void FigExp9w()
   HST2->DrawCopy("h");
 
   ycapt =0.91, xcapt=0.3;
-  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, IFI");
+  CaptNDC->DrawLatex(xcapt-0.1,ycapt," #sqrt{s} = 94.3GeV, IFI component");
   ycapt += -0.047;
 
   PlotSame2(Hst9vB_IFI,       ycapt, kBlue,    0.03, "(a)", "KKMC Bcut IFI ");
   PlotSame2(Hst9vA_IFI,       ycapt, kBlack,   0.05, "(b)", "KKMC Acut IFI ");
   PlotSame2(Hst9vE_IFI,       ycapt, kRed,     0.05, "(c)", "KKFoam3   IFI ");
 
+ // CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v_{max})  ");
+ // CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
   CaptNDC->DrawLatex(0.04,0.95,"A_{FB}^{IFI}(v)  ");
-  CaptNDC->DrawLatex(0.60,0.02,"v_{max} ");
+  CaptNDC->DrawLatex(0.60,0.02,"v ");
 
   //
   cExp9w->cd();
