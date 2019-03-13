@@ -1,0 +1,11 @@
+#!/bin/bash -l
+#SBATCH -J <dset>-<farmindex>
+#SBATCH -o slurm.%N.%j.out # STDOUT 
+#SBATCH -e slurm.%N.%j.err # STDERR
+#######################################
+cd <pthfarm>/<farmindex>
+# ========= EXECUTION =========
+cp ./<dset>.input ./pro.input
+time ../<dset>.exe
+
+exit 0

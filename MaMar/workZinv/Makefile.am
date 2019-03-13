@@ -98,8 +98,15 @@ farm24-KRK:
 	(csh ../farming/farm-init  "1 2 3 4 5 6 7 8 9 10 11 12 \
 	      13 14 15 16 17 18 19 20 21 22 23 24 " \
 	${MCMD} ${DSET} KRK ${CLASS} )
+###-----------
+farm6-CC1: CLEAN
+	(csh ../farming/farm-init "1 2 3 4 5 6" \
+	${MCMD} ${DSET} CC1 ${CLASS} )
+farm12-CC1: CLEAN
+	(csh ../farming/farm-init "1 2 3 4 5 6 7 8 9 10 11 12" \
+	${MCMD} ${DSET} CC1 ${CLASS} )
 #-----------------------------------------------------------------------
-farm-gtar:
+farm-gtar: prepare
 	(gtar -cvzf ../../../${DSET}-farm.tar.gz farm)
 #-----------------------------------------------------------------------
 bsubmit6:
