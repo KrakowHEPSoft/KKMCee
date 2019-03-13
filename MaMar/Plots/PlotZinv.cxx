@@ -28,15 +28,19 @@ using namespace std;
 //=============================================================================
 //
 //TFile DiskFileA("../workZinv/rmain.root");
-//
+//  March 2019
+TFile DiskFileA("../workZinv/rmain.root_E161GeV_140M");
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
-TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
+//TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_4G");
 //
 // FSR off, pure ISR
 //TFile DiskFileB("../workZinv/rmain.root");
-TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
+// New
+TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_143M");
+// Old
+//TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
 //
 //+++++++++++++++++++++++++++
@@ -85,6 +89,7 @@ void HistNormalize(){
   //
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
   DiskFileA.ls("");
+  //*************************************************************
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_nPhAll") );
@@ -98,7 +103,7 @@ void HistNormalize(){
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vtMuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaMuCeex2") );
-  //
+  //============================================================
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvNuCeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvNuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvNuCeex12") );
@@ -106,7 +111,7 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvMuCeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvMuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvMuCeex12") );
-  //
+  //============================================================
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evNuCeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evNuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evNuCeex12") );
@@ -114,17 +119,17 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex1") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex12") );
-  //
+  //--------------------------------------
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex1n") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex2n") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex12n") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_evMuCeex2ifi") );
-  //
+  //===========================================================
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNuel") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vPhotNumu") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosPLCeex2") );
-
+  //************************************************************
   TH1D *HST_KKMC_NORMB = (TH1D*)DiskFileB.Get("HST_KKMC_NORMA");
   //
   HisNorm1(HST_KKMC_NORMB, (TH1D*)DiskFileB.Get("hst_evNuCeex1") );
@@ -646,7 +651,7 @@ void FigCeex12isr()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("E_{#gamma}");
-  if( g161GeVyes) {Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);}
+  if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
   Hst->DrawCopy("h");
   ///
@@ -720,7 +725,7 @@ void FigCeex2fsr()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("E_{#gamma}");
-  if( g161GeVyes) {Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);}
+  if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
   Hst->DrawCopy("h");
   ///

@@ -81,29 +81,41 @@ void ROBOL2::Initialize(long &NevTot)
   hst_vaMuCeex2 = TH1D_UP("hst_vaMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   hst_vtNuCeex2 = TH1D_UP("hst_vtNuCeex2",  "dSig/dvTrue ",    nbv, 0.000 ,1.000);
   hst_vaNuCeex2 = TH1D_UP("hst_vaNuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
-  ///
+  ///=======================================================
   int nbv2 =40;   // small range
+  /// -------------- electron neutrino
+  hst_vPhotNuel = TH1D_UP("hst_vPhotNuel", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
+  hst_vPhotNumu = TH1D_UP("hst_vPhotNumu", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
+  //  ================= all neutrino
   hst_vvNuCeex1 = TH1D_UP("hst_vvNuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
   hst_vvNuCeex2 = TH1D_UP("hst_vvNuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
   hst_vvNuCeex12= TH1D_UP("hst_vvNuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
-  /// electron neutrino
-  hst_vPhotNuel = TH1D_UP("hst_vPhotNuel", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
-  hst_vPhotNumu = TH1D_UP("hst_vPhotNumu", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
-  /// Muon channel
+  /// ================= Muon channel
   hst_vvMuCeex1 = TH1D_UP("hst_vvMuCeex1", "dSig/dv CEEX1",       nbv2, vv1 , vv2);
   hst_vvMuCeex2 = TH1D_UP("hst_vvMuCeex2", "dSig/dv CEEX2",       nbv2, vv1 , vv2);
   hst_vvMuCeex12= TH1D_UP("hst_vvMuCeex12","dSig/dv CEEX1-CEEX2", nbv2, vv1 , vv2);
+
+  hst_vvMuCeex2ifi=TH1D_UP("hst_vvMuCeex2ifi","dSig/dE CEEX2 IFI",nbv2, vv1 , vv2);
+
+  hst_vvMuCeex1n = TH1D_UP("hst_vvMuCeex1n", "dSig/dv CEEX1",      nbv2, vv1 , vv2);
+  hst_vvMuCeex2n = TH1D_UP("hst_vvMuCeex2n", "dSig/dv CEEX2",      nbv2, vv1 , vv2);
+  hst_vvMuCeex12n= TH1D_UP("hst_vvMuCeex12n","dSig/dv CEEX1-CEEX2",nbv2, vv1 , vv2);
+
   /// wider beams, energy in GeV
   double Eg2= vv2*CMSene/2;
   double Eg1= vv1*CMSene/2;
   int nb4 = 40;   /// small range
+  /// ================ all neutrino
   hst_evNuCeex1  = TH1D_UP("hst_evNuCeex1",  "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
   hst_evNuCeex2  = TH1D_UP("hst_evNuCeex2",  "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
   hst_evNuCeex12 = TH1D_UP("hst_evNuCeex12", "dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+  // ================= Muon channel
   hst_evMuCeex1  = TH1D_UP("hst_evMuCeex1",  "dSig/dE CEEX1",       nb4, Eg1 , Eg2);
   hst_evMuCeex2  = TH1D_UP("hst_evMuCeex2",  "dSig/dE CEEX2",       nb4, Eg1 , Eg2);
   hst_evMuCeex12 = TH1D_UP("hst_evMuCeex12", "dSig/dE CEEX1-CEEX2", nb4, Eg1 , Eg2);
+
   hst_evMuCeex2ifi=TH1D_UP("hst_evMuCeex2ifi","dSig/dE CEEX2 IFI",  nb4, Eg1 , Eg2);
+
   hst_evMuCeex1n = TH1D_UP("hst_evMuCeex1n",  "dSig/dE CEEX1",      nb4, Eg1 , Eg2);
   hst_evMuCeex2n = TH1D_UP("hst_evMuCeex2n",  "dSig/dE CEEX2",      nb4, Eg1 , Eg2);
   hst_evMuCeex12n= TH1D_UP("hst_evMuCeex12n", "dSig/dE CEEX1-CEEX2",nb4, Eg1 , Eg2);
@@ -254,17 +266,17 @@ void ROBOL2::Production(long &iEvent)
   //
   double WtCEEX1n = KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double WtCEEX2n = KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2)
-  //
-/// All 3 types of nu+nubar
+/// ==================================================
+/// =========== All 3 types of nu+nubar ==============
 if( NuYes==1 ){
-  hst_vtNuCeex2->Fill(       vv, WtCEEX2); /// true nu-pair mass, full range
+  hst_vtNuCeex2->Fill( vv, WtCEEX2); /// true nu-pair mass, full range
   /// nu+nubar + visible photons
   if( nph_vis >= 1 ) hst_vaNuCeex2->Fill( vPhot, WtCEEX2); /// tagged, full v-range
   /// histos with restricted v-range
   if( nph_vis >= 1 ) hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
   if( nph_vis >= 1 ) hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
   if( nph_vis >= 1 ) hst_vvNuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
-  /// wider bins, absolute energy
+  /// absolute energy
   if( nph_vis >= 1 ) hst_evNuCeex1->Fill( phEneVis, WtCEEX1);
   if( nph_vis >= 1 ) hst_evNuCeex2->Fill( phEneVis, WtCEEX2);
   if( nph_vis >= 1 ) hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
@@ -272,32 +284,39 @@ if( NuYes==1 ){
   if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtCEEX2);
   if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtCEEX2);
 }/// NuYes
-  /// *********************************************************************
-  ///         various QED models, muon channel
-  /// *********************************************************************
+/// *********************************************************************
+/// ***********  muon channel,  various QED models, etc. ****************
+/// *********************************************************************
   int inAngMu =0;    /// angular limits on muon-pairs
-  if (fabs(CosThe1)<CosTheMumax &&  fabs(CosThe2)<CosTheMumax ) inAngMu =1;
+  if (fabs(CosThe1)<CosTheMumax ) inAngMu++;
+  if (fabs(CosThe2)<CosTheMumax ) inAngMu++;
+////////  if (fabs(CosThe1)<CosTheMumax &&  fabs(CosThe2)<CosTheMumax ) inAngMu =1;
 if( KF==13 ) {
   hst_vtMuCeex2->Fill(      vv, WtCEEX2);   /// true mu-pair mass distribution
   if( nph_vis >= 1 ) hst_vaMuCeex2->Fill( vPhot, WtCEEX2); /// full v-range
-/// mu_pair+gammas, both visible (in the detector)
-  if( nph_vis>=1 && inAngMu==1 ){
+/// mu_pair+gammas, at least one muon in the detector
+  if( nph_vis>=1 && inAngMu>=1 ){
     hst_CosPLCeex2->Fill(CosThePL, WtCEEX2); /// Ang. distr.
     /// histos with restricted v-range
     hst_vvMuCeex1->Fill( vPhot, WtCEEX1);
     hst_vvMuCeex2->Fill( vPhot, WtCEEX2);
     hst_vvMuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
-    /// wider bins, absolute energy
+    /// absolute energy
     hst_evMuCeex1->Fill( phEneVis, WtCEEX1);
     hst_evMuCeex2->Fill( phEneVis, WtCEEX2);
     hst_evMuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
-    /// wider bins, absolute energy IFI off!
+    /// -------------- IFI off!
+    hst_vvMuCeex1n->Fill( vPhot, WtCEEX1n);
+    hst_vvMuCeex2n->Fill( vPhot, WtCEEX2n);
+    hst_vvMuCeex12n->Fill(vPhot, WtCEEX1n-WtCEEX2n);
+    //
     hst_evMuCeex1n->Fill( phEneVis, WtCEEX1n);
     hst_evMuCeex2n->Fill( phEneVis, WtCEEX2n);
     hst_evMuCeex12n->Fill(phEneVis, WtCEEX1n-WtCEEX2n);
-    /// wider bins, absolute energy IFI
+    /// ----------- IFI alone
+    hst_vvMuCeex2ifi->Fill( vPhot,    WtCEEX2n-WtCEEX2);
     hst_evMuCeex2ifi->Fill( phEneVis, WtCEEX2n-WtCEEX2);
-  }/// visible phot and mu-pair
+   }/// visible phot and mu-pair
 }/// KF=13
 
 //!///////////////////////////////////////////////////////////

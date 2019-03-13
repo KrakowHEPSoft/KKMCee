@@ -42,27 +42,29 @@ class ROBOL2{
   //
   TH1D   *hst_vaNuCeex2;
   TH1D   *hst_vaMuCeex2;
-  //
-  TH1D   *hst_vvNuCeex1;
-  TH1D   *hst_vvNuCeex2;
-  TH1D   *hst_vvNuCeex12;
   ///
   TH1D   *hst_vPhotNuel;
   TH1D   *hst_vPhotNumu;
   ///
   TH1D   *hst_vtMuCeex2;
+  //================================
+  TH1D   *hst_vvNuCeex1;
+  TH1D   *hst_vvNuCeex2;
+  TH1D   *hst_vvNuCeex12;
+  //--------------------------------
   TH1D   *hst_vvMuCeex1;
   TH1D   *hst_vvMuCeex2;
   TH1D   *hst_vvMuCeex12;
+  TH1D   *hst_vvMuCeex2ifi;
   ///
+  TH1D   *hst_vvMuCeex1n;
+  TH1D   *hst_vvMuCeex2n;
+  TH1D   *hst_vvMuCeex12n;
+  ///===============================
   TH1D   *hst_evNuCeex1;
   TH1D   *hst_evNuCeex2;
   TH1D   *hst_evNuCeex12;
-  ///
-  TH1D   *hst_evNuCeex1n;
-  TH1D   *hst_evNuCeex2n;
-  TH1D   *hst_evNuCeex12n;
-  ///
+  ///-------------------------------
   TH1D   *hst_evMuCeex1;
   TH1D   *hst_evMuCeex2;
   TH1D   *hst_evMuCeex12;
@@ -71,7 +73,7 @@ class ROBOL2{
   TH1D   *hst_evMuCeex1n;
   TH1D   *hst_evMuCeex2n;
   TH1D   *hst_evMuCeex12n;
-  ///
+  ///==============================
   TH1D   *hst_CosPLCeex2;
   ///
   double m_YSum;   // sum of weights
