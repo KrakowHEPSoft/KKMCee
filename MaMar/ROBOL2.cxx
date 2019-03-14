@@ -263,6 +263,8 @@ void ROBOL2::Production(long &iEvent)
   //
   double WtCEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double WtCEEX2 = KKMC_generator->GetWtAlter(203);    //  CEEX Weight O(alf2)
+  if(fabs(WtCEEX1)>25) WtCEEX1=0;
+  if(fabs(WtCEEX2)>25) WtCEEX2=0;
   //
   double WtCEEX1n = KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)
   double WtCEEX2n = KKMC_generator->GetWtAlter(253);    //  CEEX Weight O(alf2)
