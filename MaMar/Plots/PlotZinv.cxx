@@ -29,17 +29,17 @@ using namespace std;
 //
 //TFile DiskFileA("../workZinv/rmain.root");
 //  March 2019
-TFile DiskFileA("../workZinv/rmain.root_E161GeV_140M");
+TFile DiskFileA("../workZinv/rmain.root_E=161GeV_5G");
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
 //TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_4G");
 //
-// FSR off, pure ISR
+// ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
-// New
-TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_143M");
-// Old
+// New March 2019
+TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
+// Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
 //
@@ -276,8 +276,8 @@ void FigVPhot()
    double ycapt = 0.85;
    CaptT->DrawLatex(0.40, ycapt,gTextEne);
 //
-   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.5, "(a)", "#gamma's untaged");
-   PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.6, "(b)", "#gamma's tagged");
+   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged");
+   PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged");
 
    //====================plot2========================
    cFigVPhot->cd(2);
@@ -298,9 +298,9 @@ void FigVPhot()
    ycapt = 0.85;
    CaptT->DrawLatex(0.40, ycapt,gTextEne);
 //
-   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.5, "(a)","e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's untaged");
+   PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)","e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's untaged");
    hst_vaMuCeex2->Scale(3.0);
-   PlotSame2(hst_vaMuCeex2,  ycapt, kRed,  0.7, "(b)","e^{+}e^{-} -> #mu^{+}#mu^{-}+N#gamma,  #gamma's tagged (x3)");
+   PlotSame2(hst_vaMuCeex2,  ycapt, kRed,  0.5, "(b)","e^{+}e^{-} -> #mu^{+}#mu^{-}+N#gamma,  #gamma's tagged (x3)");
    hst_vaMuCeex2->Scale(0.33333333);
 
   //================================================
@@ -356,11 +356,10 @@ void FigNuDiff()
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
-//  double vcapt = 1.0 - sqr(89.3/gCMSene);
-  double vcapt = 1.0 - sqr(90.5/gCMSene);
+  double vcapt = 1.0 - sqr(91.2/gCMSene);
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
-  PlotSame2(Hel,  ycapt, kBlue, vcapt,       "(a)"," #nu = #nu_{el}");
-  PlotSame2(Hmu,  ycapt, kRed,  vcapt+0.003, "(b)"," #nu = #nu_{#mu}");
+  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," #nu = #nu_{el}");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," #nu = #nu_{#mu}");
 //
   CaptT->DrawLatex(0.10,0.95, "d#sigma/dv,   e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's taged");
   ////////////////////////////////////////////
@@ -428,8 +427,8 @@ void FigCeex12nu()
   double vvZ    = 1-sqr(91.2/gCMSene);
   double vcapt  = vvZ *gCMSene/2;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
-  PlotSame2(hst_vvNuCeex1,  ycapt, kBlue, vvZ+0.005,  "(a)"," CEEX1");
-  PlotSame2(hst_vvNuCeex2,  ycapt, kRed,  vvZ+0.000,  "(b)"," CEEX2");
+  PlotSame2(hst_vvNuCeex1,  ycapt, kBlue, vvZ+0.003,  "(a)"," CEEX1");
+  PlotSame2(hst_vvNuCeex2,  ycapt, kRed,  vvZ-0.003,  "(b)"," CEEX2");
 //
   CaptT->DrawLatex(0.10,0.95, "d#sigma/dv;  "
 		  "e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,  #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}     #gamma's taged");
@@ -496,7 +495,7 @@ void FigCeex12mu()
   double vcapt  = vvZ *gCMSene/2;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   PlotSame2(hst_vvMuCeex1,  ycapt, kBlue, vvZ+0.005,  "(a)"," CEEX1");
-  PlotSame2(hst_vvMuCeex2,  ycapt, kRed,  vvZ+0.000,  "(b)"," CEEX2");
+  PlotSame2(hst_vvMuCeex2,  ycapt, kRed,  vvZ-0.005,  "(b)"," CEEX2");
 //
 //  CaptT->DrawLatex(0.10,0.95, "d#sigma/dE_{#gamma};  "
 //		  "e^{+}e^{-} -> #mu^{+}#mu^{-}+N#gamma,       #gamma's taged");
@@ -597,10 +596,10 @@ void FigCeex12rat()
   double vcapt  = vvZ *gCMSene/2;
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   RAT_ceex1->SetLineWidth(2); RAT_ceex2->SetLineWidth(2);
-  PlotSame2(RAT_ceex1,  ycapt, kBlue, vvZ-0.005,"(a)"," CEEX1");
-  PlotSame2(RAT_ceex2,  ycapt, kRed,  vvZ+0.005,"(b)"," CEEX2");
+  PlotSame2(RAT_ceex1,  ycapt, kBlue, vvZ+0.010,"(a)"," CEEX1");
+  PlotSame2(RAT_ceex2,  ycapt, kRed,  vvZ-0.015,"(b)"," CEEX2");
   //
-  PlotSame2(RAT_ceex1n, ycapt, kPine, vvZ+0.000,"(c)"," CEEX1, IFIoff");
+  PlotSame2(RAT_ceex1n, ycapt, kPine, vvZ-0.015,"(c)"," CEEX1, IFIoff");
   PlotSame2(RAT_ceex2n, ycapt, kBrune,vvZ+0.010,"(d)"," CEEX2, IFIoff");
 //
   CaptT->DrawLatex(0.10,0.92,
@@ -626,10 +625,10 @@ void FigCeex12rat()
 
   ycapt = 0.85;
   DEL12->SetLineWidth(2);
-  PlotSame2(DEL12,   ycapt, kBlack, vvZ-0.010,      "(a)"," (CEEX1-CEEX2)/CEEX2");
-  PlotSame2(DEL12n,  ycapt, kRed,   vvZ+0.000, "(b)"," (CEEX1-CEEX2)/CEEX2, IFI off");
+  PlotSame2(DEL12,   ycapt, kBlack, vvZ-0.010, "(a)"," (CEEX1-CEEX2)/CEEX2");
+  PlotSame2(DEL12n,  ycapt, kRed,   vvZ+0.015, "(b)"," (CEEX1-CEEX2)/CEEX2, IFI off");
 //  PlotSame2(RAT_ceex12n, ycapt,  kRed,   vvZ+0.005, "(b)"," (CEEX1-CEEX2)/CEEX2, IFI off");
-  PlotSame2(DEL_IFI, ycapt, kBlue,  vvZ+0.005, "(c)"," IFI/CEEX2");
+  PlotSame2(DEL_IFI, ycapt, kBlue,  vvZ-0.010, "(c)"," IFI/CEEX2");
 
   H_Eline0->DrawCopy("hsame");
   CaptT->DrawLatex(0.10,0.92,"    QED effects:  #Delta R/R ");
