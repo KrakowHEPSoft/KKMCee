@@ -29,7 +29,8 @@ using namespace std;
 //
 //TFile DiskFileA("../workZinv/rmain.root");
 //  March 2019
-TFile DiskFileA("../workZinv/rmain.root_E=161GeV_5G");
+//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
+TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
 //TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
@@ -38,7 +39,8 @@ TFile DiskFileA("../workZinv/rmain.root_E=161GeV_5G");
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
 // New March 2019
-TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
+//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
+TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_5G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
