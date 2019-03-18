@@ -590,7 +590,7 @@ void FigCeex12rat()
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
 //  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
   if( g161GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
+  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.30;
@@ -686,7 +686,7 @@ void FigCeex12isr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
+  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
@@ -760,7 +760,7 @@ void FigCeex2fsr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.8); Hst->SetMaximum(2.3);}
+  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.35;
