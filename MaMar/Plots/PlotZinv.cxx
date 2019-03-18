@@ -40,7 +40,7 @@ TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 //TFile DiskFileB("../workZinv/rmain.root");
 // New March 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
-TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_5G");
+TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_1G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
@@ -590,7 +590,7 @@ void FigCeex12rat()
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
 //  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
   if( g161GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
+  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.30;
@@ -686,7 +686,7 @@ void FigCeex12isr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
+  if( g105GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
@@ -760,7 +760,7 @@ void FigCeex2fsr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
-  if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.1);}
+  if( g105GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.35;
