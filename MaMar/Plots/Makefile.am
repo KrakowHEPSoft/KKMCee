@@ -157,6 +157,8 @@ PlotALF2-run: PlotALF2
 	./PlotALF2
 PlotALF3-run: PlotALF3
 	./PlotALF3
+PlotPlay-run: PlotPlay
+	./PlotPlay
 ################# PRD88 Table I benchmark ##########
 #		make BMarkPRD88-pdf
 PlotIFI.phony: PlotIFI

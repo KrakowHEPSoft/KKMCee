@@ -160,6 +160,191 @@ void FigPrag2()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+void FigFCCee1()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigFCCee1 =========================== "<<endl;
+  TH1D *h_lep = new TH1D("h_lep" ,  "LEP exp error.",      10, 0.0, 10.0);
+  TH1D *h_qed = new TH1D("h_qed" ,  "LEP EQD uncert",      10, 0.0, 10.0);
+  TH1D *h_fcc = new TH1D("h_fcc" ,  "FCCee1 exp. err",      10, 0.0, 10.0);
+
+  h_lep->SetBinContent( 1,  2.2);
+  h_lep->SetBinContent( 2,  2.2);
+  h_lep->SetBinContent( 3, 25.0);
+  h_lep->SetBinContent( 4, 37.0);
+  h_lep->SetBinContent( 5,  8.0);
+  h_lep->SetBinContent( 6,150.0);
+  h_lep->SetBinContent( 7, 53.0);
+  h_lep->SetBinContent( 8, 41.0);
+  h_lep->SetBinContent( 9, 33.0);
+  h_lep->SetBinContent(10, 2000);
+
+  h_qed->SetBinContent( 1,  0.3);
+  h_qed->SetBinContent( 2,  0.2);
+  h_qed->SetBinContent( 3, 12.0);
+  h_qed->SetBinContent( 4, 25.0);
+  h_qed->SetBinContent( 5,  6.0);
+  h_qed->SetBinContent( 6, 60.0);
+  h_qed->SetBinContent( 7, 28.0);
+  h_qed->SetBinContent( 8, 12.0);
+  h_qed->SetBinContent( 9,  6.0);
+  h_qed->SetBinContent(10,  100);
+
+  h_fcc->SetBinContent( 1,  0.1);
+  h_fcc->SetBinContent( 2,  0.1);
+  h_fcc->SetBinContent( 3,  1.0);
+  h_fcc->SetBinContent( 4,  4.0);
+  h_fcc->SetBinContent( 5,  1.0);
+  h_fcc->SetBinContent( 6,  1.0);
+  h_fcc->SetBinContent( 7,  0.5);
+  h_fcc->SetBinContent( 8,  0.6);
+  h_fcc->SetBinContent( 9,  0.5);
+  h_fcc->SetBinContent(10,    1);
+
+  // normalize to LEP
+  h_qed->Divide(h_lep);
+  h_fcc->Divide(h_lep);
+  h_lep->Divide(h_lep);
+  // Improvement factor
+  TH1D *h_rat = (TH1D*)h_qed->Clone("h_rat");
+  h_rat->Divide(h_fcc);
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFCCee1 = new TCanvas("cFCCee1","cFCCee1", gXcanv,  gYcanv,   1000,  800);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cFCCee1->SetFillColor(10);
+  //////////////////////////////////////////////
+  cFCCee1->cd(1);
+  gPad->SetLogy(); // !!!!!!
+
+  TH1D *Hst=h_lep;
+
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("Observable");
+  Hst->SetMaximum(1.0);
+  Hst->SetMinimum(0.0003);
+
+  Hst->SetLineColor(kBlack);    // blue line
+  Hst->SetLineWidth(6);
+  Hst->SetFillColor(kBlue);    // blues fill solid
+  Hst->DrawCopy("h");
+
+  h_qed->SetLineColor(kBlack);
+  h_qed->SetLineWidth(6);
+  h_qed->SetFillColor(kRed);
+  h_qed->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"Induced QED error in LEP pseudo-observables");
+  //-------------------------------------
+  //
+  cFCCee1->cd();
+//
+}// FigFCCee1
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigFCCee2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigFCCee2 =========================== "<<endl;
+  TH1D *h_lep = (TH1D*)DiskFileB.Get("h_lep");
+  TH1D *h_qed = (TH1D*)DiskFileB.Get("h_qed");
+  TH1D *h_fcc = (TH1D*)DiskFileB.Get("h_fcc");
+  TH1D *h_rat = (TH1D*)DiskFileB.Get("h_rat");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFCCee2 = new TCanvas("cFCCee2","cFCCee2", gXcanv,  gYcanv,   1000,  800);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cFCCee2->SetFillColor(10);
+  //////////////////////////////////////////////
+  cFCCee2->cd(1);
+  gPad->SetLogy(); // !!!!!!
+
+  TH1D *Hst=h_lep;
+
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("Observable");
+  Hst->SetMaximum(1.0);
+  Hst->SetMinimum(0.0003);
+
+  Hst->SetLineColor(kBlack);    // blue line
+  Hst->SetLineWidth(6);
+  Hst->SetFillColor(kBlue);    // blues fill solid
+  Hst->DrawCopy("h");
+
+  h_qed->SetLineColor(kBlack);
+  h_qed->SetLineWidth(6);
+  h_qed->SetFillColor(kRed);
+  h_qed->DrawCopy("hsame");
+
+  h_fcc->SetLineColor(kBlack);
+  h_fcc->SetLineWidth(6);
+  h_fcc->SetFillColor(kGreen);
+  h_fcc->DrawCopy("hsame");
+
+
+  CaptT->DrawLatex(0.12,0.95,"Current QED precision vs. FCCee exp. error");
+  //-------------------------------------
+  //
+  cFCCee2->cd();
+//
+}// FigFCCee2
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigFCCee3()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigFCCee3 =========================== "<<endl;
+  TH1D *h_lep = (TH1D*)DiskFileB.Get("h_lep");
+  TH1D *h_qed = (TH1D*)DiskFileB.Get("h_qed");
+  TH1D *h_fcc = (TH1D*)DiskFileB.Get("h_fcc");
+  TH1D *h_rat = (TH1D*)DiskFileB.Get("h_rat");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFCCee3 = new TCanvas("cFCCee3","cFCCee3", gXcanv,  gYcanv,   1000,  800);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cFCCee3->SetFillColor(10);
+  //////////////////////////////////////////////
+  cFCCee3->cd(1);
+  gPad->SetLogy(); // !!!!!!
+
+  TH1D *Hst=h_rat;
+
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("Observable");
+  //Hst->SetMaximum(1.0);
+  //Hst->SetMinimum(0.0003);
+
+  Hst->SetLineColor(kBlack);
+  Hst->SetLineWidth(6);
+  Hst->SetFillColor(kRed);
+  Hst->DrawCopy("h");
+
+  CaptT->DrawLatex(0.12,0.95,"Needed improvement for QED precision");
+  //-------------------------------------
+  //
+  cFCCee3->cd();
+//
+}// FigFCCee3
+
+
+///////////////////////////////////////////////////////////////////////////////////
 void FigTempl()
 {
 //------------------------------------------------------------------------
@@ -193,7 +378,10 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   //========== PLOTTING ==========
-  FigPrag2();
+  //FigPrag2();
+  FigFCCee1();
+  FigFCCee2();
+  FigFCCee3();
   // Template empty canvas  with 2 figures
   //FigTempl();
   //++++++++++++++++++++++++++++++++++++++++
