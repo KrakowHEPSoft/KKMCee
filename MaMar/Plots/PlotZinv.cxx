@@ -40,7 +40,7 @@ TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 //TFile DiskFileB("../workZinv/rmain.root");
 // New March 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
-TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_1G");
+TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
@@ -449,6 +449,18 @@ void FigCeex12nu()
 //
   if( g161GeVyes) cCeex12nu->SaveAs("cCeex12nu_161GeV.pdf");
   if( g105GeVyes) cCeex12nu->SaveAs("cCeex12nu_105GeV.pdf");
+//
+  /*
+  int Nb = hst_vvNuCeex2->GetNbinsX();
+  cout<<"**************************************************************************"<<endl;
+  cout<<" From FigCeex12nu: gCMSene="<<gCMSene<<endl;
+  cout<<" Nb=  "<<Nb<<endl;
+  for(int ix=1; ix <= Nb; ix++){
+	  cout<<ix<<"    "<< hst_vvNuCeex2->GetBinContent(ix)<<"    +-    "<< hst_vvNuCeex2->GetBinError(ix)<<endl;
+  }
+  cout<<"**************************************************************************"<<endl;
+  */
+//
 }//FigCeex12nu
 
 

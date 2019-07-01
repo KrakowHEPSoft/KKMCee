@@ -212,7 +212,7 @@ void FigFCCee1()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFCCee1 = new TCanvas("cFCCee1","cFCCee1", gXcanv,  gYcanv,   1000,  800);
+  TCanvas *cFCCee1 = new TCanvas("cFCCee1","cFCCee1", gXcanv,  gYcanv,   1200,  800);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
@@ -236,13 +236,14 @@ void FigFCCee1()
 
   h_qed->SetLineColor(kBlack);
   h_qed->SetLineWidth(6);
-  h_qed->SetFillColor(kRed);
+  h_qed->SetFillColor(kGreen);
   h_qed->DrawCopy("hsame");
 
   CaptT->DrawLatex(0.12,0.95,"Induced QED error in LEP pseudo-observables");
   //-------------------------------------
   //
   cFCCee1->cd();
+  cFCCee1->SaveAs("cFCCee1.pdf");
 //
 }// FigFCCee1
 
@@ -260,7 +261,7 @@ void FigFCCee2()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFCCee2 = new TCanvas("cFCCee2","cFCCee2", gXcanv,  gYcanv,   1000,  800);
+  TCanvas *cFCCee2 = new TCanvas("cFCCee2","cFCCee2", gXcanv,  gYcanv,   1200,  800);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
@@ -284,12 +285,12 @@ void FigFCCee2()
 
   h_qed->SetLineColor(kBlack);
   h_qed->SetLineWidth(6);
-  h_qed->SetFillColor(kRed);
+  h_qed->SetFillColor(kGreen);
   h_qed->DrawCopy("hsame");
 
   h_fcc->SetLineColor(kBlack);
   h_fcc->SetLineWidth(6);
-  h_fcc->SetFillColor(kGreen);
+  h_fcc->SetFillColor(kRed);
   h_fcc->DrawCopy("hsame");
 
 
@@ -297,6 +298,7 @@ void FigFCCee2()
   //-------------------------------------
   //
   cFCCee2->cd();
+  cFCCee2->SaveAs("cFCCee2.pdf");
 //
 }// FigFCCee2
 
@@ -314,7 +316,7 @@ void FigFCCee3()
   //////////////////////////////////////////////
   TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
   ////////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFCCee3 = new TCanvas("cFCCee3","cFCCee3", gXcanv,  gYcanv,   1000,  800);
+  TCanvas *cFCCee3 = new TCanvas("cFCCee3","cFCCee3", gXcanv,  gYcanv,   1200,  800);
   //                            Name    Title            xoff,yoff, WidPix,HeiPix
   ////////////////////////////////////////////////////////////////////////////////
   gXcanv += 50; gYcanv += 50;
@@ -336,10 +338,16 @@ void FigFCCee3()
   Hst->SetFillColor(kRed);
   Hst->DrawCopy("h");
 
-  CaptT->DrawLatex(0.12,0.95,"Needed improvement for QED precision");
+  Hst->Scale(3);
+  Hst->SetFillColor(0);
+  Hst->SetLineStyle(2);
+  Hst->DrawCopy("hsame");
+
+  CaptT->DrawLatex(0.12,0.95,"Needed improvement for QED precision at FCCee");
   //-------------------------------------
   //
   cFCCee3->cd();
+  cFCCee3->SaveAs("cFCCee3.pdf");
 //
 }// FigFCCee3
 
