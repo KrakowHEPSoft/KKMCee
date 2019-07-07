@@ -29,8 +29,8 @@ using namespace std;
 //
 //TFile DiskFileA("../workZinv/rmain.root");
 //  March 2019
-//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
-TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
+TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
+//TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
 //TFile DiskFileA("../workZinv/rmain.root_E161GeV_3G");
@@ -39,8 +39,8 @@ TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
 // New March 2019
-//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
-TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
+TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
+//TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
@@ -313,20 +313,34 @@ void FigVPhot()
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigNuDiff()
+void FigNuDif1()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigNuDiff =========================== "<<endl;
+  cout<<" ========================= FigNuDif1 =========================== "<<endl;
   ///
   TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
   TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
+  //!////////////////////////////////////////////////////////////////////////
+  double IntLumi = 10; // integrated luminosity [10 atobarns] at 161GeV
+  if( gCMSene <160.0) IntLumi = 13;
+  double vZ = 1.0 - sqr(91.1876/gCMSene);
+  char CaptLum[300],CaptVZ[300];
+  sprintf(CaptLum,"Integr. Lumi. = %3.1f [ab^{-1}]",IntLumi);
+  sprintf(CaptVZ, "v_{Z}= 1-M_{Z}^{2}/s = %3.5f",vZ);
+
+  IntLumi *=  1e9;     // the same in [nanobarns]
+  double SigEl= hst_vPhotNuel->Integral("width");
+  double SigMu= hst_vPhotNumu->Integral("width");
+  cout<< "@@@@@@@@@ SigEl [pb] ="<<SigEl*1e3<<"  +- "<<SigEl*1e3/sqrt(SigMu*IntLumi) <<endl;
+  cout<< "@@@@@@@@@ SigMu [pb] ="<<SigMu*1e3<<"  +- "<<SigMu*1e3/sqrt(SigMu*IntLumi) << endl;
+  char CaptSigEl[300], CaptSigMu[300];
+  sprintf(CaptSigEl,"#sigma_{e} = %2.5f +- %2.5f [pb]",   SigEl*1e3,SigEl/sqrt(SigMu*IntLumi)*1e3);
+  sprintf(CaptSigMu,"#sigma_{#mu} = %2.5f +- %2.5f [pb]", SigMu*1e3,SigMu/sqrt(SigMu*IntLumi)*1e3);
   ///
   TH1D *Hel  = hst_vPhotNuel;
   TH1D *Hmu  = hst_vPhotNumu;
 //!////////////////////////////////////////////
-  double SigEl= Hel->Integral();
-  double SigMu= Hmu->Integral();
-  cout<< "@@@@@@@@@ SigEl="<<SigEl<<" SigMu="<<SigMu<<endl;
+  cout<< "@@@@@@@@@ SigEl [pb]="<<SigEl<<" SigMu [pb] ="<<SigMu<<endl;
   double DelTch=(SigEl-SigMu)/(3*SigMu); /// t_chanel contrib.
   cout<< "@@@@@@@@@ R="<< DelTch <<endl;
   char CaptRat[300];
@@ -343,14 +357,14 @@ void FigNuDiff()
   TH1D *H_Vline0  = (TH1D*)hst_vPhotNuel->Clone("H_Vline0");  // zero line
   H_Vline0->Reset();
 //!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  TCanvas *cNuDiff = new TCanvas("cNuDiff","cNuDiff", gXcanv,  gYcanv,  1200, 600);
+  TCanvas *cNuDif1 = new TCanvas("cNuDif1","cNuDif1", gXcanv,  gYcanv,  1200, 600);
   gXcanv += gDcanv; gYcanv += gDcanv;
 //
-  cNuDiff->SetFillColor(10);
-  cNuDiff->Draw();
-  cNuDiff->Divide(2, 0);
+  cNuDif1->SetFillColor(10);
+  cNuDif1->Draw();
+  cNuDif1->Divide(2, 0);
  /////////////////////////////////////////////
-  cNuDiff->cd(1);
+  cNuDif1->cd(1);
   TH1D *Hst=Hel;
   Hst->SetStats(0);
   Hst->SetTitle(0);
@@ -359,13 +373,17 @@ void FigNuDiff()
   ///
   double ycapt = 0.40;
   double vcapt = 1.0 - sqr(91.2/gCMSene);
-  CaptT->DrawLatex(0.40, ycapt,gTextEne);
+  CaptT->DrawLatex(0.35, ycapt,gTextEne);
   PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," #nu = #nu_{el}");
   PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," #nu = #nu_{#mu}");
+  //CaptT->DrawLatex(0.25, 0.25, CaptSigEl);
+  //CaptT->DrawLatex(0.25, 0.20, CaptSigMu);
+  //CaptT->DrawLatex(0.25, 0.15, CaptLum);
+
 //
-  CaptT->DrawLatex(0.10,0.95, "d#sigma/dv,   e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's taged");
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dv [nb],   e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's taged");
   ////////////////////////////////////////////
-  cNuDiff->cd(2);
+  cNuDif1->cd(2);
   H_Vline0->SetStats(0);
   H_Vline0->SetTitle(0);
   H_Vline0->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
@@ -378,12 +396,260 @@ void FigNuDiff()
   CaptT->DrawLatex(0.50,0.75, CaptRat);
   CaptT->DrawLatex(0.10,0.95,"t-channel W contrib.    R_{t}(v)=(#nu_{el}-#nu_{#mu})/(3 #nu_{#mu})");
  //!-----------------------------
-  cNuDiff->Update();
-  cNuDiff->cd();
+  cNuDif1->Update();
+  cNuDif1->cd();
 //
-  if( g161GeVyes) cNuDiff->SaveAs("cNuDiff_161GeV.pdf");
-  if( g105GeVyes) cNuDiff->SaveAs("cNuDiff_105GeV.pdf");
-}//FigNuDiff
+  if( g161GeVyes) cNuDif1->SaveAs("cNuDif1_161GeV.pdf");
+  if( g105GeVyes) cNuDif1->SaveAs("cNuDif1_105GeV.pdf");
+}//FigNuDif1
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigNuDif2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigNuDif2 =========================== "<<endl;
+  ///
+  TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
+  TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
+  //!////////////////////////////////////////////////////////////////////////
+  double IntLumi = 10; // integrated luminosity [10 atobarns] at 161GeV
+  if( gCMSene <160.0) IntLumi = 13;
+  double vZ = 1.0 - sqr(91.1876/gCMSene);
+  char CaptLum[300],CaptVZ[300];
+  sprintf(CaptLum,"Integr. Lumi. = %3.1f [ab^{-1}]",IntLumi);
+  sprintf(CaptVZ, "v_{Z}= 1-M_{Z}^{2}/s = %3.5f",vZ);
+
+  IntLumi *=  1e9;     // the same in [nanobarns]
+  double SigEl= hst_vPhotNuel->Integral("width");
+  double SigMu= hst_vPhotNumu->Integral("width");
+  cout<< "@@@@@@@@@ SigEl [pb] ="<<SigEl*1e3<<"  +- "<<SigEl*1e3/sqrt(SigMu*IntLumi) <<endl;
+  cout<< "@@@@@@@@@ SigMu [pb] ="<<SigMu*1e3<<"  +- "<<SigMu*1e3/sqrt(SigMu*IntLumi) << endl;
+  char CaptSigEl[300], CaptSigMu[300];
+  sprintf(CaptSigEl,"#sigma_{e} = %2.5f +- %2.5f [pb]",   SigEl*1e3,SigEl/sqrt(SigMu*IntLumi)*1e3);
+  sprintf(CaptSigMu,"#sigma_{#mu} = %2.5f +- %2.5f [pb]", SigMu*1e3,SigMu/sqrt(SigMu*IntLumi)*1e3);
+  ///
+  TH1D *Hel  = hst_vPhotNuel;
+  TH1D *Hmu  = hst_vPhotNumu;
+//!////////////////////////////////////////////
+  cout<< "@@@@@@@@@ SigEl [pb]="<<SigEl<<" SigMu [pb] ="<<SigMu<<endl;
+  double DelTch=(SigEl-SigMu)/(3*SigMu); /// t_chanel contrib.
+  cout<< "@@@@@@@@@ R="<< DelTch <<endl;
+  char CaptRat[300];
+  sprintf(CaptRat,"Integrated R_{t} = %2.4f ", DelTch);
+///////////////////////////////////////////////
+  TH1D *RAT_NuelNumu = HstDiff("RAT_NuelNumu", Hel, Hmu, kBlack );
+  RAT_NuelNumu->Divide(Hel);
+  RAT_NuelNumu->Scale(0.333333); // (nuel-numu)/(3*numu)
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  TH1D *H_Vline0  = (TH1D*)hst_vPhotNuel->Clone("H_Vline0");  // zero line
+  H_Vline0->Reset();
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cNuDif2 = new TCanvas("cNuDif2","cNuDif2", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cNuDif2->SetFillColor(10);
+  cNuDif2->Draw();
+  cNuDif2->Divide(2, 0);
+ /////////////////////////////////////////////
+  cNuDif2->cd(1);
+  TH1D *Hst=Hel;
+  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.40;
+  double vcapt = 1.0 - sqr(91.2/gCMSene);
+  CaptT->DrawLatex(0.35, ycapt,gTextEne);
+  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," #nu = #nu_{el}");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," #nu = #nu_{#mu}");
+  CaptT->DrawLatex(0.25, 0.25, CaptSigEl);
+  CaptT->DrawLatex(0.25, 0.20, CaptSigMu);
+  CaptT->DrawLatex(0.25, 0.15, CaptLum);
+
+//
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dv [nb],   e^{+}e^{-} -> #nu#bar{#nu}+N#gamma,    #gamma's taged");
+  ////////////////////////////////////////////
+  cNuDif2->cd(2);
+  H_Vline0->SetStats(0);
+  H_Vline0->SetTitle(0);
+  H_Vline0->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  H_Vline0->SetMaximum( +0.10); H_Vline0->SetMinimum( -0.10);
+  H_Vline0->DrawCopy("h");
+//
+  RAT_NuelNumu->SetLineColor(kBlue);
+  RAT_NuelNumu->DrawCopy("hsame");
+  //
+  CaptT->DrawLatex(0.50,0.75, CaptRat);
+  CaptT->DrawLatex(0.10,0.95,"t-channel W contrib.    R_{t}(v)=(#nu_{el}-#nu_{#mu})/(3 #nu_{#mu})");
+ //!-----------------------------
+  cNuDif2->Update();
+  cNuDif2->cd();
+//
+  if( g161GeVyes) cNuDif2->SaveAs("cNuDif2_161GeV.pdf");
+  if( g105GeVyes) cNuDif2->SaveAs("cNuDif2_105GeV.pdf");
+}//FigNuDif2
+
+
+///////////////////////////////////////////////////////////////////////////////////
+// !!!!!!!!!!!!!!!!! NEW !!!!!!!!!!!!!!!!!!
+void FigNuEle()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigNuEle =========================== "<<endl;
+  ///
+  TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
+  TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
+  ///
+  double IntLumi = 10; // integrated luminosity [10 atobarns] at 161GeV
+  if( gCMSene <160.0) IntLumi = 13;
+  double vZ = 1.0 - sqr(91.1876/gCMSene);
+  char CaptLum[300],CaptVZ[300];
+  sprintf(CaptLum,"Integr. Lumi. = %3.1f [ab^{-1}]",IntLumi);
+  sprintf(CaptVZ, "v_{Z}= 1-M_{Z}^{2}/s = %3.5f",vZ);
+
+  IntLumi *=  1e9;     // the same in [nanobarns]
+  //
+  TH1D *hst_vPhotNuInt    = HstDiff( "hst_vPhotNuInt", hst_vPhotNuel, hst_vPhotNumu, kBlack );
+  //
+  TH1D *hst_vNuTot1    = (TH1D*)hst_vPhotNuel->Clone("hst_vNuTot1");
+  hst_vNuTot1->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0,  1.0);
+  //
+  TH1D *hst_vNuTot0    = (TH1D*)hst_vPhotNuel->Clone("hst_vNuTot0");
+  hst_vNuTot0->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0,  0.0);
+  //
+  // translate into No of events for given integr. lumi
+  //TH1D *hst_vNuel     = HstEvent("hst_vNuel", hst_vPhotNuel, IntLumi);
+  //TH1D *hst_vNumu     = HstEvent("hst_vNumu", hst_vPhotNumu, IntLumi);
+  //
+  double Xmax = hst_vPhotNumu->GetXaxis()->GetXmax();
+  double Xmin = hst_vPhotNumu->GetXaxis()->GetXmin();
+  cout<< "@@@@@@@@@ Xmin, Xmax = "<<Xmin <<" "<< Xmax<<" Xmax-Xmin="<< Xmax-Xmin<<endl;
+
+  double SigTot1= hst_vNuTot1->Integral("width");
+  double SigTot0= hst_vNuTot0->Integral("width");
+  //
+  double SigTot1Pl = hst_vNuTot1->Integral( 1,20,"width");
+  double SigTot1Mi = hst_vNuTot1->Integral(21,40,"width");
+  double SigTot0Pl = hst_vNuTot0->Integral( 1,20,"width");
+  double SigTot0Mi = hst_vNuTot0->Integral(21,40,"width");
+
+  //!////////////////////////////////////////////////////////////////////////
+  cout<< "@@@@@@@@@ SigTot1 [pb] ="<<SigTot1*1e3<<"  +- "<<SigTot1*1e3/sqrt(SigTot0*IntLumi) <<endl;
+  cout<< "@@@@@@@@@ SigTot0 [pb] ="<<SigTot0*1e3<<"  +- "<<SigTot0*1e3/sqrt(SigTot0*IntLumi) <<endl;
+  double DelTch=(SigTot1-SigTot0)/(SigTot1); /// t_chanel contrib.
+  cout<< "@@@@@@@@@ A(0) ="<< DelTch <<" +- " << 1/sqrt(SigTot1*IntLumi) << endl;
+  //
+  cout<< "@@@@@@@@@ SigTot1Pl="<<SigTot1Pl<<"   SigTot1Mi="<<SigTot1Mi<<" sum/SigTot1="<<(SigTot1Pl+SigTot1Mi)/SigTot1<<endl;
+  double ASYnuEl= (SigTot1Pl-SigTot1Mi)/(SigTot1Pl+SigTot1Mi);
+  double ASYnuMu= (SigTot0Pl-SigTot0Mi)/(SigTot0Pl+SigTot0Mi);
+  cout<< "@@@@@@@@@ ASYnuEl=(Pl-Mi)/Pl+Mi)="<<ASYnuEl <<" +- " << 1/sqrt(SigTot1*IntLumi) <<endl;
+  cout<< "@@@@@@@@@ ASYnuMu=(Pl-Mi)/Pl+Mi)="<<ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi)  <<endl;
+  cout<< "@@@@@@@@@   ASYnuEl - ASYnuMu =  "<< ASYnuEl - ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi)  <<endl;
+  char CaptRat[300], CaptS0[300], CaptSigTot1[300], CaptSigTot0[300];
+  sprintf(CaptRat,"(#sigma_{on}-#sigma_{off})/#sigma_{on} = %2.5f +- %2.5f ", DelTch, 1/sqrt(SigTot1*IntLumi));
+  sprintf(CaptS0, "S(0)= %2.5f +- %2.5f ", ASYnuMu, 1/sqrt(SigTot1*IntLumi));
+  sprintf(CaptSigTot1,"#sigma_{on } = %2.5f +- %2.5f [pb]",  SigTot1*1e3,SigTot1*1e3/sqrt(SigTot0*IntLumi));
+  sprintf(CaptSigTot0,"#sigma_{off} = %2.5f +- %2.5f [pb]", SigTot0*1e3,SigTot0*1e3/sqrt(SigTot0*IntLumi));
+  cout<< "@@@@@@@@@ FCCee statistics for 10atob. ="<< SigTot1*IntLumi <<endl;
+  double EquEve = MCequiv(hst_vNuTot1);
+  cout<< "@@@@@@@@@ No. of equiv. WT=1 MC events ="<< EquEve <<endl;
+//////////////////////////////////////////////
+  double etamax = 0.100;
+  int nbx =200;
+  TH1D *hst_DelA  = new TH1D("hst_nPhVis" , "Delta Asym",  nbx, -etamax , etamax);
+  hst_DelA->Sumw2();
+  double staterr= 1/sqrt(SigTot0*IntLumi);
+  double dASY,eta, SigTot2Pl, SigTot2Mi, ASYnu2;
+  TH1D *hst_vNuTot2    = (TH1D*)hst_vPhotNuel->Clone("hst_vNuTot2");
+  for(int ib=1; ib <= nbx; ib++){
+	eta = -etamax + 2*etamax*(ib-0.5)/nbx;
+	dASY = eta;
+	hst_vNuTot2->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0, sqrt(1+eta) );
+	SigTot2Pl = hst_vNuTot2->Integral( 1,20,"width");
+	SigTot2Mi = hst_vNuTot2->Integral(21,40,"width");
+	ASYnu2= (SigTot2Pl-SigTot2Mi)/(SigTot2Pl+SigTot2Mi);
+	dASY =ASYnu2-ASYnuEl;
+	hst_DelA->SetBinContent(ib, dASY);
+	hst_DelA->SetBinError(  ib, staterr);
+	cout<< "%%%%%%%%% "<<ib<<"  "<< eta <<"  "<<dASY<< "  +-"<<  staterr <<endl;
+  }
+//////////////////////////////////////////////
+  TH1D *Hel  = hst_vNuTot1;
+  TH1D *Hmu  = hst_vNuTot0;
+///////////////////////////////////////////////////////////////////////////
+  TH1D *RAT_NuelNumu = HstDiff("RAT_NuelNumu", Hel, Hmu, kBlack );
+  RAT_NuelNumu->Divide(Hel);
+  RAT_NuelNumu->Scale(0.333333); // (nuel-numu)/(3*numu)
+  //
+  //TH1D *RAT_NuelNumu = hst_vNuInt;
+  //RAT_NuelNumu->Divide(hst_vNuTot1);
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+
+  TH1D *H_Vline0  = (TH1D*)hst_DelA->Clone("H_Vline0");  // zero line
+  H_Vline0->Reset();
+//!||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  TCanvas *cNuEle = new TCanvas("cNuEle","cNuEle", gXcanv,  gYcanv,  1200, 600);
+  gXcanv += gDcanv; gYcanv += gDcanv;
+//
+  cNuEle->SetFillColor(10);
+  cNuEle->Draw();
+  cNuEle->Divide(2, 0);
+ /////////////////////////////////////////////
+  cNuEle->cd(1);
+  TH1D *Hst=Hel;
+  //Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  Hst->DrawCopy("h");
+  ///
+  double ycapt = 0.45;
+  double vcapt = vZ;
+  CaptT->DrawLatex(0.35, ycapt,gTextEne);
+  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," W_{t} is ON");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," W_{t} is OFF");
+  CaptT->DrawLatex(0.25, 0.30, CaptSigTot1);
+  CaptT->DrawLatex(0.25, 0.25, CaptSigTot0);
+  CaptT->DrawLatex(0.25, 0.20, CaptRat);
+  CaptT->DrawLatex(0.25, 0.15, CaptLum);
+//
+  CaptT->DrawLatex(0.10,0.95, "d#sigma/dv [nb],   e^{+}e^{-} -> 3#nu#bar{#nu}+N#gamma,    #gamma's taged");
+  ////////////////////////////////////////////
+  cNuEle->cd(2);
+  H_Vline0->SetStats(0);
+  H_Vline0->SetTitle(0);
+  H_Vline0->GetXaxis()->SetTitle("#eta= 3#Gamma_{#nu_{e}}/#Gamma_{invis.}^{SM}-1");
+  H_Vline0->SetMaximum( +0.0015); H_Vline0->SetMinimum( -0.0015);
+  if(gCMSene < 160.0){
+	  H_Vline0->SetMaximum( +0.0010); H_Vline0->SetMinimum( -0.0010);}
+  H_Vline0->SetTitleSize(0.04);
+  H_Vline0->SetLabelSize(0.030);
+  H_Vline0->SetNdivisions(10);
+  H_Vline0->DrawCopy("h");
+//
+  hst_DelA->SetLineColor(kBlue);
+  hst_DelA->DrawCopy("hsame");
+  //
+  CaptT->DrawLatex(0.10,0.95, "#Delta S = S(#eta)-S(0)");
+  CaptT->DrawLatex(0.20,0.85, "S = (#sigma_{+}-#sigma_{-})/(#sigma_{+}-#sigma_{-})" );
+  CaptT->DrawLatex(0.20,0.80, "#sigma_{+}=#sigma(v>v_{Z}),  #sigma_{-}=#sigma(v<v_{Z})" );
+  CaptT->DrawLatex(0.20,0.75, CaptVZ);
+  CaptT->DrawLatex(0.20,0.70, CaptS0);
+ //!-----------------------------
+  cNuEle->Update();
+  cNuEle->cd();
+//
+  if( g161GeVyes) cNuEle->SaveAs("cNuEle_161GeV.pdf");
+  if( g105GeVyes) cNuEle->SaveAs("cNuEle_105GeV.pdf");
+}//FigNuEle
 
 
 
@@ -806,6 +1072,9 @@ void FigCeex2fsr()
 }//FigCeex12rat
 
 
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -836,14 +1105,18 @@ int main(int argc, char **argv)
 
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
+  /*
   FigNPhot();
   FigVPhot();
-  FigNuDiff();
   FigCeex12nu();
   FigCeex12mu();
   FigCeex12rat();
   FigCeex12isr();
   FigCeex2fsr();
+  */
+  FigNuDif1();
+  FigNuDif2();
+  FigNuEle();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   //

@@ -13,6 +13,9 @@ using namespace std;
 
 double sqr( const Double_t x );
 
+// calculates no. of equiv. WT=1 events
+double MCequiv(TH1D *hst1);
+
 // This works for 1-dim histograms
 void HisNorm0( long   Nevt, double Xsav, TH1 *Hst);
 
@@ -58,6 +61,7 @@ TH1D *HstProjA(TString title, TH2D *&Scat, int NbMax);
 
 TH1D *HstProjF(TString title, TH2D *&Scat, int NbMax);
 
+TH1D *HstEvent(TString title, TH1D *hst1, double IntLumi);
 
 ///////////////////////////////////////////////////////////////////////////////////
 void MakeAFB(TH1D *hAll, TH1D *&hAFB);

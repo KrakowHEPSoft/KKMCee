@@ -579,7 +579,44 @@ TH1D *HstCumul(TString title, TH1D *hst1)
    }
   hcum1->SetName(title);
   return hcum1;
-}//HstRatio
+}//HstCumul
+
+double MCequiv(TH1D *hst1)
+{
+  // calculates no. of equiv. WT=1 events
+  cout<<"Entering MCequivfor  ";
+  cout<< hst1->GetName() <<endl;
+  int nbX  = hst1->GetNbinsX();
+  //
+  double sum=0 ,sum2=0;
+  for(int iv=0; iv <= nbX; iv++){
+    sum   += hst1->GetBinContent(  iv);
+    sum2 += sqr(hst1->GetBinError(iv));
+   }
+ double EveEquiv = sum*sum/sum2;
+ return EveEquiv;
+}//HstCumul
+
+
+TH1D *HstEvent(TString title, TH1D *hst1, double IntLumi)
+{
+  // translates normalized distribution into no. of events for// given integrated luminosity
+  cout<<"Entering HstEvent for  ";
+  cout<< hst1->GetName() <<endl;
+  int  nbX  = hst1->GetNbinsX();
+  //
+  TH1D *hcum1 = (TH1D*)hst1->Clone("hcum1"); // allocate hcum1
+  hcum1->Reset();
+  double N=0;
+  for(int iv=0; iv <= nbX; iv++){
+    N   = hst1->GetBinContent(  iv)*IntLumi;
+    hcum1->SetBinContent(iv, N);
+    hcum1->SetBinError(  iv, sqrt(N));
+   }
+  hcum1->SetName(title);
+  return hcum1;
+}//HstEvent
+
 
 
   ///////////////////////////////////////////////////////////////////////////////////
