@@ -342,7 +342,9 @@ void FigVPhot2()
     Hst->SetTitle(0);
     Hst->GetXaxis()->CenterTitle();
     Hst->GetXaxis()->SetTitleSize(0.04);
-    Hst->GetXaxis()->SetTitle("v=1-M^{2}_{#nu#bar{#nu}}/s");
+    Hst->GetXaxis()->SetTitle("v");
+
+    Hst->SetMinimum(1e-4*Hst->GetMaximum());
 
     Hst->SetLineColor(kBlue);
     Hst->DrawCopy("h");
@@ -351,8 +353,8 @@ void FigVPhot2()
     double ycapt = 0.85;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
-    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged");
-    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged");
+    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged, v=1-M^{2}_{#nu#bar{#nu}}/s");
+    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged,  v=E_{#gamma}/E_{beam}");
     //================================================
     if( g161GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_161GeV.pdf");
     if( g105GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_105GeV.pdf");
