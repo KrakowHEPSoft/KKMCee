@@ -80,7 +80,10 @@ void ROBOL2::Initialize(long &NevTot)
   hst_vtMuCeex2 = TH1D_UP("hst_vtMuCeex2",  "dSig/dvTrue mu ", nbv, 0.000 ,1.000);
   hst_vaMuCeex2 = TH1D_UP("hst_vaMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   hst_vtNuCeex2 = TH1D_UP("hst_vtNuCeex2",  "dSig/dvTrue ",    nbv, 0.000 ,1.000);
-  hst_vaNuCeex2 = TH1D_UP("hst_vaNuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  //
+  hst_vaNuCeex2   = TH1D_UP("hst_vaNuCeex2",    "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vaNuElCeex2 = TH1D_UP("hst_vaNuElCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vaNuMuCeex2 = TH1D_UP("hst_vaNuMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   ///=======================================================
   int nbv2 =40;   // small range
   /// -------------- electron neutrino
@@ -227,7 +230,8 @@ void ROBOL2::Production(long &iEvent)
     if( phTheta < ThetaMin       ) TrigPho=0;
     if( phTheta > (180-ThetaMin) ) TrigPho=0;
     if( TrigPho)  nph_vis++;
-    if( TrigPho)  phEneVis=phEne;
+//    if( TrigPho)  phEneVis=phEne; // mistake!!!
+    if( TrigPho)  phEneVis +=phEne;
     /// histogramming photon angle, inclusive, neutrino channels only
     if(NuYes){
        hst_LnThPhAll->Fill(               log10(phPT/phEne), WtMain);
@@ -271,20 +275,25 @@ void ROBOL2::Production(long &iEvent)
 /// ==================================================
 /// =========== All 3 types of nu+nubar ==============
 if( NuYes==1 ){
-  hst_vtNuCeex2->Fill( vv, WtCEEX2); /// true nu-pair mass, full range
-  /// nu+nubar + visible photons
-  if( nph_vis >= 1 ) hst_vaNuCeex2->Fill( vPhot, WtCEEX2); /// tagged, full v-range
+   hst_vtNuCeex2->Fill( vv, WtCEEX2); /// true nu-pair mass, full range
+}
+/// all 3 nu+nubar + visible photons
+if( NuYes==1 && nph_vis >= 1){
+  hst_vaNuCeex2->Fill( vPhot, WtCEEX2); /// tagged, full v-range
+  /// nu_el and nu_mu separately
+  if( KF==12 ) hst_vaNuElCeex2->Fill( vPhot, WtCEEX2);
+  if( KF==14 ) hst_vaNuMuCeex2->Fill( vPhot, WtCEEX2);
   /// histos with restricted v-range
-  if( nph_vis >= 1 ) hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
-  if( nph_vis >= 1 ) hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
-  if( nph_vis >= 1 ) hst_vvNuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
+  hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
+  hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
+  hst_vvNuCeex12->Fill(vPhot, WtCEEX1-WtCEEX2);
   /// absolute energy
-  if( nph_vis >= 1 ) hst_evNuCeex1->Fill( phEneVis, WtCEEX1);
-  if( nph_vis >= 1 ) hst_evNuCeex2->Fill( phEneVis, WtCEEX2);
-  if( nph_vis >= 1 ) hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
+  hst_evNuCeex1->Fill( phEneVis, WtCEEX1);
+  hst_evNuCeex2->Fill( phEneVis, WtCEEX2);
+  hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
   /// comparing Nuel with Numu
-  if( (nph_vis >= 1) &&  (KF==12) ) hst_vPhotNuel->Fill( vPhot, WtCEEX2);
-  if( (nph_vis >= 1) &&  (KF==14) ) hst_vPhotNumu->Fill( vPhot, WtCEEX2);
+  if( KF==12 ) hst_vPhotNuel->Fill( vPhot, WtCEEX2);
+  if( KF==14 ) hst_vPhotNumu->Fill( vPhot, WtCEEX2);
 }/// NuYes
 /// *********************************************************************
 /// ***********  muon channel,  various QED models, etc. ****************

@@ -41,6 +41,9 @@ class ROBOL2{
   TH1D   *hst_vtNuCeex2;
   //
   TH1D   *hst_vaNuCeex2;
+  TH1D   *hst_vaNuMuCeex2;
+  TH1D   *hst_vaNuElCeex2;
+  //
   TH1D   *hst_vaMuCeex2;
   ///
   TH1D   *hst_vPhotNuel;

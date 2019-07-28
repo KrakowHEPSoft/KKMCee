@@ -27,9 +27,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-//TFile DiskFileA("../workZinv/rmain.root");
+TFile DiskFileA("../workZinv/rmain.root");
 //  March 2019
-TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
+//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
 //  Febr. 2018
 //TFile DiskFileA("../workZinv/rmain.root_E105GeV_cmax1"); // cost(heta)_max =1.0
@@ -102,6 +102,10 @@ void HistNormalize(){
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vtNuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaNuCeex2") );
+  //[[[ New histos
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaNuElCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaNuMuCeex2") );
+  //]]]
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vtMuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vaMuCeex2") );
@@ -309,16 +313,31 @@ void FigVPhot()
    if( g161GeVyes) cFigVPhot->SaveAs("cFigVPhot_161GeV.pdf");
    if( g105GeVyes) cFigVPhot->SaveAs("cFigVPhot_105GeV.pdf");
 
- ///////////////////////////////////////////////////////////////////////////////
-    TCanvas *cFigVPhot1 = new TCanvas("cFigVPhot1","cFigVPhot1", gXcanv, gYcanv,    600, 600);
+}//FigVPhot
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigVPhot2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigVPhot2 =========================== "<<endl;
+ //
+  TH1D *hst_vtNuCeex2  = (TH1D*)DiskFileA.Get("hst_vtNuCeex2");  // Phot. untaged
+  TH1D *hst_vaNuCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuCeex2");  // Phot. tagged
+ ////////////////////////////////////////
+   TLatex *CaptT = new TLatex();
+   CaptT->SetNDC(); // !!!
+   CaptT->SetTextSize(0.04);
+///////////////////////////////////////////////////////////////////////////////
+    TCanvas *cFigVPhot2 = new TCanvas("cFigVPhot2","cFigVPhot2", gXcanv, gYcanv,    600, 600);
  //                                      Name    Title        xoff,yoff, WidPix,HeiPix
     gXcanv += 25, gYcanv += 25;
-    cFigVPhot1->SetFillColor(10);
+    cFigVPhot2->SetFillColor(10);
  ////////////////////////////////////////////////////////////////////////////////
     //====================plot1========================
-    cFigVPhot1->cd();
+    cFigVPhot2->cd();
     gPad->SetLogy(); // !!!!!!
-    Hst=hst_vtNuCeex2;
+    TH1D *Hst=hst_vtNuCeex2;
     Hst->SetStats(0);
     Hst->SetTitle(0);
     Hst->GetXaxis()->CenterTitle();
@@ -329,16 +348,62 @@ void FigVPhot()
     Hst->DrawCopy("h");
 
     CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
-    ycapt = 0.85;
+    double ycapt = 0.85;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
     PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged");
     PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged");
     //================================================
-    if( g161GeVyes) cFigVPhot1->SaveAs("cFigVPhot1_161GeV.pdf");
-    if( g105GeVyes) cFigVPhot1->SaveAs("cFigVPhot1_105GeV.pdf");
+    if( g161GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_161GeV.pdf");
+    if( g105GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_105GeV.pdf");
+}//FigVPhot2
 
-}//FigVPhot
+///////////////////////////////////////////////////////////////////////////////////
+void FigVPhot3()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigVPhot3 =========================== "<<endl;
+ //
+  //TH1D *hst_vtNuCeex2  = (TH1D*)DiskFileA.Get("hst_vtNuCeex2");  // Phot. untaged
+  //TH1D *hst_vaNuCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuCeex2");  // Phot. tagged
+  //
+  TH1D *hst_vaNuMuCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuMuCeex2");  // Phot. tagged
+  TH1D *hst_vaNuElCeex2  = (TH1D*)DiskFileA.Get("hst_vaNuElCeex2");  // Phot. tagged
+////////////////////////////////////////
+   TLatex *CaptT = new TLatex();
+   CaptT->SetNDC(); // !!!
+   CaptT->SetTextSize(0.04);
+///////////////////////////////////////////////////////////////////////////////
+    TCanvas *cFigVPhot3 = new TCanvas("cFigVPhot3","cFigVPhot3", gXcanv, gYcanv,    600, 600);
+ //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+    gXcanv += 25, gYcanv += 25;
+    cFigVPhot3->SetFillColor(10);
+ ////////////////////////////////////////////////////////////////////////////////
+    //====================plot1========================
+    cFigVPhot3->cd();
+    gPad->SetLogy(); // !!!!!!
+    TH1D *Hst=hst_vaNuElCeex2;
+    Hst->SetStats(0);
+    Hst->SetTitle(0);
+    Hst->GetXaxis()->CenterTitle();
+    Hst->GetXaxis()->SetTitleSize(0.04);
+    Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+
+    Hst->SetMinimum(1e-4*Hst->GetMaximum());
+
+    Hst->SetLineColor(kBlue);
+    Hst->DrawCopy("h");
+
+    CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+    double ycapt = 0.85;
+    CaptT->DrawLatex(0.40, ycapt,gTextEne);
+ //
+    PlotSame2(hst_vaNuElCeex2,  ycapt, kBlue, 0.4, "(a)", "#nu_{e}");
+    PlotSame2(hst_vaNuMuCeex2,  ycapt, kRed,  0.5, "(b)", "#nu_{#mu}");
+    //================================================
+    if( g161GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_161GeV.pdf");
+    if( g105GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_105GeV.pdf");
+}//FigVPhot3
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1137,6 +1202,8 @@ int main(int argc, char **argv)
   //*
   FigNPhot();
   FigVPhot();
+  FigVPhot2();
+  FigVPhot3();
   FigCeex12nu();
   FigCeex12mu();
   FigCeex12rat();
