@@ -386,7 +386,7 @@ int main(int argc, char **argv)
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
   //========== PLOTTING ==========
-  //FigPrag2();
+  FigPrag2();
   FigFCCee1();
   FigFCCee2();
   FigFCCee3();

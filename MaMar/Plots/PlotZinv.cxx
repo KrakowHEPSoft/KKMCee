@@ -253,9 +253,9 @@ void FigVPhot()
    TLatex *CaptT = new TLatex();
    CaptT->SetNDC(); // !!!
    CaptT->SetTextSize(0.04);
- ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
    TCanvas *cFigVPhot = new TCanvas("cFigVPhot","cFigVPhot", gXcanv, gYcanv,    1200, 600);
- //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+//                                      Name    Title        xoff,yoff, WidPix,HeiPix
    gXcanv += 25, gYcanv += 25;
    cFigVPhot->SetFillColor(10);
 ////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +274,7 @@ void FigVPhot()
 //   Hst->SetMinimum( 1e-3*Hst->GetMaximum());
    Hst->DrawCopy("h");
 
-   CaptT->DrawLatex(0.10,0.94,"d#sigma/dv;        KKMC  e^{+}e^{-} -> #nu#bar{#nu}+N#gamma");
+   CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
    double ycapt = 0.85;
    CaptT->DrawLatex(0.40, ycapt,gTextEne);
 //
@@ -309,6 +309,35 @@ void FigVPhot()
    if( g161GeVyes) cFigVPhot->SaveAs("cFigVPhot_161GeV.pdf");
    if( g105GeVyes) cFigVPhot->SaveAs("cFigVPhot_105GeV.pdf");
 
+ ///////////////////////////////////////////////////////////////////////////////
+    TCanvas *cFigVPhot1 = new TCanvas("cFigVPhot1","cFigVPhot1", gXcanv, gYcanv,    600, 600);
+ //                                      Name    Title        xoff,yoff, WidPix,HeiPix
+    gXcanv += 25, gYcanv += 25;
+    cFigVPhot1->SetFillColor(10);
+ ////////////////////////////////////////////////////////////////////////////////
+    //====================plot1========================
+    cFigVPhot1->cd();
+    gPad->SetLogy(); // !!!!!!
+    Hst=hst_vtNuCeex2;
+    Hst->SetStats(0);
+    Hst->SetTitle(0);
+    Hst->GetXaxis()->CenterTitle();
+    Hst->GetXaxis()->SetTitleSize(0.04);
+    Hst->GetXaxis()->SetTitle("v=1-M^{2}_{#nu#bar{#nu}}/s");
+
+    Hst->SetLineColor(kBlue);
+    Hst->DrawCopy("h");
+
+    CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+    ycapt = 0.85;
+    CaptT->DrawLatex(0.40, ycapt,gTextEne);
+ //
+    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged");
+    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged");
+    //================================================
+    if( g161GeVyes) cFigVPhot1->SaveAs("cFigVPhot1_161GeV.pdf");
+    if( g105GeVyes) cFigVPhot1->SaveAs("cFigVPhot1_105GeV.pdf");
+
 }//FigVPhot
 
 
@@ -317,7 +346,7 @@ void FigNuDif1()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigNuDif1 =========================== "<<endl;
-  ///
+  /// This is for paper with Alain
   TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
   TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
   //!////////////////////////////////////////////////////////////////////////
@@ -534,10 +563,10 @@ void FigNuEle()
   double SigTot1= hst_vNuTot1->Integral("width");
   double SigTot0= hst_vNuTot0->Integral("width");
   //
-  double SigTot1Pl = hst_vNuTot1->Integral( 1,20,"width");
-  double SigTot1Mi = hst_vNuTot1->Integral(21,40,"width");
-  double SigTot0Pl = hst_vNuTot0->Integral( 1,20,"width");
-  double SigTot0Mi = hst_vNuTot0->Integral(21,40,"width");
+  double SigTot1Mi = hst_vNuTot1->Integral( 1,20,"width");
+  double SigTot1Pl = hst_vNuTot1->Integral(21,40,"width");
+  double SigTot0Mi = hst_vNuTot0->Integral( 1,20,"width");
+  double SigTot0Pl = hst_vNuTot0->Integral(21,40,"width");
 
   //!////////////////////////////////////////////////////////////////////////
   cout<< "@@@@@@@@@ SigTot1 [pb] ="<<SigTot1*1e3<<"  +- "<<SigTot1*1e3/sqrt(SigTot0*IntLumi) <<endl;
@@ -571,8 +600,8 @@ void FigNuEle()
 	eta = -etamax + 2*etamax*(ib-0.5)/nbx;
 	dASY = eta;
 	hst_vNuTot2->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0, sqrt(1+eta) );
-	SigTot2Pl = hst_vNuTot2->Integral( 1,20,"width");
-	SigTot2Mi = hst_vNuTot2->Integral(21,40,"width");
+	SigTot2Mi = hst_vNuTot2->Integral( 1,20,"width");
+	SigTot2Pl = hst_vNuTot2->Integral(21,40,"width");
 	ASYnu2= (SigTot2Pl-SigTot2Mi)/(SigTot2Pl+SigTot2Mi);
 	dASY =ASYnu2-ASYnuEl;
 	hst_DelA->SetBinContent(ib, dASY);
@@ -639,10 +668,10 @@ void FigNuEle()
   hst_DelA->DrawCopy("hsame");
   //
   CaptT->DrawLatex(0.10,0.95, "#Delta S = S(#eta)-S(0)");
-  CaptT->DrawLatex(0.20,0.85, "S = (#sigma_{+}-#sigma_{-})/(#sigma_{+}-#sigma_{-})" );
-  CaptT->DrawLatex(0.20,0.80, "#sigma_{+}=#sigma(v>v_{Z}),  #sigma_{-}=#sigma(v<v_{Z})" );
-  CaptT->DrawLatex(0.20,0.75, CaptVZ);
-  CaptT->DrawLatex(0.20,0.70, CaptS0);
+  CaptT->DrawLatex(0.40,0.85, "S = (#sigma_{+}-#sigma_{-})/(#sigma_{+}-#sigma_{-})" );
+  CaptT->DrawLatex(0.40,0.80, "#sigma_{+}=#sigma(v>v_{Z}),  #sigma_{-}=#sigma(v<v_{Z})" );
+  CaptT->DrawLatex(0.40,0.75, CaptVZ);
+  CaptT->DrawLatex(0.40,0.70, CaptS0);
  //!-----------------------------
   cNuEle->Update();
   cNuEle->cd();
@@ -1105,7 +1134,7 @@ int main(int argc, char **argv)
 
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
-  /*
+  //*
   FigNPhot();
   FigVPhot();
   FigCeex12nu();
@@ -1113,7 +1142,7 @@ int main(int argc, char **argv)
   FigCeex12rat();
   FigCeex12isr();
   FigCeex2fsr();
-  */
+  //*/
   FigNuDif1();
   FigNuDif2();
   FigNuEle();
