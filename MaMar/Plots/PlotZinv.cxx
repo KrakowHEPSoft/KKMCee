@@ -28,6 +28,8 @@ using namespace std;
 //=============================================================================
 //
 TFile DiskFileA("../workZinv/rmain.root");
+//  July 2019
+//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
 //  March 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
@@ -39,8 +41,8 @@ TFile DiskFileA("../workZinv/rmain.root");
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
 // New March 2019
-TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
-//TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
+//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
+TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
@@ -396,7 +398,7 @@ void FigVPhot3()
     Hst->SetLineColor(kBlue);
     Hst->DrawCopy("h");
 
-    CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
+    CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e},#nu_{#mu}");
     double ycapt = 0.85;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
