@@ -27,9 +27,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-TFile DiskFileA("../workZinv/rmain.root");
+//TFile DiskFileA("../workZinv/rmain.root");
 //  July 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
+TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
 //  March 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
@@ -40,9 +41,13 @@ TFile DiskFileA("../workZinv/rmain.root");
 //
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
-// New March 2019
+// July 2019
+//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
+TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
+//
+// March 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
-TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
+//TFile DiskFileB("../workZinv/main.root_E=105GeV_ISR_2G");
 // Old Febr. 2018
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_5G");
 //TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_1.5G");
@@ -467,6 +472,7 @@ void FigNuDif1()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  Hst->SetMinimum(0);
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
@@ -537,7 +543,7 @@ void FigNuDif2()
   sprintf(CaptRat,"Integrated R_{t} = %2.4f ", DelTch);
 ///////////////////////////////////////////////
   TH1D *RAT_NuelNumu = HstDiff("RAT_NuelNumu", Hel, Hmu, kBlack );
-  RAT_NuelNumu->Divide(Hel);
+  RAT_NuelNumu->Divide(Hmu);
   RAT_NuelNumu->Scale(0.333333); // (nuel-numu)/(3*numu)
 //!////////////////////////////////////////////
   TLatex *CaptT = new TLatex();
@@ -559,13 +565,14 @@ void FigNuDif2()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
+  Hst->SetMinimum(0);
   Hst->DrawCopy("h");
   ///
   double ycapt = 0.40;
   double vcapt = 1.0 - sqr(91.2/gCMSene);
   CaptT->DrawLatex(0.35, ycapt,gTextEne);
-  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," #nu = #nu_{el}");
-  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," #nu = #nu_{#mu}");
+  PlotSame2(Hel,  ycapt, kBlue, vcapt-0.010, "(a)"," #nu = #nu_{el}");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt+0.010, "(b)"," #nu = #nu_{#mu}");
   CaptT->DrawLatex(0.25, 0.25, CaptSigEl);
   CaptT->DrawLatex(0.25, 0.20, CaptSigMu);
   CaptT->DrawLatex(0.25, 0.15, CaptLum);

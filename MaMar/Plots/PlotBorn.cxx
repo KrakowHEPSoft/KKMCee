@@ -40,12 +40,39 @@ double m_xpar[10001];      // complete input of KKMC run
 double gCMSene, gNevTot; // from KKMC run
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
-//
+int    g161GeVyes =0, g105GeVyes=0;
+
 float  gXcanv = 20, gYcanv = 20, gDcanv = 30;
 
 #define SP21 setw(21)<<setprecision(13)
 #define SP15 setw(15)<<setprecision(9)
 #define SP10 setw(10)<<setprecision(5)
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  double xcapt = 0.40;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+}// PlotSame2
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -67,9 +94,15 @@ const int jmax =10000;
 //LibSem.ReaData("./KK2f_defaults_ERW",    jmax, m_xpar);  // AMH AMTOP actualized
 // standard old input file
 LibSem.ReaData("../../.KK2f_defaults",     jmax, m_xpar);  // numbering as in input!!!
-// User input data with AMH AMTOP aclualized
+// User input data with AMH AMTOP actualized
 //LibSem.ReaData("../workKKMC/workKKMC_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
-LibSem.ReaData("../workKKMC/PlotBorn_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
+//
+// updated Higgs and top mass, mu-pair only
+//LibSem.ReaData("../workKKMC/PlotBorn_189GeV.input", -jmax, m_xpar);  // jmax<0 means no-zeroing
+//
+// input data for three neutrinos and muon
+LibSem.ReaData("../workZinv/workZinv.input_E161GeV", -jmax, m_xpar); // all neutrinos
+//LibSem.ReaData("../workZinv/workZinv.input_E105GeV", -jmax, m_xpar); // all neutrinos
 //*****
 double ypar[jmax];
 for(int j=0;j<jmax;j++) ypar[j]=m_xpar[j+1];    // ypar has c++ numbering
@@ -82,6 +115,9 @@ long mout =16;
 //kksem_initialize_(ypar);
 LibSem.Initialize(m_xpar);
 
+gCMSene = m_xpar[1];
+sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
+
 //************************************
 DFile = fopen("TableBorn.txt","w");
 //************************************
@@ -89,6 +125,219 @@ DFile = fopen("TableBorn.txt","w");
 cout<<"================ Initialize END   ============================"<<endl;
 
 }//Initialize
+
+
+void FigBorn0(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigBorn0 BEGIN ==========================="<<endl;
+double Emin = 85;
+double Emax = 95;
+int    nPt  = 200;
+double Ene;
+TH1D *hst_sigma3 = new TH1D("hst_sigma3" ,  "sigma(CMSene) [nb]",    nPt, Emin, Emax);
+hst_sigma3->Sumw2();
+
+long KeyFob;
+KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // BornV_Dizet, with EW and with integration
+kksem_setkeyfob_( KeyFob );
+double xBorn, svar2;
+for(int ix=0; ix <= nPt; ix++){
+   Ene = Emin +(ix-1)*((Emax-Emin)/nPt);
+   svar2 = Ene*Ene;
+   kksem_makeborn_( svar2, xBorn);
+   hst_sigma3->SetBinContent(  ix, xBorn );
+   hst_sigma3->SetBinError(    ix, 0.0 );
+   cout<< "Ene= "<<Ene<< "  xBorn [nb]= "<<xBorn<<endl;
+}//ix
+//------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////
+TCanvas *cFigBorn0 = new TCanvas("cFigBorn0","cFigBorn0: sigma(CMSene) ", gXcanv, gYcanv,    600,  600);
+//                                      Name    Title                     xoff,     yoff, WidPix,HeiPix
+gXcanv += 25, gYcanv += 25;
+//
+cFigBorn0->SetFillColor(10);
+TH1D *Hst1 = hst_sigma3;
+cFigBorn0->cd();
+Hst1->SetStats(0);
+//Hst1->SetTitle(0);
+Hst1->SetMinimum(0);
+Hst1->SetLineColor(kRed);
+Hst1->DrawCopy("h");
+cout<<"================ FigBorn0 END   ==========================="<<endl;
+}//FigBorn0
+
+
+void FigBornNu(){
+cout<<"==========================================================="<<endl;
+cout<<"================ FigBornNu BEGIN =========================="<<endl;
+
+double CMSene = m_xpar[1];
+double svar = CMSene*CMSene;
+double MZ     = m_xpar[502];
+double vvZ    = 1-(MZ*MZ)/(CMSene*CMSene);
+double vv2    = vvZ+0.020;
+double vv1    = vvZ-0.020;
+cout<<"vvZ, vv1, vv2 = " << vvZ <<"  "<< vv1 <<"  "<< vv2<<endl;
+
+double M1 = sqrt(svar*(1-vv2));
+double M2 = sqrt(svar*(1-vv1));
+
+cout<<"M1, M2 = " << M1 <<"  "<< M2 <<endl;
+
+int    nPt  = 200;
+nPt = 40;
+
+TH1D *sig_numu = new TH1D("sig_numu" ,  "#sigma(s(1-v)) [nb]",    nPt, vv1, vv2);
+TH1D *sig_nuel = new TH1D("sig_nuel" ,  "#sigma(s(1-v)) [nb]",    nPt, vv1, vv2);
+TH1D *del_elmu = new TH1D("del_elmu" ,  "#sigma(s(1-v)) [nb]",    nPt, vv1, vv2);
+sig_numu->Sumw2();
+sig_nuel->Sumw2();
+
+int KFfin=13; // muon
+KFfin=12; // nu_ele
+
+double Ene,vv;
+long KeyFob;
+KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // BornV_Dizet, with EW and with integration
+kksem_setkeyfob_( KeyFob );
+double xBornNuMu,xBornNuEl, Del, svar2;
+for(int ix=0; ix <= nPt; ix++){
+   vv  = vv1 +(ix-1)*((vv2-vv1)/nPt);
+   svar2 = svar*(1-vv);
+   //
+   KFfin=14; // nu_mu
+   bornv_setkf_(KFfin);
+   kksem_makeborn_( svar2, xBornNuMu);
+   //xBornNuMu *=1/(1-vv);
+   sig_numu->SetBinContent(  ix, xBornNuMu );
+   sig_numu->SetBinError(    ix, 0.0 );
+   //
+   KFfin=12; // nu_el
+   bornv_setkf_(KFfin);
+   kksem_makeborn_( svar2, xBornNuEl);
+   //xBornNuEl *=1/(1-vv);
+   sig_nuel->SetBinContent(  ix, xBornNuEl );
+   sig_nuel->SetBinError(    ix, 0.0 );
+   //
+   Del = (xBornNuEl-xBornNuMu)/(3*xBornNuMu);
+   cout<< "vv= "<<vv<< "  Del= "<< Del<<endl;
+   del_elmu->SetBinContent(  ix,  Del );
+   del_elmu->SetBinError(    ix, 0.0 );
+}//ix
+//
+//!////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+//
+  TH1D *H_Vline0  = (TH1D*)sig_numu->Clone("H_Vline0");  // zero line
+H_Vline0->Reset();
+
+//------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////
+TCanvas *cFigBornNu = new TCanvas("cFigBornNu","cFigBornNu: sigma(CMSene) ", gXcanv, gYcanv,  1200,  600);
+//                                      Name    Title                     xoff,     yoff, WidPix,HeiPix
+gXcanv += 25, gYcanv += 25;
+//
+cFigBornNu->SetFillColor(10);
+cFigBornNu->Draw();
+cFigBornNu->Divide(2, 0);
+/////////////////////////////////////////////
+cFigBornNu->cd(1);
+TH1D *Hst1 = sig_numu;
+Hst1->SetStats(0);
+Hst1->SetTitle(0);
+Hst1->SetMinimum(0);
+Hst1->GetXaxis()->SetTitle("v=1-M^{2}_{#nu#bar{#nu}}/s");
+Hst1->DrawCopy("h");
+//
+double ycapt = 0.40;
+double vcapt = 1.0 - sqr(91.2/gCMSene);
+CaptT->DrawLatex(0.35, ycapt,gTextEne);
+PlotSame2(sig_nuel,  ycapt, kBlue, vcapt-0.010, "(a)"," #nu = #nu_{el}");
+PlotSame2(sig_numu,  ycapt, kRed,  vcapt+0.010, "(b)"," #nu = #nu_{#mu}");
+//
+CaptT->DrawLatex(0.05,0.95, "d#sigma^{Born}(M^{2}_{#nu#bar{#nu}}) [nb],     e^{+}e^{-} -> #nu#bar{#nu}");
+//
+////////////////////////////////////////////
+cFigBornNu->cd(2);
+H_Vline0->SetStats(0);
+H_Vline0->SetTitle(0);
+H_Vline0->GetXaxis()->SetTitle("v=1-M^{2}_{#nu#bar{#nu}}/s");
+H_Vline0->SetMaximum( +0.10); H_Vline0->SetMinimum( -0.10);
+H_Vline0->DrawCopy("h");
+//
+del_elmu->DrawCopy("hsame");
+//
+CaptT->DrawLatex(0.10,0.95,"t-channel W contrib.    R_{t}(v)=(#nu_{el}-#nu_{#mu})/(3 #nu_{#mu})");
+
+if( g161GeVyes) cFigBornNu->SaveAs("cFigBornNu_161GeV.pdf");
+if( g105GeVyes) cFigBornNu->SaveAs("cFigBornNu_105GeV.pdf");
+
+cout<<"================ FigBornNu END   ==========================="<<endl;
+}//FigBornNu
+
+
+
+void TabBornNu(){
+cout<<"============================================================"<<endl;
+cout<<"================ TabBornNu BEGIN ==========================="<<endl;
+//////////////////////////////////////////////////////////////////////////
+// reproducing benchmark table 1 of http://arxiv.org/abs/hep-ph/0406045 //
+//////////////////////////////////////////////////////////////////////////
+double MZ = 91.187e0;
+double GammZ = 2.50072032;    // from KKdefaults!
+double EE[50], XB[50], AFB[50];
+EE[0] = MZ; EE[1]=  100e0, EE[2]=  140e0, EE[3]=  189e0, EE[4]=  200e0, EE[5]=  206e0;
+int KF[10]; KF[0]=13; KF[1]=14; KF[2]=12; // muon, nu_mu, nu_el
+int imax = 5;
+double KeyFob;
+KeyFob=   10; // BornV_Dizet, with EW and without integration ???
+KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
+KeyFob=    0; // With EW (BornV_Dizet) With integration OK!
+kksem_setkeyfob_( KeyFob );
+//
+int KFfin=13; // muon
+//KFfin=12; // nu_ele
+//KFfin=14; // nu_mu
+//
+cout<<" KeyFob= 0, EW of BornV_Dizet and cos(theta) integration ==="<<endl;
+double xBorn,xBornF,xBornB;
+double Ene, svar2, CMSene;
+for(int kx=0; kx <= 2; kx++){
+for(int ix=0; ix <= imax; ix++){
+  KFfin = KF[kx];
+  bornv_setkf_(KFfin);
+  svar2 = EE[ix]*EE[ix];
+  KeyFob=  0; kksem_setkeyfob_( KeyFob ); // With EW (BornV_Dizet) With integration OK!
+  kksem_makeborn_( svar2, xBorn);
+  KeyFob= -1; kksem_setkeyfob_( KeyFob ); // With EW (BornV_Dizet) Backward
+  kksem_makeborn_( svar2, xBornB);
+  KeyFob=  1; kksem_setkeyfob_( KeyFob ); // With EW (BornV_Dizet) Forward
+  kksem_makeborn_( svar2, xBornF);
+  double AFBix = (xBornF-xBornB)/(xBornF+xBornB);
+//
+//  cout<< "************ CMSene= "<< EE[ix]<< " *************** "<< endl;
+//  cout<< " xBornF [nb]= "<< SP15 << xBornF << "  xBornB [nb]= "<< SP15 << xBornB <<endl;
+//  cout<< " (xBornF+xBornB)/xBorn = "<< SP15 << (xBornF+xBornB)/xBorn << " <- testing integration" << endl;
+//
+  cout<< "  KF= "<< KFfin;
+  cout<< "  CMSene= "     << SP10 << EE[ix];
+  cout<< "  xBorn  [nb]= "<< SP15 << xBorn;
+  cout<< "  AFB="<<          SP15 << AFBix <<endl;
+  XB[ix] = xBorn;
+  AFB[ix]= AFBix;
+//
+}// for ix
+cout<<endl;
+}// for kx
+cout<<"================ TabBornNu END   ============================"<<endl;
+}//TabBorn2
+
 
 
 void TabBorn(){
@@ -261,48 +510,6 @@ cout << "AFB(s+) - AFB(s-) = " << SP15 << AFB[2]-AFB[1] << endl;
 cout<<"================ TabBorn3 END   ============================"<<endl;
 }//TabBorn3
 
-
-
-void FigBorn3(){
-cout<<"==========================================================="<<endl;
-cout<<"================ FigBorn3 BEGIN ==========================="<<endl;
-double Emin = 85;
-double Emax = 95;
-int    nPt  = 200;
-double Ene;
-TH1D *hst_sigma3 = new TH1D("hst_sigma3" ,  "sigma(CMSene) [nb]",    nPt, Emin, Emax);
-hst_sigma3->Sumw2();
-
-long KeyFob;
-KeyFob=   10; // BornV_Dizet, with EW and without integration ???
-KeyFob=  -11; // BornV_Simple, for KeyLib=0, NO EW, NO integration OK
-KeyFob=    0; // BornV_Dizet, with EW and with integration
-kksem_setkeyfob_( KeyFob );
-double xBorn, svar2;
-for(int ix=0; ix <= nPt; ix++){
-   Ene = Emin +(ix-1)*((Emax-Emin)/nPt);
-   svar2 = Ene*Ene;
-   kksem_makeborn_( svar2, xBorn);
-   hst_sigma3->SetBinContent(  ix, xBorn );
-   hst_sigma3->SetBinError(    ix, 0.0 );
-   cout<< "Ene= "<<Ene<< "  xBorn [nb]= "<<xBorn<<endl;
-}//ix
-//------------------------------------------------------------------------
-///////////////////////////////////////////////////////////////////////////////
-TCanvas *cFigBorn3 = new TCanvas("cFigBorn3","cFigBorn3: sigma(CMSene) ", gXcanv, gYcanv,    500,  500);
-//                                      Name    Title                     xoff,     yoff, WidPix,HeiPix
-gXcanv += 25, gYcanv += 25;
-//
-cFigBorn3->SetFillColor(10);
-TH1D *Hst1 = hst_sigma3;
-cFigBorn3->cd();
-Hst1->SetStats(0);
-//Hst1->SetTitle(0);
-Hst1->SetMinimum(0);
-Hst1->SetLineColor(kRed);
-Hst1->DrawCopy("h");
-cout<<"================ FigBorn3 END   ==========================="<<endl;
-}//FigBorn3
 
 
 
@@ -1160,17 +1367,26 @@ int main(int argc, char **argv)
   //
   Initialize();
   //
-  //TabBorn();
+  if( fabs(gCMSene-161)<0.01) g161GeVyes = 1;
+  if( fabs(gCMSene-105)<0.01) g105GeVyes = 1;
+
+  // d(sigma)/d(cos_theta) [nb], cos_theta = 0.0, 0.3, 0.6, 0.9
+  //TabBorn(); // output written into disk file
+  // Plots of Born xsection
+  FigBorn0();
   //FigBorn1();
-  //FigBorn3();
-  //
+  //----------------------------------
+  // Nu-Nu seection
+  TabBornNu();
+  FigBornNu();
+ //----------------------------------
   //FigAlfE1();  // alph(s) wide range, plots of ERW
-  //
+  /////////////////////////////////////////////////
   // New ones for draft with Patrick
-  TabBorn2();  // EW from Dizet
-  TabBorn3();   // Effective Born
+  //TabBorn2();  // EW from Dizet
+  //TabBorn3();  // Effective Born
   //FigAlfE2();  // 1/alpha(s) narrow range, interpolation
-  TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
+  //TestAfb3();  // testing analytical formulas at s+, s-, MZ^2
   //FigAlfa3();
   //FigAlfa4();
   //
