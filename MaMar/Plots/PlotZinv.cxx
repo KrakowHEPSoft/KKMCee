@@ -29,8 +29,8 @@ using namespace std;
 //
 //TFile DiskFileA("../workZinv/rmain.root");
 //  July 2019
-//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
-TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
+TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
+//TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
 //  March 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
@@ -42,8 +42,8 @@ TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
 // July 2019
-//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
-TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
+TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
+//TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
 //
 // March 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");
@@ -351,17 +351,17 @@ void FigVPhot2()
     Hst->GetXaxis()->SetTitleSize(0.04);
     Hst->GetXaxis()->SetTitle("v");
 
-    Hst->SetMinimum(1e-4*Hst->GetMaximum());
+    Hst->SetMinimum(1e-5*Hst->GetMaximum());
 
     Hst->SetLineColor(kBlue);
     Hst->DrawCopy("h");
 
     CaptT->DrawLatex(0.05,0.94,"d#sigma/dv;     KKMC  e^{+}e^{-} -> #nu#bar{#nu}+n#gamma, #nu=#nu_{e}+#nu_{#mu}+#nu_{#tau}");
-    double ycapt = 0.85;
+    double ycapt = 0.86;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
-    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untaged, v=1-M^{2}_{#nu#bar{#nu}}/s");
-    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged,  v=E_{#gamma}/E_{beam}");
+    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untagged, v=1-M^{2}_{#nu#bar{#nu}}/s");
+    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged, v=E_{#gamma}/E_{beam}");
     //================================================
     if( g161GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_161GeV.pdf");
     if( g105GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_105GeV.pdf");
@@ -478,8 +478,8 @@ void FigNuDif1()
   double ycapt = 0.40;
   double vcapt = 1.0 - sqr(91.2/gCMSene);
   CaptT->DrawLatex(0.35, ycapt,gTextEne);
-  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," #nu = #nu_{el}");
-  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," #nu = #nu_{#mu}");
+  PlotSame2(Hel,  ycapt, kBlue, vcapt-0.010, "(a)"," #nu = #nu_{el}");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt+0.010, "(b)"," #nu = #nu_{#mu}");
   //CaptT->DrawLatex(0.25, 0.25, CaptSigEl);
   //CaptT->DrawLatex(0.25, 0.20, CaptSigMu);
   //CaptT->DrawLatex(0.25, 0.15, CaptLum);
@@ -617,6 +617,9 @@ void FigNuEle()
   char CaptLum[300],CaptVZ[300];
   sprintf(CaptLum,"Integr. Lumi. = %3.1f [ab^{-1}]",IntLumi);
   sprintf(CaptVZ, "v_{Z}= 1-M_{Z}^{2}/s = %3.5f",vZ);
+  cout<< "@@@@@@@@@ vZ ="<<vZ<<endl;
+  cout<< "@@@@@@@@@ M1, M2 ="<< gCMSene*sqrt(1-vZ-0.02)<<"  "<< gCMSene*sqrt(1-vZ+0.02)<<endl;
+  cout<< "@@@@@@@@@ M3, M4 ="<< gCMSene*sqrt(1-0.2)<<"  "<< gCMSene*sqrt(1-0.4)<<endl;
 
   IntLumi *=  1e9;     // the same in [nanobarns]
   //
@@ -719,8 +722,8 @@ void FigNuEle()
   double ycapt = 0.45;
   double vcapt = vZ;
   CaptT->DrawLatex(0.35, ycapt,gTextEne);
-  PlotSame2(Hel,  ycapt, kBlue, vcapt+0.010, "(a)"," W_{t} is ON");
-  PlotSame2(Hmu,  ycapt, kRed,  vcapt-0.010, "(b)"," W_{t} is OFF");
+  PlotSame2(Hel,  ycapt, kBlue, vcapt-0.010, "(a)"," W_{t} is ON");
+  PlotSame2(Hmu,  ycapt, kRed,  vcapt+0.010, "(b)"," W_{t} is OFF");
   CaptT->DrawLatex(0.25, 0.30, CaptSigTot1);
   CaptT->DrawLatex(0.25, 0.25, CaptSigTot0);
   CaptT->DrawLatex(0.25, 0.20, CaptRat);
