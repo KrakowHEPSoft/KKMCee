@@ -27,9 +27,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-//TFile DiskFileA("../workZinv/rmain.root");
+TFile DiskFileA("../workZinv/rmain.root");
 //  July 2019
-TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
+//TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
 //  March 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
@@ -606,7 +606,8 @@ void FigNuDif2()
 void FigNuEle()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigNuEle =========================== "<<endl;
+  cout<<" ////////////////////////////////////////////////////////////// "<<endl;
+  cout<<" ///////////////////////// FigNuEle /////////////////////////// "<<endl;
   ///
   TH1D *hst_vPhotNuel     = (TH1D*)DiskFileA.Get("hst_vPhotNuel");
   TH1D *hst_vPhotNumu     = (TH1D*)DiskFileA.Get("hst_vPhotNumu");
@@ -617,56 +618,64 @@ void FigNuEle()
   char CaptLum[300],CaptVZ[300];
   sprintf(CaptLum,"Integr. Lumi. = %3.1f [ab^{-1}]",IntLumi);
   sprintf(CaptVZ, "v_{Z}= 1-M_{Z}^{2}/s = %3.5f",vZ);
-  cout<< "@@@@@@@@@ vZ ="<<vZ<<endl;
-  cout<< "@@@@@@@@@ M1, M2 ="<< gCMSene*sqrt(1-vZ-0.02)<<"  "<< gCMSene*sqrt(1-vZ+0.02)<<endl;
-  cout<< "@@@@@@@@@ M3, M4 ="<< gCMSene*sqrt(1-0.2)<<"  "<< gCMSene*sqrt(1-0.4)<<endl;
+  cout<< "========= vZ ="<<vZ<<endl;
+  cout<< "========= M1, M2 ="<< gCMSene*sqrt(1-vZ-0.02)<<"  "<< gCMSene*sqrt(1-vZ+0.02)<<endl;
+  cout<< "========= M3, M4 ="<< gCMSene*sqrt(1-0.2)<<"  "<< gCMSene*sqrt(1-0.4)<<endl;
 
   IntLumi *=  1e9;     // the same in [nanobarns]
-  //
+  //  difference between nu-el and nu-mu
   TH1D *hst_vPhotNuInt    = HstDiff( "hst_vPhotNuInt", hst_vPhotNuel, hst_vPhotNumu, kBlack );
-  //
+  //  3 neutrinos WITHOUT t-chanel W
   TH1D *hst_vNuTot1    = (TH1D*)hst_vPhotNuel->Clone("hst_vNuTot1");
   hst_vNuTot1->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0,  1.0);
-  //
+  //  3 neutrinos WITH t-chanel W
   TH1D *hst_vNuTot0    = (TH1D*)hst_vPhotNuel->Clone("hst_vNuTot0");
   hst_vNuTot0->Add(hst_vPhotNumu, hst_vPhotNuInt,  3.0,  0.0);
   //
-  // translate into No of events for given integr. lumi
+  // translate into No of events for given integrated lumi
   //TH1D *hst_vNuel     = HstEvent("hst_vNuel", hst_vPhotNuel, IntLumi);
   //TH1D *hst_vNumu     = HstEvent("hst_vNumu", hst_vPhotNumu, IntLumi);
   //
   double Xmax = hst_vPhotNumu->GetXaxis()->GetXmax();
   double Xmin = hst_vPhotNumu->GetXaxis()->GetXmin();
-  cout<< "@@@@@@@@@ Xmin, Xmax = "<<Xmin <<" "<< Xmax<<" Xmax-Xmin="<< Xmax-Xmin<<endl;
+  int    Nb   = hst_vPhotNumu->GetNbinsX();
+  cout<< "========= Xmin, Xmax = "<<Xmin <<" "<< Xmax<<" Xmax-Xmin="<< Xmax-Xmin<<" Nb="<<Nb<<endl;
+  double binwid = (Xmax-Xmin)/Nb;
 
   double SigTot1= hst_vNuTot1->Integral("width");
   double SigTot0= hst_vNuTot0->Integral("width");
   //
-  double SigTot1Mi = hst_vNuTot1->Integral( 1,20,"width");
-  double SigTot1Pl = hst_vNuTot1->Integral(21,40,"width");
-  double SigTot0Mi = hst_vNuTot0->Integral( 1,20,"width");
-  double SigTot0Pl = hst_vNuTot0->Integral(21,40,"width");
+  double SigTot1Mi = hst_vNuTot1->Integral( 1,20,"width"); // t-chanel W is ON
+  double SigTot1Pl = hst_vNuTot1->Integral(21,40,"width"); // t-chanel W is ON
+  double SigTot0Mi = hst_vNuTot0->Integral( 1,20,"width"); // t-chanel W is OFF
+  double SigTot0Pl = hst_vNuTot0->Integral(21,40,"width"); // t-chanel W is OFF
+  //!////////////////////////////////////////////////////////////////////////
+  cout<< "========= SigTot0 [pb] ="<<SigTot0*1e3<<endl;
+  cout<< "========= SigTot1 [pb] ="<<SigTot1*1e3<<endl;
 
   //!////////////////////////////////////////////////////////////////////////
-  cout<< "@@@@@@@@@ SigTot1 [pb] ="<<SigTot1*1e3<<"  +- "<<SigTot1*1e3/sqrt(SigTot0*IntLumi) <<endl;
-  cout<< "@@@@@@@@@ SigTot0 [pb] ="<<SigTot0*1e3<<"  +- "<<SigTot0*1e3/sqrt(SigTot0*IntLumi) <<endl;
-  double DelTch=(SigTot1-SigTot0)/(SigTot1); /// t_chanel contrib.
-  cout<< "@@@@@@@@@ A(0) ="<< DelTch <<" +- " << 1/sqrt(SigTot1*IntLumi) << endl;
+  cout<< "********* Current no. of MC  events     = "<< gNevTot<<endl;
+  cout<< "********* For FCCee integrated lumi     ="<< IntLumi<<endl;
+  cout<< "********* Experimental FCCee statistics ="<< SigTot1*IntLumi <<endl;
+  double EquEve = MCequiv(hst_vNuTot1);
+  cout<< "********* No. of equiv. WT=1 MC events  ="<< EquEve <<"  Rel.stat.error= "<< 1/sqrt(EquEve)<<endl;
   //
-  cout<< "@@@@@@@@@ SigTot1Pl="<<SigTot1Pl<<"   SigTot1Mi="<<SigTot1Mi<<" sum/SigTot1="<<(SigTot1Pl+SigTot1Mi)/SigTot1<<endl;
+  cout<< "========= SigTot1 [pb] ="<<SigTot1*1e3<<"  +- "<<SigTot1*1e3/sqrt(SigTot0*IntLumi) <<endl;
+  cout<< "========= SigTot0 [pb] ="<<SigTot0*1e3<<"  +- "<<SigTot0*1e3/sqrt(SigTot0*IntLumi) <<endl;
+  double DelTch=(SigTot1-SigTot0)/(SigTot1); /// t_chanel contrib.
+  cout<< "========= delta sima_tot ="<< DelTch <<" +- " << 1/sqrt(SigTot1*IntLumi) << endl;
+  //
+  cout<< "========= SigTot1Pl="<<SigTot1Pl<<"   SigTot1Mi="<<SigTot1Mi<<" sum/SigTot1="<<(SigTot1Pl+SigTot1Mi)/SigTot1<<endl;
   double ASYnuEl= (SigTot1Pl-SigTot1Mi)/(SigTot1Pl+SigTot1Mi);
   double ASYnuMu= (SigTot0Pl-SigTot0Mi)/(SigTot0Pl+SigTot0Mi);
-  cout<< "@@@@@@@@@ ASYnuEl=(Pl-Mi)/Pl+Mi)="<<ASYnuEl <<" +- " << 1/sqrt(SigTot1*IntLumi) <<endl;
-  cout<< "@@@@@@@@@ ASYnuMu=(Pl-Mi)/Pl+Mi)="<<ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi)  <<endl;
-  cout<< "@@@@@@@@@   ASYnuEl - ASYnuMu =  "<< ASYnuEl - ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi)  <<endl;
+  cout<< "========= ASYnuEl=(Pl-Mi)/Pl+Mi)[t-chan.ON ]="<<ASYnuEl <<" +- " << 1/sqrt(SigTot1*IntLumi) <<endl;
+  cout<< "========= ASYnuMu=(Pl-Mi)/Pl+Mi)[t-chan.OFF]="<<ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi) <<endl;
+  cout<< "========= ASYnuEl - ASYnuMu =  "   << ASYnuEl - ASYnuMu <<" +- " << 1/sqrt(SigTot1*IntLumi) <<endl;
   char CaptRat[300], CaptS0[300], CaptSigTot1[300], CaptSigTot0[300];
   sprintf(CaptRat,"(#sigma_{on}-#sigma_{off})/#sigma_{on} = %2.5f +- %2.5f ", DelTch, 1/sqrt(SigTot1*IntLumi));
-  sprintf(CaptS0, "S(0)= %2.5f +- %2.5f ", ASYnuMu, 1/sqrt(SigTot1*IntLumi));
-  sprintf(CaptSigTot1,"#sigma_{on } = %2.5f +- %2.5f [pb]",  SigTot1*1e3,SigTot1*1e3/sqrt(SigTot0*IntLumi));
+  sprintf(CaptS0, "S(0)= %2.5f +- %2.5f ", ASYnuEl, 1/sqrt(SigTot1*IntLumi));
+  sprintf(CaptSigTot1,"#sigma_{on } = %2.5f +- %2.5f [pb]", SigTot1*1e3,SigTot1*1e3/sqrt(SigTot0*IntLumi));
   sprintf(CaptSigTot0,"#sigma_{off} = %2.5f +- %2.5f [pb]", SigTot0*1e3,SigTot0*1e3/sqrt(SigTot0*IntLumi));
-  cout<< "@@@@@@@@@ FCCee statistics for 10atob. ="<< SigTot1*IntLumi <<endl;
-  double EquEve = MCequiv(hst_vNuTot1);
-  cout<< "@@@@@@@@@ No. of equiv. WT=1 MC events ="<< EquEve <<endl;
 //////////////////////////////////////////////
   double etamax = 0.100;
   int nbx =200;
@@ -685,7 +694,7 @@ void FigNuEle()
 	dASY =ASYnu2-ASYnuEl;
 	hst_DelA->SetBinContent(ib, dASY);
 	hst_DelA->SetBinError(  ib, staterr);
-	cout<< "%%%%%%%%% "<<ib<<"  "<< eta <<"  "<<dASY<< "  +-"<<  staterr <<endl;
+	//cout<< "%%%%%%%%% "<<ib<<"  "<< eta <<"  "<<dASY<< "  +-"<<  staterr <<endl;
   }
 //////////////////////////////////////////////
   TH1D *Hel  = hst_vNuTot1;
@@ -747,7 +756,7 @@ void FigNuEle()
   hst_DelA->DrawCopy("hsame");
   //
   CaptT->DrawLatex(0.10,0.95, "#Delta S = S(#eta)-S(0)");
-  CaptT->DrawLatex(0.40,0.85, "S = (#sigma_{+}-#sigma_{-})/(#sigma_{+}-#sigma_{-})" );
+  CaptT->DrawLatex(0.40,0.85, "S = (#sigma_{+}-#sigma_{-})/(#sigma_{+}+#sigma_{-})" );
   CaptT->DrawLatex(0.40,0.80, "#sigma_{+}=#sigma(v>v_{Z}),  #sigma_{-}=#sigma(v<v_{Z})" );
   CaptT->DrawLatex(0.40,0.75, CaptVZ);
   CaptT->DrawLatex(0.40,0.70, CaptS0);
@@ -1203,7 +1212,7 @@ int main(int argc, char **argv)
   //
   TH1D *HST_KKMC_NORMB = (TH1D*)DiskFileB.Get("HST_KKMC_NORMA");
   int Nodes2       = HST_KKMC_NORMB->GetBinContent(511);       // No of farm nodes (trick)
-  double gCMSene2  = HST_KKMC_NORMB->GetBinContent(1)/Nodes2;   // CMSene=xpar(1), farn adjusted
+  double gCMSene2  = HST_KKMC_NORMB->GetBinContent(1)/Nodes2;  // CMSene=xpar(1), farn adjusted
   double gNevTot2  = HST_KKMC_NORMB->GetEntries();             // MC statistics from KKMC
   //
   if( fabs(gCMSene2-gCMSene)>0.01 ){

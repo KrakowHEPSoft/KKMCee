@@ -584,7 +584,7 @@ TH1D *HstCumul(TString title, TH1D *hst1)
 double MCequiv(TH1D *hst1)
 {
   // calculates no. of equiv. WT=1 events
-  cout<<"Entering MCequivfor  ";
+  cout<<">>>>>>> Entering MCequiv for histo:  ";
   cout<< hst1->GetName() <<endl;
   int nbX  = hst1->GetNbinsX();
   //
@@ -601,7 +601,7 @@ double MCequiv(TH1D *hst1)
 TH1D *HstEvent(TString title, TH1D *hst1, double IntLumi)
 {
   // translates normalized distribution into no. of events for// given integrated luminosity
-  cout<<"Entering HstEvent for  ";
+  cout<<">>>>>>> Entering HstEvent for histo: ";
   cout<< hst1->GetName() <<endl;
   int  nbX  = hst1->GetNbinsX();
   //
