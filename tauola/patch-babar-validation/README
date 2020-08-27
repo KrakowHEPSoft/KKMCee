@@ -1,0 +1,47 @@
+VALIDATED:
+  SVN REVISION: 1852
+  DATE:         11.08.2014
+
+1) Parameters of PHOTOS were not fine tuned. For the run
+   of Generator 1 minimal photon energy was slightly smaller.
+2) Parameters for minimum photon energy in leptonic tau decays
+   was not fixed to the same value as well.
+3) Changes described in file 'tauola-bbb-rev1852.patch' have been
+   introduced to match BaBar setup.
+
+APPLYING PATCH FILE:
+--------------------
+To apply the above patch file one has to export the 1852 revision of
+TAUOLA-FORTRAN, copy teh patch file to TAUOLA-FORTRAN/tauola-bbb directory
+and execute from this directory line:
+      
+  patch -p0 -i tauola-bbb-rev1852.patch
+
+An additional patch file 'tauola-bbb-rev2110.patch' has been provided which
+contains exactly the same changes as patch file for revision 1852 but
+has been updated to the revision 2110. Changes are cosmetic. For example,
+instead of 'demo-standalone/taumain.f' file 'demo-babar/taumain.f' is patched.
+This patch should work with all newer version of the distribution.
+
+MC-TESTER:
+----------
+Changes applied by these patch files require adding MC-TESTER libraries 
+at the linking step. As this strongly depends on user environment,
+we have not added corresponding lines to the patch files.
+Please note: in order to make the MC-TESTER work the same HEPEVT library
+has to be used in MC-TESTER installation and in user framework.
+
+As an example, to add MC-TESTER to our demo examples one would have to
+modify makefile line 26 - line that starts with $(LD).
+One would have to adding to the end of this line following flags:
+
+  $(shell root-config --glibs) -L$(MCTESTERLOCATION)/lib -lHEPEvent -lMCTester -Wl,--rpath,$(MCTESTERLOCATION)/lib
+
+This assumes environmental variable $MCTESTERLOCATION is set, and 'root-config'
+is available from command line.
+
+See MC-TESTER documentation on how to compare two MC-TESTER output files
+to produce the pdf.
+
+--
+Last modified: 1 Sep 2016

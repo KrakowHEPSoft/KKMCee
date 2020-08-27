@@ -1,0 +1,58 @@
+Aug 27 2016:
+============
+
+Tune of tauola-BBB to BaBar.
+Introduced ability to add user currents or modify existing currents.
+
+Several examples have been provided:
+
+1) demo-redefine   - example of adding new currents.
+2) demo-babar      - example of default BaBar setup.
+3) demo-lfv        - example of adding and using LFV current.
+
+4) patch-tauolapp   - README and files for adding tauola-bbb to tauolapp.
+5) patch-KK-face    - README and files for adding tauola-bbb to KKMC.
+6) patch-babar-validation - README and files needed to reproduce our validation of BaBar initialization.
+
+By default 'makefile' located in this directory adds objects from 'tauola-c'
+directory to the library. This introduces ability to add user currents or
+modify existing currents. This feature can be turned off by removing
+'tauola-c' objects and adding dummy functions provided in 'tauola-no-c'.
+This will also remove dependency on C++.
+
+September 09 2016
+=================
+patch-tauolapp patch-KK-face patch-babar-validation renamed from
+ demo-tauolapp  demo-KK-face  demo-babar-validation
+August 27 2016
+==============
+Single example  demo-standalone has been replaced by 3 shorter demos
+of particular purposes.
+
+August 29 2015:
+===============
+Distribution tar-ball updated, compatibility with CLEO is preserved
+only in part. In particular parameter IFCLEO is not anymore present
+in demo-standalone/taumain.f
+
+May 29 2012:
+============
+
+STARTING POINT for bbb work (SVN version 1136).
+Tune of  tauola-BBB to CLEO (Oct.2005)
+List of changes, controlled by parameter IFCLEO:
+
+0) demo-standalone/taumain.f - Default: IFCLEO=.true. For IFCLEO=.FALSE.
+	                       GAMPRT matrix is redefined and prototype
+	                       channels are turned on, following tauola-BBB.
+1) pi- pi0 K0          - cross-contaminated by xxxx5xxxxxx (and so on) channels
+                         Switching them off (IFCLEO=.true.) makes
+                         these channel match for mc-tester.
+2) K-  K0  pi0         - TAUOLA CLEO of Oct.2005) has low NTRIALS
+                         Has to be changed to 45000 as in tauola-BBB
+                         for these channels to match.
+3) pi- pi- pi+ pi0 pi0 - channel 30 matches CLEO. Switch off ch. 31 & 33
+4) pi- pi- pi- pi+ pi+ - channel 51 matches CLEO. Switch off ch. 35
+			 Quality/purpose of
+                         non-cleo channels: 31, 33, 35 is forgotten.
+                         The IFCLEO=.true. switches them off.

@@ -44,7 +44,8 @@ F77     = gfortran
 FFLAGS  = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LD      = $(F77)
 AR      = ar cru
-LDFLAGS =
+LDFLAGS = -lstdc++
+CC	= g++
 #-----------------------------------------------------------------------
 SRCLIST= "../KK2f ../glibk ../jetset ../bornv "
 #-----------------------------------------------------------------------
@@ -95,7 +96,7 @@ EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight duri
 COMMAND1 = ProdMC.exe
 OBJECTS1 = ProdMC.o
 $(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY) -lstdc++
 #-----------------------------------------------------------------------
 COMMAND2 = demo.exe
 OBJECTS2 = demo.o

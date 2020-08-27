@@ -1,0 +1,114 @@
+Index: demo-babar/taumain.f
+===================================================================
+--- demo-babar/taumain.f
++++ demo-babar/taumain.f
+@@ -124,6 +124,8 @@
+         CALL INITDK
+         CALL INIPHY(0.1D0)
+         CALL INISAMPL
++        CALL PHOINI
++        CALL MCTEST(-1)
+ C -----------------
+ 
+       IF (KTORY.EQ.1) THEN
+@@ -148,6 +150,8 @@
+          CALL DEKAY(KTO,HH)
+          CALL DEKAY(KTO+10,HH)
+       ENDIF
++      CALL PHOTOS(4)
++      CALL MCTEST(0)
+       CALL LUHEPC(2)
+       IF(IEV.LE.44) THEN
+        WRITE(IOUT,7002) IEV
+@@ -165,6 +169,7 @@
+ C-----------------------------------------------------------------------
+ C                     POSTGENERATION
+ C-----------------------------------------------------------------------
++      CALL MCTEST(1)
+       IF (KTORY.EQ.1) THEN
+          CALL DEXAY(100,POL)
+       ELSE
+Index: tauola.f
+===================================================================
+--- tauola.f
++++ tauola.f
+@@ -1431,8 +1431,8 @@
+ C QQ transverse to PKS
+         PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
+         QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
+-        DO 31 IK=1,4
+- 31      QQ(IK)=QQ(IK)-PKS(IK)*QQPKS/PKSD
++c        DO 31 IK=1,4
++c 31      QQ(IK)=QQ(IK)-PKS(IK)*QQPKS/PKSD
+ 
+       IF (IVER.EQ.1) THEN 
+        CALL GETFF2PIRHO(FF2PIRHO)
+@@ -2198,6 +2198,13 @@
+               PNPI(I,2)=PIM2(I)
+               PNPI(I,3)=PIPL(I)
+             ENDDO
++            if(mnum.eq.2) then
++              DO I=1,4
++                PNPI(I,1)=PIPL(I)
++                PNPI(I,2)=PIM2(I)
++                PNPI(I,3)=PIM1(I)
++              ENDDO
++            end if
+       END
+ 
+ 
+@@ -4224,8 +4231,8 @@
+       DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
+ c                                                                       
+       do 77 k=1,4                                                       
+-        pmult(k,1)=pi1(k)                                               
+-        pmult(k,2)=pi2(k)                                               
++        pmult(k,1)=pi2(k)                                               
++        pmult(k,2)=pi1(k)                                               
+         pmult(k,3)=pi3(k)                                               
+         pmult(k,4)=pi4(k)                                               
+         pmult(k,5)=pi5(k)                                               
+Index: ../photos/photos.f
+===================================================================
+--- ../photos/photos.f
++++ ../photos/photos.f
+@@ -224,11 +224,11 @@
+ C--                        see dipswitch ifour
+       ITRE=.FALSE.
+ C--   Exponentiation on:
+-      IEXP=.FALSE. !.TRUE.
++      IEXP=.TRUE.
+       IF (IEXP) THEN
+       ISEC=.FALSE.
+       ITRE=.FALSE.
+-      CALL PHCORK(5)  ! in case of exponentiation correction of ph space
++      CALL PHCORK(3)  ! in case of exponentiation correction of ph space
+                       ! is a default mandatory
+       XPHCUT=0.000 000 1 
+       EXPEPS=1D-4
+@@ -252,6 +252,7 @@
+       ELSE
+         FINT=1.0D0
+       ENDIF
++      FINT=3.0
+ C ----------- FASTER VARIANT B  ------------------
+ C -- it is good for tests of fixed order and small XPHCUT
+ C -- but is less promising for more complex cases of interference
+@@ -2739,7 +2740,7 @@
+       WRITE(PHLUN,9120)
+       WRITE(PHLUN,9000)
+       IF (ISEC) THEN 
+-        STOP
++c        STOP
+       ELSE
+         GOTO 130
+       ENDIF
+@@ -2749,7 +2750,7 @@
+         WRITE(PHLUN,9120)
+         WRITE(PHLUN,9000)
+         IF (ISEC) THEN 
+-          STOP
++c          STOP
+         ELSE
+           GOTO 130
+         ENDIF

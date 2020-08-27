@@ -1,0 +1,37 @@
+Installing tauola-bbb into Tauola++
+-----------------------------------
+
+This procedure have been tested on Tauola++ v1.1.5 however, with small
+modification to Makefile, it should work with any future or earlier version.
+
+1) Extract Tauola++ tarball.
+   NOTE: use TAUOLA++ source code with full TAUOLA-FORTRAN
+
+2) copy 'tauola-bbb' folder to TAUOLA/tauola-fortran
+
+3) cd TAUOLA/src/tauolaFortranInterfaces
+   cp ../../tauola-fortran/tauola-bbb/patch-tauolapp/tauola_extras.f .
+   cd ../..
+   patch -p0 -i tauola-fortran/tauola-bbb/patch-tauolapp/tauolapp.patch
+4) Follow usual instructions to clean and recompile Tauola++
+
+5) To activate main new options of Tauola initialization IRChL and IF5PIAPP
+   a) to replace initialization for 2pi 3pi and 4pi modes from  BaBar to
+      RChL for 3 pions, novosibirsk for 4 pions and Belle for 2 pions
+      use Tauola::setNewCurrents(1);
+   b) to replace initialization for 5pi modes with the ones of the paper
+      of J. Kuhn, Z.Was APP 2008, it is sufficent to adjust appropriate
+      decay rates. The 5pi modes of that paper are coded as distinct decay 
+      channels.
+
+6) In user program add: #include "Tauola/ChannelForTauolaInterface.h"
+   then use: Tauolapp::SetUserRedefinitions( void (*pointer)() )
+   to provide a function that redefines individual Tauola++ channels.
+   See demo-redefine/iniofc.c for an example of such function.
+   With this method matrix elements/currents can be replaced with the ones
+   of the users.
+
+NOTE: only basic tests of TauSpinner in this setup have been done
+
+--
+Last Modified: T. Przedzinski, 31 August 2014

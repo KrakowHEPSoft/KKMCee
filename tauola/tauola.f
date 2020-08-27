@@ -1,12 +1,12 @@
-
+ 
       SUBROUTINE JAKER(JAK)
 C     *********************
 C
 C **********************************************************************
 C                                                                      *
 
-C           *********TAUOLA LIBRARY: VERSION 2.6 ********              *
-C           **************August   1995******************              *
+C           ********TAUOLA LIBRARY: VERSION 3.1 *********              *
+C           ************** Sep     2016******************              *
 
 C           **      AUTHORS: S.JADACH, Z.WAS        *****              *
 C           **  R. DECKER, M. JEZABEK, J.H.KUEHN,   *****              *
@@ -15,31 +15,27 @@ C           *******PUBLISHED IN COMP. PHYS. COMM.********              *
 C           *** PREPRINT CERN-TH-5856 SEPTEMBER 1990 ****              *
 C           *** PREPRINT CERN-TH-6195 OCTOBER   1991 ****              *
 C           *** PREPRINT CERN-TH-6793 NOVEMBER  1992 ****              *
+C           ********** IFJ-PAN-IV-2016-24 ***************              *
 C **********************************************************************
-C
+C 
 C ----------------------------------------------------------------------
 c SUBROUTINE JAKER,
 C CHOOSES DECAY MODE ACCORDING TO LIST OF BRANCHING RATIOS
 C JAK=1 ELECTRON MODE
 C JAK=2 MUON MODE
-C JAK=3 PION MODE
-C JAK=4 RHO  MODE
-C JAK=5 A1   MODE
-C JAK=6 K    MODE
-C JAK=7 K*   MODE
 
-C JAK=8 nPI  MODE
+C JAK=3+ nPI  MODE
 
 C
 C     called by : DEXAY
 C ----------------------------------------------------------------------
-      COMMON / TAUBRA / GAMPRT(30),JLIST(30),NCHAN
+      COMMON / TAUBRA / GAMPRT(500),JLIST(500),NCHAN
 
 C      REAL   CUMUL(20)
 
-      REAL   CUMUL(30),RRR(1)
+      REAL   CUMUL(500),RRR(1)
 C
-      IF(NCHAN.LE.0.OR.NCHAN.GT.30) GOTO 902
+      IF(NCHAN.LE.0.OR.NCHAN.GT.500) GOTO 902
       CALL RANMAR(RRR,1)
       SUM=0
       DO 20 I=1,NCHAN
@@ -70,14 +66,8 @@ C KTO=100, PRINT FINAL REPORT  (OPTIONAL).
 C DECAY MODES:
 C JAK=1 ELECTRON DECAY
 C JAK=2 MU  DECAY
-C JAK=3 PI  DECAY
-C JAK=4 RHO DECAY
-C JAK=5 A1  DECAY
-C JAK=6 K   DECAY
-C JAK=7 K*  DECAY
 
-C JAK=8 NPI DECAY
-C JAK=0 INCLUSIVE:  JAK=1,2,3,4,5,6,7,8
+C JAK=0 INCLUSIVE:  JAK=1,2,3,4,5,6,7,8,...
 
       REAL  H(4)
       REAL*8 HX(4)
@@ -86,10 +76,9 @@ C JAK=0 INCLUSIVE:  JAK=1,2,3,4,5,6,7,8
       COMMON / IDFC  / IDF
 
       COMMON /TAUPOS/ NP1,NP2                
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
-
+      include 'TAUDCDsize.inc'
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
      &                ,NAMES
@@ -116,14 +105,9 @@ C       first or second tau positions in HEPEVT as in KORALB/Z
         IF(JAK1.NE.-1.OR.JAK2.NE.-1) THEN
           CALL DADMEL(-1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
           CALL DADMMU(-1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
-          CALL DADMPI(-1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DADMRO(-1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4)
-          CALL DADMAA(-1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5,JDUM)
-          CALL DADMKK(-1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DADMKS(-1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,JDUM)
           CALL DADNEW(-1,IDUM,HDUM,PDUM1,PDUM2,PDUMX,JDUM)
         ENDIF
-        DO 21 I=1,30
+        DO 21 I=1,500
         NEVDEC(I)=0
         GAMPMC(I)=0
  21     GAMPER(I)=0
@@ -134,6 +118,8 @@ C DECAY OF TAU+ IN THE TAU REST FRAME
         IF(IWARM.EQ.0) GOTO 902
         ISGN= IDF/IABS(IDF)
 
+C AJWMOD to change BRs depending on sign:
+        CALL TAURDF(KTO)
 
         CALL DEKAY1(0,H,ISGN)
       ELSEIF(KTO.EQ.2) THEN
@@ -143,6 +129,8 @@ C DECAY OF TAU- IN THE TAU REST FRAME
         IF(IWARM.EQ.0) GOTO 902
         ISGN=-IDF/IABS(IDF)
 
+C AJWMOD to change BRs depending on sign:
+        CALL TAURDF(KTO)
 
         CALL DEKAY2(0,H,ISGN)
       ELSEIF(KTO.EQ.11) THEN
@@ -162,16 +150,11 @@ C     =======================
         IF(JAK1.NE.-1.OR.JAK2.NE.-1) THEN
           CALL DADMEL( 1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
           CALL DADMMU( 1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
-          CALL DADMPI( 1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DADMRO( 1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4)
-          CALL DADMAA( 1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5,JDUM)
-          CALL DADMKK( 1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DADMKS( 1,IDUM,HDUM,PDUM1,PDUM2,PDUM3,PDUM4,JDUM)
           CALL DADNEW( 1,IDUM,HDUM,PDUM1,PDUM2,PDUMX,JDUM)
           WRITE(IOUT,7010) NEV1,NEV2,NEVTOT
-          WRITE(IOUT,7011) (NEVDEC(I),GAMPMC(I),GAMPER(I),I= 1,7)
+          WRITE(IOUT,7011) (I,NEVDEC(I),GAMPMC(I),GAMPER(I),I= 1,NLT)
           WRITE(IOUT,7012) 
-     $         (NEVDEC(I),GAMPMC(I),GAMPER(I),NAMES(I-7),I=8,7+NMODE)
+     $         (I,NEVDEC(I),GAMPMC(I),GAMPER(I),NAMES(I-NLT),I=NLT+1,NLT+NMODE)
           WRITE(IOUT,7013) 
         ENDIF
       ELSE
@@ -184,16 +167,15 @@ C     =====
       RETURN
  7001 FORMAT(///1X,15(5H*****)
 
-     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 2.6 ******',9X,1H*,
-     $ /,' *',     25X,'***********August   1995***************',9X,1H*,
+     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 3.1 ******',9X,1H*,
+     $ /,' *',     25X,'***********Sep      2016***************',9X,1H*,
      $ /,' *',     25X,'**AUTHORS: S.JADACH, Z.WAS*************',9X,1H*,
      $ /,' *',     25X,'**R. DECKER, M. JEZABEK, J.H.KUEHN*****',9X,1H*,
      $ /,' *',     25X,'**AVAILABLE FROM: WASM AT CERNVM ******',9X,1H*,
      $ /,' *',     25X,'***** PUBLISHED IN COMP. PHYS. COMM.***',9X,1H*,
-     $ /,' *',     25X,'*******CERN-TH-5856 SEPTEMBER 1990*****',9X,1H*,
-     $ /,' *',     25X,'*******CERN-TH-6195 SEPTEMBER 1991*****',9X,1H*,
      $ /,' *',     25X,'*******CERN TH-6793 NOVEMBER  1992*****',9X,1H*,
      $ /,' *',     25X,'**5 or more pi dec.: precision limited ',9X,1H*,
+     $ /,' *',     25X,'******* IFJ-PAN-IV-2016-24 ************',9X,1H*,
 
      $ /,' *',     25X,'****DEKAY ROUTINE: INITIALIZATION******',9X,1H*,
      $ /,' *',I20  ,5X,'JAK1   = DECAY MODE TAU+               ',9X,1H*,
@@ -201,8 +183,8 @@ C     =====
      $  /,1X,15(5H*****)/)
  7010 FORMAT(///1X,15(5H*****)
 
-     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 2.6 ******',9X,1H*,
-     $ /,' *',     25X,'***********August   1995***************',9X,1H*,
+     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 3.1 ******',9X,1H*,
+     $ /,' *',     25X,'***********Sep      2016***************',9X,1H*,
 
      $ /,' *',     25X,'**AUTHORS: S.JADACH, Z.WAS*************',9X,1H*,
      $ /,' *',     25X,'**R. DECKER, M. JEZABEK, J.H.KUEHN*****',9X,1H*,
@@ -211,22 +193,18 @@ C     =====
      $ /,' *',     25X,'*******CERN-TH-5856 SEPTEMBER 1990*****',9X,1H*,
      $ /,' *',     25X,'*******CERN-TH-6195 SEPTEMBER 1991*****',9X,1H*,
      $ /,' *',     25X,'*******CERN TH-6793 NOVEMBER  1992*****',9X,1H*,
+     $ /,' *',     25X,'******* IFJ-PAN-IV-2016-24 ************',9X,1H*,
      $ /,' *',     25X,'*****DEKAY ROUTINE: FINAL REPORT*******',9X,1H*,
      $ /,' *',I20  ,5X,'NEV1   = NO. OF TAU+ DECS. ACCEPTED    ',9X,1H*,
      $ /,' *',I20  ,5X,'NEV2   = NO. OF TAU- DECS. ACCEPTED    ',9X,1H*,
      $ /,' *',I20  ,5X,'NEVTOT = SUM                           ',9X,1H*,
-     $ /,' *','    NOEVTS ',
-     $   ' PART.WIDTH     ERROR       ROUTINE    DECAY MODE    ',9X,1H*)
- 7011 FORMAT(1X,'*'
-     $       ,I10,2F12.7       ,'     DADMEL     ELECTRON      ',9X,1H*
-     $ /,' *',I10,2F12.7       ,'     DADMMU     MUON          ',9X,1H*
-     $ /,' *',I10,2F12.7       ,'     DADMPI     PION          ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMRO     RHO (->2PI)   ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMAA     A1  (->3PI)   ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMKK     KAON          ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMKS     K*            ',9X,1H*)
- 7012 FORMAT(1X,'*'
-     $       ,I10,2F12.7,A31                                    ,8X,1H*)
+     $ /,' *','NCHAN    NOEVTS ',
+     $   ' PART.WIDTH     ERROR       ROUTINE    DECAY MODE    ',4X,1H*)
+ 7011 FORMAT(1X,'*',
+     $        I4,'*',I10,2F12.7       ,'     DADMEL     ELECTRON      ',4X,1H*
+     $ /,' *',I4,'*',I10,2F12.7       ,'     DADMMU     MUON          ',4X,1H*)
+ 7012 FORMAT(1X,'*',I4,'*'
+     $       ,I10,2F12.7,A31                                    ,3X,1H*)
  7013 FORMAT(1X,'*'
      $       ,20X,'THE ERROR IS RELATIVE AND  PART.WIDTH      ',10X,1H*
      $ /,' *',20X,'IN UNITS GFERMI**2*MASS**5/192/PI**3       ',10X,1H*
@@ -241,12 +219,12 @@ C     =====
       SUBROUTINE DEKAY1(IMOD,HH,ISGN)
 C     *******************************
 C THIS ROUTINE  SIMULATES TAU+  DECAY
-
+      include 'TAUDCDsize.inc'
       COMMON / DECP4 / PP1(4),PP2(4),KF1,KF2
       COMMON / JAKI   /  JAK1,JAK2,JAKP,JAKM,KTOM
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
-
+      
       REAL  HH(4)
       REAL  HV(4),PNU(4),PPI(4)
       REAL  PWB(4),PMU(4),PNM(4)
@@ -268,18 +246,8 @@ C     =================
         CALL DADMEL(0, ISGN,HV,PNU,PWB,PMU,PNM,PHOT)
       ELSEIF(JAK.EQ.2) THEN
         CALL DADMMU(0, ISGN,HV,PNU,PWB,PMU,PNM,PHOT)
-      ELSEIF(JAK.EQ.3) THEN
-        CALL DADMPI(0, ISGN,HV,PPI,PNU)
-      ELSEIF(JAK.EQ.4) THEN
-        CALL DADMRO(0, ISGN,HV,PNU,PRHO,PIC,PIZ)
-      ELSEIF(JAK.EQ.5) THEN
-        CALL DADMAA(0, ISGN,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-      ELSEIF(JAK.EQ.6) THEN
-        CALL DADMKK(0, ISGN,HV,PKK,PNU)
-      ELSEIF(JAK.EQ.7) THEN
-        CALL DADMKS(0, ISGN,HV,PNU,PKS ,PKK,PPI,JKST)
       ELSE
-        CALL DADNEW(0, ISGN,HV,PNU,PWB,PNPI,JAK-7)
+        CALL DADNEW(0, ISGN,HV,PNU,PWB,PNPI,JAK-NLT)
       ENDIF
       DO 33 I=1,3
  33   HH(I)=HV(I)
@@ -288,7 +256,7 @@ C     =================
       ELSEIF(IMD.EQ.1) THEN
 C     =====================
       NEV=NEV+1
-        IF (JAK.LT.31) THEN
+        IF (JAK.LT.501) THEN
            NEVDEC(JAK)=NEVDEC(JAK)+1
          ENDIF
       DO 34 I=1,4
@@ -305,28 +273,6 @@ C     =====================
         DO 20 I=1,4
  20     PP1(I)=PMU(I)
  
-      ELSEIF(JAK.EQ.3) THEN
-        CALL DWLUPI(1,ISGN,PPI,PNU)
-        DO 30 I=1,4
- 30     PP1(I)=PPI(I)
- 
-      ELSEIF(JAK.EQ.4) THEN
-        CALL DWLURO(1,ISGN,PNU,PRHO,PIC,PIZ)
-        DO 40 I=1,4
- 40     PP1(I)=PRHO(I)
- 
-      ELSEIF(JAK.EQ.5) THEN
-        CALL DWLUAA(1,ISGN,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-        DO 50 I=1,4
- 50     PP1(I)=PAA(I)
-      ELSEIF(JAK.EQ.6) THEN
-        CALL DWLUKK(1,ISGN,PKK,PNU)
-        DO 60 I=1,4
- 60     PP1(I)=PKK(I)
-      ELSEIF(JAK.EQ.7) THEN
-        CALL DWLUKS(1,ISGN,PNU,PKS,PKK,PPI,JKST)
-        DO 70 I=1,4
- 70     PP1(I)=PKS(I)
       ELSE
 CAM     MULTIPION DECAY
         CALL DWLNEW(1,ISGN,PNU,PWB,PNPI,JAK)
@@ -340,10 +286,10 @@ C     =====
       SUBROUTINE DEKAY2(IMOD,HH,ISGN)
 C     *******************************
 C THIS ROUTINE  SIMULATES TAU-  DECAY
-
+      include 'TAUDCDsize.inc'
       COMMON / DECP4 / PP1(4),PP2(4),KF1,KF2
       COMMON / JAKI   /  JAK1,JAK2,JAKP,JAKM,KTOM
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
 
       REAL  HH(4)
@@ -367,18 +313,8 @@ C     =================
         CALL DADMEL(0, ISGN,HV,PNU,PWB,PMU,PNM,PHOT)
       ELSEIF(JAK.EQ.2) THEN
         CALL DADMMU(0, ISGN,HV,PNU,PWB,PMU,PNM,PHOT)
-      ELSEIF(JAK.EQ.3) THEN
-        CALL DADMPI(0, ISGN,HV,PPI,PNU)
-      ELSEIF(JAK.EQ.4) THEN
-        CALL DADMRO(0, ISGN,HV,PNU,PRHO,PIC,PIZ)
-      ELSEIF(JAK.EQ.5) THEN
-        CALL DADMAA(0, ISGN,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-      ELSEIF(JAK.EQ.6) THEN
-        CALL DADMKK(0, ISGN,HV,PKK,PNU)
-      ELSEIF(JAK.EQ.7) THEN
-        CALL DADMKS(0, ISGN,HV,PNU,PKS ,PKK,PPI,JKST)
       ELSE
-        CALL DADNEW(0, ISGN,HV,PNU,PWB,PNPI,JAK-7)
+        CALL DADNEW(0, ISGN,HV,PNU,PWB,PNPI,JAK-NLT)
       ENDIF
       DO 33 I=1,3
  33   HH(I)=HV(I)
@@ -386,7 +322,7 @@ C     =================
       ELSEIF(IMD.EQ.1) THEN
 C     =====================
       NEV=NEV+1
-        IF (JAK.LT.31) THEN
+        IF (JAK.LT.501) THEN
            NEVDEC(JAK)=NEVDEC(JAK)+1
          ENDIF
       DO 34 I=1,4
@@ -403,28 +339,6 @@ C     =====================
         DO 20 I=1,4
  20     PP2(I)=PMU(I)
  
-      ELSEIF(JAK.EQ.3) THEN
-        CALL DWLUPI(2,ISGN,PPI,PNU)
-        DO 30 I=1,4
- 30     PP2(I)=PPI(I)
- 
-      ELSEIF(JAK.EQ.4) THEN
-        CALL DWLURO(2,ISGN,PNU,PRHO,PIC,PIZ)
-        DO 40 I=1,4
- 40     PP2(I)=PRHO(I)
- 
-      ELSEIF(JAK.EQ.5) THEN
-        CALL DWLUAA(2,ISGN,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-        DO 50 I=1,4
- 50     PP2(I)=PAA(I)
-      ELSEIF(JAK.EQ.6) THEN
-        CALL DWLUKK(2,ISGN,PKK,PNU)
-        DO 60 I=1,4
- 60     PP1(I)=PKK(I)
-      ELSEIF(JAK.EQ.7) THEN
-        CALL DWLUKS(2,ISGN,PNU,PKS,PKK,PPI,JKST)
-        DO 70 I=1,4
- 70     PP1(I)=PKS(I)
       ELSE
 CAM     MULTIPION DECAY
         CALL DWLNEW(2,ISGN,PNU,PWB,PNPI,JAK)
@@ -449,12 +363,12 @@ C KTO=100, PRINT FINAL REPORT (OPTIONAL).
 C
 C     called by : KORALZ
 C ----------------------------------------------------------------------
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
       COMMON / JAKI   /  JAK1,JAK2,JAKP,JAKM,KTOM
       COMMON / IDFC  / IDFF
       COMMON /TAUPOS/ NP1,NP2                
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
@@ -483,14 +397,9 @@ C       first or second tau positions in HEPEVT as in KORALB/Z
         IF(JAK1.NE.-1.OR.JAK2.NE.-1) THEN
           CALL DEXEL(-1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
           CALL DEXMU(-1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
-          CALL DEXPI(-1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DEXRO(-1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4)
-          CALL DEXAA(-1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5,IDUM)
-          CALL DEXKK(-1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DEXKS(-1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,IDUM)
           CALL DEXNEW(-1,IDUM,PDUM,PDUM1,PDUM2,PDUMI,IDUM)
         ENDIF
-        DO 21 I=1,30
+        DO 21 I=1,500
         NEVDEC(I)=0
         GAMPMC(I)=0
  21     GAMPER(I)=0
@@ -517,16 +426,11 @@ C     =======================
         IF(JAK1.NE.-1.OR.JAK2.NE.-1) THEN
           CALL DEXEL( 1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
           CALL DEXMU( 1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5)
-          CALL DEXPI( 1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DEXRO( 1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4)
-          CALL DEXAA( 1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5,IDUM)
-          CALL DEXKK( 1,IDUM,PDUM,PDUM1,PDUM2)
-          CALL DEXKS( 1,IDUM,PDUM,PDUM1,PDUM2,PDUM3,PDUM4,IDUM)
           CALL DEXNEW( 1,IDUM,PDUM,PDUM1,PDUM2,PDUMI,IDUM)
           WRITE(IOUT,7010) NEV1,NEV2,NEVTOT
-          WRITE(IOUT,7011) (NEVDEC(I),GAMPMC(I),GAMPER(I),I= 1,7)
+          WRITE(IOUT,7011) (I,NEVDEC(I),GAMPMC(I),GAMPER(I),I= 1,NLT)
           WRITE(IOUT,7012) 
-     $         (NEVDEC(I),GAMPMC(I),GAMPER(I),NAMES(I-7),I=8,7+NMODE)
+     $         (I,NEVDEC(I),GAMPMC(I),GAMPER(I),NAMES(I-NLT),I=1+NLT,NLT+NMODE)
           WRITE(IOUT,7013) 
         ENDIF
       ELSE
@@ -535,17 +439,15 @@ C     =======================
       RETURN
  7001 FORMAT(///1X,15(5H*****)
 
-     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 2.6 ******',9X,1H*,
-     $ /,' *',     25X,'***********August   1995***************',9X,1H*,
+     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 3.1 ******',9X,1H*,
+     $ /,' *',     25X,'*********** Sep     2016***************',9X,1H*,
      $ /,' *',     25X,'**AUTHORS: S.JADACH, Z.WAS*************',9X,1H*,
      $ /,' *',     25X,'**R. DECKER, M. JEZABEK, J.H.KUEHN*****',9X,1H*,
      $ /,' *',     25X,'**AVAILABLE FROM: WASM AT CERNVM ******',9X,1H*,
      $ /,' *',     25X,'***** PUBLISHED IN COMP. PHYS. COMM.***',9X,1H*,
-     $ /,' *',     25X,'*******CERN-TH-5856 SEPTEMBER 1990*****',9X,1H*,
-     $ /,' *',     25X,'*******CERN-TH-6195 SEPTEMBER 1991*****',9X,1H*,
-
-     $ /,' *',     25X,'*******CERN-TH-6793 NOVEMBER  1992*****',9X,1H*,
+     $ /,' *',     25X,'*******CERN TH-6793 NOVEMBER  1992*****',9X,1H*,
      $ /,' *',     25X,'**5 or more pi dec.: precision limited ',9X,1H*,
+     $ /,' *',     25X,'******* IFJ-PAN-IV-2016-24 ************',9X,1H*,
      $ /,' *',     25X,'******DEXAY ROUTINE: INITIALIZATION****',9X,1H*
      $ /,' *',I20  ,5X,'JAK1   = DECAY MODE FERMION1 (TAU+)    ',9X,1H*
      $ /,' *',I20  ,5X,'JAK2   = DECAY MODE FERMION2 (TAU-)    ',9X,1H*
@@ -554,9 +456,8 @@ CHBU  format 7010 had more than 19 continuation lines
 CHBU  split into two
  7010 FORMAT(///1X,15(5H*****)
 
-     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 2.6 ******',9X,1H*,
-     $ /,' *',     25X,'***********August   1995***************',9X,1H*,
-
+     $ /,' *',     25X,'*****TAUOLA LIBRARY: VERSION 3.1 ******',9X,1H*,
+     $ /,' *',     25X,'***********Sep      2016***************',9X,1H*,
      $ /,' *',     25X,'**AUTHORS: S.JADACH, Z.WAS*************',9X,1H*,
      $ /,' *',     25X,'**R. DECKER, M. JEZABEK, J.H.KUEHN*****',9X,1H*,
      $ /,' *',     25X,'**AVAILABLE FROM: WASM AT CERNVM ******',9X,1H*,
@@ -564,22 +465,18 @@ CHBU  split into two
      $ /,' *',     25X,'*******CERN-TH-5856 SEPTEMBER 1990*****',9X,1H*,
      $ /,' *',     25X,'*******CERN-TH-6195 SEPTEMBER 1991*****',9X,1H*,
      $ /,' *',     25X,'*******CERN-TH-6793 NOVEMBER  1992*****',9X,1H*,
+     $ /,' *',     25X,'******* IFJ-PAN-IV-2016-24 ************',9X,1H*,
      $ /,' *',     25X,'******DEXAY ROUTINE: FINAL REPORT******',9X,1H*
      $ /,' *',I20  ,5X,'NEV1   = NO. OF TAU+ DECS. ACCEPTED    ',9X,1H*
      $ /,' *',I20  ,5X,'NEV2   = NO. OF TAU- DECS. ACCEPTED    ',9X,1H*
      $ /,' *',I20  ,5X,'NEVTOT = SUM                           ',9X,1H*
-     $ /,' *','    NOEVTS ',
-     $   ' PART.WIDTH     ERROR       ROUTINE    DECAY MODE    ',9X,1H*)
- 7011 FORMAT(1X,'*'
-     $       ,I10,2F12.7       ,'     DADMEL     ELECTRON      ',9X,1H*
-     $ /,' *',I10,2F12.7       ,'     DADMMU     MUON          ',9X,1H*
-     $ /,' *',I10,2F12.7       ,'     DADMPI     PION          ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMRO     RHO (->2PI)   ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMAA     A1  (->3PI)   ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMKK     KAON          ',9X,1H*
-     $ /,' *',I10,2F12.7,       '     DADMKS     K*            ',9X,1H*)
- 7012 FORMAT(1X,'*'
-     $       ,I10,2F12.7,A31                                    ,8X,1H*)
+     $ /,' *','NCHAN    NOEVTS ',
+     $   ' PART.WIDTH     ERROR       ROUTINE    DECAY MODE    ',4X,1H*)
+ 7011 FORMAT(1X,'*',
+     $        I4,'*',I10,2F12.7       ,'     DADMEL     ELECTRON      ',4X,1H*
+     $ /,' *',I4,'*',I10,2F12.7       ,'     DADMMU     MUON          ',4X,1H*)
+ 7012 FORMAT(1X,'*',I4,'*'
+     $       ,I10,2F12.7,A31                                    ,3X,1H*)
  7013 FORMAT(1X,'*'
      $       ,20X,'THE ERROR IS RELATIVE AND  PART.WIDTH      ',10X,1H*
      $ /,' *',20X,'IN UNITS GFERMI**2*MASS**5/192/PI**3       ',10X,1H*
@@ -597,8 +494,9 @@ C THIS ROUTINE  SIMULATES TAU+-  DECAY
 C
 C     called by : DEXAY
 C ---------------------------------------------------------------------
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
+      include 'TAUDCDsize.inc'
       COMMON / INOUT / INUT,IOUT
       REAL  POL(4),POLAR(4)
       REAL  PNU(4),PPI(4)
@@ -627,23 +525,8 @@ CAM
         CALL DEXMU(0, ISGN,POLAR,PNU,PWB,PMU,PNM,PHOT)
         CALL DWLUMU(KTO,ISGN,PNU,PWB,PMU,PNM)
         CALL DWRPH(KTO,PHOT )
-      ELSEIF(JAK.EQ.3) THEN
-        CALL DEXPI(0, ISGN,POLAR,PPI,PNU)
-        CALL DWLUPI(KTO,ISGN,PPI,PNU)
-      ELSEIF(JAK.EQ.4) THEN
-        CALL DEXRO(0, ISGN,POLAR,PNU,PRHO,PIC,PIZ)
-        CALL DWLURO(KTO,ISGN,PNU,PRHO,PIC,PIZ)
-      ELSEIF(JAK.EQ.5) THEN
-        CALL DEXAA(0, ISGN,POLAR,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-        CALL DWLUAA(KTO,ISGN,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-      ELSEIF(JAK.EQ.6) THEN
-        CALL DEXKK(0, ISGN,POLAR,PKK,PNU)
-        CALL DWLUKK(KTO,ISGN,PKK,PNU)
-      ELSEIF(JAK.EQ.7) THEN
-        CALL DEXKS(0, ISGN,POLAR,PNU,PKS,PKK,PPI,JKST)
-        CALL DWLUKS(KTO,ISGN,PNU,PKS,PKK,PPI,JKST)
       ELSE
-        JNPI=JAK-7
+        JNPI=JAK-NLT
         CALL DEXNEW(0, ISGN,POLAR,PNU,PWB,PNPI,JNPI)
         CALL DWLNEW(KTO,ISGN,PNU,PWB,PNPI,JAK)
       ENDIF
@@ -740,7 +623,7 @@ C
       REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
      *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
 
       REAL*4         PHX(4)
@@ -846,7 +729,7 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
       COMMON / INOUT / INUT,IOUT
       REAL*4         PHX(4)
@@ -1002,7 +885,7 @@ C
       LOGICAL IHARD
       DATA PI /3.141592653589793238462643D0/
 
-      XLAM(X,Y,Z)=SQRT((X-Y-Z)**2-4.0*Y*Z)
+C AJWMOD to satisfy compiler, comment out this unused function.
 
 C AMRO, GAMRO IS ONLY A PARAMETER FOR GETING HIGHT EFFICIENCY
 C
@@ -1166,14 +1049,46 @@ C
       REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
      *                 ,AMK,AMKZ,AMKST,GAMKST
+      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+
       REAL*8  HV(4),QP(4),XN(4),XA(4),XK(4)
+      REAL*8  MASS
 C
       HV(4)=1.D0
-      AK0=XK0DEC*AMTAU
-      IF(XK(4).LT.0.1D0*AK0) THEN
-        AMPLIT=THB(ITDKRC,QP,XN,XA,AK0,HV)
+      MASS = DSQRT( QP(4)**2 - QP(3)**2 - QP(2)**2 - QP(1)**2 )
+      IF(MASS.LE.0.1) THEN
+        IME = IMEGET(0,1)
       ELSE
-        AMPLIT=SQM2(ITDKRC,QP,XN,XA,XK,AK0,HV)
+        IME = IMEGET(0,2)
+      ENDIF
+
+      IF (IME.EQ.2) THEN
+       AK0=XK0DEC*AMTAU
+       IF(XK(4).LT.0.1D0*AK0) THEN
+         AMPLIT=THB(ITDKRC,QP,XN,XA,AK0,HV)
+       ELSE
+         AMPLIT=SQM2(ITDKRC,QP,XN,XA,XK,AK0,HV)
+       ENDIF
+      ELSEIF (IME.EQ.5) THEN
+        CALL DAMPRY_wrap(ITDKRC,XK0DEC,XK,XA,QP,XN,AMPLIT,HV)
+      ELSEIF (IME.EQ.4) THEN
+       WRITE(*,*) 'STOP from DAMPRY of TAUOLA FORTRAN.'
+       WRITE(*,*) 'For leptonic decays IME=4 is not allowed.'
+       WRITE(*,*) 'No hadronic current in leptonic decays !'
+       STOP
+      ELSEIF (IME.EQ.1) THEN
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT= GFERMI**2       
+
+      ELSE 
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT= GFERMI**2       
+
       ENDIF
       RETURN
       END
@@ -1361,43 +1276,29 @@ C V-A  AND  V+A COUPLINGS, BUT IN THE BORN PART ONLY
       IF (THB/BORN.LT.0.1D0) THEN
         PRINT *, 'ERROR IN THB, THB/BORN=',THB/BORN
 
-        STOP
+        THB=0.D0
 
       ENDIF
       RETURN
       END
-      SUBROUTINE DEXPI(MODE,ISGN,POL,PPI,PNU)
 C ----------------------------------------------------------------------
-C TAU DECAY INTO PION AND TAU-NEUTRINO
-C IN TAU REST FRAME
-C OUTPUT FOUR MOMENTA: PNU   TAUNEUTRINO,
-C                      PPI   PION CHARGED
 C ----------------------------------------------------------------------
-      REAL  POL(4),HV(4),PNU(4),PPI(4),RN(1)
-CC
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        CALL DADMPI(-1,ISGN,HV,PPI,PNU)
-CC      CALL HBOOK1(815,'WEIGHT DISTRIBUTION  DEXPI    $',100,0,2)
- 
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        CALL DADMPI( 0,ISGN,HV,PPI,PNU)
-        WT=(1+POL(1)*HV(1)+POL(2)*HV(2)+POL(3)*HV(3))/2.
-CC      CALL HFILL(815,WT)
-        CALL RANMAR(RN,1)
-        IF(RN(1).GT.WT) GOTO 300
+C ----------------------------------------------------------------------
+C RCHL UPDATE - NEW FUNCTIONS
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+
+      
+      SUBROUTINE DAM2PI(MNUM,PT,PN,PIM1,PIM2,AMPLIT,HV)
+C ----------------------------------------------------------------------
+* CALCULATES DIFFERENTIAL CROSS SECTION AND POLARIMETER VECTOR
+* FOR TAU DECAY INTO 2 scalar MODES
+* ALL SPIN EFFECTS IN THE FULL DECAY CHAIN ARE TAKEN INTO ACCOUNT.
+* CALCULATIONS DONE IN TAU REST FRAME WITH Z-AXIS ALONG NEUTRINO MOMENT
+C MNUM DECAY MODE IDENTIFIER.
 C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        CALL DADMPI( 1,ISGN,HV,PPI,PNU)
-CC      CALL HPRINT(815)
-      ENDIF
-C     =====
-      RETURN
-      END
-      SUBROUTINE DADMPI(MODE,ISGN,HV,PPI,PNU)
+C     called by : DPHSAA
 C ----------------------------------------------------------------------
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
@@ -1408,523 +1309,102 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
-      REAL*4            GAMPMC    ,GAMPER
-      COMMON / INOUT / INUT,IOUT
-      REAL  PPI(4),PNU(4),HV(4)
-      DATA PI /3.141592653589793238462643/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        NEVTOT=0
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-        NEVTOT=NEVTOT+1
-        EPI= (AMTAU**2+AMPI**2-AMNUTA**2)/(2*AMTAU)
-        ENU= (AMTAU**2-AMPI**2+AMNUTA**2)/(2*AMTAU)
-        XPI= SQRT(EPI**2-AMPI**2)
-C PI MOMENTUM
-        CALL SPHERA(XPI,PPI)
-        PPI(4)=EPI
-C TAU-NEUTRINO MOMENTUM
-        DO 30 I=1,3
-30      PNU(I)=-PPI(I)
-        PNU(4)=ENU
-        PXQ=AMTAU*EPI
-        PXN=AMTAU*ENU
-        QXN=PPI(4)*PNU(4)-PPI(1)*PNU(1)-PPI(2)*PNU(2)-PPI(3)*PNU(3)
-        BRAK=(GV**2+GA**2)*(2*PXQ*QXN-AMPI**2*PXN)
-     &      +(GV**2-GA**2)*AMTAU*AMNUTA*AMPI**2
-        DO 40 I=1,3
-40      HV(I)=-ISGN*2*GA*GV*AMTAU*(2*PPI(I)*QXN-PNU(I)*AMPI**2)/BRAK
-        HV(4)=1
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        IF(NEVTOT.EQ.0) RETURN
-        FPI=0.1284
-C        GAMM=(GFERMI*FPI)**2/(16.*PI)*AMTAU**3*
-C     *       (BRAK/AMTAU**4)**2
-CZW 7.02.93 here was an error affecting non standard model
-C       configurations only
-        GAMM=(GFERMI*FPI)**2/(16.*PI)*AMTAU**3*
-     $       (BRAK/AMTAU**4)*
-     $       SQRT((AMTAU**2-AMPI**2-AMNUTA**2)**2
-     $            -4*AMPI**2*AMNUTA**2           )/AMTAU**2
-        ERROR=0
-        RAT=GAMM/GAMEL
-        WRITE(IOUT, 7010) NEVTOT,GAMM,RAT,ERROR
-        GAMPMC(3)=RAT
-        GAMPER(3)=ERROR
-CAM     NEVDEC(3)=NEVTOT
-      ENDIF
-C     =====
-      RETURN
- 7010 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMPI FINAL REPORT  ******** ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVTOT = NO. OF PI  DECAYS TOTAL       ',9X,1H*
-     $ /,' *',E20.5,5X,'PARTIAL WTDTH ( PI DECAY) IN GEV UNITS ',9X,1H*
-     $ /,' *',F20.9,5X,'IN UNITS GFERMI**2*MASS**5/192/PI**3   ',9X,1H*
-     $ /,' *',F20.8,5X,'RELATIVE ERROR OF PARTIAL WIDTH (STAT.)',9X,1H*
-     $  /,1X,15(5H*****)/)
-      END
-      SUBROUTINE DEXRO(MODE,ISGN,POL,PNU,PRO,PIC,PIZ)
-C ----------------------------------------------------------------------
-C THIS SIMULATES TAU DECAY IN TAU REST FRAME
-C INTO NU RHO, NEXT RHO DECAYS INTO PION PAIR.
-C OUTPUT FOUR MOMENTA: PNU   TAUNEUTRINO,
-C                      PRO   RHO
-C                      PIC   PION CHARGED
-C                      PIZ   PION ZERO
-C ----------------------------------------------------------------------
-      COMMON / INOUT / INUT,IOUT
-      REAL  POL(4),HV(4),PRO(4),PNU(4),PIC(4),PIZ(4),RN(1)
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-        CALL DADMRO( -1,ISGN,HV,PNU,PRO,PIC,PIZ)
-CC      CALL HBOOK1(816,'WEIGHT DISTRIBUTION  DEXRO    $',100,0,2)
-CC      CALL HBOOK1(916,'ABS2 OF HV IN ROUTINE DEXRO   $',100,0,2)
-C
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        IF(IWARM.EQ.0) GOTO 902
-        CALL DADMRO(  0,ISGN,HV,PNU,PRO,PIC,PIZ)
-        WT=(1+POL(1)*HV(1)+POL(2)*HV(2)+POL(3)*HV(3))/2.
-CC      CALL HFILL(816,WT)
-CC      XHELP=HV(1)**2+HV(2)**2+HV(3)**2
-CC      CALL HFILL(916,XHELP)
-        CALL RANMAR(RN,1)
-        IF(RN(1).GT.WT) GOTO 300
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        CALL DADMRO(  1,ISGN,HV,PNU,PRO,PIC,PIZ)
-CC      CALL HPRINT(816)
-CC      CALL HPRINT(916)
-      ENDIF
-C     =====
-      RETURN
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DEXRO: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DADMRO(MODE,ISGN,HHV,PNU,PRO,PIC,PIZ)
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
-      REAL*4            GAMPMC    ,GAMPER
-      COMMON / INOUT / INUT,IOUT
-      REAL  HHV(4)
-      REAL  HV(4),PRO(4),PNU(4),PIC(4),PIZ(4)
-      REAL  PDUM1(4),PDUM2(4),PDUM3(4),PDUM4(4)
-      REAL*4 RRR(3)
-      REAL*8 SWT, SSWT
-      DATA PI /3.141592653589793238462643/
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-        NEVRAW=0
-        NEVACC=0
-        NEVOVR=0
-        SWT=0
-        SSWT=0
-        WTMAX=1E-20
-        DO 15 I=1,500
-        CALL DPHSRO(WT,HV,PDUM1,PDUM2,PDUM3,PDUM4)
-        IF(WT.GT.WTMAX/1.2) WTMAX=WT*1.2
-15      CONTINUE
-CC      CALL HBOOK1(801,'WEIGHT DISTRIBUTION  DADMRO    $',100,0,2)
-CC      PRINT 7003,WTMAX
-C
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        IF(IWARM.EQ.0) GOTO 902
-        CALL DPHSRO(WT,HV,PNU,PRO,PIC,PIZ)
-CC      CALL HFILL(801,WT/WTMAX)
-        NEVRAW=NEVRAW+1
-        SWT=SWT+WT
-        SSWT=SSWT+WT**2
-        CALL RANMAR(RRR,3)
-        RN=RRR(1)
-        IF(WT.GT.WTMAX) NEVOVR=NEVOVR+1
-        IF(RN*WTMAX.GT.WT) GOTO 300
-C ROTATIONS TO BASIC TAU REST FRAME
-        COSTHE=-1.+2.*RRR(2)
-        THET=ACOS(COSTHE)
-        PHI =2*PI*RRR(3)
-        CALL ROTOR2(THET,PNU,PNU)
-        CALL ROTOR3( PHI,PNU,PNU)
-        CALL ROTOR2(THET,PRO,PRO)
-        CALL ROTOR3( PHI,PRO,PRO)
-        CALL ROTOR2(THET,PIC,PIC)
-        CALL ROTOR3( PHI,PIC,PIC)
-        CALL ROTOR2(THET,PIZ,PIZ)
-        CALL ROTOR3( PHI,PIZ,PIZ)
-        CALL ROTOR2(THET,HV,HV)
-        CALL ROTOR3( PHI,HV,HV)
-        DO 44 I=1,3
- 44     HHV(I)=-ISGN*HV(I)
-        NEVACC=NEVACC+1
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        IF(NEVRAW.EQ.0) RETURN
-        PARGAM=SWT/FLOAT(NEVRAW+1)
-        ERROR=0
-        IF(NEVRAW.NE.0) ERROR=SQRT(SSWT/SWT**2-1./FLOAT(NEVRAW))
-        RAT=PARGAM/GAMEL
-        WRITE(IOUT, 7010) NEVRAW,NEVACC,NEVOVR,PARGAM,RAT,ERROR
-CC      CALL HPRINT(801)
-        GAMPMC(4)=RAT
-        GAMPER(4)=ERROR
-CAM     NEVDEC(4)=NEVACC
-      ENDIF
-C     =====
-      RETURN
- 7003 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMRO INITIALISATION ********',9X,1H*
-     $ /,' *',E20.5,5X,'WTMAX  = MAXIMUM WEIGHT                ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 7010 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMRO FINAL REPORT  ******** ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVRAW = NO. OF RHO DECAYS TOTAL       ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVACC = NO. OF RHO  DECS. ACCEPTED    ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVOVR = NO. OF OVERWEIGHTED EVENTS    ',9X,1H*
-     $ /,' *',E20.5,5X,'PARTIAL WTDTH (RHO DECAY) IN GEV UNITS ',9X,1H*
-     $ /,' *',F20.9,5X,'IN UNITS GFERMI**2*MASS**5/192/PI**3   ',9X,1H*
-     $ /,' *',F20.8,5X,'RELATIVE ERROR OF PARTIAL WIDTH        ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DADMRO: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DPHSRO(DGAMT,HV,PN,PR,PIC,PIZ)
-C ----------------------------------------------------------------------
-C IT SIMULATES RHO DECAY IN TAU REST FRAME WITH
-C Z-AXIS ALONG RHO MOMENTUM
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL  HV(4),PT(4),PN(4),PR(4),PIC(4),PIZ(4),QQ(4),RR1(1)
+      REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4)
+      REAL  PIVEC(4),PIAKS(4),HVM(4)
+      COMPLEX HADCUR(4)
       DATA PI /3.141592653589793238462643/
       DATA ICONT /0/
+      
+      IME=IMEGET(2,MNUM)   ! type of matrix element to be used
 C
-C THREE BODY PHASE SPACE NORMALISED AS IN BJORKEN-DRELL
-      PHSPAC=1./2**11/PI**5
-C TAU MOMENTUM
-      PT(1)=0.
-      PT(2)=0.
-      PT(3)=0.
-      PT(4)=AMTAU
-C MASS OF (REAL/VIRTUAL) RHO
-      AMS1=(AMPI+AMPIZ)**2
-      AMS2=(AMTAU-AMNUTA)**2
-C FLAT PHASE SPACE
-
-C     AMX2=AMS1+   RR1*(AMS2-AMS1)
-
-C     AMX=SQRT(AMX2)
-C     PHSPAC=PHSPAC*(AMS2-AMS1)
-C PHASE SPACE WITH SAMPLING FOR RHO RESONANCE
-      ALP1=ATAN((AMS1-AMRO**2)/AMRO/GAMRO)
-      ALP2=ATAN((AMS2-AMRO**2)/AMRO/GAMRO)
-CAM
- 100  CONTINUE
-      CALL RANMAR(RR1,1)
-      ALP=ALP1+RR1(1)*(ALP2-ALP1)
-      AMX2=AMRO**2+AMRO*GAMRO*TAN(ALP)
-      AMX=SQRT(AMX2)
-      IF(AMX.LT.2.*AMPI) GO TO 100
-CAM
-      PHSPAC=PHSPAC*((AMX2-AMRO**2)**2+(AMRO*GAMRO)**2)/(AMRO*GAMRO)
-      PHSPAC=PHSPAC*(ALP2-ALP1)
-C
-C TAU-NEUTRINO MOMENTUM
-      PN(1)=0
-      PN(2)=0
-      PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AMX**2)
-      PN(3)=-SQRT((PN(4)-AMNUTA)*(PN(4)+AMNUTA))
-C RHO MOMENTUM
-      PR(1)=0
-      PR(2)=0
-      PR(4)=1./(2*AMTAU)*(AMTAU**2-AMNUTA**2+AMX**2)
-      PR(3)=-PN(3)
-      PHSPAC=PHSPAC*(4*PI)*(2*PR(3)/AMTAU)
-C
-CAM
-      ENQ1=(AMX2+AMPI**2-AMPIZ**2)/(2.*AMX)
-      ENQ2=(AMX2-AMPI**2+AMPIZ**2)/(2.*AMX)
-      PPPI=SQRT((ENQ1-AMPI)*(ENQ1+AMPI))
-      PHSPAC=PHSPAC*(4*PI)*(2*PPPI/AMX)
-C CHARGED PI MOMENTUM IN RHO REST FRAME
-      CALL SPHERA(PPPI,PIC)
-      PIC(4)=ENQ1
-C NEUTRAL PI MOMENTUM IN RHO REST FRAME
-      DO 20 I=1,3
-20    PIZ(I)=-PIC(I)
-      PIZ(4)=ENQ2
-      EXE=(PR(4)+PR(3))/AMX
-C PIONS BOOSTED FROM RHO REST FRAME TO TAU REST FRAME
-      CALL BOSTR3(EXE,PIC,PIC)
-      CALL BOSTR3(EXE,PIZ,PIZ)
-      DO 30 I=1,4
-30    QQ(I)=PIC(I)-PIZ(I)
-C AMPLITUDE
-      PRODPQ=PT(4)*QQ(4)
-      PRODNQ=PN(4)*QQ(4)-PN(1)*QQ(1)-PN(2)*QQ(2)-PN(3)*QQ(3)
-      PRODPN=PT(4)*PN(4)
-      QQ2= QQ(4)**2-QQ(1)**2-QQ(2)**2-QQ(3)**2
-      BRAK=(GV**2+GA**2)*(2*PRODPQ*PRODNQ-PRODPN*QQ2)
-     &    +(GV**2-GA**2)*AMTAU*AMNUTA*QQ2
-      AMPLIT=(GFERMI*CCABIB)**2*BRAK*2*FPIRHO(AMX)
-      DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
-      DO 40 I=1,3
- 40   HV(I)=2*GV*GA*AMTAU*(2*PRODNQ*QQ(I)-QQ2*PN(I))/BRAK
-      RETURN
-      END
-      SUBROUTINE DEXAA(MODE,ISGN,POL,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-C ----------------------------------------------------------------------
-* THIS SIMULATES TAU DECAY IN TAU REST FRAME
-* INTO NU A1, NEXT A1 DECAYS INTO RHO PI AND FINALLY RHO INTO PI PI.
-* OUTPUT FOUR MOMENTA: PNU   TAUNEUTRINO,
-*                      PAA   A1
-*                      PIM1  PION MINUS (OR PI0) 1      (FOR TAU MINUS)
-*                      PIM2  PION MINUS (OR PI0) 2
-*                      PIPL  PION PLUS  (OR PI-)
-*                      (PIPL,PIM1) FORM A RHO
-C ----------------------------------------------------------------------
-      COMMON / INOUT / INUT,IOUT
-      REAL  POL(4),HV(4),PAA(4),PNU(4),PIM1(4),PIM2(4),PIPL(4),RN(1)
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-        CALL DADMAA( -1,ISGN,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-CC      CALL HBOOK1(816,'WEIGHT DISTRIBUTION  DEXAA    $',100,-2.,2.)
-C
-      ELSEIF(MODE.EQ. 0) THEN
-*     =======================
- 300    CONTINUE
-        IF(IWARM.EQ.0) GOTO 902
-        CALL DADMAA(  0,ISGN,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-        WT=(1+POL(1)*HV(1)+POL(2)*HV(2)+POL(3)*HV(3))/2.
-CC      CALL HFILL(816,WT)
-        CALL RANMAR(RN,1)
-        IF(RN(1).GT.WT) GOTO 300
-C
-      ELSEIF(MODE.EQ. 1) THEN
-*     =======================
-        CALL DADMAA(  1,ISGN,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-CC      CALL HPRINT(816)
+      IF (IME.EQ.2) THEN
+       IF     (MNUM.EQ.1) THEN
+        CALL CURR_PIPI0(PIM1,PIM2,HADCUR)
+       ELSEIF (MNUM.EQ.2) THEN
+         CALL CURR_PIK0(PIM1,PIM2,HADCUR)
+       ELSEIF (MNUM.EQ.3) THEN
+         CALL CURR_KPI0(PIM1,PIM2,HADCUR)
+       ELSEIF (MNUM.EQ.4) THEN
+         CALL CURR_KK0(PIM1,PIM2,HADCUR)
+       ELSE
+         write(*,*) 'DAM2PI: wrong MNUM= ',MNUM
+         STOP
+       ENDIF
+      ELSEIF (IME.EQ.4) THEN
+!        WRITE(*,*) "(F77) Communication check. Input:"
+!        WRITE(*,*) "   PIM1: ",PIM1
+!        WRITE(*,*) "   PIM2: ",PIM2
+        CALL CURR2_wrap(MNUM,PIM1,PIM2,HADCUR)
+!        WRITE(*,*) "(F77) Communication check. Output:"
+!        WRITE(*,*) " HADCUR: ",HADCUR
+      ELSEIF (IME.EQ.5) THEN
+!        WRITE(*,*) "(F77) Communication check. Input:"
+!        WRITE(*,*) "     PT: ",PT
+!        WRITE(*,*) "     PN: ",PN
+!        WRITE(*,*) "   PIM1: ",PIM1
+!        WRITE(*,*) "   PIM2: ",PIM2
+        CALL DAM2PI_wrap(MNUM,PT,PN,PIM1,PIM2,AMPLIT,HV)
+!        WRITE(*,*) "(F77) Communication check. Output:"
+!        WRITE(*,*) " AMPLIT: ",AMPLIT
+!        WRITE(*,*) "     HV: ",HV
+        RETURN
       ENDIF
-C     =====
-      RETURN
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DEXAA: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DADMAA(MODE,ISGN,HHV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-C ----------------------------------------------------------------------
-* A1 DECAY UNWEIGHTED EVENTS
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
-      REAL*4            GAMPMC    ,GAMPER
-      COMMON / INOUT / INUT,IOUT
-      REAL  HHV(4)
-      REAL  HV(4),PAA(4),PNU(4),PIM1(4),PIM2(4),PIPL(4)
-      REAL  PDUM1(4),PDUM2(4),PDUM3(4),PDUM4(4),PDUM5(4)
-      REAL*4 RRR(3)
-      REAL*8 SWT, SSWT
-      DATA PI /3.141592653589793238462643/
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-        NEVRAW=0
-        NEVACC=0
-        NEVOVR=0
-        SWT=0
-        SSWT=0
-        WTMAX=1E-20
-        DO 15 I=1,500
-        CALL DPHSAA(WT,HV,PDUM1,PDUM2,PDUM3,PDUM4,PDUM5,JAA)
-        IF(WT.GT.WTMAX/1.2) WTMAX=WT*1.2
-15      CONTINUE
-CC      CALL HBOOK1(801,'WEIGHT DISTRIBUTION  DADMAA    $',100,0,2)
-C
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        IF(IWARM.EQ.0) GOTO 902
-        CALL DPHSAA(WT,HV,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-CC      CALL HFILL(801,WT/WTMAX)
-        NEVRAW=NEVRAW+1
-        SWT=SWT+WT
 
-ccM.S.>>>>>>
-cc        SSWT=SSWT+WT**2
-        SSWT=SSWT+dble(WT)**2
-ccM.S.<<<<<<
+      IF (IME.EQ.2.OR.IME.EQ.4) THEN
+C
+* CALCULATE PI-VECTORS: VECTOR AND AXIAL
+       CALL CLVEC(HADCUR,PN,PIVEC)
+       CALL CLAXI(HADCUR,PN,PIAKS)
+       CALL CLNUT(HADCUR,BRAKM,HVM)
+* SPIN INDEPENDENT PART OF DECAY DIFF-CROSS-SECT. IN TAU REST  FRAME
+       BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
+     &      +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
+       IF (MNUM.EQ.1.OR.MNUM.EQ.4) THEN
+         AMPLIT=(CCABIB*GFERMI)**2*BRAK
+       ELSE
+         AMPLIT=(SCABIB*GFERMI)**2*BRAK
+       ENDIF
+C POLARIMETER VECTOR IN TAU REST FRAME
+       DO 90 I=1,3
+       HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
+     &       +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
+C HV IS DEFINED FOR TAU-    WITH GAMMA=B+HV*POL
+       HV(I)=-HV(I)/BRAK
+ 90    CONTINUE
 
-        CALL RANMAR(RRR,3)
-        RN=RRR(1)
-        IF(WT.GT.WTMAX) NEVOVR=NEVOVR+1
-        IF(RN*WTMAX.GT.WT) GOTO 300
-C ROTATIONS TO BASIC TAU REST FRAME
-        COSTHE=-1.+2.*RRR(2)
-        THET=ACOS(COSTHE)
-        PHI =2*PI*RRR(3)
-        CALL ROTPOL(THET,PHI,PNU)
-        CALL ROTPOL(THET,PHI,PAA)
-        CALL ROTPOL(THET,PHI,PIM1)
-        CALL ROTPOL(THET,PHI,PIM2)
-        CALL ROTPOL(THET,PHI,PIPL)
-        CALL ROTPOL(THET,PHI,HV)
-        DO 44 I=1,3
- 44     HHV(I)=-ISGN*HV(I)
-        NEVACC=NEVACC+1
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        IF(NEVRAW.EQ.0) RETURN
-        PARGAM=SWT/FLOAT(NEVRAW+1)
-        ERROR=0
-        IF(NEVRAW.NE.0) ERROR=SQRT(SSWT/SWT**2-1./FLOAT(NEVRAW))
-        RAT=PARGAM/GAMEL
-        WRITE(IOUT, 7010) NEVRAW,NEVACC,NEVOVR,PARGAM,RAT,ERROR
-CC      CALL HPRINT(801)
-        GAMPMC(5)=RAT
-        GAMPER(5)=ERROR
-CAM     NEVDEC(5)=NEVACC
-      ENDIF
-C     =====
-      RETURN
- 7003 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMAA INITIALISATION ********',9X,1H*
-     $ /,' *',E20.5,5X,'WTMAX  = MAXIMUM WEIGHT                ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 7010 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMAA FINAL REPORT  ******** ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVRAW = NO. OF A1  DECAYS TOTAL       ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVACC = NO. OF A1   DECS. ACCEPTED    ',9X,1H*
-     $ /,' *',I20  ,5X,'NEVOVR = NO. OF OVERWEIGHTED EVENTS    ',9X,1H*
-     $ /,' *',E20.5,5X,'PARTIAL WTDTH (A1  DECAY) IN GEV UNITS ',9X,1H*
-     $ /,' *',F20.9,5X,'IN UNITS GFERMI**2*MASS**5/192/PI**3   ',9X,1H*
-     $ /,' *',F20.8,5X,'RELATIVE ERROR OF PARTIAL WIDTH        ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DADMAA: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DPHSAA(DGAMT,HV,PN,PAA,PIM1,PIM2,PIPL,JAA)
-C ----------------------------------------------------------------------
-* IT SIMULATES A1  DECAY IN TAU REST FRAME WITH
-* Z-AXIS ALONG A1  MOMENTUM
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / TAUKLE / BRA1,BRK0,BRK0B,BRKS
-      REAL*4            BRA1,BRK0,BRK0B,BRKS
-      REAL  HV(4),PN(4),PAA(4),PIM1(4),PIM2(4),PIPL(4)
- 
- 
-      REAL*4 RRR(1)
-C MATRIX ELEMENT NUMBER:
-      MNUM=0
-C TYPE OF THE GENERATION:
-      KEYT=1
-      CALL RANMAR(RRR,1)
-      RMOD=RRR(1)
-      IF (RMOD.LT.BRA1) THEN
-       JAA=1
-       AMP1=AMPI
-       AMP2=AMPI
-       AMP3=AMPI
+      ELSEIF (IME.EQ.0) THEN  ! not initialized
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT= GFERMI**2       
+
+      ELSEIF (IME.EQ.1) THEN ! flat phase space
+C        FLAT PHASE SPACE ONLY;
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT=GFERMI**2 
+        RETURN
       ELSE
-       JAA=2
-       AMP1=AMPIZ
-       AMP2=AMPIZ
-       AMP3=AMPI
+       write(*,*) 'DAM2PI: wrong IME= ',IME
+        STOP
       ENDIF
-      CALL
-     $   DPHTRE(DGAMT,HV,PN,PAA,PIM1,AMP1,PIM2,AMP2,PIPL,AMP3,KEYT,MNUM)
-      END
-      SUBROUTINE DEXKK(MODE,ISGN,POL,PKK,PNU)
-C ----------------------------------------------------------------------
-C TAU DECAY INTO KAON  AND TAU-NEUTRINO
-C IN TAU REST FRAME
-C OUTPUT FOUR MOMENTA: PNU   TAUNEUTRINO,
-C                      PKK   KAON CHARGED
-C ----------------------------------------------------------------------
-      REAL  POL(4),HV(4),PNU(4),PKK(4),RN(1)
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        CALL DADMKK(-1,ISGN,HV,PKK,PNU)
-CC      CALL HBOOK1(815,'WEIGHT DISTRIBUTION  DEXPI    $',100,0,2)
-C
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        CALL DADMKK( 0,ISGN,HV,PKK,PNU)
-        WT=(1+POL(1)*HV(1)+POL(2)*HV(2)+POL(3)*HV(3))/2.
-CC      CALL HFILL(815,WT)
-        CALL RANMAR(RN,1)
-        IF(RN(1).GT.WT) GOTO 300
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        CALL DADMKK( 1,ISGN,HV,PKK,PNU)
-CC      CALL HPRINT(815)
-      ENDIF
-C     =====
-      RETURN
-      END
-      SUBROUTINE DADMKK(MODE,ISGN,HV,PKK,PNU)
-C ----------------------------------------------------------------------
-C FZ
 
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      END
 
+
+      SUBROUTINE CURR_PIPI0(PC,PN,HADCUR)
+C standard TAUOLA current for tau to pi pi0 nu decay 
+C now it has universal form eg. it is straighforward to add 
+C scalar part
+C NOTE:
+C       PC 4-momentum of pi
+C       PN 4-momentum of pi0
+C       06.08.2011  
+      IMPLICIT NONE
+      COMPLEX BWIGS,HADCUR(4),FKPIPL,FRHO_PI
+      COMPLEX*16              FPIBEL
+      REAL  PC(4),PN(4),QQ(4),PKS(4),FPIRHO
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
      *                 ,AMK,AMKZ,AMKST,GAMKST
@@ -1932,414 +1412,325 @@ C
       REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
      *                 ,AMK,AMKZ,AMKST,GAMKST
+      COMMON /SETINI/ IFBABAR
+      INTEGER        IFBABAR
+      INTEGER FF2PIRHO
+       
+      REAL PKSD,QQPKS
+      INTEGER IK,K
+        DO IK=1,4
+         PKS(IK)=PC(IK)+ PN(IK)
+          QQ(IK)=PC(IK)- PN(IK)
+        ENDDO
+C QQ transverse to PKS
+        PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
+        QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
+        DO 31 IK=1,4
+ 31      QQ(IK)=QQ(IK)-PKS(IK)*QQPKS/PKSD
 
+      IF (IFBABAR.EQ.2) THEN 
+       CALL GETFF2PIRHO(FF2PIRHO)
 
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
-      REAL*4            GAMPMC    ,GAMPER
-      COMMON / INOUT / INUT,IOUT
-      REAL  PKK(4),PNU(4),HV(4)
-      DATA PI /3.141592653589793238462643/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        NEVTOT=0
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-        NEVTOT=NEVTOT+1
-        EKK= (AMTAU**2+AMK**2-AMNUTA**2)/(2*AMTAU)
-        ENU= (AMTAU**2-AMK**2+AMNUTA**2)/(2*AMTAU)
-        XKK= SQRT(EKK**2-AMK**2)
-C K MOMENTUM
-        CALL SPHERA(XKK,PKK)
-        PKK(4)=EKK
-C TAU-NEUTRINO MOMENTUM
-        DO 30 I=1,3
-30      PNU(I)=-PKK(I)
-        PNU(4)=ENU
-        PXQ=AMTAU*EKK
-        PXN=AMTAU*ENU
-        QXN=PKK(4)*PNU(4)-PKK(1)*PNU(1)-PKK(2)*PNU(2)-PKK(3)*PNU(3)
-        BRAK=(GV**2+GA**2)*(2*PXQ*QXN-AMK**2*PXN)
-     &      +(GV**2-GA**2)*AMTAU*AMNUTA*AMK**2
-        DO 40 I=1,3
-40      HV(I)=-ISGN*2*GA*GV*AMTAU*(2*PKK(I)*QXN-PNU(I)*AMK**2)/BRAK
-        HV(4)=1
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        IF(NEVTOT.EQ.0) RETURN
-        FKK=0.0354
-CFZ THERE WAS BRAK/AMTAU**4 BEFORE
-C        GAMM=(GFERMI*FKK)**2/(16.*PI)*AMTAU**3*
-C     *       (BRAK/AMTAU**4)**2
-CZW 7.02.93 here was an error affecting non standard model
-C       configurations only
-        GAMM=(GFERMI*FKK)**2/(16.*PI)*AMTAU**3*
-     $       (BRAK/AMTAU**4)*
-     $       SQRT((AMTAU**2-AMK**2-AMNUTA**2)**2
-     $            -4*AMK**2*AMNUTA**2           )/AMTAU**2
-        ERROR=0
+       IF (FF2PIRHO.EQ.2) THEN ! Belle, 
+C                                  ! all fit parameters, par(1...11), are free
+        if(sqrt(pksd).le.2*ampi) pksd=4*ampi**2 ! phase space edge protection
+        DO K=1,4
+         HADCUR(K)=QQ(k)* fpibel(sqrt(pksd),0)
+        ENDDO
+       ELSEIF (FF2PIRHO.EQ.3) THEN ! Belle
+c                             ! all fit parameter free except for 
+c                             !  par(1)=F_pi(0)=1-fixed
 
-        ERROR=0
-        RAT=GAMM/GAMEL
-        WRITE(IOUT, 7010) NEVTOT,GAMM,RAT,ERROR
-        GAMPMC(6)=RAT
-        GAMPER(6)=ERROR
-CAM     NEVDEC(6)=NEVTOT
+        DO K=1,4
+         HADCUR(K)=QQ(k)* fpibel(sqrt(pksd),1)
+        ENDDO
+       ELSE
+        write(*,*) 'problem in 2-scalars current FF2PIRHO=',FF2PIRHO
+        stop
+       ENDIF
+      ELSEIF (IFBABAR.eq.1.or.IFBABAR.eq.0) THEN ! BaBar/cleo
+        DO K=1,4 
+         HADCUR(K)=QQ(k)* sqrt(FPIRHO(sqrt(pksd)))
+        ENDDO
+
+      ELSE
+        write(*,*) 'subroutine CURR_PIPI0: problem in 2-scalars current IFBABAR=',IFBABAR
+        stop
       ENDIF
-C     =====
-      RETURN
- 7010 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMKK FINAL REPORT   ********',9X,1H*
-     $ /,' *',I20  ,5X,'NEVTOT = NO. OF K  DECAYS TOTAL        ',9X,1H*,
-     $ /,' *',E20.5,5X,'PARTIAL WTDTH ( K DECAY) IN GEV UNITS  ',9X,1H*,
-     $ /,' *',F20.9,5X,'IN UNITS GFERMI**2*MASS**5/192/PI**3   ',9X,1H*
-     $ /,' *',F20.8,5X,'RELATIVE ERROR OF PARTIAL WIDTH (STAT.)',9X,1H*
-     $  /,1X,15(5H*****)/)
       END
-      SUBROUTINE DEXKS(MODE,ISGN,POL,PNU,PKS,PKK,PPI,JKST)
-C ----------------------------------------------------------------------
-C THIS SIMULATES TAU DECAY IN TAU REST FRAME
-C INTO NU K*, THEN K* DECAYS INTO PI0,K+-(JKST=20)
-C OR PI+-,K0(JKST=10).
-C OUTPUT FOUR MOMENTA: PNU   TAUNEUTRINO,
-C                      PKS   K* CHARGED
-C                      PK0   K ZERO
-C                      PKC   K CHARGED
-C                      PIC   PION CHARGED
-C                      PIZ   PION ZERO
-C ----------------------------------------------------------------------
-      COMMON / INOUT / INUT,IOUT
-      REAL  POL(4),HV(4),PKS(4),PNU(4),PKK(4),PPI(4),RN(1)
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-CFZ INITIALISATION DONE WITH THE GHARGED PION NEUTRAL KAON MODE(JKST=10
-        CALL DADMKS( -1,ISGN,HV,PNU,PKS,PKK,PPI,JKST)
-CC      CALL HBOOK1(816,'WEIGHT DISTRIBUTION  DEXKS    $',100,0,2)
-CC      CALL HBOOK1(916,'ABS2 OF HV IN ROUTINE DEXKS   $',100,0,2)
-C
-      ELSEIF(MODE.EQ. 0) THEN
-C     =======================
-300     CONTINUE
-        IF(IWARM.EQ.0) GOTO 902
-        CALL DADMKS(  0,ISGN,HV,PNU,PKS,PKK,PPI,JKST)
-        WT=(1+POL(1)*HV(1)+POL(2)*HV(2)+POL(3)*HV(3))/2.
-CC      CALL HFILL(816,WT)
-CC      XHELP=HV(1)**2+HV(2)**2+HV(3)**2
-CC      CALL HFILL(916,XHELP)
-        CALL RANMAR(RN,1)
-        IF(RN(1).GT.WT) GOTO 300
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     ======================================
-        CALL DADMKS( 1,ISGN,HV,PNU,PKS,PKK,PPI,JKST)
-CC      CALL HPRINT(816)
-CC      CALL HPRINT(916)
-      ENDIF
-C     =====
-      RETURN
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DEXKS: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DADMKS(MODE,ISGN,HHV,PNU,PKS,PKK,PPI,JKST)
-C ----------------------------------------------------------------------
+
+
+      SUBROUTINE CURR_PIK0(PC,PN,HADCUR)
+C standard TAUOLA current for tau to pi K0 nu decay 
+C now it has universal form eg. it is straighforward to add 
+C scalar part
+C NOTE:
+C       PC 4-momentum of pi
+C       PN 4-momentum of K0
+C       06.08.2011  
+      implicit none
+      COMPLEX BWIGS,HADCUR(4),FKPIPL
+      REAL  PC(4),PN(4),QQ(4),PKS(4),FKPISC,PKSD,QQPKS
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
+     &                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     &                 ,AMK,AMKZ,AMKST,GAMKST
 C
       REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
-      REAL*4            GAMPMC    ,GAMPER
+     &                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     &                 ,AMK,AMKZ,AMKST,GAMKST,FACT_K0PI
       COMMON / TAUKLE / BRA1,BRK0,BRK0B,BRKS
-      REAL*4            BRA1,BRK0,BRK0B,BRKS
-      COMMON / INOUT / INUT,IOUT
-      REAL  HHV(4)
-      REAL  HV(4),PKS(4),PNU(4),PKK(4),PPI(4)
-      REAL  PDUM1(4),PDUM2(4),PDUM3(4),PDUM4(4)
-      REAL*4 RRR(3),RMOD(1)
-      REAL*8 SWT, SSWT
-      DATA PI /3.141592653589793238462643/
-      DATA IWARM/0/
-C
-      IF(MODE.EQ.-1) THEN
-C     ===================
-        IWARM=1
-        NEVRAW=0
-        NEVACC=0
-        NEVOVR=0
-        SWT=0
-        SSWT=0
-        WTMAX=1E-20
-        DO 15 I=1,500
-C THE INITIALISATION IS DONE WITH THE 66.7% MODE
-        JKST=10
-        CALL DPHSKS(WT,HV,PDUM1,PDUM2,PDUM3,PDUM4,JKST)
-        IF(WT.GT.WTMAX/1.2) WTMAX=WT*1.2
-15      CONTINUE
-CC      CALL HBOOK1(801,'WEIGHT DISTRIBUTION  DADMKS    $',100,0,2)
-CC      PRINT 7003,WTMAX
-CC      CALL HBOOK1(112,'-------- K* MASS -------- $',100,0.,2.)
-      ELSEIF(MODE.EQ. 0) THEN
-C     =====================================
-        IF(IWARM.EQ.0) GOTO 902
-C  HERE WE CHOOSE RANDOMLY BETWEEN K0 PI+_ (66.7%)
-C  AND K+_ PI0 (33.3%)
-        DEC1=BRKS
-400     CONTINUE
-        CALL RANMAR(RMOD,1)
-        IF(RMOD(1).LT.DEC1) THEN
-          JKST=10
-        ELSE
-          JKST=20
-        ENDIF
-        CALL DPHSKS(WT,HV,PNU,PKS,PKK,PPI,JKST)
-        CALL RANMAR(RRR,3)
-        RN=RRR(1)
-        IF(WT.GT.WTMAX) NEVOVR=NEVOVR+1
-        NEVRAW=NEVRAW+1
-        SWT=SWT+WT
-        SSWT=SSWT+WT**2
-        IF(RN*WTMAX.GT.WT) GOTO 400
-C ROTATIONS TO BASIC TAU REST FRAME
-        COSTHE=-1.+2.*RRR(2)
-        THET=ACOS(COSTHE)
-        PHI =2*PI*RRR(3)
-        CALL ROTOR2(THET,PNU,PNU)
-        CALL ROTOR3( PHI,PNU,PNU)
-        CALL ROTOR2(THET,PKS,PKS)
-        CALL ROTOR3( PHI,PKS,PKS)
-        CALL ROTOR2(THET,PKK,PKK)
-        CALL ROTOR3(PHI,PKK,PKK)
-        CALL ROTOR2(THET,PPI,PPI)
-        CALL ROTOR3( PHI,PPI,PPI)
-        CALL ROTOR2(THET,HV,HV)
-        CALL ROTOR3( PHI,HV,HV)
-        DO 44 I=1,3
- 44     HHV(I)=-ISGN*HV(I)
-        NEVACC=NEVACC+1
-C
-      ELSEIF(MODE.EQ. 1) THEN
-C     =======================
-        IF(NEVRAW.EQ.0) RETURN
-        PARGAM=SWT/FLOAT(NEVRAW+1)
-        ERROR=0
-        IF(NEVRAW.NE.0) ERROR=SQRT(SSWT/SWT**2-1./FLOAT(NEVRAW))
-        RAT=PARGAM/GAMEL
-        WRITE(IOUT, 7010) NEVRAW,NEVACC,NEVOVR,PARGAM,RAT,ERROR
-CC      CALL HPRINT(801)
-        GAMPMC(7)=RAT
-        GAMPER(7)=ERROR
-CAM     NEVDEC(7)=NEVACC
-      ENDIF
-C     =====
-      RETURN
- 7003 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMKS INITIALISATION ********',9X,1H*
-     $ /,' *',E20.5,5X,'WTMAX  = MAXIMUM WEIGHT                ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 7010 FORMAT(///1X,15(5H*****)
-     $ /,' *',     25X,'******** DADMKS FINAL REPORT   ********',9X,1H*
-     $ /,' *',I20  ,5X,'NEVRAW = NO. OF K* DECAYS TOTAL        ',9X,1H*,
-     $ /,' *',I20  ,5X,'NEVACC = NO. OF K*  DECS. ACCEPTED     ',9X,1H*,
-     $ /,' *',I20  ,5X,'NEVOVR = NO. OF OVERWEIGHTED EVENTS    ',9X,1H*
-     $ /,' *',E20.5,5X,'PARTIAL WTDTH (K* DECAY) IN GEV UNITS  ',9X,1H*,
-     $ /,' *',F20.9,5X,'IN UNITS GFERMI**2*MASS**5/192/PI**3   ',9X,1H*
-     $ /,' *',F20.8,5X,'RELATIVE ERROR OF PARTIAL WIDTH        ',9X,1H*
-     $  /,1X,15(5H*****)/)
- 902  WRITE(IOUT, 9020)
- 9020 FORMAT(' ----- DADMKS: LACK OF INITIALISATION')
-      STOP
-      END
-      SUBROUTINE DPHSKS(DGAMT,HV,PN,PKS,PKK,PPI,JKST)
-C ----------------------------------------------------------------------
-C IT SIMULATES KAON* DECAY IN TAU REST FRAME WITH
-C Z-AXIS ALONG KAON* MOMENTUM
-C     JKST=10 FOR K* --->K0 + PI+-
-C     JKST=20 FOR K* --->K+- + PI0
-C ----------------------------------------------------------------------
-
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-
-
-      REAL  HV(4),PT(4),PN(4),PKS(4),PKK(4),PPI(4),QQ(4),RR1(1)
-
-      COMPLEX BWIGS
-
-      DATA PI /3.141592653589793238462643/
-C
-      DATA ICONT /0/
-C THREE BODY PHASE SPACE NORMALISED AS IN BJORKEN-DRELL
-      PHSPAC=1./2**11/PI**5
-C TAU MOMENTUM
-      PT(1)=0.
-      PT(2)=0.
-      PT(3)=0.
-      PT(4)=AMTAU
-      CALL RANMAR(RR1,1)
-C HERE BEGIN THE K0,PI+_ DECAY
-      IF(JKST.EQ.10)THEN
-C     ==================
-C MASS OF (REAL/VIRTUAL) K*
-        AMS1=(AMPI+AMKZ)**2
-        AMS2=(AMTAU-AMNUTA)**2
-C FLAT PHASE SPACE
-C       AMX2=AMS1+   RR1(1)*(AMS2-AMS1)
-C       AMX=SQRT(AMX2)
-C       PHSPAC=PHSPAC*(AMS2-AMS1)
-C PHASE SPACE WITH SAMPLING FOR K* RESONANCE
-        ALP1=ATAN((AMS1-AMKST**2)/AMKST/GAMKST)
-        ALP2=ATAN((AMS2-AMKST**2)/AMKST/GAMKST)
-        ALP=ALP1+RR1(1)*(ALP2-ALP1)
-        AMX2=AMKST**2+AMKST*GAMKST*TAN(ALP)
-        AMX=SQRT(AMX2)
-        PHSPAC=PHSPAC*((AMX2-AMKST**2)**2+(AMKST*GAMKST)**2)
-     &                /(AMKST*GAMKST)
-        PHSPAC=PHSPAC*(ALP2-ALP1)
-C
-C TAU-NEUTRINO MOMENTUM
-        PN(1)=0
-        PN(2)=0
-        PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AMX**2)
-        PN(3)=-SQRT((PN(4)-AMNUTA)*(PN(4)+AMNUTA))
-C
-C K* MOMENTUM
-        PKS(1)=0
-        PKS(2)=0
-        PKS(4)=1./(2*AMTAU)*(AMTAU**2-AMNUTA**2+AMX**2)
-        PKS(3)=-PN(3)
-        PHSPAC=PHSPAC*(4*PI)*(2*PKS(3)/AMTAU)
-C
-CAM
-        ENPI=( AMX**2+AMPI**2-AMKZ**2 ) / ( 2*AMX )
-        PPPI=SQRT((ENPI-AMPI)*(ENPI+AMPI))
-        PHSPAC=PHSPAC*(4*PI)*(2*PPPI/AMX)
-C CHARGED PI MOMENTUM IN KAON* REST FRAME
-        CALL SPHERA(PPPI,PPI)
-        PPI(4)=ENPI
-C NEUTRAL KAON MOMENTUM IN K* REST FRAME
-        DO 20 I=1,3
-20      PKK(I)=-PPI(I)
-        PKK(4)=( AMX**2+AMKZ**2-AMPI**2 ) / ( 2*AMX )
-        EXE=(PKS(4)+PKS(3))/AMX
-C PION AND K  BOOSTED FROM K* REST FRAME TO TAU REST FRAME
-        CALL BOSTR3(EXE,PPI,PPI)
-        CALL BOSTR3(EXE,PKK,PKK)
-        DO 30 I=1,4
-30      QQ(I)=PPI(I)-PKK(I)
+      REAL*4            BRA1,BRK0,BRK0B,BRKS 
+      Integer           I,K
+      
+        DO I=1,4
+         PKS(I)=PC(I)+ PN(I)
+          QQ(I)=PC(I)- PN(I)
+        ENDDO
+ 
 C QQ transverse to PKS
         PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
         QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
         DO 31 I=1,4
-31      QQ(I)=QQ(I)-PKS(I)*QQPKS/PKSD
-C AMPLITUDE
-        PRODPQ=PT(4)*QQ(4)
-        PRODNQ=PN(4)*QQ(4)-PN(1)*QQ(1)-PN(2)*QQ(2)-PN(3)*QQ(3)
-        PRODPN=PT(4)*PN(4)
-        QQ2= QQ(4)**2-QQ(1)**2-QQ(2)**2-QQ(3)**2
-        BRAK=(GV**2+GA**2)*(2*PRODPQ*PRODNQ-PRODPN*QQ2)
-     &      +(GV**2-GA**2)*AMTAU*AMNUTA*QQ2
-C A SIMPLE BREIT-WIGNER IS CHOSEN FOR K* RESONANCE
+ 31      QQ(I)=QQ(I)-PKS(I)*QQPKS/PKSD
 
-        FKS=CABS(BWIGS(AMX2,AMKST,GAMKST))**2
 
-        AMPLIT=(GFERMI*SCABIB)**2*BRAK*2*FKS
-        DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
-        DO 40 I=1,3
- 40     HV(I)=2*GV*GA*AMTAU*(2*PRODNQ*QQ(I)-QQ2*PN(I))/BRAK
-C
-C HERE BEGIN THE K+-,PI0 DECAY
-      ELSEIF(JKST.EQ.20)THEN
-C     ======================
-C MASS OF (REAL/VIRTUAL) K*
-        AMS1=(AMPIZ+AMK)**2
-        AMS2=(AMTAU-AMNUTA)**2
-C FLAT PHASE SPACE
+        DO K=1,4
+         HADCUR(K)=QQ(k)*BWIGS(pksd,AMKST,GAMKST)
+c          24.03.2014 OSh: clebsh/normalization vs. PI-PI0
+         HADCUR(K) = HADCUR(K)/SQRT(2.)
+        ENDDO
 
-C       AMX2=AMS1+   RR1*(AMS2-AMS1)
-
-C       AMX=SQRT(AMX2)
-C       PHSPAC=PHSPAC*(AMS2-AMS1)
-C PHASE SPACE WITH SAMPLING FOR K* RESONANCE
-        ALP1=ATAN((AMS1-AMKST**2)/AMKST/GAMKST)
-        ALP2=ATAN((AMS2-AMKST**2)/AMKST/GAMKST)
-        ALP=ALP1+RR1(1)*(ALP2-ALP1)
-        AMX2=AMKST**2+AMKST*GAMKST*TAN(ALP)
-        AMX=SQRT(AMX2)
-        PHSPAC=PHSPAC*((AMX2-AMKST**2)**2+(AMKST*GAMKST)**2)
-     &                /(AMKST*GAMKST)
-        PHSPAC=PHSPAC*(ALP2-ALP1)
-C
-C TAU-NEUTRINO MOMENTUM
-        PN(1)=0
-        PN(2)=0
-        PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AMX**2)
-        PN(3)=-SQRT((PN(4)-AMNUTA)*(PN(4)+AMNUTA))
-C KAON* MOMENTUM
-        PKS(1)=0
-        PKS(2)=0
-        PKS(4)=1./(2*AMTAU)*(AMTAU**2-AMNUTA**2+AMX**2)
-        PKS(3)=-PN(3)
-        PHSPAC=PHSPAC*(4*PI)*(2*PKS(3)/AMTAU)
-C
-CAM
-        ENPI=( AMX**2+AMPIZ**2-AMK**2 ) / ( 2*AMX )
-        PPPI=SQRT((ENPI-AMPIZ)*(ENPI+AMPIZ))
-        PHSPAC=PHSPAC*(4*PI)*(2*PPPI/AMX)
-C NEUTRAL PI MOMENTUM IN K* REST FRAME
-        CALL SPHERA(PPPI,PPI)
-        PPI(4)=ENPI
-C CHARGED KAON MOMENTUM IN K* REST FRAME
-        DO 50 I=1,3
-50      PKK(I)=-PPI(I)
-        PKK(4)=( AMX**2+AMK**2-AMPIZ**2 ) / ( 2*AMX )
-        EXE=(PKS(4)+PKS(3))/AMX
-C PION AND K  BOOSTED FROM K* REST FRAME TO TAU REST FRAME
-        CALL BOSTR3(EXE,PPI,PPI)
-        CALL BOSTR3(EXE,PKK,PKK)
-        DO 60 I=1,4
-60      QQ(I)=PKK(I)-PPI(I)
-C QQ transverse to PKS
-        PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
-        QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
-        DO 61 I=1,4
-61      QQ(I)=QQ(I)-PKS(I)*QQPKS/PKSD
-C AMPLITUDE
-        PRODPQ=PT(4)*QQ(4)
-        PRODNQ=PN(4)*QQ(4)-PN(1)*QQ(1)-PN(2)*QQ(2)-PN(3)*QQ(3)
-        PRODPN=PT(4)*PN(4)
-        QQ2= QQ(4)**2-QQ(1)**2-QQ(2)**2-QQ(3)**2
-        BRAK=(GV**2+GA**2)*(2*PRODPQ*PRODNQ-PRODPN*QQ2)
-     &      +(GV**2-GA**2)*AMTAU*AMNUTA*QQ2
-C A SIMPLE BREIT-WIGNER IS CHOSEN FOR THE K* RESONANCE
-
-        FKS=CABS(BWIGS(AMX2,AMKST,GAMKST))**2
-
-        AMPLIT=(GFERMI*SCABIB)**2*BRAK*2*FKS
-        DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
-        DO 70 I=1,3
- 70     HV(I)=2*GV*GA*AMTAU*(2*PRODNQ*QQ(I)-QQ2*PN(I))/BRAK
-      ENDIF
-      RETURN
       END
 
 
+      SUBROUTINE CURR_KPI0(PC,PN,HADCUR)
+C standard TAUOLA current for tau to pi pi0 nu decay 
+C now it has universal form eg. it is straighforward to add 
+C scalar part
+C NOTE:
+C       PC 4-momentum of K
+C       PN 4-momentum of pi0
+C       06.08.2011  
+      implicit none
+      COMPLEX BWIGS,HADCUR(4),FKPIPL
+      REAL  PC(4),PN(4),QQ(4),PKS(4),FKPISC,PKSD,QQPKS
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST,FACT_KPI0
+      COMMON / TAUKLE / BRA1,BRK0,BRK0B,BRKS
+      REAL*4            BRA1,BRK0,BRK0B,BRKS
+      INTEGER        I,K
+
+        DO 30 I=1,4
+         PKS(I)=PC(I)+ PN(I)
+ 30       QQ(I)=PC(I)- PN(I)
+C QQ transverse to PKS
+        PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
+        QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
+        DO 31 I=1,4
+ 31      QQ(I)=QQ(I)-PKS(I)*QQPKS/PKSD
+        DO K=1,4
+         HADCUR(K)=QQ(k)*BWIGS(pksd,AMKST,GAMKST)
+C          24.03.2014 OSh: clebsh/normalization vs. PI-PI0
+         HADCUR(K) = HADCUR(K)/2.
+        ENDDO
+
+      END   
+
+
+      SUBROUTINE CURR_KK0(PC,PN,HADCUR)
+C standard TAUOLA current for tau to K K0 nu decay 
+C now it has universal form eg. it is straighforward to add 
+C scalar part
+C NOTE:
+C       PC 4-momentum of K
+C       PN 4-momentum of K0
+C       06.08.2011  
+      IMPLICIT NONE
+      COMPLEX BWIGS,HADCUR(4),FKK0_RCHT
+      REAL  PC(4),PN(4),QQ(4),PKS(4),PKSD,QQPKS,FPIRK
+      INTEGER I,K
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+        DO I=1,4
+         PKS(I)=PC(I)+ PN(I)
+          QQ(I)=PC(I)- PN(I)
+        ENDDO
+C QQ transverse to PKS
+        PKSD =PKS(4)*PKS(4)-PKS(3)*PKS(3)-PKS(2)*PKS(2)-PKS(1)*PKS(1)
+        QQPKS=PKS(4)* QQ(4)-PKS(3)* QQ(3)-PKS(2)* QQ(2)-PKS(1)* QQ(1)
+        DO 31 I=1,4
+ 31      QQ(I)=QQ(I)-PKS(I)*QQPKS/PKSD
+
+        DO K=1,4
+         HADCUR(K)=QQ(k)*sqrt(fpirk(sqrt(pksd)))
+C          24.03.2014 OSh: clebsh/normalization vs. PI-PI0
+         HADCUR(K) = HADCUR(K)/sqrt(2.)
+        ENDDO
+ 
+      END
+
+
+      FUNCTION COEF(I,J)
+C clebsh gordan (or so ...)  coefs for 3 scalar final states
+      implicit none
+C IFBABAR=0  TAUOLA cleo COEF(I,J) =  COEFc(I,J)
+C IIBABAR=2  TAUOLA RChL COEF(I,J) =  COEFr(I,J)
+      COMMON /SETINI/ IFBABAR
+      INTEGER         IFBABAR
+      REAL COEFc(1:5,0:7)
+      REAL COEFr(1:5,0:7)
+      REAL COEF,COEFrr
+      DATA PI /3.141592653589793238462643/
+      REAL PI
+      DATA ICONT /0/
+      INTEGER ICONT
+      INTEGER I,J,JJ
+      REAL FPIc,FPIr
+
+C initialization of FPI matrix defined in ...
+C FPIc is to be used with cleo initialization
+
+C actual choice is made in ???
+
+      DATA  FPIc /93.3E-3/
+
+
+C initialization of COEF matrix defined in ...
+C COEFc is to be used with cleo initialization
+
+      IF (ICONT.EQ.0) THEN
+       ICONT=1
+C
+C*****COEFc(I,J)
+
+       COEFc(1,0)= 2.0*SQRT(2.)/3.0
+       COEFc(2,0)=-2.0*SQRT(2.)/3.0
+C AJW 2/98: Add in the D-wave and I=0 3pi substructure:
+       COEFc(3,0)= 2.0*SQRT(2.)/3.0
+       COEFc(4,0)= FPIc
+       COEFc(5,0)= 0.0
+C
+       COEFc(1,1)=-SQRT(2.)/3.0
+       COEFc(2,1)= SQRT(2.)/3.0
+       COEFc(3,1)= 0.0
+       COEFc(4,1)= FPIc
+       COEFc(5,1)= SQRT(2.)
+
+C
+       COEFc(1,2)=-SQRT(2.)/3.0
+       COEFc(2,2)= SQRT(2.)/3.0
+       COEFc(3,2)= 0.0
+       COEFc(4,2)= 0.0
+       COEFc(5,2)=-SQRT(2.)
+
+
+C AJW 11/97: Add in the K*-prim-s, ala Finkemeier&Mirkes
+      IF (IFBABAR.eq.1) then ! BaBar
+       COEFc(1,3)= 0.0
+       COEFc(2,3)= -1.0
+       COEFc(3,3)= 0.0
+      ELSE  ! CLEO
+       COEFc(1,3)= 1./3.
+       COEFc(2,3)= -2./3.
+       COEFc(3,3)= 2./3.
+      endif
+       COEFc(4,3)= 0.0
+       COEFc(5,3)= 0.0
+C
+       COEFc(1,4)= 1.0/SQRT(2.)/3.0
+       COEFc(2,4)=-1.0/SQRT(2.)/3.0
+       COEFc(3,4)= 0.0
+       COEFc(4,4)= 0.0
+       COEFc(5,4)= 0.0
+C
+       COEFc(1,5)=-SQRT(2.)/3.0
+       COEFc(2,5)= SQRT(2.)/3.0
+       COEFc(3,5)= 0.0
+       COEFc(4,5)= 0.0
+       COEFc(5,5)=-SQRT(2.)
+C
+C AJW 11/97: Add in the K*-prim-s, ala Finkemeier&Mirkes
+      IF (IFBABAR.eq.1) then ! BaBar
+       COEFc(1,6)= 0.0
+       COEFc(2,6)= -1.0
+       COEFc(3,6)= 0.0
+      ELSE  ! CLEO
+       COEFc(1,6)= 1./3.
+       COEFc(2,6)= -2./3.
+       COEFc(3,6)= 2./3.
+      endif
+
+       COEFc(4,6)= 0.0
+       COEFc(5,6)=-2.0
+C
+       COEFc(1,7)= 0.0
+       COEFc(2,7)= 0.0
+       COEFc(3,7)= 0.0
+       COEFc(4,7)= 0.0
+       COEFc(5,7)=-SQRT(2.0/3.0)
+
+      ENDIF
+         
+      IF (J.GE.11) THEN 
+       COEF=COEFc(I,0)   ! these modes are not initialized
+      ELSEIF (IFBABAR.EQ.1.or.IFBABAR.eq.0.OR.(.not.(J.EQ.9.OR.J.EQ.0.OR.J.EQ.10))) THEN   ! so far rchl only for 3pi modes
+       JJ=J
+       IF(J.GE.9) JJ=0
+       COEF=COEFc(I,JJ)
+      ELSEIF (IFBABAR.EQ.2) THEN
+       COEF=COEFrr(I,J)
+      ELSE
+       write(*,*) 'function COEF: wrong IFBABAR=',IFBABAR
+       stop
+      ENDIF
+      END
+
+
+      SUBROUTINE INIRChL(IVERI)
+C routine to set version no for the currents physics initialization
+C IVER=0  TAUOLA cleo
+C IVER=1  TAUOLA RChL
+
+      implicit none
+      INTEGER IVERI
+
+      COMMON /IPChT/ IVER
+      INTEGER        IVER
+      IVER=IVERI
+
+      IF (IVER.EQ.1) THEN
+        CALL RCHL_PARAMETERS(1)
+      ENDIF
+      end
+
+
+      SUBROUTINE INIRChLget(I)
+C routine to get version no for the currents physics initialization
+C IVER=0  TAUOLA cleo
+C IVER=1  TAUOLA RChL
+      COMMON /IPChT/ IVER
+      INTEGER        IVER
+
+      I=IVER
+      end
+
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C RCHL UPDATE - END OF NEW FUNCTIONS
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C ----------------------------------------------------------------------
 
 
       SUBROUTINE DPHNPI(DGAMT,HVX,PNX,PRX,PPIX,JNPI)
@@ -2357,12 +1748,12 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
      &                ,NAMES
       CHARACTER NAMES(NMODE)*31
-      REAL*8 WETMAX(20)
+      REAL*8 WETMAX(500)
 C
 
 
@@ -2378,7 +1769,7 @@ C
       REAL*4 RRR(9),RRX(2),RN(1),RR2(1)
 C
       DATA PI /3.141592653589793238462643/
-      DATA WETMAX /20*1D-15/
+      DATA WETMAX /500*1D-15/
 C
 CC--      PAWT(A,B,C)=SQRT((A**2-(B+C)**2)*(A**2-(B-C)**2))/(2.*A)
 C
@@ -2389,8 +1780,10 @@ C
       AMPIK(I,J)=DCDMAS(IDFFIN(I,J))
 C
 C
-
-      IF ((JNPI.LE.0).OR.JNPI.GT.20) THEN
+      jn=JNPI-nm4-nm5+3  ! for Q^2 spectrum we use sigee from ancient times. First 3 options of sigee are skipped.
+      MNUM=JNPI-nm4-nm5
+      IME=IMEGET(6,MNUM)
+      IF ((JNPI.LE.0).OR.JNPI.GT.100) THEN
        WRITE(6,*) 'JNPI OUTSIDE RANGE DEFINED BY WETMAX; JNPI=',JNPI
        STOP
       ENDIF
@@ -2429,7 +1822,7 @@ C TAU-NEUTRINO MOMENTUM
       PN(1)=0
       PN(2)=0
       PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AMX2)
-      PN(3)=-SQRT((PN(4)-AMNUTA)*(PN(4)+AMNUTA))
+      PN(3)=-SQRT(ABS((PN(4)-AMNUTA)*(PN(4)+AMNUTA)))
 C W MOMENTUM
       PR(1)=0
       PR(2)=0
@@ -2440,9 +1833,9 @@ C
 C AMPLITUDE  (cf YS.Tsai Phys.Rev.D4,2821(1971)
 C    or F.Gilman SH.Rhie Phys.Rev.D31,1066(1985)
 C
-        PXQ=AMTAU*PR(4)
-        PXN=AMTAU*PN(4)
-        QXN=PR(4)*PN(4)-PR(1)*PN(1)-PR(2)*PN(2)-PR(3)*PN(3)
+      PXQ=AMTAU*PR(4)
+      PXN=AMTAU*PN(4)
+      QXN=PR(4)*PN(4)-PR(1)*PN(1)-PR(2)*PN(2)-PR(3)*PN(3)
 
 C HERE WAS AN ERROR. 20.10.91 (ZW)
 C       BRAK=2*(GV**2+GA**2)*(2*PXQ*PXN+AMX2*QXN)
@@ -2451,7 +1844,22 @@ C       BRAK=2*(GV**2+GA**2)*(2*PXQ*PXN+AMX2*QXN)
      &      -6*(GV**2-GA**2)*AMTAU*AMNUTA*AMX2
 CAM     Assume neutrino mass=0. and sum over final polarisation
 C     BRAK= 2*(AMTAU**2-AMX2) * (AMTAU**2+2.*AMX2)
-      AMPLIT=CCABIB**2*GFERMI**2/2. * BRAK * AMX2*SIGEE(AMX2,JNPI)
+
+!       if(jn.le.6) write(*,*) 'sigeje=',jn,amx2,jn,SIGEE(AMX2,JN)
+!       if(jn.eq.7) stop
+      IF (IME.EQ.2) THEN
+       AMPLIT=CCABIB**2*GFERMI**2/2.* BRAK*AMX2*SIGEE(AMX2,JN)
+      ELSEIF (IME.EQ.4) THEN
+       AMPLIT=CCABIB**2*GFERMI**2/2.* BRAK*AMX2*SIGEE_wrap(AMX2,JN)
+      ELSEIF (IME.EQ.5) THEN
+       WRITE(*,*) 'STOP from DPHNPI of TAUOLA FORTRAN.'
+       WRITE(*,*) 'For multipion modes IME=5 is not allowed.'
+       WRITE(*,*) 'No matrix element in this cases !'
+       STOP
+
+      ELSE
+       AMPLIT=CCABIB**2*GFERMI**2/2.*     AMX2*SIGEE(AMX2,JN)
+      ENDIF
       DGAMT=1./(2.*AMTAU)*AMPLIT*PHSPAC
 C
 C   ISOTROPIC W DECAY IN W REST FRAME
@@ -2509,7 +1917,13 @@ C ---  2.02.94 ZW 1 line
       PA=PAWT(PV(5,ND-1),AMPIK(ND-1,JNPI),AMPIK(ND,JNPI))
       PHS   =PHS    *PA/PV(5,ND-1)
       CALL RANMAR(RN,1)
-      WETMAX(JNPI)=1.2D0*MAX(WETMAX(JNPI)/1.2D0,PHS/PHSMAX)
+      IF(PHSMAX.NE.0.0) THEN    ! TP 5.10.2011 due to rounding errs.
+                             ! PHSMAX may be zero, protect div. by it
+        WETMAX(JNPI)=1.2D0*MAX(WETMAX(JNPI)/1.2D0,PHS/PHSMAX)
+      ELSE
+        WETMAX(JNPI)=1.2D0*WETMAX(JNPI)/1.2D0
+      ENDIF
+
       IF (NCONT.EQ.500 000) THEN
           XNPI=0.0
           DO KK=1,ND
@@ -2613,12 +2027,17 @@ C
       DATA PI /3.141592653589793238462643/                              
       DATA INIT / 0 /                                                   
 C                          
+        
         JNPI=JNP
+        IF(JNPI.GT.6) JNPI=6  ! warning we have no input for higher masses but we want
+                              ! dummy runs. This is to make it possible and trivial
         IF(JNP.EQ.4) JNPI=3                                             
         IF(JNP.EQ.3) JNPI=4
       IF(INIT.EQ.0) THEN                                                
         INIT=1                                                          
 
+C AJWMOD: initialize if called from outside QQ:
+!        IF (AMPI.LT.0.139) AMPI = 0.1395675
 
         AMPI2=AMPI**2                                                   
         FPI = .943*AMPI                                                 
@@ -2753,12 +2172,12 @@ C
 C
       RETURN
       END
-      SUBROUTINE DPHSPK(DGAMT,HV,PN,PAA,PNPI,JAA)
+      SUBROUTINE DPH3PI(DGAMT,HV,PN,PAA,PNPI,JNPI)
 C ----------------------------------------------------------------------
 * IT SIMULATES THREE PI (K) DECAY IN THE TAU REST FRAME
 * Z-AXIS ALONG HADRONIC SYSTEM
 C ----------------------------------------------------------------------
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
@@ -2766,17 +2185,21 @@ C ----------------------------------------------------------------------
       CHARACTER NAMES(NMODE)*31
 
       REAL  HV(4),PN(4),PAA(4),PIM1(4),PIM2(4),PIPL(4),PNPI(4,9)
-C MATRIX ELEMENT NUMBER:
-      MNUM=JAA
-C TYPE OF THE GENERATION:
-      KEYT=4
-      IF(JAA.EQ.7) KEYT=3
 C --- MASSES OF THE DECAY PRODUCTS
-       AMP1=DCDMAS(IDFFIN(1,JAA+NM4+NM5+NM6))
-       AMP2=DCDMAS(IDFFIN(2,JAA+NM4+NM5+NM6))
-       AMP3=DCDMAS(IDFFIN(3,JAA+NM4+NM5+NM6))
+       AMP1=DCDMAS(IDFFIN(1,JNPI))
+       AMP2=DCDMAS(IDFFIN(2,JNPI))
+       AMP3=DCDMAS(IDFFIN(3,JNPI))
+
+C MATRIX ELEMENT NUMBER:
+      MNUM=JNPI-NM4-NM5-NM6
+      IF(JNPI.EQ.0) then
+       write(*,*) 'problem JNPI=',JNPI
+       STOP
+      endif
+      IF(JNPI.EQ.0) MNUM=0
+
       CALL
-     $   DPHTRE(DGAMT,HV,PN,PAA,PIM1,AMP1,PIM2,AMP2,PIPL,AMP3,KEYT,MNUM)
+     $   DPHTRE(DGAMT,HV,PN,PAA,PIM1,AMP1,PIM2,AMP2,PIPL,AMP3,MNUM)
             DO I=1,4
               PNPI(I,1)=PIM1(I)
               PNPI(I,2)=PIM2(I)
@@ -2785,20 +2208,48 @@ C --- MASSES OF THE DECAY PRODUCTS
       END
 
 
+      SUBROUTINE CHOICE3(MNUM,RR,ICHAN,xPROB1,xPROB2,xPROB3,
+     $            xAMRX,xGAMRX,xAMRA,xGAMRA,xAMRB,xGAMRB)
+      include 'TAUDCDsize.inc'
+      COMMON /SAMPL3/ PROB1(NM3),PROB2(NM3),AMRX(NM3),GAMRX(NM3),AMRA(NM3),GAMRA(NM3),AMRB(NM3),GAMRB(NM3)
+
+       xPROB1=PROB1(MNUM)
+       xPROB2=PROB2(MNUM)
+       xAMRX =AMRX(MNUM)
+       xGAMRX=GAMRX(MNUM)
+       xAMRA =AMRA(MNUM)
+       xGAMRA=GAMRA(MNUM)
+       xAMRB =AMRB(MNUM)
+       xGAMRB=GAMRB(MNUM)
+
+      IF    (RR.LE.xPROB1) THEN
+       ICHAN=1
+      ELSEIF(RR.LE.(xPROB1+xPROB2)) THEN
+       ICHAN=2
+        AX    =xAMRA
+        GX    =xGAMRA
+        xAMRA =xAMRB
+        xGAMRA=xGAMRB
+        xAMRB =AX
+        xGAMRB=GX
+        PX    =xPROB1
+        xPROB1=xPROB2
+        xPROB2=PX
+      ELSE
+       ICHAN=3
+      ENDIF
+C
+      xPROB3=1.0-xPROB1-xPROB2
+      END
 
 
       SUBROUTINE
-     $   DPHTRE(DGAMT,HV,PN,PAA,PIM1,AMPA,PIM2,AMPB,PIPL,AMP3,KEYT,MNUM)
+     $   DPHTRE(DGAMT,HV,PN,PAA,PIM1,AMPA,PIM2,AMPB,PIPL,AMP3,MNUM)
 C ----------------------------------------------------------------------
 * IT SIMULATES A1  DECAY IN TAU REST FRAME WITH
 * Z-AXIS ALONG A1  MOMENTUM
 * it can be also used to generate K K pi and K pi pi tau decays.
 * INPUT PARAMETERS
-* KEYT - algorithm controlling switch
-*  2   - flat phase space PIM1 PIM2 symmetrized statistical factor 1/2
-*  1   - like 1 but peaked around a1 and rho (two channels) masses.
-*  3   - peaked around omega, all particles different
-* other- flat phase space, all particles different
 * AMP1 - mass of first pi, etc. (1-3)
 * MNUM - matrix element type
 *  0   - a1 matrix element
@@ -2834,7 +2285,7 @@ C
       CALL RANMAR(RRR,5)
       RR=RRR(5)
 C
-      CALL CHOICE(MNUM,RR,ICHAN,PROB1,PROB2,PROB3,
+      CALL CHOICE3(MNUM,RR,ICHAN,PROB1,PROB2,PROB3,
      $            AMRX,GAMRX,AMRA,GAMRA,AMRB,GAMRB)
       IF     (ICHAN.EQ.1) THEN
         AMP1=AMPB
@@ -3014,111 +2465,24 @@ C
       CALL BOSTR3(EXE,PIM1,PIM1)
       CALL BOSTR3(EXE,PIM2,PIM2)
       CALL BOSTR3(EXE,PR,PR)
-C PARTIAL WIDTH CONSISTS OF PHASE SPACE AND AMPLITUDE
-      IF (MNUM.EQ.8) THEN
-        CALL DAMPOG(PT,PN,PIM1,PIM2,PIPL,AMPLIT,HV)
-C      ELSEIF (MNUM.EQ.0) THEN
-C        CALL DAMPAA(PT,PN,PIM1,PIM2,PIPL,AMPLIT,HV)
-      ELSE
-        CALL DAMPPK(MNUM,PT,PN,PIM1,PIM2,PIPL,AMPLIT,HV)
-      ENDIF
-      IF (KEYT.EQ.1.OR.KEYT.EQ.2) THEN
-C THE STATISTICAL FACTOR FOR IDENTICAL PI-S IS CANCELLED WITH
-C TWO, FOR TWO MODES OF A1 DECAY NAMELLY PI+PI-PI- AND PI-PI0PI0
 
-        PHSPAC=PHSPAC*2.0
+      IF(MNUM.EQ.9) THEN
+C THE STATISTICAL FACTOR FOR IDENTICAL PI-S
         PHSPAC=PHSPAC/2.
+        CALL CH3PISET(2) ! information that it's pi- pi0 pi0 passed for further use
+      ELSEIF(MNUM.EQ.0.OR.MNUM.EQ.10) THEN   ! MNUM=0 probably never hap
+C THE STATISTICAL FACTOR FOR IDENTICAL PI-S
+        PHSPAC=PHSPAC/2.
+        CALL CH3PISET(1) ! information that it's pi- pi- pi+ passed for further use
+      ENDIF
 
-      ENDIF
+C PARTIAL WIDTH CONSISTS OF PHASE SPACE AND AMPLITUDE
+       CALL DAM3PI(MNUM,PT,PN,PIM1,PIM2,PIPL,AMPLIT,HV)
+!        if (mnum.eq.9) write(*,*) 'mnum=',mnum,amplit,phspac
+!        if (amplit.eq.0.0) stop
+!      if (mnum.gt.7) write(*,*) 'mnumy=',mnum
+
       DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
-      END
-      SUBROUTINE DAMPAA(PT,PN,PIM1,PIM2,PIPL,AMPLIT,HV)
-C ----------------------------------------------------------------------
-* CALCULATES DIFFERENTIAL CROSS SECTION AND POLARIMETER VECTOR
-* FOR TAU DECAY INTO A1, A1 DECAYS NEXT INTO RHO+PI AND RHO INTO PI+PI.
-* ALL SPIN EFFECTS IN THE FULL DECAY CHAIN ARE TAKEN INTO ACCOUNT.
-* CALCULATIONS DONE IN TAU REST FRAME WITH Z-AXIS ALONG NEUTRINO MOMENT
-* THE ROUTINE IS WRITEN FOR ZERO NEUTRINO MASS.
-C
-C     called by : DPHSAA
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON /TESTA1/ KEYA1
-      REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4),PIPL(4)
-      REAL  PAA(4),VEC1(4),VEC2(4)
-      REAL  PIVEC(4),PIAKS(4),HVM(4)
-      COMPLEX BWIGN,HADCUR(4),FPIK
-      DATA ICONT /1/
-C
-* F CONSTANTS FOR A1, A1-RHO-PI, AND RHO-PI-PI
-*
-      DATA  FPI /93.3E-3/
-* THIS INLINE FUNCT. CALCULATES THE SCALAR PART OF THE PROPAGATOR
-      BWIGN(XM,AM,GAMMA)=1./CMPLX(XM**2-AM**2,GAMMA*AM)
-C
-* FOUR MOMENTUM OF A1
-      DO 10 I=1,4
-   10 PAA(I)=PIM1(I)+PIM2(I)+PIPL(I)
-* MASSES OF A1, AND OF TWO PI-PAIRS WHICH MAY FORM RHO
-      XMAA   =SQRT(ABS(PAA(4)**2-PAA(3)**2-PAA(2)**2-PAA(1)**2))
-      XMRO1  =SQRT(ABS((PIPL(4)+PIM1(4))**2-(PIPL(1)+PIM1(1))**2
-     $                -(PIPL(2)+PIM1(2))**2-(PIPL(3)+PIM1(3))**2))
-      XMRO2  =SQRT(ABS((PIPL(4)+PIM2(4))**2-(PIPL(1)+PIM2(1))**2
-     $                -(PIPL(2)+PIM2(2))**2-(PIPL(3)+PIM2(3))**2))
-* ELEMENTS OF HADRON CURRENT
-      PROD1  =PAA(4)*(PIM1(4)-PIPL(4))-PAA(1)*(PIM1(1)-PIPL(1))
-     $       -PAA(2)*(PIM1(2)-PIPL(2))-PAA(3)*(PIM1(3)-PIPL(3))
-      PROD2  =PAA(4)*(PIM2(4)-PIPL(4))-PAA(1)*(PIM2(1)-PIPL(1))
-     $       -PAA(2)*(PIM2(2)-PIPL(2))-PAA(3)*(PIM2(3)-PIPL(3))
-      DO 40 I=1,4
-      VEC1(I)= PIM1(I)-PIPL(I) -PAA(I)*PROD1/XMAA**2
- 40   VEC2(I)= PIM2(I)-PIPL(I) -PAA(I)*PROD2/XMAA**2
-* HADRON CURRENT SATURATED WITH A1 AND RHO RESONANCES
-      IF (KEYA1.EQ.1) THEN
-        FA1=9.87
-        FAROPI=1.0
-        FRO2PI=1.0
-        FNORM=FA1/SQRT(2.)*FAROPI*FRO2PI
-        DO 45 I=1,4
-        HADCUR(I)= CMPLX(FNORM) *AMA1**2*BWIGN(XMAA,AMA1,GAMA1)
-     $              *(CMPLX(VEC1(I))*AMRO**2*BWIGN(XMRO1,AMRO,GAMRO)
-     $               +CMPLX(VEC2(I))*AMRO**2*BWIGN(XMRO2,AMRO,GAMRO))
- 45     CONTINUE
-      ELSE
-        FNORM=2.0*SQRT(2.)/3.0/FPI
-        GAMAX=GAMA1*GFUN(XMAA**2)/GFUN(AMA1**2)
-        DO 46 I=1,4
-        HADCUR(I)= CMPLX(FNORM) *AMA1**2*BWIGN(XMAA,AMA1,GAMAX)
-     $              *(CMPLX(VEC1(I))*FPIK(XMRO1)
-     $               +CMPLX(VEC2(I))*FPIK(XMRO2))
- 46     CONTINUE
-      ENDIF
-C
-* CALCULATE PI-VECTORS: VECTOR AND AXIAL
-      CALL CLVEC(HADCUR,PN,PIVEC)
-      CALL CLAXI(HADCUR,PN,PIAKS)
-      CALL CLNUT(HADCUR,BRAKM,HVM)
-* SPIN INDEPENDENT PART OF DECAY DIFF-CROSS-SECT. IN TAU REST  FRAME
-      BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
-     &     +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
-      AMPLIT=(GFERMI*CCABIB)**2*BRAK/2.
-C THE STATISTICAL FACTOR FOR IDENTICAL PI-S WAS CANCELLED WITH
-C TWO, FOR TWO MODES OF A1 DECAY NAMELLY PI+PI-PI- AND PI-PI0PI0
-C POLARIMETER VECTOR IN TAU REST FRAME
-      DO 90 I=1,3
-      HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
-     &      +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
-C HV IS DEFINED FOR TAU-    WITH GAMMA=B+HV*POL
-      HV(I)=-HV(I)/BRAK
- 90   CONTINUE
       END
  
       FUNCTION GFUN(QKWA)
@@ -3147,6 +2511,9 @@ C **********************************************************
       REAL S,M,G
       REAL PI,PIM,QS,QM,W,GS,MK
 
+C AJW: add K*-prim possibility:
+      REAL PM, PG, PBETA
+      COMPLEX BW,BWP
 
       DATA INIT /0/
       P(A,B,C)=SQRT(ABS(ABS(((A+B-C)**2-4.*A*B)/4./A)
@@ -3158,6 +2525,10 @@ C ------------ PARAMETERS --------------------
       PIM=.139
       MK=.493667
 
+C AJW: add K*-prim possibility:
+      PM = PKORB(1,16)
+      PG = PKORB(2,16)
+      PBETA = PKORB(3,16)
 
 C -------  BREIT-WIGNER -----------------------
          ENDIF
@@ -3167,7 +2538,15 @@ C -------  BREIT-WIGNER -----------------------
          W=SQRT(S)
          GS=G*(M/W)*(QS/QM)**3
 
-         BWIGS=M**2/CMPLX(M**2-S,-M*GS)
+C cleao:
+c         BW=M**2/CMPLX(M**2-S,-M*GS)
+c         QPM=P(PM**2,PIM**2,MK**2)
+c         G1=PG*(PM/W)*(QS/QPM)**3
+c         BWP=PM**2/CMPLX(PM**2-S,-PM*G1)
+c         BWIGS= (BW+PBETA*BWP)/(1+PBETA)
+C BaBar:
+      BWIGS=M**2/cmplx(M**2-S,-M*GS)
+
 
       RETURN
       END
@@ -3204,6 +2583,9 @@ C **********************************************************
       REAL ROM,ROG,ROM1,ROG1,BETA1,PI,PIM,S,W
       EXTERNAL BWIG
       DATA  INIT /0/
+      COMMON /SETINI/ IFBABAR
+      INTEGER        IFBABAR
+
 C
 C ------------ PARAMETERS --------------------
       IF (INIT.EQ.0 ) THEN
@@ -3211,11 +2593,21 @@ C ------------ PARAMETERS --------------------
       PI=3.141592654
       PIM=.140
 
-      ROM=0.773
-      ROG=0.145
-      ROM1=1.370
-      ROG1=0.510
-      BETA1=-0.145
+C next constants are from BaBar
+      if(IFBABAR.eq.1) then
+      ROM=0.773    ! PKORB(1,9)
+      ROG=0.145    ! PKORB(2,9)
+      ROM1=1.370   ! PKORB(1,15)
+      ROG1=0.510   ! PKORB(2,15)
+      BETA1=-0.145 ! PKORB(3,15)
+      else ! CLEO
+      ROM=PKORB(1,9)
+      ROG=PKORB(2,9)
+      ROM1=PKORB(1,15)
+      ROG1=PKORB(2,15)
+      BETA1=PKORB(3,15)
+
+      endif
 
       ENDIF
 C -----------------------------------------------
@@ -3248,6 +2640,20 @@ C
    10 PIV(I)=4.*REAL(HN*CONJG(HJ(I)))-2.*HH*PN(I)
       RETURN
       END
+      SUBROUTINE TAUGETSIGN(SIGN)
+C calculation of sign for CLAXI: version of C++
+      COMMON / JAKI   /  JAK1,JAK2,JAKP,JAKM,KTOM
+      COMMON / IDFC  / IDFF
+      IF     (KTOM.EQ.1.OR.KTOM.EQ.-1) THEN
+        SIGN= IDFF/ABS(IDFF)
+      ELSEIF (KTOM.EQ.2) THEN
+        SIGN=-IDFF/ABS(IDFF)
+      ELSE
+        PRINT *, 'TAUOLA: STOP IN calculation of sign for CLAXI: KTOM=',KTOM
+        STOP
+      ENDIF
+      END
+
       SUBROUTINE CLAXI(HJ,PN,PIA)
 C ----------------------------------------------------------------------
 * CALCULATES THE "AXIAL TYPE"  PI-VECTOR  PIA
@@ -3330,7 +2736,7 @@ C
       DATA ICONT /1/
 * THIS INLINE FUNCT. CALCULATES THE SCALAR PART OF THE PROPAGATOR
 
-      BWIGN(XM,AM,GAMMA)=1./CMPLX(XM**2-AM**2,GAMMA*AM)
+C AJWMOD to satisfy compiler, comment out this unused function.
 
 C
 * FOUR MOMENTUM OF A1
@@ -3412,42 +2818,49 @@ C POLARIMETER VECTOR IN TAU REST FRAME
  91   CONTINUE
  
       END
-      SUBROUTINE DAMPPK(MNUM,PT,PN,PIM1,PIM2,PIM3,AMPLIT,HV)
-C ----------------------------------------------------------------------
-* CALCULATES DIFFERENTIAL CROSS SECTION AND POLARIMETER VECTOR
-* FOR TAU DECAY INTO K K pi, K pi pi.
-* ALL SPIN EFFECTS IN THE FULL DECAY CHAIN ARE TAKEN INTO ACCOUNT.
-* CALCULATIONS DONE IN TAU REST FRAME WITH Z-AXIS ALONG NEUTRINO MOMENT
-C MNUM DECAY MODE IDENTIFIER.
-C
 
-C     called by : DPHSAA
+      SUBROUTINE CURR3PI(MNU,PIM1,PIM2,PIM3,HADCUR)
 
-C ----------------------------------------------------------------------
-      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
-C
-      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
-     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
-     *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4),PIM3(4)
+
+      COMMON /SETINI/ IFBABAR
+      INTEGER         IFBABAR
+
+      REAL  PIM1(4),PIM2(4),PIM3(4)
       REAL  PAA(4),VEC1(4),VEC2(4),VEC3(4),VEC4(4),VEC5(4)
-      REAL  PIVEC(4),PIAKS(4),HVM(4)
-      REAL FNORM(0:7),COEF(1:5,0:7)
+
+      REAL FNORM(0:19)
+      DOUBLE PRECISION GETFPIRPT
+
       COMPLEX HADCUR(4),FORM1,FORM2,FORM3,FORM4,FORM5,UROJ
+
+      COMPLEX F1,F2,F3,F4,F5
 
       EXTERNAL FORM1,FORM2,FORM3,FORM4,FORM5
       DATA PI /3.141592653589793238462643/
       DATA ICONT /0/
 C
-      DATA  FPI /93.3E-3/
+      DATA  FPIc /93.3E-3/
       IF (ICONT.EQ.0) THEN
        ICONT=1
        UROJ=CMPLX(0.0,1.0)
        DWAPI0=SQRT(2.0)
+
+      ENDIF
+      MNUM=MNU
+      IF(MNUM.eq.10) MNUM=0  ! we shift position 10 to 0 (temporarily) 
+                             ! to have the flexibility for FORM1, ... 
+                             ! of the past
+ 
+       IF (IFBABAR.EQ.1.or.IFBABAR.eq.0.OR.(.not.(MNUM.EQ.9.OR.MNUM.EQ.0))) THEN ! so far rchl only for 3pi modes
+         FPI=FPIc
+        ELSEIF (IFBABAR.EQ.2) THEN
+         FPI=GETFPIRPT(1) ! GET  defined in in ffwid3pi.f  of RChL-currents
+        ELSE
+         write(*,*) 'subroutine CURR3PI: wrong IFBABAR=',IFBABAR
+         stop
+       ENDIF 
        FNORM(0)=CCABIB/FPI
        FNORM(1)=CCABIB/FPI
        FNORM(2)=CCABIB/FPI
@@ -3456,62 +2869,12 @@ C
        FNORM(5)=SCABIB/FPI
        FNORM(6)=SCABIB/FPI
        FNORM(7)=CCABIB/FPI
-C
-       COEF(1,0)= 2.0*SQRT(2.)/3.0
-       COEF(2,0)=-2.0*SQRT(2.)/3.0
+       FNORM(8)=0.0  ! this chanel is dead
+       FNORM(9)=CCABIB/FPI
+       DO K=10,19
+         FNORM(K)=FNORM(9) ! these chanells are not initialized
+       ENDDO
 
-       COEF(3,0)= 0.0
-
-       COEF(4,0)= FPI
-       COEF(5,0)= 0.0
-C
-       COEF(1,1)=-SQRT(2.)/3.0
-       COEF(2,1)= SQRT(2.)/3.0
-       COEF(3,1)= 0.0
-       COEF(4,1)= FPI
-       COEF(5,1)= SQRT(2.)
-C
-       COEF(1,2)=-SQRT(2.)/3.0
-       COEF(2,2)= SQRT(2.)/3.0
-       COEF(3,2)= 0.0
-       COEF(4,2)= 0.0
-       COEF(5,2)=-SQRT(2.)
-C
-
-       COEF(1,3)= 0.0
-       COEF(2,3)=-1.0
-       COEF(3,3)= 0.0
-
-       COEF(4,3)= 0.0
-       COEF(5,3)= 0.0
-C
-       COEF(1,4)= 1.0/SQRT(2.)/3.0
-       COEF(2,4)=-1.0/SQRT(2.)/3.0
-       COEF(3,4)= 0.0
-       COEF(4,4)= 0.0
-       COEF(5,4)= 0.0
-C
-       COEF(1,5)=-SQRT(2.)/3.0
-       COEF(2,5)= SQRT(2.)/3.0
-       COEF(3,5)= 0.0
-       COEF(4,5)= 0.0
-       COEF(5,5)=-SQRT(2.)
-C
-
-       COEF(1,6)= 0.0
-       COEF(2,6)=-1.0
-       COEF(3,6)= 0.0
-
-       COEF(4,6)= 0.0
-       COEF(5,6)=-2.0
-C
-       COEF(1,7)= 0.0
-       COEF(2,7)= 0.0
-       COEF(3,7)= 0.0
-       COEF(4,7)= 0.0
-       COEF(5,7)=-SQRT(2.0/3.0)
-C
-      ENDIF
 C
       DO 10 I=1,4
    10 PAA(I)=PIM1(I)+PIM2(I)+PIM3(I)
@@ -3537,51 +2900,109 @@ C
       CALL PROD5(PIM1,PIM2,PIM3,VEC5)
 * HADRON CURRENT
 C be aware that sign of vec2 is opposite to sign of vec1 in a1 case
+C Rationalize this code:
+      F1 = CMPLX(COEF(1,MNUM))*FORM1(MNUM,XMAA**2,XMRO1**2,XMRO2**2)
+      F2 = CMPLX(COEF(2,MNUM))*FORM2(MNUM,XMAA**2,XMRO2**2,XMRO1**2)
+      F3 = CMPLX(COEF(3,MNUM))*FORM3(MNUM,XMAA**2,XMRO3**2,XMRO1**2)
+      F4 = (-1.0*UROJ)*
+     $CMPLX(COEF(4,MNUM))*FORM4(MNUM,XMAA**2,XMRO1**2,XMRO2**2,XMRO3**2)
+      F5 = (-1.0)*UROJ/4.0/PI**2/FPI**2*
+     $     CMPLX(COEF(5,MNUM))*FORM5(MNUM,XMAA**2,XMRO1**2,XMRO2**2)
+!      if (mnum.eq.9) write(*,*) 'effy=', mnum,'>>',f1,f2,f3,f4,f5
+!      if (mnum.eq.9) write(*,*) 'coef=', mnum,'>>',COEF(1,MNUM),COEF(2,MNUM),COEF(3,MNUM),COEF(4,MNUM),COEF(5,MNUM)
 
       DO 45 I=1,4
       HADCUR(I)= CMPLX(FNORM(MNUM)) * (
-     $CMPLX(VEC1(I)*COEF(1,MNUM))*FORM1(MNUM,XMAA**2,XMRO1**2,XMRO2**2)+
-     $CMPLX(VEC2(I)*COEF(2,MNUM))*FORM2(MNUM,XMAA**2,XMRO2**2,XMRO1**2)+
-     $CMPLX(VEC3(I)*COEF(3,MNUM))*FORM3(MNUM,XMAA**2,XMRO3**2,XMRO1**2)+
-     *(-1.0*UROJ)*
-     $CMPLX(VEC4(I)*COEF(4,MNUM))*FORM4(MNUM,XMAA**2,XMRO1**2,
-     $                                      XMRO2**2,XMRO3**2)         +
-     $(-1.0)*UROJ/4.0/PI**2/FPI**2*
-     $CMPLX(VEC5(I)*COEF(5,MNUM))*FORM5(MNUM,XMAA**2,XMRO1**2,XMRO2**2))
+     $  CMPLX(VEC1(I))*F1+CMPLX(VEC2(I))*F2+CMPLX(VEC3(I))*F3+
+     $  CMPLX(VEC4(I))*F4+CMPLX(VEC5(I))*F5)
  45   CONTINUE
 
+      END
+
+      SUBROUTINE DAM3PI(MNUM,PT,PN,PIM1,PIM2,PIM3,AMPLIT,HV)
+C ----------------------------------------------------------------------
+* CALCULATES DIFFERENTIAL CROSS SECTION AND POLARIMETER VECTOR
+* FOR TAU DECAY INTO K K pi, K pi pi.
+* ALL SPIN EFFECTS IN THE FULL DECAY CHAIN ARE TAKEN INTO ACCOUNT.
+* CALCULATIONS DONE IN TAU REST FRAME WITH Z-AXIS ALONG NEUTRINO MOMENT
+C MNUM DECAY MODE IDENTIFIER.
+C
+
+C     called by : DPHSAA
+
+C ----------------------------------------------------------------------
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4),PIM3(4)
+      REAL  PIVEC(4),PIAKS(4),HVM(4)
+      COMPLEX HADCUR(4)
+      IME=IMEGET(3,MNUM)   ! type of matrix element to be used
+      IF (IME.EQ.0) THEN
+         AMPLIT=GFERMI**2
+         DO  I=1,3
+          HV(I)=0.0
+         ENDDO
+      ELSEIF (IME.EQ.1) THEN
+         AMPLIT=GFERMI**2
+         DO  I=1,3
+          HV(I)=0.0
+         ENDDO
+      ELSEIF (IME.EQ.3) THEN
+C omega is a special case because of sum over photon spin states
+        CALL DAMPOG(PT,PN,PIM1,PIM2,PIM3,AMPLIT,HV)
+        RETURN
+       ELSEIF (IME.EQ.5) THEN
+C wrapper
+        CALL DAM3PI_wrap(MNUM,PT,PN,PIM1,PIM2,PIM3,AMPLIT,HV)
+        RETURN
+      ELSEIF(IME.EQ.2.OR.IME.EQ.4) THEN
+       IF(IME.EQ.4 ) THEN
+        CALL CURR3PI_wrap(MNUM,PIM1,PIM2,PIM3,HADCUR)
+       ELSE
+        CALL CURR3PI(MNUM,PIM1,PIM2,PIM3,HADCUR)
+       ENDIF
 C
 * CALCULATE PI-VECTORS: VECTOR AND AXIAL
-      CALL CLVEC(HADCUR,PN,PIVEC)
-      CALL CLAXI(HADCUR,PN,PIAKS)
-      CALL CLNUT(HADCUR,BRAKM,HVM)
+       CALL CLVEC(HADCUR,PN,PIVEC)
+       CALL CLAXI(HADCUR,PN,PIAKS)
+       CALL CLNUT(HADCUR,BRAKM,HVM)
 * SPIN INDEPENDENT PART OF DECAY DIFF-CROSS-SECT. IN TAU REST  FRAME
-      BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
-     &     +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
-      AMPLIT=(GFERMI)**2*BRAK/2.
-      IF (MNUM.GE.9) THEN
-        PRINT *, 'MNUM=',MNUM
-        ZNAK=-1.0
-        XM1=0.0
-        XM2=0.0
-        XM3=0.0
-        DO 77 K=1,4
-        IF (K.EQ.4) ZNAK=1.0
-        XM1=ZNAK*PIM1(K)**2+XM1
-        XM2=ZNAK*PIM2(K)**2+XM2
-        XM3=ZNAK*PIM3(K)**2+XM3
- 77     PRINT *, 'PIM1=',PIM1(K),'PIM2=',PIM2(K),'PIM3=',PIM3(K)
-        PRINT *, 'XM1=',SQRT(XM1),'XM2=',SQRT(XM2),'XM3=',SQRT(XM3)
-        PRINT *, '************************************************'
-      ENDIF
+       BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
+     &      +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
+       AMPLIT=(GFERMI)**2*BRAK/2.
+       IF (MNUM.GE.20) THEN   ! dead code under this if
+         PRINT *, 'MNUM=',MNUM
+         ZNAK=-1.0
+         XM1=0.0
+         XM2=0.0
+         XM3=0.0
+         DO 77 K=1,4
+         IF (K.EQ.4) ZNAK=1.0
+         XM1=ZNAK*PIM1(K)**2+XM1
+         XM2=ZNAK*PIM2(K)**2+XM2
+         XM3=ZNAK*PIM3(K)**2+XM3
+ 77      PRINT *, 'PIM1=',PIM1(K),'PIM2=',PIM2(K),'PIM3=',PIM3(K)
+         PRINT *, 'XM1=',SQRT(XM1),'XM2=',SQRT(XM2),'XM3=',SQRT(XM3)
+         PRINT *, '************************************************'
+       ENDIF
 C POLARIMETER VECTOR IN TAU REST FRAME
-      DO 90 I=1,3
-      HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
+       DO 90 I=1,3
+       HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
      &      +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
 C HV IS DEFINED FOR TAU-    WITH GAMMA=B+HV*POL
-      HV(I)=-HV(I)/BRAK
- 90   CONTINUE
+       HV(I)=-HV(I)/BRAK
+ 90    CONTINUE
+      ENDIF
       END
+
+
       SUBROUTINE PROD5(P1,P2,P3,PIA)
 C ----------------------------------------------------------------------
 C external product of P1, P2, P3 4-momenta.
@@ -3670,25 +3091,24 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
-      COMMON / TAUBMC / GAMPMC(30),GAMPER(30),NEVDEC(30)
+      COMMON / TAUBMC / GAMPMC(500),GAMPER(500),NEVDEC(500)
       REAL*4            GAMPMC    ,GAMPER
 
       COMMON / INOUT / INUT,IOUT
 
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
      &                ,NAMES
       CHARACTER NAMES(NMODE)*31
-
-
+ 
       REAL*4 PNU(4),PWB(4),PNPI(4,9),HV(4),HHV(4)
       REAL*4 PDUM1(4),PDUM2(4),PDUMI(4,9)
       REAL*4 RRR(3)
       REAL*4 WTMAX(NMODE)
       REAL*8              SWT(NMODE),SSWT(NMODE)
-      DIMENSION NEVRAW(NMODE),NEVOVR(NMODE),NEVACC(NMODE)
+      INTEGER*8 NEVRAW(NMODE),NEVOVR(NMODE),NEVACC(NMODE)
 C
       DATA PI /3.141592653589793238462643/
       DATA IWARM/0/
@@ -3707,28 +3127,40 @@ C       PRINT 7003
         SSWT(JNPI)=0
         WTMAX(JNPI)=-1.
 
-        DO  I=1,500
+C for 4pi phase space, need lots more trials at initialization,
+C or use the WTMAX determined with many trials for default model:
+        NTRIALS = 5000
+C cleo knew nothing about channels recently introduced
+        IF (JNPI.LE.4) THEN
+C         11.Oct.11: fix for BINP and KARLSRUHE currents added
+          WTMAX(JNPI) = PKORB(3,37+JNPI)
+          NTRIALS = 20000
+        END IF
+!       write(*,*) 'jnpi=',jnpi, ntrials, a
+        DO  I=1,NTRIALS
 
           IF    (JNPI.LE.0) THEN
             GOTO 903 
           ELSEIF(JNPI.LE.NM4) THEN 
             CALL DPH4PI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
+!            IF (I.eq.1) write(*,*) '4 pi jnpi=',jnpi
           ELSEIF(JNPI.LE.NM4+NM5) THEN
              CALL DPH5PI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
           ELSEIF(JNPI.LE.NM4+NM5+NM6) THEN
             CALL DPHNPI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
           ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3) THEN
-            INUM=JNPI-NM4-NM5-NM6
-            CALL DPHSPK(WT,HV,PDUM1,PDUM2,PDUMI,INUM)
+            CALL DPH3PI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
           ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3+NM2) THEN
-            INUM=JNPI-NM4-NM5-NM6-NM3
-            CALL DPHSRK(WT,HV,PDUM1,PDUM2,PDUMI,INUM)
+            CALL DPH2PI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
+          ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3+NM2+NM1) THEN
+            CALL DPH1PI(WT,HV,PDUM1,PDUM2,PDUMI,JNPI)
           ELSE
            GOTO 903
           ENDIF   
         IF(WT.GT.WTMAX(JNPI)/1.2) WTMAX(JNPI)=WT*1.2
         ENDDO
 
+C       PRINT *,' DADNEW JNPI,NTRIALS,WTMAX =',JNPI,NTRIALS,WTMAX(JNPI)
 
 C       CALL HBOOK1(801,'WEIGHT DISTRIBUTION  DADNPI    $',100,0.,2.,.0)
 C       PRINT 7004,WTMAX(JNPI)
@@ -3749,12 +3181,12 @@ C
           ELSEIF(JNPI.LE.NM4+NM5+NM6) THEN
             CALL DPHNPI(WT,HHV,PNU,PWB,PNPI,JNPI) 
           ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3) THEN
-            INUM=JNPI-NM4-NM5-NM6
-            CALL DPHSPK(WT,HHV,PNU,PWB,PNPI,INUM)
+            CALL DPH3PI(WT,HHV,PNU,PWB,PNPI,JNPI)
           ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3+NM2) THEN
-            INUM=JNPI-NM4-NM5-NM6-NM3
-            CALL DPHSRK(WT,HHV,PNU,PWB,PNPI,INUM)
-          ELSE
+            CALL DPH2PI(WT,HHV,PNU,PWB,PNPI,JNPI)
+          ELSEIF(JNPI.LE.NM4+NM5+NM6+NM3+NM2+NM1) THEN
+            CALL DPH1PI(WT,HHV,PNU,PWB,PNPI,JNPI)
+           ELSE
            GOTO 903
           ENDIF   
             DO I=1,4
@@ -3797,14 +3229,14 @@ C     =======================
           PARGAM=SWT(JNPI)/FLOAT(NEVRAW(JNPI)+1)
           ERROR=0
           IF(NEVRAW(JNPI).NE.0)
-     &    ERROR=SQRT(SSWT(JNPI)/SWT(JNPI)**2-1./FLOAT(NEVRAW(JNPI)))
+     &    ERROR=SQRT(ABS(SSWT(JNPI)/SWT(JNPI)**2-1./FLOAT(NEVRAW(JNPI))))
           RAT=PARGAM/GAMEL
-          WRITE(IOUT, 7010) NAMES(JNPI),
+          WRITE(IOUT, 7010) NLT+JNPI,NAMES(JNPI),
      &     NEVRAW(JNPI),NEVACC(JNPI),NEVOVR(JNPI),PARGAM,RAT,ERROR
 CC        CALL HPRINT(801)
-          GAMPMC(8+JNPI-1)=RAT
-          GAMPER(8+JNPI-1)=ERROR
-CAM       NEVDEC(8+JNPI-1)=NEVACC(JNPI)
+          GAMPMC(NLT+JNPI)=RAT
+          GAMPER(NLT+JNPI)=ERROR
+CAM       NEVDEC(NLT+JNPI)=NEVACC(JNPI)
   500     CONTINUE
       ENDIF
 C     =====
@@ -3817,7 +3249,7 @@ C     =====
      $  /,1X,15(5H*****)/)
  7010 FORMAT(///1X,15(5H*****)
      $ /,' *',     25X,'******** DADNEW FINAL REPORT  ******** ',9X,1H*
-     $ /,' *',     25X,'CHANNEL:',A31                           ,9X,1H*
+     $ /,' *',     25X,'CHANNEL',I4,': ',A31                    ,4X,1H*
      $ /,' *',I20  ,5X,'NEVRAW = NO. OF DECAYS TOTAL           ',9X,1H*
      $ /,' *',I20  ,5X,'NEVACC = NO. OF DECAYS ACCEPTED        ',9X,1H*
      $ /,' *',I20  ,5X,'NEVOVR = NO. OF OVERWEIGHTED EVENTS    ',9X,1H*
@@ -3832,8 +3264,150 @@ C     =====
  9030 FORMAT(' ----- DADNEW: WRONG JNPI',2I5)
       STOP
       END
+
+      SUBROUTINE DPH1PI(WT,HV,PNU,PWB,PNPI,JNPI)
+C ----------------------------------------------------------------------
+C FZ
+
+      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+      include 'TAUDCDsize.inc'
+
+      COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
+     &                ,NAMES
+      CHARACTER NAMES(NMODE)*31
+
+
+      REAL  PKK(4),PNU(4),HV(4),PNPI(4,9),PWB(4)
+      DATA PI /3.141592653589793238462643/
+      INUM=JNPI-NM4-NM5-NM6-NM3-NM2
+
+      AMF1= DCDMAS(IDFFIN(1,JNPI))
+      AMF0=AMNUTA
+      IF(INUM.GE.3.AND.IDFFIN(3,JNPI).NE.0) AMF0= DCDMAS(IDFFIN(3,JNPI))
+      IF(INUM.GE.3.AND.IDFFIN(4,JNPI).NE.0) AMF0= DCDMAS(IDFFIN(4,JNPI))
+        EKK= (AMTAU**2+AMF1**2-AMF0**2)/(2*AMTAU)
+        ENU= (AMTAU**2-AMF1**2+AMF0**2)/(2*AMTAU)
+        XKK= SQRT(EKK**2-AMF1**2)
+C K MOMENTUM
+        CALL SPHERA(XKK,PKK)
+        PKK(4)=EKK
+C TAU-NEUTRINO MOMENTUM
+        DO 30 I=1,3
+30      PNU(I)=-PKK(I)
+        PNU(4)=ENU
+
  
+       CALL DAM1PI(INUM,PNU,AMF0,PKK,AMF1,GAMM,HV)
+       WT=GAMM
+       DO I=1,4
+         PNPI(I,1)=PKK(I)
+       ENDDO
+
+      END
+
+      SUBROUTINE DAM1PI(INUM,PNU,AMF0,PKK,AMF1,GAMM,HV)
+
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+
+      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL  PKK(4),PNU(4),HV(4)
+      DATA PI /3.141592653589793238462643/
+
+       IME=IMEGET(1,INUM) 
+
+       IF (IME.EQ.2.OR.IME.EQ.4) THEN
+        EKK=PKK(4)
+        ENU=PNU(4)
+        PXQ=AMTAU*EKK
+        PXN=AMTAU*ENU
+        QXN=PKK(4)*PNU(4)-PKK(1)*PNU(1)-PKK(2)*PNU(2)-PKK(3)*PNU(3)
+        BRAK=(GV**2+GA**2)*(2*PXQ*QXN-AMF1**2*PXN)
+     &      +(GV**2-GA**2)*AMTAU*AMF0*AMF1**2
+        DO 40 I=1,3
+40      HV(I)=2*GA*GV*AMTAU*(2*PKK(I)*QXN-PNU(I)*AMF1**2)/BRAK
+        HV(4)=1
+
+C WARNING: 2-BODY PHASE SPACE FACTOR IS INCLUDED !
+
+       IF (IME.EQ.2) THEN
+        IF (INUM.EQ.1) THEN  ! pi nu 
+         FPI=0.1284
+         GAMM=(GFERMI*FPI)**2/(16.*PI)*AMTAU**3*
+     $        (BRAK/AMTAU**4)*
+     $        SQRT((AMTAU**2-AMF1**2-AMF0**2)**2
+     $             -4*AMF1**2*AMF0**2           )/AMTAU**2
+
+        ELSEIF (INUM.EQ.2) THEN  ! K nu
+         FKK=0.0354
+         GAMM=(GFERMI*FKK)**2/(16.*PI)*AMTAU**3*
+     $        (BRAK/AMTAU**4)*
+     $        SQRT((AMTAU**2-AMF1**2-AMF0**2)**2
+     $             -4*AMF1**2*AMF0**2           )/AMTAU**2
+        ELSE 
+C optional non-sm ME or dalitz plot enhancements etc. 
+C may be  be installed here for some values of MNUM.
+C CALL ALTERN1(INUM,PNU,PKK,GAMM,HV)
+
+         GAMM=GFERMI**2
+         DO  I=1,3
+          HV(I)=0.0
+         ENDDO
+        ENDIF
+
+       ELSEIF (IME.EQ.4) THEN
+        FKK=FCONST_wrap(INUM) ! to be filled in by C++ 
+         GAMM=(GFERMI*FKK)**2/(16.*PI)*AMTAU**3*
+     $        (BRAK/AMTAU**4)*
+     $        SQRT((AMTAU**2-AMF1**2-AMF0**2)**2
+     $             -4*AMF1**2*AMF0**2           )/AMTAU**2
+       ENDIF
+       ELSEIF (IME.EQ.5) THEN       
+         CALL DAM1PI_wrap(INUM,PNU,AMF0,PKK,AMF1,GAMM,HV)
+         RETURN
+       ELSEIF (IME.EQ.0) THEN    ! not initialized
+         GAMM=GFERMI**2
+         DO  I=1,3
+          HV(I)=0.0
+         ENDDO
+       ELSE    ! any other; flat phase space
+         GAMM=GFERMI**2
+         DO  I=1,3
+          HV(I)=0.0
+         ENDDO
+       ENDIF
+
+      END
  
+
+      SUBROUTINE CHOICE4(MNUM,xPROB1,xPROB2,xAMRX,xGAMRX,xAMRA,xGAMRA)
+      include 'TAUDCDsize.inc'
+      COMMON /SAMPL4/ PROB1(NM4),PROB2(NM4),AMRX(NM4),GAMRX(NM4),AMRA(NM4),GAMRA(NM4)
+       xPROB1=PROB1(MNUM)
+       xPROB2=PROB2(MNUM)
+       xAMRX =AMRX (MNUM)
+       xGAMRX=GAMRX(MNUM)
+       xAMRA =AMRA (MNUM)
+       xGAMRA=GAMRA(MNUM)
+
+      END
+
+
       SUBROUTINE DPH4PI(DGAMT,HV,PN,PAA,PMULT,JNPI)
 C ----------------------------------------------------------------------
 
@@ -3850,6 +3424,11 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      include 'TAUDCDsize.inc'
+
+      COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
+     &                ,NAMES
+      CHARACTER NAMES(NMODE)*31
 
 
       REAL  HV(4),PT(4),PN(4),PAA(4),PIM1(4),PIM2(4),PIPL(4),PMULT(4,9)
@@ -3865,38 +3444,13 @@ C THREE BODY PHASE SPACE NORMALISED AS IN BJORKEN-DRELL
 C D**3 P /2E/(2PI)**3 (2PI)**4 DELTA4(SUM P)
       PHSPAC=1./2**23/PI**11
       PHSP=1./2**5/PI**2
+      AMP1=DCDMAS(IDFFIN(1,JNPI))    ! mass for  PIM2
+      AMP2=DCDMAS(IDFFIN(2,JNPI))    ! mass for  PIM1
+      AMP3=DCDMAS(IDFFIN(3,JNPI))    ! mass for  PIPL
+      AMP4=DCDMAS(IDFFIN(4,JNPI))    ! mass for  PIZ
 
-      IF (JNPI.EQ.1) THEN
-       PREZ=0.7
-
-       AMP1=AMPI
-       AMP2=AMPI
-       AMP3=AMPI
-       AMP4=AMPIZ
-       AMRX=0.782
-       GAMRX=0.0084
-
-        AMROP =1.2
-        GAMROP=.46
-      ELSE
-       PREZ=0.0
-
-       AMP1=AMPIZ
-       AMP2=AMPIZ
-       AMP3=AMPIZ
-       AMP4=AMPI
-
-       AMRX=1.4
-       GAMRX=.6
-        AMROP =AMRX
-        GAMROP=GAMRX
  
-      ENDIF
-
-      RRB=0.3
-      CALL CHOICE(100+JNPI,RRB,ICHAN,PROB1,PROB2,PROB3,
-
-     $            AMROP,GAMROP,AMRX,GAMRX,AMRB,GAMRB)
+      CALL CHOICE4(JNPI,PROB1,PROB2,AMROP,GAMROP,AMRX,GAMRX)
       PREZ=PROB1+PROB2
 C TAU MOMENTUM
       PT(1)=0.
@@ -4046,53 +3600,62 @@ C
       PN(2)=0
       PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AM4**2)
       PN(3)=-PAA(3)
+C ZBW 20.12.2002 bug fix
+        IF(RRR(9).LE.0.5*PREZ) THEN
+         DO 72 I=1,4
+         X=PIM1(I)
+         PIM1(I)=PIM2(I)
+ 72      PIM2(I)=X
+        ENDIF           
+C end of bug fix
 C WE INCLUDE REMAINING PART OF THE JACOBIAN
 C --- FLAT CHANNEL
         AM3SQ=(PIM1(4)+PIZ(4)+PIPL(4))**2-(PIM1(3)+PIZ(3)+PIPL(3))**2
      $       -(PIM1(2)+PIZ(2)+PIPL(2))**2-(PIM1(1)+PIZ(1)+PIPL(1))**2
-        AMS2=(AM4-AMP2)**2
-        AMS1=(AMP1+AMP3+AMP4)**2
+        AMS2=(AM4-AMP1)**2
+        AMS1=(AMP2+AMP3+AMP4)**2
         FF1=(AMS2-AMS1)
         AMS1=(AMP3+AMP4)**2
-        AMS2=(SQRT(AM3SQ)-AMP1)**2
+        AMS2=(SQRT(AM3SQ)-AMP2)**2
         FF2=AMS2-AMS1
-        FF3=(4*PI)*(XLAM(AM2**2,AMP1**2,AM3SQ)/AM3SQ)
-        FF4=(4*PI)*(XLAM(AM3SQ,AMP2**2,AM4**2)/AM4**2)
+        FF3=(4*PI)*(XLAM(AM2**2,AMP2**2,AM3SQ)/AM3SQ)
+        FF4=(4*PI)*(XLAM(AM3SQ,AMP1**2,AM4**2)/AM4**2)
         UU=FF1*FF2*FF3*FF4
 C --- FIRST CHANNEL
         AM3SQ=(PIM1(4)+PIZ(4)+PIPL(4))**2-(PIM1(3)+PIZ(3)+PIPL(3))**2
      $       -(PIM1(2)+PIZ(2)+PIPL(2))**2-(PIM1(1)+PIZ(1)+PIPL(1))**2
-        AMS2=(AM4-AMP2)**2
-        AMS1=(AMP1+AMP3+AMP4)**2
+        AMS2=(AM4-AMP1)**2
+        AMS1=(AMP2+AMP3+AMP4)**2
         ALP1=ATAN((AMS1-AMRX**2)/AMRX/GAMRX)
         ALP2=ATAN((AMS2-AMRX**2)/AMRX/GAMRX)
         FF1=((AM3SQ-AMRX**2)**2+(AMRX*GAMRX)**2)/(AMRX*GAMRX)
         FF1=FF1*(ALP2-ALP1)
         AMS1=(AMP3+AMP4)**2
-        AMS2=(SQRT(AM3SQ)-AMP1)**2
+        AMS2=(SQRT(AM3SQ)-AMP2)**2
         FF2=AMS2-AMS1
-        FF3=(4*PI)*(XLAM(AM2**2,AMP1**2,AM3SQ)/AM3SQ)
-        FF4=(4*PI)*(XLAM(AM3SQ,AMP2**2,AM4**2)/AM4**2)
+        FF3=(4*PI)*(XLAM(AM2**2,AMP2**2,AM3SQ)/AM3SQ)
+        FF4=(4*PI)*(XLAM(AM3SQ,AMP1**2,AM4**2)/AM4**2)
         FF=FF1*FF2*FF3*FF4
 C --- SECOND CHANNEL
         AM3SQ=(PIM2(4)+PIZ(4)+PIPL(4))**2-(PIM2(3)+PIZ(3)+PIPL(3))**2
      $       -(PIM2(2)+PIZ(2)+PIPL(2))**2-(PIM2(1)+PIZ(1)+PIPL(1))**2
-        AMS2=(AM4-AMP1)**2
-        AMS1=(AMP2+AMP3+AMP4)**2
+        AMS2=(AM4-AMP2)**2
+        AMS1=(AMP1+AMP3+AMP4)**2
         ALP1=ATAN((AMS1-AMRX**2)/AMRX/GAMRX)
         ALP2=ATAN((AMS2-AMRX**2)/AMRX/GAMRX)
         GG1=((AM3SQ-AMRX**2)**2+(AMRX*GAMRX)**2)/(AMRX*GAMRX)
         GG1=GG1*(ALP2-ALP1)
         AMS1=(AMP3+AMP4)**2
-        AMS2=(SQRT(AM3SQ)-AMP2)**2
+        AMS2=(SQRT(AM3SQ)-AMP1)**2
         GG2=AMS2-AMS1
-        GG3=(4*PI)*(XLAM(AM2**2,AMP2**2,AM3SQ)/AM3SQ)
-        GG4=(4*PI)*(XLAM(AM3SQ,AMP1**2,AM4**2)/AM4**2)
+        GG3=(4*PI)*(XLAM(AM2**2,AMP1**2,AM3SQ)/AM3SQ)
+        GG4=(4*PI)*(XLAM(AM3SQ,AMP2**2,AM4**2)/AM4**2)
         GG=GG1*GG2*GG3*GG4
 C --- JACOBIAN AVERAGED OVER THE TWO
-        IF ( ( (FF+GG)*UU+FF*GG ).GT.0.0D0) THEN
-          RR=FF*GG*UU/(0.5*PREZ*(FF+GG)*UU+(1.0-PREZ)*FF*GG)
-          PHSPAC=PHSPAC*RR
+C        IF ( ( (FF+GG)*UU+FF*GG ).GT.0.0D0) THEN
+        IF ( (0.5*PREZ*(FF+GG)*UU+(1.0-PREZ)*FF*GG).GT.0.0D0) THEN
+           RR=FF*GG*UU/(0.5*PREZ*(FF+GG)*UU+(1.0-PREZ)*FF*GG)
+           PHSPAC=PHSPAC*RR
         ELSE
           PHSPAC=0.0
         ENDIF
@@ -4106,7 +3669,7 @@ C --- JACOBIAN AVERAGED OVER THE TWO
  70      PIM2(I)=X
         ENDIF
         PHSPAC=PHSPAC/2.
-       ELSE
+       ELSEIF (JNPI.EQ.2) THEN
 C MOMENTA OF PI0-S ARE GENERATED UNIFORMLY ONLY IF PREZ=0.0
         RR5= RRR(5)
         IF(RR5.LE.0.5) THEN
@@ -4116,6 +3679,19 @@ C MOMENTA OF PI0-S ARE GENERATED UNIFORMLY ONLY IF PREZ=0.0
  71      PIM2(I)=X
         ENDIF
         PHSPAC=PHSPAC/6.
+       ELSE
+C note that         PIM1(4)=1./(2*AM3)*(AM3**2-AM2**2+AMP2**2)
+C in this case it matters PIM1 PIM2 are not particles of identical mass 
+         DO  I=1,4
+          X=PIM1(I)
+          PIM1(I)=PIM2(I)
+          PIM2(I)=X
+         ENDDO
+C        do nothing  ! .OR.JNPI.EQ.3.OR.JNPI.EQ.4
+C        case of e-e-e+ nunu  will require new presampler because
+C        there are two regions where photon is near real.
+C        case e-e+ mu- nunu can be easily treated if order
+C        mu- nu e-e+ nu is adopted.
        ENDIF
 * ALL PIONS BOOSTED FROM  4  REST FRAME TO TAU REST FRAME
 * Z-AXIS ANTIPARALLEL TO NEUTRINO MOMENTUM
@@ -4137,6 +3713,8 @@ C      AMPLIT=CCABIB**2*GFERMI**2/2. * BRAK * AMX2*SIGEE(AMX2,1)
         CALL DAM4PI(JNPI,PT,PN,PIM1,PIM2,PIZ,PIPL,AMPLIT,HV)
       ELSEIF (JNPI.EQ.2) THEN
         CALL DAM4PI(JNPI,PT,PN,PIM1,PIM2,PIPL,PIZ,AMPLIT,HV)
+      ELSE
+        CALL DAM4PI(JNPI,PT,PN,PIM1,PIM2,PIPL,PIZ,AMPLIT,HV) ! temporarily
       ENDIF
 
       DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
@@ -4174,33 +3752,193 @@ C
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
       REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4),PIM3(4),PIM4(4)
       REAL  PIVEC(4),PIAKS(4),HVM(4)
-      COMPLEX HADCUR(4),FORM1,FORM2,FORM3,FORM4,FORM5
+      COMPLEX HADCUR(4),HADCUR1(4),FORM1,FORM2,FORM3,FORM4,FORM5
       EXTERNAL FORM1,FORM2,FORM3,FORM4,FORM5
       DATA PI /3.141592653589793238462643/
       DATA ICONT /0/
+
+      COMMON /SETINI/ IFBABAR
+      INTEGER        IFBABAR
+      INTEGER        IFKARL
+      IME=IMEGET(4,MNUM)   ! type of matrix element to be used
+
 C
+!      write(*,*) 'falanti',mnum
+      IF (IME.EQ.2) THEN
+       IF     (MNUM.EQ.1.OR.MNUM.EQ.2) THEN ! MNUM
+        if (IFBABAR.eq.1) then
+         CALL CURR(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
+        else if (IFBABAR.eq.2) then
+          IFKARL=0 ! current choice between Karlsruhe (1), Novosibirsk(0)
+          if(IFKARL.eq.1) then 
+           CALL CURR_KARLS(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
+          else
+             if (MNUM.EQ.1) then
+              CALL CURR_BINP(MNUM,1,PIM1,PIM4,PIM2,PIM3,HADCUR)
+              CALL CURR_BINP(MNUM,7,PIM1,PIM4,PIM2,PIM3,HADCUR1)
+              do I=1,4
+              HADCUR(I) = HADCUR(I) + HADCUR1(I)
+              enddo
+             elseif (MNUM.EQ.2) then
+              CALL CURR_BINP(MNUM,-1,PIM4,PIM3,PIM1,PIM2,HADCUR)
+             endif
+          endif
+        else  ! IFBABAR
+         CALL CURR_CLEO(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
+        endif ! IFBABAR
+       ELSE   ! MNUM
+        CALL CURR(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
+       ENDIF  ! MNUM
+      ELSEIF (IME.EQ.4) THEN
+        CALL CURR4_wrap(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
+      ELSEIF (IME.EQ.5) THEN
+        CALL DAM4PI_wrap(MNUM,PT,PN,PIM1,PIM2,PIM3,PIM4,AMPLIT,HV)
+        RETURN
+      ELSE
+!       do nothing
+      ENDIF  ! IME
 
-      CALL CURR(MNUM,PIM1,PIM2,PIM3,PIM4,HADCUR)
-
+      IF (IME.EQ.2.OR.IME.EQ.4) THEN   ! we use standard ME calc. also for IME=4 (user current)
 C
 * CALCULATE PI-VECTORS: VECTOR AND AXIAL
-      CALL CLVEC(HADCUR,PN,PIVEC)
-      CALL CLAXI(HADCUR,PN,PIAKS)
-      CALL CLNUT(HADCUR,BRAKM,HVM)
+       CALL CLVEC(HADCUR,PN,PIVEC)
+       CALL CLAXI(HADCUR,PN,PIAKS)
+       CALL CLNUT(HADCUR,BRAKM,HVM)
 * SPIN INDEPENDENT PART OF DECAY DIFF-CROSS-SECT. IN TAU REST  FRAME
-      BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
-     &     +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
-      AMPLIT=(CCABIB*GFERMI)**2*BRAK/2.
+       BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
+     &      +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
+       AMPLIT=(CCABIB*GFERMI)**2*BRAK/2.
 C POLARIMETER VECTOR IN TAU REST FRAME
-      DO 90 I=1,3
-      HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
-     &      +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
+       DO 90 I=1,3
+       HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
+     &       +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
 C HV IS DEFINED FOR TAU-    WITH GAMMA=B+HV*POL
-      IF (BRAK.NE.0.0)
-     &HV(I)=-HV(I)/BRAK
- 90   CONTINUE
+       IF (BRAK.NE.0.0)
+     & HV(I)=-HV(I)/BRAK
+ 90    CONTINUE
+
+      ELSEIF (IME.EQ.0) THEN  ! not initialized
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT= GFERMI**2       
+
+      ELSEIF (IME.EQ.1) THEN ! flat phase space
+C        FLAT PHASE SPACE ONLY;
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT=GFERMI**2 
+        RETURN
+      ELSE
+       write(*,*) 'DAM4PI: wrong IME= ',IME
+        STOP
+      ENDIF
+
       END
-       SUBROUTINE DPH5PI(DGAMT,HV,PN,PAA,PMULT,JNPI)                    
+      SUBROUTINE DAM5PI(MNUM,PT,PN,PIM1,PIM2,PIM3,PIM4,PIM5,AMPLIT,HV)
+C ----------------------------------------------------------------------
+* CALCULATES DIFFERENTIAL CROSS SECTION AND POLARIMETER VECTOR
+* FOR TAU DECAY INTO 4 PI MODES
+* ALL SPIN EFFECTS IN THE FULL DECAY CHAIN ARE TAKEN INTO ACCOUNT.
+* CALCULATIONS DONE IN TAU REST FRAME WITH Z-AXIS ALONG NEUTRINO MOMENT
+C MNUM DECAY MODE IDENTIFIER.
+C
+
+C     called by : DPHSAA
+
+C ----------------------------------------------------------------------
+      COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+C
+      REAL*4            AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU
+     *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1
+     *                 ,AMK,AMKZ,AMKST,GAMKST
+      COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL
+      REAL  HV(4),PT(4),PN(4),PIM1(4),PIM2(4),PIM3(4),PIM4(4),PIM5(4)
+      REAL  PIVEC(4),PIAKS(4),HVM(4)
+      COMPLEX HADCUR(4),FORM1,FORM2,FORM3,FORM4,FORM5
+      EXTERNAL FORM1,FORM2,FORM3,FORM4,FORM5
+      include 'TAUDCDsize.inc'
+      DATA PI /3.141592653589793238462643/
+      DATA ICONT /0/
+
+      
+      IME=IMEGET(5,MNUM)   ! type of matrix element to be used
+
+C
+!      write(*,*) 'falanti',mnum
+      IF (IME.EQ.2) THEN
+       IF     (MNUM.EQ.9.OR.MNUM.LE.6) THEN
+        CALL CURR5(MNUM,PIM1,PIM2,PIM3,PIM4,PIM5,HADCUR)
+       ELSE
+         write(*,*) 'DAM5PI: wrong MNUM= ',MNUM
+         STOP
+       ENDIF
+      ELSEIF (IME.EQ.4) THEN
+        CALL CURR5_wrap(MNUM,PIM1,PIM2,PIM3,PIM4,PIM5,HADCUR)
+      ELSEIF (IME.EQ.5) THEN
+        CALL DAM5PI_wrap(MNUM,PT,PN,PIM1,PIM2,PIM3,PIM4,PIM5,AMPLIT,HV)
+        RETURN
+      ENDIF
+
+      IF (IME.EQ.2.OR.IME.EQ.4) THEN
+C
+* CALCULATE PI-VECTORS: VECTOR AND AXIAL
+       CALL CLVEC(HADCUR,PN,PIVEC)
+       CALL CLAXI(HADCUR,PN,PIAKS)
+       CALL CLNUT(HADCUR,BRAKM,HVM)
+* SPIN INDEPENDENT PART OF DECAY DIFF-CROSS-SECT. IN TAU REST  FRAME
+       BRAK= (GV**2+GA**2)*PT(4)*PIVEC(4) +2.*GV*GA*PT(4)*PIAKS(4)
+     &      +2.*(GV**2-GA**2)*AMNUTA*AMTAU*BRAKM
+       AMPLIT=(CCABIB*GFERMI)**2*BRAK/2.
+C POLARIMETER VECTOR IN TAU REST FRAME
+       DO 90 I=1,3
+       HV(I)=-(AMTAU*((GV**2+GA**2)*PIAKS(I)+2.*GV*GA*PIVEC(I)))
+     &       +(GV**2-GA**2)*AMNUTA*AMTAU*HVM(I)
+C HV IS DEFINED FOR TAU-    WITH GAMMA=B+HV*POL
+       IF (BRAK.NE.0.0)
+     & HV(I)=-HV(I)/BRAK
+ 90    CONTINUE
+      ELSEIF (IME.EQ.0) THEN  ! not initialized
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT= GFERMI**2       
+
+      ELSEIF (IME.EQ.1) THEN ! flat phase space
+C        FLAT PHASE SPACE ONLY;
+        DO  I=1,3
+         HV(I)=0.0
+        ENDDO
+        AMPLIT=GFERMI**2 
+        RETURN
+      ELSE
+       write(*,*) 'DAM5PI: wrong IME= ',IME
+        STOP
+      ENDIF
+
+      END
+
+
+      SUBROUTINE CHOICE5(INUM,xPROBa2,xPROBOM,xama2,xgama2,xAMOM,xGAMOM)
+      include 'TAUDCDsize.inc'
+      REAL*8          xAMOM,xGAMOM
+      REAL*8           AMOM, GAMOM
+      COMMON /SAMPL5/ PROBa2(NM5),PROBOM(NM5),ama2(NM5),gama2(NM5),AMOM(NM5),GAMOM(NM5)
+
+      xPROBa2=PROBa2(INUM)
+      xPROBOM=PROBOM(INUM)
+      xama2=ama2(INUM)
+      xgama2=gama2(INUM)
+      xAMOM=AMOM(INUM)
+      xGAMOM=GAMOM(INUM)
+
+      END
+
+      SUBROUTINE DPH5PI(DGAMT,HV,PN,PAA,PMULT,JNPI)                    
 C ----------------------------------------------------------------------
 * IT SIMULATES 5pi DECAY IN TAU REST FRAME WITH                         
 * Z-AXIS ALONG 5pi MOMENTUM                                             
@@ -4216,7 +3954,7 @@ C
      *                 ,AMK,AMKZ,AMKST,GAMKST                           
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL                
       REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL                
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
@@ -4226,7 +3964,7 @@ C
       REAL*4 PR(4),PI1(4),PI2(4),PI3(4),PI4(4),PI5(4)                   
       REAL*8 AMP1,AMP2,AMP3,AMP4,AMP5,ams1,ams2,amom,gamom
       REAL*8 AM5SQ,AM4SQ,AM3SQ,AM2SQ,AM5,AM4,AM3
-      REAL*4 RRR(10)                                                    
+      REAL*4 RRR(12)                                                    
       REAL*8 gg1,gg2,gg3,ff1,ff2,ff3,ff4,alp,alp1,alp2
 
       REAL*8 XM,AM,GAMMA
@@ -4243,16 +3981,17 @@ C
 
       BWIGN(XM,AM,GAMMA)=XM**2/CMPLX(XM**2-AM**2,GAMMA*AM)            
 
-  
-C                              
-      AMOM=.782                                                         
-      GAMOM=0.0085                                                      
+ 
+      INUM=JNPI-NM4
+ 
+C get parameters for presampler                                                 
+      call choice5(INUM,PROBa2,PROBOM,ama2,gama2,AMOM,GAMOM)
 c                                                                       
 C 6 BODY PHASE SPACE NORMALISED AS IN BJORKEN-DRELL                     
 C D**3 P /2E/(2PI)**3 (2PI)**4 DELTA4(SUM P)                            
       PHSPAC=1./2**29/PI**14                                            
 c     PHSPAC=1./2**5/PI**2                                              
-C init 5pi decay mode (JNPI)                                            
+C init 5pi decay mode (JNPI)    
       AMP1=DCDMAS(IDFFIN(1,JNPI))
       AMP2=DCDMAS(IDFFIN(2,JNPI))
       AMP3=DCDMAS(IDFFIN(3,JNPI))
@@ -4263,20 +4002,38 @@ C TAU MOMENTUM
       PT(1)=0.                                                          
       PT(2)=0.                                                          
       PT(3)=0.                                                          
-      PT(4)=AMTAU                                                       
-C                                                                       
-      CALL RANMAR(RRR,10)                                               
+      PT(4)=AMTAU                                                                                                                             
+      CALL RANMAR(RRR,12)                                               
 C                                                                       
 c masses of 5, 4, 3 and 2 pi systems                                    
 c 3 pi with sampling for omega resonance                                
 cam                                                                     
-c mass of 5   (12345)                                                   
-      rr1=rrr(10)                                                       
-      ams1=(amp1+amp2+amp3+amp4+amp5)**2                                
-      ams2=(amtau-amnuta)**2                                            
-      am5sq=ams1+   rr1*(ams2-ams1)                                     
-      am5 =sqrt(am5sq)                                                  
-      phspac=phspac*(ams2-ams1)  
+c mass of 5   (12345)                     
+       IF (RRR(11).GT.PROBa2) THEN                              
+c  flat phase space:
+        rr1=rrr(10)                                                       
+        ams1=(amp1+amp2+amp3+amp4+amp5)**2                                
+        ams2=(amtau-amnuta)**2 
+        alp1=atan((ams1-ama2**2)/ama2/gama2)                              
+        alp2=atan((ams2-ama2**2)/ama2/gama2)                     
+        am5sq=ams1+   rr1*(ams2-ams1)                                     
+        am5 =sqrt(am5sq)                                                  
+C      phspac=phspac*(ams2-ams1)  
+c or peaked phase space  for a1(?) resonance: 
+       ELSE
+        rr1=rrr(10)                                                       
+        ams1=(amp1+amp2+amp3+amp4+amp5)**2                                
+        ams2=(amtau-amnuta)**2    
+        alp1=atan((ams1-ama2**2)/ama2/gama2)                              
+        alp2=atan((ams2-ama2**2)/ama2/gama2)                              
+        alp=alp1+rr1*(alp2-alp1)                                          
+        am5sq =ama2**2+ama2*gama2*tan(alp)                                
+        am5 =sqrt(am5sq)
+       ENDIF                                                  
+c --- these are two parts of jacobian, plugged here --------------- 
+      gg5=((am5sq-ama2**2)**2+(ama2*gama2)**2)/(ama2*gama2)             
+      gg5=gg5*(alp2-alp1)                          
+      phspac=phspac/(PROBa2/gg5+(1D0-PROBa2)/(ams2-ams1) )               
 c                                                                       
 c mass of 4   (2345)                                                    
 c flat phase space                                                      
@@ -4288,23 +4045,33 @@ c flat phase space
       gg1=ams2-ams1                   
 c                                                                       
 c mass of 3   (234)                                                     
-C phase space with sampling for omega resonance                         
-      rr1=rrr(1)                                                        
-      ams1=(amp2+amp3+amp4)**2                                          
-      ams2=(am4-amp5)**2                                                
-      alp1=atan((ams1-amom**2)/amom/gamom)                              
-      alp2=atan((ams2-amom**2)/amom/gamom)                              
-      alp=alp1+rr1*(alp2-alp1)                                          
-      am3sq =amom**2+amom*gamom*tan(alp)                                
-      am3 =sqrt(am3sq)                                                  
-c --- this part of the jacobian will be recovered later --------------- 
-      gg2=((am3sq-amom**2)**2+(amom*gamom)**2)/(amom*gamom)             
-      gg2=gg2*(alp2-alp1)                          
-c flat phase space;                                                     
-C      am3sq=ams1+   rr1*(ams2-ams1)                                     
-C      am3 =sqrt(am3sq)                                                  
+
+       IF (RRR(12).LT.PROBom) THEN                    
+C phase space with sampling for omega resonance     
+        rr1=rrr(1)                                                        
+        ams1=(amp2+amp3+amp4)**2                                          
+        ams2=(am4-amp5)**2                                                
+        alp1=atan((ams1-amom**2)/amom/gamom)                              
+        alp2=atan((ams2-amom**2)/amom/gamom)                              
+        alp=alp1+rr1*(alp2-alp1)                                          
+        am3sq =amom**2+amom*gamom*tan(alp)                                
+        am3 =sqrt(am3sq)                                                  
+       ELSE                             
+c flat phase space; 
+        rr1=rrr(1)                                                        
+        ams1=(amp2+amp3+amp4)**2                                          
+        ams2=(am4-amp5)**2                                                
+        alp1=atan((ams1-amom**2)/amom/gamom)                              
+        alp2=atan((ams2-amom**2)/amom/gamom)                              
+                                                   
+        am3sq=ams1+   rr1*(ams2-ams1)                                     
+        am3 =sqrt(am3sq)                                                  
 c --- this part of jacobian will be recovered later                     
-C      gg2=ams2-ams1                                                     
+       ENDIF
+c --- this part of the jacobian will be recovered later --------------- 
+       gg2=((am3sq-amom**2)**2+(amom*gamom)**2)/(amom*gamom)             
+       gg2=gg2*(alp2-alp1)   
+       gg2=1D0/(PROBOM/gg2+(1D0-PROBOM)/(ams2-ams1))
 c                                                                       
 C mass of 2  (34)                                                       
       rr2=rrr(2)                                                        
@@ -4456,14 +4223,22 @@ c normalisation factor (to some numerical undimensioned factor;
 c cf R.Fischer et al ZPhys C3, 313 (1980))                              
       fnorm = 1/fpi**6                                                  
 c     AMPLIT=CCABIB**2*GFERMI**2/2. * BRAK * AM5SQ*SIGEE(AM5SQ,JNPI)    
-      AMPLIT=CCABIB**2*GFERMI**2/2. * BRAK                              
+      AMPLIT=CCABIB**2*GFERMI**2/2. * BRAK !* (1D0*(jnpi-12))                             
       amplit = amplit * fompp * fnorm                                   
 c phase space test                                                      
 c     amplit = amplit * fnorm                                           
-      DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC                                  
+
+!      write(*,*) '5pi jnpi=',jnpi                                  
 c ignore spin terms                                                     
       DO 40 I=1,3                                                       
- 40   HV(I)=0.                                    
+ 40   HV(I)=0.       
+                             
+!      write(*,*) jnpi
+!      stop
+
+      if (INUM.gt.1) ! for the time being we want to keep old wrong m.e.
+     $ CALL DAM5PI(INUM,PT,PN,PI1,PI2,PI3,PI4,PI5,AMPLIT,HV)
+      DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC
 c                                                                       
       do 77 k=1,4                                                       
         pmult(k,1)=pi1(k)                                               
@@ -4479,12 +4254,32 @@ C for identical matrices, polarimetric vector. Matrix element rather naive.
 
 C flat phase space in pion system + with breit wigner for omega
 C anyway it is better than nothing, and code is improvable.                                                  
-      end                                                               
-      SUBROUTINE DPHSRK(DGAMT,HV,PN,PR,PMULT,INUM)
+      end         
+  
+
+      SUBROUTINE CHOICE2(INUM,xPROB1,xPROB2,xAM2,xGAM2,xAM3,xGAM3)
+      include 'TAUDCDsize.inc'
+      COMMON /SAMPL2/ PROB1(NM2),PROB2(NM2),AM2(NM2),GAM2(NM2),AM3(NM2),GAM3(NM2)
+
+
+!        PROB(1) flat
+!        PROB(2) K*
+!        PROB(3) rho
+        xAM2  = AM2  (INUM)
+        xGAM2 = GAM2 (INUM)
+        xAM3  = AM3  (INUM)
+        xGAM3 = GAM3 (INUM)
+        xPROB1= PROB1(INUM)
+        xPROB2= PROB2(INUM)
+
+      END
+                                                    
+      SUBROUTINE DPH2PI(DGAMT,HV,PN,PR,PMULT,JNPI)
 C ----------------------------------------------------------------------
 C IT SIMULATES RHO DECAY IN TAU REST FRAME WITH                         
 C Z-AXIS ALONG RHO MOMENTUM                                             
-C Rho decays to K Kbar                                                  
+C Rho decays to K Kbar       
+C WARNING: DPH2PI routine is missing 2 scalar ME calculation                
 C ----------------------------------------------------------------------
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU             
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1                
@@ -4494,14 +4289,35 @@ C
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1                
      *                 ,AMK,AMKZ,AMKST,GAMKST                           
       COMMON / DECPAR / GFERMI,GV,GA,CCABIB,SCABIB,GAMEL                
-      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL                
+      REAL*4            GFERMI,GV,GA,CCABIB,SCABIB,GAMEL 
+      include 'TAUDCDsize.inc'
+
+      COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
+     &                ,NAMES
+      CHARACTER NAMES(NMODE)*31
+
       REAL  HV(4),PT(4),PN(4),PR(4),PKC(4),PKZ(4),QQ(4),PMULT(4,9)
 
-      REAL RR1(1)
+      REAL RR1(1),RR2(1)
 
       DATA PI /3.141592653589793238462643/                              
       DATA ICONT /0/                                                    
-C                                                                       
+C       
+      INUM=JNPI-NM3-NM4- NM5- NM6
+
+      AMF1= DCDMAS(IDFFIN(1,JNPI))
+      AMF2  = DCDMAS(IDFFIN(2,JNPI))  
+      AMF0=AMNUTA
+!      IF(INUM.GT.4) THEN
+!       write(*,*) inum,':',IDFFIN(1,IADDR),IDFFIN(2,IADDR),IDFFIN(3,IADDR),DCDMAS(IDFFIN(3,IADDR))
+!      ENDIF
+      IF(INUM.GT.3.AND.IDFFIN(3,JNPI).NE.0) AMF0= DCDMAS(IDFFIN(3,JNPI))
+
+!      write(*,*) 'pajacna', INUM,  IDFFIN(1,IADDR),  IDFFIN(2,IADDR),  IDFFIN(3,IADDR)   
+!      write(*,*) 'pajacna', INUM,  DCDMAS(IDFFIN(1,IADDR)),  DCDMAS(IDFFIN(2,IADDR)),  IDFFIN(3,IADDR)
+!       write(*,*) 'pajacna', AMK,AMKZ  
+!       write(*,*) 'pajacna',AMF1,AMF2
+!      STOP                        
 C THREE BODY PHASE SPACE NORMALISED AS IN BJORKEN-DRELL                 
       PHSPAC=1./2**11/PI**5      
 C TAU MOMENTUM                                                          
@@ -4510,43 +4326,72 @@ C TAU MOMENTUM
       PT(3)=0.                                                          
       PT(4)=AMTAU                                                       
 C MASS OF (REAL/VIRTUAL) RHO                                            
-      AMS1=(AMK+AMKZ)**2                                                
-      AMS2=(AMTAU-AMNUTA)**2                                            
+      AMS1=(AMF1+AMF2)**2                                                
+      AMS2=(AMTAU-AMF0)**2                                            
 C FLAT PHASE SPACE                                                      
-      CALL RANMAR(RR1,1)                                                
-      AMX2=AMS1+   RR1(1)*(AMS2-AMS1)                                      
-      AMX=SQRT(AMX2)                                                    
-      PHSPAC=PHSPAC*(AMS2-AMS1)                                         
-C PHASE SPACE WITH SAMPLING FOR RHO RESONANCE                           
-c     ALP1=ATAN((AMS1-AMRO**2)/AMRO/GAMRO)                              
-c     ALP2=ATAN((AMS2-AMRO**2)/AMRO/GAMRO)                              
-CAM                                                                     
  100  CONTINUE                                                          
-c     CALL RANMAR(RR1,1)                                                
-c     ALP=ALP1+RR1(1)*(ALP2-ALP1)                                          
-c     AMX2=AMRO**2+AMRO*GAMRO*TAN(ALP)                                  
-c     AMX=SQRT(AMX2)                                                    
-c     IF(AMX.LT.(AMK+AMKZ)) GO TO 100                                   
-CAM                                                                     
-c     PHSPAC=PHSPAC*((AMX2-AMRO**2)**2+(AMRO*GAMRO)**2)/(AMRO*GAMRO)    
-c     PHSPAC=PHSPAC*(ALP2-ALP1)                                         
-C                                                                       
-C TAU-NEUTRINO MOMENTUM                                                 
+      CALL RANMAR(RR1,1)                                                
+      CALL CHOICE2(INUM,PROB1,PROB2,AM2,GAM2,AM3,GAM3)
+        ALP1 =ATAN((AMS1-AM2**2)/AM2/GAM2)
+        ALP2 =ATAN((AMS2-AM2**2)/AM2/GAM2)
+        ALP1R=ATAN((AMS1-AM3**2)/AM3/GAM3)                              
+        ALP2R=ATAN((AMS2-AM3**2)/AM3/GAM3)                              
+
+        CALL RANMAR(RR2,1)
+!        RR2(1)=0.03
+        IF (RR2(1).LT.PROB1) THEN
+C FLAT PHASE SPACE
+         AMX2=AMS1+   RR1(1)*(AMS2-AMS1)
+         AMX=SQRT(AMX2)
+        ELSEIF(RR2(1).LT.PROB1+PROB2) THEN
+C PHASE SPACE WITH SAMPLING FOR K* RESONANCE
+         ALP=ALP1+RR1(1)*(ALP2-ALP1)
+         AMX2=AM2**2+AM2*GAM2*TAN(ALP)
+         AMX=SQRT(AMX2)
+        ELSE
+         ALP=ALP1R+RR1(1)*(ALP2R-ALP1R)                                          
+         AMX2=AM3**2+AM3*GAM3*TAN(ALP)                                  
+         AMX=SQRT(AMX2)  
+        ENDIF
+        IF(AMX.LE.(AMF1+AMF2)) GO TO 100 
+        IF(AMX.GE.(AMTAU-AMF0)) GO TO 100
+C merging of the three channels
+        PHSPAC1=(AMS2-AMS1)
+
+        PHSPAC2=((AMX2-AM2**2)**2+(AM2*GAM2)**2)
+     &                /(AM2*GAM2)
+        PHSPAC2=PHSPAC2*(ALP2-ALP1)
+
+        PHSPAC3=((AMX2-AM3**2)**2+(AM3*GAM3)**2)/(AM3*GAM3)    
+        PHSPAC3=PHSPAC3*(ALP2R-ALP1R)                                         
+
+        A1=0.0
+        A2=0.0
+        A3=0.0
+        IF (PHSPAC1.NE.0.0) A1=PROB1          /PHSPAC1
+        IF (PHSPAC2.NE.0.0) A2=PROB2          /PHSPAC2
+        IF (PHSPAC3.NE.0.0) A3=(1-PROB1-PROB2)/PHSPAC3
+        IF (A1+A2+A3.NE.0.0) THEN
+         PHSPAC=PHSPAC/(A1+A2+A3)
+        ELSE
+         PHSPAC=0
+        ENDIF
+                               
       PN(1)=0                                                           
       PN(2)=0                                                           
-      PN(4)=1./(2*AMTAU)*(AMTAU**2+AMNUTA**2-AMX**2)                    
-      PN(3)=-SQRT((PN(4)-AMNUTA)*(PN(4)+AMNUTA))                        
+      PN(4)=1./(2*AMTAU)*(AMTAU**2+AMF0**2-AMX**2)                    
+      PN(3)=-SQRT((PN(4)-AMF0)*(PN(4)+AMF0))                        
 C RHO MOMENTUM                                                          
       PR(1)=0                                                           
       PR(2)=0                                                           
-      PR(4)=1./(2*AMTAU)*(AMTAU**2-AMNUTA**2+AMX**2)                    
+      PR(4)=1./(2*AMTAU)*(AMTAU**2-AMF0**2+AMX**2)                    
       PR(3)=-PN(3)                                                      
       PHSPAC=PHSPAC*(4*PI)*(2*PR(3)/AMTAU)                              
 C                                                                       
 CAM                                                                     
-      ENQ1=(AMX2+AMK**2-AMKZ**2)/(2.*AMX)                               
-      ENQ2=(AMX2-AMK**2+AMKZ**2)/(2.*AMX)                               
-      PPPI=SQRT((ENQ1-AMK)*(ENQ1+AMK))                                  
+      ENQ1=(AMX2+AMF1**2-AMF2**2)/(2.*AMX)                               
+      ENQ2=(AMX2-AMF1**2+AMF2**2)/(2.*AMX)                               
+      PPPI=SQRT((ENQ1-AMF1)*(ENQ1+AMF1))                                  
       PHSPAC=PHSPAC*(4*PI)*(2*PPPI/AMX)                                 
 C CHARGED PI MOMENTUM IN RHO REST FRAME                                 
       CALL SPHERA(PPPI,PKC)                                             
@@ -4559,24 +4404,12 @@ C NEUTRAL PI MOMENTUM IN RHO REST FRAME
 C PIONS BOOSTED FROM RHO REST FRAME TO TAU REST FRAME                   
       CALL BOSTR3(EXE,PKC,PKC)                                          
       CALL BOSTR3(EXE,PKZ,PKZ)                                          
-      DO 30 I=1,4                                                       
- 30      QQ(I)=PKC(I)-PKZ(I)  
-C QQ transverse to PR
-        PKSD =PR(4)*PR(4)-PR(3)*PR(3)-PR(2)*PR(2)-PR(1)*PR(1)
-        QQPKS=PR(4)* QQ(4)-PR(3)* QQ(3)-PR(2)* QQ(2)-PR(1)* QQ(1)
-        DO 31 I=1,4
-31      QQ(I)=QQ(I)-PR(I)*QQPKS/PKSD                        
-C AMPLITUDE                                                             
-      PRODPQ=PT(4)*QQ(4)                                                
-      PRODNQ=PN(4)*QQ(4)-PN(1)*QQ(1)-PN(2)*QQ(2)-PN(3)*QQ(3)            
-      PRODPN=PT(4)*PN(4)                                                
-      QQ2= QQ(4)**2-QQ(1)**2-QQ(2)**2-QQ(3)**2                          
-      BRAK=(GV**2+GA**2)*(2*PRODPQ*PRODNQ-PRODPN*QQ2)                   
-     &    +(GV**2-GA**2)*AMTAU*AMNUTA*QQ2                               
-      AMPLIT=(GFERMI*CCABIB)**2*BRAK*2*FPIRK(AMX)                       
-      DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC                                  
-      DO 40 I=1,3                                                       
- 40   HV(I)=2*GV*GA*AMTAU*(2*PRODNQ*QQ(I)-QQ2*PN(I))/BRAK               
+!      write(*,*) 'inum=',inum
+
+!      if (inn.gt.3) inn=3   ! for higher inn channels flat phase space
+      CALL DAM2PI(INUM,PT,PN,PKC,PKZ,AMPLIT,HV)
+      DGAMT=1/(2.*AMTAU)*AMPLIT*PHSPAC 
+
       do 77 k=1,4                                                       
         pmult(k,1)=pkc(k)
         pmult(k,2)=pkz(k)
@@ -4630,10 +4463,6 @@ C -----------------------------------------------
 C     ****************
 C INITIALIZE LUND COMMON
 
-      PARAMETER (NMXHEP=2000)
-      COMMON/HEPEVTX/NEVHEP,NHEP,ISTHEP(NMXHEP),IDHEP(NMXHEP),
-     &JMOHEP(2,NMXHEP),JDAHEP(2,NMXHEP),PHEP(5,NMXHEP),VHEP(4,NMXHEP)
-      SAVE  /HEPEVTx/
 
       NHEP=0
       END
@@ -4775,250 +4604,6 @@ C anti muon neutrino (nu_mu is 14)
 C
       RETURN
       END
-      SUBROUTINE DWLUPI(KTO,ISGN,PPI,PNU)
-C ----------------------------------------------------------------------
-C Lorentz transformation to CMsystem and
-C Updating of HEPEVT record
-C
-C ISGN = 1/-1 for tau-/tau+
-C
-C     called by : DEXAY,(DEKAY1,DEKAY2)
-C ----------------------------------------------------------------------
-C
-      REAL  PNU(4),PPI(4)
-      COMMON /TAUPOS/ NP1,NP2
-C
-C position of decaying particle:
-      IF(KTO.EQ. 1) THEN
-        NPS=NP1
-      ELSE
-        NPS=NP2
-      ENDIF
-C
-C tau neutrino (nu_tau is 16)
-      CALL TRALO4(KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
-C charged pi meson (pi+ is 211)
-      CALL TRALO4(KTO,PPI,PPI,AM)
-      CALL FILHEP(0,1,-211*ISGN,NPS,NPS,0,0,PPI,AM,.TRUE.)
-C
-      RETURN
-      END
-      SUBROUTINE DWLURO(KTO,ISGN,PNU,PRHO,PIC,PIZ)
-C ----------------------------------------------------------------------
-C Lorentz transformation to CMsystem and
-C Updating of HEPEVT record
-C
-C ISGN = 1/-1 for tau-/tau+
-C
-C     called by : DEXAY,(DEKAY1,DEKAY2)
-C ----------------------------------------------------------------------
-C
-
-
-      REAL  PNU(4),PRHO(4),PIC(4),PIZ(4)
-
-      COMMON /TAUPOS/ NP1,NP2
-
-C
-C position of decaying particle:
-      IF(KTO.EQ. 1) THEN
-        NPS=NP1
-      ELSE
-        NPS=NP2
-      ENDIF
-C
-C tau neutrino (nu_tau is 16)
-      CALL TRALO4(KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
-C charged rho meson (rho+ is 213)
-      CALL TRALO4(KTO,PRHO,PRHO,AM)
-      CALL FILHEP(0,2,-213*ISGN,NPS,NPS,0,0,PRHO,AM,.TRUE.)
-C
-C charged pi meson (pi+ is 211)
-      CALL TRALO4(KTO,PIC,PIC,AM)
-      CALL FILHEP(0,1,-211*ISGN,-1,-1,0,0,PIC,AM,.TRUE.)
-C
-C pi0 meson (pi0 is 111)
-      CALL TRALO4(KTO,PIZ,PIZ,AM)
-      CALL FILHEP(0,1,111,-2,-2,0,0,PIZ,AM,.TRUE.)
-C
-      RETURN
-      END
-      SUBROUTINE DWLUAA(KTO,ISGN,PNU,PAA,PIM1,PIM2,PIPL,JAA)
-C ----------------------------------------------------------------------
-C Lorentz transformation to CMsystem and
-C Updating of HEPEVT record
-C
-C ISGN = 1/-1 for tau-/tau+
-C JAA  = 1 (2) FOR A_1- DECAY TO PI+ 2PI- (PI- 2PI0)
-C
-C     called by : DEXAY,(DEKAY1,DEKAY2)
-C ----------------------------------------------------------------------
-C
-
-
-      REAL  PNU(4),PAA(4),PIM1(4),PIM2(4),PIPL(4)
-
-      COMMON /TAUPOS/ NP1,NP2
-
-C
-C position of decaying particle:
-      IF(KTO.EQ. 1) THEN
-        NPS=NP1
-      ELSE
-        NPS=NP2
-      ENDIF
-C
-C tau neutrino (nu_tau is 16)
-      CALL TRALO4(KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
-C charged a_1 meson (a_1+ is 20213)
-      CALL TRALO4(KTO,PAA,PAA,AM)
-      CALL FILHEP(0,1,-20213*ISGN,NPS,NPS,0,0,PAA,AM,.TRUE.)
-C
-C two possible decays of the charged a1 meson
-      IF(JAA.EQ.1) THEN
-C
-C A1  --> PI+ PI-  PI- (or charged conjugate)
-C
-C pi minus (or c.c.) (pi+ is 211)
-        CALL TRALO4(KTO,PIM2,PIM2,AM)
-        CALL FILHEP(0,1,-211*ISGN,-1,-1,0,0,PIM2,AM,.TRUE.)
-C
-C pi minus (or c.c.) (pi+ is 211)
-        CALL TRALO4(KTO,PIM1,PIM1,AM)
-        CALL FILHEP(0,1,-211*ISGN,-2,-2,0,0,PIM1,AM,.TRUE.)
-C
-C pi plus (or c.c.) (pi+ is 211)
-        CALL TRALO4(KTO,PIPL,PIPL,AM)
-        CALL FILHEP(0,1, 211*ISGN,-3,-3,0,0,PIPL,AM,.TRUE.)
-C
-      ELSE IF (JAA.EQ.2) THEN
-C
-C A1  --> PI- PI0  PI0 (or charged conjugate)
-C
-C pi zero (pi0 is 111)
-        CALL TRALO4(KTO,PIM2,PIM2,AM)
-        CALL FILHEP(0,1,111,-1,-1,0,0,PIM2,AM,.TRUE.)
-C
-C pi zero (pi0 is 111)
-        CALL TRALO4(KTO,PIM1,PIM1,AM)
-        CALL FILHEP(0,1,111,-2,-2,0,0,PIM1,AM,.TRUE.)
-C
-C pi minus (or c.c.) (pi+ is 211)
-        CALL TRALO4(KTO,PIPL,PIPL,AM)
-        CALL FILHEP(0,1,-211*ISGN,-3,-3,0,0,PIPL,AM,.TRUE.)
-C
-      ENDIF
-C
-      RETURN
-      END
-      SUBROUTINE DWLUKK (KTO,ISGN,PKK,PNU)
-C ----------------------------------------------------------------------
-C Lorentz transformation to CMsystem and
-C Updating of HEPEVT record
-C
-C ISGN = 1/-1 for tau-/tau+
-C
-C ----------------------------------------------------------------------
-C
-      REAL PKK(4),PNU(4)
-      COMMON /TAUPOS/ NP1,NP2
-C
-C position of decaying particle
-
-      IF (KTO.EQ.1) THEN
-
-        NPS=NP1
-      ELSE
-        NPS=NP2
-      ENDIF
-C
-C tau neutrino (nu_tau is 16)
-      CALL TRALO4 (KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
-C K meson (K+ is 321)
-      CALL TRALO4 (KTO,PKK,PKK,AM)
-      CALL FILHEP(0,1,-321*ISGN,NPS,NPS,0,0,PKK,AM,.TRUE.)
-C
-      RETURN
-      END
-      SUBROUTINE DWLUKS(KTO,ISGN,PNU,PKS,PKK,PPI,JKST)
-      COMMON / TAUKLE / BRA1,BRK0,BRK0B,BRKS
-      REAL*4            BRA1,BRK0,BRK0B,BRKS
-
-C ----------------------------------------------------------------------
-C Lorentz transformation to CMsystem and
-C Updating of HEPEVT record
-C
-C ISGN = 1/-1 for tau-/tau+
-C JKST=10 (20) corresponds to K0B pi- (K- pi0) decay
-C
-C ----------------------------------------------------------------------
-C
-
-      REAL  PNU(4),PKS(4),PKK(4),PPI(4),XIO(1)
-      COMMON /TAUPOS/ NP1,NP2
-
-C
-C position of decaying particle
-      IF(KTO.EQ. 1) THEN
-        NPS=NP1
-      ELSE
-        NPS=NP2
-      ENDIF
-C
-C tau neutrino (nu_tau is 16)
-      CALL TRALO4(KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
-C charged K* meson (K*+ is 323)
-      CALL TRALO4(KTO,PKS,PKS,AM)
-      CALL FILHEP(0,1,-323*ISGN,NPS,NPS,0,0,PKS,AM,.TRUE.)
-C
-C two possible decay modes of charged K*
-      IF(JKST.EQ.10) THEN
-C
-C K*- --> pi- K0B (or charged conjugate)
-C
-C charged pi meson  (pi+ is 211)
-        CALL TRALO4(KTO,PPI,PPI,AM)
-        CALL FILHEP(0,1,-211*ISGN,-1,-1,0,0,PPI,AM,.TRUE.)
-C
-        BRAN=BRK0B
-        IF (ISGN.EQ.-1) BRAN=BRK0
-C K0 --> K0_long (is 130) / K0_short (is 310) = 1/1
-        CALL RANMAR(XIO,1)
-        IF(XIO(1).GT.BRAN) THEN
-          K0TYPE = 130
-        ELSE
-          K0TYPE = 310
-        ENDIF
-C
-        CALL TRALO4(KTO,PKK,PKK,AM)
-        CALL FILHEP(0,1,K0TYPE,-2,-2,0,0,PKK,AM,.TRUE.)
-C
-      ELSE IF(JKST.EQ.20) THEN
-C
-C K*- --> pi0 K-
-C
-C pi zero (pi0 is 111)
-        CALL TRALO4(KTO,PPI,PPI,AM)
-        CALL FILHEP(0,1,111,-1,-1,0,0,PPI,AM,.TRUE.)
-C
-C charged K meson (K+ is 321)
-        CALL TRALO4(KTO,PKK,PKK,AM)
-        CALL FILHEP(0,1,-321*ISGN,-2,-2,0,0,PKK,AM,.TRUE.)
-C
-      ENDIF
-C
-      RETURN
-      END
       SUBROUTINE DWLNEW(KTO,ISGN,PNU,PWB,PNPI,MODE)
 C ----------------------------------------------------------------------
 C Lorentz transformation to CMsystem and
@@ -5029,7 +4614,7 @@ C
 C     called by : DEXAY,(DEKAY1,DEKAY2)
 C ----------------------------------------------------------------------
 C
-      PARAMETER (NMODE=15,NM1=0,NM2=1,NM3=8,NM4=2,NM5=1,NM6=3)
+      include 'TAUDCDsize.inc'
 
       COMMON / TAUDCD /IDFFIN(9,NMODE),MULPIK(NMODE)
 
@@ -5039,26 +4624,48 @@ C
       REAL  PNU(4),PWB(4),PNPI(4,9)
       REAL  PPI(4)
 C
-      JNPI=MODE-7
+      JNPI=MODE-NLT
 C position of decaying particle
       IF(KTO.EQ. 1) THEN
         NPS=NP1
       ELSE
         NPS=NP2
       ENDIF
+      IS=0
 C
 C tau neutrino (nu_tau is 16)
       CALL TRALO4(KTO,PNU,PNU,AM)
-      CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
+      ND=MULPIK(JNPI)
+      IF(ND.EQ.2.AND.IDFFIN(3,JNPI).NE.0) THEN
+        IS=1
+        CALL FILHEP(0,1,-IDFFIN(3,JNPI)*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
+      ELSEIF(ND.EQ.2.AND.IDFFIN(4,JNPI).NE.0) THEN
+        IS=1
+        CALL FILHEP(0,1, IDFFIN(4,JNPI)     ,-IS,-IS,0,0,PNU,AM,.TRUE.)
+      ELSEIF(ND.EQ.1.AND.IDFFIN(3,JNPI).NE.0) THEN
+        IS=1
+        CALL FILHEP(0,1,-IDFFIN(3,JNPI)*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
+      ELSEIF(ND.EQ.1.AND.IDFFIN(4,JNPI).NE.0) THEN
+        IS=1
+        CALL FILHEP(0,1, IDFFIN(4,JNPI)     ,-IS,-IS,0,0,PNU,AM,.TRUE.)
+c sigle scalar has no W
+      ELSEIF(ND.EQ.1) THEN
+        IS=1
+        CALL FILHEP(0,1,16*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
+
+      ELSE
+        CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
 C
 C W boson (W+ is 24)
-      CALL TRALO4(KTO,PWB,PWB,AM)
-      CALL FILHEP(0,1,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
+        CALL TRALO4(KTO,PWB,PWB,AM)
+        CALL FILHEP(0,1,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
+      ENDIF
 C
 C multi pi mode JNPI
-C
+C 
 C get multiplicity of mode JNPI
       ND=MULPIK(JNPI)
+
       DO I=1,ND
 
         KFPI=LUNPIK(IDFFIN(I,JNPI),-ISGN)
@@ -5069,7 +4676,7 @@ C        IF(KFPI.NE.111)KFPI=KFPI*ISGN
           PPI(J)=PNPI(J,I)
         END DO
         CALL TRALO4(KTO,PPI,PPI,AM)
-        CALL FILHEP(0,1,KFPI,-I,-I,0,0,PPI,AM,.TRUE.)
+        CALL FILHEP(0,1,KFPI,-I-IS,-I-IS,0,0,PPI,AM,.TRUE.)
       END DO
 C
       RETURN
@@ -5344,136 +4951,6 @@ C
       CALL ROTOR3( PHI,PP,PP)
       RETURN
       END
-      SUBROUTINE RANMAR(RVEC,LENV)
-C ----------------------------------------------------------------------
-C<<<<<FUNCTION RANMAR(IDUMM)
-C CERNLIB V113, VERSION WITH AUTOMATIC DEFAULT INITIALIZATION
-C     Transformed to SUBROUTINE to be as in CERNLIB
-C     AM.Lutz   November 1988, Feb. 1989
-C
-C!Universal random number generator proposed by Marsaglia and Zaman
-C in report FSU-SCRI-87-50
-C        modified by F. James, 1988 and 1989, to generate a vector
-C        of pseudorandom numbers RVEC of length LENV, and to put in
-C        the COMMON block everything needed to specify currrent state,
-C        and to add input and output entry points RMARIN, RMARUT.
-C
-C     Unique random number used in the program
-C ----------------------------------------------------------------------
-      COMMON / INOUT / INUT,IOUT
-      DIMENSION RVEC(*)
-      COMMON/RASET1/U(97),C,I97,J97
-      PARAMETER (MODCNS=1000000000)
-      DATA NTOT,NTOT2,IJKL/-1,0,0/
-C
-      IF (NTOT .GE. 0)  GO TO 50
-C
-C        Default initialization. User has called RANMAR without RMARIN.
-      IJKL = 54217137
-      NTOT = 0
-      NTOT2 = 0
-      KALLED = 0
-      GO TO 1
-C
-      ENTRY      RMARIN(IJKLIN, NTOTIN,NTOT2N)
-C         Initializing routine for RANMAR, may be called before
-C         generating pseudorandom numbers with RANMAR. The input
-C         values should be in the ranges:  0<=IJKLIN<=900 OOO OOO
-C                                          0<=NTOTIN<=999 999 999
-C                                          0<=NTOT2N<<999 999 999!
-C To get the standard values in Marsaglia-s paper, IJKLIN=54217137
-C                                            NTOTIN,NTOT2N=0
-      IJKL = IJKLIN
-      NTOT = MAX(NTOTIN,0)
-      NTOT2= MAX(NTOT2N,0)
-      KALLED = 1
-C          always come here to initialize
-    1 CONTINUE
-      IJ = IJKL/30082
-      KL = IJKL - 30082*IJ
-      I = MOD(IJ/177, 177) + 2
-      J = MOD(IJ, 177)     + 2
-      K = MOD(KL/169, 178) + 1
-      L = MOD(KL, 169)
-      WRITE(IOUT,201) IJKL,NTOT,NTOT2
- 201  FORMAT(1X,' RANMAR INITIALIZED: ',I10,2X,2I10)
-      DO 2 II= 1, 97
-      S = 0.
-      T = .5
-      DO 3 JJ= 1, 24
-         M = MOD(MOD(I*J,179)*K, 179)
-         I = J
-         J = K
-         K = M
-         L = MOD(53*L+1, 169)
-         IF (MOD(L*M,64) .GE. 32)  S = S+T
-    3    T = 0.5*T
-    2 U(II) = S
-      TWOM24 = 1.0
-      DO 4 I24= 1, 24
-    4 TWOM24 = 0.5*TWOM24
-      C  =   362436.*TWOM24
-      CD =  7654321.*TWOM24
-      CM = 16777213.*TWOM24
-      I97 = 97
-      J97 = 33
-C       Complete initialization by skipping
-C            (NTOT2*MODCNS + NTOT) random numbers
-      DO 45 LOOP2= 1, NTOT2+1
-      NOW = MODCNS
-      IF (LOOP2 .EQ. NTOT2+1)  NOW=NTOT
-      IF (NOW .GT. 0)  THEN
-       WRITE (IOUT,'(A,I15)') ' RMARIN SKIPPING OVER ',NOW
-       DO 40 IDUM = 1, NTOT
-       UNI = U(I97)-U(J97)
-       IF (UNI .LT. 0.)  UNI=UNI+1.
-       U(I97) = UNI
-       I97 = I97-1
-       IF (I97 .EQ. 0)  I97=97
-       J97 = J97-1
-       IF (J97 .EQ. 0)  J97=97
-       C = C - CD
-       IF (C .LT. 0.)  C=C+CM
-   40  CONTINUE
-      ENDIF
-   45 CONTINUE
-      IF (KALLED .EQ. 1)  RETURN
-C
-C          Normal entry to generate LENV random numbers
-   50 CONTINUE
-      DO 100 IVEC= 1, LENV
-      UNI = U(I97)-U(J97)
-      IF (UNI .LT. 0.)  UNI=UNI+1.
-      U(I97) = UNI
-      I97 = I97-1
-      IF (I97 .EQ. 0)  I97=97
-      J97 = J97-1
-      IF (J97 .EQ. 0)  J97=97
-      C = C - CD
-      IF (C .LT. 0.)  C=C+CM
-      UNI = UNI-C
-      IF (UNI .LT. 0.) UNI=UNI+1.
-C        Replace exact zeroes by uniform distr. *2**-24
-         IF (UNI .EQ. 0.)  THEN
-         UNI = TWOM24*U(2)
-C             An exact zero here is very unlikely, but lets be safe.
-         IF (UNI .EQ. 0.) UNI= TWOM24*TWOM24
-         ENDIF
-      RVEC(IVEC) = UNI
-  100 CONTINUE
-      NTOT = NTOT + LENV
-         IF (NTOT .GE. MODCNS)  THEN
-         NTOT2 = NTOT2 + 1
-         NTOT = NTOT - MODCNS
-         ENDIF
-      RETURN
-C           Entry to output current status
-      ENTRY RMARUT(IJKLUT,NTOTUT,NTOT2T)
-      IJKLUT = IJKL
-      NTOTUT = NTOT
-      NTOT2T = NTOT2
-      RETURN
-      END
 
       FUNCTION DILOGT(X)
 C     *****************
@@ -5528,7 +5005,76 @@ CERN      C304      VERSION    29/07/71 DILOG        59                C
       A=Y*A-B+1.93506 43008 6996
       DILOGT=S*T*(A-B)+Z
       RETURN
-C=======================================================================
-C===================END OF CPC PART ====================================
-C=======================================================================
+      END
+C     FUNCTIONS FOR LFV HANDLING  
+C     THEY ARE CALLED BY DAM2PI AND DAM1PI
+C      DOUBLE PRECISION ALTERN(MNUM,PN,PIM1,PIM2,AMPLIT,HV)
+C      PRINT *, 'STILL IMPLEMENTING, mchrzasz'
+C      RETURN
+C      END
+      FUNCTION IMEGET(IMULT,MNUM)
+      IMPLICIT NONE  
+      include 'TAUDCDsize.inc'
+      INTEGER imeget,imult,mnum
+      integer KEY0,KEY1,KEY2,KEY3,KEY4,KEY5,KEY6
+      COMMON /METYP/ KEY0(2),KEY1(NM1),KEY2(NM2),KEY3(NM3),
+     $               KEY4(NM4),KEY5(NM5),KEY6(NM6)
+C this function provides access to the list of decay products to pass info
+C on the type of matrix element.
+
+C INPUT:
+C    IMULT: multiplicity of the channel (e.g. IMULT=2 denotes 2 products plus tau_nu) 
+C    MNUM:  position on the list of decay channels for the given multiplicity   
+C OUTPUT:
+C    IMEGET; 0- channel not initialized,  1- constant ME flat phase space
+C            2- default ME,               3- default ME, but one stable spin>0
+C            4- default ME wrapped curr., 5- wrapped ME  
+       IF(IMULT.LT.0.OR.IMULT.GT.6) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT
+        STOP
+       ENDIF
+
+      IF (IMULT.EQ.0) THEN
+       IF(MNUM.LE.0.OR.MNUM.GT.2) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY0(MNUM)
+      ELSEIF (IMULT.EQ.1) THEN
+       IF(MNUM.LE.0.OR.MNUM.GT.NM1) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY1(MNUM)
+      ELSEIF (IMULT.EQ.2) THEN
+       IF(MNUM.LE.0.OR.MNUM.GT.NM2) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY2(MNUM)
+      ELSEIF (IMULT.EQ.3) THEN
+       IF(MNUM.LT.0.OR.MNUM.GT.NM3) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY3(MNUM)
+      ELSEIF (IMULT.EQ.4) THEN
+       IF(MNUM.LT.0.OR.MNUM.GT.NM4) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY4(MNUM)
+      ELSEIF (IMULT.EQ.5) THEN
+       IF(MNUM.LE.0.OR.MNUM.GT.NM5) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY5(MNUM)   
+      ELSEIF (IMULT.EQ.6) THEN
+       IF(MNUM.LE.0.OR.MNUM.GT.NM6) THEN
+        WRITE(*,*) 'stop in IMEGET IMULT=',IMULT,' but MNUM=',MNUM
+        STOP
+       ENDIF
+       IMEGET=KEY6(MNUM)
+      ENDIF
       END

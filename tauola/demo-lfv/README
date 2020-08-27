@@ -1,0 +1,22 @@
+Demo of tauola-BBB with the new LFV channel added to the list of decay
+channels and generation set to use only this channel.
+
+NOTE:
+This example is based on demo-babar with only small differences:
+- New channel named "Dalitz for Tau->3mu LFV" is defined in file lfv.c
+  and registered in iniofc.c as channel 92.
+- Two lines are added to taumain.f:
+    CALL TauolaRedef
+    CALL INIofC
+- In prod/dane.dat channel 92 is used in generation.
+
+OTHER NOTES:
+In iniofc.c the number given to the new channel is 90 but its actual number
+is 92. This shift is needed to account for two leptonic channels.
+
+The new channel's branching ratio is set to 0. As such, if in 'prod/dane.dat'
+JAK1 and JAK2 are set to 0, this example will produce results identical to
+demo-babar.
+
+--
+Last modified: 1 Sep 2016
