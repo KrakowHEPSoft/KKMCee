@@ -1,0 +1,26 @@
+Matrix element type me as used in  RegisterChannel method of channels_wrappers.h
+           0- channel not initialized,  1- constant ME flat phase space
+           2- default ME,               3- default ME, but one stable spin>0
+           4- default ME wrapped curr., 5- wrapped ME  
+
+
+List of channels that have different order of entries in event record than
+arguments of methods for matix-element/current calculations:
+
+      NM4 group (DAM4PI), wrapper for channel 1: 
+
+            event record  : pi- pi- pi+ pi0
+            matrix element: pi- pi- pi0 pi+
+            current       : pi- pi- pi0 pi+
+
+            If Novosibirsk currents are used  1,4,2,3
+            but this is of no practical importance for wrap
+
+      NM4 group (DAM4PI), wrapper for channel 2:
+
+            event record  : pi0 pi0 pi0 pi- 
+            matrix element: pi0 pi0 pi0 pi- 
+            current       : pi0 pi0 pi0 pi- 
+
+            If Novosibirsk currents are used 4, 3, 1, 2 
+            but this is of no practical importance for wrap

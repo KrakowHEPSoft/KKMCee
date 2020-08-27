@@ -1,0 +1,111 @@
+TP Sep 27 2014: Tauface.f adapted to KKMC_v4_16
+MC Apr 28 2017: added  comments for  KKMC_v4_24
+-----------------------------------------------
+
+Installation of tauola-bbb to KKMC_v4_16 should require
+the following steps:
+
+
+1) Replace content of 'KKMC_v4_16/tauola' ('KK-all/tauola') with 'tauola-bbb' 
+   content
+   Copy Tauface.f to KK-all/KK2f/Tauface.f
+
+
+2) Adjust compilation flags of KK-all/ffbench to the ones of
+   your platform. If not already present, add -lstdc++ at the end of linking
+   procedure of executable program (usually, LDFLAGS or LIBS). Example:
+
+   Also, you may need to add:
+   CC      = g++
+   at the begining of the ffbench/Makefile  
+
+3) At this step you can execute in ffbench:
+   
+   'make makflag'
+   'make makprod'
+   
+
+   To then compile and run tauola:
+   cp Tau/Tau.input.1k Tau/Tau.input
+   kmake Tau-start
+
+
+
+   Some platform-dependent changes may be needed. For example, if you
+   are using gcc v4.7 or higher, you may need to add flag '-lstdc++' by hand
+   at the end of linking procedure. In KKMC_v4_16/ffbench/Makefile line:
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1) $(EXT_LIBRARY) -lstdc++
+
+4) If your main program is in C++, in user program add: #include 
+   "Tauola/ChannelForTauolaInterface.h"
+   then use: Tauolapp::SetUserRedefinitions( void (*pointer)() )
+   to provide a function that redefines individual Tauola++ channels.
+   See demo-redefine/iniofc.c for an example of such function.
+   With this method matrix elements/currents can be replaced with the ones
+   of the users.
+   
+   As an example, also valid in general case when your main program is in Fortran,
+   you can use .c and .h files from tauola/demo-redefine.
+   Simply copy them to ffbench directory (update paths for included libraries) 
+   and add them to the Makefile, then add line: 
+   CALL TauolaRedef
+   to main program before TAUOLA initialization.
+ 
+NOTE: Before running updated program make sure to "make clean" the tauola folder.
+      You may also need to make Clean in ffbench directory of KK-all.
+      If it's not clean from previously compiled libraries 
+      (i.e. was used elswere and then copied to KK-all)
+      it may cause problems when recompiling.
+
+      
+
+
+FURTHER NOTES: 
+    
+    1. Currently, BR of decay channels cannot be changed using config file.
+       BaBar default BR-s are hard-coded in Tauface.f, manipulation with 
+       the KKMC input can be easily restored. In Tauface.f, line
+       !         GAMPRT(K)=XPAR(ITAUXPAR+100+K)
+       has to be uncommented, then of course defaults of KKMC defined 
+       in .KK2f_defaults have to be adopted to the bbb case. A necessary 
+       patch is given in file KK2f_defaults_adendum.txt
+
+    2. To activate main new options and features for Tauola
+       switches IFBABAR, IFEQUALBR, IF5PIAPP
+       are passed as  input parameters of KKMC;
+       input file entries 2901-2903,  have to be set to 0d0 or 1D0
+       IFBABAR   -- denotes if verion of the currents used. 
+                    0 = CLEO currents (old default)
+                    1 = BaBar currents
+                    2 = CLEO + RChL currents for 3 pions and 
+                    other options for 2 (Belle) and 4 (Novosibirsk/Karlshrue) pion modes.
+       IF5PIAPP  -- denotes if for 5 pion modes currents as of paper
+                    of J. Kuhn and Z. Was from APP of 2008 are to be used
+       IFEQUALBR -- denotes if all branching ratios are to be set equal
+
+       You may like to add to KK-all/.KK2f_defaults file the additional lines
+       of: KK2f_defaults_adendum.txt file.
+
+    3. IFEQUALBR overrules setting imposed by IFRCHL and/or IF5PIAP set to 1
+       Initialization performed from the C++ over-writes corresponding 
+       previous settings.
+
+    4. If instead of code from tauola/tauola-c the dummy one, 
+       of tauola/tauola-no-c, is used,  all reference to C C++ part of 
+       the project will be removed, but of course other updates for the project
+       will be preserved. In this case arrangement will nearly coincide with 
+       the one mentioned in  TAU04 proceedings hep-ph/0411377, but still 
+       with many new tau decay channels; also anomalous ones,
+       finally new hadronic currents.
+
+Note for KKMC 4.24 
+-------------------
+
+      The above arrangements were prepared for KKMC version 4.16.
+      To take into account modified Makefile system of KKMC 4.24.
+      follow advices in KKMC's HowToStart
+ 
+      In particular in 3) replace the first two makes with:
+      alias kmake='make -f KKMakefile'
+      kmake makflag
+      kmake makprod

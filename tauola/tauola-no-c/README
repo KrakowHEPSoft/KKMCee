@@ -1,0 +1,11 @@
+In this directory there is a code of dummy functions which can replace 
+C-based user initialization code.  If it is used instead of code from 
+tauola-c sub-directory and code like demo-standalone/iniofc.c 
+is not used, project is reduced to pure fortran. In this case arrangement 
+will nearly coincide with the one mentioned in  TAU04 proceedings 
+hep-ph/0411377, but still with many new tau decay channels; 
+also anomalous ones, finally new hadronic currents.
+
+These routines provide also specification how alternative solution to the one 
+proposed in tauola-c should communicate through restricted set of functions
+(methods affecting content of struct-s/COMMON BLOCK-s have to be added too). 

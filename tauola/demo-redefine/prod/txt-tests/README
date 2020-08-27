@@ -1,0 +1,55 @@
+Now, with more than 200 channels, we need to have tools to look into printouts
+ from demos.
+ 
+ ******
+ outputcheck.c INFO
+This tool is made to shorten generation report from tauola.output while making test of channels initializations.
+Fot test to work, file taumain.f require changes:
+Index: taumain.f
+===================================================================
+--- taumain.f   (revision 1685)
++++ taumain.f   (working copy)
+@@ -22,7 +22,7 @@
+       KTORY=1
+       CALL DECTES(KTORY)
+       KTORY=2
+-      CALL DECTES(KTORY)
++C      CALL DECTES(KTORY)
+ C      CALL testresu ! fine tune inputs: masses etc.
+       END
+       SUBROUTINE DECTES(KTORY)
+@@ -67,6 +67,10 @@
+       READ( NINP,3002) NEVT,JAK1,JAK2,ITDKRC
+       READ( NINP,3003) PTAU,XK0DEC
+       ENDIF
++      NEVT=1
++      do kk=1,203
++      JAK1=kk
++      JAK2=kk
+ C======================================
+ C control output
+       WRITE(NOUT,'(6A6/6I6)')
+@@ -153,7 +157,7 @@
+       ENDIF
+       IPRI=MOD(NEV,1000)
+
+-      IF(IPRI.EQ.1) write(*,*) ' event no: ',NEV,' NEVTES: ',NEVTES
++      IF(IPRI.EQ.1) write(*,*) ' event no: ',NEV,' NEVTES: ',NEVTES, '  kk= ', kk
+   300 CONTINUE
+   301 CONTINUE
+ C-----------------------------------------------------------------------
+@@ -164,6 +168,7 @@
+       ELSE
+          CALL DEKAY(100,HH)
+       ENDIF
++      enddo
+       RETURN
+  7001 FORMAT(//4(/1X,15(5H=====))
+      $ /,' ',     19X,'  NON INITIALIZED BBB-VERSION OF TAUOLA ',9X,1H ,
+
+Program creates file out.txt containing only most important lines of tauola.output, 
+so it can be esier to check if all channels are initialized properly.
+Optionally uncommenting lines makes another file(channels.txt) with list of generated channels.
+If zeros appear in some lines of channels.txt it means that those particula channels are not initialized at all.
+At the moment program has to be compiled manually. Makefile might appear later.
+ *****

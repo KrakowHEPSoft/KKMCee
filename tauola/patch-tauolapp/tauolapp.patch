@@ -1,0 +1,171 @@
+Index: Makefile
+===================================================================
+--- Makefile	(revision 1178)
++++ Makefile
+@@ -13,13 +13,14 @@
+                          src/$(C_TAUOLA_INTERFACE_DIR)/*.o \
+                          src/$(UTILITIES_DIR)/*.o
+ 
+-# If RChL currents exist - add additional objects to the library
+-ifneq "$(wildcard tauola-fortran/tauola-modified/new-currents/ )" ""
++# If tauola-bbb exist - add additional objects to the library
++ifneq "$(wildcard tauola-fortran/tauola-bbb )" ""
+ 
+-TAUOLA_RCHL_OBJECTS = tauola-fortran/tauola-modified/new-currents/RChL-currents/*/*.o \
+-                      tauola-fortran/tauola-modified/new-currents/other-currents/*.o
++TAUOLA_RCHL_OBJECTS = tauola-fortran/tauola-bbb/new-currents/RChL-currents/*/*.o \
++                      tauola-fortran/tauola-bbb/new-currents/other-currents/*.o \
++                      tauola-fortran/tauola-bbb/tauola-c/*.o
+ 
+-TAUOLA_FORTRAN_DIR = tauola-fortran/tauola-modified
++TAUOLA_FORTRAN_DIR = tauola-fortran/tauola-bbb
+ else
+ TAUOLA_RCHL_OBJECTS =
+ TAUOLA_FORTRAN_DIR = tauola-fortran/tauola
+@@ -96,6 +97,10 @@
+ 	echo "\nUsing pre-constructed 'tauola-fortran/tauola'\n"
+ endif
+ 	make -C $(TAUOLA_FORTRAN_DIR)
++ifneq "$(wildcard tauola-fortran/tauola-bbb )" ""
++	mkdir -p include/Tauola
++	cp tauola-fortran/tauola-bbb/tauola-c/*.h include/Tauola
++endif
+ 	@echo "#################################################"
+ 	@echo "      tauola-fortran compiled successfully.      "
+ 	@echo "#################################################"
+Index: src/tauolaFortranInterfaces/f_Init.h
+===================================================================
+--- src/tauolaFortranInterfaces/f_Init.h	(revision 1178)
++++ src/tauolaFortranInterfaces/f_Init.h
+@@ -26,6 +26,8 @@
+ 
+   extern void inietc_(float jak1=0,float jak2=0,float itdkrc=1,float ifphot=1);
+   extern void inimas_();
++  extern void inisampl_();
++  extern void iniofc_();
+   extern void iniphx_(float *i);
+   extern void initdk_();
+   extern void iniphy_(float *i);
+Index: src/tauolaFortranInterfaces/f_Init.c
+===================================================================
+--- src/tauolaFortranInterfaces/f_Init.c	(revision 1178)
++++ src/tauolaFortranInterfaces/f_Init.c
+@@ -1,5 +1,6 @@
+ #include "f_Init.h"
+ #include "Log.h"
++#include "Tauola.h"
+ #include <iostream>
+ using std::endl;
+ 
+@@ -21,9 +22,12 @@
+   
+   inimas_();
+   initdk_();
++  inisampl_();
+   float iniphy_param = iniphy;
+   iniphy_(&iniphy_param);
+ 
++  iniofc_(); 
++
+   int init_state=-1;
+   //  dexay_(&init_state,pol);
+   dekay_(&init_state,pol);
+Index: src/tauolaFortranInterfaces/Makefile
+===================================================================
+--- src/tauolaFortranInterfaces/Makefile	(revision 1178)
++++ src/tauolaFortranInterfaces/Makefile	(working copy)
+@@ -10,7 +10,7 @@
+ 	$(CC) $(CFLAGS) $(DEBUG) -I. -I../tauolaCInterfaces -I../tauolaFortranInterfaces -I../utilities -c $< -o $@
+ 
+ %.o: %.f
+-	$(F77) $(FFLAGS) $(DEBUG) -I. -c $< -o $@
++	$(F77) $(FFLAGS) $(DEBUG) -I../../tauola-fortran/tauola-bbb -I. -c $< -o $@
+ 
+ all: $(OBJECTS_C) $(OBJECTS_F)
+ 
+Index: src/tauolaFortranInterfaces/f_Variables.h
+===================================================================
+--- src/tauolaFortranInterfaces/f_Variables.h	(revision 1178)
++++ src/tauolaFortranInterfaces/f_Variables.h	(working copy)
+@@ -47,8 +47,8 @@
+   } taurad_;
+ 
+   extern struct {
+-    float gamprt[30];
+-    int   jlist[30];
++    float gamprt[500];
++    int   jlist[500];
+     int   nchan;
+   } taubra_;
+ 
+Index: TauSpinner/include/TauSpinner/Tauola_wrapper.h
+===================================================================
+--- TauSpinner/include/TauSpinner/Tauola_wrapper.h	(revision 1178)
++++ TauSpinner/include/TauSpinner/Tauola_wrapper.h	(working copy)
+@@ -19,7 +19,7 @@
+   void dam4pi_(int *MNUM, float *PT, float *PN, float *PIM1, float *PIM2, float *PIZ, float *PIPL,
+                float *AMPLIT, float *HH);
+ 
+-  void damppk_(int *MNUM, float *PT, float *PN, float *PIM1, float *PIM2, float *PIPL,
++  void dam3pi_(int *MNUM, float *PT, float *PN, float *PIM1, float *PIM2, float *PIPL,
+                float *AMPLIT, float *HH);
+ 
+   void dampry_(int *ITDKRC, double *XK0DEC, double *XK, double *XA, double *QP, double *XN,
+Index: TauSpinner/src/tau_reweight_lib.cxx
+===================================================================
+--- TauSpinner/src/tau_reweight_lib.cxx	(revision 1178)
++++ TauSpinner/src/tau_reweight_lib.cxx	(working copy)
+@@ -552,7 +552,7 @@
+   }
+ 
+   // Print out some info about the channel
+-  DEBUG( cout<<" WT: "<<WT<<endl; )
++  DEBUG( cout<<" WT: "<<WT<<" WTamplitP: "<<WTamplitP<<" WTamplitM: "<<WTamplitM<<endl;)
+ 
+   if (WT<0.0) {
+     printf("WT is: %13.10f. Setting WT = 0.0\n",WT);
+@@ -754,7 +754,7 @@
+ 
+     const double AMTAU = 1.777;
+ 
+-    int   MNUM = 0;
++    int   MNUM = 1;
+     float PT[4]   = { 0.0, 0.0, 0.0, (float)AMTAU };
+     float PN[4]   = { (float)tau_daughters[0].px(), (float)tau_daughters[0].py(), (float)tau_daughters[0].pz(), (float)tau_daughters[0].e() };
+     float PIM1[4] = { (float)tau_daughters[1].px(), (float)tau_daughters[1].py(), (float)tau_daughters[1].pz(), (float)tau_daughters[1].e() };
+@@ -1003,7 +1003,7 @@
+     //        CALL DAMPPK(MNUM,PT,PN,PIM1,PIM2,PIPL,AMPLIT,HH)
+ 
+     const double AMTAU = 1.777;
+-    int   MNUM = 0;
++    int   MNUM = 10;
+     float PT[4]   = { 0.0, 0.0, 0.0, (float)AMTAU };
+     float PN[4]   = { (float)tau_daughters[0].px(), (float)tau_daughters[0].py(), (float)tau_daughters[0].pz(), (float)tau_daughters[0].e() };
+     float PIM1[4] = { (float)tau_daughters[1].px(), (float)tau_daughters[1].py(), (float)tau_daughters[1].pz(), (float)tau_daughters[1].e() };
+@@ -1015,7 +1015,7 @@
+     // For RChL currents one needs to define 3-pi sub-channel used
+     chanopt_.JJ=2;
+ 
+-    damppk_( &MNUM, PT, PN, PIM1, PIM2, PIPL, &AMPLIT, HV );
++    dam3pi_( &MNUM, PT, PN, PIM1, PIM2, PIPL, &AMPLIT, HV );
+ 
+     WTamplit = AMPLIT;
+     HH[0] = -HV[0];
+@@ -1038,7 +1038,7 @@
+     //        CALL DAMPPK(MNUM,PT,PN,PIM1,PIM2,PIPL,AMPLIT,HH)
+ 
+     const double AMTAU = 1.777;
+-    int   MNUM = 0;
++    int   MNUM = 10;
+     float PT[4]   = { 0.0, 0.0, 0.0, (float)AMTAU };
+     float PN[4]   = { (float)tau_daughters[0].px(), (float)tau_daughters[0].py(), (float)tau_daughters[0].pz(), (float)tau_daughters[0].e() };
+     float PIM1[4] = { (float)tau_daughters[1].px(), (float)tau_daughters[1].py(), (float)tau_daughters[1].pz(), (float)tau_daughters[1].e() };
+@@ -1050,7 +1050,7 @@
+     // For RChL currents one needs to define 3-pi sub-channel used
+     chanopt_.JJ=1;
+ 
+-    damppk_( &MNUM, PT, PN, PIM1, PIM2, PIPL, &AMPLIT, HV );
++    dam3pi_( &MNUM, PT, PN, PIM1, PIM2, PIPL, &AMPLIT, HV );
+ 
+     WTamplit = AMPLIT;
+     HH[0] = -HV[0];
