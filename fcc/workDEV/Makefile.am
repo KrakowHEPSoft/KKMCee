@@ -12,6 +12,8 @@ MAIN=MainDEV
 DSET=workDEV
 ## CERN  subCMC=bsub, CLASS= 8nm, 1nh, 1nd, 1nw
 ## Local qubCMC=qsub, CLASS= qunlimited
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++ 
+
 subCMD=qsub
 CLASS=qunlimitted
 ##############

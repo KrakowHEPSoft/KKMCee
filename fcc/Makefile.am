@@ -2,9 +2,11 @@
 # Automake creates Makefile using all information defined below
 METASOURCES = AUTO
 SUBDIRS = workDEV
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++  
+
 ############################################
 KK2f_Libs= \
-	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/fcc/libDEV.la  $(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a \
@@ -38,8 +40,7 @@ libDEV_la_LDFLAGS = -L$(ROOTLIBDIR)-no-install -g
 bin_PROGRAMS = MainDEV
 AM_FFLAGS = @MY_F77_FLAGS@
 #---------------------------------------------------------------
-MainDEV_SOURCES = MainDEV.cxx 
-MainDEV_LDADD = $(top_builddir)/fcc/libDEV.la \
-				$(ROOTAUXLIBS) $(ROOTGLIBS) $(FLIBS) \
-				$(KK2f_Libs)
+MainDEV_SOURCES = MainDEV.cxx
+MainDEV_LDADD = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) $(FLIBS) -lgfortran
+
 MainDEV_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g

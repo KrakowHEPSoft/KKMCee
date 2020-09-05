@@ -124,7 +124,7 @@ class TMCgenKKMC: public TMCgen
   void Finalize();
   //void Make();
   void Generate();
-  double Density(int, double *){;};   /// Dummy method of the abstract class TFOAM_INTEGRAND
+  double Density(int, double *){return 0;};   /// Dummy method of the abstract class TFOAM_INTEGRAND
 /////////////////////////////////////////////////////////////////////////////
   //void Initialize(double []);
   //void Finalize(double&,  double&);

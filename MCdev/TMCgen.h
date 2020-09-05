@@ -54,7 +54,7 @@ class TMCgen   : public TFOAM_INTEGRAND {
   virtual void Redress(   TRandom*, ofstream*, TH1D*);
   virtual void Generate();
   virtual void Finalize();
-  virtual double Density(int nDim, double *Xarg){;};
+  virtual double Density(int nDim, double *Xarg){return 0;};
   double sqr( const double x ){ return x*x;};
   int Min( int &i, int &j){ if(i<j) return i; else return j;};
 /// for debug

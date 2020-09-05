@@ -2,13 +2,23 @@ INCLUDES = -I$(top_srcdir)/Rhadr $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 bin_PROGRAMS = MainP
 MainP_SOURCES = MainP.cxx Semaph.cxx ROBOL.cxx ROBOL2.cxx KKMC.cxx PartLund.cxx
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
-MainP_LDADD = $(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
-	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a $(top_builddir)/dizet/libDizet.a \
-	$(ROOTAUXLIBS) $(ROOTGLIBS)
+############################################
+#  Tables (re)generated in flight.
+#  To be xchecked if it works correctly!!!
+############################################
+KK2f_Libs2= \
+        $(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
+        $(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
+        $(top_builddir)/tauola/libTauola.a $(top_builddir)/tauola/glib.a  $(top_builddir)/photos/libPhotos.a \
+        $(top_builddir)/dizet/libDizet.a \
+        $(top_builddir)/KKsem/libKKsem.a  -lstdc++
 
-MainP_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+
+
+MainP_LDADD = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+MainP_LDFLAGS = -L$(ROOTLIBDIR)
 
 SUBDIRS = Plots
 

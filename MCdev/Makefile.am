@@ -1,5 +1,6 @@
 
 SUBDIRS = farming
+CXXFLAGS = -g -O2 -std=c++11
 
 # ROOT Dictionary file definition
 dictC = MCdevDict.cxx

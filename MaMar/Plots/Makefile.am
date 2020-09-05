@@ -3,6 +3,8 @@ INCLUDES = -I$(top_srcdir)/KKsem  \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
+
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
    PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2\
    PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3
@@ -34,9 +36,9 @@ $(top_builddir)/bornv/libBornvTabs.a:
 KK2f_Libs2= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
-	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
+	$(top_builddir)/tauola/libTauola.a $(top_builddir)/tauola/glib.a  $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a
+	$(top_builddir)/KKsem/libKKsem.a  -lstdc++ 
 ############################################
 #  From tables on the disk (original)
 ############################################
@@ -44,8 +46,8 @@ KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a
+	$(top_builddir)/dizet/libDizet.a \ $(top_builddir)/tauola/glib.a \
+	$(top_builddir)/KKsem/libKKsem.a  -lstdc++ 
 
 Plot1_SOURCES = KKplot.cxx HisNorm.cxx Plot1.cxx
 Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran

@@ -3,6 +3,9 @@
 INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
 METASOURCES = AUTO
 SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFoam0 workFoam3 workFOAM1 workKKMC Plots
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+
+
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKfm.la libKKmc.la
 CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
@@ -73,8 +76,8 @@ KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a
+	$(top_builddir)/dizet/libDizet.a  $(top_builddir)/tauola/glib.a \
+	$(top_builddir)/KKsem/libKKsem.a  -lstdc++
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam0 MainFOAM MainKKMC

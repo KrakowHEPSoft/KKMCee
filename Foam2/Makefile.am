@@ -4,6 +4,7 @@ INCLUDES = -I$(top_srcdir)/Foam2 -I$(ROOTINCDIR) $(all_includes)
 METASOURCES = AUTO
 #---------------------------------------------------------------
 # ROOT specific part added by hand
+CXXFLAGS = -g -O2 -std=c++11
 dictC = FOAMDict.cxx
 dictH = FOAMDict.h
 nodist_libFOAM_la_SOURCES =$(dictC)
