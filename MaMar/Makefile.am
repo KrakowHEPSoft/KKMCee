@@ -76,7 +76,7 @@ KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a  $(top_builddir)/tauola/glib.a \
+	$(top_builddir)/dizet/libDizet.a   \
 	$(top_builddir)/KKsem/libKKsem.a  -lstdc++
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency

@@ -23,7 +23,7 @@ bornex_SOURCES      = bornex.f
 
 bornex_LDADD = $(top_builddir)/KKsem/libKKsem.a $(top_builddir)/KK2f/libKK2f.a\
 	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a\
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/tauola/glib.a\
+	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a \
 	$(top_builddir)/photos/libPhotos.a $(top_builddir)/dizet/libDizet.a -lstdc++ 
 
 chi_prepare_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a \
@@ -31,14 +31,14 @@ chi_prepare_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a \
 
 afb_prepare_LDADD = $(top_builddir)/KKsem/libKKsem.a \
 	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a \
-	$(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/tauola/glib.a  $(top_builddir)/photos/libPhotos.a -lstdc++ 
+	$(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a  $(top_builddir)/photos/libPhotos.a -lstdc++ 
 
 chi_mcan_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a \
 	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/KKsem/libKKsem.a
 
 afb_int_LDADD = $(top_builddir)/KKsem/libKKsem.a $(top_builddir)/KK2f/libKK2f.a\
 	$(top_builddir)/glibk/libGlibk.a $(top_builddir)/jetset/libJetset.a\
-	$(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/tauola/glib.a\
+	$(top_builddir)/bornv/libBornvTabs.a $(top_builddir)/tauola/libTauola.a \
 	$(top_builddir)/photos/libPhotos.a -lstdc++ 
 
 delhad_LDADD = $(top_builddir)/yfspro/libfig/libSemaPlot.a\

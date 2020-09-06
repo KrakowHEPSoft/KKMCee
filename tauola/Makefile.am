@@ -1,4 +1,4 @@
-
+include ../make.inc 
 METASOURCES = AUTO
 lib_LIBRARIES = libTauola.a
 
@@ -13,7 +13,7 @@ CFLAGS  = -fPIC -Wall -Wno-write-strings
 ###########################################################
 
 libTauola_a_SOURCES = \
-	formf.f tauola.f curr_cleo.f f3pi.o pkorb.f \
+	formf.f tauola.f curr_cleo.f f3pi.f pkorb.f \
 	new-currents/other-currents/frho_pi_belle.f\
     new-currents/RChL-currents/rcht_3pi/f3pi_rcht.f \
     new-currents/RChL-currents/rcht_3pi/funct_3pi.f \
