@@ -229,7 +229,7 @@ link-dizet-6.45:
 #======================
 # NOTE: additional input params for EW librarry are in ../dizet/input.all 
 EWtables:
-	(cd ../dizet; make table.all )
+	(cd ../dizet; $(MAKE) table.all )
 #-----------------------------------------------------------------------
 clean:                                                     
 	rm -f *.o *.a *~ *.exe
