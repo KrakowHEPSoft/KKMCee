@@ -1,4 +1,4 @@
-include ../make.inc
+include make.inc
 #######################################################
 LOCAL_LIB   =  glib.a 
 LIB_OBJECTS =  formf.o tauola.o curr_cleo.o f3pi.o pkorb.o \
