@@ -7,7 +7,6 @@ AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_F77([gfortran f95])
 
-
 AM_CONFIG_HEADER(config.h)
 
 # Do compilation tests using the compiler, preprocessor, and file extensions
