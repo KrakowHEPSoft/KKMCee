@@ -2,6 +2,8 @@ INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 SUBDIRS = test0 workZinv workFSR Plots
 
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR
 AM_FFLAGS = @MY_F77_FLAGS@
 
@@ -25,19 +27,19 @@ KK2f_Libs= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a
+	$(top_builddir)/dizet/libDizet.a -lstdc++
 
 Prod0_SOURCES = Prod0.cxx KKMC.cxx PartLund.cxx ROBOL.cxx Semaph.cxx
-Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-Prod0_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Prod0_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Prod0_LDFLAGS = -L$(ROOTLIBDIR) 
 
 ProdZinv_SOURCES = ProdZinv.cxx KKMC.cxx PartLund.cxx ROBOL2.cxx Semaph.cxx
-ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-ProdZinv_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdZinv_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+ProdZinv_LDFLAGS = -L$(ROOTLIBDIR)
 
 ProdFSR_SOURCES = ProdFSR.cxx KKMC.cxx PartLund.cxx RoboFSR.cxx Semaph.cxx
-ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS)
-ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+ProdFSR_LDADD   = $(KK2f_Libs) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+ProdFSR_LDFLAGS = -L$(ROOTLIBDIR) 
 
 ########################################################################
 ###                   USER PART

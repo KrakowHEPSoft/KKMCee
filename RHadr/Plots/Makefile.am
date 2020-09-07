@@ -1,5 +1,7 @@
 INCLUDES = -I$(top_srcdir)/RHadr $(all_includes) -I$(ROOTINCDIR)
 
+CXXFLAGS = -g -O2 -std=c++11 -lstdc++ 
+
 METASOURCES = AUTO
 bin_PROGRAMS = SkyLine Plot2b Plot2c Plot3a Plot3b Plot3m Plot3f
 
@@ -11,47 +13,35 @@ Plot3b_SOURCES  = Plot3b.cxx
 Plot3m_SOURCES  = Plot3m.cxx
 Plot3f_SOURCES  = Plot3f.cxx
 
-SkyLine_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(ROOTAUXLIBS) $(ROOTGLIBS)
-SkyLine_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+KK2f_Libs2= \
+	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
+	$(top_builddir)/tauola/libTauola.a  $(top_builddir)/photos/libPhotos.a \
+	$(top_builddir)/dizet/libDizet.a \
+	$(top_builddir)/KKsem/libKKsem.a  -lstdc++
 
-Plot2b_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot2b_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-Plot2c_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot2c_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
 
-Plot3a_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot3a_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+SkyLine_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+SkyLine_LDFLAGS = -L$(ROOTLIBDIR)
 
-Plot3b_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot3b_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Plot2b_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot2b_LDFLAGS  = -L$(ROOTLIBDIR)
 
-Plot3m_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot3m_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Plot2c_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot2c_LDFLAGS  = -L$(ROOTLIBDIR)
 
-Plot3f_LDADD = $(top_builddir)/KK2f/libKK2f.a \
-	$(top_builddir)/bornv/libBornvDizet.a $(top_builddir)/tauola/libTauola.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/photos/libPhotos.a $(top_builddir)/jetset/libJetset.a $(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a $(ROOTAUXLIBS) $(ROOTGLIBS)
-Plot3f_LDFLAGS = -L$(ROOTLIBDIR) -lgfortran
+Plot3b_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot3b_LDFLAGS  = -L$(ROOTLIBDIR)
+
+Plot3a_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot3a_LDFLAGS  = -L$(ROOTLIBDIR)
+
+Plot3m_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot3m_LDFLAGS  = -L$(ROOTLIBDIR)
+
+Plot3f_LDADD =  $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot3f_LDFLAGS  = -L$(ROOTLIBDIR)
 
 
 #=============================================================================
