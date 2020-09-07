@@ -20,8 +20,8 @@ BeginX
 *     Center-of-mass energy [GeV]
     1        100.0e0      cmsene =xpar( 1)  Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2)  Beam energy spread [GeV]
-    3              5      ninp   =xpar( 3)  Input  unit number (not used)
-    4             16      nout   =xpar( 4)  Output unit number
+    3              5      ninp   =xpar( 5)  Input  unit number (not used)
+    4             16      nout   =xpar( 6)  Output unit number
 *     PrintOut from generator
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
@@ -37,7 +37,7 @@ BeginX
 *     KeyELW=0,1 Type of Elewctroweak corrections, KeyElw=0 only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
 *     KeyRes=0,1 Experim. R used to model rate of decay of gamma* and decay
-   13              0      KeyRes=xpar(13) =0 no RRes, =1 RRes on, =2 RRes+Photos
+   13              0      KeyRes=xpar(13) Deafault is 0, dumb parton R
 *     Minimum and maximum v, where v = 1-sprim/s, v=1 alowed
    16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
 ** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
@@ -70,9 +70,9 @@ BeginX
 **    Photon emission from final QUARKS
    29              1      KeyQSR=xpar(29)  Default is  1
 **    Coupling constants etc.
-   30  137.0359895e0      alfinv=xpar(30)  Inverse of alpha_QED at q^2=0
+   30  137.035999139      alfinv=xpar(30)  Inverse of alpha_QED at q^2=0
    31    389.37966e3      gnanob=xpar(31)  GeV^(-2)  --> NanoBarn conversion
-   32     1.16639e-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2)])
+   32   1.1663787e-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2)])
 ********************************************************************************
 **     Technical cuts and internal parameters
 **\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\
@@ -139,11 +139,11 @@ BeginX
   501              1\\\\\\KeyZet=xpar(501)  default is 1\\\\\\\\\\\\\\\\\\\\\\\\
 *indx_______________ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 ** Mass and width of Z-boson [GeV]
-  502       91.187e0      MZ  =xpar(502)  PDG 1996
+  502      91.1876e0      MZ  =xpar(502)  PDG 1996
 **     sin(thetaW)**2 where thetaW is electroweak mixing angle
   503    .22276773e0      SwSq  =xpar(503) sin_squared of EW angle, from Dizet
   504   2.50072032e0      GammZ =xpar(504) Z width, from Dizet
-  505     80.37787e0      MW    =xpar(505) W mass,  from Dizet
+  505    80.358935e0      MW    =xpar(505) W mass,  from Dizet
   506   2.08825837e0      GammW =xpar(506) W width, from Dizet
   510          1e-60      MasPhot=xpar(510) photon mass, IR regulator 
 ********************************************************************************
@@ -156,7 +156,7 @@ BeginX
   514             -1      2*T3L =2*Isospin for Left component
   515              0      2*helicity, 0 for unpolarized
   516        0.010e0      mass [GeV] (5-15MeV in PDG)
-  516        0.100e0      Constituent mass, for comparison with KoralZ !!!!!!!
+  516        0.083e0      Constituent mass, for comparison with KoralZ !!!!!!!
   517          5.0e0      WtMax Maximum weight for rejection d-quark
 **518         0.99e0      auxiliary parameter vmaxGPS d-quark
   518        20.00e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -166,7 +166,7 @@ BeginX
   523              2      3*Q   =3*charge
   524              1      2*T3L =2*Isospin for Left component
   525              0      2*helicity, 0 for unpolarized
-  526        0.005e0      mass [GeV] (2-8MeV in PDG)
+  526        0.062e0      mass [GeV] (2-8MeV in PDG)
   526        0.100e0      Constituent mass, for comparison with KoralZ !!!!!!!
   527          5.0e0      WtMax Maximum weight for rejection u-quark
 **528         0.99e0      auxiliary parameter vmaxGPS u-quark
@@ -178,7 +178,7 @@ BeginX
   533             -1      3*Q   =3*charge
   534             -1      2*T3L =2*Isospin for Left component
   535              0      2*helicity, 0 for unpolarized
-  536        0.200e0      mass [GeV] (100-300MeV in PDG)
+  536        0.215e0      mass [GeV] (100-300MeV in PDG)
   537          5.0e0      WtMax Maximum weight for rejection s-quark
 **538         0.99e0      auxiliary parameter vmaxGPS s-quark
   538        20.00e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -188,7 +188,7 @@ BeginX
   543              2      3*Q   =3*charge
   544              1      2*T3L =2*Isospin for Left component
   545              0      2*helicity, 0 for unpolarized
-  546        1.300e0      mass [GeV] (1.0-1.6 GeV in PDG)
+  546        1.500e0      mass [GeV] (1.0-1.6 GeV in PDG)
   547          5.0e0      WtMax Maximum weight for rejection c-quark
 **548         0.99e0      auxiliary parameter vmaxGPS c-quark
   548        20.00e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -199,8 +199,7 @@ BeginX
   553             -1      3*Q   =3*charge
   554             -1      2*T3L =2*Isospin for Left component
   555              0      2*helicity, 0 for unpolarized
-  556        4.200e0      mass [GeV] (4.1-4.5 GeV in PDG)
-  556        4.500e0      for comparison with KoarlZ
+  556        4.700e0      mass [GeV] (4.1-4.5 GeV in PDG)
   557          5.0e0      WtMax Maximum weight for rejection b-quark
 **558         0.99e0      auxiliary parameter vmaxGPS b-quark
   558        20.00e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -221,7 +220,7 @@ BeginX
   613             -3      3*Q   =3*charge
   614             -1      2*T3L =2*Isospin for Left component
   615              0      2*helicity
-  616    0.510999e-3      mass [GeV]   (0.51099907 MeV)
+  616  0.51099907e-3      mass [GeV]   (0.51099907 MeV)
   617          8.0e0      WtMax Maximum weight for rejection electron
 **618         0.99e0      auxiliary parameter vmaxGPS
   618          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -264,7 +263,7 @@ BeginX
   653             -3      3*Q   =3*charge
   654             -1      2*T3L =2*Isospin for Left component
   655              0      2*helicity
-  656        1.777e0      mass [GeV]   (1.777 GeV)
+  656      1.77705e0      mass [GeV]   (1.777 GeV)
   657          8.0e0      WtMax Maximum weight for rejection tau
 **658          1.0e0      auxiliary parameter vmaxGPS, CEEX always on
   658          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
@@ -285,10 +284,10 @@ BeginX
 ********************************************************************************
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
   801              1     Ibox=0,1, EW boxes off,on,    input for Dizet
-  805          100e0      amh   =xpar(805) Higgs mass, input for Dizet
-  806          175e0      amtop =xpar(806) Top mass,   input for Dizet
+  805        125.1e0      amh   =xpar(805) Higgs mass, input for Dizet
+  806        173.0e0      amtop =xpar(806) Top mass,   input for Dizet
   808 128.86674175e0   alfinvMZ =xpar(808) alfQED(MZ), input for Dizet
-  809        0.125e0   alfQCDMZ =xpar(809) alfQCD(MZ), input for Dizet
+  809    0.1201789e0   alfQCDMZ =xpar(809) alfQCD(MZ), input for Dizet
 *      DIZET flags NPAR(i)=NPAR(900+i)
   901              1  Ihvp  ! =1,2,3  (Jegerlehner/Eidelman, Jegerlehner(1988), Burkhardt etal.)
   902              4  Iamt4 ! =0,1,2,3,4 (=4 the best, Degrassi/Gambino)
@@ -305,7 +304,6 @@ BeginX
   913              0  Ifact ! =0,1,2,3,4,5 (Expansion of kappa; =0 none )
   914              0  Ihigs ! =0,1      ( Leading Higgs contribution resummation)
   915              1  Iafmt ! =0,1      (=0 for old ZF)
-*       Additional parameters of 6.x version
   916              1  Iewlc ! =0,1   (???)
   917              1  Iczak ! =0,1   (Czarnecki/Kuehn corrections)
   918              1  Ihig2 ! =0,1   (Two-loop higgs  corrections off,on) 

@@ -29,25 +29,25 @@
      $           KFtau   = 15,  KFtaunu = 16)
       CHARACTER*40 TableFile
 *----------------------------------------------------------------------
-      TableFile= '../../dizet/table.down.current'
+      TableFile= '../../dizet/table.down'
       CALL BornV_ReadFile(TableFile,KFdown)
-      TableFile= '../../dizet/table.up.current'
+      TableFile= '../../dizet/table.up'
       CALL BornV_ReadFile(TableFile,KFup)
-      TableFile= '../../dizet/table.down.current'
+      TableFile= '../../dizet/table.down'
       CALL BornV_ReadFile(TableFile,KFstran)
-      TableFile= '../../dizet/table.up.current'
+      TableFile= '../../dizet/table.up'
       CALL BornV_ReadFile(TableFile,KFcharm)
-      TableFile= '../../dizet/table.botom.current'
+      TableFile= '../../dizet/table.botom'
       CALL BornV_ReadFile(TableFile,KFbotom)
-      TableFile= '../../dizet/table.mu.current'
+      TableFile= '../../dizet/table.mu'
       CALL BornV_ReadFile(TableFile,KFmu)
-      TableFile= '../../dizet/table.tau.current'
+      TableFile= '../../dizet/table.tau'
       CALL BornV_ReadFile(TableFile,KFtau)
-      TableFile= '../../dizet/table.nue.current'
+      TableFile= '../../dizet/table.nue'
       CALL BornV_ReadFile(TableFile,KFelnu)
-      TableFile= '../../dizet/table.numu.current'
+      TableFile= '../../dizet/table.numu'
       CALL BornV_ReadFile(TableFile,KFmunu)
-      TableFile= '../../dizet/table.nutau.current'
+      TableFile= '../../dizet/table.nutau'
       CALL BornV_ReadFile(TableFile,KFtaunu)
 
       END

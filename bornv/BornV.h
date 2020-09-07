@@ -17,9 +17,8 @@
       DOUBLE PRECISION   m_fleps
 ****  PARAMETER (m_fleps = 1d-35)  ! original
 ****  PARAMETER (m_fleps = 1d-45)  ! enough???
-****  PARAMETER (m_fleps = 1d-100)  ! enough!!!
-      PARAMETER (m_fleps = 1d-200)  ! enough!!!
-****  PARAMETER (m_fleps = 1d-300)  ! risky?
+      PARAMETER (m_fleps = 1d-100)  ! enough!!!
+****      PARAMETER (m_fleps = 1d-200)  ! enough!!!
 *//////////////////////////////////////////////////////////////////////////////
 *//       Energy limits in the EW grid, w=sqrt(s) in GeV units.              //
 *//////////////////////////////////////////////////////////////////////////////
@@ -35,11 +34,11 @@
       PARAMETER(        m_WminLEP1=0.010d0,  m_WmaxLEP1= 95.000d0 )  ! LEP1 basic range (m_WminLEP1,m_WmaxLEP1)
 ***   PARAMETER(        m_WminLEP1=0.010d0,  m_WmaxLEP1=100.001d0 )  ! LEP1 basic range (m_WminLEP1,m_WmaxLEP1)
 *----------- Z resonance
-      PARAMETER(        m_poin2 =  20 )                              ! Z range sqrt(s)    spacing
+      PARAMETER(        m_poin2 = 120 )                              ! Z range sqrt(s)    spacing
 ***   PARAMETER(        m_poTh2 =   0 )                              ! Cost(heta) spacing
       PARAMETER(        m_poTh2 =  14 )                              ! =14 is overkill?
       DOUBLE PRECISION  m_WminZ, m_WmaxZ, m_WdelZ                    ! Z range (amz + m_WdelZ)
-      PARAMETER(        m_WdelZ = 5.000d0)                           ! Z range (amz + m_WdelZ)
+      PARAMETER(        m_WdelZ = 60.000d0)                           ! Z range (amz + m_WdelZ)
 ***   PARAMETER(        m_WdelZ = 2d0 *2.495342704946d0)             ! Old range 2*Gamma
 *----------- LEP2
       PARAMETER(        m_poTh3 =  30 )                              ! Overkill, bit lets kkep it
@@ -143,8 +142,8 @@
       CHARACTER*80  m_fmt0, m_fmt1, m_fmt2
       PARAMETER (
      $  m_fmt0 ='(4g20.13)',                      ! Mz,Mt,Mh etc.
-     $  m_fmt1 ='( a,  i4,  f10.5, i4,  f10.5 )', ! header
-     $  m_fmt2 ='(6g13.7)'   )                    ! complex formfactors
+     $  m_fmt1 ='( a,  i4,  f11.5, i4,  f11.5 )', ! header
+     $  m_fmt2 ='(6(g13.7,1x))'   )                    ! complex formfactors
 *
 *  Class procedures:
 *
