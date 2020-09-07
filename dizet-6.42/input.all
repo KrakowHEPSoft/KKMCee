@@ -1,0 +1,35 @@
+******************************************************************************
+BeginX
+*----|||||||||||||||----------------------------------------------------------
+****************************************
+* already updated in KK2f_defaults
+*   30 137.035999139       alfinv=xpar(30)  Inverse of alpha_QED at q^2=0
+*   32   1.1663787d-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639d-5  [GeV^(-2)])
+*  502      91.1876D0      amaz  =xpar(502)  PDG 1996
+*  526        0.062d0      mass [GeV] (2-8MeV in PDG)      u
+*  516        0.083d0      mass [GeV] (5-15MeV in PDG)     d
+*  546        1.500d0      mass [GeV] (1.0-1.6 GeV in PDG) c
+*  536        0.215d0      mass [GeV] (100-300MeV in PDG)  s
+*  556        4.700d0      mass [GeV] (4.1-4.5 GeV in PDG) b
+*  616  0.51099907d-3      mass [GeV]   (0.51099907 MeV)   e
+*  636    0.1056583d0      mass [GeV]   (0.1056583 GeV)    mu
+*  656      1.77705d0      mass [GeV]   (1.777 GeV)        tau
+*  805        125.0D0      amh   =xpar(505) Higgs mass, input for Dizet
+*  806        173.0D0      amtop =xpar(506) Top mass,   input for Dizet
+*  809    0.1201789D0      alfQCDMZ =xpar(809) alfQCD(MZ)
+****************************************
+  801              1      Ibox=0,1, EW boxes off,on,   input for Dizet
+  901              1      Ihvp  ! =1,2,3  (Jegerlehner/Eidelman, Jegerlehner(1988), Burkhardt etal.)
+  902              4      Iamt4 ! =0,1,2,3,4 (=4 the best, Degrassi/Gambino)
+  915              3      IAMFT
+*----|||||||||||||||----------------------------------------------------------
+  401              1   DOWN  quark
+  402              1   UP    quark
+  405              1   BOTOM quark
+  412              1   e     neutrino
+  413              1   MU    lepton
+  414              1   MU    neutrino
+  415              1   TAU   lepton
+  416              1   TAU   neutrino
+EndX
+******************************************************************************

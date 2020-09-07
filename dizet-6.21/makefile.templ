@@ -1,0 +1,106 @@
+#####################################################################
+#	make table-clean	make table.all
+##### re-produce tables for new input data
+#       make table.all
+#############################
+#       make tables
+# 	make table.mu
+# 	make table.tau
+# 	make table.down
+# 	make table.up
+# 	make table.botom
+# 	make table.down-debug
+# this is necessary if grid size changed in bornv.h
+#       make Clean
+#####################################################################
+all:		dizet.a
+#####################################################################
+FFLAGS =  <FFLAGS>
+F77 = <F77>
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+#####################################################################
+LOCAL_LIB = dizet.a
+#####LIB_OBJECTS = DZface.o dzero.o dizet5_0.o
+#####LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_05.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_21.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+##########################################################################
+##########################################################################
+COMMAND1 = TabMain.exe
+OBJECTS1 = TabMain.o
+DZface.o:		DZface.h BornV.h
+BornV_StartEW.o:	DZface.h BornV.h
+#############################
+# Link procedure
+$(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1)  $(LOCAL_LIB)
+##########################################################################
+##############################################################################
+SRCLIST= "./"
+#-----------------------------------------------------------------------------
+table.all:	Clean $(COMMAND1) input.all
+	(cp  ./input.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+tableYR.all:	Clean $(COMMAND1) input.all
+	(cp  ./inputYR.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+table.down:	$(COMMAND1) input.down
+	(cp  ./input.down ./input.data; time ./TabMain.exe; chmod -w table.down )
+table.down-debug:	$(COMMAND1)
+	(cp  ./input.down./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
+#-----------------------------------------------------------------------------
+table.up:	$(COMMAND1) input.up
+	(cp  ./input.up ./input.data; time ./TabMain.exe; chmod -w table.up )
+table.up-debug:		$(COMMAND1)
+	(cp  ./input.up ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.botom:	$(COMMAND1) input.botom
+	(cp  ./input.botom ./input.data; time ./TabMain.exe; chmod -w table.botom )
+botom-debug:		$(COMMAND1)
+	(cp  ./input.botom ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.mu:	$(COMMAND1) input.mu
+	(cp ./input.mu ./input.data; time ./TabMain.exe; chmod -w table.mu  )
+table.mu-debug:		$(COMMAND1)
+	(cp ./input.mu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
+#-----------------------------------------------------------------------------
+table.tau:	$(COMMAND1) input.tau
+	(cp ./input.tau ./input.data; time ./TabMain.exe; chmod -w table.tau  )
+table.tau-debug:	$(COMMAND1)
+	(cp ./input.tau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.nue:	$(COMMAND1) input.nutau
+	(cp ./input.nue ./input.data; time ./TabMain.exe; chmod -w table.nue  )
+table.nue-debug:	$(COMMAND1)
+	(cp ./input.nue ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.numu:	$(COMMAND1) input.numu
+	(cp ./input.numu ./input.data; time ./TabMain.exe; chmod -w table.numu  )
+table.numu-debug:	$(COMMAND1)
+	(cp ./input.numu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.nutau:	$(COMMAND1) input.nutau
+	(cp ./input.nutau ./input.data; time ./TabMain.exe; chmod -w table.nutau  )
+table.nutau-debug:	$(COMMAND1)
+	(cp ./input.nutau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+##############################################################################
+makflag:
+	(cd ../ffbench; make makflag)
+#-----------------------------------------------------------------------------
+#####################################################################
+#####################################################################
+#-----------------------------------------------------------------------------
+clean:
+	rm -f *.o *.a *~ *.exe
+#-----------------------------------------------------------------------------
+# this is necessary if grid size changed in bornv.h
+Clean:	clean
+	(cd ../bornv; make clean)
+##############################################################################

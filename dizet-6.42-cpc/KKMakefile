@@ -1,0 +1,194 @@
+#####################################################################
+#	make table-clean	make table.all		make table-check
+##### re-produce tables for new input data
+#       make table.all
+##### copy produced tables into current
+#	make table-cp
+##### copy predefined tables into current
+#	make default
+#	make YR
+# Note that old files table.* has to be removed manualy, this prevents
+# accidental removal of tables which cost some time to create.
+#############################
+#       make tables
+# 	make table.mu
+# 	make table.tau
+# 	make table.down
+# 	make table.up
+# 	make table.botom
+# 	make table.down-debug
+# this is necessary if grid size changed in bornv.h
+#       make Clean
+#####################################################################
+all:		dizet.a
+#####################################################################
+FFLAGS = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77    = gfortran
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+#####################################################################
+# diff m2tcor5_11.f ZF6_23/m2tcor5_11.f | more         OK the same
+# diff bkqcdl5_14.f ZF6_23/bkqcdl5_14.f | more         OK the same
+# diff bcqcdl5_14.f ZF6_23/bcqcdl5_14.f | more         OK the same
+# diff zf514_aux.f  ZF6_23/zf514_aux.f  | more         OK the same
+# diff dizet6_05.f  ZF6_23/dizet6_21.f  | more         some changes
+#####################################################################
+LOCAL_LIB = dizet.a
+#####LIB_OBJECTS = DZface.o dzero.o dizet5_0.o
+#####LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_05.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_42.o zf630_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+##########################################################################
+##########################################################################
+COMMAND1 = TabMain.exe
+OBJECTS1 = TabMain.o
+DZface.o:		DZface.h
+BornV_StartEW.o:	DZface.h
+#############################
+# Link procedure
+$(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1)  $(LOCAL_LIB)
+##########################################################################
+##############################################################################
+SRCLIST= "./"
+#-----------------------------------------------------------------------------
+table.all:	Clean $(COMMAND1) input.all
+	(cp  ./input.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+tableYR.all:	Clean $(COMMAND1) input.all
+	(cp  ./inputYR.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+table.down:	$(COMMAND1) input.down
+	(cp  ./input.down ./input.data; time ./TabMain.exe; chmod -w table.down )
+table.down-debug:	$(COMMAND1)
+	(cp  ./input.down./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
+#-----------------------------------------------------------------------------
+table.up:	$(COMMAND1) input.up
+	(cp  ./input.up ./input.data; time ./TabMain.exe; chmod -w table.up )
+table.up-debug:		$(COMMAND1)
+	(cp  ./input.up ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.botom:	$(COMMAND1) input.botom
+	(cp  ./input.botom ./input.data; time ./TabMain.exe; chmod -w table.botom )
+botom-debug:		$(COMMAND1)
+	(cp  ./input.botom ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.mu:	$(COMMAND1) input.mu
+	(cp ./input.mu ./input.data; time ./TabMain.exe; chmod -w table.mu  )
+table.mu-debug:		$(COMMAND1)
+	(cp ./input.mu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
+#-----------------------------------------------------------------------------
+table.tau:	$(COMMAND1) input.tau
+	(cp ./input.tau ./input.data; time ./TabMain.exe; chmod -w table.tau  )
+table.tau-debug:	$(COMMAND1)
+	(cp ./input.tau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.nue:	$(COMMAND1) input.nutau
+	(cp ./input.nue ./input.data; time ./TabMain.exe; chmod -w table.nue  )
+table.nue-debug:	$(COMMAND1)
+	(cp ./input.nue ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.numu:	$(COMMAND1) input.numu
+	(cp ./input.numu ./input.data; time ./TabMain.exe; chmod -w table.numu  )
+table.numu-debug:	$(COMMAND1)
+	(cp ./input.numu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+table.nutau:	$(COMMAND1) input.nutau
+	(cp ./input.nutau ./input.data; time ./TabMain.exe; chmod -w table.nutau  )
+table.nutau-debug:	$(COMMAND1)
+	(cp ./input.nutau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
+#-----------------------------------------------------------------------------
+tables:	table.down table.up table.botom table.mu table.tau table.nue table.numu table.nutau
+##############################################################################
+makflag:
+	(cd ../ffbench; make makflag)
+#-----------------------------------------------------------------------------
+#	make table-clean	make table.all		make table-check
+table-clean:
+	(rm -f  table.tau.current table.down.current table.up.current table.botom.current table.mu.current \
+		table.nue.current table.numu.current table.nutau.current)
+table-check:
+	(diff table.down.current   table.down    | more)
+	(diff table.up.current     table.up      | more)
+	(diff table.botom.current  table.botom   | more)
+	(diff table.mu.current     table.mu      | more)
+	(diff table.tau.current    table.tau     | more)
+	(diff table.nue.current    table.nue     | more)
+	(diff table.numu.current   table.numu    | more)
+	(diff table.nutau.current  table.nutau   | more)
+#####################################################################
+default:
+	(cp -f ./table.down.345pt.default    ./table.down.current)
+	(cp -f ./table.up.345pt.default      ./table.up.current)
+	(cp -f ./table.botom.345pt.default   ./table.botom.current)
+	(cp -f ./table.mu.345pt.default      ./table.mu.current)
+	(cp -f ./table.tau.345pt.default     ./table.tau.current)
+	(cp -f ./table.nue.345pt.default     ./table.nue.current)
+	(cp -f ./table.numu.345pt.default    ./table.numu.current)
+	(cp -f ./table.nutau.345pt.default   ./table.nutau.current)
+#####################################################################
+table-cp:
+	(cp table.down   table.down.current    )
+	(cp table.up     table.up.current      )
+	(cp table.botom  table.botom.current   )
+	(cp table.mu     table.mu.current      )
+	(cp table.tau    table.tau.current     )
+	(cp table.nue    table.nue.current     )
+	(cp table.numu   table.numu.current    )
+	(cp table.nutau  table.nutau.current   )
+table-cp-default:
+	(cp table.down   table.down.345pt.default    )
+	(cp table.up     table.up.345pt.default      )
+	(cp table.botom  table.botom.345pt.default   )
+	(cp table.mu     table.mu.345pt.default      )
+	(cp table.tau    table.tau.345pt.default     )
+	(cp table.nue    table.nue.345pt.default     )
+	(cp table.numu   table.numu.345pt.default    )
+	(cp table.nutau  table.nutau.345pt.default   )
+	(chmod -w table.*.345pt.default)
+table-cp-YR:
+	(cp table.down   table.down.345pt.YR    )
+	(cp table.up     table.up.345pt.YR      )
+	(cp table.botom  table.botom.345pt.YR   )
+	(cp table.mu     table.mu.345pt.YR      )
+	(cp table.tau    table.tau.345pt.YR     )
+	(cp table.nue    table.nue.345pt.YR     )
+	(cp table.numu   table.numu.345pt.YR    )
+	(cp table.nutau  table.nutau.345pt.YR   )
+table-cp-YRibox:
+	(cp table.down   table.down.YRibox    )
+	(cp table.up     table.up.YRibox      )
+	(cp table.botom  table.botom.YRibo    )
+	(cp table.mu     table.mu.YRibox      )
+	(cp table.tau    table.tau.YRibox     )
+#####################################################################
+YR:
+	(cp -f ./table.down.345pt.YR    ./table.down.current)
+	(cp -f ./table.up.345pt.YR      ./table.up.current)
+	(cp -f ./table.botom.345pt.YR   ./table.botom.current)
+	(cp -f ./table.mu.345pt.YR      ./table.mu.current)
+	(cp -f ./table.tau.345pt.YR     ./table.tau.current)
+	(cp -f ./table.nue.345pt.YR     ./table.nue.current)
+	(cp -f ./table.numu.345pt.YR    ./table.numu.current)
+	(cp -f ./table.nutau.345pt.YR   ./table.nutau.current)
+# has to be reproduced!!! old version 340pt
+#YRibox:
+#	(cp -f ./table.down.YRibox    ./table.down.current)
+#	(cp -f ./table.up.YRibox      ./table.up.current)
+#	(cp -f ./table.botom.YRibox   ./table.botom.current)
+#	(cp -f ./table.mu.YRibox      ./table.mu.current)
+#	(cp -f ./table.tau.YRibox     ./table.tau.current)
+#-----------------------------------------------------------------------------
+clean:
+	rm -f *.o *.a *~ *.exe
+#-----------------------------------------------------------------------------
+# this is necessary if grid size changed in bornv.h
+Clean:	clean
+	(cd ../bornv; make clean)
+##############################################################################
