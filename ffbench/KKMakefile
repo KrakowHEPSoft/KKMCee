@@ -101,7 +101,7 @@ $(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
 COMMAND2 = demo.exe
 OBJECTS2 = demo.o
 $(COMMAND2):                   $(OBJECTS2) $(EXT_LIBRARY)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) -lstdc++ 
 #-----------------------------------------------------------------------
 COMMAND3 = demo_R.exe
 OBJECTS3 = demo_R.o
