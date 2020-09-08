@@ -207,6 +207,7 @@ makflag-ext:
 #--- local dirs
 makflag: makflag-ext
 	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > KKMakefile)
+#=============================================================================
 #---------------------------------------------------------------------------------------
 ../dizet: 
 	(make link-dizet-6.45)
