@@ -89,8 +89,8 @@ $(EXT_LIB7): $(EXT_SRC7)
 EXT_LIBRARYa = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4a) $(EXT_LIB5) $(EXT_LIB6)
 EXT_LIBRARYd = $(EXT_LIB1) $(EXT_LIB2) $(EXT_LIB3) $(EXT_LIB4d) $(EXT_LIB5) $(EXT_LIB6) $(EXT_LIB7)
 # Note that benchmark ouputs are for EXT_LIBRARYd
-#EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
-EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
+EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk are used
+#EXT_LIBRARY = $(EXT_LIBRARYd)   # Dizet is linked, tables created in-flight during initialization
 #-----------------------------------------------------------------------
 # Link procedure
 COMMAND1 = ProdMC.exe
@@ -101,8 +101,9 @@ $(COMMAND1):                   $(OBJECTS1) $(EXT_LIBRARY)
 COMMAND2 = demo.exe
 OBJECTS2 = demo.o
 $(COMMAND2):                   $(OBJECTS2) $(EXT_LIBRARY)
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) -lstdc++
 #-----------------------------------------------------------------------
+# Obsolete??
 COMMAND3 = demo_R.exe
 OBJECTS3 = demo_R.o
 $(COMMAND3):                   $(OBJECTS3) $(EXT_LIBRARY)
@@ -206,11 +207,29 @@ makflag-ext:
 #--- local dirs
 makflag: makflag-ext
 	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > KKMakefile)
-#=============================================================================
-mbr:
-	(cd ../bornv;  $(MAKE) mbr)
-default:
-	(cd ../dizet;  $(MAKE) default)
+#---------------------------------------------------------------------------------------
+../dizet: 
+	(make link-dizet-6.45)
+link-dizet-6.21:
+	(cd ..; rm -f dizet;             ln -s ./dizet-6.21 ./dizet )
+	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
+	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
+link-dizet-6.42-cpc:
+	(cd ..; rm -f dizet;             ln -s ./dizet-6.42-cpc ./dizet )
+	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
+	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
+link-dizet-6.42:
+	(cd ..; rm -f dizet;             ln -s ./dizet-6.42 ./dizet )
+	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
+	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
+link-dizet-6.45:
+	(cd ..; rm -f ./dizet;           ln -s ./dizet-6.45 ./dizet )
+	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
+	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
+#======================
+# NOTE: additional input params for EW librarry are in ../dizet/input.all 
+EWtables:
+	(cd ../dizet; $(MAKE) table.all )
 #-----------------------------------------------------------------------
 clean:                                                     
 	rm -f *.o *.a *~ *.exe
@@ -236,81 +255,4 @@ gtar: Clean
 #-----------------------------------------------------------------------
 # Exporting subset of KKMC directories as in CPC version (2000)  
 #       make -i -f KKMakefile export
-#-----------------------------------------------------------------------
-VERS=v4_22
-export: Clean
-	(rm -f     ./*.tgz)
-	(rm -rf    ./KKMC_$(VERS);      mkdir  ./KKMC_$(VERS) )
-### MC generator
-	(mkdir  ./KKMC_$(VERS)/KK2f;   cp -pt  ./KKMC_$(VERS)/KK2f/   ../KK2f/*.f ../KK2f/*.h  ../KK2f/*.templ )
-	(mkdir  ./KKMC_$(VERS)/bornv;  cp -pt  ./KKMC_$(VERS)/bornv/  ../bornv/*.* )
-	      (cp -prt  ./KKMC_$(VERS)/bornv/  ../bornv/tabtest)
-	(mkdir  ./KKMC_$(VERS)/dizet;  cp -prt ./KKMC_$(VERS)/ ../dizet/ )
-	(mkdir  ./KKMC_$(VERS)/glibk;  cp -pt  ./KKMC_$(VERS)/glibk/  ../glibk/*.* )
-	(mkdir  ./KKMC_$(VERS)/jetset; cp -pt  ./KKMC_$(VERS)/jetset/ ../jetset/*.* )
-	(mkdir  ./KKMC_$(VERS)/tauola; cp -pt  ./KKMC_$(VERS)/tauola/ ../tauola/*.* )
-	(mkdir  ./KKMC_$(VERS)/photos; cp -pt  ./KKMC_$(VERS)/photos/ ../photos/*.* )
-	(mkdir  ./KKMC_$(VERS)/KKsem;  cp -pt  ./KKMC_$(VERS)/KKsem/  ../KKsem/*.* )
-### Main and miscelaneous
-	(mkdir  ./KKMC_$(VERS)/m4;  cp -prt ./KKMC_$(VERS)/ ../m4/ )
-	(cp -pt ./KKMC_$(VERS)/ ../* ../.KK2f_defaults )
-### user directory
-	(mkdir     ./KKMC_$(VERS)/ffbench )
-	(cp -pt  ./KKMC_$(VERS)/ffbench/  *.* *-*  KKMakefile)
-	(cp -prt ./KKMC_$(VERS)/ffbench/ \
-	    ./demo  ./Mu ./Tau     ./Inclusive  \
-	    ./Down  ./Up ./Botom   ./demo_R \
-	    ./Beast ./Test ./iniseed  \
-	    ./Plots )
-### cleaning
-	(rm -f ./KKMC_$(VERS)/KKall12.kdevses ./KKMC_$(VERS)/ToBeDone ./KKMC_$(VERS)/*~ )
-	(find  ./KKMC_$(VERS)/ -name .svn -exec rm -r -f {} \; )
-	(tar -cvzf ./KKMC_$(VERS).tgz ./KKMC_$(VERS) )
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-# Exporting KKMC with extra MaMar directory,  C++ top layer of analysis
-#       make -i -f KKMakefile Export
-# Before that autotools has to be reconfigured:
-#   1. comment out yfspro and RRhad in configure.ac and Makefile.am in main directory
-#   2. ( make distclean;  autoreconf -i --force ; ./configure)
-#-----------------------------------------------------------------------
-VERSm=v4_24a
-Export: Clean
-	(rm -f     ./*.tgz)
-	(rm -rf    ./KKMC_$(VERSm);      mkdir  ./KKMC_$(VERSm) )
-### Main and miscelaneous
-	(mkdir  ./KKMC_$(VERSm)/m4;  cp -prt ./KKMC_$(VERSm)/ ../m4/ )
-	(cp -pt ./KKMC_$(VERSm)/ ../.KK2f_defaults  ../HighLights \
-            ../ReleaseNotes ../POOPrules ../HowToStart ../HowToMore ../TitlePage ../Log2012 \
-            ../*-* ../*.* ../configure ../libtool ../missing  ../depcomp   )
-### MC generator
-	(mkdir  ./KKMC_$(VERSm)/KK2f;   cp -pt  ./KKMC_$(VERSm)/KK2f/   ../KK2f/*.f ../KK2f/*.h  \
-                                              ../KK2f/*.templ ../KK2f/*.am ../KK2f/*.in)
-	(mkdir  ./KKMC_$(VERSm)/bornv;  cp -pt  ./KKMC_$(VERSm)/bornv/  ../bornv/*.* )
-	                              ( cp -prt ./KKMC_$(VERSm)/bornv/  ../bornv/tabtest)
-	(mkdir  ./KKMC_$(VERSm)/dizet;  cp -prt ./KKMC_$(VERSm)/ ../dizet/ )
-	(mkdir  ./KKMC_$(VERSm)/glibk;  cp -pt  ./KKMC_$(VERSm)/glibk/  ../glibk/*.* )
-	(mkdir  ./KKMC_$(VERSm)/jetset; cp -pt  ./KKMC_$(VERSm)/jetset/ ../jetset/*.* )
-	(mkdir  ./KKMC_$(VERSm)/tauola; cp -pt  ./KKMC_$(VERSm)/tauola/ ../tauola/*.* )
-	(mkdir  ./KKMC_$(VERSm)/photos; cp -pt  ./KKMC_$(VERSm)/photos/ ../photos/*.* )
-	(mkdir  ./KKMC_$(VERSm)/KKsem;  cp -pt  ./KKMC_$(VERSm)/KKsem/  ../KKsem/*.* )
-### user directory ffbench of CPC distribution
-	(mkdir   ./KKMC_$(VERSm)/ffbench )
-	(cp -pt  ./KKMC_$(VERSm)/ffbench/  *.* *-*  KKMakefile)
-	(cp -prt ./KKMC_$(VERSm)/ffbench/ ./Plots \
-	    ./demo  ./Mu ./Tau     ./Inclusive  \
-	    ./Down  ./Up ./Botom   ./demo_R \
-	    ./Beast ./Test ./iniseed  )
-### extra user directory MaMar with C++ upper layer, ROOT, autotools
-	(mkdir   ./KKMC_$(VERSm)/MaMar )
-	(cp -pt  ./KKMC_$(VERSm)/MaMar/  ../MaMar/*.cxx ../MaMar/*.h \
-                ../MaMar/Makefile.in ../MaMar/Makefile.am ../MaMar/README \
-                ../MaMar/semaphore.start ../MaMar/semaphore.stop )
-	(cp -prt ./KKMC_$(VERSm)/MaMar/ ../MaMar/Plots \
-	    ../MaMar/test0 ../MaMar/workZinv  ../MaMar/workFSR \
-	    ../MaMar/farming  ../MaMar/iniseed )
-### cleaning
-	(rm -f ./KKMC_$(VERSm)/*~ ./KKMC_$(VERSm)/ToBeDone )
-	(find  ./KKMC_$(VERSm)/ -name .svn -exec rm -r -f {} \; )
-	(tar -cvzf ./KKMC_$(VERSm).tgz ./KKMC_$(VERSm) )
 #-----------------------------------------------------------------------
