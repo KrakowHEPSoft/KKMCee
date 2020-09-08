@@ -5,6 +5,7 @@
 #  MANDATORY Update/creation of makefile's everywhere, compilation flags etc.
 #       make -f KKMakefile makflag
 #       make -f KKMakefile makprod
+MAKE    = make -f KKMakefile
 #  FFLAGS, F77, AR has to be the same as in ffbench/KKMakefile
 #-------------------------------------------------------------------------------
 #   make -f KKMakefile demo-start   <==  basic demonstration program
@@ -21,7 +22,6 @@
 #  activate below   EXT_LIBRARY = EXT_LIBRARYa
 #-------------------------------------------------------------------------------
 ############
-MAKE    = make -f KKMakefile
 all:	demo-start
 ########### ALPHA  flags ###########
 #FFLAGS  =  -O -w -c -static

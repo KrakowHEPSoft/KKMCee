@@ -1,5 +1,5 @@
 #####################################################################
-#	make table-clean	make table.all
+#	make table.all
 #####################################################################
 all:		dizet.a
 #####################################################################
@@ -31,58 +31,10 @@ $(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1)  $(LOCAL_LIB)
 ##########################################################################
 ##############################################################################
-SRCLIST= "./"
+MAKE    = make -f KKMakefile
 #-----------------------------------------------------------------------------
 table.all:	Clean $(COMMAND1) input.all
 	(cp  ./input.all ./input.data; time ./TabMain.exe)
-#-----------------------------------------------------------------------------
-tableYR.all:	Clean $(COMMAND1) input.all
-	(cp  ./inputYR.all ./input.data; time ./TabMain.exe)
-#-----------------------------------------------------------------------------
-table.down:	$(COMMAND1) input.down
-	(cp  ./input.down ./input.data; time ./TabMain.exe; chmod -w table.down )
-table.down-debug:	$(COMMAND1)
-	(cp  ./input.down./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
-#-----------------------------------------------------------------------------
-table.up:	$(COMMAND1) input.up
-	(cp  ./input.up ./input.data; time ./TabMain.exe; chmod -w table.up )
-table.up-debug:		$(COMMAND1)
-	(cp  ./input.up ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-table.botom:	$(COMMAND1) input.botom
-	(cp  ./input.botom ./input.data; time ./TabMain.exe; chmod -w table.botom )
-botom-debug:		$(COMMAND1)
-	(cp  ./input.botom ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-table.mu:	$(COMMAND1) input.mu
-	(cp ./input.mu ./input.data; time ./TabMain.exe; chmod -w table.mu  )
-table.mu-debug:		$(COMMAND1)
-	(cp ./input.mu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe  )
-#-----------------------------------------------------------------------------
-table.tau:	$(COMMAND1) input.tau
-	(cp ./input.tau ./input.data; time ./TabMain.exe; chmod -w table.tau  )
-table.tau-debug:	$(COMMAND1)
-	(cp ./input.tau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-table.nue:	$(COMMAND1) input.nutau
-	(cp ./input.nue ./input.data; time ./TabMain.exe; chmod -w table.nue  )
-table.nue-debug:	$(COMMAND1)
-	(cp ./input.nue ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-table.numu:	$(COMMAND1) input.numu
-	(cp ./input.numu ./input.data; time ./TabMain.exe; chmod -w table.numu  )
-table.numu-debug:	$(COMMAND1)
-	(cp ./input.numu ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-table.nutau:	$(COMMAND1) input.nutau
-	(cp ./input.nutau ./input.data; time ./TabMain.exe; chmod -w table.nutau  )
-table.nutau-debug:	$(COMMAND1)
-	(cp ./input.nutau ./input.data; xldb -I  ${SRCLIST} ./TabMain.exe )
-#-----------------------------------------------------------------------------
-tables:	table.down table.up table.botom table.mu table.tau table.nue table.numu table.nutau
-##############################################################################
-makflag:
-	(cd ../ffbench; make makflag)
 #-----------------------------------------------------------------------------
 #####################################################################
 #-----------------------------------------------------------------------------
@@ -91,5 +43,5 @@ clean:
 #-----------------------------------------------------------------------------
 # this is necessary if grid size changed in bornv.h
 Clean:	clean
-	(cd ../bornv; make clean)
+	(cd ../bornv; $(MAKE) clean)
 ##############################################################################
