@@ -1,0 +1,90 @@
+
+Changes introduced with respect to standard dizet directory
+of KKMC.
+
+1) File hadr5n17_compact.f with new parametrization from F. Jegerlehner added
+2) Changes for XADRQQ(S) function of H.BURKHARDT introduced
+   into dizet6_42.f file and on ivocation of this vacpol function introduced.
+   See diff included below in the file.
+3) local variant of BXformat.h used. This is for pretabulated EW-tables
+   readability, also for  other than KKMC applications.
+4) graphic representation of pretabulation results available
+   through code of TAUOLA/TauSpinner/examples/Dizet-example
+
+22.05.2019  ERW, ZW
+
+
+317c317
+<        IHVP=NPAR(1)
+---
+>       IHVP=NPAR(1)
+319c319
+<        IQCD=NPAR(3)
+---
+>       IQCD=NPAR(3)
+2456,2459c2456,2467
+<       DATA A1,B1,C1/   0.0   ,  0.00835,  1.0  /
+<       DATA A2,B2,C2/   0.0   ,  0.00238,  3.927 /
+<       DATA A3,B3,C3/ 0.00165 ,  0.00300,  1.0  /
+<       DATA A4,B4,C4/ 0.00221 ,  0.00293,  1.0  /
+---
+> CC      DATA A1,B1,C1/   0.0   ,  0.00835,  1.0  /
+> CC      DATA A2,B2,C2/   0.0   ,  0.00238,  3.927 /
+> CC      DATA A3,B3,C3/ 0.00165 ,  0.00300,  1.0  /
+> CC      DATA A4,B4,C4/ 0.00221 ,  0.00293,  1.0  /
+> C     update parametrisation Phys.Lett.B513(2001)46
+>       DATA A1,B1,C1/   0.0   ,  0.0023092,  3.9925370  /
+>       DATA A2,B2,C2/   0.0   ,  0.0022333,  4.2191779 /
+>       DATA A3,B3,C3/   0.0   ,  0.0024402,  3.2496684 /
+>       DATA A4,B4,C4/   0.0   ,  0.0027340,  2.0995092 /
+>       DATA A5,B5,C5/ 0.0010485 ,  0.0029431,  1.0  /
+>       DATA A6,B6,C6/ 0.0012234 ,  0.0029237,  1.0  /
+>       DATA A7,B7,C7/ 0.0016894 ,  0.0028984,  1.0  /
+2469c2477
+<       IF(T.LT.0.3D0**2) THEN
+---
+>       IF(T.LT.0.7D0**2) THEN
+2471c2479
+<       ELSEIF(T.LT.3.D0**2) THEN
+---
+>       ELSEIF(T.LT.2.D0**2) THEN
+2473c2481
+<       ELSEIF(T.LT.100.D0**2) THEN
+---
+>       ELSEIF(T.LT.4.D0**2) THEN
+2475c2483
+<       ELSE
+---
+>       ELSEIF(T.LT.10.D0**2) THEN
+2476a2485,2490
+>       ELSEIF(T.LT.91.1876D0**2) THEN
+>         REPIAA=A5+B5*LOG(1.D0+C5*T)
+>       ELSEIF(T.LT.10000.0D0**2) THEN
+>         REPIAA=A6+B6*LOG(1.D0+C6*T)
+>       ELSE
+>         REPIAA=A7+B7*LOG(1.D0+C7*T)
+5617a5632
+>       Real ee,st2,der,errdersta,errdersys,deg,errdegsta,errdegsys
+5629c5644
+<        ENDIF
+---
+>       ENDIF
+5631,5633c5646,5657
+<        st2= 0.2322d0
+<        call hadr5(e,argmz,st2,der,errder,deg,errdeg)
+<        dalh5=der
+---
+> *       st2= 0.2322d0
+> *       call hadr5(e,argmz,st2,der,errder,deg,errdeg)
+> * update for 2017 version      
+> * st2=0.23153 is the reference value, used for deg only
+>       st2= 0.23153
+>       ee = e
+>       call hadr5x(ee,st2,der,errdersta,errdersys,
+>      &             deg,errdegsta,errdegsys)
+> 
+> *       PRINT *,'E, dalh5', ee, der
+>        
+>        dalh5=der   
+5634a5659
+>       

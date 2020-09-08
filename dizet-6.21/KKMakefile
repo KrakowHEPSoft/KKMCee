@@ -1,0 +1,53 @@
+#####################################################################
+#       make table.all
+#############################
+MAKE    = make -f KKMakefile
+#####################################################################
+all:		dizet.a
+#####################################################################
+FFLAGS =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77 = gfortran
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+#####################################################################
+LOCAL_LIB = dizet.a
+#####LIB_OBJECTS = DZface.o dzero.o dizet5_0.o
+#####LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_05.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_21.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+##########################################################################
+##########################################################################
+COMMAND1 = TabMain.exe
+OBJECTS1 = TabMain.o
+DZface.o:		DZface.h BornV.h
+BornV_StartEW.o:	DZface.h BornV.h
+#############################
+# Link procedure
+$(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1)  $(LOCAL_LIB)
+##############################################################################
+table.all:	Clean $(COMMAND1) input.all
+	(cp  ./input.all ./input.data; time ./TabMain.exe)
+##############################################################################
+makflag:
+	(cd ../ffbench; $(MAKE) makflag)
+#-----------------------------------------------------------------------------
+#####################################################################
+#####################################################################
+#-----------------------------------------------------------------------------
+table.all:	Clean $(COMMAND1) input.all
+	(cp  ./input.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+clean:
+	rm -f *.o *.a *~ *.exe
+#-----------------------------------------------------------------------------
+# this may be is necessary if grid size changed in bornv.h
+Clean:	clean
+	(cd ../bornv; $(MAKE) clean)
+##############################################################################

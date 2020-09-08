@@ -1,0 +1,47 @@
+#####################################################################
+#	make table.all
+#####################################################################
+all:		dizet.a
+#####################################################################
+FFLAGS = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
+F77    = gfortran
+AR = ar
+RANLIB = ranlib
+LD = $(F77)
+#############
+.f.o:
+	$(F77) $(FFLAGS) -c $<
+#####################################################################
+LOCAL_LIB = dizet.a
+#####LIB_OBJECTS = DZface.o dzero.o dizet5_0.o
+#####LIB_OBJECTS = DZface.o BornV_StartEW.o dizet6_05.o zf514_aux.o bcqcdl5_14.o bkqcdl5_14.o m2tcor5_11.o
+LIB_OBJECTS = DZface.o BornV_StartEW.o  hadr5n95.o hadr5n16.o hadr5n17.o zfmai6_42.o zfusr6_44.o zfbib6_40.o dizet6_45.o APV_lib.o acol6_1p.o m2tcor5_11.o pairho6_40.o funang6_30.o expifi6_30.o bcqcdl5_14.o bkqcdl5_14.o bhang4_640.o zf630_aux.o
+$(LOCAL_LIB): $(LIB_OBJECTS)
+	$(AR) rv  $(LOCAL_LIB) $(LIB_OBJECTS)
+	$(RANLIB) $(LOCAL_LIB)
+##########################################################################
+##########################################################################
+COMMAND1 = TabMain.exe
+OBJECTS1 = TabMain.o
+DZface.o:		DZface.h
+BornV_StartEW.o:	DZface.h
+#############################
+# Link procedure
+$(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS1)  $(LOCAL_LIB)
+##########################################################################
+##############################################################################
+MAKE    = make -f KKMakefile
+#-----------------------------------------------------------------------------
+table.all:	Clean $(COMMAND1) input.all
+	(cp  ./input.all ./input.data; time ./TabMain.exe)
+#-----------------------------------------------------------------------------
+#####################################################################
+#-----------------------------------------------------------------------------
+clean:
+	rm -f *.o *.a *~ *.exe
+#-----------------------------------------------------------------------------
+# this is necessary if grid size changed in bornv.h
+Clean:	clean
+	(cd ../bornv; $(MAKE) clean)
+##############################################################################
