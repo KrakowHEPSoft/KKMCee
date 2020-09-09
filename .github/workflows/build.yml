@@ -25,12 +25,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: build with KKMake
         run: |
+          echo 'Performing build with KKMC and dizet 6.45'
           ln -s dizet-6.45 dizet
-          ls -l
           cd ./ffbench
-          pwd
-          echo 'Making Alias'
           alias kmake='make -f KKMakefile'
-          kmake makflag
-          kmake makprod
-          kmake EWtables
+          make -f KKMakefile makflag
+          make -f KKMakefile makprod
+          make -f KKMakefile EWtables
