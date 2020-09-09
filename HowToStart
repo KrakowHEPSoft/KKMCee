@@ -2,8 +2,8 @@ HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
 First link the latest dizet version:
       ln -s dizet-6.45 dizet      
-Please note that we recommend version 6.45, however we provide other
-versions for experienced users.
+Please note that we recommend version 6.45, 
+however other versions for experienced users are provided.
 
 Under Linux proceed as below immediately:)
      ****************
