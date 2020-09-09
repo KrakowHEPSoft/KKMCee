@@ -26,7 +26,10 @@ jobs:
       - name: build with KKMake
         run: |
           ln -s dizet-6.45 dizet
+          ls -l
           cd ./ffbench
+          pwd
+          echo 'Making Alias'
           alias kmake='make -f KKMakefile'
           kmake makflag
           kmake makprod
