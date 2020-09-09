@@ -28,20 +28,45 @@ jobs:
           echo 'Performing build with KKMC and dizet 6.45'
           ln -s dizet-6.45 dizet
           cd ./ffbench
-          alias kmake='make -f KKMakefile'
+          make -f KKMakefile clean
           make -f KKMakefile makflag
           make -f KKMakefile makprod
           make -f KKMakefile EWtables
 
 
-      - name: build with KKMake and dizet 6.45
+      - name: build with KKMake and dizet 6.42-cpc
         run: |
           echo 'Performing build with KKMC and dizet 6.42-cpc'
-
+          rm dizet
+          
           ln -s dizet-6.42-cpc dizet
           cd ./ffbench
-          alias kmake='make -f KKMakefile'
+          make -f KKMakefile clean
           make -f KKMakefile makflag
           make -f KKMakefile makprod
           make -f KKMakefile EWtables
 
+      - name: build with KKMake and dizet 6.42
+        run: |
+          echo 'Performing build with KKMC and dizet 6.42'
+          rm dizet
+          ln -s dizet-6.42 dizet
+          cd ./ffbench
+          make -f KKMakefile clean
+          make -f KKMakefile makflag
+          make -f KKMakefile makprod
+          make -f KKMakefile EWtables
+
+      - name: build with KKMake and dizet 6.21
+        run: |
+          echo 'Performing build with KKMC and dizet 6.21'
+          rm dizet
+          ln -s dizet-6.21 dizet
+          cd ./ffbench
+          make -f KKMakefile clean
+          make -f KKMakefile makflag
+          make -f KKMakefile makprod
+          make -f KKMakefile EWtables
+
+
+                                                            
