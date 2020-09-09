@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/bornv
+AM_CPPFLAGS = -I$(top_srcdir)/bornv
 METASOURCES = AUTO
 lib_LIBRARIES = libBornvTabs.a libBornvDizet.a
 libBornvDizet_a_SOURCES = BornV.f BStra.f FoamC.f IRC.f MBrA.f\

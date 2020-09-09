@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
+AM_CPPFLAGS = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 
 #-----------------------------------------------------------------------

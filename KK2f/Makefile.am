@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/KK2f
+AM_CPPFLAGS = -I$(top_srcdir)/KK2f
 METASOURCES = AUTO
 lib_LIBRARIES = libKK2f.a
 libKK2f_a_SOURCES = KK2f.f KarLud.f   YFSini2.f \

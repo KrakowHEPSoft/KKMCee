@@ -1,8 +1,8 @@
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
+AM_CPPFLAGS = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 SUBDIRS = test0 workZinv workFSR Plots
 
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+AM_CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR
 AM_FFLAGS = @MY_F77_FLAGS@

@@ -1,8 +1,8 @@
-INCLUDES = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) \
+AM_CPPFLAGS = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) \
 	-I$(ROOTINCDIR)
 METASOURCES = AUTO
 
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++  
+AM_CXXFLAGS = -g -O2 -std=c++11 -lstdc++  
 
 bin_PROGRAMS = Plot1 Plot2 PlotFSR
 

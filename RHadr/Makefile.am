@@ -1,8 +1,8 @@
-INCLUDES = -I$(top_srcdir)/Rhadr $(all_includes) -I$(ROOTINCDIR)
+AM_CPPFLAGS = -I$(top_srcdir)/Rhadr $(all_includes) -I$(ROOTINCDIR)
 METASOURCES = AUTO
 bin_PROGRAMS = MainP
 MainP_SOURCES = MainP.cxx Semaph.cxx ROBOL.cxx ROBOL2.cxx KKMC.cxx PartLund.cxx
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+AM_CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 
 ############################################

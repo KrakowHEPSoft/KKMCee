@@ -1,4 +1,4 @@
-include make.inc 
+#include make.inc 
 METASOURCES = AUTO
 lib_LIBRARIES = libTauola.a
 
@@ -7,7 +7,7 @@ lib_LIBRARIES = libTauola.a
 # KKMC doesn't have 'make.inc' and does not set C++ flags
 # so we have to hard-code them here
 CC      = g++
-CFLAGS  = -fPIC -Wall -Wno-write-strings
+AM_CFLAGS  = -fPIC -Wall -Wno-write-strings
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 ###########################################################

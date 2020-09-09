@@ -1,6 +1,6 @@
-INCLUDES = -I$(top_srcdir)/RHadr $(all_includes) -I$(ROOTINCDIR)
+AM_CPPFLAGS = -I$(top_srcdir)/RHadr $(all_includes) -I$(ROOTINCDIR)
 
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++ 
+AM_CXXFLAGS = -g -O2 -std=c++11 -lstdc++ 
 
 METASOURCES = AUTO
 bin_PROGRAMS = SkyLine Plot2b Plot2c Plot3a Plot3b Plot3m Plot3f
