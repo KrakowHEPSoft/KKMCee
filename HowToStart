@@ -1,6 +1,14 @@
 HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
-Under Linux (SLC6) proceed as below immediately:)
+First link the correct dizet version:
+      ln -s dizet-6.45 dizet
+      rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/
+      rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/
+      
+Please note that we recommend version 6.45, however we provide other
+versions for experienced users.
+
+Under Linux proceed as below immediately:)
      ****************
      **   ffbench  **
      ****************
@@ -10,7 +18,6 @@ subdirectories is first created running master makefile ffbench/KKMakefile:
     alias kmake='make -f KKMakefile'
     kmake makflag
     kmake makprod
-    kmake link-dizet-6.45
     kmake EWtables
 If an adjustment of the fortran compilation options is needed,
 then do it only in the master ffbench/KKMakefile and repeat the above.
@@ -50,7 +57,6 @@ Beamstrahlung at 500GeV (takes a few minutes):
 Main program in C++. ROOT version 5 is involved.
 Here autotools are recommended
      make distclean       <== optionally, sometimes helps
-     ln -s dizet-6.45 dizet
      autoreconf -i --force
      ./configure
      make -k
