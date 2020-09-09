@@ -1,6 +1,11 @@
 HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
-Under Linux (SLC6) proceed as below immediately:)
+First link the latest dizet version:
+      ln -s dizet-6.45 dizet      
+Please note that we recommend version 6.45, 
+however other versions for experienced users are provided.
+
+Under Linux proceed as below immediately:)
      ****************
      **   ffbench  **
      ****************
@@ -10,6 +15,7 @@ subdirectories is first created running master makefile ffbench/KKMakefile:
     alias kmake='make -f KKMakefile'
     kmake makflag
     kmake makprod
+    kmake EWtables
 If an adjustment of the fortran compilation options is needed,
 then do it only in the master ffbench/KKMakefile and repeat the above.
 -------------------------------------------------------------
@@ -46,8 +52,7 @@ Beamstrahlung at 500GeV (takes a few minutes):
      **    MaMar   **
      ****************
 Main program in C++. ROOT version 5 is involved.
-Here autotools are recommended:
-     cd KKMC_v4_24a
+Here autotools are recommended
      make distclean       <== optionally, sometimes helps
      autoreconf -i --force
      ./configure
@@ -60,7 +65,10 @@ Running example program:
 Wait until program stops and
      make Plot1
 See more information in MaMar/README:
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+NOTE: Directories ffbech, yfspro, RHadr, YRprod and MaMar are NOT parts
+of the Monte Carlo generator but analysis packages used in various past workshops
+and publications to be used as templates for the user analysis packages!
 --------------------------------------------------------------------------------
 User Manual published in Comp. Phys. Commun. 130 (2000) 260.
 --------------------------------------------------------------------------------
