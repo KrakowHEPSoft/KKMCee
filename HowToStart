@@ -54,7 +54,7 @@ Beamstrahlung at 500GeV (takes a few minutes):
      ****************
      **    MaMar   **
      ****************
-Main program in C++. ROOT version 5 is involved.
+Main program in C++. ROOT version 5 or 6 is involved.
 Here autotools are recommended
      make distclean       <== optionally, sometimes helps
      autoreconf -i --force
