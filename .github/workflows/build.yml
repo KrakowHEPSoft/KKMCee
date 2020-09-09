@@ -15,10 +15,18 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Install ROOT
+        run: |
+          echo 'Installint ROOT'
+          wget https://root.cern/download/root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
+          tar -xzvf root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
+          source root/bin/thisroot.sh 
+
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
