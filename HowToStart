@@ -68,7 +68,10 @@ Running example program:
 Wait until program stops and
      make Plot1
 See more information in MaMar/README:
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+NOTE: Directories ffbech, yfspro, RHadr, YRprod and MaMar are NOT parts
+of the Monte Carlo generator but analysis packages used in various past workshops
+and publications to be used as templates for the user analysis packages!
 --------------------------------------------------------------------------------
 User Manual published in Comp. Phys. Commun. 130 (2000) 260.
 --------------------------------------------------------------------------------

@@ -1,3 +1,0 @@
-
-tex $1.f
-xdvi -nogrey $1
