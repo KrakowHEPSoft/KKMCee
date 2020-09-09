@@ -1,9 +1,9 @@
 HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
-First link the correct dizet version:
+First link the latest dizet version:
       ln -s dizet-6.45 dizet
-      rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/
-      rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/
+      (cd dizet; rm -f ./BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
+      (cd dizet; rm -f ./.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
       
 Please note that we recommend version 6.45, however we provide other
 versions for experienced users.
@@ -54,7 +54,7 @@ Beamstrahlung at 500GeV (takes a few minutes):
      ****************
      **    MaMar   **
      ****************
-Main program in C++. ROOT version 5 or 6 is involved.
+Main program in C++. ROOT version 5 is involved.
 Here autotools are recommended
      make distclean       <== optionally, sometimes helps
      autoreconf -i --force

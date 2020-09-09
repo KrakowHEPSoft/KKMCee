@@ -70,6 +70,7 @@
       DOUBLE PRECISION   m_vv,      m_x1,      m_x2
       DOUBLE PRECISION   m_Qf,      m_T3f,     m_helic,  m_amferm, m_auxpar !
       DOUBLE PRECISION   m_gnanob
+      DOUBLE PRECISION   m_QEDmodif !
       INTEGER            m_IsGenerated, m_KFferm,  m_NCf
       INTEGER            m_KFini,       m_KeyINT,  m_KeyQCD,   m_KeyRes
       INTEGER            m_KeyElw,      m_KeyZet,  m_KeyWtm
@@ -106,6 +107,7 @@
      $  m_alfinv,                       ! 1/alphaQED, Thomson limit (Q^2=0)
      $  m_alfpi,                        ! alphaQED/pi
      $  m_Xenph,                        ! Enhancement factor for Crude photon multiplicity
+     $  m_QEDmodif,                     ! Modification factor for running QED coupling
 * EW parameters
      $  m_MZ,                           ! Z mass
      $  m_amh,                          ! Higgs mass
