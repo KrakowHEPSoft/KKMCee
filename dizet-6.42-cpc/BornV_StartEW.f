@@ -7,6 +7,7 @@
 *///////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'BornV.h'
+      INCLUDE '../bornv/BornV.h'
       DOUBLE PRECISION  xpar_input(*)
 *------------------------------------------------------------------
       CALL BornV_StartDZ(xpar_input)
@@ -18,7 +19,8 @@
 *//   xpar goes as an input to DZface                             //
 *//                                                               //
 *///////////////////////////////////////////////////////////////////
-      INCLUDE 'BornV.h'
+*      INCLUDE 'BornV.h'
+      INCLUDE '../bornv/BornV.h'
       DOUBLE PRECISION  xpar(*)
 *------------------------------------------------------------------
       INTEGER KFdown, KFup, KFstran, KFcharm, KFbotom, KFtop

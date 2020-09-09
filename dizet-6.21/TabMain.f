@@ -42,7 +42,7 @@
 *-------------------------------------------------------------------------------
       iout = 16
       OPEN(iout,FILE='./TabMain.output')
-      CALL DZface_ReaDataX('./.KK2f_defaults', 1,imax,xpar)  ! reading general defaults
+      CALL DZface_ReaDataX('../.KK2f_defaults', 1,imax,xpar)  ! reading general defaults
       CALL DZface_ReaDataX(    './input.data', 0,imax,xpar)  ! reading actual user input
 * Find active chanels
       DO i=401,416
