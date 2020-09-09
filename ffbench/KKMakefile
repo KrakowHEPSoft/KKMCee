@@ -207,25 +207,14 @@ makflag-ext:
 makflag: makflag-ext
 	(cd ./Plots;   sed -e 's#<FFLAGS>#$(FFLAGS)#' -e 's#<F77>#$(F77)#' -e 's#<AR>#$(AR)#' makefile.templ > KKMakefile)
 #=============================================================================
-#---------------------------------------------------------------------------------------
-../dizet: 
-	(make link-dizet-6.45)
 link-dizet-6.21:
 	(cd ..; rm -f dizet;             ln -s ./dizet-6.21 ./dizet )
-	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
-	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
 link-dizet-6.42-cpc:
 	(cd ..; rm -f dizet;             ln -s ./dizet-6.42-cpc ./dizet )
-	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
-	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
 link-dizet-6.42:
 	(cd ..; rm -f dizet;             ln -s ./dizet-6.42 ./dizet )
-	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
-	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
 link-dizet-6.45:
 	(cd ..; rm -f ./dizet;           ln -s ./dizet-6.45 ./dizet )
-	(rm -f ../dizet/BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
-	(rm -f ../dizet/.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
 #======================
 # NOTE: additional input params for EW librarry are in ../dizet/input.all 
 EWtables:

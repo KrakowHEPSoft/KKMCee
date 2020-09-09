@@ -1,10 +1,7 @@
 HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
 First link the latest dizet version:
-      ln -s dizet-6.45 dizet
-      (cd dizet; rm -f ./BornV.h;         ln -s ../bornv/BornV.h  ../dizet/)
-      (cd dizet; rm -f ./.KK2f_defaults;  ln -s ../.KK2f_defaults ../dizet/)
-      
+      ln -s dizet-6.45 dizet      
 Please note that we recommend version 6.45, however we provide other
 versions for experienced users.
 
