@@ -33,14 +33,15 @@ jobs:
           make -f KKMakefile makprod
           make -f KKMakefile EWtables
 
-     - name: build with AutoMake and dizet 6.45
-       run: |
-         echo 'Performing build with KKMC and dizet 6.45'
-         rm dizet
-         ln -s dizet-6.45 dizet
-         autoreconf -i --force
-         ./configure
-         make
+
+      - name: build with AutoMake and dizet 6.45
+        run: |
+          echo 'Performing build with KKMC and dizet 6.45'
+          rm dizet
+          ln -s dizet-6.45 dizet
+          autoreconf -i --force
+          ./configure
+          make
 
 
       - name: build with KKMake and dizet 6.42-cpc
