@@ -25,8 +25,11 @@ jobs:
           wget https://root.cern/download/root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
           tar -xzvf root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
           source root/bin/thisroot.sh 
-
-
+          pwd
+          ls -l
+          echo $ROOTSYS
+          echo 'Sourced ROOT'
+          echo $ROOTSYS
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
@@ -45,6 +48,7 @@ jobs:
       - name: build with AutoMake and dizet 6.45
         run: |
           echo 'Performing build with KKMC and dizet 6.45'
+          source ../root/bin/thisroot.sh 
           rm dizet
           ln -s dizet-6.45 dizet
           autoreconf -i --force
