@@ -48,6 +48,7 @@ jobs:
       - name: build with AutoMake and dizet 6.45
         run: |
           echo 'Performing build with KKMC and dizet 6.45'
+          pwd
           source ../root/bin/thisroot.sh 
           rm dizet
           ln -s dizet-6.45 dizet
