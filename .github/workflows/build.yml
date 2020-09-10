@@ -23,7 +23,7 @@ jobs:
         run: |
           echo 'Installint ROOT'
           wget https://root.cern/download/root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
-          tar -xzvf root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz ..
+          tar -xzvf root_v6.22.00.Linux-ubuntu18-x86_64-gcc7.5.tar.gz
           mv root ../
           source ../root/bin/thisroot.sh 
           pwd
