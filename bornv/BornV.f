@@ -1686,6 +1686,21 @@ c]]]]]]]]]]]]]
       m_QCDcor    = QCDcor
       END
 
+      DOUBLE PRECISION FUNCTION BornV_QEDcoup(ss)
+*//////////////////////////////////////////////////////////////////////////////
+*//                                                                          //
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'BornV.h'
+      DOUBLE PRECISION ss, alfinv0
+      DOUBLE PRECISION    QEDcor
+
+      CALL Bornv_InterpoGSW(13,ss, 0d0);
+      QEDcor = 1d0/(2d0-DREAL(m_GSW(6)) )
+      BornV_QEDcoup = 1/m_alfinv/QEDcor
+      END
+
+
       SUBROUTINE BornV_GetMW(MW)
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //

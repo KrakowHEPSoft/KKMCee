@@ -200,6 +200,7 @@
       DOUBLE PRECISION    p1(4),p2(4),p3(4),p4(4)
       INTEGER             nbv, idv, k, KFfin
       DOUBLE PRECISION    ss2, vv, ss, vmin,  vmax
+      DOUBLE PRECISION    BornV_QEDcoup, AlphaQCD
 *=======================================================================
       IF(mode .EQ. -1 ) THEN
 *     book histograms
@@ -226,5 +227,12 @@
 *     finalization, printouts
          CALL GLK_Print(idv+1)
          CALL GLK_Print(idv+9)
+c[[[[[[[[[[[[[[[[[[[[
+c temporary insert
+         ss = 91**2
+         write(*,*) ' 1/alpha_QED(MZ) = ', 1/BornV_QEDcoup(ss)
+         CALL KK2f_GetOneX(809,AlphaQCD)
+         write(*,*) ' alpha_QCD(MZ)   = ', AlphaQCD
+c]]]]]]]]]]]]]]]]]]]]
       ENDIF
       END
