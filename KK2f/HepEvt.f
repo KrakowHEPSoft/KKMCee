@@ -145,6 +145,89 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
       END
 
 
+      SUBROUTINE LHEF_Fill()
+*//////////////////////////////////////////////////////////////////////////////
+*//                                                                          //
+*//   This subroutine fills one event into the Les Houches event file using  //
+*//   the  information from HepEvt common block                              //
+*//   WRITEN by A Siodmok,    24 sep 2020                                    //
+*//                                                                          //
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'HepEvt.h'
+
+      INTEGER           m_EvtUnit,i,j, ISTUP,col1,col2
+      DOUBLE PRECISION  ss, AlphaQCD, AlphaQED
+*------------------------------------------------------------------------------
+
+* Start to write Les Houch file
+      m_EvtUnit = 77
+      WRITE(m_EvtUnit,*)  '<event>'
+      ss = 91**2
+*      & 1/BornV_QEDcoup(ss),
+*     CALL KK2f_GetOneX(809,AlphaQCD)
+
+*-----------------------------------------------------------------------
+*--   Add line on NUP (nb of particles in event)
+*--   IDPRUP (process id dummy) XWGTUP (ev weight)
+*--   SCALUP (scale for example EW boson inv. mass)
+*--   AQEDUP (alpha qed value) AQCDUP 
+*-----------------------------------------------------------------------
+
+*    Use Staszek's getters they are in ffbench/Demo.f
+*      ss = 91**2
+*     1/BornV_QEDcoup(ss),
+*     CALL KK2f_GetOneX(809,AlphaQCD)
+*     So far just dummy line:
+      
+      WRITE(m_EvtUnit,*) nhep, 9999, 'weight', ' scale',
+     & ' alphaQED', ' alphaQCD' 
+
+
+
+      
+*------------------------------------------------------------------------
+*-- Stores event in Les Houches format (see hep-ph 0609017)
+*-- PDGid ISTUP Mothers Colours p_x p_y p_z E m cτ  spin (helicity) 
+*-- information
+*-- ISTUP: status code ( −1 = incoming parton, 1 = final-state parton,
+*--   2 = intermediate resonance with preserved m) 
+*----------------------------------------------------------------------- 
+      
+*-- most particles has no colour chatges so they are 0
+      col1 = 0
+      col2 = 0
+
+*-- Different status codes in LHEF (-1,2,1)  vs HEPEVT (3,2,1)
+      DO i = 1,nhep
+         IF( isthep(i).EQ.3) THEN 
+             ISTUP = -1
+         ELSE 
+             ISTUP = isthep(i)
+         END IF 
+
+*-- For quarks we have to set a colour to 101
+         IF( idhep(i) .LE. 6 .AND. idhep(i) .GT. 0) THEN
+             col1 = 101
+             col2 = 0
+         END IF
+*-- For antiquarks we have to set a colour to 101
+         IF( idhep(i) .GE. -6 .AND. idhep(i) .LT. 0) THEN
+             col1 = 0
+             col2 = 101
+         END IF    
+             
+
+         WRITE(m_EvtUnit,*) idhep(i), ISTUP,
+     &        (jmohep(j,i),j=1,2),col1, col2,(phep(j,i),j=1,5),0,0
+
+      ENDDO
+
+*     finish Les Houches
+      WRITE(m_EvtUnit,*)  '</event>'
+
+      END
+      
 
       SUBROUTINE HepEvt_Hadronize(HadMin)
 *//////////////////////////////////////////////////////////////////////////////
