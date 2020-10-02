@@ -173,7 +173,7 @@
       DOUBLE PRECISION    BornV_GetMass, BornV_GetAuxPar, MinMas
       DOUBLE PRECISION    WtMax,  amferm, xcru_karl
       DOUBLE PRECISION    WMlist(200), Xborn(200)  ! 200 should be class parameter!!!
-      INTEGER             NBbranch,   KFlist(200), Nbin
+      INTEGER             NBbranch,   KFlist(200), Nbin, m_WriteLHE
       DOUBLE PRECISION    vvmin, pol1, pol2, PolBeam1(4), PolBeam2(4)
 *--------------------------------------------------------------------------
 *     Initialization of the internal histogramming package
@@ -218,6 +218,26 @@
       m_KFini  = m_xpar(400)
       m_MasPhot= m_xpar(510)
       vvmin =xpar(16)
+      m_WriteLHE = m_xpar(100)
+*      BEAMENERGY=m_CMSene/2.
+      IF(m_WriteLHE .EQ. 1) THEN
+*     CALL Init_LHE()
+*        77 is a unique number for LHE file.
+         OPEN(77, file = 'LHE_OUT.dat')
+         WRITE(77, '(a)')'<LesHouchesEvents version="1.0">'
+         WRITE(77, '(a)')'<!--'
+         WRITE(77, '(a)')'   File Created with KKMC'
+         WRITE(77, '(a)')'-->'
+         WRITE(77, '(a)')'<init>'
+         WRITE(77, '(A, es17.8, A, es17.8, A)' )'  11  -11  ', m_CMSene/2.,'  ', m_CMSene/2. , '  0  0  0  0  3  1'
+         WRITE(77, '(a)')'  0.1  1.0e-06  1.000000e+00   9999'
+         WRITE(77, '(a)')'</init>'
+         WRITE(77, '(a)')'  '
+         
+      END IF
+
+
+
       m_Emin   = m_CMSene/2d0 * vvmin
       m_Xenph  = m_xpar(40)
       IF(m_KeyINT .EQ. 0)  m_Xenph  = 1D0
@@ -359,6 +379,7 @@
       m_nevgen=0
 *----------------------------------------------------------------------
 ***** CALL GLK_ListPrint(6)     ! debug
+*----------------------------------------------------------------------
       END                       !!! KK2f_Initialize !!!
 
 
@@ -452,6 +473,7 @@
       INTEGER           LevPri,Ie1Pri,Ie2Pri
       INTEGER           KFfin,NevCru
       INTEGER           TauIsInitialized
+      INTEGER           m_WriteLHE
       DOUBLE PRECISION  wt_fsr,wt_isr,WtScaled,XCruNb
       DOUBLE PRECISION  CMSE, vv, svar1, Exe, SvarQ
       DOUBLE PRECISION  charg2,amfi1,amfi2
@@ -468,7 +490,8 @@
       LevPri =m_xpar( 5)  !PrintOut Level 0,1,2,3
       Ie1Pri =m_xpar( 6)  !PrintOut Start point
       Ie2Pri =m_xpar( 7)  !PrintOut End   point
-* WtSet reseting to zero
+      m_WriteLHE = m_xpar(100)  
+*     WtSet reseting to zero
       DO j=1,m_lenwt
          m_WtSet(j)  =0d0
          m_WtList(j) =0d0
@@ -644,8 +667,14 @@
             ENDIF
          ENDIF
       ENDIF
-      END                       !!! end of KK2f_Make !!!
 
+      IF(m_WriteLHE .EQ. 1) THEN
+         CALL LHEF_Fill
+      ENDIF
+         
+      END                       !!! end of KK2f_Make !!!
+      
+      
       SUBROUTINE KK2f_ZBoostAll(exe)
 *///////////////////////////////////////////////////////////////////////////////
 *//                                                                           //
@@ -754,6 +783,9 @@
 * Print even more on the weight in each branch!
       CALL MBrA_Print1
 *--------------------------------------------------------------------------------
+      WRITE(77,'(a)')  '</LesHouchesEvents>'
+      CLOSE(77)
+      
       CALL TauPair_Finalize
       END
 

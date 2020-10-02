@@ -10,7 +10,7 @@
 *//  because older Jetset uses single precision version of /hepevt/          //
 *//                                                                          //
 *//////////////////////////////////////////////////////////////////////////////
-
+      
 
       SUBROUTINE HepEvt_Fill
 *//////////////////////////////////////////////////////////////////////////////////////
@@ -41,6 +41,8 @@
       DOUBLE PRECISION  WtMain,WtCrud
       INTEGER           KFfin,ip,kstat,j,i,nphoy,nphox,kfbeam
       DOUBLE PRECISION  pbos(4),xmtmp ! &&&
+
+*     INTEGER           m_EvtUnit
 *------------------------------------------------------------------------------
 * Actual KFcode of final fermion
       CALL KarLud_GetKFfin(KFfin)
@@ -60,11 +62,11 @@
       CALL HepEvt_Fil1(ip,3, KFbeam, 0,0,0,0, pf1,amel,.FALSE.)
       ip=2
       CALL HepEvt_Fil1(ip,3,-KFbeam, 0,0,0,0, pf2,amel,.FALSE.)
-* Now mother of ffbar and photons added in event record 
+* Now mother of ffbar and photons added in event record
 *   1,2               - beams
 *   3                 - Z/gamma*
-*   4,...,4+nphot     - photons 
-*   4+nphot,5+nphot   - final fermions   
+*   4,...,4+nphot     - photons
+*   4+nphot,5+nphot   - final fermions
       DO j=1,4
          pbos(j)=qf1(j)+qf2(j)
       ENDDO
@@ -129,6 +131,8 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
       CALL HepEvt_SetFbar(ip)
 * Finaly fill also LUND common block
       CALL pyhepc(2)
+* Fill Les Houches
+*      CALL LHEF_Fill()
 
       Etot= SQRT(ABS(Psum(4)**2 -Psum(3)**2 -Psum(2)**2 -Psum(1)**2))
 * Check on total 4-momentum conservation
@@ -143,6 +147,89 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
          CALL PYlist(1)
       ENDIF
       END
+
+      SUBROUTINE LHEF_Fill()
+*//////////////////////////////////////////////////////////////////////////////
+*//                                                                          //
+*//   This subroutine fills one event into the Les Houches event file using  //
+*//   the  information from HepEvt common block                              //
+*//   WRITEN by A Siodmok,      24 sep 2020                                  //
+*//   MODIFIED by M.Chrzaszcz,  29 sep 2020                                  //
+*//                                                                          //
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'HepEvt.h'
+
+      INTEGER           m_EvtUnit,i,j, ISTUP,col1,col2
+      DOUBLE PRECISION  ss, AlphaQCD, AlphaQED
+* Start to write Les Houch file
+      m_EvtUnit = 77
+
+      WRITE(m_EvtUnit,'(a)')  '<event>'
+      ss = 91**2
+*      & 1/BornV_QEDcoup(ss),
+*     CALL KK2f_GetOneX(809,AlphaQCD)
+
+*-----------------------------------------------------------------------
+*--   Add line on NUP (nb of particles in event)
+*--   IDPRUP (process id dummy) XWGTUP (ev weight)
+*--   SCALUP (scale for example EW boson inv. mass)
+*--   AQEDUP (alpha qed value) AQCDUP
+*-----------------------------------------------------------------------
+
+*    Use Staszek's getters they are in ffbench/Demo.f
+*      ss = 91**2
+*     1/BornV_QEDcoup(ss),
+*     CALL KK2f_GetOneX(809,AlphaQCD)
+*     So far just dummy line:
+
+*      WRITE(m_EvtUnit,*) nhep, 9999, 'weight', ' scale',
+*     & ' alphaQED', ' alphaQCD'
+
+
+*------------------------------------------------------------------------
+*-- Stores event in Les Houches format (see hep-ph 0609017)
+*-- PDGid ISTUP Mothers Colours p_x p_y p_z E m cτ  spin (helicity)
+*-- information
+*-- ISTUP: status code ( −1 = incoming parton, 1 = final-state parton,
+*--   2 = intermediate resonance with preserved m)
+*-----------------------------------------------------------------------
+
+*-- most particles has no colour chatges so they are 0
+      col1 = 0
+      col2 = 0
+*-- Different status codes in LHEF (-1,2,1)  vs HEPEVT (3,2,1)
+      DO i = 1,nhep
+         IF( isthep(i).EQ.3) THEN
+             ISTUP = -1
+         ELSE
+             ISTUP = isthep(i)
+         END IF
+
+*-- For quarks we have to set a colour to 101
+         IF( idhep(i) .LE. 6 .AND. idhep(i) .GT. 0) THEN
+             col1 = 101
+             col2 = 0
+         END IF
+*-- For antiquarks we have to set a colour to 101
+         IF( idhep(i) .GE. -6 .AND. idhep(i) .LT. 0) THEN
+             col1 = 0
+             col2 = 101
+         END IF
+
+
+         WRITE(m_EvtUnit,*) idhep(i), ISTUP,
+     &        (jmohep(j,i),j=1,2),col1, col2,(phep(j,i),j=1,5),0,0
+
+      ENDDO
+
+*     finish Les Houches
+      WRITE(m_EvtUnit,'(a)')  '</event>'
+
+      END
+
+
+
 
 
 
@@ -177,7 +264,7 @@ c$$$      ih2=4  ! antifermion is here  &&&
 C (M.B.) Use RRes_HADGEN if requested for KeyRes=1
       CALL BornV_GetKeyRes(KeyRes)
       IF(KeyRes.EQ.0) THEN
-        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
+        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN
 ** Explicit string arangement:
           ijoin(1) = ih1
           ijoin(2) = ih2
@@ -198,7 +285,7 @@ C (M.B.) Use RRes_HADGEN if requested for KeyRes=1
           ENDIF
         ENDIF
       ELSE ! RRes_HADGEN falls back to Jetset if qq mass > 2 GeV
-        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
+        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN
           QQMOM(1) = phep(1,ih1)+phep(1,ih2)
           QQMOM(2) = phep(2,ih1)+phep(2,ih2)
           QQMOM(3) = phep(3,ih1)+phep(3,ih2)
@@ -234,7 +321,7 @@ c$$$      ih1=3  ! fermion is here      &&&
 c$$$      ih2=4  ! antifermion is here  &&&
       Call HepEvt_GetF(   ih1)  ! fermion is here
       Call HepEvt_GetFbar(ih2)  ! antifermion is here
-      IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
+      IF ( ABS(idhep(ih1)) .LT. 10 ) THEN
 ** Explicit string arangement:
          ijoin(1) = ih1
          ijoin(2) = ih2
@@ -252,7 +339,7 @@ c$$$      ih2=4  ! antifermion is here  &&&
             CALL pyexec
          ENDIF
       ENDIF
-      
+
       END
 
 
