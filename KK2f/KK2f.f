@@ -669,7 +669,7 @@
       ENDIF
 
       IF(m_WriteLHE .EQ. 1) THEN
-         CALL LHEF_Fill
+         CALL LHEF_Fill(m_alfinv, m_CMSene)
       ENDIF
          
       END                       !!! end of KK2f_Make !!!

@@ -148,7 +148,7 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
       ENDIF
       END
 
-      SUBROUTINE LHEF_Fill()
+      SUBROUTINE LHEF_Fill(AlphaQED, ECM)
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //
 *//   This subroutine fills one event into the Les Houches event file using  //
@@ -157,12 +157,14 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
 *//   MODIFIED by M.Chrzaszcz,  29 sep 2020                                  //
 *//                                                                          //
 *//////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
+      DOUBLE PRECISION AlphaQED, ECM
       INCLUDE 'HepEvt.h'
 
       INTEGER           m_EvtUnit,i,j, ISTUP,col1,col2
-      DOUBLE PRECISION  ss, AlphaQCD, AlphaQED
+      DOUBLE PRECISION  ss, AlphaQCD
 * Start to write Les Houch file
+
+
       m_EvtUnit = 77
 
       WRITE(m_EvtUnit,'(a)')  '<event>'
@@ -182,9 +184,10 @@ c$$$           CALL HepEvt_Fil1(4+ip,1,22, 2,1,0,0, aph,0d0,.FALSE.) ! FSR
 *     1/BornV_QEDcoup(ss),
 *     CALL KK2f_GetOneX(809,AlphaQCD)
 *     So far just dummy line:
-
-*      WRITE(m_EvtUnit,*) nhep, 9999, 'weight', ' scale',
-*     & ' alphaQED', ' alphaQCD'
+      CALL KK2f_GetOneX(809,AlphaQCD)
+      
+      WRITE(m_EvtUnit,*) nhep, 9999, 1., ECM,
+     & 1./AlphaQED, AlphaQCD
 
 
 *------------------------------------------------------------------------
