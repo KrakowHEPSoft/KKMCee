@@ -82,6 +82,7 @@
      $    m_Idyfs,            ! pointer for histograming
      $    m_idbra,            ! pointer for brancher
      $    m_idgen             ! special histogram for this generator
+  
 *
       SAVE /c_KK2f/
 *
