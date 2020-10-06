@@ -70,8 +70,11 @@
       CHARACTER*60      comm60
       CHARACTER*80      comm80
       INTEGER           imax,iReset,iTalk
-      INTEGER           ninp,i,line,index
+      INTEGER           ninp,i,line,indeks
       DOUBLE PRECISION  value
+      INTEGER           OFFSET1, OFFSET2
+      CHARACTER*60      m_LHEF
+
 *////////////////////////////////////////
 *//  Clear xpar and read default Umask //
 *////////////////////////////////////////
@@ -91,6 +94,7 @@
       ENDIF
 * Search for 'BeginX'
       DO line =1,100000
+         WRITE(*,*) '---------------'
          READ(ninp,'(a6,a)') beg6,comm60
          IF(beg6 .EQ. 'BeginX') THEN
             IF(iTalk .EQ. 1)   WRITE( *,'(a6,a)') beg6,comm60
@@ -103,11 +107,22 @@
          READ(ninp,'(a)') mark1
          IF(mark1 .EQ. ' ') THEN
             BACKSPACE(ninp)
-            READ(ninp,'(a1,i4,d15.0,a60)') mark1,index,value,comm60
+            READ(ninp,'(a1,i4,d15.0,a60)') mark1,indeks,value,comm60
             IF(iTalk .EQ. 1) 
-     $           WRITE( *,'(a1,i4,g15.6,a60)') mark1,index,value,comm60
-            IF( (index .LE. 0) .OR. (index .GE. imax)) GOTO 990
-            xpar(index) = value
+     $           WRITE( *,'(a1,i4,g15.6,a60)') mark1,indeks,value,comm60
+            IF( (indeks .LE. 0) .OR. (indeks .GE. imax)) GOTO 990
+            IF( indeks .EQ. 100 ) THEN
+               OFFSET1 = INDEX(comm60,'(') + 1
+               OFFSET2 = INDEX(comm60,')') - 1
+               m_LHEF = comm60(OFFSET1:OFFSET2)
+               WRITE(*,*) '---------------',OFFSET1 , OFFSET2, m_LHEF
+               xpar(indeks) = value
+               IF (value .EQ. 1) THEN
+                   OPEN(77, file = m_LHEF)
+               ENDIF
+            ELSE   
+               xpar(indeks) = value
+            ENDIF   
          ELSEIF(mark1 .EQ. 'E') THEN
             BACKSPACE(ninp)
             READ(  ninp,'(a4,a)') end4,comm60
@@ -129,7 +144,7 @@
       CLOSE(ninp)
       RETURN
 *-----------
- 990  WRITE(    *,*) '+++ KK2f_ReaDataX: wrong index= ',index
+ 990  WRITE(    *,*) '+++ KK2f_ReaDataX: wrong index= ',indeks
       STOP
       RETURN
  991  WRITE(    *,*) '+++ KK2f_ReaDataX: wrong end of data '
@@ -156,7 +171,7 @@
       INTEGER nout,nout2
       CLOSE(nout2)
       END
-
+      
       SUBROUTINE KK2f_Initialize(xpar)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
@@ -179,6 +194,7 @@
 *     Initialization of the internal histogramming package
       CALL GLK_Initialize
 
+      
       DO j=1,m_jlim
          m_xpar(j)=xpar(j)
       ENDDO
@@ -221,9 +237,8 @@
       m_WriteLHE = m_xpar(100)
 *      BEAMENERGY=m_CMSene/2.
       IF(m_WriteLHE .EQ. 1) THEN
-*     CALL Init_LHE()
-*        77 is a unique number for LHE file.
-         OPEN(77, file = 'LHE_OUT.dat')
+
+*        If needed the file is opend in KK2f_ReaDataX 
          WRITE(77, '(a)')'<LesHouchesEvents version="1.0">'
          WRITE(77, '(a)')'<!--'
          WRITE(77, '(a)')'   File Created with KKMC'
