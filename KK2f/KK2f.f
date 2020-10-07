@@ -115,6 +115,10 @@
                OFFSET1 = INDEX(comm60,'(') + 1
                OFFSET2 = INDEX(comm60,')') - 1
                m_LHEF = comm60(OFFSET1:OFFSET2)
+               IF( LEN_TRIM(m_LHEF) .EQ. 0 .OR. OFFSET1 .EQ. 1 .OR.
+     &         OFFSET2 .EQ. -1) THEN
+                  m_LHEF = 'KKMC_OUT.LHE'
+               ENDIF
                WRITE(*,*) '---------------',OFFSET1 , OFFSET2, m_LHEF
                xpar(indeks) = value
                IF (value .EQ. 1) THEN
