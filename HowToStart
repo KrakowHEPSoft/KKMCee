@@ -42,16 +42,11 @@ Muons only, v<0.99, wt=1 events:
 	cp Mu/Mu.input.1k Mu/Mu.input
 	kmake Mu-start
 	diff -b Mu/pro.output.1k Mu/pro.output | less
-
-Beamstrahlung at 500GeV (takes a few minutes):
-  cp Beast/Foam500,1k.input Beast/Beast.input
-  kmake Beast-start
-  diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
 -------------------------------------------------------------------------------
      ****************
      **    MaMar   **
      ****************
-Main program in C++. ROOT version 5 is involved.
+Main program in C++. ROOT version 5 or 6 is involved.
 Here autotools are recommended
      make distclean       <== optionally, sometimes helps
      autoreconf -i --force

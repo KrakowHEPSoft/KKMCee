@@ -14,8 +14,8 @@
 *////////////////////////////////////////////////////////////////////////////////////////
       DOUBLE PRECISION    m_version
       CHARACTER*14        m_Date
-      PARAMETER ( m_Version     =          4.24d0 )
-      PARAMETER ( m_Date        =  ' Febr  2017')
+      PARAMETER ( m_Version     =          4.30d0 )
+      PARAMETER ( m_Date        =  ' October 2020')
 *////////////////////////////////////////////////////////////////////////////////////////
       INTEGER     m_phmax             ! maximum photon multiplicity ISR+FSR
       PARAMETER ( m_phmax = 100)

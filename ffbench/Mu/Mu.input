@@ -13,6 +13,6 @@ BeginX
 *     Define process
   413              1      KFfin, muon
   100              1      store lhe file to (LHE_OUT.LHE)
-************************* one can change the lhf file name between the brackets 
+************************* one can change the lhf file name between brackets 
 ********************************************************************************
 EndX

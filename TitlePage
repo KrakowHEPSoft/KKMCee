@@ -22,6 +22,7 @@
 *//  ===================KK  4.15  May. 2001 ================================        //
 *//  ===================KK  4.16  Oct. 2001 ================================        //
 *//  ===================KK  4.22  Jun. 2013 ================================        //
+*//  ===================KK  4.30  Oct. 2020 ================================        //
 *//  =======================================================================        //
 *//                                                                                 //
 *//  AUTHORS:                                                                       //
@@ -31,7 +32,17 @@
 *//     Address: University of Tennessee,  Knoxville, Tennessee                     //
 *//                         Z. Was                                                  //
 *//     Address: Institute of Nuclear Physics, Cracow, Poland                       //
+*//                         S. Yost                                                 //
+*//     Address: The Citadele, Charleston, SC, USA                                  //
 *//                                                                                 //
-*//            (C) 1998 by S. Jadach, BFL Ward, Z. Was                              //
+*//            (C) 2020 by S. Jadach, BFL Ward, Z. Was, S. Yost                     //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
+
+  *******************************************************************************
+  * The authors of KKMCee are grateful to Marcin Chrzaszcz and Andrzej Siodmok  *
+  * for invalulable help in preparing new realease 4.30 -- in particular for    *
+  * the upgrade of TAUOLA and implementing and testing new LHE interface        *
+  * to modern parton showers.                                                   *
+  *******************************************************************************
+

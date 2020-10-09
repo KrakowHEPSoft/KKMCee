@@ -1,11 +1,23 @@
 --------------------------------------------------------------------------------
-           Release Notes in anti-chronological order 1999-2013
+           Release Notes in anti-chronological order 1999-2020
 ********************************************************************************
-***********  First version of the KKMCee development branch   ******************
-*********     (The other branch KKMChh is for hadron beams)     ****************
+***********  First version of the KKMC-ee development branch  ******************
+*********    (The other branch KKMC-hh is for hadron beams)   ******************
 ********************************************************************************
 
-Changes in the present DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
+Changes in the DEVELOPEMENT VERSION 4.30 , October 10-th 2020:
+1. Electroweak library DIZET upgraded to the latest vertion 6.45,
+   previous versions are kept, see arXiv 2007.07964.
+2. TAOLA library upgraded to 2017 version.
+3. LHE interface to modern C++ parton showers (like Pythia8) 
+   for hadronic final states is implemented.
+4. C++ template of the user main program MaMar works with ROOT v.5 and 6.
+
+********************************************************************************
+********************************************************************************
+********************************************************************************
+
+Changes in the DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
 1. Beamstrahlung reorganized completely and simplified.
    Dirac delta component of CIRCE is modeled using very narrow gaussian peaks.
    Single Foam can cope with this distribution.

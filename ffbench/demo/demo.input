@@ -32,6 +32,5 @@ BeginX
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
     7             20      Ie2Pri =xpar( 7)  PrintOut End   point
-    100              1      m_WriteLHE = xpar(100)
 ********************************************************************************
 EndX

@@ -33,3 +33,17 @@ At the moment the basic paper on KKMC and CEEX exponentiation are:
      SLACcitation  = "%%CITATION = PHLTA,B449,97;%%"
 }
 
+@article{Arbuzov:2020coe,
+      author         = "Arbuzov, A. and Jadach, S. and Wąs, Z. and Ward, B. F.
+                        L. and Yost, S. A.",
+      title          = "{The Monte Carlo Program KKMC for the Lepton or Quark
+                        Pair Production at LEP/SLC Energies -- updates of
+                        electroweak calculations}",
+      year           = "2020",
+      eprint         = "2007.07964",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ph",
+      reportNumber   = "IFJPAN-IV-2020-05, BU-HEPP-20-01",
+      SLACcitation   = "%%CITATION = ARXIV:2007.07964;%%"
+}
+
