@@ -27,7 +27,11 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-TFile DiskFileA("../workZinv/rmain.root");
+//TFile DiskFileA("../workZinv/rmain.root");
+// Dec 2020
+TFile DiskFileA("../workZinv/rmain.root_E105GeV_6G");
+//TFile DiskFileA("../workZinv/rmain.root_E125GeV_6G");
+//TFile DiskFileA("../workZinv/rmain.root_E161GeV_6G");
 //  July 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
@@ -41,8 +45,12 @@ TFile DiskFileA("../workZinv/rmain.root");
 //
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
+// Dec 2020
+TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_2G");
+//TFile DiskFileB("../workZinv/rmain.root_E125GeV_ISR_2G");
+//TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_2G");
 // July 2019
-TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
+//TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
 //TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
 //
 // March 2019
@@ -63,7 +71,7 @@ TFile DiskFileX("Plot2.root","RECREATE","histograms");
 double gCMSene, gNevTot; // from KKMC run
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
-int    g161GeVyes =0, g105GeVyes=0;
+int    g161GeVyes =0, g125GeVyes=0, g105GeVyes=0;
 //
 float  gXcanv = 20, gYcanv = 20, gDcanv = 30;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +252,7 @@ void FigNPhot()
 
   //================================================
   if( g161GeVyes) cFigNPhot->SaveAs("cFigNPhot_161GeV.pdf");
+  if( g125GeVyes) cFigNPhot->SaveAs("cFigNPhot_125GeV.pdf");
   if( g105GeVyes) cFigNPhot->SaveAs("cFigNPhot_105GeV.pdf");
 
 }//FigNPhot
@@ -318,6 +327,7 @@ void FigVPhot()
 
   //================================================
    if( g161GeVyes) cFigVPhot->SaveAs("cFigVPhot_161GeV.pdf");
+   if( g125GeVyes) cFigVPhot->SaveAs("cFigVPhot_125GeV.pdf");
    if( g105GeVyes) cFigVPhot->SaveAs("cFigVPhot_105GeV.pdf");
 
 }//FigVPhot
@@ -364,6 +374,7 @@ void FigVPhot2()
     PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged, v=E_{#gamma}/E_{beam}");
     //================================================
     if( g161GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_161GeV.pdf");
+    if( g125GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_125GeV.pdf");
     if( g105GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_105GeV.pdf");
 }//FigVPhot2
 
@@ -411,6 +422,7 @@ void FigVPhot3()
     PlotSame2(hst_vaNuMuCeex2,  ycapt, kRed,  0.5, "(b)", "#nu_{#mu}");
     //================================================
     if( g161GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_161GeV.pdf");
+    if( g125GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_125GeV.pdf");
     if( g105GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_105GeV.pdf");
 }//FigVPhot3
 
@@ -504,6 +516,7 @@ void FigNuDif1()
   cNuDif1->cd();
 //
   if( g161GeVyes) cNuDif1->SaveAs("cNuDif1_161GeV.pdf");
+  if( g125GeVyes) cNuDif1->SaveAs("cNuDif1_125GeV.pdf");
   if( g105GeVyes) cNuDif1->SaveAs("cNuDif1_105GeV.pdf");
 }//FigNuDif1
 
@@ -597,6 +610,7 @@ void FigNuDif2()
   cNuDif2->cd();
 //
   if( g161GeVyes) cNuDif2->SaveAs("cNuDif2_161GeV.pdf");
+  if( g125GeVyes) cNuDif2->SaveAs("cNuDif2_125GeV.pdf");
   if( g105GeVyes) cNuDif2->SaveAs("cNuDif2_105GeV.pdf");
 }//FigNuDif2
 
@@ -765,6 +779,7 @@ void FigNuEle()
   cNuEle->cd();
 //
   if( g161GeVyes) cNuEle->SaveAs("cNuEle_161GeV.pdf");
+  if( g125GeVyes) cNuEle->SaveAs("cNuEle_125GeV.pdf");
   if( g105GeVyes) cNuEle->SaveAs("cNuEle_105GeV.pdf");
 }//FigNuEle
 
@@ -831,6 +846,7 @@ void FigCeex12nu()
   cCeex12nu->cd();
 //
   if( g161GeVyes) cCeex12nu->SaveAs("cCeex12nu_161GeV.pdf");
+  if( g125GeVyes) cCeex12nu->SaveAs("cCeex12nu_125GeV.pdf");
   if( g105GeVyes) cCeex12nu->SaveAs("cCeex12nu_105GeV.pdf");
 //
   /*
@@ -914,6 +930,7 @@ void FigCeex12mu()
   cCeex12mu->cd();
 //
   if( g161GeVyes) cCeex12mu->SaveAs("cCeex12mu_161GeV.pdf");
+  if( g125GeVyes) cCeex12mu->SaveAs("cCeex12mu_125GeV.pdf");
   if( g105GeVyes) cCeex12mu->SaveAs("cCeex12mu_105GeV.pdf");
 }//FigCeex12mu
 
@@ -985,6 +1002,7 @@ void FigCeex12rat()
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
 //  Hst->SetMinimum(1.9); Hst->SetMaximum(2.5);
   if( g161GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
+  if( g125GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
   if( g105GeVyes) {Hst->SetMinimum(1.6); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
@@ -1033,6 +1051,7 @@ void FigCeex12rat()
   cCeex12rat->cd();
 //
   if( g161GeVyes) cCeex12rat->SaveAs("cCeex12rat_161GeV.pdf");
+  if( g125GeVyes) cCeex12rat->SaveAs("cCeex12rat_125GeV.pdf");
   if( g105GeVyes) cCeex12rat->SaveAs("cCeex12rat_105GeV.pdf");
 }//FigCeex12rat
 
@@ -1081,6 +1100,7 @@ void FigCeex12isr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
+  if( g125GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   if( g105GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
@@ -1111,6 +1131,7 @@ void FigCeex12isr()
   cCeex12isr->cd();
 //
   if( g161GeVyes) cCeex12isr->SaveAs("cCeex12isr_161GeV.pdf");
+  if( g125GeVyes) cCeex12isr->SaveAs("cCeex12isr_125GeV.pdf");
   if( g105GeVyes) cCeex12isr->SaveAs("cCeex12isr_105GeV.pdf");
 }//FigCeex12rat
 
@@ -1155,6 +1176,7 @@ void FigCeex2fsr()
   Hst->SetTitle(0);
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   if( g161GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
+  if( g125GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   if( g105GeVyes) {Hst->SetMinimum(1.7); Hst->SetMaximum(2.2);}
   Hst->DrawCopy("h");
   ///
@@ -1174,6 +1196,7 @@ void FigCeex2fsr()
   Hst->SetStats(0);
   Hst->SetTitle(0);
   if(g105GeVyes) {Hst->SetMinimum( -0.05); Hst->SetMaximum( +0.25);}
+  if(g125GeVyes) {Hst->SetMinimum( -0.05); Hst->SetMaximum( +0.25);}
   if(g161GeVyes) {Hst->SetMinimum( -0.10); Hst->SetMaximum( +0.10);}
   Hst->GetXaxis()->SetTitle("v=E_{#gamma}/E_{beam}");
   Hst->SetLineColor(kBlack);
@@ -1185,6 +1208,7 @@ void FigCeex2fsr()
   cCeex2fsr->cd();
 //
   if(g161GeVyes) cCeex2fsr->SaveAs("cCeex2fsr_161GeV.pdf");
+  if(g125GeVyes) cCeex2fsr->SaveAs("cCeex2fsr_125GeV.pdf");
   if(g105GeVyes) cCeex2fsr->SaveAs("cCeex2fsr_105GeV.pdf");
 }//FigCeex12rat
 
@@ -1208,6 +1232,7 @@ int main(int argc, char **argv)
   sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
   sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
   if( fabs(gCMSene-161)<0.01) g161GeVyes = 1;
+  if( fabs(gCMSene-125)<0.01) g125GeVyes = 1;
   if( fabs(gCMSene-105)<0.01) g105GeVyes = 1;
   //
   TH1D *HST_KKMC_NORMB = (TH1D*)DiskFileB.Get("HST_KKMC_NORMA");
