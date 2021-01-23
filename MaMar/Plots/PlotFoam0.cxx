@@ -31,7 +31,7 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 ////  ****************** KKMC******************
-//TFile DiskFileA("../workKKMC/histo.root");
+TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
@@ -42,13 +42,13 @@ using namespace std;
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_13G");  // jan.2018
 //
 // Sept. 2017 runs
-TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // for IFI off still OK
+//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // for IFI off still OK
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_2.5G"); // obsolete
 //TFile DiskFileA("../workKKMC/histo.root_91GeV_3.5G"); //
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); // obsolete
 
 ////  ****************** FOAM ******************
-//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root"); // current
 //  Febr. 2018
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_22G_FSR_1-v"); // with s(1-v) in FSR
 //TFile DiskFileF("../workFOAM/histo.root_91GeV_21G_FSR_1-v"); // with s(1-v) in FSR
@@ -56,7 +56,7 @@ TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // for IFI off still OK
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_73G_FSR_1-v"); // with s(1-v) in FSR
 // Dec 2017 run
 //TFile DiskFileF("../workFOAM/histo.root_88GeV_22G");
-TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_23G");
 //TFile DiskFileF("../workFOAM/histo.root_10GeV_18G");
 // Sept. 2017 runs OBSOLETE
 //TFile DiskFileF("../workFOAM/histo.root_95GeV_57G"); // OBSOLETE
