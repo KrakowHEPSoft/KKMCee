@@ -64,12 +64,17 @@ void ROBOL2::Initialize(long &NevTot)
   double CMSene = m_xpar[1];
   double MZ     = m_xpar[502];
   double vvZ    = 1-(MZ*MZ)/(CMSene*CMSene);
+  double rat = 0.715/0.679215;
   double vv2    = vvZ+0.020;
   double vv1    = vvZ-0.020;
+  vv2 = vvZ*rat;
+  vv1 = vvZ/rat;
   int nbin =NevTot/100;
   if(nbin>1000) nbin=1000;
   //[[[
   cout<<"ROBOL2::Initialize:  [1] "<<endl;
+  cout<<"vvZ= "<<vvZ<<endl;
+  cout<<"vv1= "<<vv1<<"  vv2= "<<vv2<<endl;
   //]]]
   hst_weight  = TH1D_UP("hst_weight" , "MC weight",      100, 0.000 , 2.0);
   hst_Mff     = TH1D_UP("hst_Mff"    , "Mass(f-fbar)",  nbin, 0.000 ,CMSene);

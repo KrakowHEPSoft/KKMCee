@@ -29,12 +29,12 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // KKMC current
-TFile DiskFileA("../workKKMC/histo.root");
+//TFile DiskFileA("../workKKMC/histo.root");
 // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_88GeV_11G"); // Jan. 2018
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_10G"); // Jan. 2018
 //
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
+TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 //TFile DiskFileA("../workKKMC/histo.root_10GeV_5.8G"); //
 
 //////  *** KKFOAM, bacis xcheck including IFI
@@ -1333,7 +1333,7 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   ReMakeKKMC();        // reprocessing KKMC histos
   HisReMakeFoam35();   // prepare histos from KKfoam
-//  KKsemMakeHisto();    // prepare histos from KKsem
+  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
   //FigScatV();
@@ -1341,8 +1341,8 @@ int main(int argc, char **argv)
   FigScatA();
   FigInfo();
 
-  //FigVtest();  // introduct. tests/calibrations
-  //FigCtest();  // introduct. tests/calibrations
+  FigVtest();  // introduct. tests/calibrations
+  FigCtest();  // introduct. tests/calibrations
 
   //FigVprod();
   //FigCprod();
