@@ -1336,22 +1336,23 @@ int main(int argc, char **argv)
 //  KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   //
-  FigScatV();
-/*
+  //FigScatV();
+
   FigScatA();
   FigInfo();
+
   //FigVtest();  // introduct. tests/calibrations
   //FigCtest();  // introduct. tests/calibrations
 
-  FigVprod();
-  FigCprod();
+  //FigVprod();
+  //FigCprod();
   //
-  FigCosThe();
-  FigCosThe2();
+
+  //FigCosThe();
+  //FigCosThe2();
   //
   //FigCtheSoft();
 
-*/
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

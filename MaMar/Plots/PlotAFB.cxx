@@ -28,10 +28,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // New MainKKMC
-//TFile DiskFileA("../workKKMC/histo.root");  // current
+TFile DiskFileA("../workKKMC/histo.root");  // current
 //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
-TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 // Archive
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); // newest!
@@ -601,6 +601,52 @@ void Fig_vT_Ceex21()
 }// Fig_vT_Ceex21
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigPhi()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigPhi =========================== "<<endl;
+  // renormalize histograms in nanobarns
+  Double_t CMSene;
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
+  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
+  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
+
+  TH1D *hst_phi1_Ceex2_pol    = (TH1D*)DiskFileA.Get("hst_phi1_Ceex2_pol");
+
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex(); CaptT->SetNDC(); // !!!
+  ////////////////////////////////////////////////////////////////////////////////
+  TCanvas *cPhi = new TCanvas("cPhi","cPhi", gXcanv,  gYcanv,   1200,  600);
+  //                            Name    Title            xoff,yoff, WidPix,HeiPix
+  ////////////////////////////////////////////////////////////////////////////////
+  gXcanv += 50; gYcanv += 50;
+  cPhi->SetFillColor(10);
+//  cPhi->Divide( 2,  0);
+  //cPhi->Divide( 2,  0,     0.0,     0.0,   10);
+  //              nx, ny, xmargin, ymargin, color
+  //////////////////////////////////////////////
+  cPhi->cd(1);
+
+  TH1D *Hst = hst_phi1_Ceex2_pol;
+//  Hst->SetStats(0);
+  Hst->SetTitle(0);
+  Hst->GetXaxis()->SetTitleSize(0.05);
+  Hst->GetXaxis()->SetTitle(" #phi ");
+  Hst->DrawCopy("h");
+
+  CaptT->DrawLatex(0.12,0.95,"d#sigma/d#phi:         P_{y}^{1}=+0.10,    P_{y}^{2}=-0.10 ");
+  //-------------------------------------
+  cPhi->cd(2);
+
+  cPhi->SaveAs("cPhi.pdf");
+
+  //
+  cPhi->cd();
+//
+}// FigPhi
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -613,13 +659,14 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   // Template empty canvas  with 2 figures
   //FigTempl();
+  FigPhi();
   // Raw MC double distr. of v and cost(theta)
-  FigScatA();
-  FigVsig();
-  FigAfbIFI();
-  FigAfbKin();
+  //FigScatA();
+  //FigVsig();
+  //FigAfbIFI();
+  //FigAfbKin();
   //
-  Fig_vT_Ceex21();
+  //Fig_vT_Ceex21();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

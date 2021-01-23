@@ -16,6 +16,8 @@ ClassImp(TRobolKKMC);
 //      *************** temporary entries from KKMC ****************
 //      SUBROUTINE KarLud_GetVVxx(vv,x1,x2)
 extern "C" void  karlud_getvvxx_(double&, double&, double&);
+//DOUBLE PRECISION  FUNCTION KinLib_AngPhi(x,y)
+extern "C" double kinlib_angphi_(double*, double*);
 //extern "C" void  pyhepc_(long&);
 //extern "C" void  photos_(long&);
 //extern "C" void  phoini_();
@@ -283,7 +285,9 @@ void TRobolKKMC::Hbooker()
 ////////
   hst_vB_Ceex2i      = TH1D_UP("hst_vB_Ceex2i",  "dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
   hst_vB_Ceex2i_F    = TH1D_UP("hst_vB_Ceex2i_F","dSig/dvTrue ", NBexp, 0.000 ,m_vvcut2);
-//
+//  Misc.
+  hst_phi1_Ceex2_pol = TH1D_UP("hst_phi1_Ceex2_pol", "phi1 azimithal", 64, -2*M_PI ,2*M_PI);
+
 /////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
@@ -417,6 +421,20 @@ void TRobolKKMC::Production(double &iEvent)
   double E2      = m_pfer2.Energy();
 
   double Acol    = fabs(Phi1-(Phi2+3.141594));
+
+  double phi1, px, py;
+//  px = m_pfer1[1];
+//  py = m_pfer1[2];
+  px = m_pfer1.X();
+  py = m_pfer1.Y();
+  double pt = sqrt(px*px+py*py );
+  phi1 = kinlib_angphi_(&px, &py);
+
+  if( m_NevGen< 50) {
+	  cout<<"========================================================================="<<endl;
+	  cout<<" px="<<px/pt<<" py="<<py/pt<<endl;
+	  cout<<" Phi1="<<Phi1<<"   phi1="<<phi1<< "  Phi1- phi1="<< Phi1- phi1<<endl;
+  }
 
   double SinThe1,SinThe2,yy1,yy2,CosThePL,CosPRD,zAleph,s1Aleph,xe1,xe2;
 //--------------------------------------------------------------------
@@ -672,6 +690,11 @@ void TRobolKKMC::Production(double &iEvent)
     if( CosThePL > 0.0) hst_vA_Ceex1i_F->Fill( vvA, WtCEEX1-WtCEEX1n);// IFI
     if( CosThePL > 0.0) hst_vA_Ceex2i_F->Fill( vvA, WtCEEX2-WtCEEX2n);// IFI
   }
+// Azimuthal distribution
+//  if( fabs(CosPRD)<0.9  && Acol<0.001 && xe1>0.90 && xe2>0.90){
+    hst_phi1_Ceex2_pol->Fill(  Phi1, WtCEEX2);
+//    hst_phi1_Ceex2_pol->Fill(  Phi1, WtEEX3);
+//  }
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;
     cout<<"============================================================="<<endl;

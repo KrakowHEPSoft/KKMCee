@@ -20,7 +20,7 @@ BeginX
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
-   16           1e-6      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
+   16           1e-7      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
 ** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
