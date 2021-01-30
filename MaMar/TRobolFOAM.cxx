@@ -197,7 +197,7 @@ void TRobolFOAM::Production(double &iEvent)
 if( MCgen->m_IsFoam5 == 1) {
   /// MC generation in base class, ISR+FSR+IFI event
   MCgen->m_Mode = -5;
-  TRobol::Production(iEvent);  // It invokes MCgen->Generale
+  TRobol::Production(iEvent);  // It invokes MCgen->Generate() !!!
   /// filling in histos
   MCgen->f_FoamI->GetMCwt(wt5);
   xx  = MCgen->m_xx;
