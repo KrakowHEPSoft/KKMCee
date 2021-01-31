@@ -335,7 +335,8 @@ void TMCgenFOAM::MapMinus( double r, double gam, double &v, double &dJac){
   } else {
 	  Reps = 1+gam*log(eps);        // R(eps)
 	  R1   = 1+2*gam*log(eps);      // R(1)
-	  RV   = R1 +gam*log(m_vvmax);  // R(V)
+////    RV   = R1 +gam*log(m_vvmax);  // R(V) // Error!!! for r=1 implies v=1/vvmax !!!
+	  RV   = R1 -gam*log(m_vvmax);  // R(V) corrected
 	  Rat  = Reps/RV;
 	  if( r< Rat){
 		  v = 0; dJac= 1/Rat;
