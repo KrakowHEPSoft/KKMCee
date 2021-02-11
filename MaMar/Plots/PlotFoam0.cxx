@@ -37,9 +37,9 @@ using namespace std;
 TFile DiskFileA("../workKKMC/histo.root_95GeV_5G"); // Jan. 2021
 
 ////  ****************** FOAM ******************
-//TFile DiskFileF("../workFOAM/histo.root"); // current
+TFile DiskFileF("../workFOAM/histo.root"); // current
 
-TFile DiskFileF("../workFOAM/histo.root_95GeV_70G"); // current
+//TFile DiskFileF("../workFOAM/histo.root_95GeV_70G"); // current
 
 //=============================================================================
 // All previous results are for old DIZET 6.21

@@ -28,10 +28,10 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT 
 //=============================================================================
 // New MainKKMC
-TFile DiskFileA("../workKKMC/histo.root");  // current
+//TFile DiskFileA("../workKKMC/histo.root");  // current
 //
 //TFile DiskFileA("../workKKMC/histo.root_88GeV.new");  // current
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
+TFile DiskFileA("../workKKMC/histo.root_95GeV.new");  // current
 // Archive
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");  // last
 //TFile DiskFileA("../workKKMC/histo.root_95GeV.4G"); // newest!
@@ -659,14 +659,14 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   // Template empty canvas  with 2 figures
   //FigTempl();
-  FigPhi();
+  //FigPhi();  // piggyback stydy of transverse polarization
   // Raw MC double distr. of v and cost(theta)
-  //FigScatA();
-  //FigVsig();
-  //FigAfbIFI();
-  //FigAfbKin();
+  FigScatA();
+  FigVsig();
+  FigAfbIFI();
+  FigAfbKin();
   //
-  //Fig_vT_Ceex21();
+  Fig_vT_Ceex21();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

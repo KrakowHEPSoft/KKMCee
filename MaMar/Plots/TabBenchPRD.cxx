@@ -30,26 +30,13 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
-// New
-//TFile  DiskFileA("../workKKMC/histo.root");           // KKMC current
+//
+TFile  DiskFileA("../workKKMC/histo.root");           // KKMCee current
 
 //TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
 
-//TFile DiskFileA("../workKKMC/histo.root_95GeV.4G");
+//TFile DiskFileA("../workAFB/rmain.root_189GeV_50M");  // Feb. 2021
 
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_1200M");
-//TString XparFile="../workKKMC/workKKMC_95GeV.input";  // KKMC input
-
-// Old
-//TFile DiskFileA("../workAFB/rmain.root");  // current
-
-TFile DiskFileA("../workAFB/rmain.root_189FeV_50M");  // Feb. 2021
-// Archive
-//TFile DiskFileA("../workAFB/rmain_95GeV.root");  // 100M new
-//TFile DiskFileA("../workAFB/rmain.root_95GeV_100M"); // obsolete??
-//TFile DiskFileA("../workAFB/rmain.root_10GeV_30M");
-//TFile DiskFileA("../workAFB/rmain.root_91GeV_48M");
-//TFile DiskFileA("../workAFB/rmain.root_189GeV_100M");  // Old benchmark
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
 FILE *DiskFileTeX;
@@ -205,105 +192,10 @@ void ReMakeMChisto(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigOldBench()
+void TableIII()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigOldBench =========================== "<<endl;
-  //
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  char TextEne[100]; sprintf(TextEne,"#sqrt{s} =%4.2fGeV", CMSene);
-  //
-  // KKsem
-  TH1D *vcum_ISR2_FSR2   = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");
-  TH1D *afbv_ISR2_FSR2   = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");
-
-  // Distributions of v=vTrue
-  // without cutoff on c=cos(thetaPRD)
-  TH1D *HTot_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2");
-  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");
-
-  TH1D *HTot_vTcPR_Ceex2n= (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");
-  TH1D *HAfb_vTcPR_Ceex2n= (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n");
-  //
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-  TLatex *CaptTb = new TLatex(0.40,0.01,"v_{max}");
-  CaptTb->SetNDC(); // !!!
-  CaptTb->SetTextSize(0.04);
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigOldBench = new TCanvas("cFigOldBench","FigOldBench", 70, 20,    700, 700);
-  //                                   Name    Title     xoff,yoff, WidPix,HeiPix
-  cFigOldBench->SetFillColor(10);
-
-  TH1D *HTot_rat_Ceex2 =(TH1D*)HTot_vTcPR_Ceex2->Clone("HTot_rat_Ceex2");
-  HTot_rat_Ceex2->Divide(vcum_ISR2_FSR2);
-
-  HTot_rat_Ceex2->SetMinimum(0.975);
-  HTot_rat_Ceex2->SetMaximum(1.100);
-  HTot_rat_Ceex2->SetMinimum(1 -0.0010);  // zoom
-  HTot_rat_Ceex2->SetMaximum(1 +0.0010);  // zoom
-
-  HTot_rat_Ceex2->SetStats(0);
-  HTot_rat_Ceex2->SetTitle(0);
-  HTot_rat_Ceex2->DrawCopy("h");
-  //
-  TH1D *HTot_rat_Ceex2n = (TH1D*)HTot_vTcPR_Ceex2n->Clone("HTot_rat_Ceex2n");
-  HTot_rat_Ceex2n->Divide(vcum_ISR2_FSR2);
-
-  HTot_rat_Ceex2n->SetLineColor(kMagenta);
-  HTot_rat_Ceex2n->DrawCopy("hsame");
-
-  CaptT->DrawLatex(0.12,0.85,"Ceex2/KKsem, Blue/Magenta for IFI on/off");
-  CaptT->DrawLatex(0.60,0.75,TextEne);
-  CaptTb->Draw();
-  //----------------------------
-  cFigOldBench->cd();
-  cFigOldBench->SaveAs("cFigOldBench.pdf");
-
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigOldBench2 = new TCanvas("cFigOldBench2","FigOldBench2",270, 50,    700, 700);
-  //                                   Name    Title     xoff,yoff, WidPix,HeiPix
-  cFigOldBench2->SetFillColor(10);
-
-  TH1D *HAfb_diff_Ceex2 =(TH1D*)HAfb_vTcPR_Ceex2->Clone("HAfb_diff_Ceex2");
-  HAfb_diff_Ceex2->Add(HAfb_diff_Ceex2,  afbv_ISR2_FSR2, 1.0, -1.0);
-
-  HAfb_diff_Ceex2->SetLineColor(kRed); // red
-  HAfb_diff_Ceex2->SetStats(0);
-  HAfb_diff_Ceex2->SetTitle(0);
-  HAfb_diff_Ceex2->SetMinimum(-0.02);
-  HAfb_diff_Ceex2->SetMaximum( 0.06);
-  HAfb_diff_Ceex2->SetMinimum(-0.0010);  // zoom
-  HAfb_diff_Ceex2->SetMaximum( 0.0010);  // zoom
-
-  HAfb_diff_Ceex2->DrawCopy("h");
-  //
-  TH1D *HAfb_diff_Ceex2n =(TH1D*)HAfb_vTcPR_Ceex2n->Clone("HAfb_diff_Ceex2n");
-  HAfb_diff_Ceex2n->Add(HAfb_diff_Ceex2n, afbv_ISR2_FSR2, 1.0, -1.0) ;
-  HAfb_diff_Ceex2n->SetLineColor(kGreen); // green
-  HAfb_diff_Ceex2n->SetLineWidth(2);
-  HAfb_diff_Ceex2n->DrawCopy("hsame");
-  //
-   //
-  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{KKsem}_{FB}, Red/Green = IFI on/off");
-  CaptT->DrawLatex(0.60,0.75,TextEne);
-
-  //----------------------------
-  cFigOldBench2->cd();
-  cFigOldBench2->SaveAs("cFigOldBench2.pdf");
-  //================================================
-}//FigOldBench
-
-
-///////////////////////////////////////////////////////////////////////////////////
-void TabOldBench()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= TabOldBench start=========================== "<<endl;
+  cout<<" ========================= TableIII start=========================== "<<endl;
 //
   Double_t CMSene;
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
@@ -359,7 +251,7 @@ void TabOldBench()
   strcpy(Mcapt,"{\\color{red}$\\sigma(v_{\\max})$ [pb]}");
 
 ///************************************
-  DiskFileTeX = fopen("TabOldBench.txp","w");
+  DiskFileTeX = fopen("TableIII.txp","w");
 //************************************
 // Initialization of the latex source file
   PlInitialize(DiskFileTeX, 2);
@@ -391,161 +283,9 @@ void TabOldBench()
 //************************************
   fclose(DiskFileTeX);
 //************************************
-  cout<<" ========================= TabOldBench end =========================== "<<endl;
-}//TabOldBench
+  cout<<" ========================= TableIII end =========================== "<<endl;
+}//TableIII
 
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigVdist()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigVdist =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-  //
-  TH1D *HTot_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HTot_vTcPR_Ceex2n");  // KKMC sigma(vmax) from scat.
-  //
-  TH1D *Hpro_vT_Ceex2n    = (TH1D*)DiskFileB.Get("Hpro_vT_Ceex2n");     // KKMC dsigma/dv IFI off, from scat.
-  //
-  TH1D *vcum_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vcum_ISR2_FSR2");     // KKsem  sigma(vmax)
-  TH1D *vdis_ISR2_FSR2    = (TH1D*)DiskFileB.Get("vdis_ISR2_FSR2");     // KKsem  dsigma/d(v)
-  //
-  //*****************************************************************************
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVdist = new TCanvas("cFigVdist","FigVdist: NEW", 50, 50,    1000, 800);
-  //                            Name    Title               xoff,yoff, WidPix,HeiPix
-  cFigVdist->SetFillColor(10);
-  ////////////////////////////////////////////////////////////////////////////////
-  cFigVdist->Divide( 2,  2);
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-  //====================plot1========================
-  //                sigma(vmax)
-  cFigVdist->cd(1);
-  //gPad->SetLogy(); // !!!!!!
-  // MC v-true direct
-  TH1D *Hst1 = HTot_vTcPR_Ceex2n;  //  KKMC sigma(vmax) from scat.
-  //
-  Hst1->SetStats(0);
-  Hst1->SetTitle(0);
-  //Hst1->SetMinimum(1e-3*Hst1->GetMaximum());
-  Hst1->DrawCopy("h");
-  //
-  vcum_ISR2_FSR2->SetLineColor(kBlue);   // blue
-  vcum_ISR2_FSR2->DrawCopy("hsame");     // KKsem sigma(vmax)
-  //
-  CaptT->DrawLatex(0.02,0.95, "#sigma(v_{max}) Black KKMC noIFI, Blue KKsem");
-  //====================plot2========================
-  cFigVdist->cd(2);
-  TH1D *Hst1_ratio =(TH1D*)Hst1->Clone("Hst1_ratio");
-  Hst1_ratio->Divide(vcum_ISR2_FSR2);   // divide by KKsem
-  //Hst1_ratio->SetMinimum(0.95);
-  //Hst1_ratio->SetMaximum(1.10);
-  Hst1_ratio->SetLineColor(kBlue);
-  Hst1_ratio->DrawCopy("h");
-  //
-  CaptT->DrawLatex(0.02,0.95,"#sigma(v_{max}); Ratio KKMC/KKsem, noIFI");
-  //====================plot3========================
-  //                 dsigma/d(v)
-  cFigVdist->cd(3);
-  gPad->SetLogy(); // !!!!!!
-  TH1D *Hst3 = Hpro_vT_Ceex2n;           // KKMC dsigma/dv from scat.
-  Hst3->SetStats(0);
-  Hst3->SetTitle(0);
-  Hst3->SetLineColor(kRed); // red
-  Hst3->DrawCopy("h");
-  //
-  vdis_ISR2_FSR2->SetLineColor(kMagenta); // magenta     KKsem ISR+FSR noIFI
-  vdis_ISR2_FSR2->DrawCopy("hsame");      // KKsem dsigma/d(v) ISR+FSR noIFI
-
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (IFI off),  Red KKMC noIFI, Magenta KKsem");
-  //====================plot4========================
-  cFigVdist->cd(4);
-
-  TH1D *Hst3_ratio =(TH1D*)Hst3->Clone("Hst3_ratio");
-  Hst3_ratio->Divide(vdis_ISR2_FSR2);
-
-  Hst3_ratio->SetStats(0);
-  Hst3_ratio->SetTitle(0);
-  Hst3_ratio->DrawCopy("h");  // black
-
-  CaptT->DrawLatex(0.02,0.95,"d#sigma/dv (IFI off), Ratio KKMC/KKsem noIFI");
-  //----------------------------
-  cFigVdist->cd();
-  //================================================
-}//FigVdist
-
-///////////////////////////////////////////////////////////////////////////////////
-void FigAfb()
-{
-//------------------------------------------------------------------------
-  cout<<" ========================= FigAfb =========================== "<<endl;
-  Double_t CMSene;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  CMSene  = HST_KKMC_NORMA->GetBinContent(1); // CMSene=xpar(1) stored in NGeISR
-  CMSene /= HST_KKMC_NORMA->GetBinContent(511); // farm adjusted
-
-  TH1D *HAfb_vTcPR_Ceex2  = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2");  // KKMC
-  TH1D *HAfb_vTcPR_Ceex2n = (TH1D*)DiskFileB.Get("HAfb_vTcPR_Ceex2n"); // KKMC
-
-  TH1D *afbv_ISR2_FSR2    = (TH1D*)DiskFileB.Get("afbv_ISR2_FSR2");    // KKsem
- //
-  //*****************************************************************************
-  ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigAfb = new TCanvas("cFigAfb","FigAfb: NEW", 20, 300,   1000, 550);
-  //                            Name    Title                   xoff,yoff, WidPix,HeiPix
-  cFigAfb->SetFillColor(10);
-  ////////////////////////////////////////////////////////////////////////////////
-  cFigAfb->Divide( 2,  0);
-  //////////////////////////////////////////////
-  TLatex *CaptT = new TLatex();
-  CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.04);
-  //====================plot1========================
-  //                AFB(vmax)
-  cFigAfb->cd(1);
-  //gPad->SetLogy(); // !!!!!!
-  // MC v-true direct
-  TH1D *Hst1 = HAfb_vTcPR_Ceex2n;  //  KKMC AFB(vmax) from scat. IFI off
-  TH1D *Hst2 = HAfb_vTcPR_Ceex2;   //  KKMC AFB(vmax) from scat. IFI on
-  //
-  Hst2->SetStats(0);
-  Hst2->SetTitle(0);
-  Hst2->SetLineColor(kMagenta);            // magenta
-  Hst2->DrawCopy("h");                     // KKMC AFB(vmax) from scat. IFI on
-  //
-  Hst1->SetLineColor(kBlack);              // black
-  Hst1->DrawCopy("hsame");                 // KKMC AFB(vmax) from scat. IFI off
-  //
-  afbv_ISR2_FSR2->SetLineColor(kRed);      // red
-  afbv_ISR2_FSR2->DrawCopy("hsame");       // KKsem AFB(vmax) direct. IFI off
-  //
-  CaptT->DrawLatex(0.02,0.95, "A_{FB}(v_{max}) Black KKMC-IFIoff, Magenta KKMC-IFIon, Red KKsem");
-  //====================plot2========================
-  cFigAfb->cd(2);
-  TH1D *Hst1_diff1 =(TH1D*)Hst1->Clone("Hst1_diff1");
-   TH1D *Hst2_diff1 =(TH1D*)Hst2->Clone("Hst2_diff1");
-
-  Hst2_diff1->Add(Hst2_diff1, Hst1,             1.0, -1.0); // KKMC_IFI   minus KKMC  noIFI black
-  Hst1_diff1->Add(Hst1_diff1, afbv_ISR2_FSR2,   1.0, -1.0); // KKMC_noIFI minus KKsem_noIFI red
-  Hst2_diff1->SetMinimum(-0.010);  // 95GeV, 88FeV
-  Hst2_diff1->SetMaximum( 0.025);  // 95GeV, 88FeV
-
-  Hst2_diff1->SetLineColor(kBlack);
-  Hst2_diff1->DrawCopy("h");
-
-  Hst1_diff1->SetLineColor(kRed);
-  Hst1_diff1->DrawCopy("hsame");
-  //
-  CaptT->DrawLatex(0.12,0.85,"A^{KKMC}_{FB}-A^{KKsem}_{FB}, blac IFIon, red IFIoff ");
-
-  cFigAfb->cd();
-  //================================================
-}//FigAfb
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -556,27 +296,14 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   LibSem.Initialize(DiskFileA);
 /////////////////////////////////////////////////////////////////////////
-// Reading directly KKMC input (farming)
-/*
-  double xpar[10001];
-  int jmax = 10000;
-  LibSem.ReaData("../../.KK2f_defaults",     jmax, xpar);  // numbering as in input!!!
-  char dname[100];  sprintf(dname,XparFile);
-  LibSem.ReaData(dname, -jmax, xpar);  // jmax<0 for append mode
-  LibSem.Initialize(xpar);  // for non-farm case
-*/
-/////////////////////////////////////////////////////////////////////////
   DiskFileB.cd();
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();     // reprocessing MC histos
   KKsemMakeHisto();    // prepare histos from KKsem
   //========== PLOTTING ==========
   // Some comparisons with KKsem
-  FigVdist();  // sigma(v) and sigma(vmax) KKMC/KKsem
-  FigAfb();    // AFB(vmax) KKMC/KKsem
   // Old benchmarks KKMC vs. KKsem with Gauss integrator
-  FigOldBench();
-  TabOldBench();
+  TableIII();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();
@@ -584,7 +311,7 @@ int main(int argc, char **argv)
   DiskFileB.Close();
 
   //++++++++++++++++++++++++++++++++++++++++
-  theApp.Run();
+  //  theApp.Run();  // only for displaying plots
   //++++++++++++++++++++++++++++++++++++++++
 }
 

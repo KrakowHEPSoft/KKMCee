@@ -7,7 +7,8 @@ METASOURCES = AUTO
 CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
    PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2\
-   PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3
+   PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3\
+   TabBenchPRD
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -73,10 +74,6 @@ PlotFSR_SOURCES = KKplot.cxx HisNorm.cxx PlotFSR.cxx
 PlotFSR_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
 PlotFSR_LDFLAGS = -L$(ROOTLIBDIR)
 
-PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
-PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
-PlotIFI_LDFLAGS = -L$(ROOTLIBDIR)
-
 PlotFoam0_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotFoam0.cxx
 PlotFoam0_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam -lgfortran
 PlotFoam0_LDFLAGS = -L$(ROOTLIBDIR)
@@ -116,6 +113,15 @@ PlotALF2_LDFLAGS = -L$(ROOTLIBDIR)
 PlotALF3_SOURCES = KKplot.cxx HisNorm.cxx PlotALF3.cxx
 PlotALF3_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotALF3_LDFLAGS = -L$(ROOTLIBDIR)
+
+# PlotIFI seems obsolete
+PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
+PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotIFI_LDFLAGS = -L$(ROOTLIBDIR)
+
+TabBenchPRD_SOURCES = KKplot.cxx HisNorm.cxx TabBenchPRD.cxx
+TabBenchPRD_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+TabBenchPRD_LDFLAGS = -L$(ROOTLIBDIR)
 
 
 ######################### private #############################
@@ -175,7 +181,18 @@ $(BM1).pdf: $(BM1).tex TabOldBench.pdf cFigOldBench.pdf
 	pdflatex $(BM1).tex
 $(BM1)-pdf: $(BM1).pdf
 	evince  $(BM1).pdf
-#######
+###################################################
+#		make TableIII-pdf
+TabBenchPRD.phony: TabBenchPRD
+	(./TabBenchPRD; touch TabBenchPRD.phony;)
+####
+BM3 = TableIII
+$(BM3).txp:   TabBenchPRD.phony
+$(BM3).pdf: $(BM3).txp
+#	pdflatex $(BM3).txp
+$(BM3)-pdf: klean $(BM3).pdf
+	evince  $(BM3).pdf
+###################################################
 klean:
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap *.phony)
 	(rm -f *.txp chi afb output-* *.hst)

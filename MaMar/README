@@ -18,16 +18,16 @@ in case of problems one may also need to do:
 
 Chains of the user-level analysis programs:
 
- 
  //////////////////////////////////////////////////////////////////////////
- //    New chains of MC production with ROOT persistency and farming     //
+ //    NEW chains of MC production with ROOT persistency and farming     //
  //////////////////////////////////////////////////////////////////////////
 ************************ (MainKKMC) **********************************
  MainKKMC+TMCgenKKMC+TRobolKKMC+workKKMC/Start.C
 ----------------------------------------------------------------
- Analysis of the IFI contribution to AFB near Z in ee->mumu process
+ Analysis of the IFI contribution to AFB near Z in ee->mu+mu process
  Version customized for running on PC-farm
-    analysis ./Plots/PlotIFI.cxx, PlotAFB.cxx
+    analysis ./Plots/PlotAFB2 (!), PlotFoam0 (!)
+    analysis ./Plots/PlotAFB.cxx), PlotFoam2, PlotFoam1
  
 ************************ (MainFoam) **********************************
  MainFOAM+TMCgenFOAM+TRobolFOAM+workFOAM/Start.C+Plots/PlotFoam !!!

@@ -6,10 +6,10 @@ BeginX
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0           1000      1k   NEVT = number of events
-    0         100000      100k   NEVT = number of events
-*    0      100000000      100M NEVT = number of events
+*    0        1000000      1M   NEVT = number of events
+    0      100000000      100M NEVT = number of events
 * Center-of-mass energy [GeV]
-    1        94.30e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1          189e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events
@@ -26,7 +26,9 @@ BeginX
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-** New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
+***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
+   27              2      KeyINT=xpar(27)  Default is  2
+* New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
 ** which overrules KeyGPS for each type of final fermion
 *   28              0      KeyGPS=xpar(28)  Default is  1
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
