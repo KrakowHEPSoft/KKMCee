@@ -35,7 +35,7 @@ TFile  DiskFileA("../workKKMC/histo.root");           // KKMCee current
 
 //TFile DiskFileA("../workKKMC/histo.root_189GeV_OldDiz_100M"); // Feb. 2021
 
-//TFile DiskFileA("../workAFB/histo.root_189GeV_NewDiz_480M");  // Feb. 2021
+//TFile DiskFileA("../workKKMC/histo.root_189GeV_NewDiz_480M");  // Feb. 2021
 
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
