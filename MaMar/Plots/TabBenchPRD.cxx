@@ -33,9 +33,9 @@ using namespace std;
 //
 TFile  DiskFileA("../workKKMC/histo.root");           // KKMCee current
 
-//TFile DiskFileA("../workKKMC/histo.root_95GeV_26G");
+//TFile DiskFileA("../workKKMC/histo.root_189GeV_OldDiz_100M"); // Feb. 2021
 
-//TFile DiskFileA("../workAFB/rmain.root_189GeV_50M");  // Feb. 2021
+//TFile DiskFileA("../workAFB/histo.root_189GeV_NewDiz_480M");  // Feb. 2021
 
 //
 TFile DiskFileB("RhoSemi.root","RECREATE","histograms");
