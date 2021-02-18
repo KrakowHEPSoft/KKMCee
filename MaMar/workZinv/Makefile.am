@@ -1,5 +1,3 @@
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
-METASOURCES = AUTO
 #-----------------------------------------------------------------------
 #########  FARMING on NZ42 farm ###########
 #  make prepare
@@ -190,9 +188,9 @@ q-nev:
 q-cont:
 	(cat farm/*/semaphore | grep cont)
 #-----------------------------------------------------------------------
-clean:                                                     
+Clean:                                                     
 	(rm -f *.o *.a *~ *.exe core *.err *.out)
-CLEAN:  clean
+CLEAN:  Clean
 	(rm  -R -f farm )
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------

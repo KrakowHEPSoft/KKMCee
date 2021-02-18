@@ -1,16 +1,21 @@
-AC_INIT(configure.ac)
-AM_INIT_AUTOMAKE(KKMCee, 4.24)
+AC_INIT([KKMCee],[4.25])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([configure.ac])
+# ':='-style assignments are not portable
+AM_INIT_AUTOMAKE([-Wall -Wno-portability])
 AC_PREFIX_DEFAULT(${PWD}/)
+LT_INIT
 AC_PROG_LIBTOOL
 AC_PROG_CXX
 AC_PROG_CC
-AC_PROG_RANLIB
+
 AC_PROG_F77([gfortran f95])
 
 AM_CONFIG_HEADER(config.h)
 
 # Do compilation tests using the compiler, preprocessor, and file extensions
-AC_LANG_FORTRAN77
+AC_LANG([Fortran 77])
+###AC_LANG_FORTRAN77
 
 AC_F77_LIBRARY_LDFLAGS
 
@@ -25,7 +30,7 @@ ROOT_PATH(3.02/00, , AC_MSG_ERROR( ROOT has not been found.))
 #HAS_CERNLIB( , AC_MSG_ERROR( CERNLIB has not been found))
 AC_LANG(C)
 AC_LINK_IFELSE(
-	[AC_LANG_PROGRAM([[#include<stdio.h> ]],
+	[AC_LANG_PROGRAM([[#include<stdio.h>]],
 			[[const char hw[] = "Hello, World\n";]],
                        [[fputs (hw, stdout);]])],
 	[AC_MSG_RESULT(TESTPROG OK)], [AC_MSG_RESULT(TestProg Failed)]
@@ -36,7 +41,9 @@ AC_LINK_IFELSE(
 QUEUE_CMD
 CLASS_CMD 
 
-AC_OUTPUT(Makefile \
+##AC_OUTPUT(Makefile \
+
+AC_CONFIG_FILES([Makefile \
 glibk/Makefile \
 bornv/Makefile \
 dizet/Makefile \
@@ -55,4 +62,5 @@ MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile 
                yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
 RHadr/Makefile RHadr/Plots/Makefile \
 fcc/Makefile fcc/workDEV/Makefile \
-)
+])
+AC_OUTPUT
