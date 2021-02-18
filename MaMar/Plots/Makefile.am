@@ -1,10 +1,12 @@
-INCLUDES = -I$(top_srcdir)/KKsem  \
-    -I$(top_srcdir)/MaMar $(all_includes) \
-	-I$(ROOTINCDIR)
+#####INCLUDES = -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR)
+all_includes := -I$(top_srcdir)/KKsem -I$(top_srcdir)/MaMar $(all_includes)
+AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)    # used while compiling
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -lstdc++ # used while compiling and linking
+###CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+
+
 METASOURCES = AUTO
 
-
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
    PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2\
    PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3\
@@ -30,25 +32,15 @@ $(top_builddir)/KKsem/libKKsem.a:
 	(cd $(top_builddir)/KKsem/; make)
 $(top_builddir)/bornv/libBornvTabs.a:
 	(cd $(top_builddir)/bornv/; make)
+
 ############################################
 #  Tables (re)generated in flight.
-#  To be xchecked if it works correctly!!!
-############################################
 KK2f_Libs2= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a \
-	$(top_builddir)/KKsem/libKKsem.a  -lstdc++ 
-############################################
-#  From tables on the disk (original)
-############################################
-KK2f_Libs= \
-	$(top_builddir)/KK2f/libKK2f.a $(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a \
-	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
-	$(top_builddir)/dizet/libDizet.a \ 
-	$(top_builddir)/KKsem/libKKsem.a  -lstdc++ 
+	$(top_builddir)/KKsem/libKKsem.a
 
 Plot1_SOURCES = KKplot.cxx HisNorm.cxx Plot1.cxx
 Plot1_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
@@ -94,10 +86,6 @@ PlotKKsem_SOURCES = KKplot.cxx HisNorm.cxx HisReMake.cxx PlotKKsem.cxx
 PlotKKsem_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotKKsem_LDFLAGS = -L$(ROOTLIBDIR)
 
-PlotPlay_SOURCES =  PlotPlay.cxx
-PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
-PlotPlay_LDFLAGS = -L$(ROOTLIBDIR)
-
 PlotALF_SOURCES = KKplot.cxx HisNorm.cxx PlotALF.cxx
 PlotALF_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotALF_LDFLAGS = -L$(ROOTLIBDIR)
@@ -114,14 +102,19 @@ PlotALF3_SOURCES = KKplot.cxx HisNorm.cxx PlotALF3.cxx
 PlotALF3_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotALF3_LDFLAGS = -L$(ROOTLIBDIR)
 
+TabBenchPRD_SOURCES = KKplot.cxx HisNorm.cxx TabBenchPRD.cxx
+TabBenchPRD_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+TabBenchPRD_LDFLAGS = -L$(ROOTLIBDIR)
+
+PlotPlay_SOURCES =  PlotPlay.cxx
+PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotPlay_LDFLAGS = -L$(ROOTLIBDIR)
+
+################################
 # PlotIFI seems obsolete
 PlotIFI_SOURCES = KKplot.cxx HisNorm.cxx PlotIFI.cxx
 PlotIFI_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotIFI_LDFLAGS = -L$(ROOTLIBDIR)
-
-TabBenchPRD_SOURCES = KKplot.cxx HisNorm.cxx TabBenchPRD.cxx
-TabBenchPRD_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
-TabBenchPRD_LDFLAGS = -L$(ROOTLIBDIR)
 
 
 ######################### private #############################

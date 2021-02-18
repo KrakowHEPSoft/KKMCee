@@ -14,6 +14,6 @@ SemFile.Write("",TObject::kOverwrite);
 SemFile.Close();
 
 //*****************************************************************
-TBrowser oglad("oglad");
+//TBrowser oglad("oglad");
 
 }

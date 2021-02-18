@@ -9,7 +9,7 @@
 ///============================================================================
 gROOT->Reset();
 cout<<"%%% ================== Start.C ================== %%%%"<<endl;
-gSystem->Load("../.libs/libKKmc.so");
+//gSystem->Load("../.libs/libKKmc.so"); // transferred to rootlogon.C
 TFile HistoFile("histo.root","RECREATE","Histograms");
 TFile GenFile(  "mcgen.root","RECREATE","r.n.generator, MCgens");
 TFile SemFile(  "semaf.root","RECREATE","Semaphore");
@@ -47,10 +47,11 @@ MCgen->Write("MCgen",TObject::kOverwrite);
 ///*****************************************************************
 ///       Create new instance of the MC analysis object
 TRobol *RoboT = new TRobolKKMC("RoboT");  /// base clase only
-RoboT.f_HistNormName = "HST_KKMC_NORMA";
+RoboT->f_HistNormName = "HST_KKMC_NORMA";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
 GenFile.Write();
+GenFile.ls();
 cout<<"---------------------------------------------------------"<<endl;
 GenFile.Close();
 cout << "===========Output written in histo.root===========" << endl;

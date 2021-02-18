@@ -1,11 +1,14 @@
 # ****** This is input data file for Automake ****** 
 # Automake creates Makefile using all information defined below
-INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
-METASOURCES = AUTO
 SUBDIRS = test0 workAFB workZinv workFSR workFOAM workFoam0 workFoam3 workFOAM1 workKKMC Plots
-CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
+#######INCLUDES = -I$(top_srcdir)/MaMar $(all_includes) -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2
+all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(all_includes)
+AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
+######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
+METASOURCES = AUTO
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKfm.la libKKmc.la
 CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
@@ -19,15 +22,16 @@ noinst_HEADERS1 = LinkDef1.h
 #  ROOT Directory generation:
 ROOTCINTHDRS1= $(include_HEADERS1) $(noinst_HEADERS1)
 $(dict1C) : $(ROOTCINTHDRS1)
-	$(ROOTCINT) -f $(dict1C) -c $(INCLUDES) $(ROOTCINTHDRS1)
+	$(ROOTCINT) -f $(dict1C) -c $(all_includes) $(ROOTCINTHDRS1)
+	if [ -f "$(dict1H:.h=_rdict.pcm)" -a -d ".libs/" ]; then ln -f -s "../$(dict1H:.h=_rdict.pcm)" ".libs/"; fi # a brutal fix for ROOT 6 and libtool
 #---------------------------------------------------------------
-#  Local library 1
+#  Local library 1 # is FLIBS needed?
 #  Additional flags:
 nodist_libKKfm_la_SOURCES = $(dict1C)
 libKKfm_la_SOURCES =  TMCgenFOAM.cxx TRobolFOAM.cxx
-libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
-libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
+libKKfm_la_LIBADD =  \
+	$(top_builddir)/MCdev/libMCdev.la \
+	-L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(FLIBS) $(ROOTAUXLIBS)
 #///////////////////////////////////////////////////////////////
 #   ROOT Dictionary 2 file definition
 dict2C = KKmcDict.cxx
@@ -38,15 +42,16 @@ noinst_HEADERS2 = LinkDef2.h
 #  ROOT Directory generation:
 ROOTCINTHDRS2= $(include_HEADERS2) $(noinst_HEADERS2)
 $(dict2C) : $(ROOTCINTHDRS2)
-	$(ROOTCINT) -f $(dict2C) -c $(INCLUDES) $(ROOTCINTHDRS2)
+	$(ROOTCINT) -f $(dict2C) -c $(all_includes) $(ROOTCINTHDRS2)
+	if [ -f "$(dict2H:.h=_rdict.pcm)" -a -d ".libs/" ]; then ln -f -s "../$(dict2H:.h=_rdict.pcm)" ".libs/"; fi # a brutal fix for ROOT 6 and libtool
 #---------------------------------------------------------------
 #  Local library 2
 #  Additional flags:
 nodist_libKKmc_la_SOURCES = $(dict2C)
 libKKmc_la_SOURCES =  TMCgenKKMC.cxx TRobolKKMC.cxx TPartLund.cxx
-libKKmc_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
-libKKmc_la_LDFLAGS = -L$(ROOTLIBDIR)
+libKKmc_la_LIBADD =  \
+	$(top_builddir)/MCdev/libMCdev.la \
+    -L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(FLIBS) $(ROOTAUXLIBS)
 #///////////////////////////////////////////////////////////////
 #  explicit target in ../
 $(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
@@ -84,19 +89,21 @@ bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam0 MainFOAM MainKKMC
 AM_FFLAGS = @MY_F77_FLAGS@
 #-------------------------------------------------------------------------
 MainFOAM_SOURCES = MainFOAM.cxx 
-MainFOAM_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
-				 $(top_builddir)/Foam2/.libs/libFOAM.a  \
-    			 $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
-    			 $(top_builddir)/MaMar/libKKfm.la \
-    			 $(KK2f_Libs)
+MainFOAM_LDADD = \
+				$(top_builddir)/MCdev/.libs/libMCdev.a \
+				$(top_builddir)/Foam2/.libs/libFOAM.a  \
+				$(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
+				$(top_builddir)/MaMar/libKKfm.la \
+				$(KK2f_Libs)
 MainFOAM_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 #-------------------------------------------------------------------------
 MainKKMC_SOURCES = MainKKMC.cxx 
-MainKKMC_LDADD = $(top_builddir)/MCdev/.libs/libMCdev.a \
-				 $(top_builddir)/Foam2/.libs/libFOAM.a  \
-    			 $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
-    			 $(top_builddir)/MaMar/libKKmc.la \
-    			 $(KK2f_Libs)
+MainKKMC_LDADD = \
+				$(top_builddir)/MCdev/.libs/libMCdev.a \
+				$(top_builddir)/Foam2/.libs/libFOAM.a  \
+				$(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
+				$(top_builddir)/MaMar/libKKmc.la \
+				$(KK2f_Libs)
 MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 #-------------------------------------------------------------------------
 #/////////////////////////////////////////////////////////////////////////

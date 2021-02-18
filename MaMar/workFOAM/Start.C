@@ -9,7 +9,7 @@
 ///============================================================================
 gROOT->Reset();
 cout<<"%%% ================== Start.C ================== %%%%"<<endl;
-gSystem->Load("../.libs/libKKfm.so");
+//gSystem->Load("../.libs/libKKfm.so"); // transferred to rootlogon.C
 TFile HistoFile("histo.root","RECREATE","Histograms");
 TFile GenFile(  "mcgen.root","RECREATE","r.n.generator, MCgens");
 TFile SemFile(  "semaf.root","RECREATE","Semaphore");
@@ -48,9 +48,10 @@ MCgen->Write("MCgen",TObject::kOverwrite);
 ///*****************************************************************
 ///       Create new instance of the MC analysis object
 TRobol *RoboT = new TRobolFOAM("RoboT");  /// base clase only
-RoboT.f_HistNormName = "HST_FOAM_NORMA5";
+RoboT->f_HistNormName = "HST_FOAM_NORMA5";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
+GenFile.ls();
 GenFile.Write();
 cout<<"---------------------------------------------------------"<<endl;
 GenFile.Close();
