@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign 1.6
-SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar MCdev Foam2 yfspro RHadr fcc
+SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar MCdev Foam2 yfspro RHadr fcc SRCee
 ### Subdir below is for limited distribution like v4.22m 
 ### ( make distclean;  autoreconf -i --force ; ./configure) plus uncommenting in Makefile.am
 ###SUBDIRS = glibk bornv dizet KK2f jetset tauola photos KKsem ffbench MaMar
