@@ -63,5 +63,6 @@ MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile 
 RHadr/Makefile RHadr/Plots/Makefile \
 fcc/Makefile fcc/workDEV/Makefile \
 SRCee/Makefile \
+DZface/Makefile \
 ])
 AC_OUTPUT

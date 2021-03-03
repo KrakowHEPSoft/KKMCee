@@ -1,20 +1,10 @@
 
-#######INCLUDES = -I$(ROOTINCDIR) -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/SRChh
 all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 ######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 METASOURCES = AUTO
-
-#ROOTLDFLAGS = -L$(ROOTLIBDIR) $(ROOTLIBS)
-
-#F77=$(FC)
-#LINK=$(CXXLINK)
-#AM_CXXFLAGS = $(ROOTCFLAGS)
-#AM_FFLAGS = $(AM_FCFLAGS) $(FCFLAGS)
-
-#LDFLAGS= $(AM_LDFLAGS) $(LHAPDF_LDFLAGS) $(ROOTLDFLAGS) -lstdc++
 
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKee.la
