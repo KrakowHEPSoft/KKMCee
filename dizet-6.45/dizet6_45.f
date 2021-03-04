@@ -4854,6 +4854,8 @@ C 13/10/1992 - Barbieri's m_t^4 are implemented
 * HEAVY QUARK POLE MASSES (DB/GP-CONVENTION)
 *
       DATA SMASS/0.3D0/,CMASS/1.5D0/,BMASS/4.7D0/
+      INTEGER icont
+      DATA icont /0/
 *
       ZQED=1D0
       ZMIX=1D0
@@ -4930,10 +4932,9 @@ C 13/10/1992 - Barbieri's m_t^4 are implemented
         SQS=13D0
       ENDIF
 *
-      IF(SQS.GE.350D0) THEN
-        PRINT *,'You have requested SQRT(S).GE.350 GeV.'
-        PRINT *,'Program STORs, since it is not foreseen'
-        PRINT *,'to run above the t-tbar threshold.'
+      IF(SQS.GE.350D0 .AND. icont .LE. 5) THEN
+        icont=icont+1
+        PRINT *,'STORs: Requested SQRT(S).GE.350 GeV above the t-tbar threshold'
       ENDIF
 *
 * COEFFICIENTS OF BETA AND GAMA FUNCTIONS
@@ -5290,7 +5291,7 @@ cb        print *,'AMBRUN=',AMBRUN
 * BAIKOV ET AL. 1201.5804v3, 2012:     GOTO 2012
 *
       IBAIKOV=2012
-      print *, '   IBAIKOV =  ',IBAIKOV
+cc      print *, '   IBAIKOV =  ',IBAIKOV
       IF(IBAIKOV.EQ.2005) GOTO 2005
       IF(IBAIKOV.EQ.2008) GOTO 2008
       IF(IBAIKOV.EQ.2012) GOTO 2012

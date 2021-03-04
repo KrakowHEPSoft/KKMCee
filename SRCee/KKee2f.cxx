@@ -42,9 +42,9 @@ KKee2f::KKee2f()
   cout<< "----> KKee2f Default Constructor (for ROOT only) "<<endl;
 //  m_WtMainMonit = NULL;
   DB         = NULL;
-//  m_BornDist = NULL;
+  m_BornDist = NULL;
 //  m_EWforms  = NULL;
-//  m_EWtabs   = NULL;
+  m_EWtabs   = NULL;
 //  m_GenISR   = NULL;
 //  m_GenFSR   = NULL;
 //  m_Event    = NULL;
@@ -64,9 +64,9 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
 ///////////////////////////////////////////////////
 //  m_WtMainMonit = NULL;
   DB         = NULL;
-//  m_BornDist = NULL;
+  m_BornDist = NULL;
 //  m_EWforms  = NULL;
-//  m_EWtabs   = NULL;
+  m_EWtabs   = NULL;
 //  m_GenISR   = NULL;
 //  m_GenFSR   = NULL;
 //  m_Event    = NULL;
@@ -134,6 +134,20 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 // testing object of a new KK template class
   m_KKexamp= new KKlasa(OutFile);
   m_KKexamp->Initialize();
+////////////////////////////////////////////
+  cout<<"***** Reading EW tables from DIZET-table1-KK and DIZET-table2-KK *****"<<endl;
+  m_EWtabs   = new KKdizet(OutFile); // EW tables from the disk file
+  m_EWtabs->Initialize();
+  m_EWtabs->ReadEWtabs();    // reads EW tables from the disk file
+
+//  globux_setewtabs_( m_EWtabs);
+//////////////////////////////////////////////////////////////
+// This replaces BornV class of original KKMC
+  m_BornDist = new KKborn(OutFile);
+  m_BornDist->SetDB(DB);
+  m_BornDist->SetDZ(m_EWtabs);  // EW tables from the disk
+  m_BornDist->Initialize();
+  //////////////////////////////////////////////////////////////
 
   cout  << "   *******************************" << endl;
   cout  << "   ****   KKee2f   END        ****" << endl;

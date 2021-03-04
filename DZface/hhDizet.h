@@ -31,7 +31,7 @@
       PARAMETER(        m_poin4 = 180 )                              ! NLC range sqrt(s)    spacing
       PARAMETER(        m_poTh4 =  14 )                              ! Cost(heta) spacing
       DOUBLE PRECISION  m_WmaxNLC                                    ! NLC range (m_WmaxLEP2,m_WmaxNLC)
-      PARAMETER(        m_WmaxNLC  =7040.001d0 )                     ! NLC range (m_WmaxLEP2,m_WmaxNLC)
+      PARAMETER(        m_WmaxNLC  =8000.00d0 )                      ! NLC range (m_WmaxLEP2,m_WmaxNLC)
 *//////////////////////////////////////////////////////////////////////////////
       DOUBLE COMPLEX     m_GSW
       DOUBLE PRECISION   m_QCDcor   ! obsolete

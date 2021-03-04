@@ -15,7 +15,7 @@ dict1C = KK2fDict.cxx
 dict1H = KK2fDict.h
 CLEANFILES = $(dict1C) $(dict1H)
 #  Header files:
-include_HEADERS1 = 	KKee2f.h KKdbase.h \
+include_HEADERS1 = 	KKee2f.h KKdbase.h KKdizet.h KKborn.h \
 					KKlasa.h
 #					KKborn.h KKdizet.h KKarLud.h KKarFin.h \
 #                   KKevent.h KKqed3.h KKceex.h KKpart.h KKbvir.h
@@ -29,7 +29,7 @@ $(dict1C) : $(ROOTCINTHDRS1)
 #  Local library 1
 #  Additional flags:
 nodist_libKKee_la_SOURCES = $(dict1C)
-libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx \
+libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKlasa.cxx
 #						KKborn.cxx KKdizet.cxx KKarLud.cxx KKarFin.cxx \
 #						KKevent.cxx KKqed3.cxx KKceex.cxx KKpart.cxx KKbvir.cxx

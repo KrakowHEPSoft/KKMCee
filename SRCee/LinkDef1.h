@@ -6,5 +6,7 @@
 
 #pragma link C++ class KKee2f+;
 #pragma link C++ class KKdbase+;
+#pragma link C++ class KKdizet+;
+#pragma link C++ class KKborn+;
 #pragma link C++ class KKlasa+;
 #endif

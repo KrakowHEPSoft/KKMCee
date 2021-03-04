@@ -22,8 +22,8 @@ using namespace std;
 #include "TMCgen.h"
 #include "KKdbase.h"
 
-//#include "KKborn.h"
-//#include "KKdizet.h"
+#include "KKborn.h"
+#include "KKdizet.h"
 
 #include "KKlasa.h"
 
@@ -32,9 +32,9 @@ class KKee2f: public TMCgen{
 //class KKee2f: public TFOAM_INTEGRAND {
  public:
  KKdbase *DB;                     // Database
-// KKborn  *m_BornDist;             // Born differential distribution
+ KKborn  *m_BornDist;             // Born differential distribution
 // KKdizet *m_EWforms;              // EW formfactors
-// KKdizet *m_EWtabs;               // EW formfactors
+ KKdizet *m_EWtabs;               // EW formfactors
  KKlasa  *m_KKexamp;              // Template for new class
 
 // Dimensionality

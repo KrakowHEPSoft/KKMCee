@@ -28,7 +28,7 @@
       INCLUDE 'BornV.h'
       INCLUDE 'hhDizet.h'
       DOUBLE PRECISION xpar(*)
-      INTEGER KFini, KFfin, i
+      INTEGER KFini, KFfin, i, nFin
 *------------------------------------------------------------------
       INTEGER KFdown, KFup, KFstran, KFcharm, KFbotom, KFtop
       PARAMETER(
@@ -46,33 +46,26 @@
       ENDDO
 *********************************************************************
       m_ndisk = 17
-      write(*,*) '============ hh_InitializeDizet:', ' ============'
+      write(*,*) '======================================================'
+      write(*,*) '================= hh_InitializeDizet ================='
       write(*,*) "Saving EW table data to file: DIZET-table1"
       OPEN (m_ndisk, FILE='DIZET-table1',STATUS='REPLACE')
 *------------------------------------------------------------------
 * Find active chanels
       KFini = KFel
+      nFin =0
+      DO i=401,416
+      IF( xpar(i) .EQ. 1d0 ) nFin=nFin+1
+      ENDDO
+      WRITE(*,*) 'KFini=',KFini,'   No of final states =', nFin
+      write(m_ndisk,*) nFin
       DO i=401,416
          IF( xpar(i) .EQ. 1d0 ) THEN
             KFfin= i-400
-            IF(    KFfin .EQ. KFdown  ) THEN
-               WRITE(    *,*) '=========== BornV_StartDZ: DOWN quark ==========='
-               WRITE(m_out,*) '=========== BornV_StartDZ: DOWN quark ==========='
-               write(*,*) '--------------------------------------------'
-               CALL hhDizet_InitDizet(KFini ,KFfin, xpar)
-               CALL hhDizet_Tabluj
-               CALL hhDizet_WriteTable(KFini, KFfin)
-             ELSEIF(KFfin .EQ. KFup    )  THEN
-               WRITE(    *,*) '=========== BornV_StartDZ: UP quark ==========='
-               WRITE(m_out,*) '=========== BornV_StartDZ: UP quark ==========='
-               CALL hhDizet_InitDizet(KFini ,KFfin, xpar)
-               CALL hhDizet_Tabluj
-               CALL hhDizet_WriteTable(KFini, KFfin)
-            ELSE
-               WRITE(*,    *) '#### STOP in dizet/BornV_StartEW, wrong KFfin=',KFfin
-               WRITE(m_out,*) '#### STOP in dizet/BornV_StartEW, wrong KFfin=',KFfin
-               STOP
-            ENDIF
+            WRITE(    *,*) '==============   KFfin=',KFfin, '      ============'
+            CALL hhDizet_InitDizet(KFini ,KFfin, xpar)
+            CALL hhDizet_Tabluj
+            CALL hhDizet_WriteTable(KFini, KFfin)
          ENDIF
       ENDDO
 ********************************************************************
