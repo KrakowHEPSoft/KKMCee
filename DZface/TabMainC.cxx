@@ -34,17 +34,9 @@ int main()
   double m_xpar[10001];
   double m_ypar[10001];
 
-  ReaData("./KKMChh_defaults", jmax, m_xpar);       // f77 indexing in xpar
+  ReaData("./KKMCee_defaults", jmax, m_xpar);       // f77 indexing in xpar
   ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 means no-zeroing
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // c++ indexing in ypar
-
-/*
-  int iReset =1;
-  readataz_(iReset,jmax,m_xpar);  // reading general defaults
-  iReset =0;
-  readataz_(iReset,jmax,m_xpar);  // reading actual user input
-  for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j];    // c++ indexing in ypar and xpar
-*/
 
 //=============================================================
 //   opening disk fime for fortran part of code

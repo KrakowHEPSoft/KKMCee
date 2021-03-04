@@ -28,42 +28,55 @@
       INCLUDE 'BornV.h'
       INCLUDE 'hhDizet.h'
       DOUBLE PRECISION xpar(*)
-      DOUBLE PRECISION hh_Param
-      INTEGER i, j1, j2, j3, k, qtype(2), ltype(2), KFini, KFfin, KFsav
-      CHARACTER(LEN=33) Qlabel(2), Llabel(2) ! for printouts
-* prototype quark flavors for tables: down (strange, bottom), up (charm)
-      DATA qtype /1, 2/  
-* prototype lepton flavors for tables: use 2nd generation as model
-      DATA ltype /13, 14/
-* labels showing the meaning of each IV index: 
-      DATA Qlabel /'initial down/strange/bottom quark', '  initial up/charm quark  '/
-      DATA Llabel /'   final charged lepton   ',        '  final neutrino      '/
+      INTEGER KFini, KFfin, i
+*------------------------------------------------------------------
+      INTEGER KFdown, KFup, KFstran, KFcharm, KFbotom, KFtop
+      PARAMETER(
+     $     KFdown  = 1,   KFup    = 2,
+     $     KFstran = 3,   KFcharm = 4,
+     $     KFbotom = 5,   KFtop   = 6)
+      INTEGER KFel,KFelnu,KFmu,KFmunu,KFtau,KFtaunu
+      PARAMETER(
+     $     KFel    = 11,  KFelnu  = 12,
+     $     KFmu    = 13,  KFmunu  = 14,
+     $     KFtau   = 15,  KFtaunu = 16)
 
       DO i =1,1000
          m_xpar(i) = xpar(i)
       ENDDO
 *********************************************************************
       m_ndisk = 17
-      DO i = 1, 2 
-            write(*,*) '============ hh_InitializeDizet:', Qlabel(i), ' ============'
-*           Separate disk files for up and down initial quark
-            IF( i .EQ. 1) THEN
-               write(*,*) "Saving EW table data to file: DIZET-table1"
-               OPEN (m_ndisk, FILE='DIZET-table1')
-            ELSE
-               write(*,*) "Saving EW table data to file: DIZET-table2"
-               OPEN (m_ndisk, FILE='DIZET-table2')
-            ENDIF
-            DO k = 1, 2
-               KFini = qtype(i)
-               KFfin = ltype(k)
-               write(*,*) '---------------------- ', Llabel(k), ' ----------------------'
+      write(*,*) '============ hh_InitializeDizet:', ' ============'
+      write(*,*) "Saving EW table data to file: DIZET-table1"
+      OPEN (m_ndisk, FILE='DIZET-table1',STATUS='REPLACE')
+*------------------------------------------------------------------
+* Find active chanels
+      KFini = KFel
+      DO i=401,416
+         IF( xpar(i) .EQ. 1d0 ) THEN
+            KFfin= i-400
+            IF(    KFfin .EQ. KFdown  ) THEN
+               WRITE(    *,*) '=========== BornV_StartDZ: DOWN quark ==========='
+               WRITE(m_out,*) '=========== BornV_StartDZ: DOWN quark ==========='
+               write(*,*) '--------------------------------------------'
                CALL hhDizet_InitDizet(KFini ,KFfin, xpar)
                CALL hhDizet_Tabluj
                CALL hhDizet_WriteTable(KFini, KFfin)
-            END DO
-      END DO
+             ELSEIF(KFfin .EQ. KFup    )  THEN
+               WRITE(    *,*) '=========== BornV_StartDZ: UP quark ==========='
+               WRITE(m_out,*) '=========== BornV_StartDZ: UP quark ==========='
+               CALL hhDizet_InitDizet(KFini ,KFfin, xpar)
+               CALL hhDizet_Tabluj
+               CALL hhDizet_WriteTable(KFini, KFfin)
+            ELSE
+               WRITE(*,    *) '#### STOP in dizet/BornV_StartEW, wrong KFfin=',KFfin
+               WRITE(m_out,*) '#### STOP in dizet/BornV_StartEW, wrong KFfin=',KFfin
+               STOP
+            ENDIF
+         ENDIF
+      ENDDO
 ********************************************************************
+      CLOSE(m_ndisk)
       write(*,*) 'KKMC-hh Multiflavor Dizet initialization completed.'
       END ! hhDizet_Initialize
 
