@@ -41,7 +41,7 @@ int main()
 //=============================================================
 //   opening disk fime for fortran part of code
   int m_out = 16;
-  const char *output_file = "./pro77.output";
+  const char *output_file = "./TabMain77.output";
   int sl2 = strlen(output_file);
   fort_open_(m_out,output_file,sl2);
 //=============================================================

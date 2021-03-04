@@ -1,4 +1,4 @@
-DSET = work1
+DSET = workMini
 
 ##############
 KKMCee_defaults:
@@ -8,5 +8,7 @@ EWtables: KKMCee_defaults
 	(cd $(top_builddir); make)
 	cp ./$(DSET).input ./pro.input
 	($(top_builddir)/DZface/TabMainC;)
-#	 cp -f DIZET-table1 DIZET-table1-T;)
+
+start: EWtables
+	../MainMini
 	
