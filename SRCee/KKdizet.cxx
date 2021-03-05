@@ -82,22 +82,25 @@ void KKdizet::ReadEWtabs(){
   double MZ, amh, amtop, swsq, gammz, MW, GammW;
   ifstream InputFile;
 
-  for(int KFi=1; KFi<=2;KFi++){
-  if(KFi ==1 ) InputFile.open("DIZET-table1-KK");
-  if(KFi ==2 ) InputFile.open("DIZET-table2-KK");
-  for(int KFf=13; KFf<=14; KFf++){
-//------------------------------------------------------------------------------
-//	params out of dizet as in hhDizet_WriteTable
-//	CALL DZface_GetPrm( amzD,m_gammz,gammz1,m_MW,m_GammW,gammw1,m_swsq)
-//	WRITE(m_ndisk, m_fmt0) m_MZ, m_amh, m_amtop, m_swsq, m_gammz, m_MW, m_GammW
-//-------------------------------
+  int KFi,KFf;
+  InputFile.open("DIZET-table1");
+  int nChanel;
+  InputFile >>  nChanel;
+  InputFile.getline(trail,200); //  cout<<trail<<endl;
+  cout<<"KKdizet::ReadEWtabs:  nChanel="<<nChanel<<endl;
+  for(int ich=0;ich<nChanel;ich++){
+  char label;
+  for(int i=0;i<33;i++) InputFile.get(label); // reading front text
+  InputFile>>  KFi>> KFf;
+  InputFile.getline(trail,200); //  cout<<trail<<endl;
+  cout<<"KKdizet::ReadEWtabs:  KFi, KFf =="<<KFi<<"  "<<KFf<<endl;
+  KFi =1; // this is always electron beam KF-10!!!
+//------------------------------------------------------------------
 //  Values of m_MZ, m_amh, m_amtop are the same as input in xpar.
 //  DIZET calculates SM values of m_swsq, m_gammz, m_MW, M_GammW
 //  Let us give the special names D_swsq, D_GamZ, D_MW, D_GammW
-//------------------------------------------------------------------------------
+//------------------------------------------------------------------
 // 1st line, SM input/output parameters
-  InputFile.getline(trail,200);
-  cout<<trail<<endl;
   InputFile>> m_MZ >> m_amh >> m_amtop >> D_swsq >> D_GamZ>>D_MW>> D_GammW;
   cout<<" m_MZ="<< m_MZ <<"  m_amh="<< m_amh <<"  m_amtop="<< m_amtop
       <<"  D_swsq="<< D_swsq <<"  D_GamZ="<< D_GamZ
@@ -157,9 +160,8 @@ void KKdizet::ReadEWtabs(){
 	  }//j
   }//i
   //-----------
-  }//KFf
+  }//ich
   InputFile.close();
-  }//for KFi
   cout<<"==========================  ReadEWtabs END  ==========================="<<endl;
 }//ReadEWtabs
 

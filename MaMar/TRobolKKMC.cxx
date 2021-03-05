@@ -23,6 +23,8 @@ extern "C" double kinlib_angphi_(double*, double*);
 //extern "C" void  phoini_();
 //extern "C" void  hepevt_setphotosflagtrue_(long&);
 //extern "C" void  hepevt_getnhep_(long&);
+//DOUBLE PRECISION  FUNCTION BornV_Simple(KFi,KFf,svar,costhe)
+extern "C" double bornv_simple_(const int*, const int*, const double*, const double*);
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -702,9 +704,8 @@ void TRobolKKMC::Production(double &iEvent)
     cout<< " dalf= "<<  dalf << "  xmodif= "<<  1+dalf ;
     cout<< " CEEX2 ratio = "<<  Wt2CEEX2/WtCEEX2 ;
     cout<< "  EEX2 ratio = "<<  Wt2EEX2/WtEEX2 <<endl;
-  }
-
-
+  }// if iEvent
+//
 } //
 
 

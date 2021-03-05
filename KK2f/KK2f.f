@@ -175,6 +175,7 @@
       DOUBLE PRECISION    WMlist(200), Xborn(200)  ! 200 should be class parameter!!!
       INTEGER             NBbranch,   KFlist(200), Nbin
       DOUBLE PRECISION    vvmin, pol1, pol2, PolBeam1(4), PolBeam2(4)
+      DOUBLE PRECISION    Xsimple, BornV_Simple, BornV_Differential
 *--------------------------------------------------------------------------
 *     Initialization of the internal histogramming package
       CALL GLK_Initialize
@@ -359,6 +360,17 @@
       m_nevgen=0
 *----------------------------------------------------------------------
 ***** CALL GLK_ListPrint(6)     ! debug
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(*,*) '%%%%%%%%%%%%%%%%%%%%%%%% DEBUG in KK2f_Initialize %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+cc DOUBLE PRECISION  FUNCTION BornV_Simple(KFi,KFf,svar,costhe)
+      Xsimple = BornV_Simple(11, 13, m_CMSene**2, 0.5d0)
+      write(*,*) 'Xsimple=', Xsimple
+
+cc DOUBLE PRECISION  FUNCTION BornV_Differential(Mode,KFf,svar,CosThe,eps1,eps2,ta,tb)
+      Xsimple = BornV_Differential(1, 13, m_CMSene**2, 0.5d0, 0d0,0d0,0d0,0d0)
+      write(*,*) 'Xdifferential=', Xsimple
+cc      STOP
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!! KK2f_Initialize !!!
 
 

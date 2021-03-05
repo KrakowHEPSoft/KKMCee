@@ -134,15 +134,15 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<<"***** Reading EW tables from DIZET-table1-KK and DIZET-table2-KK *****"<<endl;
   m_EWtabs   = new KKdizet(OutFile); // EW tables from the disk file
   m_EWtabs->Initialize();
-//  m_EWtabs->ReadEWtabs();    // reads EW tables from the disk file
+  m_EWtabs->ReadEWtabs();    // reads EW tables from the disk file
 
 //  globux_setewtabs_( m_EWtabs);
 //////////////////////////////////////////////////////////////
 // This replaces BornV class of original KKMC
   m_BornDist = new KKborn(OutFile);
   m_BornDist->SetDB(DB);
-//  m_BornDist->SetDZ(m_EWtabs);  // EW tables from the disk
-//  m_BornDist->Initialize();
+  m_BornDist->SetDZ(m_EWtabs);  // EW tables from the disk
+  m_BornDist->Initialize();
   //////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////
