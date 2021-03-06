@@ -24,17 +24,19 @@ using namespace std;
 
 #include "KKborn.h"
 #include "KKdizet.h"
+#include "KKevent.h"
 
 #include "KKlasa.h"
 
 
 class KKee2f: public TMCgen{
-//class KKee2f: public TFOAM_INTEGRAND {
  public:
  KKdbase *DB;                     // Database
  KKborn  *m_BornDist;             // Born differential distribution
-// KKdizet *m_EWforms;              // EW formfactors
  KKdizet *m_EWtabs;               // EW formfactors
+ KKevent *m_Event;                // MC event ISR+FSR in KKMC format
+
+
  KKlasa  *m_KKexamp;              // Template for new class
 
 // Dimensionality
@@ -55,12 +57,19 @@ class KKee2f: public TMCgen{
  int      m_ntot_new;         // = 0;
  int      m_ntot2_new;        // = 0;
  int      m_iseed;                 // KKMC random number generator seed
+ //
+ int      m_KFlist[6];            // list of final fermion KF indices to generate
+ int      m_nKF;                  // number of fermions selected to generate
 
+ double   m_MminCEEX[17];         // minimum fermion pair mass for CEEX
+
+ int      m_nCallsFoam0;          // function calls during initialization
+ double   m_XsPrim;               // primary cross section for overall normalization
 //-------------------------------------------
 // Switches controlling operation
- int      m_FoamMode;              // Foam Density mode, <0 generation, >0 initialization
- int      m_RhoMode;               // Type of Density function =3,4,5
- int      m_Icont;                 // density call counter for initialization
+ int      m_FoamMode;             // Foam Density mode, <0 generation, >0 initialization
+ int      m_RhoMode;              // Type of Density function =3,4,5
+ int      m_Icont;                // density call counter for initialization
 
 
  public:
@@ -72,14 +81,20 @@ class KKee2f: public TMCgen{
 /////////////////////////////////////////////////////////////////////////////
 /// methods obligatory
 
-
-  double sqr( const Double_t x ){ return x*x;};
+  double sqr( const double x ){ return x*x;};
 
   double Density(int, Double_t*);
   //
-  void Initialize(TRandom*, ofstream*, TH1D*);
+  void   Initialize(TRandom*, ofstream*, TH1D*);
 
-  void ReaData(const char *DiskFile, int imax, double xpar[]);
+  void   ReaData(const char *DiskFile, int imax, double xpar[]);
+
+  void   InitParams();
+  void   FoamInitA();
+
+  void   MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi);
+  double MakeRhoISR(double gamiCR, double gami, double alfi, double vv, double vvmin, double vvmax);
+
   ////////////////////////////////////////////////////////////////////////////
       ClassDef(KKee2f,2); // Monte Carlo generator
   };
