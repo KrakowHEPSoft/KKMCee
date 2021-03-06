@@ -10,7 +10,7 @@ METASOURCES = AUTO
 bin_PROGRAMS = Plot1 Plot2 PlotZinv PlotFSR \
    PlotAFB PlotAFB2 PlotIFI PlotFoam0 PlotFoam1 PlotFoam2\
    PlotBorn PlotKKsem PlotPlay PlotALF PlotALF1 PlotALF2 PlotALF3\
-   TabBenchPRD
+   TabBenchPRD TabNew
 
 ########### KK2f MC libraries ###########
 $(top_builddir)/KK2f/libKK2f.a:
@@ -106,6 +106,10 @@ TabBenchPRD_SOURCES = KKplot.cxx HisNorm.cxx TabBenchPRD.cxx
 TabBenchPRD_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 TabBenchPRD_LDFLAGS = -L$(ROOTLIBDIR)
 
+TabNew_SOURCES = KKplot.cxx HisNorm.cxx TabNew.cxx
+TabNew_LDADD   = $(KK2f_Libs2) $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+TabNew_LDFLAGS = -L$(ROOTLIBDIR)
+
 PlotPlay_SOURCES =  PlotPlay.cxx
 PlotPlay_LDADD   =  $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 PlotPlay_LDFLAGS = -L$(ROOTLIBDIR)
@@ -185,6 +189,16 @@ $(BM3).pdf: $(BM3).txp
 #	pdflatex $(BM3).txp
 $(BM3)-pdf: klean $(BM3).pdf
 	evince  $(BM3).pdf
+###################################################
+#		make TableNew-pdf
+TabNew.phony: TabNew
+	(./TabNew; touch TabNew.phony;)
+####
+BM4 = TableNew
+$(BM4).txp:   TabNew.phony
+$(BM4).pdf: $(BM4).txp
+$(BM4)-pdf: klean $(BM4).pdf
+	evince  $(BM4).pdf
 ###################################################
 klean:
 	(rm -f *.o *.exe *~ *.dvi *.log *.aux dump.hst core lmap *.phony)

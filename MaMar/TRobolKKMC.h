@@ -194,6 +194,10 @@ class TRobolKKMC : public TRobol
 
   TH1D   *hst_phi1_Ceex2_pol;     //!  No streamer!!!
 
+  TH1D   *hst_axib1;              //!  No streamer!!!
+  TH1D   *hst_axib2;              //!  No streamer!!!
+  TH1D   *hst_axib3;              //!  No streamer!!!
+
   double m_YSum;   // sum of weights
   double m_YSum2;  // sum of weights^2
   double m_DelAlf; // range of AlphaQED (relative)

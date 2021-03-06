@@ -290,6 +290,11 @@ void TRobolKKMC::Hbooker()
 //  Misc.
   hst_phi1_Ceex2_pol = TH1D_UP("hst_phi1_Ceex2_pol", "phi1 azimithal", 64, -2*M_PI ,2*M_PI);
 
+// axion search background
+  hst_axib1          = TH1D_UP("hst_axib1"," all              ", 1, 0.00 ,1.00); // single bin
+  hst_axib2          = TH1D_UP("hst_axib2"," 1 photon         ", 1, 0.00 ,1.00); // single bin
+  hst_axib3          = TH1D_UP("hst_axib3"," 1 phot. no lept. ", 1, 0.00 ,1.00); // single bin
+
 /////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
   //  ************* special histo  *************
@@ -344,12 +349,12 @@ void TRobolKKMC::Production(double &iEvent)
   KKMC_generator->GetBeams(m_pbea1,m_pbea2);
   KKMC_generator->GetFermions(m_pfer1,m_pfer2);
   KKMC_generator->GetNphot(m_Nphot);                  // photon multiplicity
+  // photons total 4-momentum
   TLorentzVector VSumPhot;    // By default all components are initialized by zero.
-  long iphot,iphot1;
-  for(iphot=0;iphot<m_Nphot;iphot++){
+  for(int iphot=0;iphot<m_Nphot;iphot++){
     KKMC_generator->GetPhoton1(iphot+1,m_phot[iphot]);  // photon 4-momenta
     VSumPhot+= m_phot[iphot];
-  }
+  }//iphot
   if(iEvent<10){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
@@ -367,50 +372,25 @@ void TRobolKKMC::Production(double &iEvent)
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
   // ********************************************************************
-  // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
+  // ***   Photon trigger
+  double vphmin =0.645, vphmax=0.715;
+  double cphmax = cos(M_PI*15.0/180.0);
   double Pi=4*atan(1.0);
-  double phEne,phTheta,phCosth;
-  double XEnePho  = 0.010;              // Emin for visible photom
-  //**************************************************
-  // Loop over photons, just in case
+  double vph,phEne,phTheta,phCosth;
+  double XEnePho  = 0.010;       // Emin for visible photom
   //**************************************************
   int nph_ene=0;
-  for(iphot=0;iphot<m_Nphot;iphot++){
+  int nph_visible=0;
+  for(int iphot=0;iphot<m_Nphot;iphot++){
     phEne   = m_phot[iphot].Energy();
     phCosth = m_phot[iphot].CosTheta();
     phTheta = m_phot[iphot].Theta()*180/Pi;
-    if(phEne>XEnePho){
-      nph_ene++;
-    }
-  }
+    vph = 2*phEne/CMSene;
+    if(phEne>XEnePho) nph_ene++;
+    if( vph> vphmin && vph<vphmax && abs(phCosth)<cphmax) nph_visible++;
+  }// iphot
 
-  /*[[[[
-  //********************************************************************
-  // Muon trigger, it is not realy necessary if MC ir run for mu only
-  //********************************************************************
-  int TrigMu  = 0;
-  // find muons, excluding muons from phi decays!!!
-  long jMu1 =PartFindStable( 13);    // fortran numbering!!!
-  long jMu2 =PartFindStable(-13);    // fortran numbering!!!
-  m_pMu1  = m_Event[jMu1-1].fMom;    // fortran numbering!!!
-  m_pMu2  = m_Event[jMu2-1].fMom;    // fortran numbering!!!
-  long par1=m_Event[jMu1-1].fParent; // fortran numbering!!!
-  long par2=m_Event[jMu2-1].fParent; // fortran numbering!!!
-  if( (jMu1*jMu1)  && (par1 == par2) && (par1 == 3) ) TrigMu  = 1; // exclude backgr.
-  //**************************************************************
-  if( TrigMu && (m_count1<17) ){
-    m_count1++;
-    cout<<"**************************>>> two muons <<<****************************"<<endl;
-    KKMC_generator->PyList(2);
-  }
-  // muons,  vv, Q^2 costheta, etc
-  double CosThe1 = m_pMu1.CosTheta();
-  double Theta1  = m_pMu1.Theta();
-  double E1      = m_pMu1.Energy();
-  double CosThe2 = m_pMu2.CosTheta();
-  double Theta2  = m_pMu2.Theta();
-  double E2      = m_pMu2.Energy();
-  */
+  // ********************************************************************
 
   double CosThe1 = m_pfer1.CosTheta();
   double Theta1  = m_pfer1.Theta();
@@ -424,6 +404,16 @@ void TRobolKKMC::Production(double &iEvent)
 
   double Acol    = fabs(Phi1-(Phi2+3.141594));
 
+  // ***   lepton trigger
+  int nlep_visible =0;
+  double cmax = 0.95;
+  double vf1=2*E1/CMSene;
+  double vf2=2*E2/CMSene;
+//  if( vf1>vphmin && vf1<vphmax && abs(CosThe1)<cmax) nlep_visible++;
+//  if( vf2>vphmin && vf2<vphmax && abs(CosThe2)<cmax) nlep_visible++;
+  if( abs(CosThe1)<cmax) nlep_visible++;
+  if( abs(CosThe2)<cmax) nlep_visible++;
+
   double phi1, px, py;
 //  px = m_pfer1[1];
 //  py = m_pfer1[2];
@@ -432,7 +422,7 @@ void TRobolKKMC::Production(double &iEvent)
   double pt = sqrt(px*px+py*py );
   phi1 = kinlib_angphi_(&px, &py);
 
-  if( m_NevGen< 50) {
+  if( m_NevGen<= 1) {
 	  cout<<"========================================================================="<<endl;
 	  cout<<" px="<<px/pt<<" py="<<py/pt<<endl;
 	  cout<<" Phi1="<<Phi1<<"   phi1="<<phi1<< "  Phi1- phi1="<< Phi1- phi1<<endl;
@@ -697,6 +687,13 @@ void TRobolKKMC::Production(double &iEvent)
     hst_phi1_Ceex2_pol->Fill(  Phi1, WtCEEX2);
 //    hst_phi1_Ceex2_pol->Fill(  Phi1, WtEEX3);
 //  }
+//------------------------------------------------
+// special selection for axion search background
+//------------------------------------------------
+  hst_axib1->Fill(0.5, WtCEEX2);
+  if( nph_visible>0 ) hst_axib2->Fill(0.5, WtCEEX2);
+  if( nph_visible>0  && nlep_visible ==0 ) hst_axib3->Fill(0.5, WtCEEX2);
+
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;
     cout<<"============================================================="<<endl;
