@@ -56,7 +56,7 @@ class KKee2f: public TMCgen{
  int      m_ijkl_new;         // = 54217137;
  int      m_ntot_new;         // = 0;
  int      m_ntot2_new;        // = 0;
- int      m_iseed;                 // KKMC random number generator seed
+ int      m_iseed;                // KKMC random number generator seed
  //
  int      m_KFlist[6];            // list of final fermion KF indices to generate
  int      m_nKF;                  // number of fermions selected to generate
@@ -65,13 +65,24 @@ class KKee2f: public TMCgen{
 
  int      m_nCallsFoam0;          // function calls during initialization
  double   m_XsPrim;               // primary cross section for overall normalization
+
+ double   m_ParCIRCE[4];          // Par list of CIRCE
 //-------------------------------------------
 // Switches controlling operation
  int      m_FoamMode;             // Foam Density mode, <0 generation, >0 initialization
  int      m_RhoMode;              // Type of Density function =3,4,5
  int      m_Icont;                // density call counter for initialization
-
-
+//-------------------------------------------
+// some variables of the event
+ double   m_CMSene;
+ double   m_XXXene;
+ double   m_CosTheta;
+ int      m_KFini;
+ int      m_KFfin;
+ double   m_vv;
+ double   m_x1;
+ double   m_x2;
+//-------------------------------------------
  public:
  KKee2f();                // explicit default constructor for streamer
  KKee2f(const char*);     // user constructor
@@ -91,6 +102,8 @@ class KKee2f: public TMCgen{
 
   void   InitParams();
   void   FoamInitA();
+
+  double RhoFoam5(double *Xarg);
 
   void   MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi);
   double MakeRhoISR(double gamiCR, double gami, double alfi, double vv, double vvmin, double vvmax);

@@ -128,6 +128,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 //  Data base of static input data
   DB = new KKdbase(OutFile);
   DB->Initialize(  m_xpar );
+  m_CMSene =  DB->CMSene;
 
   InitParams();
 ////////////////////////////////////////////
@@ -154,6 +155,10 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<<"%%%%%  f_RNgen->Rndm() = "<< f_RNgen->Rndm()  <<endl;
   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
+  for(int i=0;i<4;i++) m_ParCIRCE[i] = m_xpar[76+i]; // CIRCE params
+  cout<<" CIRCE Par[*]=";
+  for(int i=0;i<4;i++) cout<<"  "<<m_ParCIRCE[i]; cout<<endl;
+
   f_FoamI = new TFOAM("FoamI"); // Foam object of base class
 
   FoamInitA();
@@ -173,74 +178,6 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout  << "   *******************************" << endl;
 
 }// Initialize
-
-
-//-----------------------------------------------------------------------------
-double KKee2f::Density(int nDim, double *Xarg){
-  double rho= 1e-100;
-  //
-  //rho = RhoFoam5(Xarg);      // New c++
-  // Foam requires density to be positive.
-  // This is compensated later on by the weight,
-  // but this trick works only for weighted events
-  if(m_FoamMode<0 ) rho = abs(rho);
-  //
-  return rho;
-}
-
-
-void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
-//////////////////////////////////////////////////////////////
-//    subprogram reading input data file and packing        //
-//    entries into matrix xpar                              //
-//    WARNING: input file cannot include empty lines        //
-//    it cannot handle entries like 1d-30, has to be 1e-30! //
-//////////////////////////////////////////////////////////////
-{
-  char trail[200];
-  char ch1;
-  int  foundB=0, line, indx;
-  int  line_max =2000;
-  double value;
-  cout<<"============================ReaData=============================="<<endl;
-  cout<<"===                     "<< DiskFile <<"               =========="<<endl;
-  cout<<"================================================================="<<endl;
-  ifstream InputFile;
-  InputFile.open(DiskFile);
-  for(indx=0;indx<imax; indx++) xpar[indx]=0.0;
-  for(line=0;line<line_max; line++){
-    InputFile.get(ch1);
-    if( ch1 == 'B') foundB=1;
-    InputFile.getline(trail,200);
-    if(foundB) break;
-  }
-  for(line=0;line<line_max; line++){
-    InputFile.get(ch1);
-    if( ch1 == 'E'){
-      InputFile.getline(trail,200);
-      cout<<ch1<<trail<<"["<<line<<"]"<<endl;
-      break;
-    }
-    if( ch1 == '*'){
-      InputFile.getline(trail,200);
-      cout<<ch1<<trail<<endl;
-    }else{
-      InputFile>>indx>>value;
-      if(indx<0 || indx>abs(imax) ){
-	cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
-	exit(0);
-      }
-      xpar[indx] = value;
-      //xpar[indx-1] = value; // correction for fortran indexing in input file
-      InputFile.getline(trail,200);
-      cout<<ch1;
-      cout<<setw(4)<<indx<<setw(15)<<value<<" ";
-      cout<<trail<<endl;
-    }
-  }
-  cout<<"================================================================="<<endl;
-  InputFile.close();
-}// ReaData
 
 
 //_______________________________________________________________________________
@@ -335,6 +272,63 @@ void KKee2f::FoamInitA(){
     cout<<"-----------------------FoamInitA end-------------------------------"<<endl;
 }//FoamInitA
 
+
+//-----------------------------------------------------------------------------
+double KKee2f::Density(int nDim, double *Xarg){
+  double rho= 1e-100;
+  //
+  rho = RhoFoam5(Xarg);      // New c++
+  // Foam requires density to be positive.
+  // This is compensated later on by the weight,
+  // but this trick works only for weighted events
+  if(m_FoamMode<0 ) rho = abs(rho);
+  //
+  return rho;
+}
+
+double KKee2f::RhoFoam5(double *Xarg){
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//  5-dimensional version with generation of KFfin generation                //
+//                                                                           //
+//  BornSimple is in R-units (pointlike xsection at  sqrt(s)=m_XXXene!       //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+int iarg=0;
+double Rho = 1.0;
+//==========================================================
+// Final fermion type
+int iKF = 1 + m_nKF*Xarg[iarg]; iarg++;
+m_KFfin = m_KFlist[iKF-1];
+Rho = Rho *m_nKF; // to get sum over final fermions, not average
+//==========================================================
+///////////////  Polar angle Theta ///////////////
+double cmax = 0.99999999;
+m_CosTheta = cmax*( -1.0 + 2.0* Xarg[iarg] ); iarg++;
+Rho *= 2.0*cmax;  // jacobian
+//==========================================================
+//////////////////  Beam spread ///////////////////////
+// delta is the "infinitesimal" width of Gasian representation
+// of the Dirac delta in the circe spectrum. Its value is adjusted empricaly
+// Foam tolerates alpha down to 0.0005.
+double delta = 0.0005;
+m_x1  = Xarg[iarg]; iarg++;
+m_x2  = Xarg[iarg]; iarg++;
+double z1 = 1-m_x1;
+double z2 = 1-m_x2;
+double GS1 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_x1/delta)/2 ); //half of Gauss
+double GS2 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_x2/delta)/2 ); //half of Gauss
+double SF1 = m_ParCIRCE[1]*exp(log(m_x1)*m_ParCIRCE[3]) *exp(log(1-m_x1)*m_ParCIRCE[2]);   // the same as circee
+double SF2 = m_ParCIRCE[1]*exp(log(m_x2)*m_ParCIRCE[3]) *exp(log(1-m_x2)*m_ParCIRCE[2]);   // the same as circee
+double SF12 = (GS1+SF1)*(GS2+SF2);
+Rho *=SF12;
+m_XXXene =  m_CMSene*sqrt(z1*z2);
+//--------------------------------------------
+/////////////////  ISR //////////////////////////////
+m_vv = Xarg[iarg]; iarg++;
+return Rho;
+}//RhoFoam5
+
 void KKee2f::MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi){
 //////////////////////////////////////////////////////////////////////////////
 //   Crude Gami as a function of CMSene                                     //
@@ -374,4 +368,59 @@ if (vv > vvmin) {
 }
 return Rho * exp(gami*log(vvmax ));
 }//RhoISR
+
+
+void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
+//////////////////////////////////////////////////////////////
+//    subprogram reading input data file and packing        //
+//    entries into matrix xpar                              //
+//    WARNING: input file cannot include empty lines        //
+//    it cannot handle entries like 1d-30, has to be 1e-30! //
+//////////////////////////////////////////////////////////////
+{
+  char trail[200];
+  char ch1;
+  int  foundB=0, line, indx;
+  int  line_max =2000;
+  double value;
+  cout<<"============================ReaData=============================="<<endl;
+  cout<<"===                     "<< DiskFile <<"               =========="<<endl;
+  cout<<"================================================================="<<endl;
+  ifstream InputFile;
+  InputFile.open(DiskFile);
+  for(indx=0;indx<imax; indx++) xpar[indx]=0.0;
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'B') foundB=1;
+    InputFile.getline(trail,200);
+    if(foundB) break;
+  }
+  for(line=0;line<line_max; line++){
+    InputFile.get(ch1);
+    if( ch1 == 'E'){
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<"["<<line<<"]"<<endl;
+      break;
+    }
+    if( ch1 == '*'){
+      InputFile.getline(trail,200);
+      cout<<ch1<<trail<<endl;
+    }else{
+      InputFile>>indx>>value;
+      if(indx<0 || indx>abs(imax) ){
+	cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
+	exit(0);
+      }
+      xpar[indx] = value;
+      //xpar[indx-1] = value; // correction for fortran indexing in input file
+      InputFile.getline(trail,200);
+      cout<<ch1;
+      cout<<setw(4)<<indx<<setw(15)<<value<<" ";
+      cout<<trail<<endl;
+    }
+  }
+  cout<<"================================================================="<<endl;
+  InputFile.close();
+}// ReaData
+
 
