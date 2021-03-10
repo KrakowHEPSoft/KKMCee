@@ -30,6 +30,7 @@ class KKdbase: public TObject{
  int      KeyINT;
  int      KeyISR;
  int      KeyFSR;
+ int      KeyBES;
  int      KeyWgt;
  int      KeyElw;
  int      KeyZet;

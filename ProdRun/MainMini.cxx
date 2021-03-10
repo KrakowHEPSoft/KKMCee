@@ -49,19 +49,20 @@ double Dist0= Born->BornSimple(KFi, KFf, svar, CosThe);
 cout<<"MainMini: BornSimple=  "<<SW20<<Dist0<<endl;
 double Dist1= Born->Born_DizetS(KFi, KFf, svar, CosThe);
 cout<<"MainMini: Born_DizetS= "<<SW20<<Dist1<<endl;
-/*
+
 /////////////////////////////////////////////////////////////
 // Small loop over MC events
 for(int iev=1; iev<=100; iev++) {
    KKMCgen->Generate();
-   if(iev <= 10) KKMCgen->m_Event->PrintISR_FSR();
-   if(iev <= 10) cout<<" iev ="<< iev<<endl;
+   if(iev <= 20) KKMCgen->m_Event->PrintISR_FSR();
+   if(iev <= 20) KKMCgen->m_Event->PrintISR_FSR(&OutFile);
+   if(iev <= 20) cout<<" iev ="<< iev<<endl;
 }
 
 /////////////////////////////////////////////////////////////
 // final printout from BHLUMI4 goes to pro.output
-KKMCgen->Finalize();
-*/
+//KKMCgen->Finalize();
+
 
 cout << "  |--------------------| "<<endl<<flush;
 cout << "  |  TestMini1 Ended   | "<<endl<<flush;

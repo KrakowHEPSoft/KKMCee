@@ -66,7 +66,8 @@ class KKee2f: public TMCgen{
  int      m_nCallsFoam0;          // function calls during initialization
  double   m_XsPrim;               // primary cross section for overall normalization
 
- double   m_ParCIRCE[4];          // Par list of CIRCE
+ double   m_ParCIRCE[5];          // List of CIRCE parameters
+ double   m_ParBES[5];            // List of BES  parameters
 //-------------------------------------------
 // Switches controlling operation
  int      m_FoamMode;             // Foam Density mode, <0 generation, >0 initialization
@@ -74,14 +75,19 @@ class KKee2f: public TMCgen{
  int      m_Icont;                // density call counter for initialization
 //-------------------------------------------
 // some variables of the event
+ TLorentzVector m_XXf;             // input for karfin
  double   m_CMSene;
  double   m_XXXene;
+ double   m_Ebeam1;
+ double   m_Ebeam2;
  double   m_CosTheta;
  int      m_KFini;
  int      m_KFfin;
  double   m_vv;
- double   m_x1;
- double   m_x2;
+ double   m_r1;
+ double   m_r2;
+  //-------------------------------------------
+ double   m_WtFoam;
 //-------------------------------------------
  public:
  KKee2f();                // explicit default constructor for streamer
@@ -93,8 +99,6 @@ class KKee2f: public TMCgen{
 /// methods obligatory
 
   double sqr( const double x ){ return x*x;};
-
-  double Density(int, Double_t*);
   //
   void   Initialize(TRandom*, ofstream*, TH1D*);
 
@@ -103,10 +107,13 @@ class KKee2f: public TMCgen{
   void   InitParams();
   void   FoamInitA();
 
+  double Density(int, Double_t*);
   double RhoFoam5(double *Xarg);
 
   void   MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi);
   double MakeRhoISR(double gamiCR, double gami, double alfi, double vv, double vvmin, double vvmax);
+
+  void   Generate();
 
   ////////////////////////////////////////////////////////////////////////////
       ClassDef(KKee2f,2); // Monte Carlo generator

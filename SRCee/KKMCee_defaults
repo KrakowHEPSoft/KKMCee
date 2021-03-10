@@ -58,8 +58,8 @@ BeginX
    23              0\\\\\\mltISR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
 **\\\\SPECIAL tests: fixed FSR multiplicity\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
    24              0\\\\\\mltFSR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
-**\\\\SPECIAL tests: fixed v=vmax\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-   25              0      KeyFix Type of ISR, =0,1ormal, =2 beamsstrahlung
+**  Beam Energy Spread type
+   25              2      KeyBES BES, =0 none, =1 Gausian, =2 beamsstrahlung
 *(\\\\SPECIAL tests: mass terms in crude MC photon distrib.\\\\\\\\\\\\\\\\\\\\\
    26              0\\\\\\KeyWtm\\\\\\\\\\ Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
 **    Interference ISR/FSR to be ON/OFF
@@ -101,6 +101,7 @@ BeginX
    66            0e0      spin1z  polarization vector beam 2
 ********************************************************************************
 * Beamstrahlung parameters for Thorsten Ohl's package CIRCE 
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
    71          350e0      IRCroots   sqrt(s) [GeV] discrete values 350,500,800GeV
    72            3e0      IRCacc     
    73            5e0      IRCver     version
@@ -111,6 +112,15 @@ BeginX
    77    0.5461300e0      Par(1) 
    78   12.2869997e0      Par(2) 
    79  -0.62756001e0      Par(3) 
+** Parameters for Gaussian BES (Beam Energy Spread) Default for Z peak
+** From Patrick for E1 and E2 (in GeV): 45.6,    81.,      120.,  175., 182.5
+** Typical values for half width s1 and s2 (in % of E): 0.132, 0.132, 0.165, 0.186
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   80        62.50e0      ParBES(0) E1=125GeV/2
+   81        62.50e0      ParBES(1) E2=125GeV/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
 *********************************************************************************
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 **     Define process
@@ -415,5 +425,4 @@ BeginX
  3027          1.1e0 FOAM Maximum FOAM weight for internal rejection (if used).
  3028              1      Crude distribution for x1, x2 generation*
 *******************************************************************************
-
 EndX

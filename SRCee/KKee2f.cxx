@@ -155,8 +155,13 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<<"%%%%%  f_RNgen->Rndm() = "<< f_RNgen->Rndm()  <<endl;
   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
+  cout<<"%%%%%  Beam Eenergy Spread (BES) parameters %%%%% "<<endl;
+  for(int i=0;i<5;i++) m_ParBES[i] = m_xpar[80+i]; // CIRCE params
+  cout<<" ParBES[*]=";
+  for(int i=0;i<5;i++) cout<<"  "<<m_ParBES[i]; cout<<endl;
+  cout<<"%%%%%  Beamstrahlung parameters %%%%% "<<endl;
   for(int i=0;i<4;i++) m_ParCIRCE[i] = m_xpar[76+i]; // CIRCE params
-  cout<<" CIRCE Par[*]=";
+  cout<<" ParCIRCE[*]=";
   for(int i=0;i<4;i++) cout<<"  "<<m_ParCIRCE[i]; cout<<endl;
 
   f_FoamI = new TFOAM("FoamI"); // Foam object of base class
@@ -174,7 +179,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_KKexamp->Initialize();
 
   cout  << "   *******************************" << endl;
-  cout  << "   ****   KKee2f   END        ****" << endl;
+  cout  << "   **** KKee2f:Initialize END ****" << endl;
   cout  << "   *******************************" << endl;
 
 }// Initialize
@@ -214,11 +219,12 @@ void KKee2f::FoamInitA(){
 	// Foam object initialization
     cout<<"-----------------------FoamInitA start-------------------------------"<<endl;
     int nDim, kDim;
-    nDim = 0;                 // simplices
-	m_RhoMode = 5;            // Foam integrand type
-    kDim = 5;                 // hyperrectangles:  KF+BES1+BES2+ISR+Theta=5
-    f_FoamI->SetnDim(nDim);   // simplicial dimensions
-    f_FoamI->SetkDim(kDim);   // hypercubic dimensions
+    nDim = 0;                   // simplices
+	m_RhoMode = 5;              // Foam integrand type
+    kDim = 5;                   // hyperrectangles:  KF+BES1+BES2+ISR+Theta=5
+    if(DB->KeyBES == 0) kDim=3;  // BES off
+    f_FoamI->SetnDim(nDim);     // simplicial dimensions
+    f_FoamI->SetkDim(kDim);     // hypercubic dimensions
 //---------------------------------------------
 // set fixed cells for final fermion flavor KFfin
     int nDivL = m_nKF-1;
@@ -300,29 +306,70 @@ double Rho = 1.0;
 // Final fermion type
 int iKF = 1 + m_nKF*Xarg[iarg]; iarg++;
 m_KFfin = m_KFlist[iKF-1];
-Rho = Rho *m_nKF; // to get sum over final fermions, not average
+//Rho = Rho *m_nKF; // to get sum over final fermions, not average
 //==========================================================
 ///////////////  Polar angle Theta ///////////////
 double cmax = 0.99999999;
 m_CosTheta = cmax*( -1.0 + 2.0* Xarg[iarg] ); iarg++;
-Rho *= 2.0*cmax;  // jacobian
+//Rho *= 2.0*cmax;  // jacobian
 //==========================================================
+m_r1=0.0; m_r2=0.0;
+int optGauss = 0;
 //////////////////  Beam spread ///////////////////////
+if(        DB->KeyBES == 0){
+  m_Ebeam1  = 0.5*m_CMSene;
+  m_Ebeam2  = 0.5*m_CMSene;
+}
+else if(   DB->KeyBES == 1){
+  double E1,E2,sigma1,sigma2,sigma,corho,delE1,delE2,dGauss;
+  E1    = m_ParBES[0];
+  E2    = m_ParBES[1];
+  sigma1= m_ParBES[2]*E1;
+  sigma2= m_ParBES[3]*E2;
+  corho = m_ParBES[4];
+  if( optGauss==1){
+  sigma = sqrt(sigma1*sigma2);
+  delE1 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
+  delE2 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
+  Rho *= sqr(20*sigma);  // Jacobian
+  m_r1 = delE1/E1; // can be negative
+  m_r2 = delE2/E2; // can be negative
+  m_Ebeam1  = E1+delE1; // =E1*(1+m_r1)
+  m_Ebeam2  = E2+delE2; // =E2*(1+m_r2)
+  dGauss = sqr(delE1/sigma1)+ sqr(delE2/sigma2)-2*corho*(delE1/sigma1)*(delE2/sigma2);
+  dGauss = exp(-0.5/(1-sqr(corho))*dGauss);
+  dGauss *= 1/(2.0*M_PI)/(sigma1*sigma2)/sqrt(1-sqr(corho)); // Normalization factor
+  Rho *= dGauss;
+  }else{
+   double r1 = Xarg[iarg]; iarg++;
+   double r2 = Xarg[iarg]; iarg++;
+   double x1 = sqrt(-2.*log(r1)) * cos(2.*M_PI*r2);
+   double x2 = sqrt(-2.*log(r1)) * sin(2.*M_PI*r2);
+   double y1 = x1;
+   double y2 = corho * x1 + sqrt(1.-corho*corho) * x2;
+   m_r1= y1 * m_ParBES[2]; // can be negative
+   m_r2= y2 * m_ParBES[3]; // can be negative
+   m_Ebeam1 = E1 * (1.0 + y1 * m_r1);
+   m_Ebeam2 = E2 * (1.0 + y2 * m_r2);
+  }//if optGauss
+} else if( DB->KeyBES == 2){
+// Linear Collider case. Beamstrahlung following CIRCE parametrization.
 // delta is the "infinitesimal" width of Gasian representation
 // of the Dirac delta in the circe spectrum. Its value is adjusted empricaly
 // Foam tolerates alpha down to 0.0005.
-double delta = 0.0005;
-m_x1  = Xarg[iarg]; iarg++;
-m_x2  = Xarg[iarg]; iarg++;
-double z1 = 1-m_x1;
-double z2 = 1-m_x2;
-double GS1 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_x1/delta)/2 ); //half of Gauss
-double GS2 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_x2/delta)/2 ); //half of Gauss
-double SF1 = m_ParCIRCE[1]*exp(log(m_x1)*m_ParCIRCE[3]) *exp(log(1-m_x1)*m_ParCIRCE[2]);   // the same as circee
-double SF2 = m_ParCIRCE[1]*exp(log(m_x2)*m_ParCIRCE[3]) *exp(log(1-m_x2)*m_ParCIRCE[2]);   // the same as circee
-double SF12 = (GS1+SF1)*(GS2+SF2);
-Rho *=SF12;
-m_XXXene =  m_CMSene*sqrt(z1*z2);
+  double delta = 0.0005;
+  m_r1  = Xarg[iarg]; iarg++; // always positive
+  m_r2  = Xarg[iarg]; iarg++; // always positive
+  m_Ebeam1 = 0.5*m_CMSene*(1-m_r1);
+  m_Ebeam2 = 0.5*m_CMSene*(1-m_r2);
+  double GS1 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_r1/delta)/2 ); //half of Gauss
+  double GS2 = m_ParCIRCE[0]*sqrt( 2/M_PI)/delta *exp (-sqr(m_r2/delta)/2 ); //half of Gauss
+  double SF1 = m_ParCIRCE[1]*exp(log(m_r1)*m_ParCIRCE[3]) *exp(log(1-m_r1)*m_ParCIRCE[2]);   // the same as circee
+  double SF2 = m_ParCIRCE[1]*exp(log(m_r2)*m_ParCIRCE[3]) *exp(log(1-m_r2)*m_ParCIRCE[2]);   // the same as circee
+  double SF12 = (GS1+SF1)*(GS2+SF2);
+  Rho *=SF12;
+}// if KeyBES
+m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 //--------------------------------------------
 /////////////////  ISR //////////////////////////////
 m_vv = Xarg[iarg]; iarg++;
@@ -369,6 +416,46 @@ if (vv > vvmin) {
 return Rho * exp(gami*log(vvmax ));
 }//RhoISR
 
+void KKee2f::Generate()
+{
+m_EventCounter++;
+f_NevGen++;
+m_Event->m_EventCounter = m_EventCounter;
+////////////////////////////////////////////////
+// Foam here starts MC event generation
+////////////////////////////////////////////////
+m_FoamMode = -1;   // generation mode
+////////////////////////////////////////////////
+f_FoamI->MakeEvent();
+f_FoamI->GetMCwt(m_WtFoam);
+
+m_KFini = 11;
+m_Event->m_KFini=m_KFini;
+m_Event->m_KFfin=m_KFfin;
+m_Event->m_vv= 0.0;
+m_Event->m_r1= m_r1;
+m_Event->m_r2= m_r2;
+m_Event->m_nPhotISR=0;
+m_Event->m_nPhotFSR=0;
+m_Event->m_nPhot=0;
+
+double Mbeam= DB->fmass[m_KFini];  // electron or muon beam mass
+m_Event->DefPair(m_XXXene,Mbeam,Mbeam, &(m_Event->m_Pf1), &(m_Event->m_Pf2));
+
+m_Event->m_Rem1.SetPxPyPzE( 0, 0, 0.5*DB->CMSene*m_r1, 0.5*DB->CMSene*m_r1); //obsolete
+m_Event->m_Rem2.SetPxPyPzE( 0, 0,-0.5*DB->CMSene*m_r2, 0.5*DB->CMSene*m_r2); //obsolete
+
+m_XXf = m_Event->m_Pf1 + m_Event->m_Pf2;
+
+// Final fermion moment defined, to be possibly overwritten
+double the= acos(m_CosTheta);
+double phi= 2*M_PI*f_RNgen->Rndm();
+double amfi  =DB->fmass[m_KFfin];
+m_Event->PhaSpac2(&m_XXf,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
+
+m_Event->ZBoostALL();
+
+}// Generate
 
 void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
 //////////////////////////////////////////////////////////////

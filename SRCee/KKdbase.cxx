@@ -57,6 +57,7 @@ void KKdbase::Initialize(double xpar[] )
   BXTXT(*m_Out,"========== PHYSICS SWITCHES ============");
   KeyISR = m_xpar[20];
   KeyFSR = m_xpar[21];
+  KeyBES = m_xpar[25];
   KeyINT = m_xpar[27];
   KeyGPS = m_xpar[28];
   KeyWgt = m_xpar[10];
@@ -65,6 +66,7 @@ void KKdbase::Initialize(double xpar[] )
   BX1I(*m_Out,"   KeyISR", KeyISR,    " ISR initial state emission       [20]          =");
   BX1I(*m_Out,"   KeyFSR", KeyFSR,    " FSR final   state emission       [21]          =");
   BX1I(*m_Out,"   KeyINT", KeyINT,    " IFI interference on/off switch   [27]          =");
+  BX1I(*m_Out,"   KeyBES", KeyBES,    " Beam Energy Spread type          [25]          =");
   BX1I(*m_Out,"   KeyGPS", KeyGPS,    " GPS/CEEX matrix element type     [28]          =");
   BX1I(*m_Out,"   KeyWgt", KeyWgt,    " WTed/unWTed events  switch       [10]          =");
   BX1I(*m_Out,"   KeyElw", KeyElw,    " Electroweak correction  switch   [12]          =");

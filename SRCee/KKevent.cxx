@@ -315,7 +315,7 @@ void KKevent::PrintISR_FSR(){
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-cout<<"//////////////////Event::PrintISR+FSR//////////////////>  m_EventCounter="<< m_EventCounter<<endl;
+cout<<"///////////////////////////////Event::PrintISR+FSR///////////////////////////>  m_EventCounter="<< m_EventCounter<<endl;
 cout<<"m_nPhotISR= "<<m_nPhotISR<<"  m_nPhotFSR= "<<m_nPhotFSR<<endl;
 cout<<"m_WT_ISR = "<< m_WT_ISR<<"      ";
 cout<<"m_KFini  = "<< m_KFini<< "    m_KFfin = "<< m_KFfin <<endl;
@@ -324,6 +324,10 @@ cout<<"m_vv = "<< m_vv   << "   m_r1 = "<< m_r1 <<"   m_r2 = "<<m_r2<<endl;
 cout<< "m_Pf1  "; MomPrint(m_Pf1); cout<<"   "<< m_Pf1.M() <<endl;
 cout<< "m_Pf2  "; MomPrint(m_Pf2); cout<<"   "<< m_Pf2.M() <<endl;
 
+TLorentzVector BeamSum = m_Pf1+m_Pf2;
+cout<< "SumIni "; MomPrint(BeamSum); cout<<"   "<< BeamSum.M() <<endl;
+
+cout<<"-------------------------------  final state -------------------------------------------------------------------"<<endl;
 cout<< "m_Qf1  "; MomPrint(m_Qf1); cout<<"   "<< m_Qf1.M() <<endl;
 cout<< "m_Qf2  "; MomPrint(m_Qf2); cout<<"   "<< m_Qf2.M() <<endl;
 
@@ -340,11 +344,6 @@ for(int i=1; i<= m_nPhotFSR; i++){
 }
 
 cout<< "m_Sum  "; MomPrint(MomtSum); cout<<"   "<< MomtSum.M() <<endl;
-cout<<"-------------------------------initial hadron remnants ---------------------------------------------------------"<<endl;
-cout<< "m_Rem1 "; MomPrint(m_Rem1); cout<<"   "<< m_Rem1.M() <<endl;
-cout<< "m_Rem2 "; MomPrint(m_Rem2); cout<<"   "<< m_Rem2.M() <<endl;
-MomtSum += m_Rem1+m_Rem2;
-cout<< "SumAll "; MomPrint(MomtSum); cout<<"   "<< MomtSum.M() <<endl;
 cout<<"----------------------------------------------------------------------------------------------------------------"<<endl;
 }//EventPrint
 
@@ -362,7 +361,7 @@ void KKevent::PrintISR_FSR(ofstream *Out){
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-*Out<<"//////////////////Event::PrintISR+FSR//////////////////>  m_EventCounter="<< m_EventCounter<<endl;
+*Out<<"//////////////////////////Event::PrintISR+FSR///////////////////////////////>  m_EventCounter="<< m_EventCounter<<endl;
 *Out<<"m_nPhotISR= "<<m_nPhotISR<<"  m_nPhotFSR= "<<m_nPhotFSR<<endl;
 *Out<<"m_WT_ISR = "<< m_WT_ISR<<"      ";
 *Out<<"m_KFini  = "<< m_KFini<< "    m_KFfin = "<< m_KFfin <<endl;
@@ -370,6 +369,11 @@ void KKevent::PrintISR_FSR(ofstream *Out){
 
 *Out<< "m_Pf1  "; MomPrint(Out,m_Pf1); *Out<<"   "<< m_Pf1.M() <<endl;
 *Out<< "m_Pf2  "; MomPrint(Out,m_Pf2); *Out<<"   "<< m_Pf2.M() <<endl;
+
+TLorentzVector BeamSum = m_Pf1+m_Pf2;
+*Out<< "SumIni "; MomPrint(Out,BeamSum); *Out<<"   "<< BeamSum.M() <<endl;
+
+*Out<<"-------------------------------  final state -------------------------------------------------------------------"<<endl;
 
 *Out<< "m_Qf1  "; MomPrint(Out,m_Qf1); *Out<<"   "<< m_Qf1.M() <<endl;
 *Out<< "m_Qf2  "; MomPrint(Out,m_Qf2); *Out<<"   "<< m_Qf2.M() <<endl;
@@ -386,11 +390,6 @@ for(int i=1; i<= m_nPhotFSR; i++){
 }
 
 *Out<< "m_Sum  "; MomPrint(Out,MomtSum); *Out<<"   "<< MomtSum.M() <<endl;
-*Out<<"-------------------------------initial hadron remnants ---------------------------------------------------------"<<endl;
-*Out<< "m_Rem1 "; MomPrint(Out,m_Rem1); *Out<<"   "<< m_Rem1.M() <<endl;
-*Out<< "m_Rem2 "; MomPrint(Out,m_Rem2); *Out<<"   "<< m_Rem2.M() <<endl;
-MomtSum += m_Rem1+m_Rem2;
-*Out<< "SumAll "; MomPrint(Out,MomtSum); *Out<<"   "<< MomtSum.M() <<endl;
 *Out<<"----------------------------------------------------------------------------------------------------------------"<<endl;
 }//EventPrint
 

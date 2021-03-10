@@ -32,19 +32,19 @@ KKee2f *KKMCgen = new KKee2f("MCgen");
 TH1D *h_NORMA = new TH1D("KKMCgen_NORMA","Normalization histo",10000,0,10000);
 KKMCgen->Initialize(  RN_gen, &OutFile, h_NORMA);
 
-/*
 /////////////////////////////////////////////////////////////
 // Small loop over MC events
 for(int iev=1; iev<=100; iev++) {
+   cout<<" iev ="<< iev<<endl;
+   if(iev <= 10) cout<<" iev ="<< iev<<endl;
    KKMCgen->Generate();
    if(iev <= 10) KKMCgen->m_Event->PrintISR_FSR();
-   if(iev <= 10) cout<<" iev ="<< iev<<endl;
 }
 
 /////////////////////////////////////////////////////////////
 // final printout from BHLUMI4 goes to pro.output
-KKMCgen->Finalize();
-*/
+//KKMCgen->Finalize();
+
 
 cout << "  |--------------------| "<<endl<<flush;
 cout << "  |  TestMini1 Ended   | "<<endl<<flush;
