@@ -9,7 +9,7 @@ BeginX
 *    0        1000000      1M   NEVT = number of events
     0      100000000      100M NEVT = number of events
 * Center-of-mass energy [GeV]
-    1          189e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1          100e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events
@@ -26,11 +26,20 @@ BeginX
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
+**  Beam Energy Spread type
+   25              1      KeyBES BES, =0 none, =1 Gausian, =2 beamsstrahlung
 ***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
    27              2      KeyINT=xpar(27)  Default is  2
 * New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
 ** which overrules KeyGPS for each type of final fermion
 *   28              0      KeyGPS=xpar(28)  Default is  1
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   80        50.00e0      ParBES(0) E1=125GeV/2
+   81        50.00e0      ParBES(1) E2=125GeV/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.500e0      ParBES(3) rho correlation parameter, dimensionles
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     Define process
 *     LIST of Final state flavours to be generated randomly according
