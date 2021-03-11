@@ -17,6 +17,10 @@ class TRobolKKMC : public TRobol
  long   m_count1;             // auxiliary event counter (debug)
 //
  TH1D   *hst_weight;          //!  No streamer!!!
+ TH1D   *hst_vvTrue;          //!  No streamer!!!
+ TH1D   *hst_CosTheta;        //!  No streamer!!!
+ //
+ TH2D   *sca_r1r2;            //!  No streamer!!!
 ///////////////////////////////////////////
 /// mandatory constructors and destructors
  public:

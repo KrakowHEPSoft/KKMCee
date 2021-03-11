@@ -66,8 +66,12 @@ void TRobolKKMC::Hbooker()
   BXCLO(*f_Out);
   f_HstFile->cd();
   //  ************* user histograms  *************
-  int nbin=1000;
-  hst_weight  = TH1D_UP("hst_weight" ,  "MC weight",      100, 0.000 , 2.0);
+  double delv = 0.012;
+  int nbin=200;
+  hst_weight   = TH1D_UP("hst_weight" ,  "MC weight",   nbin, 0.000 , 2.0);
+  hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin, -delv , delv);
+  hst_CosTheta = TH1D_UP("hst_CosTheta", "CosTheta",    nbin,  -1.0 , 1.0);
+  sca_r1r2     = TH2D_UP("sca_r1r2" ,    "BES spectrum", 100, -delv , delv, 100, -delv , delv);
 
 }//Hbooker
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,12 +87,24 @@ void TRobolKKMC::Production(double &iEvent)
   m_NevGen++;
   KKee2f *KKMC_generator = (KKee2f*)f_MCgen;
   KKMC_generator->Generate(); // done in user class
- // IMPORT KKMC event and weights
+  KKevent *Event = KKMC_generator->m_Event;
+
   double WtMain,WtCrude;
  // KKMC_generator->GetWt(WtMain,WtCrude);
   WtMain = KKMC_generator->m_WtFoam; // temporary
 
-  hst_weight->Fill(WtMain);              // histogramming
+  double CosTheta = KKMC_generator->m_CosTheta;
+  double r1 = Event->m_r1;
+  double r2 = Event->m_r2;
+  double vvTrue = r1 + r2;
+
+  hst_weight->Fill(WtMain);
+
+  hst_vvTrue->Fill(vvTrue);
+
+  hst_CosTheta->Fill(CosTheta,WtMain);
+
+  sca_r1r2->Fill(r1, r2, WtMain);
 
 }//Production
 

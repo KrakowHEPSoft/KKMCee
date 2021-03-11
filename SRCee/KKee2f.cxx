@@ -314,7 +314,7 @@ m_CosTheta = cmax*( -1.0 + 2.0* Xarg[iarg] ); iarg++;
 //Rho *= 2.0*cmax;  // jacobian
 //==========================================================
 m_r1=0.0; m_r2=0.0;
-int optGauss = 0;
+int optGauss = 2;   // Gaussian BES with/without mapping
 //////////////////  Beam spread ///////////////////////
 if(        DB->KeyBES == 0){
   m_Ebeam1  = 0.5*m_CMSene;
@@ -328,18 +328,18 @@ else if(   DB->KeyBES == 1){
   sigma2= m_ParBES[3]*E2;
   corho = m_ParBES[4];
   if( optGauss==1){
-  sigma = sqrt(sigma1*sigma2);
-  delE1 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
-  delE2 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
-  Rho *= sqr(20*sigma);  // Jacobian
-  m_r1 = delE1/E1; // can be negative
-  m_r2 = delE2/E2; // can be negative
-  m_Ebeam1  = E1+delE1; // =E1*(1+m_r1)
-  m_Ebeam2  = E2+delE2; // =E2*(1+m_r2)
-  dGauss = sqr(delE1/sigma1)+ sqr(delE2/sigma2)-2*corho*(delE1/sigma1)*(delE2/sigma2);
-  dGauss = exp(-0.5/(1-sqr(corho))*dGauss);
-  dGauss *= 1/(2.0*M_PI)/(sigma1*sigma2)/sqrt(1-sqr(corho)); // Normalization factor
-  Rho *= dGauss;
+   sigma = sqrt(sigma1*sigma2);
+   delE1 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
+   delE2 = 10*sigma*(2*Xarg[iarg]-1.0); iarg++; // range is +-10sigma
+   Rho *= sqr(20*sigma);  // Jacobian
+   m_r1 = delE1/E1; // can be negative
+   m_r2 = delE2/E2; // can be negative
+   m_Ebeam1  = E1+delE1; // =E1*(1+m_r1)
+   m_Ebeam2  = E2+delE2; // =E2*(1+m_r2)
+   dGauss = sqr(delE1/sigma1)+ sqr(delE2/sigma2)-2*corho*(delE1/sigma1)*(delE2/sigma2);
+   dGauss = exp(-0.5/(1-sqr(corho))*dGauss);
+   dGauss *= 1/(2.0*M_PI)/(sigma1*sigma2)/sqrt(1-sqr(corho)); // Normalization factor
+   Rho *= dGauss;
   }else{
    double r1 = Xarg[iarg]; iarg++;
    double r2 = Xarg[iarg]; iarg++;
@@ -354,9 +354,8 @@ else if(   DB->KeyBES == 1){
   }//if optGauss
 } else if( DB->KeyBES == 2){
 // Linear Collider case. Beamstrahlung following CIRCE parametrization.
-// delta is the "infinitesimal" width of Gasian representation
-// of the Dirac delta in the circe spectrum. Its value is adjusted empricaly
-// Foam tolerates alpha down to 0.0005.
+// delta is the "infinitesimal" width of Gaussian representation
+// of the Dirac delta in the circe spectrum. It is adjusted empirically.
   double delta = 0.0005;
   m_r1  = Xarg[iarg]; iarg++; // always positive
   m_r2  = Xarg[iarg]; iarg++; // always positive
@@ -455,6 +454,17 @@ m_Event->PhaSpac2(&m_XXf,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
 
 m_Event->ZBoostALL();
 
+//////////////////////////////////////////////////////////////////////
+// Special histogram used for control of overall normalization
+// in case of both weighted and unweighted events
+// NevPrim = no of events at the very bottom of all rejection loops
+// Note that crude integral XsPrimPb has zero statistical error!
+// what about WTmax ???
+  double XsPrimPb = f_FoamI->GetPrimary();
+  int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
+  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
+  f_TMCgen_NORMA->SetEntries(NevPrim);
+///////////////////
 }// Generate
 
 void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
