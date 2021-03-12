@@ -4,7 +4,7 @@
 ///            nfarm   = number of jobs
 /// Note: nfarm may be bigger than no. of subdirs ./farm/*/
 ///----------------------------------------------------------------
-#include<iostream.h>
+#include<iostream>
 int SubmFarmS(TString qsubCMD = "qsub", int nfarm = 6)
 {
 gROOT->Reset();

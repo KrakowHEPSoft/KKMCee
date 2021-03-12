@@ -928,7 +928,7 @@ void PlTable2(int Ncol, TH1D *iHst[], FILE *ltex, Char_t *Capt[], Char_t Mcapt[]
     for( int j=1; j<=Npl; j++ ){
 	   yi = (iHst[j])->GetBinContent(k);
 	   ei = (iHst[j])->GetBinError(k);
-	   fprintf(ltex," & $ %10.4f \\pm %8.4f $ ", yi, ei);
+	   fprintf(ltex," & $ %11.5f \\pm %9.5f $ ", yi, ei);
      }//j
     fprintf(ltex,"\\\\ \n");
  }//k
