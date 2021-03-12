@@ -380,6 +380,7 @@ void TRobolKKMC::Production(double &iEvent)
   double Pi=4*atan(1.0);
   double vph,phEne,phTheta,phCosth;
   double XEnePho  = 0.95;  // Emin for visible photom
+  XEnePho = 0.97;
   //----------------------------------------------------
   int nph_ene=0;
   int nph_visible=0;

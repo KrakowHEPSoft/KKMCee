@@ -24,7 +24,7 @@ BeginX
 ** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
-   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+   17        0.999e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 ***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
    27              2      KeyINT=xpar(27)  Default is  2
