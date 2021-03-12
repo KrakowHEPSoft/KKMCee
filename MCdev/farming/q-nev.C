@@ -1,3 +1,4 @@
+#include<iostream>
 {
 //_________________________________________________________________
 cout<<"%%%%%%%%%%%%%%%%%%%%%%%% farm-querry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
@@ -5,11 +6,11 @@ cout<<"%%%%%%%%%%%%%%%%%%%%%%%% farm-querry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<
 gROOT->Reset();
 gSystem->Load("../../MCdev/.libs/libMCdev.so");
 
-TString Dir1=gSystem.WorkingDirectory();
+TString Dir1=gSystem->WorkingDirectory();
 cout<<Dir1<<endl;
 
 int isDir;
-isDir = gSystem.ChangeDirectory(Dir1);
+isDir = gSystem->ChangeDirectory(Dir1);
 double TotEvent=0;
 
 int Nfarm =250;
@@ -18,7 +19,7 @@ for(int i=1; i<Nfarm+1; i++){
   DIRi        +="/farm/";
   DIRi        += i;
   DIRi        += "/";
-  isDir = gSystem.ChangeDirectory(DIRi);
+  isDir = gSystem->ChangeDirectory(DIRi);
   //cout<<"%%% isDir = "<<isDir<<endl;
   if(isDir){
     cout<<"%%% DIRi= "<< DIRi<<endl;
