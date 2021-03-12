@@ -1,13 +1,13 @@
 ///----------------------------------------------------------------
 /// This is upgraded version of sept 2008
 ///----------------------------------------------------------------
-#include<iostream>
+#include <iostream>
 int SetFarmQ(TString dname = "WORK", int nfarm = 6)
 {
 ///_________________________________________________________________
   cout<<"%%% ================== SetFarm ================== %%%%"<<endl;
-  gROOT->Reset();
-  gSystem->Load("../../MCdev/.libs/libMCdev.so");
+//  gROOT->Reset();
+//  gSystem->Load("../../MCdev/.libs/libMCdev.so");
   TString Dir1=gSystem->WorkingDirectory();
   cout<<"%%% working directory= " <<Dir1<<endl;
 //   cout<<"%%% working directory= " <<Dir1<<endl;

@@ -4,11 +4,11 @@
 ///            nfarm   = number of jobs
 /// Note: nfarm may be bigger than no. of subdirs ./farm/*/
 ///----------------------------------------------------------------
-#include<iostream>
+#include <iostream>
 int SubmFarmS(TString qsubCMD = "qsub", int nfarm = 6)
 {
-gROOT->Reset();
-gSystem->Load("../../MCdev/.libs/libMCdev.so");
+//gROOT->Reset();
+//gSystem->Load("../../MCdev/.libs/libMCdev.so");
 ///_________________________________________________________________
 TString Dir1=gSystem->WorkingDirectory();
 cout<<" working directiry: " << Dir1<<endl;
