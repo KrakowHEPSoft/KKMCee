@@ -98,7 +98,8 @@ void TableNew()
 //  iHst[4]->Scale(1e3);    // nano- to pico-barns
 // multicolumn caption
   Char_t Mcapt[132];
-  strcpy(Mcapt,"{\\color{red} 161GeV, $\\mu^+\\mu^-\\gamma$, $\\sigma$[pb]}");
+//  strcpy(Mcapt,"{\\color{red} 161GeV, $\\mu^+\\mu^-\\gamma$, $\\sigma$[pb]}");
+  strcpy(Mcapt,"{\\color{red} 91.2GeV, $\\nu\\bar{\\nu}\\gamma$, $\\sigma$[pb]}");
 
 ///************************************
   DiskFileTeX = fopen("TableNew.txp","w");

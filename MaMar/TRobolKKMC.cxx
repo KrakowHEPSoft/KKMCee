@@ -373,14 +373,13 @@ void TRobolKKMC::Production(double &iEvent)
   double vv     = 1-s1/s;
 // *******************************************************************
 // ******   Photon trigger ******
-  double vphmin =0.645, vphmax=0.715;
+//  double vphmin =0.645, vphmax=0.715;
   double cphmax = cos(M_PI*15.0/180.0);
-  vphmin =0.95, vphmax=0.99; // neutrino channels (axion search)
-  cphmax = 0.80;             // neutrino channels (axion search)
+//  vphmin =0.95, vphmax=0.99;     // neutrino channels (axion search)
+  cphmax = cos(M_PI*35.0/180.0); // neutrino channels (axion search)
   double Pi=4*atan(1.0);
   double vph,phEne,phTheta,phCosth;
-  double XEnePho  = 0.010;  // Emin for visible photom
-  XEnePho  = 0.00;          // neutrino channels (axion search)
+  double XEnePho  = 0.95;  // Emin for visible photom
   //----------------------------------------------------
   int nph_ene=0;
   int nph_visible=0;
@@ -389,8 +388,8 @@ void TRobolKKMC::Production(double &iEvent)
     phCosth = m_phot[iphot].CosTheta();
     phTheta = m_phot[iphot].Theta()*180/Pi;
     vph = 2*phEne/CMSene;
-    if(phEne>XEnePho) nph_ene++;
-    if( vph> vphmin && vph<vphmax && abs(phCosth)<cphmax) nph_visible++;
+    if( vph>XEnePho) nph_ene++;
+    if( vph>XEnePho && abs(phCosth)<cphmax) nph_visible++;
   }// iphot
 // ********************************************************************
 
