@@ -358,12 +358,12 @@ void TRobolKKMC::Production(double &iEvent)
   if(iEvent<10){
     cout<<"-----------------------------------------------------------  "<<iEvent;
     cout<<"  -----------------------------------------------------------"<<endl;
-    cout<<"  WtMain= "<< WtMain  << "  WtCrude= "<< WtCrude<<endl;
+    cout<<" WtMain= "<< WtMain  << "  WtCrude= "<< WtCrude<<endl;
     cout<<" m_Nphot= "<< m_Nphot<<endl;
-    cout<<"VSumPhot= "; MomPrint( VSumPhot );
+    cout<<" VSumPhot= "; MomPrint( VSumPhot );
     KKMC_generator->Print1();
-    //KKMC_generator->PyList(2);
-    //PyPrint(1);
+//    KKMC_generator->PyList(2);
+//    PyPrint(1);
   }
   // ****************************************************************
   double s  =(m_pbea1+m_pbea2)*(m_pbea1+m_pbea2);
@@ -371,14 +371,17 @@ void TRobolKKMC::Production(double &iEvent)
   double CMSene = sqrt(s);
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
-  // ********************************************************************
-  // ***   Photon trigger
+// *******************************************************************
+// ******   Photon trigger ******
   double vphmin =0.645, vphmax=0.715;
   double cphmax = cos(M_PI*15.0/180.0);
+  vphmin =0.95, vphmax=0.99; // neutrino channels (axion search)
+  cphmax = 0.80;             // neutrino channels (axion search)
   double Pi=4*atan(1.0);
   double vph,phEne,phTheta,phCosth;
-  double XEnePho  = 0.010;       // Emin for visible photom
-  //**************************************************
+  double XEnePho  = 0.010;  // Emin for visible photom
+  XEnePho  = 0.00;          // neutrino channels (axion search)
+  //----------------------------------------------------
   int nph_ene=0;
   int nph_visible=0;
   for(int iphot=0;iphot<m_Nphot;iphot++){
@@ -389,8 +392,7 @@ void TRobolKKMC::Production(double &iEvent)
     if(phEne>XEnePho) nph_ene++;
     if( vph> vphmin && vph<vphmax && abs(phCosth)<cphmax) nph_visible++;
   }// iphot
-
-  // ********************************************************************
+// ********************************************************************
 
   double CosThe1 = m_pfer1.CosTheta();
   double Theta1  = m_pfer1.Theta();
@@ -404,7 +406,8 @@ void TRobolKKMC::Production(double &iEvent)
 
   double Acol    = fabs(Phi1-(Phi2+3.141594));
 
-  // ***   lepton trigger
+// ********************************************************************
+// ******   lepton trigger ******
   int nlep_visible =0;
   double cmax = 0.95;
   double vf1=2*E1/CMSene;
@@ -413,6 +416,8 @@ void TRobolKKMC::Production(double &iEvent)
 //  if( vf2>vphmin && vf2<vphmax && abs(CosThe2)<cmax) nlep_visible++;
   if( abs(CosThe1)<cmax) nlep_visible++;
   if( abs(CosThe2)<cmax) nlep_visible++;
+  nlep_visible =0;   // neutrino channels (axion search)
+// ********************************************************************
 
   double phi1, px, py;
 //  px = m_pfer1[1];
@@ -687,12 +692,13 @@ void TRobolKKMC::Production(double &iEvent)
     hst_phi1_Ceex2_pol->Fill(  Phi1, WtCEEX2);
 //    hst_phi1_Ceex2_pol->Fill(  Phi1, WtEEX3);
 //  }
-//------------------------------------------------
+//------------------------------------------------------------------
 // special selection for axion search background
-//------------------------------------------------
+//------------------------------------------------------------------
   hst_axib1->Fill(0.5, WtCEEX2);
   if( nph_visible>0 ) hst_axib2->Fill(0.5, WtCEEX2);
   if( nph_visible>0  && nlep_visible ==0 ) hst_axib3->Fill(0.5, WtCEEX2);
+//------------------------------------------------------------------
 
   if(iEvent<50){
     cout<<"============================================================="<<iEvent;
