@@ -291,9 +291,9 @@ void TRobolKKMC::Hbooker()
   hst_phi1_Ceex2_pol = TH1D_UP("hst_phi1_Ceex2_pol", "phi1 azimithal", 64, -2*M_PI ,2*M_PI);
 
 // axion search background
-  hst_axib1          = TH1D_UP("hst_axib1"," all              ", 1, 0.00 ,1.00); // single bin
-  hst_axib2          = TH1D_UP("hst_axib2"," 1 photon         ", 1, 0.00 ,1.00); // single bin
-  hst_axib3          = TH1D_UP("hst_axib3"," 1 phot. no lept. ", 1, 0.00 ,1.00); // single bin
+  hst_axib1          = TH1D_UP("hst_axib1"," all              ",  1, 0.00 ,1.00); // single bean
+  hst_axib2          = TH1D_UP("hst_axib2"," 1 photon         ", 10, 0.90 ,1.00); //
+  hst_axib3          = TH1D_UP("hst_axib3"," 1 phot. no lept. ", 10, 0.90 ,1.00); //
 
 /////////////////////////////////////////////////////////
 /*  mooved to TMCgenKKMC
@@ -380,8 +380,8 @@ void TRobolKKMC::Production(double &iEvent)
   double Pi=4*atan(1.0);
   double vph,phEne,phTheta,phCosth;
   double XEnePho  = 0.95;  // Emin for visible photom
-  XEnePho = 0.97;
-  //----------------------------------------------------
+  XEnePho = 0.90;
+  double vPhoSum =0;
   int nph_ene=0;
   int nph_visible=0;
   for(int iphot=0;iphot<m_Nphot;iphot++){
@@ -389,6 +389,7 @@ void TRobolKKMC::Production(double &iEvent)
     phCosth = m_phot[iphot].CosTheta();
     phTheta = m_phot[iphot].Theta()*180/Pi;
     vph = 2*phEne/CMSene;
+    vPhoSum = vPhoSum+vph;
     if( vph>XEnePho) nph_ene++;
     if( vph>XEnePho && abs(phCosth)<cphmax) nph_visible++;
   }// iphot
@@ -695,9 +696,9 @@ void TRobolKKMC::Production(double &iEvent)
 //------------------------------------------------------------------
 // special selection for axion search background
 //------------------------------------------------------------------
-  hst_axib1->Fill(0.5, WtCEEX2);
-  if( nph_visible>0 ) hst_axib2->Fill(0.5, WtCEEX2);
-  if( nph_visible>0  && nlep_visible ==0 ) hst_axib3->Fill(0.5, WtCEEX2);
+  hst_axib1->Fill( 0.5, WtEEX3);
+  if( nph_ene>0 ) hst_axib2->Fill(vPhoSum, WtEEX3);
+  if( nph_visible>0  && nlep_visible ==0 ) hst_axib3->Fill(vPhoSum, WtEEX3);
 //------------------------------------------------------------------
 
   if(iEvent<50){
