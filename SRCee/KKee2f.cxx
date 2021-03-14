@@ -45,9 +45,9 @@ KKee2f::KKee2f()
   m_BornDist = NULL;
   m_EWtabs   = NULL;
   m_Event    = NULL;
-//  m_GenISR   = NULL;
+  m_GenISR   = NULL;
 //  m_GenFSR   = NULL;
-//  m_QED3     = NULL;
+  m_QED3     = NULL;
 //  m_GPS      = NULL;
 //  m_BVR      = NULL;
   m_KKexamp  = NULL;
@@ -66,9 +66,9 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
   m_BornDist = NULL;
   m_EWtabs   = NULL;
   m_Event    = NULL;
-//  m_GenISR   = NULL;
+  m_GenISR   = NULL;
 //  m_GenFSR   = NULL;
-//  m_QED3     = NULL;
+  m_QED3     = NULL;
 //  m_GPS      = NULL;
 //  m_BVR      = NULL;
   m_KKexamp  = NULL;
@@ -147,6 +147,20 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_BornDist->Initialize();
 //////////////////////////////////////////////////////////////
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++
+  m_GenISR= new KKarLud(OutFile);
+  m_GenISR->SetDB(DB);
+  m_GenISR->SetRNgen(f_RNgen);
+  m_GenISR->SetEvent(m_Event);
+  m_GenISR->Initialize();
+
+//============================
+  m_QED3= new KKqed3(OutFile);
+  m_QED3->SetDB(DB);
+  m_QED3->SetEvent(m_Event);
+  m_QED3->SetBornV(m_BornDist);
+  m_QED3->Initialize();
+//============================
 
 // MC event ISR+FSR record in KKMC format
   m_Event= new KKevent(OutFile);
@@ -157,6 +171,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 
   cout<<"%%%%%  Beam Eenergy Spread (BES) parameters %%%%% "<<endl;
+  cout<<" KeyBES = "<< DB->KeyBES<<endl;
   for(int i=0;i<5;i++) m_ParBES[i] = m_xpar[80+i]; // CIRCE params
   cout<<" ParBES[*]=";
   for(int i=0;i<5;i++) cout<<"  "<<m_ParBES[i]; cout<<endl;
@@ -373,13 +388,14 @@ else if(   DB->KeyBES == 1){
 }// if KeyBES
 m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 //--------------------------------------------
+
 /////////////////  ISR //////////////////////////////
 double R,gamiCR,gami,alfi;
 double amfin = DB->fmass[m_KFfin];
 double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
 double RhoISR, AvMult, YFSkon, YFS_IR;
 if ( DB->KeyISR == 1) {
-  MakeGami(m_KFfin,m_XXXene,gamiCR,gami,alfi);
+  MakeGami(m_KFini,m_XXXene,gamiCR,gami,alfi);
   if( gami <= 0 ) return 0 ;
   R = Xarg[iarg]; iarg++; // last dimension
   if ( (R == 0) && (gami >= 1) ) return 0;    // to be totally safe
@@ -389,7 +405,7 @@ if ( DB->KeyISR == 1) {
   RhoISR = MakeRhoISR(gamiCR, gami, alfi, m_vv, DB->vvmin, vvmax);
   AvMult = gamiCR*log(m_vv/DB->vvmin);
   if( AvMult < 0) AvMult=0;   // correctness of this to be xchecked !!!!
-  YFSkon = exp( 0.25*gami + alfi*(-0.5 + sqr(m_pi)/3.0) );
+  YFSkon = exp( 0.25*gami + alfi*(-0.5 + sqr(M_PI)/3.0) );
   YFS_IR = exp(gami*log(DB->vvmin));
 }else {   // ISR off
   m_vv = 0;
@@ -412,6 +428,7 @@ if( m_FoamMode<0) {  // Only in generation mode !!!!!
   m_Event->m_YFS_IR_ini = YFS_IR;
   m_Event->m_YFSkon_ini = YFSkon;
 }
+
 //------------------
 double svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
 //double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0 ???
@@ -422,6 +439,7 @@ Rho  *= BornCR;
 //
 if( std::isnan(Rho)) cout<<"  m_EventCounter="<<m_EventCounter<<" Rho="<<Rho<<endl;
 if( abs(Rho) < 1e-150) Rho=1e-150;  // Foam does not tolerate zero integrand
+
 //
 return Rho;
 }//RhoFoam5
@@ -433,7 +451,7 @@ void KKee2f::MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, do
 double amel = DB->fmass[KFini];
 double am2  = sqr(2*amel/CMSene);
 double chini2 = sqr(DB->Qf[KFini]);  // electric charge of beam fermion
-alfi   = chini2 /DB->Alfinv0 /m_pi;
+alfi   = chini2 /DB->Alfinv0 /M_PI;
 if( am2 < 1 ) {
   double beta = sqrt(1-am2);
   gami    = 2*alfi *( log( sqr(1+beta)/am2) -1);

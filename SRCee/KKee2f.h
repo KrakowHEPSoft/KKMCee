@@ -25,6 +25,8 @@ using namespace std;
 #include "KKborn.h"
 #include "KKdizet.h"
 #include "KKevent.h"
+#include "KKarLud.h"
+#include "KKqed3.h"
 
 #include "KKlasa.h"
 
@@ -35,15 +37,17 @@ class KKee2f: public TMCgen{
  KKborn  *m_BornDist;             // Born differential distribution
  KKdizet *m_EWtabs;               // EW formfactors
  KKevent *m_Event;                // MC event ISR+FSR in KKMC format
-
-
+ KKarLud *m_GenISR;               // ISR YFS generator
+// KKarFin *m_GenFSR;               // FSR YFS generator
+ KKqed3  *m_QED3;                 // EEX matrix element
+// KKceex  *m_GPS;                  // CEEX matrix element
+// KKbvir  *m_BVR;                  // Library of virtual corrections
  KKlasa  *m_KKexamp;              // Template for new class
 
 // Dimensionality
  static const int maxPar  = 10001;    // max. num. KKMC parameters +1
  static const int maxPhot =   101;    // max. num. KKMC photons +1
  static const int maxWT   =  1001;    // max. num. KKMC wt list +1
- double   m_pi;               // pi
 //----------------------------------
 // INPUT data
  long     m_NevTot;           //   total numer of events to be generated, obsolete

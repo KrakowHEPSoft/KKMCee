@@ -9,5 +9,7 @@
 #pragma link C++ class KKdizet+;
 #pragma link C++ class KKborn+;
 #pragma link C++ class KKevent+;
+#pragma link C++ class KKarLud+;
+#pragma link C++ class KKqed3+;
 #pragma link C++ class KKlasa+;
 #endif
