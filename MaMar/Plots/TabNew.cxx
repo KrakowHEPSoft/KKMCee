@@ -71,13 +71,13 @@ void TableNew()
 //  Char_t Capt[20][132];
 
 // Column captions
-  int nPlt=3;   // KORALZ eliminated
+  int nPlt=2;   // KORALZ eliminated
   Char_t *Capt[nPlt+1];
   for( int i=0; i<=nPlt; i++ ) Capt[i]=new char[132];
-  strcpy(Capt[0],"{\\color{blue}$N$}");
-  strcpy(Capt[1],"{\\color{blue} Tot.}");
-  strcpy(Capt[2],"{\\color{blue} 1 phot. }");
-  strcpy(Capt[3],"{\\color{blue} 1 phot. NO lept.}");
+  strcpy(Capt[0],"{\\color{blue}$v$}");
+//  strcpy(Capt[1],"{\\color{blue} Tot.}");
+  strcpy(Capt[1],"{\\color{blue} 1 phot. }");
+  strcpy(Capt[2],"{\\color{blue} 1 phot. $\\theta$ cut}");
 //  strcpy(Capt[4],"{\\color{red}${\\cal O}(\\alpha^2)_{\\rm CEEX}$ }");
 
 // formats, not used in PlTable2
@@ -88,15 +88,20 @@ void TableNew()
 
 // pointers to histograms
   TH1D *iHst[nPlt+1];
-  iHst[1]= hst_axib1;  //
-  iHst[2]= hst_axib2;  //
-  iHst[3]= hst_axib3;  //
+//  iHst[1]= hst_axib1;  //
+//  iHst[2]= hst_axib2;  //
+//  iHst[3]= hst_axib3;  //
+  iHst[1]= hst_axib2;  //
+  iHst[2]= hst_axib3;  //
 //  iHst[4]= HTot_vTcPR_Ceex2;   //CEEX2
   iHst[1]->Scale(1e3);    // nano- to pico-barns
   iHst[2]->Scale(1e3);    // nano- to pico-barns
-  iHst[3]->Scale(1e3);    // nano- to pico-barns
+//  iHst[3]->Scale(1e3);    // nano- to pico-barns
 //  iHst[4]->Scale(1e3);    // nano- to pico-barns
 // multicolumn caption
+  double dx =0.01;
+  iHst[1]->Scale(dx);    // integral over bean
+  iHst[2]->Scale(dx);    // ntegral over bean
   Char_t Mcapt[132];
 //  strcpy(Mcapt,"{\\color{red} 161GeV, $\\mu^+\\mu^-\\gamma$, $\\sigma$[pb]}");
   strcpy(Mcapt,"{\\color{red} 91.2GeV, $\\nu\\bar{\\nu}\\gamma$, $\\sigma$[pb]}");
@@ -111,7 +116,7 @@ void TableNew()
 //  int k1,k2,dk;
 //  k1=10; k2=90; dk=20;  //original
 //  k1= 5; k2=45; dk=10;
-    PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, " ", 1, 1, 1); // for 1 bins
+    PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, " ", 1, 10, 1); // for 1 bins
 //  PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "B", 1, 1, 1); // for 1 bins
 //  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T", 1, 1, 1); // for 1 bins
 //  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "E", 1, 1, 1); // for 1 bins

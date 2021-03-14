@@ -129,6 +129,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   DB = new KKdbase(OutFile);
   DB->Initialize(  m_xpar );
   m_CMSene =  DB->CMSene;
+  m_KFini = 11;
 
   InitParams();
 ////////////////////////////////////////////
@@ -306,12 +307,12 @@ double Rho = 1.0;
 // Final fermion type
 int iKF = 1 + m_nKF*Xarg[iarg]; iarg++;
 m_KFfin = m_KFlist[iKF-1];
-//Rho = Rho *m_nKF; // to get sum over final fermions, not average
+Rho = Rho *m_nKF; // to get sum over final fermions, not average
 //==========================================================
 ///////////////  Polar angle Theta ///////////////
 double cmax = 0.99999999;
 m_CosTheta = cmax*( -1.0 + 2.0* Xarg[iarg] ); iarg++;
-//Rho *= 2.0*cmax;  // jacobian
+Rho *= 2.0*cmax;  // jacobian
 //==========================================================
 m_r1=0.0; m_r2=0.0;
 int optGauss = 2;   // Gaussian BES with/without mapping
@@ -341,6 +342,8 @@ else if(   DB->KeyBES == 1){
    dGauss *= 1/(2.0*M_PI)/(sigma1*sigma2)/sqrt(1-sqr(corho)); // Normalization factor
    Rho *= dGauss;
   }else{
+   // mapping of Patrick Janot for 2-dim Gaussian BES with optional correlation
+   // in this case Jacobian*distribution=1 is omitted.
    double r1 = Xarg[iarg]; iarg++;
    double r2 = Xarg[iarg]; iarg++;
    double x1 = sqrt(-2.*log(r1)) * cos(2.*M_PI*r2);
@@ -371,7 +374,55 @@ else if(   DB->KeyBES == 1){
 m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 //--------------------------------------------
 /////////////////  ISR //////////////////////////////
-m_vv = Xarg[iarg]; iarg++;
+double R,gamiCR,gami,alfi;
+double amfin = DB->fmass[m_KFfin];
+double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
+double RhoISR, AvMult, YFSkon, YFS_IR;
+if ( DB->KeyISR == 1) {
+  MakeGami(m_KFfin,m_XXXene,gamiCR,gami,alfi);
+  if( gami <= 0 ) return 0 ;
+  R = Xarg[iarg]; iarg++; // last dimension
+  if ( (R == 0) && (gami >= 1) ) return 0;    // to be totally safe
+  m_vv = vvmax* exp((1.0/gami)*log(R));
+  if(m_vv > vvmax) return 0; // should never happen, but cautious
+// Calculate ISR crude structure function (the same as in Karlud)
+  RhoISR = MakeRhoISR(gamiCR, gami, alfi, m_vv, DB->vvmin, vvmax);
+  AvMult = gamiCR*log(m_vv/DB->vvmin);
+  if( AvMult < 0) AvMult=0;   // correctness of this to be xchecked !!!!
+  YFSkon = exp( 0.25*gami + alfi*(-0.5 + sqr(m_pi)/3.0) );
+  YFS_IR = exp(gami*log(DB->vvmin));
+}else {   // ISR off
+  m_vv = 0;
+  RhoISR = 1;
+  AvMult = 0; // average photon multiplicity
+  YFSkon = 1; // yfs form factor
+  YFS_IR = 1;  // exponentiated integral of Rho for v < vmin
+}//KeyISR
+Rho *= RhoISR;
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// Basic variables to be used later on in generation
+if( m_FoamMode<0) {  // Only in generation mode !!!!!
+  m_Event->m_AvMult  = AvMult;
+  m_Event->m_KFini   = m_KFini;
+  m_Event->m_KFfin   = m_KFfin;
+  m_Event->m_vv      = m_vv;
+  m_Event->m_CosTheta= m_CosTheta;
+  m_Event->m_r1      = m_r1;
+  m_Event->m_r2      = m_r2;
+  m_Event->m_YFS_IR_ini = YFS_IR;
+  m_Event->m_YFSkon_ini = YFSkon;
+}
+//------------------
+double svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
+//double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0 ???
+double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, m_CosTheta);  //
+double sig0nb = 4.0*M_PI/( 3.0 *sqr(DB->Alfinv0)) *1.0/(sqr(m_XXXene )) *DB->gnanob;
+BornCR  *= sig0nb/(1.0-m_vv);
+Rho  *= BornCR;
+//
+if( std::isnan(Rho)) cout<<"  m_EventCounter="<<m_EventCounter<<" Rho="<<Rho<<endl;
+if( abs(Rho) < 1e-150) Rho=1e-150;  // Foam does not tolerate zero integrand
+//
 return Rho;
 }//RhoFoam5
 
@@ -379,7 +430,6 @@ void KKee2f::MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, do
 //////////////////////////////////////////////////////////////////////////////
 //   Crude Gami as a function of CMSene                                     //
 //////////////////////////////////////////////////////////////////////////////
-
 double amel = DB->fmass[KFini];
 double am2  = sqr(2*amel/CMSene);
 double chini2 = sqr(DB->Qf[KFini]);  // electric charge of beam fermion
@@ -428,7 +478,6 @@ m_FoamMode = -1;   // generation mode
 f_FoamI->MakeEvent();
 f_FoamI->GetMCwt(m_WtFoam);
 
-m_KFini = 11;
 m_Event->m_KFini=m_KFini;
 m_Event->m_KFfin=m_KFfin;
 m_Event->m_vv= 0.0;

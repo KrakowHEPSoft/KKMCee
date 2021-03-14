@@ -34,6 +34,7 @@ class KKevent: public TObject{
  int      m_KFfin;                   // outgoing fermion ID (negative if 1st is anti)
  double   m_Mbeam1, m_Mbeam2;        // masses of parton (quark) beams
  double   m_vv;                      // vv of KKMC
+ double   m_CosTheta;                // cos(theta) at the crude level
  double   m_r1, m_r2;                // z variables for initial Energy Beam Spread (EBS)
  // event 4-momenta
  TLorentzVector m_Pf1;               // initial quark m_p1
@@ -50,11 +51,13 @@ class KKevent: public TObject{
  TLorentzVector m_PhotISR[maxPhot];  // ISR photons, f77 indexing
  TLorentzVector m_PhotFSR[maxPhot];  // FSR photons, f77 indexing
  //------------------------------------
- // MC Weights
+ // Formfactors
+ double   m_AvMult;                // Average ISR photon multiplicity
  double   m_YFS_IR_ini;            // YFS formfactor part from Foam Density
  double   m_YFSkon_ini;            // YFS formfactor part from Foam Density
  double   m_YFS_IR_fin;            // YFS formfactor part from KKarfin (Piatek)
  double   m_YFSkon_fin;            // YFS formfactor part from KKarfin (Piatek)
+ // MC Weights
  double   m_WtFoam;                // Foam weight
  double   m_WT_ISR;                // ISR weight
  double   m_WT_FSR;                // FSR weight
