@@ -62,22 +62,23 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
   m_icont++;
 
 // import variables generated in FOAM
-  m_KFini= m_Event->m_KFini;
-  m_KFfin= m_Event->m_KFfin;
-  m_vv   = m_Event->m_vv;
-  m_r1   = m_Event->m_r1;
-  m_r2   = m_Event->m_r2;
+  m_KFini  = m_Event->m_KFini;
+  m_KFfin  = m_Event->m_KFfin;
+  m_vv     = m_Event->m_vv;
+  m_r1     = m_Event->m_r1;
+  m_r2     = m_Event->m_r2;
+  m_XXXene = m_Event->m_XXXene; // = sqrt(PX*PX)
+  m_AvMult = m_Event->m_AvMult;
 //     Redefine CMS energy and boost
-  m_XXXene = DB->CMSene*sqrt((1-m_r1)*(1-m_r2));
-  m_Event->m_XXXene = m_XXXene;
+//  m_XXXene = DB->CMSene*sqrt((1-m_r1)*(1-m_r2));
+//  m_Event->m_XXXene = m_XXXene;
 
+// usually beam is electron but muon is also allowed
   m_amel= DB->fmass[m_KFini];  // current masses
-//  KeyMass-dependent masses, current or constituent
-//  m_amel= m_Event->m_Mbeam1;  // two identical beams assumed
 
 // defining incomming (beam) parton momenta
-  double  qm1 = m_amel, qm2 = m_amel;
-  m_Event->DefPair(m_XXXene,qm1,qm2, &(m_Event->m_Pf1), &(m_Event->m_Pf2));
+//  double  qm1 = m_amel, qm2 = m_amel;
+//  m_Event->DefPair(m_XXXene,m_amel,m_amel, &(m_Event->m_Pf1), &(m_Event->m_Pf2));
 
   // Low-level multiphoton ISR generator (1986)
   if (DB->KeyISR == 1) {
@@ -85,7 +86,7 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
 	   *PX     = m_Event->m_PX;      // temporary solution
 	   *wt_ISR = m_Event->m_WT_ISR;  // temporary solution?
   } else if(DB->KeyISR == 0) {
-	    m_Event->DefPair( m_XXXene,qm1,qm2, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
+	    m_Event->DefPair( m_XXXene,m_amel,m_amel, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
 	    double cth= 1 -2*m_RNgen->Rndm();
 	    double the= acos(cth);
 	    double phi= 2*M_PI *m_RNgen->Rndm();

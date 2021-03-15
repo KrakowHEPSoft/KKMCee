@@ -69,7 +69,9 @@ void TRobolKKMC::Hbooker()
   double delv = 0.012;
   int nbin=200;
   hst_weight   = TH1D_UP("hst_weight" ,  "MC weight",   nbin, 0.000 , 2.0);
-  hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin, -delv , delv);
+  hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
+  hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin,  0.0 , 1.0);
+  hst_nPhot    = TH1D_UP("hst_nPhot" ,   "nPhot",         20,  0.0 ,  20);
   hst_CosTheta = TH1D_UP("hst_CosTheta", "CosTheta",    nbin,  -1.0 , 1.0);
   sca_r1r2     = TH2D_UP("sca_r1r2" ,    "BES spectrum", 100, -delv , delv, 100, -delv , delv);
 
@@ -91,16 +93,22 @@ void TRobolKKMC::Production(double &iEvent)
 
   double WtMain,WtCrude;
  // KKMC_generator->GetWt(WtMain,WtCrude);
-  WtMain = KKMC_generator->m_WtFoam; // temporary
+ // WtMain = KKMC_generator->m_WtFoam; // temporary
+  WtMain = KKMC_generator->m_WtMain;
 
   double CosTheta = KKMC_generator->m_CosTheta;
   double r1 = Event->m_r1;
   double r2 = Event->m_r2;
-  double vvTrue = r1 + r2;
+  double vv = Event->m_vv;
+  int nPhot = Event->m_nPhotISR;
 
   hst_weight->Fill(WtMain);
 
-  hst_vvTrue->Fill(vvTrue);
+  hst_vvTrue->Fill(vv,WtMain);
+  hst_nPhot->Fill(nPhot,WtMain);
+
+  double vvBES = r1 + r2;
+  hst_vvBES->Fill(vvBES,WtMain);
 
   hst_CosTheta->Fill(CosTheta,WtMain);
 

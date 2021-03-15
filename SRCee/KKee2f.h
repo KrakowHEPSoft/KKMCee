@@ -90,8 +90,14 @@ class KKee2f: public TMCgen{
  double   m_vv;
  double   m_r1;
  double   m_r2;
-  //-------------------------------------------
- double   m_WtFoam;
+ // MC Weights
+  double   m_WtSet[maxWT];           // list of alternative weights f77 indexing
+ // double   m_WtSet[1001];             // list of alternative weights f77 indexing
+  double   m_WtSetNew[maxWT];         // list of alternative weights f77 indexing
+  double   m_WtAlter[maxWT];          // list of alternative weights f77 indexing
+  double   m_WtMain;                  // Main weight
+  double   m_WtCrude;                 // Crude weight
+  double   m_WtFoam;                  // Foam weight
 //-------------------------------------------
  public:
  KKee2f();                // explicit default constructor for streamer

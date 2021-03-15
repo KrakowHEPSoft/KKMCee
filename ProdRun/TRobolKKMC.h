@@ -18,6 +18,8 @@ class TRobolKKMC : public TRobol
 //
  TH1D   *hst_weight;          //!  No streamer!!!
  TH1D   *hst_vvTrue;          //!  No streamer!!!
+ TH1D   *hst_nPhot;           //!  No streamer!!!
+ TH1D   *hst_vvBES;           //!  No streamer!!!
  TH1D   *hst_CosTheta;        //!  No streamer!!!
  //
  TH2D   *sca_r1r2;            //!  No streamer!!!

@@ -46,6 +46,8 @@ void HistNormalize(){
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_weight") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvTrue") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_nPhot") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvBES") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_CosTheta") );
   //
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_r1r2") );
@@ -61,10 +63,11 @@ void FigInfo()
   double CMSene=100.0;
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
-  TH1D *hst_weight       = (TH1D*)DiskFileA.Get("hst_weight");
-  //TH1D *hst_LnThPhAll  = (TH1D*)DiskFileA.Get("hst_LnThPhAll");
+  TH1D *hst_weight    = (TH1D*)DiskFileA.Get("hst_weight");
+  TH1D *hst_nPhot     = (TH1D*)DiskFileA.Get("hst_nPhot");
+  TH1D *hst_vvBES     = (TH1D*)DiskFileA.Get("hst_vvBES");
   TH1D *hst_vvTrue    = (TH1D*)DiskFileA.Get("hst_vvTrue");
-  TH1D *hst_CosTheta   = (TH1D*)DiskFileA.Get("hst_CosTheta");
+  TH1D *hst_CosTheta  = (TH1D*)DiskFileA.Get("hst_CosTheta");
   //------------------------------------------------------------------------
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
@@ -84,30 +87,30 @@ void FigInfo()
   //==========plot1==============
   cFigInfo->cd(1);
   gPad->SetLogy(); // !!!!!!
-  /*
-  hst_nPhAll->SetStats(0);
-  hst_nPhAll->SetMinimum( 1e-3*hst_nPhAll->GetMaximum());
-  hst_nPhAll->SetTitle(0);
-  hst_nPhAll->SetLineColor(kBlue);
-  hst_nPhAll->GetXaxis()->SetLabelSize(0.06);
-  hst_nPhAll->DrawCopy("h");
-  //
-  hst_nPhVis->SetLineColor(kRed);
-  hst_nPhVis->DrawCopy("hsame");
+  TH1D *HST = hst_nPhot;
+  HST->SetStats(0);
+  HST->SetMinimum( 1e-3*HST->GetMaximum());
+  HST->SetTitle(0);
+  HST->SetLineColor(kBlue);
+  HST->GetXaxis()->SetLabelSize(0.06);
+  HST->DrawCopy("h");
   CaptT->DrawLatex(0.10,0.93,"No. of #gamma's. tagged (red) and All (blue)");
   CaptE->DrawLatex(0.70,0.85, capt1);
-  */
+
   ///==========plot2==============
   cFigInfo->cd(2);
   //-----------------------------
-  hst_CosTheta->SetTitle(0);
-  hst_CosTheta->SetStats(0);
-  hst_CosTheta->SetLineColor(4);
-  hst_CosTheta->SetMinimum(0);
+  gPad->SetLogy(); // !!!!!!
+  //HST = hst_CosTheta;
+  HST = hst_vvTrue;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->SetLineColor(4);
+  //HST->SetMinimum(0);
 
-  hst_CosTheta->DrawCopy("h");
+  HST->DrawCopy("h");
 
-  CaptT->DrawLatex(0.10,0.95,"d#sigma/dc (Ceex2) ");
+  CaptT->DrawLatex(0.10,0.95,"d#sigma/dv (Ceex2) ");
   ///==========plot3==============
   cFigInfo->cd(3);
   gPad->SetLogy(); // !!!!!!
@@ -119,9 +122,9 @@ void FigInfo()
   cFigInfo->cd(4);
   ///
   //gPad->SetLogy(); // !!!!!!
-  hst_vvTrue->SetTitle(0);
-  hst_vvTrue->DrawCopy("h");
-  CaptT->DrawLatex(0.10,0.95,"Beam Enegy Spread");
+  hst_vvBES->SetTitle(0);
+  hst_vvBES->DrawCopy("h");
+  CaptT->DrawLatex(0.10,0.95,"Beam Energy Spread");
   CaptE->DrawLatex(0.30,0.85, capt1);
   //
   cFigInfo->cd();
@@ -205,8 +208,8 @@ int main(int argc, char **argv)
  */
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
-  FigInfo();
   FigBES2();
+  FigInfo();
  //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
 //

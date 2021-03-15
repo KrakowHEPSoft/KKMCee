@@ -28,7 +28,7 @@ extern "C" {
 "K "<<setw(10)<<name<<" = "<<setw(10)<<numb<<" = "          <<setw(50)<<text<<" K"<<endl
 #define BOX1F(name,numb,text)     cout<<"K "<<setw(10)<<name<<\
         " = "<<setw(15)<<setprecision(8)<<numb<<"   =    "<<setw(40)<<text<<" K"<<endl
-#define BX2F(name,numb,err,text) cout<<"K "<<setw(10)<<name<<\
+#define BOX2F(name,numb,err,text) cout<<"K "<<setw(10)<<name<<\
 " = "<<setw(15)<<setprecision(8)<<numb<<" +- "<<setw(15)<<setprecision(8)<<err<<\
                                                     "  = "<<setw(25)<<text<<" K"<<endl
 #define BOXCLO cout<<\
@@ -146,6 +146,9 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_BornDist->SetDZ(m_EWtabs);  // EW tables from the disk
   m_BornDist->Initialize();
 //////////////////////////////////////////////////////////////
+// MC event ISR+FSR record in KKMC format
+  m_Event= new KKevent(OutFile);
+  m_Event->Initialize(DB->CMSene);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++
   m_GenISR= new KKarLud(OutFile);
@@ -162,9 +165,6 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_QED3->Initialize();
 //============================
 
-// MC event ISR+FSR record in KKMC format
-  m_Event= new KKevent(OutFile);
-  m_Event->Initialize(DB->CMSene);
 
   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
   cout<<"%%%%%  f_RNgen->Rndm() = "<< f_RNgen->Rndm()  <<endl;
@@ -425,14 +425,14 @@ if( m_FoamMode<0) {  // Only in generation mode !!!!!
   m_Event->m_CosTheta= m_CosTheta;
   m_Event->m_r1      = m_r1;
   m_Event->m_r2      = m_r2;
+  m_Event->m_XXXene  = m_XXXene;
   m_Event->m_YFS_IR_ini = YFS_IR;
   m_Event->m_YFSkon_ini = YFSkon;
 }
 
 //------------------
 double svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
-//double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0 ???
-double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, m_CosTheta);  //
+double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0
 double sig0nb = 4.0*M_PI/( 3.0 *sqr(DB->Alfinv0)) *1.0/(sqr(m_XXXene )) *DB->gnanob;
 BornCR  *= sig0nb/(1.0-m_vv);
 Rho  *= BornCR;
@@ -483,6 +483,7 @@ if (vv > vvmin) {
 return Rho * exp(gami*log(vvmax ));
 }//RhoISR
 
+//_______________________________________________________________________________
 void KKee2f::Generate()
 {
 m_EventCounter++;
@@ -496,11 +497,6 @@ m_FoamMode = -1;   // generation mode
 f_FoamI->MakeEvent();
 f_FoamI->GetMCwt(m_WtFoam);
 
-m_Event->m_KFini=m_KFini;
-m_Event->m_KFfin=m_KFfin;
-m_Event->m_vv= 0.0;
-m_Event->m_r1= m_r1;
-m_Event->m_r2= m_r2;
 m_Event->m_nPhotISR=0;
 m_Event->m_nPhotFSR=0;
 m_Event->m_nPhot=0;
@@ -518,7 +514,56 @@ double the= acos(m_CosTheta);
 double phi= 2*M_PI*f_RNgen->Rndm();
 double amfi  =DB->fmass[m_KFfin];
 m_Event->PhaSpac2(&m_XXf,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+double WT_ISR=1;      // m_GenISR
+double WT_FSR=1;      // m_GenISR
+m_WtCrude = m_WtFoam;
 
+
+
+//////////////////////////////////////
+//          ISR   KKarlud           //
+//   KeyISR inside m_GenISR????
+m_Event->m_Mbeam1 = Mbeam; // input for m_GenISR
+m_Event->m_Mbeam2 = Mbeam; // input for m_GenISR
+m_GenISR->Make(&m_XXf,&WT_ISR);
+m_WtCrude *=  WT_ISR;
+
+//////////////////////////////////////
+if(m_WtCrude!= 0){
+    m_Event->Merge(); // merging ISR and FSR photon momenta
+}//if wtcrude
+
+//=============================================================
+//                    Model weight
+// =============================================================
+// WtSet reseting to zero
+double WtBest, WtBest2;
+
+for(int j=0; j< maxWT;j++){
+   m_WtSet[j]   =0;
+   m_WtAlter[j] =0;  // formely WtList
+}//for
+
+//m_WtMain  =m_WtCrude;
+if(m_WtCrude != 0 ) {
+// 4-momenta are transfered to QED directly through m_Event
+      m_QED3->Make(); // f77 indexing!!!
+      for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
+      WtBest = m_WtSet[74];   // wtset[74]
+//[[[[[[[[[[[[[[[
+      if(m_EventCounter <30 ){
+        (*f_Out)<<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
+        cout    <<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
+      }
+//]]]]]]]]]]]]]]]
+}//m_WtCrude
+
+m_WtMain=WtBest*m_WtCrude;
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 m_Event->ZBoostALL();
 
 //////////////////////////////////////////////////////////////////////
@@ -531,7 +576,17 @@ m_Event->ZBoostALL();
   int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
   f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
   f_TMCgen_NORMA->SetEntries(NevPrim);
-///////////////////
+
+/////////////////////////////////////////////////////////////
+//[[[[[ DEBUG
+  if(m_EventCounter <= 20) {
+     m_Event->PrintISR();
+     m_Event->PrintISR_FSR();
+     m_Event->PrintISR_FSR(f_Out);
+     m_Event->EventPrintAll();
+  }//m_EventCounter
+
+
 }// Generate
 
 void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
