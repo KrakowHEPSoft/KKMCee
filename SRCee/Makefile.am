@@ -16,9 +16,9 @@ dict1H = KK2fDict.h
 CLEANFILES = $(dict1C) $(dict1H)
 #  Header files:
 include_HEADERS1 = 	KKee2f.h KKdbase.h KKdizet.h KKborn.h \
-					KKevent.h KKlasa.h KKarLud.h KKqed3.h
-#					KKarFin.h \
-#                   KKceex.h KKpart.h KKbvir.h
+					KKevent.h KKlasa.h KKarLud.h KKqed3.h \
+					KKarFin.h \
+					KKceex.h KKpart.h KKbvir.h
 noinst_HEADERS1 = LinkDef1.h
 #  ROOT Directory generation:
 ROOTCINTHDRS1= $(include_HEADERS1) $(noinst_HEADERS1)
@@ -30,9 +30,9 @@ $(dict1C) : $(ROOTCINTHDRS1)
 #  Additional flags:
 nodist_libKKee_la_SOURCES = $(dict1C)
 libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
-						KKevent.cxx KKlasa.cxx KKarLud.cxx KKqed3.cxx
-#						KKarFin.cxx \
-#						KKceex.cxx KKpart.cxx KKbvir.cxx
+						KKevent.cxx KKlasa.cxx KKarLud.cxx KKqed3.cxx \
+						KKarFin.cxx \
+						KKceex.cxx KKpart.cxx KKbvir.cxx
 libKKee_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
     $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)
