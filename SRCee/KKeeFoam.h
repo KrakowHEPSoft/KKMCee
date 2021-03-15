@@ -21,9 +21,6 @@ extern "C" {
 // SRChh/ffff_aux.f
    void fort_open_( const int&, const char*, int);
    void fort_close_(const int&);
-// LHAPDF
-   void   hhpdf_initialize_(double[]);
-   double hhpdf_strucfunc_(const int&, const int&, const double&, const double&);
 }
 
 class KKeeFoam :public TMCgen
@@ -43,8 +40,8 @@ class KKeeFoam :public TMCgen
   KKbvir   *m_BVR;             // Library of virtual corrections
   KKceex   *m_GPS;             // CEEX matrix element
 
-  TFOAM   *m_Foam9;        //  Additional Foam object
-  double   m_Xsav9;        //  normalization
+  TFOAM   *m_Foam6;        //  Additional Foam object
+ // double   m_Xsav6;        //  normalization
 
 // Dimensionality
   static const int maxPar  = 10001;    // max. num. KKMC parameters +1
@@ -52,15 +49,12 @@ class KKeeFoam :public TMCgen
   double   m_xpar[maxPar];     // xpar input parameters of KKMC, f77 indexing
 //
 // data members
-  int      m_count7;            // debug
-  int      m_count9;            // debug
+  int      m_count4;            // debug
+  int      m_count6;            // debug
   int      m_out;              // f77 output unit no
 
   double   m_alfpi;            // alpha/pi
   double   m_ceuler;           // Euler const.
-  //
-  int      m_QuarkList[6];     // list of quarks KF indices to generate
-  int      m_nQuarks;          // number of quark flavors selected to generate
   //
   int      m_LeptonList[6];    // list of final leptons KF indices to generate
   int      m_nLeptons;         // number of lepton flavors selected to generate
@@ -78,8 +72,8 @@ class KKeeFoam :public TMCgen
   int      m_nCallsFoam0;   // No of events in Foam initialization
   // additional Foam object
   double   m_Xnorm9;        // Foam normalization
-  int      m_nCallsFoam9;   // No of events in Foam initialization
-  TH1D    *h_TMCgen_NORMA9; //! Normalization histogram, no streamer!!!
+  int      m_nCallsFoam6;   // No of events in Foam initialization
+  TH1D    *h_TMCgen_NORMA6; //! Normalization histogram, no streamer!!!
 //***********************************************
   double   m_CMSene;        //! no streamer!!!
   double   m_XXXmin;        //! no streamer!!!
@@ -93,7 +87,6 @@ class KKeeFoam :public TMCgen
   double   m_chfin;         //! current fin.  fermion charge
   double   m_Mfin;          //! current fin.  fermion mass
   double   m_CosTheta;      //! no streamer!!
-  int      m_AntiQ;         //! no streamer!!
   double   m_y1;            //! 1-x1, PDF1
   double   m_y2;            //! 1-x2, PDF2
   double   m_vv;            //! ISR

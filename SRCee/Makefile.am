@@ -7,9 +7,9 @@ AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 METASOURCES = AUTO
 
 #///////////////////////////////////////////////////////////////
-lib_LTLIBRARIES = libKKee.la
+lib_LTLIBRARIES = libKKee.la libKKfm.la
 #///////////////////////////////////////////////////////////////
-#   Main KKMChh C++ library
+#   Main KKMCee C++ library
 #   ROOT Dictionary 1 file definition
 dict1C = KK2fDict.cxx
 dict1H = KK2fDict.h
@@ -38,6 +38,28 @@ libKKee_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 
+#///////////////////////////////////////////////////////////////
+#   Library of Foam internal benchmark
+#   ROOT Dictionary 2 file definition
+dict2C = KKfmDict.cxx
+dict2H = KKfmDict.h
+#  Header files:
+include_HEADERS2 = KKeeFoam.h
+noinst_HEADERS2 = LinkDef2.h
+#  ROOT Directory generation:
+ROOTCINTHDRS2= $(include_HEADERS2) $(noinst_HEADERS2)
+$(dict2C) : $(ROOTCINTHDRS2)
+	$(ROOTCINT) -f $(dict2C) -c $(all_includes) $(ROOTCINTHDRS2)
+	if [ -f "$(dict2H:.h=_rdict.pcm)" -a -d ".libs/" ]; then ln -f -s "../$(dict2H:.h=_rdict.pcm)" ".libs/"; fi # a brutal fix for ROOT 6 and libtool
+#---------------------------------------------------------------
+#  Local library 2
+#  Additional flags:
+nodist_libKKfm_la_SOURCES = $(dict2C)
+libKKfm_la_SOURCES =  KKeeFoam.cxx
+libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
+    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
+#///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////
 #  explicit target in ../MCdev

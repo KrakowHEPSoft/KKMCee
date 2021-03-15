@@ -18,7 +18,7 @@ KKeeFoam::KKeeFoam():
   m_Event    = NULL;             // MC event ISR+FSR in KKMC format
   m_BVR      = NULL;             // Library of virtual corrections
   m_GPS      = NULL;             // CEEX matrix element
-  m_Foam9    = NULL;             // Foam object
+  m_Foam6    = NULL;             // Foam object
 }
 
 ///______________________________________________________________________________________
@@ -40,7 +40,7 @@ KKeeFoam::KKeeFoam(const char* Name):
   m_Event    = NULL;             // MC event ISR+FSR in KKMC format
   m_BVR      = NULL;             // Library of virtual corrections
   m_GPS      = NULL;             // CEEX matrix element
-  m_Foam9    = NULL;             // Foam object
+  m_Foam6    = NULL;             // Foam object
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
 /// Foam setup
@@ -55,8 +55,8 @@ KKeeFoam::KKeeFoam(const char* Name):
   m_FoamMode    = 7;
 ///////////////////////////////////////////////////
 // debug
-  m_count7   =0;
-  m_count9   =0;
+  m_count4   =0;
+  m_count6   =0;
 
   m_ceuler  = 0.57721566;
 
@@ -72,7 +72,7 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
 //////////////////////////////////////////////////////////////
   const int jmax = maxPar;
-  ReaData("./KKMChh_defaults", jmax, m_xpar);       // f77 indexing in xpar
+  ReaData("./KKMCee_defaults", jmax, m_xpar);       // f77 indexing in xpar
   ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 means no-zeroing
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // c++ indexing in ypar
 
@@ -97,10 +97,6 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   int sl2 = strlen(output_file);
   fort_open_(m_out,output_file,sl2);
 
-// initialization of LHAPDF library
-  hhpdf_initialize_(m_ypar);
-//===========================
-
 ////////////////////////////////////////////
   cout<<"***** Reading EW tables from DIZET-table1-KK and DIZET-table2-KK *****"<<endl;
   m_DZ   = new KKdizet(OutFile); // EW tables from the disk file
@@ -117,7 +113,7 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 //////////////////////////////////////////////////////////////
 // MC event ISR+FSR record in KKMC format
   m_Event= new KKevent(OutFile);
-  m_Event->Initialize(DB->CMSene, DB->PDG_H1, DB->PDG_H2);
+  m_Event->Initialize(DB->CMSene);
 
 // Lib of virtual functions
   m_BVR = new KKbvir(OutFile);
@@ -132,18 +128,9 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_GPS->SetRNgen(f_RNgen);
   m_GPS->Initialize();
 
-//////////////////////////////////////////////////////////////
-// list of initial state quarks
-  m_nQuarks = 0;
-  for(int i = 1; i<= 6; i++){
-       if(m_xpar[3400+i] == 1) {
-          m_nQuarks = m_nQuarks + 1;
-          m_QuarkList[m_nQuarks-1] = i;  // KF of the quark
-       }//if
- }// for
-  // list of final state leptons
+  // list of final state fermions
   m_nLeptons = 0;
-  for(int i = 1; i<= 6; i++){ // loop over leptons, 1,2,..6
+  for(int i = 1; i<= 16; i++){ // loop over fermions s, 1,2,..16
      int KF = 10+i;
      if ( m_xpar[400+KF] == 1 ) {
         m_nLeptons = m_nLeptons + 1;
@@ -159,8 +146,8 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 /// ********  SETTING UP FOAM object of base class  *******   //
 ////////////////////////////////////////////////////////////////
   f_FoamI   = new TFOAM("FoamI");   // new instance of MC generator FOAM
-  m_kDim    = 7;  // KFi+KFf flavous + z1,z2 of PDFs + ISR + FSR + cosTheta=7
-  m_FoamMode    = 7;
+  m_kDim    = 4;  // KFi+KFf flavous + z1,z2 of PDFs + ISR + FSR + cosTheta=7
+  m_FoamMode    = 4;
   if(DB->KeyISR == 0) m_kDim=m_kDim -1;
   if(DB->KeyFSR == 0) m_kDim=m_kDim -1;
   int nDim=0;
@@ -174,19 +161,12 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   int ibL=0;    // <-- first variable !!!
   f_FoamI->SetInhiDiv(ibL, 1);
   if( nDivL>0 ) f_FoamI->SetXdivPRD(ibL, nDivL, xDivL);
-  // set fixed cells for initial (five) quark flavors
-  int nDivQ = m_nQuarks-1;  // q+qbar common 5 fixed bins
-  double xDivQ[nDivQ];
-  for(int k = 0; k< nDivQ; k++) xDivQ[k] = ((k+1)*1.0)/nDivQ;
-  int ibQ=1;     // <--second variable !!!
-  f_FoamI->SetInhiDiv(ibQ, 1);
-  if( nDivQ>0 ) f_FoamI->SetXdivPRD(ibQ, nDivQ, xDivQ);
 //----------------------------------------------
   m_nCells     = m_xpar[3021];
   m_nSampl     = m_xpar[3023];
   int Vopt     = m_xpar[3022];
   int nBins    = m_xpar[3024];
-//  int EvPerBin = m_xpar[3025];
+  int EvPerBin = m_xpar[3025];
   int KeyWgt   = m_xpar[3026];
   double WtMaxRej = m_xpar[3027];
   m_nCells  =   2000; // for test
@@ -215,43 +195,35 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 //////////////////////////////////////////////////////////////
 // Additional Foam instance with IFI, two more dimensions
 //////////////////////////////////////////////////////////////
-  m_Foam9   = new TFOAM("Foam9");   // new instance of MC generator FOAM
-  m_kDim    = 9; // 7 + 2 of IFI variables = 9
+  m_Foam6   = new TFOAM("Foam9");   // new instance of MC generator FOAM
+  m_kDim    = 6; // 4 + 2 of IFI variables = 6
   if(DB->KeyISR == 0) m_kDim=m_kDim -1;
 //  if(DB->KeyFSR == 0) m_kDim=m_kDim -1;
 //  if(DB->KeyINT == 0) m_kDim=m_kDim -1;
   m_FoamMode    = 9; // Density function switch
-  m_Foam9->SetnDim(nDim);     // simplicial dimensions not used
-  m_Foam9->SetkDim(m_kDim);   // hypercubic dimensions
+  m_Foam6->SetnDim(nDim);     // simplicial dimensions not used
+  m_Foam6->SetkDim(m_kDim);   // hypercubic dimensions
   //---------------------------------------------
   // set fixed cells for final lepton flavors
   nDivL = m_nLeptons-1;
   for(int k = 0; k< nDivL; k++) xDivL[k] = ((k+1)*1.0)/nDivL;
   ibL=0;    // <-- first variable !!!
-  m_Foam9->SetInhiDiv(ibL, 1);
-  if( nDivL>0 ) m_Foam9->SetXdivPRD(ibL, nDivL, xDivL);
-  // set fixed cells for initial (five) quark flavors
-  nDivQ = m_nQuarks-1;  // q+qbar common 5 fixed bins
-  for(int k = 0; k< nDivQ; k++) xDivQ[k] = ((k+1)*1.0)/nDivQ;
-  ibQ=1;     // <--second variable !!!
-  m_Foam9->SetInhiDiv(ibQ, 1);
-  if( nDivQ>0 ) m_Foam9->SetXdivPRD(ibQ, nDivQ, xDivQ);
+  m_Foam6->SetInhiDiv(ibL, 1);
+  if( nDivL>0 ) m_Foam6->SetXdivPRD(ibL, nDivL, xDivL);
 //----------------------------------------------
-//  m_nCells  =  10000; // for production
-//  m_nSampl  = 100000; // for production
-  m_Foam9->SetnCells(m_nCells);     // No. of cells, optional, default=2000
-  m_Foam9->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
-  m_Foam9->SetnBin(        16);     // No. of bins default 8
-  m_Foam9->SetOptRej(       0);            // wted events (=0)is default, (=1) for wt=1 events
-  m_Foam9->Initialize( f_RNgen, this);     // Initialize FOAM
-  m_Foam9->GetIntNorm(m_Xnorm9,errel);     // universal normalization
-  m_nCallsFoam9   = m_Foam9->GetnCalls();  // Needed for nCalls from generation ONLY
+  m_Foam6->SetnCells(m_nCells);     // No. of cells, optional, default=2000
+  m_Foam6->SetnSampl(m_nSampl);     // No. of MC evts/cell in exploration, default=200
+  m_Foam6->SetnBin(        16);     // No. of bins default 8
+  m_Foam6->SetOptRej(       0);            // wted events (=0)is default, (=1) for wt=1 events
+  m_Foam6->Initialize( f_RNgen, this);     // Initialize FOAM
+  m_Foam6->GetIntNorm(m_Xnorm9,errel);     // universal normalization
+  m_nCallsFoam6   = m_Foam6->GetnCalls();  // Needed for nCalls from generation ONLY
   //************* special normalization histos  *************
 //  m_TMCgen_NORMA9 = TH1D_UP("m_TMCgen_NORMA9","Normalization and xpar",jmax,0.0,10000.0);
   f_HstFile->cd();
-  h_TMCgen_NORMA9 = new TH1D("h_TMCgen_NORMA9","Normalization and xpar",jmax,0.0,10000.0);
-  for(int j=1; j<=jmax; j++) h_TMCgen_NORMA9->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
-  h_TMCgen_NORMA9->SetEntries(0); // Important!!!
+  h_TMCgen_NORMA6 = new TH1D("h_TMCgen_NORMA6","Normalization and xpar",jmax,0.0,10000.0);
+  for(int j=1; j<=jmax; j++) h_TMCgen_NORMA6->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
+  h_TMCgen_NORMA6->SetEntries(0); // Important!!!
   cout<<"||||| No of density calls in Foam9 initialization="<< m_nCallsFoam0<<endl;
 //////////////////////////////////////////////////////////////
 //screen output
@@ -276,7 +248,7 @@ void KKeeFoam::Generate()
 // NB. Crude integral XsPrimPb has zero statistical error!
 //////////////////////////////////////////////////////////////////////
 {
-if(m_FoamMode == -7) {
+if(m_FoamMode == -4) {
   f_NevGen++;
   f_FoamI->MakeEvent();         // Foam of base class
   m_WTfoam   = f_FoamI->GetMCwt();  // get weight
@@ -284,14 +256,14 @@ if(m_FoamMode == -7) {
   int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
   f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);     // Picobarns
   f_TMCgen_NORMA->SetEntries(NevPrim);
-}else if( m_FoamMode == -9){
+}else if( m_FoamMode == -6){
   f_NevGen++;
-  m_Foam9->MakeEvent();         // Foam of base class
-  m_WTfoam   = m_Foam9->GetMCwt();  // get weight
-  double XsPrimPb = m_Foam9->GetPrimary();
-  int NevPrim     = m_Foam9->GetnCalls() -m_nCallsFoam9; // Generation only
-  h_TMCgen_NORMA9->SetBinContent(0,XsPrimPb*NevPrim);     // Picobarns
-  h_TMCgen_NORMA9->SetEntries(NevPrim);
+  m_Foam6->MakeEvent();         // Foam of base class
+  m_WTfoam   = m_Foam6->GetMCwt();  // get weight
+  double XsPrimPb = m_Foam6->GetPrimary();
+  int NevPrim     = m_Foam6->GetnCalls() -m_nCallsFoam6; // Generation only
+  h_TMCgen_NORMA6->SetBinContent(0,XsPrimPb*NevPrim);     // Picobarns
+  h_TMCgen_NORMA6->SetEntries(NevPrim);
 }else{
   cout<<"+++++ KKeeFoam::Generate: Wrong m_FoamMode = "<<m_FoamMode<<endl; exit(33);
 }
@@ -315,8 +287,8 @@ void KKeeFoam::Finalize()
   cout << "**************** KKeeFoam::Finalize  ***********************"<<endl;
   cout << "Directly from FOAM: MCresult= " << MCresult << " +- "<<MCerror <<endl;
   cout << "**************************************************************"<<endl;
-  m_Foam9->Finalize( MCnorm, Errel);  //!
-  m_Foam9->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
+  m_Foam6->Finalize( MCnorm, Errel);  //!
+  m_Foam6->GetIntegMC( MCresult, MCerror);  //! get MC integral, should be one
   ///------------------------
 }//!Finalize
 
@@ -324,10 +296,10 @@ void KKeeFoam::Finalize()
 ///________________________________________________________________________
 double KKeeFoam::Density(int nDim, double *Xarg){
 //
-  if(        abs(m_FoamMode) == 7 ){
+  if(        abs(m_FoamMode) == 4 ){
     return Density4(nDim, Xarg);
-  } else if( abs(m_FoamMode) == 9 ){
-    return Density9(nDim, Xarg);
+  } else if( abs(m_FoamMode) == 6 ){
+    return Density6(nDim, Xarg);
   } else {
    cout<<" KKeeFoam::Density: wrong Mode ="<<m_FoamMode<<endl;
     exit(-9);
@@ -336,39 +308,25 @@ double KKeeFoam::Density(int nDim, double *Xarg){
 
 
 ////////////////////////////////////////////////////////////////
-double KKeeFoam::Density9(int nDim, double *Xarg)
+double KKeeFoam::Density6(int nDim, double *Xarg)
 { // density distribution for Foam
 ///////////////////////////////////////////////////////////////
-m_count9++;
+m_count6++;
 double Rho = 1.0;
 int iarg=0;
 //--------------------------------------------
-// Initial quark type
-int Iq = 1 + m_nQuarks*Xarg[iarg]; iarg++;
-// factor 2 because q+qbar bins
-Rho  = Rho*2*m_nQuarks; // to get sum over quarks, not average
-m_KFini = m_QuarkList[Iq-1];
+m_KFini = 11;  // electron, can be also muon
 m_chini = DB->Qf[ m_KFini];
 m_Mbeam = DB->fmass[m_KFini];  // to be refined, current or constituent?
 //==========================================================
-// Final lepton type
+// Final fermion type
 int Ilep = 1 + m_nLeptons*Xarg[iarg]; iarg++;
 m_KFfin = m_LeptonList[Ilep-1];        // !!!!!!
 Rho = Rho *m_nLeptons; // to get sum over leptons, not average
 m_Mfin   = DB->fmass[m_KFfin];
 m_chfin  = DB->Qf[ m_KFfin];
-//==========================================================
-// PDF variables
-double x1, x2, RhoDY;
-MaperDY2(Xarg[iarg], Xarg[iarg+1], x1, x2, RhoDY);  // Nalgo=1 onl
-Rho  *=RhoDY;
-iarg = iarg+2;
-m_XXXene = DB->CMSene * sqrt(x1* x2);    // qqbqr energy
-double svar = sqr(m_XXXene);             // qqbar system before ISR
-// Structure functions
-double SF1 = hhpdf_strucfunc_(1,  m_KFini, m_XXXene, x1);
-double SF2 = hhpdf_strucfunc_(2, -m_KFini, m_XXXene, x2);
-Rho = Rho*SF1*SF2;
+m_XXXene = DB->CMSene;
+double svar = sqr(m_XXXene);
 //==========================================================
 // Polar angle Theta
 double cmax = 0.99999;
@@ -419,22 +377,15 @@ Rho *= dJacFSR;  // jacobian
 RhoFSR0 = RhoFSR(0,svar2,m_uu,m_eps);
 Rho *= RhoFSR0;
 //}//KeyFSR
-m_xx= x1* x2 *(1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
-//[[[[[[[[[[[[[[[[[[[
-// Soft cut-off on QED ISR+FSR+IFI for tests
-//double yy =  1.0 - (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
-//if(  yy>0.2 ) return 0;
-//]]]]]]]]]]]]]]]]]]]
+m_xx= (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
 //===========================================================
 // Crude distribution
-int Nc =3;  // colour
-double svarZ = sqr(DB->CMSene) * x1* x2 *(1-m_vv);
+double svarZ = sqr(DB->CMSene) *(1-m_vv);
 double dBornCrude = m_BornDist->BornSimple(m_KFini, m_KFfin, svarZ, 0.0);
 dBornCrude *= 1/(2.0*cmax);  // to be compatible with KKMChh (KORALZ) convention
-Rho *= dBornCrude/Nc;
+Rho *= dBornCrude;
 double sig0nb = 4*M_PI* 1.0/(3.0*sqr(DB->Alfinv0)) *1.0/(svarZ )*DB->gnanob;
 Rho *=  sig0nb;
-Rho *=  1/(x1*x2);    // PDFs normalized as momentum distribution instead luminosities
 if( svarZ*(1-m_uu) < sqr(2*m_Mfin)) Rho = 1e-100;
 ///////////////////////////////////////////////////////////////////////////
 //// The basic/crude integrand Rho for Foam is complete at this point !! //
@@ -459,8 +410,8 @@ m_GPS->BornFoam2( 11,m_KFini,m_KFfin,sisr2,m_CosTheta,Yint);
 double dSigFoam2 = m_GPS->MakeRhoFoam() *Yint;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 //if( f_NevGen>0 && f_NevGen<500) {
-//cout<<"KKeeFoam::Density9: gamint="<< gamint<<" vv="<<m_vv<<" uu="<<m_uu<<" r1="<<m_r1<<" r2="<<m_r2<<endl;
-//cout<<"KKeeFoam::Density9:  sisr1="<<sisr1<<" sisr2="<<sisr2<<" Yint="<<Yint<<sisr2<<" dSigFoam2="<<dSigFoam2<<endl;
+//cout<<"KKeeFoam::Density6: gamint="<< gamint<<" vv="<<m_vv<<" uu="<<m_uu<<" r1="<<m_r1<<" r2="<<m_r2<<endl;
+//cout<<"KKeeFoam::Density6:  sisr1="<<sisr1<<" sisr2="<<sisr2<<" Yint="<<Yint<<sisr2<<" dSigFoam2="<<dSigFoam2<<endl;
 //}
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -476,63 +427,32 @@ if(DB->KeyISR != 0) m_WTset[203] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR C
 if(DB->KeyFSR != 0) m_WTset[202] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
 if(DB->KeyFSR != 0) m_WTset[203] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
 //////////////////////////////////////////////////////////////
-// random swap of q and qbar
-if ( f_RNgen->Rndm() < 0.5) m_AntiQ = 0; else m_AntiQ = 1;
-if( m_AntiQ) {double x0; x0=x1; x1=x2; x2=x0;} // swap x1,x2 of PDFs
-if( m_AntiQ) m_CosTheta *= -1.0; // and reverse z=axis for final fermions
 /////////////////////////////////////////////////////////////
 //  Finishing kinematics
-m_y1 = 1.0-x1;
-m_y2 = 1.0-x2;
-if( (m_y1 == 1) || (m_y2 == 1) ) return 0; // implausible but safe
 /////////////////////////////////////////////////////////////
 if(m_FoamMode > 0 ) Rho = fabs(Rho); // For initialization mode
 return Rho;
-}//Density9
+}//Density6
 
 //_____________________________________________________________________
 double KKeeFoam::Density4(int nDim, double *Xarg)
 { // density distribution for Foam
 ///////////////////////////////////////////////////////////////
-m_count7++;
+m_count4++;
 double Rho = 1.0;
 int iarg=0;
 //--------------------------------------------
-// Initial quark type
-int Iq = 1 + m_nQuarks*Xarg[iarg]; iarg++;
-// factor 2 because q+qbar bins
-Rho  = Rho*2*m_nQuarks; // to get sum over quarks, not average
-m_KFini = m_QuarkList[Iq-1];
+m_KFini = 11;
 m_chini = DB->Qf[ m_KFini];
 m_Mbeam = DB->fmass[m_KFini];  // to be refined, current or constituent?
 //--------------------------------------------
-// Final lepton type
+// Final fermion type
 int Ilep = 1 + m_nLeptons*Xarg[iarg]; iarg++;
 m_KFfin = m_LeptonList[Ilep-1];        // !!!!!!
 Rho = Rho *m_nLeptons; // to get sum over leptons, not average
 m_Mfin   = DB->fmass[m_KFfin];
 m_chfin  = DB->Qf[ m_KFfin];
-//----------------------------------------------
-double x1, x2, RhoDY;
-MaperDY2(Xarg[iarg], Xarg[iarg+1], x1, x2, RhoDY);  // Nalgo=1 onl
-Rho  *=RhoDY;
-//[[[[[[[[[[[[ debug
-//x1 = Xarg[iarg]; x2 = Xarg[iarg+1];
-//double QQ= DB->CMSene*sqrt(x1*x2);
-//if(QQ< m_XXXmin || QQ>m_XXXmax) Rho=1e-100;
-//]]]]]]]]]]]]
-
-iarg = iarg+2;
-m_XXXene = DB->CMSene * sqrt(x1* x2);
-
-// Structure functions
-double SF1 = hhpdf_strucfunc_(1,  m_KFini, m_XXXene, x1);
-double SF2 = hhpdf_strucfunc_(2, -m_KFini, m_XXXene, x2);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//      cout<< "m_KFini, m_XXXene, x1, x2 = "<< m_KFini<<"  "<< m_XXXene<<"  "<< x1<<"  "<< x2<< endl;
-//      cout<< "SF1, SF2 = "<< SF1<<"  "<< SF2<< endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-Rho = Rho*SF1*SF2;
+m_XXXene = DB->CMSene;
 
 // ******** mapping for polar angle *******
 double cmax = 0.99999;
@@ -578,20 +498,18 @@ if( DB->KeyFSR != 0){
 //  Rho *= gamf *exp(gamf*log(m_uu))/m_uu; // FSR distribution
 //]]]]]]]]]]]]]]]]]
 }// if KeyISR
-m_xx= x1* x2 *(1-m_vv)*(1-m_uu);
+m_xx= (1-m_vv)*(1-m_uu);
 
-int Nc =3;  // colour
-double svarZ = sqr(DB->CMSene) * x1* x2 *(1-m_vv);
+double svarZ = sqr(DB->CMSene) *(1-m_vv);
 //double svarZ = sqr(m_XXXene); // the same
 double dBornCrude = m_BornDist->BornSimple(m_KFini, m_KFfin, svarZ, 0.0);
 dBornCrude *= 1/(2.0*cmax);  // to be compatible with KKMChh (KORALZ) convention
 //[[[[[[[
 //double dBornCrude = m_BornDist->BornSimple(m_KFini, m_KFfin, svarZ, m_CosTheta);
 //dBornCrude *= 3.0/8.0;      // 3/8 corrects for KORALZ convention in BornSimple
-Rho *= dBornCrude/Nc;
+Rho *= dBornCrude;
 double sig0nb = 4*M_PI* 1.0/(3.0*sqr(DB->Alfinv0)) *1.0/(svarZ )*DB->gnanob;
 Rho *=  sig0nb;
-Rho *=  1/(x1*x2);    // PDFs normalized as momentum distribution instead luminosities
 if( svarZ*(1-m_uu) < sqr(2*m_Mfin)) Rho = 1e-100;
 //[[[[[[[[[[[[[[[[[[[
 // Temporary cut-off on QED ISR+FSR+IFI for tests
@@ -636,16 +554,8 @@ if(DB->KeyISR != 0) m_WTset[252] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR C
 if(DB->KeyISR != 0) m_WTset[253] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX2
 if(DB->KeyFSR != 0) m_WTset[252] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
 if(DB->KeyFSR != 0) m_WTset[253] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
-//////////////////////////////////////////////////////////////
-// random swap of q and qbar
-if ( f_RNgen->Rndm() < 0.5) m_AntiQ = 0; else m_AntiQ = 1;
-if( m_AntiQ) {double x0; x0=x1; x1=x2; x2=x0;} // swap x1,x2 of PDFs
-if( m_AntiQ) m_CosTheta *= -1.0; // and reverse z=axis for final fermions
 /////////////////////////////////////////////////////////////
 //  Finishing kinematics
-m_y1 = 1.0-x1;
-m_y2 = 1.0-x2;
-if( (m_y1 == 1) || (m_y2 == 1) ) return 0; // implausible but safe
 /////////////////////////////////////////////////////////////
 if(m_FoamMode > 0 ) Rho = fabs(Rho); // For initialization mode
 return Rho;
@@ -795,23 +705,6 @@ double KKeeFoam::gamIFI( double costhe){
 }
 
 
-void KKeeFoam::MaperDY2(double r1, double r2, double &x1, double &x2, double &Rho){
-//----------------------------------------------------------------------------
-// Maps r1, r2 into parton momentum fractions x1, x2,
-// power map for Q^2, Nalgo = 1 only.
-//----------------------------------------------------------------------------
-  double svar = sqr(DB->CMSene);
-  double Qsqmin = sqr(m_XXXmin);
-  double Qsqmax = sqr(m_XXXmax);
-  double Qsq = 1/((1-r1)/Qsqmin + r1/Qsqmax);
-  Rho = sqr(Qsq) * (1/Qsqmin - 1/Qsqmax);
-  double z = Qsq/svar;
-  x1 = exp(r2*log(z));
-  x2 = z/x1;
-  Rho = -log(z) * Rho/svar;
-  }// MaperDY2
-
-
 ///------------------------------------------------------------------------
 void KKeeFoam::MapPlus( double r, double gam, double &v, double &dJac){
 // Maping for POSITIVE gam
@@ -884,7 +777,7 @@ void KKeeFoam::MapMinus( double r, double gam, double &v, double &dJac){
       }
   }
   //[[[[[[[[[[[[[[[[[[[
-  //if(m_count9<1000) cout<<"MapMinus:gam="<<gam<<" eps="<<eps<<" del="<<m_del<<" vvmax="<<m_vvmax<<" v="<<v<<endl;
+  //if(m_count6<1000) cout<<"MapMinus:gam="<<gam<<" eps="<<eps<<" del="<<m_del<<" vvmax="<<m_vvmax<<" v="<<v<<endl;
 
   if( v<0 || v>1) {
       cout<<"STOP in KKeeFoam::MapMinus: +++ v = "<<v<<endl;

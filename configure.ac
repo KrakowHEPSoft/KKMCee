@@ -64,7 +64,7 @@ RHadr/Makefile RHadr/Plots/Makefile \
 fcc/Makefile fcc/workDEV/Makefile \
 SRCee/Makefile \
 DZface/Makefile \
-ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile \
+ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \
 ProdDigest/Makefile \
 ])
 AC_OUTPUT
