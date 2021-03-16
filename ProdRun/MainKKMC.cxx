@@ -24,7 +24,6 @@ TFile HistoFile("histo.root","UPDATE","histograms");
 TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
-  gSystem->Load("../.libs/libKKmc.so");
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable
   TFile *SemafFile;    // Semaphore and loop params

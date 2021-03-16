@@ -13,7 +13,6 @@ lib_LTLIBRARIES = libKKee.la libKKfm.la
 #   ROOT Dictionary 1 file definition
 dict1C = KK2fDict.cxx
 dict1H = KK2fDict.h
-CLEANFILES = $(dict1C) $(dict1H)
 #  Header files:
 include_HEADERS1 = 	KKee2f.h KKdbase.h KKdizet.h KKborn.h \
 					KKevent.h KKlasa.h KKarLud.h KKqed3.h \
@@ -45,7 +44,7 @@ dict2C = KKfmDict.cxx
 dict2H = KKfmDict.h
 #  Header files:
 include_HEADERS2 = KKeeFoam.h
-noinst_HEADERS2 = LinkDef2.h
+noinst_HEADERS2  = LinkDef2.h
 #  ROOT Directory generation:
 ROOTCINTHDRS2= $(include_HEADERS2) $(noinst_HEADERS2)
 $(dict2C) : $(ROOTCINTHDRS2)
@@ -60,6 +59,8 @@ libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
     $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
+CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
+
 
 #///////////////////////////////////////////////////////////////
 #  explicit target in ../MCdev

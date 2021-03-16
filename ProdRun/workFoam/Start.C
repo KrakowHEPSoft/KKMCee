@@ -6,10 +6,6 @@
 ///============================================================================
 gROOT->Reset();
 cout<<"%%% ================== Start.C ================== %%%%"<<endl;
-gSystem->Load("../.libs/libProdFoam.so");
-gSystem->Load("../../SRChh/.libs/libKK2f.so");
-gSystem->Load("../../SRChh/.libs/libKKfm.so");
-//gSystem->Load("../../MCdev/.libs/libMCdev.so");
 TFile HistoFile("histo.root","RECREATE","Histograms");
 TFile GenFile(  "mcgen.root","RECREATE","r.n.generator, MCgens");
 TFile SemFile(  "semaf.root","RECREATE","Semaphore");
@@ -20,11 +16,7 @@ double nevtot   = 1e12; // 1000G
 //nevtot =10;     // 10
 //nevtot =100;     // 100
 //nevtot =2000;      //2k
-//nevtot =10000;     // 10k
-//nevtot =100000;    // 100k
-//nevtot =200000;    // 200k
 //nevtot =1000000;   // 1M
-//nevtot =4000000;   // 4M
 //nevtot =100e6;     // 100M
 nevtot = 2e9;        // 2G
 double nevgrp   = 2e5; // 200k
@@ -48,9 +40,7 @@ RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
 ///*****************************************************************
 cout<<"***   Create new instance of MC generator"<<endl;
-TMCgen *MCgen = new KKhhFoam("MCgen");
-//########### Change some input parameters ###########
-//MCgen->m_nSampl  = 100000;   // MC evts/cell (200)  ##
+TMCgen *MCgen = new KKeeFoam("MCgen");
 //####################################################
 MCgen->ls();
 MCgen->Write("MCgen",TObject::kOverwrite);

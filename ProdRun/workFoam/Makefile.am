@@ -5,8 +5,8 @@
 # Farming under SLURM batch system on CC1
 #    make SLfarm6; make SLsubmitall; ...
 #=======================================================================
-MAIN=MainKKMC
-DSET=work1
+MAIN=MainFoam
+DSET=workFoam
 subCMD=qsub
 CLASS=qunlimitted
 ##############

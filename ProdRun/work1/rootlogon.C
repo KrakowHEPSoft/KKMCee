@@ -1,3 +1,3 @@
 {
-  gSystem->Load("../.libs/libKKmc.so");
+  gSystem->Load("../.libs/libProdKK.so");
 }
