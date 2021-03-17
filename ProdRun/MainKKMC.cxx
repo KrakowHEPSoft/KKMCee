@@ -24,6 +24,18 @@ TFile HistoFile("histo.root","UPDATE","histograms");
 TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
+/*
+  cout<<"------------------------------MCgenFile->ls----------------------------------"<<endl;
+  MCgenFile.ls();
+  MCgenFile.GetListOfKeys()->Print();
+  MCgenFile.ShowStreamerInfo();
+  cout<<"------------------------------MCgenFile-------------------------------------"<<endl;
+*/
+//  gSystem->Load("../.libs/libProdFoam.so");        // not needed
+//  gSystem->Load("../../MCdev/.libs/libMCdev.so");  // not needed
+  gSystem->Load("../../SRCee/.libs/libKKee.so");     // not needed
+  gSystem->Load("../../SRCee/.libs/libKKfm.so");     // NEEDED! why?
+
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable
   TFile *SemafFile;    // Semaphore and loop params

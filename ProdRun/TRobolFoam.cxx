@@ -146,7 +146,7 @@ void TRobolFoam::Production(double &iEvent)
 // MC generation using FOAM of the base class
 //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
-  MCgen->m_FoamMode = -7;
+  MCgen->m_FoamMode = -4;
   TRobol::Production(iEvent);  // It invokes MCgen->Generate() !!!
 /// filling in histos
   double WTfoam;
@@ -188,7 +188,7 @@ void TRobolFoam::Production(double &iEvent)
 // MC generation using additional FOAM object
 /////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-  MCgen->m_FoamMode = -9;
+  MCgen->m_FoamMode = -6;
   MCgen->Generate();               //!!!!!!
   MCgen->m_Foam6->GetMCwt(WTfoam);
 // event has changed!!!

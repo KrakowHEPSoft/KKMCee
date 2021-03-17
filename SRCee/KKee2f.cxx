@@ -5,12 +5,13 @@
 
 ClassImp(KKee2f);
 
+/*
 extern "C" {
 // SRChh/ffff_aux.f
    void fort_open_( const int&, const char*, int);
    void fort_close_(const int&);
 }//
-
+*/
 
 #define SW20 setw(20)<<setprecision(14)
 #define SP15 setw(15)<<setprecision(9)

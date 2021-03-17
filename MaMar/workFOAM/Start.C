@@ -51,9 +51,11 @@ TRobol *RoboT = new TRobolFOAM("RoboT");  /// base clase only
 RoboT->f_HistNormName = "HST_FOAM_NORMA5";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
+cout<<"-------------------------GenFile.ls-------------------------"<<endl;
 GenFile.ls();
 GenFile.Write();
-cout<<"---------------------------------------------------------"<<endl;
+cout<<"-------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+//GenFile.ShowStreamerInfo();
 GenFile.Close();
 cout << "===========Output written in histo.root===========" << endl;
 HistoFile.Write();

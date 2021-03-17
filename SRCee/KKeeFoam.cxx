@@ -52,7 +52,7 @@ KKeeFoam::KKeeFoam(const char* Name):
 //  m_del     = 1e-6;         // limit for |gamma*ln(eps)| in IFI mapping $$$
   m_eps = 1e-6;             // IR regulator
 //  m_eps = 1e-8;             // IR regulator, test $$$
-  m_FoamMode    = 7;
+  m_FoamMode    = 4;
 ///////////////////////////////////////////////////
 // debug
   m_count4   =0;
@@ -90,12 +90,14 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   double minMfl = m_xpar[656];  // tau mass
   m_Mffmin = 2*minMfl;
 
-  //=============================================================
+//=============================================================
 //   opening disk fime for fortran part of code
+/*
   m_out = 16;
   const char *output_file = "./pro77.output";
   int sl2 = strlen(output_file);
   fort_open_(m_out,output_file,sl2);
+*/
 
 ////////////////////////////////////////////
   cout<<"***** Reading EW tables from DIZET-table1-KK and DIZET-table2-KK *****"<<endl;
@@ -200,7 +202,7 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   if(DB->KeyISR == 0) m_kDim=m_kDim -1;
 //  if(DB->KeyFSR == 0) m_kDim=m_kDim -1;
 //  if(DB->KeyINT == 0) m_kDim=m_kDim -1;
-  m_FoamMode    = 9; // Density function switch
+  m_FoamMode    = 6; // Density function switch
   m_Foam6->SetnDim(nDim);     // simplicial dimensions not used
   m_Foam6->SetkDim(m_kDim);   // hypercubic dimensions
   //---------------------------------------------

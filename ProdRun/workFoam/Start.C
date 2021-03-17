@@ -40,7 +40,7 @@ RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
 ///*****************************************************************
 cout<<"***   Create new instance of MC generator"<<endl;
-TMCgen *MCgen = new KKeeFoam("MCgen");
+KKeeFoam *MCgen = new KKeeFoam("MCgen");
 //####################################################
 MCgen->ls();
 MCgen->Write("MCgen",TObject::kOverwrite);
@@ -51,7 +51,11 @@ TRobol *RoboT = new TRobolFoam("RoboT");  /// base clase only
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
 GenFile.Write();
-cout<<"---------------------------------------------------------"<<endl;
+cout<<"--------------------------GenFile.ls-------------------------------"<<endl;
+GenFile.ls();
+GenFile.GetListOfKeys()->Print();
+cout<<"-------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+GenFile.ShowStreamerInfo();
 GenFile.Close();
 cout << "===========Output written in histo.root===========" << endl;
 HistoFile.Write();

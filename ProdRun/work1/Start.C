@@ -52,8 +52,10 @@ RoboT->f_HistNormName = "HST_KKMC_NORMA";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
 GenFile.Write();
+cout<<"--------------------------GenFile.ls-------------------------------"<<endl;
 GenFile.ls();
-cout<<"---------------------------------------------------------"<<endl;
+cout<<"-------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+GenFile.ShowStreamerInfo();
 GenFile.Close();
 cout << "===========Output written in histo.root===========" << endl;
 HistoFile.Write();
