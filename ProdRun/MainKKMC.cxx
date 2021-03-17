@@ -33,7 +33,7 @@ int main()
 */
 //  gSystem->Load("../.libs/libProdFoam.so");        // not needed
 //  gSystem->Load("../../MCdev/.libs/libMCdev.so");  // not needed
-  gSystem->Load("../../SRCee/.libs/libKKee.so");     // not needed
+  gSystem->Load("../../SRCee/.libs/libKKee.so");     // needed ???
   gSystem->Load("../../SRCee/.libs/libKKfm.so");     // NEEDED! why?
 
   char chcyc[100];          // Cycle text variable

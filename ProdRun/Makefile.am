@@ -13,7 +13,6 @@ CLEANFILES = $(dict2C) $(dict2H)
 #   ROOT Dictionary for local library 1
 dict1C = ProdFoamDict.cxx
 dict1H = ProdFoamDict.h
-CLEANFILES = $(dict1C) $(dict1H)
 #  Header files:
 include_HEADERS1 = TRobolFoam.h
 noinst_HEADERS1 = LinkDef1.h
@@ -52,6 +51,7 @@ libProdKK_la_LIBADD =  \
 	$(top_builddir)/SRCee/libKKee.la \
     -L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(FLIBS) $(ROOTAUXLIBS)
 #///////////////////////////////////////////////////////////////
+CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
 
 #///////////////////////////////////////////////////////////////
 #  explicit target in ../MCdev and ../SRCee
