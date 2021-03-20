@@ -20,21 +20,24 @@ using namespace std;
 #include "TRobol.h"
 #include "TSystem.h"
 
-TFile HistoFile("histo.root","UPDATE","histograms");
-TFile MCgenFile("mcgen.root","UPDATE","Generators");
+//TFile HistoFile("histo.root","UPDATE","histograms");
+//TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
-/*
-  cout<<"------------------------------MCgenFile->ls----------------------------------"<<endl;
-  MCgenFile.ls();
-  MCgenFile.GetListOfKeys()->Print();
-  MCgenFile.ShowStreamerInfo();
-  cout<<"------------------------------MCgenFile-------------------------------------"<<endl;
-*/
-//  gSystem->Load("../.libs/libProdFoam.so");        // not needed
-//  gSystem->Load("../../MCdev/.libs/libMCdev.so");  // not needed
   gSystem->Load("../../SRCee/.libs/libKKee.so");     // needed ???
   gSystem->Load("../../SRCee/.libs/libKKfm.so");     // NEEDED! why?
+  TFile *HistoFile = new TFile("histo.root","UPDATE","histograms");
+  TFile *MCgenFile = new TFile("mcgen.root","UPDATE","Generators");
+//  cout<<"------------------------------MCgenFile->ls----------------------------------"<<endl;
+//  MCgenFile->ls();
+//  MCgenFile->GetListOfKeys()->Print();
+//  cout<<"------------------------------MCgenFile->ShowStreamerInfo---------------------------"<<endl;
+//  MCgenFile->ShowStreamerInfo();
+//  cout<<"------------------------------HistoFile->ShowStreamerInfo---------------------------"<<endl;
+//  HistoFile->ShowStreamerInfo();
+//  cout<<"------------------------------MCgenFile-------------------------------------"<<endl;
+//  gSystem->Load("../.libs/libProdFoam.so");        // not needed
+//  gSystem->Load("../../MCdev/.libs/libMCdev.so");  // not needed
 
   char chcyc[100];          // Cycle text variable
   Text_t *Tcycle;           // Cycle text variable
@@ -73,14 +76,21 @@ int main()
   //--------------------------------------------------------------------------
   if( Status == "STOP") cout<<"MainPr: +++Warning+++ Status=STOP in semaphore"<<endl;
   //////////////////////////////////////////////////////////////////////////
-  TRobol *RoboT =(TRobol*)MCgenFile.Get("RoboT");   /// read analysis object
+  TRobol *RoboT =(TRobol*)MCgenFile->Get("RoboT");   /// read analysis object
   RoboT->Initialize(
         &OutFile,   /// Central log-file for messages
-        &MCgenFile,  /// ROOT disk file for CRNG and MC gen.
-        &HistoFile); /// ROOT disk file for histograms
+        MCgenFile,  /// ROOT disk file for CRNG and MC gen.
+        HistoFile); /// ROOT disk file for histograms
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
   cout<< "|| MainKKMC: to be generated "<<NevTot<< " events "<<endl;
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
+  //[[[[[[[[[[
+  //  cout<<"------------------------------HistoFile->ls----------------------------------"<<endl;
+  //  HistoFile->ls();
+  //  cout<<"------------------------------HistoFile->ShowStreamerInfo---------------------------"<<endl;
+  //  HistoFile->ShowStreamerInfo();
+  //  exit(99);
+  //]]]]]]]]]]
   ///***********************************************************************
   ///          MAIN LOOP OVER MONTE CARLO EVENTS
   for ( iLoop = 0; ; iLoop++)
@@ -100,14 +110,14 @@ int main()
       // Disk Write for all histos and r.n. generator
       sprintf(chcyc,"*;%i",iLoop); Tcycle = chcyc;
       //cout<<"Main iLoop, Tcycle = "<< iLoop <<"|||"<< Tcycle <<"|||"<<endl;
-      HistoFile.cd();
-      HistoFile.Write();  //!!!
-      HistoFile.Delete(Tcycle);
-      HistoFile.Flush();
+      HistoFile->cd();
+      HistoFile->Write();  //!!!
+      HistoFile->Delete(Tcycle);
+      HistoFile->Flush();
       //
-      MCgenFile.cd();
-      MCgenFile.Write();  //!!!
-      MCgenFile.Delete(Tcycle);
+      MCgenFile->cd();
+      MCgenFile->Write();  //!!!
+      MCgenFile->Delete(Tcycle);
       ///////////////////////////////////////////////////////////////
       // Checks semaphore for each group of NGroup events
       SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
@@ -137,27 +147,29 @@ int main()
   RoboT->Finalize();
   //////////////////////////////////////////////////////////////////////
   //  LAST WRITEs
-  MCgenFile.cd();
+  MCgenFile->cd();
   RoboT->Write("RoboT",TObject::kOverwrite);  // only for tests
   //////////////////////////////////////////////////////////////////////
   //      Some TESTS and control printouts
-  cout<<"------------------------------HistoFile.ls----------------------------------"<<endl;
-  HistoFile.ls();
-  //cout<<"------------------------------HistoFile.Map---------------------------------"<<endl;
-  //HistoFile.Map();
-  //cout<<"-------------------------MCgenFile.ShowStreamerInfo-------------------------"<<endl;
-  //MCgenFile.ShowStreamerInfo();
-  cout<<"------------------------HistoFile.GetListOfKeys-----------------------------"<<endl;
-  HistoFile.GetListOfKeys()->Print();
-  cout<<"------------------------MCgenFile.GetListOfKeys-----------------------------"<<endl;
-  MCgenFile.GetListOfKeys()->Print();
+  cout<<"------------------------------HistoFile->ls----------------------------------"<<endl;
+  HistoFile->ls();
+  //cout<<"-----------------------------HistoFile->Map---------------------------------"<<endl;
+  //HistoFile->Map();
+  //cout<<"-------------------------MCgenFile->ShowStreamerInfo-------------------------"<<endl;
+  //MCgenFile->ShowStreamerInfo();
+  cout<<"-------------------------HistoFile->ShowStreamerInfo-------------------------"<<endl;
+  HistoFile->ShowStreamerInfo();
+  cout<<"------------------------HistoFile->GetListOfKeys-----------------------------"<<endl;
+  HistoFile->GetListOfKeys()->Print();
+  cout<<"------------------------MCgenFile->GetListOfKeys-----------------------------"<<endl;
+  MCgenFile->GetListOfKeys()->Print();
   cout<<"-------------------------------SemafFile.ls---------------------------------"<<endl;
   SemafFile->ls();
   cout<<"---------------------------------end---------------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES
-  HistoFile.Close();
-  MCgenFile.Close();
+  HistoFile->Close();
+  MCgenFile->Close();
   OutFile.close();
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;

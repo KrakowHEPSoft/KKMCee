@@ -20,7 +20,7 @@ TString semaf   = "START";
 double nevtot   = 1e12; // 1000G
 //nevtot = 2e5;
 //nevtot =1000;
-nevtot = 10e6;
+//nevtot = 10e6;
 double nevgrp   = 1e5; // 100k
 nevgrp = 1e6;          // 1M
 //nevgrp = 1e4;
@@ -51,16 +51,20 @@ TRobol *RoboT = new TRobolKKMC("RoboT");  /// base clase only
 RoboT->f_HistNormName = "HST_KKMC_NORMA";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
+cout << "========================GenFile.Write (MCgen.root)=============" << endl;
 GenFile.Write();
 cout<<"--------------------------GenFile.ls-------------------------------"<<endl;
 GenFile.ls();
-cout<<"-------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
-GenFile.ShowStreamerInfo();
+//cout<<"--------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+//GenFile.ShowStreamerInfo();
 GenFile.Close();
-cout << "===========Output written in histo.root===========" << endl;
+cout << "========================HistoFile.Write (histo.root)===========" << endl;
 HistoFile.Write();
-//HistoFile.ls();
-HistoFile.Close();
+cout<<"--------------------------HistoFile.ls-------------------------------"<<endl;
+HistoFile.ls();
+cout<<"--------------------------HistoFile.ShowStreamerInfo-------------------------"<<endl;
+//HistoFile.GetListOfKeys()->Print();
+//HistoFile.Close();
 cout<<"%%% ===============End Start.C ================== %%%%"<<endl;
 return 0;
 }

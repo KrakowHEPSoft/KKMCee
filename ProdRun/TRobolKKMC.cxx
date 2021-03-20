@@ -67,7 +67,7 @@ void TRobolKKMC::Hbooker()
   f_HstFile->cd();
   //  ************* user histograms  *************
   double delv = 0.012;
-  int nbin=200;
+  int nbin=100;
   hst_weight   = TH1D_UP("hst_weight" ,  "MC weight",   nbin, 0.000 , 2.0);
   hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
   hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin,  0.0 , 1.0);

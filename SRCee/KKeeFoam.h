@@ -47,6 +47,7 @@ class KKeeFoam :public TMCgen
   static const int maxPar  = 10001;    // max. num. KKMC parameters +1
   double   m_ypar[maxPar];     // xpar input parameters of KKMC, c++ indexing
   double   m_xpar[maxPar];     // xpar input parameters of KKMC, f77 indexing
+  static const int maxWT   =  1001;    // max. num. KKMC wt list +1
 //
 // data members
   int      m_count4;            // debug
@@ -71,7 +72,7 @@ class KKeeFoam :public TMCgen
   double   m_Xnorm;         // Foam normalization
   int      m_nCallsFoam0;   // No of events in Foam initialization
   // additional Foam object
-  double   m_Xnorm9;        // Foam normalization
+  double   m_Xnorm6;        // Foam normalization
   int      m_nCallsFoam6;   // No of events in Foam initialization
   TH1D    *h_TMCgen_NORMA6; //! Normalization histogram, no streamer!!!
 //***********************************************
@@ -97,7 +98,8 @@ class KKeeFoam :public TMCgen
 //
   double   m_WTfoam;        //! MC weight
   double   m_wt0;           //! MC weight  EEX0, Born
-  double   m_WTset[1001];   //! MC correcting weights
+  double   m_WtSet[maxWT];   //! MC correcting weights
+  double   m_WtAlter[maxWT];          // list of alternative weights f77 indexing
 
   ///////////////////////////////////////////////////////////
   /// methods

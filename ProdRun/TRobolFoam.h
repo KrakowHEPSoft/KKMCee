@@ -24,24 +24,11 @@ class TRobolFoam : public TRobol
 //  THwtMon *mon_WtMain;         //!  No streamer!!!
 //  THwtMon *mon_WtFoam;         //!  No streamer!!!
 ////////////////////////////////////////////////////////////////////////////
-  TH1D   *hst_weight;          //!  No streamer!!!
-  TH1D   *hst6_weight;         //!  No streamer!!!
+  TH1D   *HST_weight4;          //!  No streamer!!!
+  TH1D   *HST_weight6;          //!  No streamer!!!
+
+  TH1D   *HST_vv_eex3;          //!  No streamer!!!
   //
- TH1D   *Hst_Mll;             //!  No streamer!!!
-  TH1D   *Hst_Mll_eex0;        //!  No streamer!!!
-  TH1D   *Hst_MllF_eex0;       //!  No streamer!!!
-  TH1D   *Hst_Mll_eex2;        //!  No streamer!!!
-  TH1D   *Hst_MllF_eex2;       //!  No streamer!!!
-  //
-  TH1D   *Hst_Mll_ceex2;       //!  No streamer!!!
-  TH1D   *Hst_MllF_ceex2;      //!  No streamer!!!
-  TH1D   *hst6_Mll_ceex2;       //!  No streamer!!!
-  TH1D   *hst6_MllF_ceex2;      //!  No streamer!!!
-  //
-  TH1D   *Hst_Mll_ceex0;       //!  No streamer!!!
-  TH1D   *Hst_MllF_ceex0;      //!  No streamer!!!
-  TH1D   *hst6_Mll_ceex0;       //!  No streamer!!!
-  TH1D   *hst6_MllF_ceex0;      //!  No streamer!!!
   /////////////////////////////////////////////////////////////////////////////
   /// mandatory constructors and destructors
       public:

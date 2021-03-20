@@ -65,8 +65,8 @@ void TRobolFoam::Initialize(
   KKeeFoam *MCgen = (KKeeFoam*)f_MCgen;
 //
   int jmax = MCgen->maxPar;
-// special histogram name "HST_FOAM_NORMA5" set in Start.C ???!!!
-  TH1D *h_TMCgen_NORMA = (TH1D*)HstFile->Get("h_TMCgen_NORMA");
+// Name of special histogram name "HST_FOAM_NORMA4" is set in Start.C
+  TH1D *h_TMCgen_NORMA = (TH1D*)HstFile->Get("HST_FOAM_NORMA4");
   h_TMCgen_NORMA->SetEntries(0);
 // storing input data for later use in analysis programs
   for(int j=1; j<=jmax; j++) h_TMCgen_NORMA->SetBinContent(j,  MCgen->m_xpar[j]  );
@@ -96,34 +96,18 @@ void TRobolFoam::Hbooker()
   //
   // *************************************
   // Weight monitoring
-  double WtMax = 3.5;
+  double WtMax = 2.0;
   int NBwt =200;
  // mon_WtFoam = new THwtMon("mon_WtFoam", "WtFoam",  NBwt, WtMax);
 //  mon_WtMain = new THwtMon("mon_WtMain", "WtMain",  NBwt, WtMax);
 //
-  hst_weight   = TH1D_UP("hst_weight" , "MC weight",     NBwt,   0.0 , WtMax);
-  hst6_weight  = TH1D_UP("hst6_weight" , "MC weight",    NBwt,   0.0 , WtMax);
+  HST_weight4  = TH1D_UP("HST_weight4" , "MC weight",    NBwt,   0.0 , WtMax);
+  HST_weight6  = TH1D_UP("HST_weight6" , "MC weight",    NBwt,   0.0 , WtMax);
 
-  int nBins = 120;
-  Hst_Mll   = TH1D_UP("Hst_Mll",   "Dilepton Invariant Mass with IFI;M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
+  int nBins = 100;
+//  Hst_Mll   = TH1D_UP("Hst_Mll",   "Dilepton Invariant Mass with IFI;M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
 
-  Hst_Mll_eex0  = TH1D_UP("Hst_Mll_eex0",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  Hst_MllF_eex0 = TH1D_UP("Hst_MllF_eex0",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
-
-  Hst_Mll_eex2  = TH1D_UP("Hst_Mll_eex2",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  Hst_MllF_eex2 = TH1D_UP("Hst_MllF_eex2",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
-////////////////////////////////
-  Hst_Mll_ceex2  = TH1D_UP("Hst_Mll_ceex2",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  Hst_MllF_ceex2 = TH1D_UP("Hst_MllF_ceex2",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
-//
-  hst6_Mll_ceex2  = TH1D_UP("hst6_Mll_ceex2",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  hst6_MllF_ceex2 = TH1D_UP("hst6_MllF_ceex2",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
-//////
-  Hst_Mll_ceex0  = TH1D_UP("Hst_Mll_ceex0",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  Hst_MllF_ceex0 = TH1D_UP("Hst_MllF_ceex0",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
-//
-  hst6_Mll_ceex0  = TH1D_UP("hst6_Mll_ceex0",   "M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
-  hst6_MllF_ceex0 = TH1D_UP("hst6_MllF_ceex0",  "AFB(M_{ll})",                    nBins, m_Mllmin, m_Mllmax);
+  HST_vv_eex3 = TH1D_UP("HST_vv_eex3",   "vv", nBins, 0.0, 1.0);
 
   cout<<       "################Hbooker end##############"<<endl;
 
@@ -141,6 +125,7 @@ void TRobolFoam::Production(double &iEvent)
   m_NevGen++;
   double xx, vv, CosTheta;
   KKeeFoam *MCgen = (KKeeFoam*)f_MCgen;
+  KKevent *Event = MCgen->m_Event;
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 // MC generation using FOAM of the base class
@@ -153,35 +138,13 @@ void TRobolFoam::Production(double &iEvent)
   MCgen->f_FoamI->GetMCwt(WTfoam);
   xx  = MCgen->m_xx;
   CosTheta = MCgen->m_CosTheta;
-  double x1= 1.0 -MCgen->m_y1;
-  double x2= 1.0 -MCgen->m_y2;
-  // CosTheta knows boost direction of Z
-  if(x1<x2) CosTheta *= -1.0; // exploit q/qbar differences in PDF
-  double Mll = MCgen->m_CMSene * sqrt( MCgen->m_xx);
-  //Mll = MCgen->m_XXXene; // this is for KeyISR=0;
+  vv  = MCgen->m_vv;
 
-  // monitoring main weight, all events
-  //mon_WtFoam->Fill(WTfoam);
-  hst_weight->Fill(WTfoam,1.0);
+  HST_weight4->Fill(WTfoam,1.0);
 
-  //////////////////////////////////////////////////
-  Hst_Mll->Fill(  Mll, WTfoam);
+  double WtEEX3 = MCgen->m_WtAlter[73];
 
-  double WTborn= WTfoam *MCgen->m_WTset[71]; // EEX0
-  Hst_Mll_eex0->Fill(  Mll, WTborn);
-  if( CosTheta> 0.0) Hst_MllF_eex0->Fill(  Mll, WTborn);
-
-  double WT73= WTfoam *MCgen->m_WTset[73];  // EEX2
-  Hst_Mll_eex2->Fill(  Mll, WT73);
-  if( CosTheta> 0.0) Hst_MllF_eex2->Fill(  Mll, WT73);
-
-  double WTceex2= WTfoam *MCgen->m_WTset[253];  // CEEX2 no IFI
-  Hst_Mll_ceex2->Fill(  Mll, WTceex2);
-  if( CosTheta> 0.0) Hst_MllF_ceex2->Fill(  Mll, WTceex2);
-
-  double WTceex0= WTfoam *MCgen->m_WTset[251];  // ceex0 noIFI
-  Hst_Mll_ceex0->Fill(  Mll, WTceex0);
-  if( CosTheta> 0.0) Hst_MllF_ceex0->Fill(  Mll, WTceex0);
+  HST_vv_eex3->Fill(vv, WtEEX3);
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -192,20 +155,9 @@ void TRobolFoam::Production(double &iEvent)
   MCgen->Generate();               //!!!!!!
   MCgen->m_Foam6->GetMCwt(WTfoam);
 // event has changed!!!
-  hst6_weight->Fill(WTfoam,1.0);
-  xx  = MCgen->m_xx;               // event has changed!!!
-  CosTheta = MCgen->m_CosTheta;    // event has changed!!!
-  Mll = MCgen->m_CMSene * sqrt( MCgen->m_xx);
-//
-/// filling in histos
-  double WTceex2i= WTfoam *MCgen->m_WTset[203];  // CEEX2
-//  cout<< "  Production: WTfoam="<<WTfoam<<"  m_WTset[203]="<< MCgen->m_WTset[203]<<" WTceex2i="<<WTceex2i <<endl;
-  hst6_Mll_ceex2->Fill(  Mll, WTceex2i);
-  if( CosTheta> 0.0) hst6_MllF_ceex2->Fill(  Mll, WTceex2i);
+  HST_weight6->Fill(WTfoam,1.0);
 
-  double WTceex0i= WTfoam *MCgen->m_WTset[201];  // ceex0+IFI
-  hst6_Mll_ceex0->Fill(  Mll, WTceex0i);
-  if( CosTheta> 0.0) hst6_MllF_ceex0->Fill(  Mll, WTceex0i);
+  vv  = Event->m_vv;
 
 }// Production
 

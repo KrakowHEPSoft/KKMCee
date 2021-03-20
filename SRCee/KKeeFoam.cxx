@@ -197,7 +197,7 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 //////////////////////////////////////////////////////////////
 // Additional Foam instance with IFI, two more dimensions
 //////////////////////////////////////////////////////////////
-  m_Foam6   = new TFOAM("Foam9");   // new instance of MC generator FOAM
+  m_Foam6   = new TFOAM("Foam6");   // new instance of MC generator FOAM
   m_kDim    = 6; // 4 + 2 of IFI variables = 6
   if(DB->KeyISR == 0) m_kDim=m_kDim -1;
 //  if(DB->KeyFSR == 0) m_kDim=m_kDim -1;
@@ -218,15 +218,16 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_Foam6->SetnBin(        16);     // No. of bins default 8
   m_Foam6->SetOptRej(       0);            // wted events (=0)is default, (=1) for wt=1 events
   m_Foam6->Initialize( f_RNgen, this);     // Initialize FOAM
-  m_Foam6->GetIntNorm(m_Xnorm9,errel);     // universal normalization
+  m_Foam6->GetIntNorm(m_Xnorm6,errel);     // universal normalization
   m_nCallsFoam6   = m_Foam6->GetnCalls();  // Needed for nCalls from generation ONLY
   //************* special normalization histos  *************
-//  m_TMCgen_NORMA9 = TH1D_UP("m_TMCgen_NORMA9","Normalization and xpar",jmax,0.0,10000.0);
   f_HstFile->cd();
-  h_TMCgen_NORMA6 = new TH1D("h_TMCgen_NORMA6","Normalization and xpar",jmax,0.0,10000.0);
+  // NOTE: Normalization histo for m_FoamI is allocated in TRobol base class (MCdev convention)
+  // The additional Foam6 normalization histo is allocated here:
+  h_TMCgen_NORMA6 = new TH1D("HST_FOAM_NORMA6","Normalization and xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++) h_TMCgen_NORMA6->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
   h_TMCgen_NORMA6->SetEntries(0); // Important!!!
-  cout<<"||||| No of density calls in Foam9 initialization="<< m_nCallsFoam0<<endl;
+  cout<<"||||| No of density calls in Foam6 initialization="<< m_nCallsFoam0<<endl;
 //////////////////////////////////////////////////////////////
 //screen output
   BXOPE(*f_Out);
@@ -254,16 +255,26 @@ if(m_FoamMode == -4) {
   f_NevGen++;
   f_FoamI->MakeEvent();         // Foam of base class
   m_WTfoam   = f_FoamI->GetMCwt();  // get weight
+// weights for the advanced user
+  for(int j= 71; j<= 74; j++)   m_WtAlter[j] = m_WtSet[j]*m_WTfoam;  // indexing f77!!!!
+  for(int j=251; j<=253; j++)   m_WtAlter[j] = m_WtSet[j]*m_WTfoam;  // indexing f77!!!!
+// recording normalization
   double XsPrimPb = f_FoamI->GetPrimary();
   int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
+  // Note: The "KeyName" of f_TMCgen_NORMA histo may be redefined in Start.C
+  // It is allocated in basic TRobol class, its pointer is passed to TMCgen
+  // This procedure adopted in MCdev looks like over-complicated
   f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);     // Picobarns
   f_TMCgen_NORMA->SetEntries(NevPrim);
 }else if( m_FoamMode == -6){
   f_NevGen++;
   m_Foam6->MakeEvent();         // Foam of base class
   m_WTfoam   = m_Foam6->GetMCwt();  // get weight
+  for(int j=201; j<=203; j++)   m_WtAlter[j] = m_WtSet[j]*m_WTfoam;  // indexing f77!!!!
+// recording normalization
   double XsPrimPb = m_Foam6->GetPrimary();
   int NevPrim     = m_Foam6->GetnCalls() -m_nCallsFoam6; // Generation only
+  // Additional normalization histo is allocated in KKeeFoam::Initialize
   h_TMCgen_NORMA6->SetBinContent(0,XsPrimPb*NevPrim);     // Picobarns
   h_TMCgen_NORMA6->SetEntries(NevPrim);
 }else{
@@ -421,13 +432,13 @@ double dSigFoam2 = m_GPS->MakeRhoFoam() *Yint;
 // alternative weights for CEEX
 double wt0  = 3.0/8.0* dSigFoam2/dBornCrude; // for CEEX0 with IFI
 //double wt0  = 3.0/8.0* dSigFoam0/dBornCrude; // for CEEX0 with IFI
-m_WTset[201]   = wt0; // CEEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
-m_WTset[202]   = wt0; // CEEX1
-m_WTset[203]   = wt0; // CEEX1
-if(DB->KeyISR != 0) m_WTset[202] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX1
-if(DB->KeyISR != 0) m_WTset[203] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX2
-if(DB->KeyFSR != 0) m_WTset[202] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
-if(DB->KeyFSR != 0) m_WTset[203] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
+m_WtSet[201]   = wt0; // CEEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
+m_WtSet[202]   = wt0; // CEEX1
+m_WtSet[203]   = wt0; // CEEX1
+if(DB->KeyISR != 0) m_WtSet[202] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX1
+if(DB->KeyISR != 0) m_WtSet[203] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX2
+if(DB->KeyFSR != 0) m_WtSet[202] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
+if(DB->KeyFSR != 0) m_WtSet[203] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
 //////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 //  Finishing kinematics
@@ -540,22 +551,22 @@ if( f_NevGen>0 && f_NevGen<30) {
 /////////////////////////////////////////////////////////////
 // alternative weights for EEX
 m_wt0= 3.0/8.0* dSigDizetS/dBornCrude; // mainly for EEX0, also for keyISR=0, keyFSR=0
-m_WTset[ 71]  = m_wt0; // EEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
-m_WTset[ 72]  = m_wt0; // EEX1
-m_WTset[ 73]  = m_wt0; // EEX2
-if(DB->KeyISR != 0) m_WTset[ 72] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR EEX1
-if(DB->KeyISR != 0) m_WTset[ 73] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR EEX2
-if(DB->KeyFSR != 0) m_WTset[ 72] *= RhoFSR(1,svar1,m_uu,m_eps)/RhoFSR0; // FSR EEX1
-if(DB->KeyFSR != 0) m_WTset[ 73] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR EEX2
+m_WtSet[ 71]  = m_wt0; // EEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
+m_WtSet[ 72]  = m_wt0; // EEX1
+m_WtSet[ 73]  = m_wt0; // EEX2
+if(DB->KeyISR != 0) m_WtSet[ 72] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR EEX1
+if(DB->KeyISR != 0) m_WtSet[ 73] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR EEX2
+if(DB->KeyFSR != 0) m_WtSet[ 72] *= RhoFSR(1,svar1,m_uu,m_eps)/RhoFSR0; // FSR EEX1
+if(DB->KeyFSR != 0) m_WtSet[ 73] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR EEX2
 // alternative weights for CEEX
 double wt0  = 3.0/8.0* dSigFoam0/dBornCrude; // for CEEX0
-m_WTset[251]   = wt0; // CEEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
-m_WTset[252]   = wt0; // CEEX1
-m_WTset[253]   = wt0; // CEEX1
-if(DB->KeyISR != 0) m_WTset[252] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX1
-if(DB->KeyISR != 0) m_WTset[253] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX2
-if(DB->KeyFSR != 0) m_WTset[252] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
-if(DB->KeyFSR != 0) m_WTset[253] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
+m_WtSet[251]   = wt0; // CEEX0, includes RhoISR(0,...) and/or RhoFSR(0,...)
+m_WtSet[252]   = wt0; // CEEX1
+m_WtSet[253]   = wt0; // CEEX1
+if(DB->KeyISR != 0) m_WtSet[252] *= RhoISR(1,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX1
+if(DB->KeyISR != 0) m_WtSet[253] *= RhoISR(2,svar1,m_vv,m_eps)/RhoISR0; // ISR CEEX2
+if(DB->KeyFSR != 0) m_WtSet[252] *= RhoFSR(1,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX1
+if(DB->KeyFSR != 0) m_WtSet[253] *= RhoFSR(2,svar2,m_uu,m_eps)/RhoFSR0; // FSR CEEX2
 /////////////////////////////////////////////////////////////
 //  Finishing kinematics
 /////////////////////////////////////////////////////////////

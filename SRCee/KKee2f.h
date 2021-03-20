@@ -92,7 +92,6 @@ class KKee2f: public TMCgen{
  double   m_r2;
  // MC Weights
   double   m_WtSet[maxWT];           // list of alternative weights f77 indexing
- // double   m_WtSet[1001];             // list of alternative weights f77 indexing
   double   m_WtSetNew[maxWT];         // list of alternative weights f77 indexing
   double   m_WtAlter[maxWT];          // list of alternative weights f77 indexing
   double   m_WtMain;                  // Main weight

@@ -47,20 +47,23 @@ MCgen->Write("MCgen",TObject::kOverwrite);
 ///*****************************************************************
 cout<<"***   Create new instance of the MC analysis object"<<endl;
 TRobol *RoboT = new TRobolFoam("RoboT");  /// base clase only
-//RoboT.f_HistNormName = TString("HST_FOAM_NORMA7"); // instead of h_TMCgen_NORMA
+RoboT->f_HistNormName = TString("HST_FOAM_NORMA4"); // instead of h_TMCgen_NORMA
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
+cout << "========================GenFile.Write (MCgen.root)=============" << endl;
 GenFile.Write();
 cout<<"--------------------------GenFile.ls-------------------------------"<<endl;
 GenFile.ls();
-GenFile.GetListOfKeys()->Print();
-cout<<"-------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
-GenFile.ShowStreamerInfo();
+//cout<<"--------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+//GenFile.ShowStreamerInfo();
 GenFile.Close();
-cout << "===========Output written in histo.root===========" << endl;
+cout << "========================HistoFile.Write (histo.root)===========" << endl;
 HistoFile.Write();
+cout<<"--------------------------HistoFile.ls-------------------------------"<<endl;
 HistoFile.ls();
-HistoFile.Close();
+cout<<"--------------------------HistoFile.ShowStreamerInfo-------------------------"<<endl;
+//HistoFile.GetListOfKeys()->Print();
+//HistoFile.Close();
 cout<<"%%% ===============End Start.C ================== %%%%"<<endl;
 return 0;
 }
