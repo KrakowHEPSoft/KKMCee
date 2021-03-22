@@ -120,7 +120,8 @@ class KKee2f: public TMCgen{
   double RhoFoam5(double *Xarg);
 
   void   MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi);
-  double MakeRhoISR(double gamiCR, double gami, double alfi, double vv, double vvmin, double vvmax);
+  double RhoISRold(double vv, double CMSene);
+  void   MapPlus( double r, double gam, double vvmax, double &v, double &dJac);
 
   void   Generate();
 

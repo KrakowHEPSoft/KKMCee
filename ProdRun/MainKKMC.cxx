@@ -157,14 +157,14 @@ int main()
   //HistoFile->Map();
   //cout<<"-------------------------MCgenFile->ShowStreamerInfo-------------------------"<<endl;
   //MCgenFile->ShowStreamerInfo();
-  cout<<"-------------------------HistoFile->ShowStreamerInfo-------------------------"<<endl;
-  HistoFile->ShowStreamerInfo();
-  cout<<"------------------------HistoFile->GetListOfKeys-----------------------------"<<endl;
-  HistoFile->GetListOfKeys()->Print();
-  cout<<"------------------------MCgenFile->GetListOfKeys-----------------------------"<<endl;
-  MCgenFile->GetListOfKeys()->Print();
-  cout<<"-------------------------------SemafFile.ls---------------------------------"<<endl;
-  SemafFile->ls();
+  //cout<<"-------------------------HistoFile->ShowStreamerInfo-------------------------"<<endl;
+  //HistoFile->ShowStreamerInfo();
+  //cout<<"------------------------HistoFile->GetListOfKeys-----------------------------"<<endl;
+  //HistoFile->GetListOfKeys()->Print();
+  //cout<<"------------------------MCgenFile->GetListOfKeys-----------------------------"<<endl;
+  //MCgenFile->GetListOfKeys()->Print();
+  //cout<<"-------------------------------SemafFile.ls---------------------------------"<<endl;
+  //SemafFile->ls();
   cout<<"---------------------------------end---------------------------------------"<<endl;
   //////////////////////////////////////////////////////////////////////
   //                 CLOSE ALL FILES

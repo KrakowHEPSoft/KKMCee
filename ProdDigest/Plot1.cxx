@@ -48,11 +48,17 @@ void HistNormalize(){
   DiskFileA->ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_weight") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vvTrue") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
+  //
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vvTrue") );
+ //
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2") );
+  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2n") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA->Get("sca_vTcPR_Eex2") );
 
   //[[[[[[[[[[[[[[[[[[[[[
   //cout<<"----------------DiskFileA->GetListOfKeys--------------------"<<endl;
@@ -65,15 +71,98 @@ void HistNormalize(){
   //DiskFileF->ShowStreamerInfo();
   //]]]]]]]]]]]]]]]]]]]]]]
 //----------------------
-  TH1D *HST_FOAM_NORMA4 = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
+  TH1D    *HST_FOAM_NORMA4= (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
   HisNorm1(HST_FOAM_NORMA4, (TH1D*)DiskFileF->Get("HST_weight4") );
-  HisNorm1(HST_FOAM_NORMA4, (TH1D*)DiskFileF->Get("HST_vv_eex3") );
+  HisNorm1(HST_FOAM_NORMA4, (TH1D*)DiskFileF->Get("HST_vv_eex2") );
+  HisNorm2(HST_FOAM_NORMA4, (TH2D*)DiskFileF->Get("SCA_vTcPR_Eex2") );
 //------------------------------
-  TH1D *HST_FOAM_NORMA6 = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA6");
+  TH1D    *HST_FOAM_NORMA6= (TH1D*)DiskFileF->Get("HST_FOAM_NORMA6");
   HisNorm1(HST_FOAM_NORMA6, (TH1D*)DiskFileF->Get("HST_weight6") );
 
-
 }// HistNormalize
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void ReMakeMChisto(){
+	// Some KKMC histos are preprocessed
+	//------------------------------------------------------------------------
+  cout<<"==================================================================="<<endl;
+  cout<<"================ ReMakeMChisto  BEGIN  ============================"<<endl;
+  TH1D *HST_KKMC_NORMA  = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
+  TH1D *HST_FOAM_NORMA4 = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
+  //****************************************************************************************
+  // Pure MC reprocessing part
+  //
+  TH2D *sca_vTcPR_Eex2  = (TH2D*)DiskFileA->Get("sca_vTcPR_Eex2");
+  //TH2D *sca_vTcPR_Ceex2 = (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2");
+  //TH2D *sca_vTcPR_Ceex2n = (TH2D*)DiskFileA->Get("sca_vTcPR_Ceex2n");
+
+  ///****************************************************************************************
+  /// Distributions of v=vTrue with unlimited c=cos(theta)
+  //  without cutoff on c=cos(thetaPRD)
+  int nbMax=0;   // cosThetaMax = 1.0
+  TH1D                   *hTot_vTcPR_Eex2, *hAfb_vTcPR_Eex2;
+  ProjV( sca_vTcPR_Eex2,  hTot_vTcPR_Eex2,  hAfb_vTcPR_Eex2, nbMax);  //!!!!
+  hTot_vTcPR_Eex2->SetName("hTot_vTcPR_Eex2");
+  hAfb_vTcPR_Eex2->SetName("hAfb_vTcPR_Eex2");
+  nbMax=0;   // cosThetaMax = 1.0
+  /*
+  TH1D                    *HTot_vTcPR_Ceex2, *HAfb_vTcPR_Ceex2;
+  ProjV( sca_vTcPR_Ceex2,  HTot_vTcPR_Ceex2,  HAfb_vTcPR_Ceex2, nbMax);  //!!!!
+  HTot_vTcPR_Ceex2->SetName("HTot_vTcPR_Ceex2");
+  HAfb_vTcPR_Ceex2->SetName("HAfb_vTcPR_Ceex2");
+  //
+  // IFI off
+  nbMax=0;   // cosThetaMax = 1.0
+  TH1D                    *HTot_vTcPR_Ceex2n, *HAfb_vTcPR_Ceex2n;
+  ProjV( sca_vTcPR_Ceex2n,  HTot_vTcPR_Ceex2n,  HAfb_vTcPR_Ceex2n, nbMax);  //!!!!
+  HTot_vTcPR_Ceex2n->SetName("HTot_vTcPR_Ceex2n");
+  HAfb_vTcPR_Ceex2n->SetName("HAfb_vTcPR_Ceex2n");
+  */
+  //
+  ///****************************************************************************************
+  //  dsigma/dv unlimited cos(theta)
+  TH1D *hPro_vT_Eex2;
+  ProjX1(sca_vTcPR_Eex2, hPro_vT_Eex2);
+  hPro_vT_Eex2->SetName("hPro_vT_Eex2");
+
+  /*
+  TH1D *Hpro_vT_Ceex2;
+  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2);
+  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2");
+
+  //  dsigma/dv unlimited cos(theta)
+  TH1D *Hpro_vT_Ceex2n;
+  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2n);
+  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2n");
+*/
+//-------------------------------------------------------------------------------------------
+//-----------------------------FOAM----------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+  TH2D *SCA_vTcPR_Eex2  = (TH2D*)DiskFileF->Get("SCA_vTcPR_Eex2");
+  //TH2D *SCA_vTcPR_Ceex2 = (TH2D*)DiskFileF->Get("SCA_vTcPR_Ceex2");
+  //TH2D *SCA_vTcPR_Ceex2n = (TH2D*)DiskFileF->Get("SCA_vTcPR_Ceex2n");
+
+  ///****************************************************************************************
+  /// Distributions of v=vTrue with unlimited c=cos(theta)
+  //  without cutoff on c=cos(thetaPRD)
+  nbMax=0;   // cosThetaMax = 1.0
+  TH1D                   *HTot_vTcPR_Eex2, *HAfb_vTcPR_Eex2;
+  ProjV( SCA_vTcPR_Eex2,  HTot_vTcPR_Eex2,  HAfb_vTcPR_Eex2, nbMax);  //!!!!
+  HTot_vTcPR_Eex2->SetName("HTot_vTcPR_Eex2");
+  HAfb_vTcPR_Eex2->SetName("HAfb_vTcPR_Eex2");
+
+  ///****************************************************************************************
+  //  dsigma/dv unlimited cos(theta)
+  TH1D *HPro_vT_Eex2;
+  ProjX1(SCA_vTcPR_Eex2, HPro_vT_Eex2);
+  HPro_vT_Eex2->SetName("HPro_vT_Eex2");
+
+
+  cout<<"================ ReMakeMChisto ENDs  ============================="<<endl;
+  cout<<"==================================================================="<<endl;
+}//RemakeMChisto
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigInfo()
@@ -84,7 +173,9 @@ void FigInfo()
   double CMSene=100.0;
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
-  TH1D *hst_weight    = (TH1D*)DiskFileA->Get("hst_weight");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
+  TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
+
   TH1D *hst_nPhot     = (TH1D*)DiskFileA->Get("hst_nPhot");
   TH1D *hst_CosTheta  = (TH1D*)DiskFileA->Get("hst_CosTheta");
   //
@@ -111,8 +202,11 @@ void FigInfo()
   gPad->SetLogy(); // !!!!!!
   ///
   CaptT->DrawLatex(0.10,0.95,"weight distribution");
-  hst_weight->GetXaxis()->SetLabelSize(0.05);
-  hst_weight->DrawCopy("h");
+  hst_WtMain->GetXaxis()->SetLabelSize(0.05);
+  hst_WtMain->DrawCopy("h");
+
+  hst_WtFoam->SetLineColor(kRed);
+  hst_WtFoam->DrawCopy("hsame");
 
   //==========plot2==============
   cFigInfo->cd(2);
@@ -156,8 +250,12 @@ void FigVplot()
   double CMSene=100.0;
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
-  TH1D *hst_vvTrue    = (TH1D*)DiskFileA->Get("hst_vvTrue");
-  TH1D *HST_vv_eex3  =  (TH1D*)DiskFileF->Get("HST_vv_eex3");
+  TH1D *hst_vvTrue    = (TH1D*)DiskFileA->Get("hst_vvTrue");    //KKMCee
+  TH1D *hPro_vT_Eex2  = (TH1D*)DiskFileB->Get("hPro_vT_Eex2");  //KKMCee
+
+  TH1D *HST_vv_eex2   = (TH1D*)DiskFileF->Get("HST_vv_eex2");   //KKeeFoam
+  TH1D *HPro_vT_Eex2  = (TH1D*)DiskFileB->Get("HPro_vT_Eex2");  //KKeeFoam
+
   //------------------------------------------------------------------------
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
@@ -179,28 +277,35 @@ void FigVplot()
   cFigVplot->cd(1);
   gPad->SetLogy(); // !!!!!!
   TH1D *HST; //
-  HST = hst_vvTrue; //
-  //HST = HST_vv_eex3;
+  HST = hst_vvTrue;   //
+  //HST = hPro_vT_Eex2; //
 
   //HST->SetTitle(0);
   //HST->SetStats(0);
-  HST->SetLineColor(4);
   //HST->SetMinimum(0);
-  HST->DrawCopy("h");
+  HST->SetLineColor(kRed);
+  HST->DrawCopy("h");                  //KKMCee
 
-  HST_vv_eex3->DrawCopy("hsame");
+  hPro_vT_Eex2->SetLineColor(kGreen);
+  hPro_vT_Eex2->DrawCopy("hsame");     //KKMCee
+
+  HST_vv_eex2->SetLineColor(kBlue);
+  HST_vv_eex2->DrawCopy("hsame");      //KKeeFOAM
+
+  HPro_vT_Eex2->SetLineColor(kMagenta);
+  HPro_vT_Eex2->DrawCopy("hsame");     //KKeeFOAM
 
 //==========plot1==============
   cFigVplot->cd(2);
 //  TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_Mll_ceex2_B,  hst_Mll_ceex2_A,  kBlack ); //
-  TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_vvTrue,  HST_vv_eex3,  kBlack ); //
+  TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_vvTrue,  HST_vv_eex2,  kBlue ); //
 
   HST =RAT_Hh;
   HST->SetTitle(0);
   HST->SetStats(0);
-  HST->SetLineColor(4);
-  HST->SetMinimum(1-0.05);
-  HST->SetMaximum(1+0.05);
+  HST->SetLineColor(kBlue);
+  HST->SetMinimum(1-0.02);
+  HST->SetMaximum(1+0.02);
   HST->DrawCopy("h");
 
   TH1D *hOne = (TH1D*)RAT_Hh->Clone("hOne");  // zero line
@@ -212,6 +317,135 @@ void FigVplot()
 
   cFigVplot->SaveAs("cFigVplot.pdf");
 }//FigVplot
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigVCplot()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigVCplot =========================== "<<endl;
+  char capt1[100];
+  double CMSene=100.0;
+  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
+  TH1D *hTot_vTcPR_Eex2 = (TH1D*)DiskFileB->Get("hTot_vTcPR_Eex2");
+  TH1D *HTot_vTcPR_Eex2 = (TH1D*)DiskFileB->Get("HTot_vTcPR_Eex2");
+  //------------------------------------------------------------------------
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+//  CaptT->SetTextSize(0.060);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVCplot = new TCanvas("cFigVCplot","FigVCplot: general info ",  gXcanv,  gYcanv,    1000,  500);
+  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigVCplot->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigVCplot->Divide( 2,  1);
+
+  //==========plot1==============
+  cFigVCplot->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  TH1D *HST; //
+  HST = hTot_vTcPR_Eex2; //
+
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->SetLineColor(kRed);
+  HST->SetMinimum(0);
+  HST->DrawCopy("h");
+
+  HTot_vTcPR_Eex2->DrawCopy("hsame");
+
+//==========plot1==============
+  cFigVCplot->cd(2);
+  //  TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_Mll_ceex2_B,  hst_Mll_ceex2_A,  kBlack ); //
+  TH1D *RAT_Ha  = HstRatio("RAT_Ha",  hTot_vTcPR_Eex2,  HTot_vTcPR_Eex2,  kBlue ); //
+
+  HST =RAT_Ha;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->SetLineColor(kBlue);
+  HST->SetMinimum(1-0.02);
+  HST->SetMaximum(1+0.02);
+  HST->DrawCopy("h");
+
+  TH1D *hOne = (TH1D*)RAT_Ha->Clone("hOne");  // zero line
+  for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
+  hOne->SetLineColor(kBlack);
+  hOne->DrawCopy("hsame");
+
+  //=================
+  cFigVCplot->cd();
+
+  cFigVCplot->SaveAs("cFigVCplot.pdf");
+}//FigVCplot
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigAFBvv()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigAFBvv =========================== "<<endl;
+  char capt1[100];
+  double CMSene=100.0;
+  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
+  TH1D *hAfb_vTcPR_Eex2= (TH1D*)DiskFileB->Get("hAfb_vTcPR_Eex2");
+  TH1D *HAfb_vTcPR_Eex2= (TH1D*)DiskFileB->Get("HAfb_vTcPR_Eex2");
+  //------------------------------------------------------------------------
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+//  CaptT->SetTextSize(0.060);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigAFBvv = new TCanvas("cFigAFBvv","FigAFBvv: general info ",  gXcanv,  gYcanv,    1000,  500);
+  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigAFBvv->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  cFigAFBvv->Divide( 2,  1);
+
+//==========plot1==============
+  cFigAFBvv->cd(1);
+  //gPad->SetLogy(); // !!!!!!
+  TH1D *HST; //
+  HST = hAfb_vTcPR_Eex2; //
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->SetLineColor(kRed);
+//  HST->SetMinimum(0);
+  HST->DrawCopy("h");
+
+  HAfb_vTcPR_Eex2->DrawCopy("hsame");
+
+//==========plot1==============
+  cFigAFBvv->cd(2);
+  TH1D *afb_diff_Hh = HstDiff(  "afb_diff_h", hAfb_vTcPR_Eex2, HAfb_vTcPR_Eex2, kBlue); //
+  HST = afb_diff_Hh;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->SetLineColor(kBlue);
+  HST->SetMinimum(-0.01);
+  HST->SetMaximum(+0.01);
+  HST->DrawCopy("h");
+
+  TH1D *hZero0 = (TH1D*)afb_diff_Hh->Clone("hZero0");  // zero line
+  for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
+  hZero0->DrawCopy("hsame");
+
+  //=================
+  cFigAFBvv->cd();
+
+  cFigAFBvv->SaveAs("cFigAFBvv.pdf");
+
+}//FigAFBvv
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -240,10 +474,14 @@ int main(int argc, char **argv)
   sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
   sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
  */
+  DiskFileB->cd();
   HistNormalize();     // Renormalization of MC histograms
+  ReMakeMChisto();
   //========== PLOTTING ==========
   FigInfo();
   FigVplot();
+  FigVCplot();
+  FigAFBvv();
  //++++++++++++++++++++++++++++++++++++++++
   DiskFileA->ls();
 //

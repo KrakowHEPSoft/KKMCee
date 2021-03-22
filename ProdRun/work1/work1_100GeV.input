@@ -25,7 +25,7 @@ BeginX
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-*   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+***   17         0.50e0      vvmax =xpar(17)  if 1e0 then reduced inside program
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 **  Beam Energy Spread type
    25              0      KeyBES BES, =0 none, =1 Gausian, =2 beamsstrahlung
@@ -58,5 +58,20 @@ BeginX
     5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
     7             20      Ie2Pri =xpar( 7)  PrintOut End   point
+********************************************************************************
+* FOAM GENERATION PARAMETERS
+ 3020       54217137      Ranmar initial random number seed (KKMC and FOAM)
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+ 3021           5000 FOAM Maximum number of cells (5000 default, 2000 for map)
+ 3022              0 FOAM Vopt: set to 0 to save vertices, 1 to NOT save them
+ 3023          50000 FOAM Number of MC samples inside single cell
+ 3024             16 FOAM Number of bins for edge-histogram in cell exploration
+ 3025            250 FOAM Events per bin during buildup
+* For unweighted events, FOAM KeyWgt can be 0 or 1. 
+* For weighted events, FOAM KeyWgt must be 1. (Reset in program if not)
+ 3026              1 FOAM KeyWgt=0,1 for constant, variable weights (default 1)
+ 3027          1.1e0 FOAM Maximum FOAM weight for internal rejection (if used).
+ 3028              1      Crude distribution for x1, x2 generation*
+*******************************************************************************
 ********************************************************************************
 EndX

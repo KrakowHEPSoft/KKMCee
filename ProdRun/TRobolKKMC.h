@@ -16,11 +16,20 @@ class TRobolKKMC : public TRobol
  long   m_NevGen;             // event serial number
  long   m_count1;             // auxiliary event counter (debug)
 //
- TH1D   *hst_weight;          //!  No streamer!!!
+ TH1D   *hst_WtMain;          //!  No streamer!!!
+ TH1D   *hst_WtFoam;          //!  No streamer!!!
+
  TH1D   *hst_vvTrue;          //!  No streamer!!!
  TH1D   *hst_nPhot;           //!  No streamer!!!
  TH1D   *hst_vvBES;           //!  No streamer!!!
  TH1D   *hst_CosTheta;        //!  No streamer!!!
+
+ //
+ //TH2D   *sca_vTcPR_Ceex2;     //!  No streamer!!!
+ //TH2D   *sca_vTcPR_Ceex2n;    //!  No streamer!!!
+ TH2D   *sca_vTcPR_Eex2;      //!  No streamer!!!
+
+
  //
  TH2D   *sca_r1r2;            //!  No streamer!!!
 ///////////////////////////////////////////

@@ -250,6 +250,8 @@ void KKee2f::FoamInitA(){
     int ibL=0;    // <-- first variable !!!
     f_FoamI->SetInhiDiv(ibL, 1);
     if( nDivL>0 ) f_FoamI->SetXdivPRD(ibL, nDivL, xDivL);
+    // cos(theta) generation is frozen
+    f_FoamI->SetInhiDiv(1, 1);
 //----------------------------------------------
     int nCells   = m_xpar[3021]; // move to database?
     int Vopt     = m_xpar[3022];
@@ -395,32 +397,37 @@ m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 double R,gamiCR,gami,alfi;
 double amfin = DB->fmass[m_KFfin];
 double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
-double RhoISR, AvMult, YFSkon, YFS_IR;
+double RhoISR=1, dJac;
 if ( DB->KeyISR == 1) {
   MakeGami(m_KFini,m_XXXene,gamiCR,gami,alfi);
-  if( gami <= 0 ) return 0 ;
   R = Xarg[iarg]; iarg++; // last dimension
-  if ( (R == 0) && (gami >= 1) ) return 0;    // to be totally safe
-  m_vv = vvmax* exp((1.0/gami)*log(R));
-  if(m_vv > vvmax) return 0; // should never happen, but cautious
-// Calculate ISR crude structure function (the same as in Karlud)
-  RhoISR = MakeRhoISR(gamiCR, gami, alfi, m_vv, DB->vvmin, vvmax);
-  AvMult = gamiCR*log(m_vv/DB->vvmin);
-  if( AvMult < 0) AvMult=0;   // correctness of this to be xchecked !!!!
-  YFSkon = exp( 0.25*gami + alfi*(-0.5 + sqr(M_PI)/3.0) );
-  YFS_IR = exp(gami*log(DB->vvmin));
+  double GamI = gami;
+  //GamI = gamiCR; // about the same efficiency
+  // mapping R->vv
+  m_vv = vvmax* exp((1.0/GamI)*log(R));
+  dJac   = exp(GamI*log(vvmax ))/(GamI/m_vv*exp(GamI*log(m_vv) ));
+  RhoISR *= dJac;
+  ///////////////
+  // alternative mapping from KKeeFoam
+  //MapPlus( R, GamI, vvmax, m_vv, dJac);
+  //RhoISR *= dJac;
+  /////////////// No mapping at all
+  //m_vv = R*vvmax;
+  //RhoISR *=vvmax;
+  ///////////////
+  RhoISR *= RhoISRold(m_vv, m_XXXene);
 }else {   // ISR off
   m_vv = 0;
+  m_Event->m_AvMult     = 0;
+  m_Event->m_YFSkon_ini = 1;
+  m_Event->m_YFS_IR_ini = 1;
   RhoISR = 1;
-  AvMult = 0; // average photon multiplicity
-  YFSkon = 1; // yfs form factor
-  YFS_IR = 1;  // exponentiated integral of Rho for v < vmin
 }//KeyISR
 Rho *= RhoISR;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Basic variables to be used later on in generation
 if( m_FoamMode<0) {  // Only in generation mode !!!!!
-  m_Event->m_AvMult  = AvMult;
   m_Event->m_KFini   = m_KFini;
   m_Event->m_KFfin   = m_KFfin;
   m_Event->m_vv      = m_vv;
@@ -428,10 +435,7 @@ if( m_FoamMode<0) {  // Only in generation mode !!!!!
   m_Event->m_r1      = m_r1;
   m_Event->m_r2      = m_r2;
   m_Event->m_XXXene  = m_XXXene;
-  m_Event->m_YFS_IR_ini = YFS_IR;
-  m_Event->m_YFSkon_ini = YFSkon;
-}
-
+}// Event
 //------------------
 double svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
 double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0
@@ -441,10 +445,49 @@ Rho  *= BornCR;
 //
 if( std::isnan(Rho)) cout<<"  m_EventCounter="<<m_EventCounter<<" Rho="<<Rho<<endl;
 if( abs(Rho) < 1e-150) Rho=1e-150;  // Foam does not tolerate zero integrand
-
 //
 return Rho;
 }//RhoFoam5
+
+
+double KKee2f::RhoISRold(double vv, double CMSene){
+//////////////////////////////////////////////////////////////////////////////
+//                                                                          //
+//   This procedure is tightly related to ISR photon generation in Karlud   //
+//   It calculates QED crude radiator Function                              //
+//                                                                          //
+//   m_AvMult is later used in KarLud_YFSini                                //
+//   m_YFSkon m_YFS_IR are later used in GPS_Make  and QED3_Make           //
+//                                                                          //
+//////////////////////////////////////////////////////////////////////////////
+double Rho,gamiCR,gami,alfi;
+MakeGami(m_KFini,CMSene,gamiCR,gami,alfi);
+double DilJac0, AvMult,YFS_IR,VoluMC;
+double vvmin=DB->vvmin;
+if(vv > vvmin) {
+   DilJac0   = (1.0+1.0/sqrt(1.0-vv))/2.0;
+   AvMult    = gamiCR*log(vv/vvmin);
+   VoluMC    = gamiCR/vv *exp( AvMult );   //!!! Phase space Volume CRUDE
+   YFS_IR    = -gami*log(1.0/vvmin);       //!!! IR part of YFS formfactor
+   Rho       = VoluMC *exp(YFS_IR);
+} else {
+   DilJac0   = 1.0;
+   AvMult    = 0.0;
+   VoluMC    = 1.0;
+// IMPORTANT:     The integral over Rho(v<vvmin) = YFS_IR = EXP(-gami*LOG(1/vvmin))
+   YFS_IR    = -gami*log(1.0/vvmin);        //!!! IR part of YFS formfactor
+   Rho       = 1.0/vv *gami*exp(log(vv)*gami);
+//   Rho       =  exp(log(vvmin)*gami)/vvmin; // unfinished exercise with MapPlus
+}
+Rho =  Rho * DilJac0;
+//* YFS formfactor, finite part, YFS_form_Factor = EXP(YFS_IR + YFSkon)
+//* YFSkon is delegated/exported to QED3 and GPS (not used here).
+m_Event->m_AvMult     = AvMult;
+m_Event->m_YFSkon_ini = exp(1/4.0 *gami + alfi*( -0.5  +M_PI*M_PI/3.0) );
+m_Event->m_YFS_IR_ini = exp(YFS_IR);
+return Rho;
+}// RhoISR
+
 
 void KKee2f::MakeGami(int KFini, double CMSene, double &gamiCR, double &gami, double &alfi){
 //////////////////////////////////////////////////////////////////////////////
@@ -466,24 +509,42 @@ if( am2 < 1 ) {
 }//if
 }//MakeGami
 
-double KKee2f::MakeRhoISR(double gamiCR, double gami, double alfi, double vv, double vvmin, double vvmax){
-//////////////////////////////////////////////////////////////////////////
-// This function calculates the entire RhoISR, including the MakeISR    //
-// factor and the Jacobian from RhoFoam together, permitting similar    //
-// numerical factors to be canceled analytically. Should be more stable.//
-// The factor m_vv must have been generated before calling this.        //
-// This function is side-effect free and has no hidden inputs.          //
-//////////////////////////////////////////////////////////////////////////
-double Rho;
-if (vv > vvmin) {
-    Rho = (gamiCR/gami)* exp( (gamiCR-gami)*log(vv/vvmin) );
-    double DilJac0 = 0.5*(1 + 1/sqrt(1-vv));
-    Rho = Rho*DilJac0;
-} else {
-    Rho = 1;
-}
-return Rho * exp(gami*log(vvmax ));
-}//RhoISR
+///------------------------------------------------------------------------
+void KKee2f::MapPlus( double r, double gam, double vvmax, double &v, double &dJac){
+// Maping for POSITIVE gam
+// Input r in (0,1) is uniform random number or FOAM variable
+// Returned v is distributed according to gam*v^{gam-1}
+  double del = 1e-4;
+  double eps =DB->vvmin;
+  double Reps,Rat,RV;
+  if( fabs(gam*log(eps)) > del){
+      Reps = exp(gam*log(eps));
+      RV   = exp(gam*log(vvmax));
+      Rat  = Reps/RV;
+      if( r< Rat ){
+          v = 0;  dJac=1/Rat;
+      } else {
+          v = exp((1/gam)*log(r)); // mapping
+          v *= vvmax;
+          dJac = RV/(gam/v*exp(gam*log(v)));      // jacobian
+      }
+  } else {
+      Reps = 1+gam*log(eps);
+      RV   = 1+gam*log(vvmax);
+      Rat  = Reps/RV;
+      if( r< Rat ){
+          v = 0; dJac=1/Rat;
+      } else {
+          v = exp(-(1/gam)*(1-r)); // mapping
+          v *= vvmax;
+          dJac = RV/(gam/v);        // jacobian
+      }
+  }
+  if( v<0 || v>1) {
+      cout<<"STOP in TMCgenFOAM::MapPlus: +++ v = "<<v<<endl;
+      exit(11);
+  }
+}// MapPlus
 
 //_______________________________________________________________________________
 void KKee2f::Generate()
@@ -555,7 +616,7 @@ if(m_WtCrude != 0 ) {
       for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
       WtBest = m_WtSet[74];   // wtset[74]
 //[[[[[[[[[[[[[[[
-      if(m_EventCounter <30 ){
+      if(m_EventCounter <10 ){
         (*f_Out)<<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
         cout    <<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
       }

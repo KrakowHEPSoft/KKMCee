@@ -107,7 +107,14 @@ void TRobolFoam::Hbooker()
   int nBins = 100;
 //  Hst_Mll   = TH1D_UP("Hst_Mll",   "Dilepton Invariant Mass with IFI;M_{ll};d#sigma/dM_{Z} (nb/GeV)", nBins, m_Mllmin, m_Mllmax);
 
-  HST_vv_eex3 = TH1D_UP("HST_vv_eex3",   "vv", nBins, 0.0, 1.0);
+  HST_vv_eex2 = TH1D_UP("HST_vv_eex2",   "vv", nBins, 0.0, 1.0);
+
+  int nbv =100;
+  int nbc = 50;
+
+//  SCA_vTcPR_Ceex2  = TH2D_UP("SCA_vTcPR_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+//  SCA_vTcPR_Ceex2n = TH2D_UP("SCA_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  SCA_vTcPR_Eex2   = TH2D_UP("SCA_vTcPR_Eex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
 
   cout<<       "################Hbooker end##############"<<endl;
 
@@ -137,14 +144,21 @@ void TRobolFoam::Production(double &iEvent)
   double WTfoam;
   MCgen->f_FoamI->GetMCwt(WTfoam);
   xx  = MCgen->m_xx;
+  //
   CosTheta = MCgen->m_CosTheta;
   vv  = MCgen->m_vv;
 
   HST_weight4->Fill(WTfoam,1.0);
 
-  double WtEEX3 = MCgen->m_WtAlter[73];
+  double WtEEX2 = MCgen->m_WtAlter[73];
+//  double WtEEX3 = MCgen->m_WtAlter[74]; // not implemented
 
-  HST_vv_eex3->Fill(vv, WtEEX3);
+  HST_vv_eex2->Fill(vv, WtEEX2);
+
+// big scatergrams, range vv< 1.0
+//  SCA_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
+//  SCA_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
+  SCA_vTcPR_Eex2->Fill(    vv, CosTheta, WtEEX2);
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
