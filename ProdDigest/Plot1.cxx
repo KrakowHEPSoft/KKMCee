@@ -41,6 +41,46 @@ int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 float  gXcanv = 0, gYcanv = 0, gDcanv = 30;
 ///////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame(TH1D *&HST, double &ycapt, Int_t kolor, TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");      // Magenta
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  //double yy=ycapt;
+  CaptT->DrawLatex(0.40,ycapt, opis);
+}// PlotSame
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &xcapt, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+}// PlotSame2
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
   //
@@ -264,7 +304,7 @@ void FigVplot()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-//  CaptT->SetTextSize(0.060);
+  CaptT->SetTextSize(0.040);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigVplot = new TCanvas("cFigVplot","FigVplot: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -278,26 +318,26 @@ void FigVplot()
   gPad->SetLogy(); // !!!!!!
   TH1D *HST; //
   HST = hst_vvTrue;   //
-  //HST = hPro_vT_Eex2; //
+  HST = hPro_vT_Eex2; //
 
-  //HST->SetTitle(0);
-  //HST->SetStats(0);
-  //HST->SetMinimum(0);
-  HST->SetLineColor(kRed);
+  HST->SetTitle(0);
+  HST->SetStats(0);
+
+  HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
   HST->DrawCopy("h");                  //KKMCee
 
-  hPro_vT_Eex2->SetLineColor(kGreen);
-  hPro_vT_Eex2->DrawCopy("hsame");     //KKMCee
+  CaptT->DrawLatex(0.06,0.95, "#sigma(v_{max}) ");
+  double ycapt = 0.80; double xcapt=0.40;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 100GeV");
 
-  HST_vv_eex2->SetLineColor(kBlue);
-  HST_vv_eex2->DrawCopy("hsame");      //KKeeFOAM
-
-  HPro_vT_Eex2->SetLineColor(kMagenta);
-  HPro_vT_Eex2->DrawCopy("hsame");     //KKeeFOAM
+  PlotSame2(hst_vvTrue,    xcapt, ycapt, kRed,      0.10, "(a2)", "  ISR EEX2, KKMCee ");
+  PlotSame2(hPro_vT_Eex2,  xcapt, ycapt, kGreen,    0.20, "(b2)", "  ISR EEX2, KKMCee ");
+  PlotSame2(HST_vv_eex2,   xcapt, ycapt, kBlue,     0.60, "(f2)", "  ISR EEX2, KKeeFoam ");
+  PlotSame2(HPro_vT_Eex2,  xcapt, ycapt, kMagenta,  0.70, "(g2)", "  ISR EEX2, KKeeFoam ");
 
 //==========plot1==============
   cFigVplot->cd(2);
-//  TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_Mll_ceex2_B,  hst_Mll_ceex2_A,  kBlack ); //
   TH1D *RAT_Hh  = HstRatio("RAT_Hh",  hst_vvTrue,  HST_vv_eex2,  kBlue ); //
 
   HST =RAT_Hh;
@@ -306,10 +346,14 @@ void FigVplot()
   HST->SetLineColor(kBlue);
   HST->SetMinimum(1-0.02);
   HST->SetMaximum(1+0.02);
+  HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
   HST->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, " (a2)/(f2) ");
 
   TH1D *hOne = (TH1D*)RAT_Hh->Clone("hOne");  // zero line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
+  hOne->SetLineColor(kBlack);
   hOne->DrawCopy("hsame");
 
   //=================
@@ -336,7 +380,7 @@ void FigVCplot()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-//  CaptT->SetTextSize(0.060);
+  CaptT->SetTextSize(0.040);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigVCplot = new TCanvas("cFigVCplot","FigVCplot: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -355,9 +399,18 @@ void FigVCplot()
   HST->SetStats(0);
   HST->SetLineColor(kRed);
   HST->SetMinimum(0);
+  HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
+  HST->GetYaxis()->SetTitle("  ");
+
   HST->DrawCopy("h");
 
-  HTot_vTcPR_Eex2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.06,0.95, "#sigma(v_{max}) ");
+  double ycapt = 0.70; double xcapt=0.40;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 100GeV");
+
+  PlotSame2(hTot_vTcPR_Eex2,    xcapt, ycapt, kBlack,   0.10, "(a2)", "  ISR EEX2, KKMCee:  ");
+  PlotSame2(HTot_vTcPR_Eex2,    xcapt, ycapt, kBlue,    0.40, "(f2)", "  ISR EEX2, KKeeFoam:");
 
 //==========plot1==============
   cFigVCplot->cd(2);
@@ -368,9 +421,15 @@ void FigVCplot()
   HST->SetTitle(0);
   HST->SetStats(0);
   HST->SetLineColor(kBlue);
-  HST->SetMinimum(1-0.02);
-  HST->SetMaximum(1+0.02);
+  HST->SetMinimum(1-0.006);
+  HST->SetMaximum(1+0.006);
+
+  HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
+  HST->GetYaxis()->SetTitle("  ");
+
   HST->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "(a2)/(f2) ");
 
   TH1D *hOne = (TH1D*)RAT_Ha->Clone("hOne");  // zero line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
@@ -402,7 +461,7 @@ void FigAFBvv()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-//  CaptT->SetTextSize(0.060);
+  CaptT->SetTextSize(0.040);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAFBvv = new TCanvas("cFigAFBvv","FigAFBvv: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -420,9 +479,15 @@ void FigAFBvv()
   HST->SetStats(0);
   HST->SetLineColor(kRed);
 //  HST->SetMinimum(0);
+  HST->GetXaxis()->SetTitle("v");
   HST->DrawCopy("h");
 
-  HAfb_vTcPR_Eex2->DrawCopy("hsame");
+  CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
+  double ycapt = 0.70; double xcapt=0.40;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 100GeV");
+  PlotSame2(hAfb_vTcPR_Eex2,    xcapt, ycapt, kBlack,   0.30, "(a2)", "  ISR EEX2, KKMCee:  ");
+  PlotSame2(HAfb_vTcPR_Eex2,    xcapt, ycapt, kBlue,    0.50, "(f2)", "  ISR EEX2, KKeeFoam:");
 
 //==========plot1==============
   cFigAFBvv->cd(2);
@@ -430,13 +495,17 @@ void FigAFBvv()
   HST = afb_diff_Hh;
   HST->SetTitle(0);
   HST->SetStats(0);
-  HST->SetLineColor(kBlue);
-  HST->SetMinimum(-0.01);
-  HST->SetMaximum(+0.01);
+  HST->SetLineColor(kBlack);
+  HST->SetMinimum(-0.006);
+  HST->SetMaximum(+0.006);
+  HST->GetXaxis()->SetTitle("v");
   HST->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "(a2)-(f2)");
 
   TH1D *hZero0 = (TH1D*)afb_diff_Hh->Clone("hZero0");  // zero line
   for(int i=1; i <= hZero0->GetNbinsX() ; i++) { hZero0->SetBinContent(i, 0); hZero0->SetBinError(i, 0);}
+  hZero0->SetLineColor(kBlack);
   hZero0->DrawCopy("hsame");
 
   //=================
@@ -478,7 +547,7 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();
   //========== PLOTTING ==========
-  FigInfo();
+  //FigInfo();
   FigVplot();
   FigVCplot();
   FigAFBvv();

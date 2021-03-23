@@ -403,14 +403,15 @@ if ( DB->KeyISR == 1) {
   R = Xarg[iarg]; iarg++; // last dimension
   double GamI = gami;
   //GamI = gamiCR; // about the same efficiency
-  // mapping R->vv
-  m_vv = vvmax* exp((1.0/GamI)*log(R));
-  dJac   = exp(GamI*log(vvmax ))/(GamI/m_vv*exp(GamI*log(m_vv) ));
-  RhoISR *= dJac;
+  //Straightforward mapping R->vv
+  //m_vv = vvmax* exp((1.0/GamI)*log(R));
+  //dJac   = exp(GamI*log(vvmax ))/(GamI/m_vv*exp(GamI*log(m_vv) ));
+  //RhoISR *= dJac;
   ///////////////
   // alternative mapping from KKeeFoam
-  //MapPlus( R, GamI, vvmax, m_vv, dJac);
-  //RhoISR *= dJac;
+  // probably safer, more stable numerically
+  MapPlus( R, GamI, vvmax, m_vv, dJac);
+  RhoISR *= dJac;
   /////////////// No mapping at all
   //m_vv = R*vvmax;
   //RhoISR *=vvmax;
@@ -476,8 +477,8 @@ if(vv > vvmin) {
    VoluMC    = 1.0;
 // IMPORTANT:     The integral over Rho(v<vvmin) = YFS_IR = EXP(-gami*LOG(1/vvmin))
    YFS_IR    = -gami*log(1.0/vvmin);        //!!! IR part of YFS formfactor
-   Rho       = 1.0/vv *gami*exp(log(vv)*gami);
-//   Rho       =  exp(log(vvmin)*gami)/vvmin; // unfinished exercise with MapPlus
+//   Rho       = 1.0/vv *gami*exp(log(vv)*gami);
+   Rho       =  exp(log(vvmin)*gami); // this is for MapPlus
 }
 Rho =  Rho * DilJac0;
 //* YFS formfactor, finite part, YFS_form_Factor = EXP(YFS_IR + YFSkon)
