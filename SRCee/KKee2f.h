@@ -38,10 +38,10 @@ class KKee2f: public TMCgen{
  KKdizet *m_EWtabs;               // EW formfactors
  KKevent *m_Event;                // MC event ISR+FSR in KKMC format
  KKarLud *m_GenISR;               // ISR YFS generator
-// KKarFin *m_GenFSR;               // FSR YFS generator
+ KKarFin *m_GenFSR;               // FSR YFS generator
  KKqed3  *m_QED3;                 // EEX matrix element
 // KKceex  *m_GPS;                  // CEEX matrix element
-// KKbvir  *m_BVR;                  // Library of virtual corrections
+ KKbvir  *m_BVR;                  // Library of virtual corrections
  KKlasa  *m_KKexamp;              // Template for new class
 
 // Dimensionality

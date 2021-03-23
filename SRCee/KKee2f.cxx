@@ -47,10 +47,10 @@ KKee2f::KKee2f()
   m_EWtabs   = NULL;
   m_Event    = NULL;
   m_GenISR   = NULL;
-//  m_GenFSR   = NULL;
+  m_GenFSR   = NULL;
   m_QED3     = NULL;
 //  m_GPS      = NULL;
-//  m_BVR      = NULL;
+  m_BVR      = NULL;
   m_KKexamp  = NULL;
 }
 
@@ -68,10 +68,10 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
   m_EWtabs   = NULL;
   m_Event    = NULL;
   m_GenISR   = NULL;
-//  m_GenFSR   = NULL;
+  m_GenFSR   = NULL;
   m_QED3     = NULL;
 //  m_GPS      = NULL;
-//  m_BVR      = NULL;
+  m_BVR      = NULL;
   m_KKexamp  = NULL;
   //
   m_EventCounter = 0;
@@ -152,12 +152,22 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_Event->Initialize(DB->CMSene);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++
+  m_BVR = new KKbvir(OutFile); // Lib of virtual functions
+  m_BVR->Initialize();
+//++++++++++++++++++++++++++++++++++++++++++++++++++
   m_GenISR= new KKarLud(OutFile);
   m_GenISR->SetDB(DB);
   m_GenISR->SetRNgen(f_RNgen);
   m_GenISR->SetEvent(m_Event);
   m_GenISR->Initialize();
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++
+  m_GenFSR= new KKarFin(OutFile);
+  m_GenFSR->SetDB(DB);
+  m_GenFSR->SetRNgen(f_RNgen);
+  m_GenFSR->SetEvent(m_Event);
+  m_GenFSR->SetBVR(m_BVR);
+  m_GenFSR->Initialize();
 //============================
   m_QED3= new KKqed3(OutFile);
   m_QED3->SetDB(DB);
@@ -593,7 +603,13 @@ m_Event->m_Mbeam1 = Mbeam; // input for m_GenISR
 m_Event->m_Mbeam2 = Mbeam; // input for m_GenISR
 m_GenISR->Make(&m_XXf,&WT_ISR);
 m_WtCrude *=  WT_ISR;
-
+//////////////////////////////////////
+if(m_WtCrude != 0){
+     DB->KeyPia = 0;  // for DEBUG !!!!
+     DB->KeyPia = 1;  // default!!!!
+     m_GenFSR->Make(&m_XXf,&WT_FSR);
+     m_WtCrude *= WT_FSR;
+}// if WtCrude
 //////////////////////////////////////
 if(m_WtCrude!= 0){
     m_Event->Merge(); // merging ISR and FSR photon momenta
