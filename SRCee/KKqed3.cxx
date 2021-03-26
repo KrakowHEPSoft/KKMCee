@@ -69,9 +69,6 @@ void KKqed3::Make(){
   double chain2 = sqr(DB->Qf[KFini] );
   double chafi2 = sqr(DB->Qf[KFfin] );
   int IsFSR = DB->KeyFSR;
-  //[[[[[[[[[[[[[[[[[[[
-  IsFSR =0;
-  //]]]]]]]]]]]]]]]]]]]
   TLorentzVector pp = m_Event->m_Pf1 + m_Event->m_Pf2;
   TLorentzVector qq = m_Event->m_Qf1 + m_Event->m_Qf2;
   TLorentzVector xx = qq + m_Event->m_PhotFSR[0];  // m_PhotFSR[0] is sum of all
@@ -94,6 +91,7 @@ void KKqed3::Make(){
 // Imported from MC generation KKarfin and Density, safer method
   YFSkon_ini = m_Event->m_YFSkon_ini;
   YFSkon_fin = m_Event->m_YFSkon_fin;
+//  if(m_icont <100) cout<<" YFSkon_fin="<<YFSkon_fin<<endl;
 
   int nphox =  m_Event->m_nPhotISR;
   int nphoy =  m_Event->m_nPhotFSR;

@@ -116,7 +116,7 @@ void TRobolKKMC::Production(double &iEvent)
   double r1 = Event->m_r1;
   double r2 = Event->m_r2;
 //  double vv = Event->m_vv;
-  int nPhot = Event->m_nPhotISR;
+  int nPhot = Event->m_nPhot;
 
 // ****************************************************************
 // Kinematic variables to be monitored
@@ -165,14 +165,14 @@ void TRobolKKMC::Production(double &iEvent)
 // HISTOGRAMMING
 // ****************************************************************
   double WtEEX2 = KKMC_generator->m_WtAlter[73];
+  double WtEEX0 = KKMC_generator->m_WtAlter[71];
+////  WtEEX2=WtEEX0; //!!!!!!!!!!!! DEBUG
 
   hst_WtMain->Fill(WtMain);
   hst_WtFoam->Fill(WtFoam);
 
   hst_nPhot->Fill(nPhot,WtMain);
 
-
-//  hst_vvTrue->Fill(vv,WtMain);
   hst_vvTrue->Fill(vv,WtEEX2);
 
 // big scatergrams, range vv< 1.0

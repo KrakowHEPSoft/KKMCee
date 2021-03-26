@@ -594,8 +594,6 @@ double WT_ISR=1;      // m_GenISR
 double WT_FSR=1;      // m_GenISR
 m_WtCrude = m_WtFoam;
 
-
-
 //////////////////////////////////////
 //          ISR   KKarlud           //
 //   KeyISR inside m_GenISR????
@@ -648,6 +646,10 @@ if(m_WtCrude != 0 ) {
 
 m_WtMain=WtBest*m_WtCrude;
 
+m_Event->m_WtCrude= m_WtCrude;
+m_Event->m_WtMain = m_WtMain;
+m_Event->m_WT_FSR = WT_FSR;
+m_Event->m_WT_ISR = WT_ISR;
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 m_Event->ZBoostALL();

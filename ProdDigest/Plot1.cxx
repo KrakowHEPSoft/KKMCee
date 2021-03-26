@@ -88,8 +88,8 @@ void HistNormalize(){
   DiskFileA->ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
@@ -250,10 +250,10 @@ void FigInfo()
 
   //==========plot2==============
   cFigInfo->cd(2);
-  gPad->SetLogy(); // !!!!!!
+  //gPad->SetLogy(); // !!!!!!
   TH1D *HST = hst_nPhot;
-  HST->SetStats(0);
-  HST->SetMinimum( 1e-3*HST->GetMaximum());
+  //HST->SetStats(0);
+  //HST->SetMinimum( 1e-3*HST->GetMaximum());
   HST->SetTitle(0);
   HST->SetLineColor(kBlue);
   HST->GetXaxis()->SetLabelSize(0.06);
@@ -346,6 +346,8 @@ void FigVplot()
   HST->SetLineColor(kBlue);
   HST->SetMinimum(1-0.02);
   HST->SetMaximum(1+0.02);
+//  HST->SetMinimum(1-0.2);
+//  HST->SetMaximum(1+0.2);
   HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
   HST->DrawCopy("h");
 
@@ -421,8 +423,10 @@ void FigVCplot()
   HST->SetTitle(0);
   HST->SetStats(0);
   HST->SetLineColor(kBlue);
-  HST->SetMinimum(1-0.006);
-  HST->SetMaximum(1+0.006);
+//  HST->SetMinimum(1-0.006);
+//  HST->SetMaximum(1+0.006);
+  HST->SetMinimum(1-0.01);
+  HST->SetMaximum(1+0.01);
 
   HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
   HST->GetYaxis()->SetTitle("  ");
@@ -547,10 +551,10 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();
   //========== PLOTTING ==========
-  //FigInfo();
+  FigInfo();
   FigVplot();
   FigVCplot();
-  FigAFBvv();
+//  FigAFBvv();
  //++++++++++++++++++++++++++++++++++++++++
   DiskFileA->ls();
 //

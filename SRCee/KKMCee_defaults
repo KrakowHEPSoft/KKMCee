@@ -48,7 +48,7 @@ BeginX
    19            100\\\\\\hard-wired maximum photon multiplicity\\\\\\\\\\\\\\\\
 ********************************************************************************
 **    EQD/EW bremsstrahlung flags/data
-   20              1      KeyISR=xpar(20)  Default is  1, for beams       |<<<<|
+   20              1      KeyISR=xpar(20)  Default is  1, for beams      
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 **\\\\KeyPia = 0, NO   removal of FSR photons below emin=Ene*delta in CMS\\\\\\\

@@ -315,7 +315,7 @@ void KKevent::PrintISR_FSR(){
 
 cout<<"///////////////////////////////Event::PrintISR+FSR///////////////////////////>  m_EventCounter="<< m_EventCounter<<endl;
 cout<<"m_nPhotISR= "<<m_nPhotISR<<"  m_nPhotFSR= "<<m_nPhotFSR<<endl;
-cout<<"m_WT_ISR = "<< m_WT_ISR<<"      ";
+cout<<"m_WT_ISR = "<< m_WT_ISR<<"    m_WT_FSR = "<< m_WT_FSR<<"      ";
 cout<<"m_KFini  = "<< m_KFini<< "    m_KFfin = "<< m_KFfin <<endl;
 cout<<"m_vv = "<< m_vv   << "   m_r1 = "<< m_r1 <<"   m_r2 = "<<m_r2<<endl;
 
@@ -361,7 +361,7 @@ void KKevent::PrintISR_FSR(ofstream *Out){
 
 *Out<<"//////////////////////////Event::PrintISR+FSR///////////////////////////////>  m_EventCounter="<< m_EventCounter<<endl;
 *Out<<"m_nPhotISR= "<<m_nPhotISR<<"  m_nPhotFSR= "<<m_nPhotFSR<<endl;
-*Out<<"m_WT_ISR = "<< m_WT_ISR<<"      ";
+*Out<<"m_WT_ISR = "<< m_WT_ISR<<"    m_WT_FSR = "<< m_WT_FSR<<"      ";
 *Out<<"m_KFini  = "<< m_KFini<< "    m_KFfin = "<< m_KFfin <<endl;
 *Out<<"m_vv = "<< m_vv   << "   m_r1 = "<< m_r1 <<"   m_r2 = "<<m_r2<<endl;
 

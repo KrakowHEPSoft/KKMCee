@@ -390,7 +390,7 @@ Rho *= dJacFSR;  // jacobian
 RhoFSR0 = RhoFSR(0,svar2,m_uu,m_eps);
 Rho *= RhoFSR0;
 //}//KeyFSR
-m_xx= (1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
+m_xx= 1-(1-m_vv)*(1-m_uu)*(1-m_r1)*(1-m_r2);
 //===========================================================
 // Crude distribution
 double svarZ = sqr(DB->CMSene) *(1-m_vv);
@@ -511,7 +511,7 @@ if( DB->KeyFSR != 0){
 //  Rho *= gamf *exp(gamf*log(m_uu))/m_uu; // FSR distribution
 //]]]]]]]]]]]]]]]]]
 }// if KeyISR
-m_xx= (1-m_vv)*(1-m_uu);
+m_xx= 1-(1-m_vv)*(1-m_uu);
 
 double svarZ = sqr(DB->CMSene) *(1-m_vv);
 //double svarZ = sqr(m_XXXene); // the same
@@ -649,7 +649,11 @@ double KKeeFoam::RhoFSR(int KeyFSR, double svar, double uu, double eps){
   double delb   = gamf/4 +alf1*(-0.5  +sqr(M_PI)/3.0)
 		         -gamf/2 *log(1-uu);
   double ffact  = Fyfs(gamf)*exp(delb);
-
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  if( f_NevGen>0 && f_NevGen<50) {
+//    if( uu<0.01) cout<<" RhoFSR: uu="<<uu<<"  ffact="<< ffact<<"  fyfs="<< Fyfs(gamf)<<endl;
+//  }
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   double rho,dels,delh;
   if(       KeyFSR == 0){
 /// zero   order exponentiated

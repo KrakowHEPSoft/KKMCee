@@ -26,6 +26,8 @@ using namespace std;
 #include "KKdizet.h"
 #include "KKevent.h"
 #include "KKarLud.h"
+#include "KKbvir.h"
+#include "KKarFin.h"
 #include "KKqed3.h"
 
 #include "KKlasa.h"

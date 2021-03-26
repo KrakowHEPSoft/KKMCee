@@ -56,7 +56,6 @@ void KKarFin::Initialize()
   m_Emin      = DB->CMSene/2 *m_vvmin;
   m_delta     = m_vvmin*DB->delfac;
   m_MasPhot   = 1e-60;  // dummy photon mass
-
   m_icont   =0;
   ///////////////////////////////////////////////////
 }// Initialize
@@ -215,8 +214,11 @@ if (m_nphot == 0) {
       if(xk[i] < sqrt(10.0)*m_delta) Mark[i]=1;
       xsum = xsum+xk[i];
    }//
-   // Event outside phase space (too hard photon)
-   if(xsum >= 1.0) goto e60;
+// Event outside phase space (too hard photon)
+//   if(xsum >= 1.0) goto e60; // BUG
+   if(xsum >= 1.0) {
+       m_nphot=0; *WtFin =0; return;
+   }
    double xfact=1.0/(1.0-xsum);
    for(int i=1; i<=m_nphot; i++){
       xk[i]=xk[i]*xfact;
@@ -248,7 +250,7 @@ if (m_nphot == 0) {
 // reject events with too hard photons
    double smini = sqr(Mas1+Mas2);
    if(sprim < smini)   {
-	   wt2=0; *WtFin =0; return;
+	   m_nphot=0; *WtFin =0; return;
    }
 
 //-----------------------------------------------------------------------
@@ -365,7 +367,9 @@ if(m_nphot >= 1) {  // spurious if ???
 // Final Monitoring weights
 *WtFin = wt1*wt2*wt3;
 //[[[[[[[[[[[[[[[[[[[[[[[[[
-if( m_icont == 11173 ) cout<<" WtFin ="<<*WtFin<<"  wt1="<<wt1<<"  wt2="<<wt2<<"  wt3="<<wt3<<endl;
+//if( m_icont <50 ) {
+//	cout<<" WtFin ="<<*WtFin<<"  wt1="<<wt1<<"  wt2="<<wt2<<"  wt3="<<wt3<<endl;
+//}//if( m_icont
 //]]]]]]]]]]]]]]]]]]]]]]]]]
 //-----------------------------------------------------------------------
 //CALL GLK_Mfill(m_idyfs+61,     wt1  ,1d0)
@@ -431,6 +435,7 @@ double r1r2  =  m_r1*m_r2;
 double QQk   =  QQ*m_phot[0];
 double Eq1   = (svarQ +Mas1*Mas1 -Mas2*Mas2)/(2*sqrt(svarQ));
 double Eq2   = (svarQ -Mas1*Mas1 +Mas2*Mas2)/(2*sqrt(svarQ));
+double uu= 1-svarQ/svarX;
 // Delta1 and Epsi1 are cutoffs located in YFS formfactor
 // Note that xfact=(1+2*QQk/svarQ) is EXACTLY the same as in KarFin_YFSfin
 // Delta1 = 2*Emin/sqrt(s'), where Emin is in QMS
@@ -449,9 +454,12 @@ double YFS_IR = -2.0*alfch *(     q1q2 *m_BVR->A( q1q2, Mas1,Mas2) -1.0  )    *l
 // YFSkon is delegated/exported to QED3 (unused here).
 double YFSkon =  1/4.0 *2*alfch*(log(svarQ/sqr(Mass))-1) + alfch*( -0.5  + sqr(M_PI)/3.0); // Mass<<sqrt(s)
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//if(m_icont <50 && uu<0.01){
+//cout<<" *******************************************************************************nphot="<<m_nphot<<" uu="<<uu<<endl;
 //cout<<" KKarFin::Piatek VoluMC= "<<VoluMC<<" YFS_IR="<<YFS_IR<<" YFSkon="<<YFSkon<<endl;
-//cout<<"  alfch="<< alfch <<" q1q2="<<q1q2<<" Mas1="<<Mas1<<"  Delta1="<<Delta1<<endl;
-//cout<<"  m_delta="<<m_delta<<"  QQk="<< QQk << " svarQ="<<svarQ<<endl;
+//cout<<" alfch="<< alfch <<" q1q2="<<q1q2<<" Mas1="<<Mas1<<"  Delta1="<<Delta1<<endl;
+//cout<<"  m_delta="<<m_delta<<"  QQk="<< QQk << " svarQ="<<svarQ<<" svarQ/svarX="<< svarQ/svarX <<endl;
+//}//if(m_icont
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //===========================================================================================
 // Corrections necessary for photon remooval scenario (now default!)
@@ -518,7 +526,6 @@ if(DB->KeyPia == 0) {
 } else {
 // Optional removal of photons below Emin from the record
 // in such a case WtMas includes exp(belb2)= <wt3> for removed ph.
-//[[[[[[[[[[[[[
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 //   cout<<"KKarFin::Piatek:  m_NevGen ="<<m_NevGen<<endl;
 //   cout<<"//////KKarFin::Piatek: m_nphot="<<m_nphot<<"  m_Emin="<< m_Emin<<endl;
@@ -561,9 +568,14 @@ m_Event->m_YFSkon_fin = m_YFSkon;
 *Wt3 = m_WtMass *m_VoluMC *m_YFS_IR;
 //**********************************
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//if(m_icont <50 && uu<0.01){
+//cout<<" *******************************************************************************nphot="<<m_nphot<<" uu="<<uu<<endl;
+//cout<<" KKarFin::Piatek VoluMC= "<<m_VoluMC<<" YFS_IR="<<m_YFS_IR<<" YFSkon="<<m_YFSkon<<" m_WtMass="<<m_WtMass<<endl;
+//if(m_icont <100){
 //cout<<" KKarFin::Piatek *************** m_YFS_IR= "<< m_YFS_IR <<endl;
 //cout<<" KKarFin::Piatek m_WtMass= "<<m_WtMass<<"   Wt3="<< *Wt3  <<endl;
 //cout<<" KKarFin::Piatek   WtCtrl= "<<WtCtrl<<  " WtRem="<< WtRem<<endl;
+//}//if(m_icont <50
 // Monitoring
 //CALL GLK_Mfill(m_idyfs+65,       WtCtrl ,1d0)
 //CALL GLK_Mfill(m_idyfs+66,       WtRem  ,1d0)

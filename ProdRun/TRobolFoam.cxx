@@ -152,13 +152,15 @@ void TRobolFoam::Production(double &iEvent)
 
   double WtEEX2 = MCgen->m_WtAlter[73];
 //  double WtEEX3 = MCgen->m_WtAlter[74]; // not implemented
+  double WtEEX0 = MCgen->m_WtAlter[71];
+////  WtEEX2= WtEEX0; // !!!!!!!!!!!!!! DEBUG
 
-  HST_vv_eex2->Fill(vv, WtEEX2);
+  HST_vv_eex2->Fill(xx, WtEEX2);
 
 // big scatergrams, range vv< 1.0
 //  SCA_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
 //  SCA_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
-  SCA_vTcPR_Eex2->Fill(    vv, CosTheta, WtEEX2);
+  SCA_vTcPR_Eex2->Fill(    xx, CosTheta, WtEEX2);
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
