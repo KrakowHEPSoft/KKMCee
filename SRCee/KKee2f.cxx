@@ -49,7 +49,7 @@ KKee2f::KKee2f()
   m_GenISR   = NULL;
   m_GenFSR   = NULL;
   m_QED3     = NULL;
-//  m_GPS      = NULL;
+  m_GPS      = NULL;
   m_BVR      = NULL;
   m_KKexamp  = NULL;
 }
@@ -70,7 +70,7 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
   m_GenISR   = NULL;
   m_GenFSR   = NULL;
   m_QED3     = NULL;
-//  m_GPS      = NULL;
+  m_GPS      = NULL;
   m_BVR      = NULL;
   m_KKexamp  = NULL;
   //
@@ -175,6 +175,14 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_QED3->SetBornV(m_BornDist);
   m_QED3->Initialize();
 //============================
+  m_GPS = new KKceex(OutFile);
+  m_GPS->SetDB(DB);         // input database
+  m_GPS->SetDZ(m_EWtabs);   // EW tables from the disk
+  m_GPS->SetEvent(m_Event); // MC event record
+  m_GPS->SetBornV(m_BornDist);
+  m_GPS->SetBVR(m_BVR);
+  m_GPS->SetRNgen(f_RNgen);
+  m_GPS->Initialize();
 
 
   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
@@ -631,18 +639,51 @@ if(m_WtCrude != 0 ) {
       for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
       WtBest = m_WtSet[74];   // wtset[74]
 //[[[[[[[[[[[[[[[
-      if(m_EventCounter <10 ){
+      if(m_EventCounter <20 ){
         (*f_Out)<<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
         cout    <<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
       }
+//]]]]]]]]]]]]]]]
+// New CEEX matrix element is now default for leptons and for quarks.
+// Its use is controled by auxiliary parameter MinMassCEEX variable [GeV]
+// CEEX is calculated twice, with ISR*FSR interference OFF and ON
+   double SvarQ;
+   SvarQ = (m_Event->m_Qf1 + m_Event->m_Qf2)*(m_Event->m_Qf1 + m_Event->m_Qf2);
+   if( (DB->KeyGPS != 0) && (SvarQ > sqr(m_MminCEEX[m_KFfin])) ) {
+      int KeyInt0=0;
+      m_GPS->SetKeyInt(KeyInt0);
+      m_GPS->Make();
+      m_WtSetNew[51]=m_GPS->m_WtSet[51];
+      m_WtSetNew[52]=m_GPS->m_WtSet[52];
+      m_WtSetNew[53]=m_GPS->m_WtSet[53];
+      WtBest = m_GPS->m_WtSet[53];
+      if( DB->KeyINT != 0 ) {
+        m_GPS->SetKeyInt(DB->KeyINT);
+        m_GPS->Make();
+        m_WtSetNew[1]=m_GPS->m_WtSet[1];
+        m_WtSetNew[2]=m_GPS->m_WtSet[2];
+        m_WtSetNew[3]=m_GPS->m_WtSet[3];
+        WtBest = m_GPS->m_WtSet[3];
+      }// if KeyInt
+// +200 shift in the index should be better done inside gps_make() !!?
+   for(int j=1; j<200;j++) m_WtSet[j+200] = m_WtSetNew[j];
+   }//if
+}//if wtcrude
+//[[[[[[[[[[[[[[[
+if(m_EventCounter <20 ){
+  (*f_Out)<<" m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
+  cout    <<" m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
+  (*f_Out)<<" m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
+  cout    <<" m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
+ }
+//]]]]]]]]]]]]]]]
 
 /////////// VARIABLE-WEIGHT events ///////////////
 // collection of the weights for the advanced user
 // This is version for WTed events only!!!!
    for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]*m_WtCrude;  // indexing f77!!!!
 
-   //]]]]]]]]]]]]]]]
-}//m_WtCrude
+/////////////////////////////////////////////////////////////////////////
 
 m_WtMain=WtBest*m_WtCrude;
 
@@ -674,6 +715,12 @@ m_Event->ZBoostALL();
      m_Event->EventPrintAll();
   }//m_EventCounter
 
+  //
+  if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
+	  cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
+	  cout<<" m_WtCrude="<<m_WtCrude<<"   m_WtMain="<<m_WtMain<<endl;
+	  exit(99);
+  }// if nan
 
 }// Generate
 

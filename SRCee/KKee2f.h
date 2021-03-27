@@ -29,7 +29,7 @@ using namespace std;
 #include "KKbvir.h"
 #include "KKarFin.h"
 #include "KKqed3.h"
-
+#include "KKceex.h"
 #include "KKlasa.h"
 
 
@@ -42,7 +42,7 @@ class KKee2f: public TMCgen{
  KKarLud *m_GenISR;               // ISR YFS generator
  KKarFin *m_GenFSR;               // FSR YFS generator
  KKqed3  *m_QED3;                 // EEX matrix element
-// KKceex  *m_GPS;                  // CEEX matrix element
+ KKceex  *m_GPS;                  // CEEX matrix element
  KKbvir  *m_BVR;                  // Library of virtual corrections
  KKlasa  *m_KKexamp;              // Template for new class
 

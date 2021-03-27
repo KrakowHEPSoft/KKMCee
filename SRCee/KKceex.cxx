@@ -243,6 +243,8 @@ void KKceex::Make(){
   double svar  = PP*PP;
   double svarQ = QQ*QQ;
   double Ene   = sqrt(svar)/2.0;
+
+  m_Emin      = Ene *DB->vvmin; //IR cutoff
 //-------------------------------------------------------------
 // Overall normalization factors
   double CrudNorm  =  1.0;

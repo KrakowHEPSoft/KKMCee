@@ -79,8 +79,9 @@ void TRobolKKMC::Hbooker()
   int nbv =100;
   int nbc = 50;
 
-//  sca_vTcPR_Ceex2  = TH2D_UP("sca_vTcPR_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-//  sca_vTcPR_Ceex2n = TH2D_UP("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2  = TH2D_UP("sca_vTcPR_Ceex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Ceex2n = TH2D_UP("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
+  sca_vTcPR_Eex0   = TH2D_UP("sca_vTcPR_Eex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Eex2   = TH2D_UP("sca_vTcPR_Eex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
 
   sca_r1r2     = TH2D_UP("sca_r1r2" ,    "BES spectrum", 100, -delv , delv, 100, -delv , delv);
@@ -164,9 +165,16 @@ void TRobolKKMC::Production(double &iEvent)
 // ****************************************************************
 // HISTOGRAMMING
 // ****************************************************************
-  double WtEEX2 = KKMC_generator->m_WtAlter[73];
-  double WtEEX0 = KKMC_generator->m_WtAlter[71];
-////  WtEEX2=WtEEX0; //!!!!!!!!!!!! DEBUG
+  double WtEEX2  = KKMC_generator->m_WtAlter[73];
+  double WtEEX0  = KKMC_generator->m_WtAlter[71];
+  double WtCEEX1 = KKMC_generator->m_WtAlter[202];    //  CEEX Weight O(alf1)
+  double WtCEEX1n= KKMC_generator->m_WtAlter[252];    //  CEEX Weight O(alf1)
+  double WtCEEX2 = KKMC_generator->m_WtAlter[203];    //  CEEX Weight O(alf2)
+  double WtCEEX2n= KKMC_generator->m_WtAlter[253];    //  CEEX Weight O(alf2) IFI off
+  double WtCEEX0 = KKMC_generator->m_WtAlter[201];    //  CEEX Weight O(alf0)
+  double WtCEEX0n= KKMC_generator->m_WtAlter[251];    //  CEEX Weight O(alf0) IFI off
+//  WtEEX2=WtEEX0;    //!!!!!!!!!!!! DEBUG
+//  WtEEX2=WtCEEX2n;  //!!!!!!!!!!!! DEBUG
 
   hst_WtMain->Fill(WtMain);
   hst_WtFoam->Fill(WtFoam);
@@ -176,10 +184,10 @@ void TRobolKKMC::Production(double &iEvent)
   hst_vvTrue->Fill(vv,WtEEX2);
 
 // big scatergrams, range vv< 1.0
-//  sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
-//  sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
-//  sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
+  sca_vTcPR_Eex0->Fill(    vv, CosPRD, WtEEX0);
   sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
+  sca_vTcPR_Ceex2->Fill(   vv, CosPRD, WtCEEX2);
+  sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // IFI off
 
 //----------------- BES corner ------------------------
   double vvBES = r1 + r2;

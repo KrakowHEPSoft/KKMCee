@@ -28,12 +28,11 @@ class TRobolFoam : public TRobol
   TH1D   *HST_weight6;          //!  No streamer!!!
 
   TH1D   *HST_vv_eex2;          //!  No streamer!!!
-  //
-
-  //
-  //TH2D   *SCA_vTcPR_Ceex2;     //!  No streamer!!!
-  //TH2D   *SCA_vTcPR_Ceex2n;    //!  No streamer!!!
+   //
+  TH2D   *SCA_vTcPR_Ceex2;     //!  No streamer!!!
+  TH2D   *SCA_vTcPR_Ceex2n;    //!  No streamer!!!
   TH2D   *SCA_vTcPR_Eex2;      //!  No streamer!!!
+  TH2D   *SCA_vTcPR_Eex0;      //!  No streamer!!!
 
   /////////////////////////////////////////////////////////////////////////////
   /// mandatory constructors and destructors

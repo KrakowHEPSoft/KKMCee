@@ -25,8 +25,9 @@ class TRobolKKMC : public TRobol
  TH1D   *hst_CosTheta;        //!  No streamer!!!
 
  //
- //TH2D   *sca_vTcPR_Ceex2;     //!  No streamer!!!
- //TH2D   *sca_vTcPR_Ceex2n;    //!  No streamer!!!
+ TH2D   *sca_vTcPR_Ceex2;     //!  No streamer!!!
+ TH2D   *sca_vTcPR_Ceex2n;    //!  No streamer!!!
+ TH2D   *sca_vTcPR_Eex0;      //!  No streamer!!!
  TH2D   *sca_vTcPR_Eex2;      //!  No streamer!!!
 
 
