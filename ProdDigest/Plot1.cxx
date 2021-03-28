@@ -442,7 +442,7 @@ void FigVCplot()
   cFigVCplot->cd(1);
   //gPad->SetLogy(); // !!!!!!
   TH1D *HST; //
-  HST = hTot_vTcPR_Eex2; //
+  HST = hTot_vTcPR_Eex0; //
 
   HST->SetTitle(0);
   HST->SetStats(0);
@@ -458,12 +458,14 @@ void FigVCplot()
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
 
+  PlotSame2(hTot_vTcPR_Eex0,    xcapt, ycapt, kBlue,    0.80, "(a0)", "  KKMCee EEX2  ");
   PlotSame2(hTot_vTcPR_Eex2,    xcapt, ycapt, kBlack,   0.10, "(a2)", "  KKMCee EEX2  ");
-  PlotSame2(hTot_vTcPR_Ceex2,   xcapt, ycapt, kGreen,   0.20, "(c2)", "  KKMCee CEEX2 ");
-  PlotSame2(hTot_vTcPR_Ceex2n,  xcapt, ycapt, kRed,     0.30, "(d2)", "  KKMCee CEEX2 IFIoff, ");
+  PlotSame2(hTot_vTcPR_Ceex2,   xcapt, ycapt, kGreen,   0.30, "(c2)", "  KKMCee CEEX2 ");
+  PlotSame2(hTot_vTcPR_Ceex2n,  xcapt, ycapt, kRed,     0.40, "(d2)", "  KKMCee CEEX2 IFIoff, ");
 
-  PlotSame2(HTot_vTcPR_Eex2,    xcapt, ycapt, kBlue,    0.40, "(f2)", "  KKeeFoam IFI off ");
-  PlotSame2(HTot_vTcPR_Ceex2,   xcapt, ycapt, kMagenta, 0.50, "(g2)", "  KKeeFoam IFI on ");
+  PlotSame2(HTot_vTcPR_Eex0,    xcapt, ycapt, kRed,     0.90, "(f0)", "  KKeeFoam0 IFI off ");
+  PlotSame2(HTot_vTcPR_Eex2,    xcapt, ycapt, kBlue,    0.50, "(f2)", "  KKeeFoam2 IFI off ");
+  PlotSame2(HTot_vTcPR_Ceex2,   xcapt, ycapt, kMagenta, 0.60, "(g2)", "  KKeeFoam2 IFI on ");
 
 //==========plot1==============
   cFigVCplot->cd(2);
@@ -471,6 +473,7 @@ void FigVCplot()
   TH1D *RAT_Ha1 = HstRatio("RAT_Ha1", hTot_vTcPR_Ceex2n, HTot_vTcPR_Eex2,  kRed );  //
   TH1D *RAT_Ha2 = HstRatio("RAT_Ha2", hTot_vTcPR_Ceex2,  HTot_vTcPR_Eex2,  kRed );  //
   TH1D *RAT_Ha3 = HstRatio("RAT_Ha3", hTot_vTcPR_Ceex2,  HTot_vTcPR_Ceex2, kRed );  //
+  TH1D *RAT_Ha4 = HstRatio("RAT_Ha4", hTot_vTcPR_Eex0,   HTot_vTcPR_Eex0,  kRed );  //
 
   HST =RAT_Ha;
   HST->SetTitle(0);
@@ -496,6 +499,7 @@ void FigVCplot()
   PlotSame2(RAT_Ha1,   xcapt, ycapt, kRed,    0.20, "(B)", "  (d2)/(f2)  ");
 //  PlotSame2(RAT_Ha2,   xcapt, ycapt, kGreen,  0.30, "(C)", "  (c2)/(f2)  ");
   PlotSame2(RAT_Ha3,   xcapt, ycapt, kMagenta,0.40, "(D)", "  (c2)/(g2)  ");
+  PlotSame2(RAT_Ha4,   xcapt, ycapt, kGreen,  0.90, "(E)", "  (a0)/(f0)  ");
 
   TH1D *hOne = (TH1D*)RAT_Ha->Clone("hOne");  // zero line
   for(int i=1; i <= hOne->GetNbinsX() ; i++) { hOne->SetBinContent(i, 1); hOne->SetBinError(i, 0);}
