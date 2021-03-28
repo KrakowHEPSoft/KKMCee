@@ -65,6 +65,9 @@ int SetFarmSL(TString dname = "WORK", int nfarm = 6)
          gSystem->Exec("cp ../../histo.root ./histo.root");
          gSystem->Exec("cp ../../semaf.root ./semaf.root");
          gSystem->Exec("cp ../../mcgen.root ./mcgen.root");
+//------------ links specific to KKMCee
+         gSystem->Exec("ln -s ../../KKMCee_defaults ./");
+         gSystem->Exec("ln -s ../../DIZET-table1 ./");
          gSystem->Exec("ls -altr");
          TFile GenFile("./mcgen.root","UPDATE","r.n.generator, MCgens");
         //GenFile.ls();
