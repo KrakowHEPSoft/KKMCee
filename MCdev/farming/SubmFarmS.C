@@ -29,6 +29,7 @@ for(int i=1; i<nfarm+1; i++){
     gSystem->Exec(qsubCMD+" ./*.cmd.* ");
   }
 }
+exit(0);
 ///*****************************************************************
 ///TBrowser oglad("oglad");
 }
