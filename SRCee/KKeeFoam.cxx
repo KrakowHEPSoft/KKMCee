@@ -415,8 +415,8 @@ sisr2 = (1-m_vv)*(1-m_r2)*svar; // ISR + one IFI variable
 // Re(M M^*) including only leading part of gamma-Z box
 m_GPS->m_KeyInt=2;              // important!!!
 SetEvent( sisr1, m_CosTheta); // set input for BornFoam2
-double Emin = 0.5 * m_XXXene * DB->vvmin;
-m_GPS->SetEmin(Emin);                      // not needed!!
+//double Emin = 0.5 * m_XXXene * DB->vvmin;
+//m_GPS->SetEmin(Emin);                      // not needed!!
 m_GPS->BornFoam2( 10,m_KFini,m_KFfin,sisr1,m_CosTheta,Yint);
 SetEvent( sisr2, m_CosTheta); // set input for BornFoam2
 m_GPS->BornFoam2( 11,m_KFini,m_KFfin,sisr2,m_CosTheta,Yint);

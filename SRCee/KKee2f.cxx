@@ -213,6 +213,10 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_KKexamp= new KKlasa(OutFile);
   m_KKexamp->Initialize();
 
+
+  for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
+  cout<<" TMCgen::Initialize:  xpar filled into h_NORMA  "<<endl;
+
   cout  << "   *******************************" << endl;
   cout  << "   **** KKee2f:Initialize END ****" << endl;
   cout  << "   *******************************" << endl;

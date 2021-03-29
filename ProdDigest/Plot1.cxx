@@ -256,7 +256,7 @@ void FigInfo()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-//  CaptT->SetTextSize(0.060);
+  CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ",  gXcanv,  gYcanv,    1000,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -285,8 +285,9 @@ void FigInfo()
   HST->SetLineColor(kBlue);
   HST->GetXaxis()->SetLabelSize(0.06);
   HST->DrawCopy("h");
-  CaptT->DrawLatex(0.10,0.93,"No. of #gamma's. tagged (red) and All (blue)");
-  CaptE->DrawLatex(0.70,0.85, capt1);
+  CaptT->DrawLatex(0.10,0.93,"No. of photons");
+  CaptT->DrawLatex(0.30,0.80, gTextEne);
+  CaptT->DrawLatex(0.30,0.75, gTextNev);
 
   ///==========plot3==============
   cFigInfo->cd(3);
@@ -313,9 +314,6 @@ void FigVplot()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigVplot =========================== "<<endl;
-  char capt1[100];
-  double CMSene=100.0;
-  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
   TH1D *hst_vvTrue    = (TH1D*)DiskFileA->Get("hst_vvTrue");    //KKMCee
   TH1D *hPro_vT_Eex2  = (TH1D*)DiskFileB->Get("hPro_vT_Eex2");  //KKMCee
@@ -334,7 +332,7 @@ void FigVplot()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.040);
+  CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigVplot = new TCanvas("cFigVplot","FigVplot: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -359,7 +357,8 @@ void FigVplot()
   CaptT->DrawLatex(0.06,0.95, "#sigma(v_{max}) ");
   double ycapt = 0.90; double xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
 
   PlotSame2(hst_vvTrue,    xcapt, ycapt, kBlack,    0.10, "(b2)", "  KKMCee EEX2 ");
   PlotSame2(hPro_vT_Eex2,  xcapt, ycapt, kRed,      0.20, "(a2)", "  KKMCee EEX2 ");
@@ -388,7 +387,8 @@ void FigVplot()
   CaptT->DrawLatex(0.06,0.95, "Ratios ");
   ycapt = 0.90; xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
 
   PlotSame2(RAT_Hh,    xcapt, ycapt, kBlack,    0.30, "(A)", " (a2)/(f2) ");
   PlotSame2(RAT_Hh1,   xcapt, ycapt, kRed,      0.50, "(B)", " (a0)/(f0) ");
@@ -429,7 +429,7 @@ void FigVCplot()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.040);
+  CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigVCplot = new TCanvas("cFigVCplot","FigVCplot: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -456,7 +456,8 @@ void FigVCplot()
   CaptT->DrawLatex(0.06,0.95, "#sigma(v_{max}) ");
   double ycapt = 0.85; double xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
 
   PlotSame2(hTot_vTcPR_Eex0,    xcapt, ycapt, kBlue,    0.80, "(a0)", "  KKMCee EEX2  ");
   PlotSame2(hTot_vTcPR_Eex2,    xcapt, ycapt, kBlack,   0.10, "(a2)", "  KKMCee EEX2  ");
@@ -479,10 +480,10 @@ void FigVCplot()
   HST->SetTitle(0);
   HST->SetStats(0);
   HST->SetLineColor(kBlue);
-//  HST->SetMinimum(1-0.006);
-//  HST->SetMaximum(1+0.006);
-  HST->SetMinimum(1-0.01);
-  HST->SetMaximum(1+0.01);
+//  HST->SetMinimum(1-0.025);
+//  HST->SetMaximum(1+0.075);
+  HST->SetMinimum(1-0.010);
+  HST->SetMaximum(1+0.010);
 
   HST->GetXaxis()->SetTitle("v=1-#hat{s}/s");
   HST->GetYaxis()->SetTitle("  ");
@@ -493,7 +494,8 @@ void FigVCplot()
   CaptT->DrawLatex(0.06,0.95, "Ratios ");
   ycapt = 0.85; xcapt=0.40;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
 
   PlotSame2(RAT_Ha,    xcapt, ycapt, kBlue,   0.10, "(A)", "  (a2)/(f2)  ");
   PlotSame2(RAT_Ha1,   xcapt, ycapt, kRed,    0.20, "(B)", "  (d2)/(f2)  ");
@@ -535,7 +537,7 @@ void FigAFBvv()
 //  CaptE->SetTextSize(0.055);
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
-  CaptT->SetTextSize(0.040);
+  CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
   TCanvas *cFigAFBvv = new TCanvas("cFigAFBvv","FigAFBvv: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
@@ -559,7 +561,9 @@ void FigAFBvv()
   CaptT->DrawLatex(0.06,0.95, "A_{FB}(v_{max}) ");
   double ycapt = 0.70; double xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
+
   PlotSame2(hAfb_vTcPR_Eex2,    xcapt, ycapt, kBlack,   0.10, "(a2)", "  KKMCee EEX2 ");
   PlotSame2(hAfb_vTcPR_Ceex2n,  xcapt, ycapt, kRed,     0.20, "(d2)", "  KKMCee CEEX2 IFI off");
   PlotSame2(hAfb_vTcPR_Ceex2,   xcapt, ycapt, kBlue,    0.30, "(c2)", "  KKMCee CEEX2 IFI on");
@@ -584,7 +588,9 @@ void FigAFBvv()
   CaptT->DrawLatex(0.06,0.95, "Differences ");
   ycapt = 0.90; xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}, 189GeV");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.25,ycapt,gTextEne);
+
   PlotSame2(afb_diff_Hh,    xcapt, ycapt, kBlack,   0.30, "(A)", "  (a2)-(f2) ");
   PlotSame2(afb_diff_Hh1,   xcapt, ycapt, kRed,     0.40, "(B)", "  (d2)-(f2) ");
 //  PlotSame2(afb_diff_Hh2,   xcapt, ycapt, kGreen,   0.50, "(C)", "  (c2)-(f2) ");
@@ -619,17 +625,17 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
-  /*
+
   /////////////////////////////////////////////////////////
   // Reading directly KKMC input (farming)
   int Nodes;
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
+//  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
   Nodes    = HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
   gCMSene  = HST_KKMC_NORMA->GetBinContent(1)/Nodes;   // CMSene=xpar(1), farn adjusted
   gNevTot  = HST_KKMC_NORMA->GetEntries();             // MC statistics from KKMC
   sprintf(gTextEne,"#sqrt{s} =%4.2fGeV", gCMSene);
   sprintf(gTextNev,"KKMC:%10.2e events", gNevTot);
- */
   DiskFileB->cd();
   HistNormalize();     // Renormalization of MC histograms
   ReMakeMChisto();
@@ -641,8 +647,8 @@ int main(int argc, char **argv)
  //++++++++++++++++++++++++++++++++++++++++
   DiskFileA->ls();
 //
-//  cout<< "CMSene[GeV] = "<< gCMSene<< endl;
-//  cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gNevTot<< endl;
+  cout<< "CMSene[GeV] = "<< gTextEne<< endl;
+  cout<< "KKMC: No. of farm nodes="<< Nodes  << "  Tot no. of events = "<<gTextNev<< endl;
 //
   //++++++++++++++++++++++++++++++++++++++++
   theApp.Run();

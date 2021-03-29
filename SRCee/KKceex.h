@@ -193,7 +193,7 @@ void SetRNgen(TRandom *RNgen){ m_RNgen= RNgen;};
 
 void SetEmin(double Emin){      m_Emin   = Emin;};
 void SetKeyInt(int KeyInt){     m_KeyInt = KeyInt;};
-void SetIR(double YFS_IR, double YFSkon){ m_YFS_IR= YFS_IR; m_YFSkon= YFSkon;};
+//void SetIR(double YFS_IR, double YFSkon){ m_YFS_IR= YFS_IR; m_YFSkon= YFSkon;};
 
 inline double XiProd( KKpart &p, KKpart &q){
 /////////////////////////////////////////////////////////////////////////////////////
