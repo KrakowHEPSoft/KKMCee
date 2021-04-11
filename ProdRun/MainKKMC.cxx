@@ -20,12 +20,8 @@ using namespace std;
 #include "TRobol.h"
 #include "TSystem.h"
 
-//TFile HistoFile("histo.root","UPDATE","histograms");
-//TFile MCgenFile("mcgen.root","UPDATE","Generators");
 int main()
 {
-  gSystem->Load("../../SRCee/.libs/libKKee.so");     // needed ???
-  gSystem->Load("../../SRCee/.libs/libKKfm.so");     // NEEDED! why?
   TFile *HistoFile = new TFile("histo.root","UPDATE","histograms");
   TFile *MCgenFile = new TFile("mcgen.root","UPDATE","Generators");
 //  cout<<"------------------------------MCgenFile->ls----------------------------------"<<endl;

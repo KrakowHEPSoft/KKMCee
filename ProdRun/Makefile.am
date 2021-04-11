@@ -22,11 +22,14 @@ $(dict1C) : $(ROOTCINTHDRS1)
 	$(ROOTCINT) -f $(dict1C) -c $(all_includes)  $(ROOTCINTHDRS1)
 	if [ -f "$(dict1H:.h=_rdict.pcm)" -a -d ".libs/" ]; then ln -f -s "../$(dict1H:.h=_rdict.pcm)" ".libs/"; fi # a brutal fix for ROOT 6 and libtool
 ##-----------------------Local library 1--------------------------
+#  Additional flags:
 nodist_libProdFoam_la_SOURCES = $(dict1C)
 libProdFoam_la_SOURCES =  TRobolFoam.cxx
 libProdFoam_la_LIBADD =  \
     $(top_builddir)/MCdev/libMCdev.la \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+	$(top_builddir)/SRCee/libKKee.la \
+ 	$(top_builddir)/SRCee/libKKfm.la \
+    -L$(ROOTLIBDIR) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
 libProdFoam_la_LDFLAGS = -L$(ROOTLIBDIR)
 #################################################################]]]
 
@@ -42,7 +45,7 @@ ROOTCINTHDRS2= $(include_HEADERS2) $(noinst_HEADERS2)
 $(dict2C) : $(ROOTCINTHDRS2)
 	$(ROOTCINT) -f $(dict2C) -c $(all_includes) $(ROOTCINTHDRS2)
 	if [ -f "$(dict2H:.h=_rdict.pcm)" -a -d ".libs/" ]; then ln -f -s "../$(dict2H:.h=_rdict.pcm)" ".libs/"; fi # a brutal fix for ROOT 6 and libtool
-#---------------------------------------------------------------
+#------------------------Local library 2---------------------------
 #  Additional flags:
 nodist_libProdKK_la_SOURCES = $(dict2C)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx

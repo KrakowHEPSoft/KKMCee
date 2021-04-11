@@ -1,3 +1,6 @@
+//////////////////////////
+//  make TabIIIPRD-pdf
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -27,9 +30,11 @@ TFile *DiskFileA;
 TFile *DiskFileF;
 TFile *DiskFileB;
 
-TString FileA= "../ProdRun/work1/histo.root";
-
-TString FileF= "../ProdRun/workFoam/histo.root";
+//TString FileA= "../ProdRun/work1/histo.root";
+//TString FileF= "../ProdRun/workFoam/histo.root";
+//
+TString FileA= "../ProdRun/work1/histo_189GeV_4G.root";
+TString FileF= "../ProdRun/workFoam/histo_189GeV_1G.root";
 
 FILE *DiskFileTeX;
 
