@@ -1,5 +1,4 @@
 ///////////////////////////////////////////////////////////////////////////////
-// OBSOLETE!!!!
 // This module handles main Monte Carlo loop and writing histograms onto disk.
 // It is UNIVERSAL, works for any MC generator for event analysis.
 // MC event generator and analysis is encapsulated inside RobolA module.
@@ -42,13 +41,13 @@ int main()
   SemafFile =TFile::Open("semaf.root","UPDATE","Semaphor");
   ofstream   OutFile("pro.output",ios::out);  // Logfile output
   cout    <<endl<<flush;
-  cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  | MainKKMC  Entering | "<<endl<<flush;
-  cout    << "  |--------------------| "<<endl<<flush;
+  cout    << "  |---------------------| "<<endl<<flush;
+  cout    << "  | MainMCdev  Entering | "<<endl<<flush;
+  cout    << "  |---------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
-  OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  | MainKKMC  Entering | "<<endl<<flush;
-  OutFile << "  |--------------------| "<<endl<<flush;
+  OutFile << "  |---------------------| "<<endl<<flush;
+  OutFile << "  | MainMCdev  Entering | "<<endl<<flush;
+  OutFile << "  |---------------------| "<<endl<<flush;
   double NevTot =2e14; // Total (limit) of events, redefined below
   double NGroup =2e5;  // no. of events in the group, TO BE TUNED
   long   iLoop;        // external loop event counter
@@ -79,7 +78,7 @@ int main()
         MCgenFile,  /// ROOT disk file for CRNG and MC gen.
         HistoFile); /// ROOT disk file for histograms
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
-  cout<< "|| MainKKMC: to be generated "<<NevTot<< " events "<<endl;
+  cout<< "|| MainMCdev: to be generated "<<NevTot<< " events "<<endl;
   cout<< "||||||||||||||||||||||||||||||||||||||||||||||||||"<<endl;
   //[[[[[[[[[[
   //  cout<<"------------------------------HistoFile->ls----------------------------------"<<endl;
@@ -170,11 +169,11 @@ int main()
   OutFile.close();
   cout    <<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
-  cout    << "  |  MainKKMC  Ended   | "<<endl<<flush;
+  cout    << "  |  MainMCdev  Ended  | "<<endl<<flush;
   cout    << "  |--------------------| "<<endl<<flush;
   OutFile <<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
-  OutFile << "  |  MainKKMC  Ended   | "<<endl<<flush;
+  OutFile << "  |  MainMCdev  Ended  | "<<endl<<flush;
   OutFile << "  |--------------------| "<<endl<<flush;
   return 0;
   }

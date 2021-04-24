@@ -4,11 +4,13 @@ all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foa
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 
-#///////////////////////////////////////////////////////////////
+#/////////////////////////////////////////////////////////////////////////
+# -lFoam is optional in case FOAM of ROOT is used instead of local Foam2
+#LIBADD_RTF = -L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(ROOTAUXLIBS) $(FLIBS)
+#/////////////////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libProdKK.la  libProdFoam.la
 
-CLEANFILES = $(dict2C) $(dict2H)
-
+CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
 #################################################################[[[
 #   ROOT Dictionary for local library 1
 dict1C = ProdFoamDict.cxx
@@ -26,10 +28,8 @@ $(dict1C) : $(ROOTCINTHDRS1)
 nodist_libProdFoam_la_SOURCES = $(dict1C)
 libProdFoam_la_SOURCES =  TRobolFoam.cxx
 libProdFoam_la_LIBADD =  \
-    $(top_builddir)/MCdev/libMCdev.la \
 	$(top_builddir)/SRCee/libKKee.la \
- 	$(top_builddir)/SRCee/libKKfm.la \
-    -L$(ROOTLIBDIR) $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+ 	$(top_builddir)/SRCee/libKKfm.la 
 libProdFoam_la_LDFLAGS = -L$(ROOTLIBDIR)
 #################################################################]]]
 
@@ -50,44 +50,30 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libProdKK_la_SOURCES = $(dict2C)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx
 libProdKK_la_LIBADD =  \
-	$(top_builddir)/MCdev/libMCdev.la \
-	$(top_builddir)/SRCee/libKKee.la \
-    -L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(FLIBS) $(ROOTAUXLIBS)
+	$(top_builddir)/SRCee/libKKee.la 
 #///////////////////////////////////////////////////////////////
-CLEANFILES = $(dict1C) $(dict1H) $(dict2C) $(dict2H)
-
-#///////////////////////////////////////////////////////////////
-#  explicit target in ../MCdev and ../SRCee
-$(top_builddir)/MCdev/libMCdev.la: $(top_builddir)/MCdev/*.h $(top_builddir)/MCdev/*.cxx
-	(cd $(top_builddir)/MCdev/; make)
-$(top_builddir)/SRCee/libKKee.la:  $(top_builddir)/SRCee/*.h $(top_builddir)/SRCee/*.cxx
-	(cd $(top_builddir)/SRCee/; make)
 
 #/////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
 bin_PROGRAMS = MainMini MainKKMC  MainFoam
 #/////////////////////////////////////////////////////////
+#-------------------------------------------------------------------------
+# option -no-install needed for debuger
+#-------------------------------------------------------------------------
+MainKKMC_SOURCES = MainMCdev.cxx 
+MainKKMC_LDADD = \
+			libProdKK.la
+MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) -g -no-install
+#-------------------------------------------------------------------------
+# option -no-install needed for debuger
+#-------------------------------------------------------------------------
+MainFoam_SOURCES = MainMCdev.cxx 
+MainFoam_LDADD = \
+			libProdFoam.la
+MainFoam_LDFLAGS = -rpath $(ROOTRPATH) -g  -no-install
+#/////////////////////////////////////////////////////////
 MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
-			$(top_builddir)/SRCee/libKKee.la \
-			$(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran -lFoam $(FLIBS)
-MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-#/////////////////////////////////////////////////////////
-#-------------------------------------------------------------------------
-MainKKMC_SOURCES = MainKKMC.cxx 
-MainKKMC_LDADD = \
-				$(top_builddir)/MCdev/.libs/libMCdev.a \
-				$(top_builddir)/Foam2/.libs/libFOAM.a  \
-				$(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
-				$(top_builddir)/ProdRun/libProdKK.la
-MainKKMC_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-#-------------------------------------------------------------------------
-#-------------------------------------------------------------------------
-MainFoam_SOURCES = MainKKMC.cxx 
-MainFoam_LDADD = \
-				$(top_builddir)/MCdev/.libs/libMCdev.a \
-				$(top_builddir)/Foam2/.libs/libFOAM.a  \
-				$(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS) \
-				$(top_builddir)/ProdRun/libProdFoam.la
-MainFoam_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
+			$(top_builddir)/SRCee/libKKee.la
+MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g  -no-install
 #-------------------------------------------------------------------------

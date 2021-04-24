@@ -32,8 +32,8 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKevent.cxx KKlasa.cxx KKarLud.cxx KKqed3.cxx \
 						KKarFin.cxx \
 						KKceex.cxx KKpart.cxx KKbvir.cxx
-libKKee_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+libKKee_la_LIBADD =  \
+	$(top_builddir)/MCdev/libMCdev.la 
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 
@@ -55,8 +55,8 @@ $(dict2C) : $(ROOTCINTHDRS2)
 #  Additional flags:
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
-libKKfm_la_LIBADD =  $(top_builddir)/MCdev/libMCdev.la \
-    $(ROOTAUXLIBS) $(ROOTGLIBS) -lFoam $(FLIBS)
+libKKfm_la_LIBADD =  \
+	$(top_builddir)/MCdev/libMCdev.la 
 libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
@@ -75,8 +75,7 @@ bin_PROGRAMS = TestMini1
 #/////////////////////////////////////////////////////////
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
-			$(top_builddir)/SRCee/libKKee.la \
-			$(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran -lFoam $(FLIBS)
+			libKKee.la 
 TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
 
 #/////////////////////////////////////////////////////////

@@ -35,7 +35,7 @@ TMCgenKKMC::TMCgenKKMC(const char* Name):
   m_ntot_new  = 0;
   m_ntot2_new = 0;
 
-  cout<< "----> TMCgenKKMC::TMCgenFOAM USER Constructor "<<endl;
+  cout<< "----> TMCgenKKMC::TMCgenKKMC USER Constructor "<<endl;
 }///TMCgenKKMC
 
 ///______________________________________________________________________________________
