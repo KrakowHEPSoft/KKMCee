@@ -619,8 +619,8 @@ void FigAFBvv()
 int main(int argc, char **argv)
 {
 
-  gSystem->Load("../SRCee/.libs/libKKee.so");     // needed ???
-  gSystem->Load("../SRCee/.libs/libKKfm.so");     // NEEDED! why?
+//  gSystem->Load("../SRCee/.libs/libKKee.so");     // needed ???
+//  gSystem->Load("../SRCee/.libs/libKKfm.so");     // NEEDED! why?
 
   DiskFileA = new TFile(FileA);
   DiskFileF = new TFile(FileF);

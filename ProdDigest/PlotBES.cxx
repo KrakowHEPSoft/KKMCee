@@ -44,7 +44,7 @@ void HistNormalize(){
   DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_weight") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_WtMain") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvTrue") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_vvBES") );
@@ -68,7 +68,7 @@ void FigInfo()
   double CMSene=100.0;
   sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
-  TH1D *hst_weight    = (TH1D*)DiskFileA.Get("hst_weight");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA.Get("hst_WtMain");
   TH1D *hst_nPhot     = (TH1D*)DiskFileA.Get("hst_nPhot");
   TH1D *hst_vvBES     = (TH1D*)DiskFileA.Get("hst_vvBES");
   TH1D *hst_vvTrue    = (TH1D*)DiskFileA.Get("hst_vvTrue");
@@ -122,8 +122,8 @@ void FigInfo()
   gPad->SetLogy(); // !!!!!!
   ///
   CaptT->DrawLatex(0.10,0.95,"weight distribution");
-  hst_weight->GetXaxis()->SetLabelSize(0.05);
-  hst_weight->DrawCopy("h");
+  hst_WtMain->GetXaxis()->SetLabelSize(0.05);
+  hst_WtMain->DrawCopy("h");
  ///==========plot4==============
   cFigInfo->cd(4);
   ///
@@ -201,6 +201,8 @@ int main(int argc, char **argv)
   //++++++++++++++++++++++++++++++++++++++++
   TApplication theApp("theApp", &argc, argv);
   //++++++++++++++++++++++++++++++++++++++++
+  DiskFileA.cd();
+  DiskFileA.ls();
   /*
   /////////////////////////////////////////////////////////
   // Reading directly KKMC input (farming)
