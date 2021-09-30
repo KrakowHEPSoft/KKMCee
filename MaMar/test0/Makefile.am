@@ -19,6 +19,7 @@ prepare:
 	(ln -s ../../dizet          ./dizet )
 #-----------------------------------------------------------------------
 start: 
+	(cd $(top_builddir); make -s)
 	(cp ../iniseed/iniseed.0 ./iniseed	;\
 	 cp ../semaphore.start   ./semaphore	;\
 	 cp ./$(DSET).input ./pro.input		;\

@@ -58,8 +58,8 @@ BeginX
    23              0\\\\\\mltISR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
 **\\\\SPECIAL tests: fixed FSR multiplicity\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
    24              0\\\\\\mltFSR\\\\\\\\\\\Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
-**\\\\SPECIAL tests: fixed v=vmax\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-   25              0      KeyFix Type of ISR, =0,1ormal, =2 beamsstrahlung
+**\\\\KeyFix Type of ISR (=1 obsolete, see KarLud_Make, BornV_RhoFoamC)
+   25              0      =0 normal, =2 beamsstrahlung =3,4 for gaussian BES
 *(\\\\SPECIAL tests: mass terms in crude MC photon distrib.\\\\\\\\\\\\\\\\\\\\\
    26              0\\\\\\KeyWtm\\\\\\\\\\ Default is  0\\\\\\\\\\\\\\\\\\\\\\\\
 **    Interference ISR/FSR to be ON/OFF
@@ -108,6 +108,15 @@ BeginX
    75            1e0      IRCxchat   printout level
 **\\\\\writing vegas grid on the disk, KeyGrid=-1 create and dump, =+1 read\\\\\
    76            0e0  KeyGrid=0 create, not read, default\\\\\\\\\\\\\\\\\\\\\\\
+** Parameters for Gaussian BES (Beam Energy Spread) Default for Z peak
+** From Patrick for E1 and E2 (in GeV): 45.6,    81.,      120.,  175., 182.5
+** Typical values for half width s1 and s2 (in % of E): 0.132, 0.132, 0.165, 0.186
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   80          0.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
+   81          0.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
 ********************************************************************************
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 **     Define process

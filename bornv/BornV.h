@@ -73,8 +73,9 @@
       DOUBLE PRECISION   m_QEDmodif !
       INTEGER            m_IsGenerated, m_KFferm,  m_NCf
       INTEGER            m_KFini,       m_KeyINT,  m_KeyQCD,   m_KeyRes
-      INTEGER            m_KeyElw,      m_KeyZet,  m_KeyWtm
+      INTEGER            m_KeyElw,      m_KeyZet,  m_KeyWtm,   m_KeyFix
       INTEGER            m_out
+      double precision   m_BES_ene1, m_BES_ene2, m_BES_sig1, m_BES_sig2, m_BES_rho
 
       COMMON /c_BornV/
 * Tables of EW formfactors
@@ -92,6 +93,8 @@
 *
      $  m_CMSene,                       ! Initial value of CMS energy
      $  m_XXXene,                       ! CMS energy after beamsstrahlung or beam spread
+     $  m_BES_ene1, m_BES_ene2,              !
+     $  m_BES_sig1, m_BES_sig2, m_BES_rho,   !
 * -------------------- EVENT --------------------------
      $  m_x1,                           ! 1-z1 = x1 for first  beam(strahlung)
      $  m_x2,                           ! 1-z2 = x2 for second beam(strahlung)
@@ -131,6 +134,7 @@
 * Initial/final fermion types
      $  m_KFini,                        ! KF code of beam
 * Test switches
+     $  m_KeyFix,                       ! ISR type, BES on/off
      $  m_KeyQCD,                       ! QCD FSR corr. switch
      $  m_KeyINT,                       ! ISR/FSR INTereference switch
      $  m_KeyElw,                       ! Type of Electrowak Library

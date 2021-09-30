@@ -74,7 +74,7 @@ C end (M.B.)
          WRITE(m_out,*) ' ### STOP in KarLud_Initialize: DelEne too big ', m_DelEne
          STOP
       ENDIF
-      IF( (m_DelEne.NE.0d0) .AND. (m_KeyFix.EQ.2) ) THEN
+      IF( (m_DelEne.NE.0d0) .AND. (m_KeyFix.GE.2) ) THEN
          WRITE(m_out,*) ' ### STOP in KarLud_Initialize:'
          WRITE(m_out,*) ' Beamsstrahlung and Beam energy spread together not safe, not tested'
          STOP
@@ -105,7 +105,7 @@ C end (M.B.)
             CALL Vesk1_Initialize(BornV_RhoVesko1,Npeaks,Xpeaks,m_XCrude)
 c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             XCrude    = m_XCrude
-         ELSEIF(m_KeyFix .EQ. 2) THEN
+         ELSEIF(m_KeyFix .GE. 2) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
 *//   Initialization of Circe package of Thorsten Ohl                                //
 *//   and of the beamstrahlung module Bstra                                          //
@@ -240,7 +240,7 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
 *     Generate vv = 1-s'/s
          IF(    m_KeyFix .EQ. 0 ) THEN
             CALL Vesk1_Make( BornV_RhoVesko1, x,y, m_WtBasic)
-         ELSEIF(m_KeyFix .EQ. 2) THEN
+         ELSEIF(m_KeyFix .GE. 2) THEN
             CALL BStra_Make(m_vv, m_x1, m_x2, m_WtBasic)
 *           Redefine CMS energy and boost
             m_XXXene = m_XXXene*SQRT((1d0-m_x1)*(1d0-m_x2))
@@ -347,7 +347,7 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
             ISRerr   = ISRbest*ErRela
             XKarlud  = ISRcru                      ! true crude
             KError   = 0d0
-         ELSEIF( m_KeyFix .EQ. 2 ) THEN
+         ELSEIF( m_KeyFix .GE. 2 ) THEN
             CALL BStra_GetXCrude(ISRcru)
             CALL BStra_Finalize(ISRbest,ErRela)
             ISRerr   = ISRbest*ErRela
@@ -747,7 +747,7 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
       NevCru = 1
       XCruNb = m_XCrude * BornV_Sig0nb(m_CMSene)
 *     The case of initial PDFs
-      IF(m_KeyFix .EQ. 2) THEN
+      IF(m_KeyFix .GE. 2) THEN
          CALL BStra_GetSumCru(XCruNb,NevCru)
          XCruNb = XCruNb* BornV_Sig0nb(m_CMSene)
       ENDIF

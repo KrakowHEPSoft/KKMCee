@@ -70,6 +70,7 @@
       m_KeyElw = xpar_input(12)         ! ElectroWeak library on/off
       m_KeyZet = xpar_input(501)        ! Z-boson on/off
       m_KeyWtm = xpar_input(26)         ! Photon emission without mass terms
+      m_KeyFix = xpar_input(25)         ! ISR type BES on/off
       m_KeyRes = xpar_input(13)         ! Exper. R for gamma*
 *                       <<<  Other        >>>
       m_KeyQCD = xpar_input(53)         ! QCD FSR
@@ -81,6 +82,26 @@
 *
       m_out    = xpar_input(4)
 *
+
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      m_BES_ene1 = 50         ! if zero then replaced by CMSene/2
+c      m_BES_ene2 = 50         ! if zero then replaced by CMSene/2
+c      m_BES_sig1 = 0.132e-2   ! sigma1/E1 value from Patrick
+c      m_BES_sig2 = 0.132e-2   ! sigma2/E2 value from Patrick
+c      m_BES_rho  = 0.300e0    ! correlation param. 0<rho<1
+
+      m_BES_ene1 = xpar_input(80)
+      m_BES_ene2 = xpar_input(81)
+      m_BES_sig1 = xpar_input(82)
+      m_BES_sig2 = xpar_input(83)
+      m_BES_rho  = xpar_input(84)
+      IF(ABS(m_BES_ene1*m_BES_ene2) .LT. 1e-4) THEN
+         m_BES_ene1 = m_CMSene/2;
+         m_BES_ene2 = m_CMSene/2;
+      ENDIF
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) '  BornV  Initializator                '
       WRITE(m_out,bxl1f) m_MZ    ,   'Z mass     [GeV]   ','amz   ','a1'
@@ -93,6 +114,7 @@
       WRITE(m_out,bxl1i) m_KFini ,   'KF code of beam    ','KFini ','a7'
       WRITE(m_out,bxl1g) vvmax,      'Input vvmax        ','vvmax ','a8'
       WRITE(m_out,bxl1g) m_vvmax,    'reduced vvmax in MC','vvmax ','a9'
+      WRITE(m_out,bxl1i) m_KeyFix,   'ISR type,BES on/off','KeyFix','a0'
       WRITE(m_out,bxtxt) 'Test switches:                         '
       WRITE(m_out,bxl1i) m_KeyElw,   'Electroweak lib.   ','KeyElw','10'
       WRITE(m_out,bxl1i) m_KeyZet,   'Z on/off   switch  ','KeyZet','11'
@@ -357,6 +379,12 @@ C end
       DOUBLE PRECISION  Rjac0, Rjac1, Rjac2
       DOUBLE PRECISION  zbms, zisr, y1,y2, ybms,yisr, xbms,xisr, Emin, W, SF1, SF2, GS1, GS2, pi
       DOUBLE PRECISION  Par(0:3)
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+cc      INTEGER           KeyBES
+      double precision  E1,E2,sigma1,sigma2,sigma,corho,delE1,delE2,dGauss
+cc      double precision  BES_ene1,BES_ene2,BES_sig1,BES_sig2,BES_rho
+      double precision  x1,x2, rr1,rr2, Ebeam1, Ebeam2
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       INTEGER Option
       INTEGER           Icont
       DATA              Icont/0/
@@ -372,7 +400,14 @@ C end
       r1   = xarg(2)
       r2   = xarg(3)
       Rho  = 1d0
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      KeyBES=1
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+      IF( m_KeyFix .EQ. 2) THEN
+ccc      IF( KeyBES .EQ. 0) THEN
 *//////////////////////////////////////////////////////////////////////////////////////
+* Beamstrahlung spectrum
+* WARNING!!! it looks that CIRCE spectrum below is not normalized to one!!!
 * delta is the "infinitesimal" width of Gasian representation
 * of the Dirac delta in the circe spectrum. Its value is adjusted empricaly
 * Foam tolerates alpha down to 0.005.
@@ -388,8 +423,55 @@ C end
       SF1 = Par(1) *m_x1**Par(3) *(1d0-m_x1)**Par(2)   ! the same as circee
       SF2 = Par(1) *m_x2**Par(3) *(1d0-m_x2)**Par(2)   ! the same as circee
       SF12 = (GS1+SF1)*(GS2+SF2)
+      Rho = Rho *SF12
+      ELSE IF ( m_KeyFix .EQ. 3) THEN
+ccc      ELSE IF ( KeyBES .EQ. 1) THEN
+C mapping of Patrick Janot for 2-dim Gaussian BES with optional correlation
+C in this case Jacobian*distribution=1 is omitted.
+      E1    = m_BES_ene1
+      E2    = m_BES_ene2
+      corho = m_BES_rho
+      x1 = sqrt(-2.*log(r1)) * cos(2.*m_PI*r2)
+      x2 = sqrt(-2.*log(r1)) * sin(2.*m_PI*r2)
+      y1 = x1
+      y2 = corho * x1 + sqrt(1.-corho*corho) * x2
+      rr1= y1 * m_BES_sig1
+      rr2= y2 * m_BES_sig2
+      Ebeam1 = E1 * (1.0 + y1 * rr1)
+      Ebeam2 = E2 * (1.0 + y2 * rr2)
+      z1 = Ebeam1/E1
+      z2 = Ebeam2/E2
+      m_x1  = 1-z1
+      m_x2  = 1-z2
+      ELSE IF ( m_KeyFix .EQ. 4) THEN
+ccc      ELSE IF ( KeyBES .EQ. 2) THEN
+! using explicit density distribution,
+! the same BES distribution from Patrick Janot
+      E1    = m_BES_ene1
+      E2    = m_BES_ene2
+      sigma1= m_BES_sig1*E1
+      sigma2= m_BES_sig2*E2
+      corho = m_BES_rho
+! standard distribution for FOAM
+      sigma = SQRT(sigma1*sigma2)
+      delE1 = 10*sigma*(2*r1-1.0)  ! range is +-10sigma
+      delE2 = 10*sigma*(2*r2-1.0)  ! range is +-10sigma
+      Rho = Rho* (20*sigma)**2  ! Jacobian
+      m_x1 = delE1/E1 ! can be negative
+      m_x2 = delE2/E2 ! can be negative
+      dGauss = (delE1/sigma1)**2+ (delE2/sigma2)**2 -2*corho*(delE1/sigma1)*(delE2/sigma2)
+      dGauss = EXP(-0.5/(1-corho**2)*dGauss)
+      dGauss = dGauss* 1/(2.0*m_PI)/(sigma1*sigma2)/SQRT(1-(corho)**2) ! Normalization factor
+      Rho = Rho* dGauss;
+      z1 = 1d0-m_x1
+      z2 = 1d0-m_x2
+      ELSE
+      write(*,*) '++++BornV_RhoFoamC: STOP wrong KeyFix=',m_KeyFix
+      ENDIF
 *//////////////////////////////////////////////////////////////////////////////////////
       m_XXXene =  m_CMSene*SQRT(z1*z2)                ! hidden input for BornV_Crude,BornV_MakeISR
+*//////////////////////////////////////////////////////////////////////////////////////
+* ISR spectrum
 *****(((   Correction by Scott Yost
       Emin = 0.5* m_XXXene * m_vvmin
       CALL KK2f_SetEmin(   Emin)
@@ -407,9 +489,8 @@ C end
       CALL BornV_MakeISR(RhoISR)                         !<-- uses m_XXXene and m_vv
       Rho = Rho *RhoISR
       IF(  m_vv < 1d-300)  Rho = 0d0    !!! temporary fix
-      IF( (z1.GE.1d0) .OR. (z2.GE.1d0) ) GOTO 800
-*   Beamstrahlung spectrum
-      Rho = Rho *SF12
+cc      IF( (z1.GE.1d0) .OR. (z2.GE.1d0) ) GOTO 800
+*   Born
       BornU  = BornV_Crude(m_vv)/(1d0-m_vv)/z1/z2
       BornV_RhoFoamC = Rho*BornU
       RETURN
