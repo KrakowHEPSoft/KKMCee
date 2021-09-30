@@ -1,0 +1,71 @@
+ =========================================================
+ git clone git@github.com:KrakowHEPSoft/KKMCee.git
+
+ mv KKMCee KKMCee-FCC_release
+ cd KKMCee-FCC_release
+ 
+ ln -s dizet-6.45 dizet
+ cd ffbench
+ 
+ alias kmake='make -f KKMakefile'
+ 
+ kmake makflag
+ kmake makprod
+  
+ kmake EWtables
+ kmake demo-start
+ diff -b demo/demo.output.1k demo/demo.output | less
+ 
+ cd ../yfspro
+ kmake makflag
+ kmake makprod
+ 
+ cp E189GeV/E189GeV_PRD63.input E189GeV/E189GeV.input
+ kmake E189GeV-start
+ kmake E189GeV-stop
+
+ cd E189GeV
+ kmake farm24-CC1
+ kmake qsubmit24
+ 
+ kmake q-nev
+ kmake combine24
+ 
+ cd ../pubfig
+ kmake clean
+ kmake afb_sig-ps
+ =====================================================
+ 
+ Last command produces several latex files,
+ which are \input to afb_sig.tex, which is processed
+ and finally postscript file pops up on the screen.
+ First page of the postscript shows table of cross sections 
+ and charge asymmetries as in Table III of Phys.Rev. D63 (2000).
+ Next pages reproduce several plots of PRD63 paper.
+ 
+ It may not work on farm because there is no LaTeX
+ in the system.
+ In such a case one has to import E189GeV/pro.hst
+ on your laptop and execute 'kmake afb_sig-ps'
+ in order to produce postscript file with "kmake afb_sig-ps".
+ 
+ One may of course produce locally on laptop pro.hst file with:
+   cd yfspro
+   kmake E189GeV-start
+   kmake E189GeV-stop
+ but it will take 24h to get 50M events.
+ 
+ In the default configuration of KKMCee (FCC_realease)
+ will run with Dizet 6.45 version.
+ In case one wants to go back to 2000 version:
+   ln -s dizet-6.21 dizet
+   cp .KK2f_defaults-2000 .KK2f_defaults
+ and recompile/rebuild is necessary.
+ 
+ Once benchmark run is complete one may compare resulting
+ table and other plots with the archived files:
+   yfspro/pubfig/afb_sig_OldDiz_240M.pdf
+   yfspro/pubfig/afb_sig_NewDiz_***M.pdf
+ 
+ -----------------------------------------------------
+ 

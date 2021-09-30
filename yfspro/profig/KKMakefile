@@ -11,7 +11,8 @@ MAKE    = make -f KKMakefile
 SRCLIST= "../libfig ../../glibk"
 #----------------------------------------------------------------------
 XDVI   = kdvi
-XPS    = ghostview
+##XPS    = ghostview
+XPS    = evince
 #----------------------------------------------------------------------
 FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 LDFLAGS =

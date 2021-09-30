@@ -25,7 +25,7 @@ XPSf    = gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black
 XPS     = evince 
 #----------------------------------------------------------------------
 FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
-LDFLAGS =
+LDFLAGS = -lstdc++
 F77 = gfortran
 LD = $(F77)
 ##############################################################################
