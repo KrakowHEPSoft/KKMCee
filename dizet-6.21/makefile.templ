@@ -25,8 +25,8 @@ $(LOCAL_LIB): $(LIB_OBJECTS)
 ##########################################################################
 COMMAND1 = TabMain.exe
 OBJECTS1 = TabMain.o
-DZface.o:		DZface.h BornV.h
-BornV_StartEW.o:	DZface.h BornV.h
+DZface.o:		DZface.h
+BornV_StartEW.o:	DZface.h
 #############################
 # Link procedure
 $(COMMAND1): $(OBJECTS1)                    $(LOCAL_LIB)

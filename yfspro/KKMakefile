@@ -40,7 +40,7 @@ all:	$(COMMAND)
 MAKE    = make -f KKMakefile
 F77     = gfortran
 LD      = $(F77)
-LDFLAGS =
+LDFLAGS = -lstdc++
 FFLAGS  = -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
 ########### linux flags ###########
 #FFLAGS  =  -O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash
