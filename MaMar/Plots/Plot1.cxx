@@ -728,6 +728,62 @@ void FigCprod()
 }//FigCprod
 
 
+///////////////////////////////////////////////////////////////////////////////////
+void FigBES2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigBES2 =========================== "<<endl;
+  TH2D *sca_r1r2    = (TH2D*)DiskFileA.Get("sca_r1r2");
+
+  //////////////////////////////////////////////
+  TString OptSurf;
+  //OptSurf="      "; // 2D scatergram, points
+  //OptSurf="col"; // 2D histogram, color
+  //OptSurf="colz"; // 2D kolorowe paski, ze skala
+  //OptSurf="surf1 "; // 3D surface color
+  //OptSurf="lego2 "; // 3D histogram color
+  OptSurf="surf3 "; // 3D histogram, z plotem "na dachu"
+  //OptSurf="surf2z"; // 3D kolorowe paski, ze skala
+  //OptSurf="surf2 "; // 3D kolorowe paski bez skali
+  //OptSurf="surf4 "; // 3D gladka powierchnia
+  //-------------------------------------
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+//  CaptT->SetTextSize(0.060);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigBES2 = new TCanvas("cFigBES2","FigBES2: general info ",  50,  50,    800,  800);
+  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  cFigBES2->SetFillColor(10);
+
+  cFigBES2->cd();
+//  gPad->SetLogz(); // !!!!!!
+
+  gPad->SetTheta(25);
+  gPad->SetPhi( -70);
+  TH2D *Scat1= sca_r1r2;
+
+  Scat1->SetTitle(0);
+  Scat1->SetStats(0);
+
+  Scat1->GetYaxis()->CenterTitle();
+  Scat1->GetYaxis()->SetTitleOffset(1.4);
+  Scat1->GetYaxis()->SetTitleSize(0.035);
+  Scat1->GetYaxis()->SetNdivisions(5);
+  Scat1->GetYaxis()->SetTitle("r_{1}");
+  Scat1->GetXaxis()->CenterTitle();
+  Scat1->GetXaxis()->SetTitleOffset(1.4);
+  Scat1->GetXaxis()->SetNdivisions(5);
+  Scat1->GetXaxis()->SetTitle("r_{2}");
+
+  sca_r1r2->DrawCopy(OptSurf);
+
+//  CaptT->DrawLatex(0.10,0.95,"Gaussian Beam Enegy Spread");
+  CaptT->DrawLatex(0.10,0.95,"Beamstrahlung Energy Spread");
+
+  cFigBES2->SaveAs("cFigBES2.pdf");
+}//FigBES2
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -744,6 +800,7 @@ int main(int argc, char **argv)
   FigCtest();
   FigVprod();
   FigCprod();
+  FigBES2();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
   DiskFileB.ls();

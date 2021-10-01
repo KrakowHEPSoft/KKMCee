@@ -19,7 +19,7 @@ BeginX
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 **\\\\KeyFix Type of ISR (=1 obsolete) see KarLud_Make, BornV_RhoFoamC
 ** 25              0      =0 normal, =2 beamsstrahlung =3,4 for gaussian BES
-   25              3
+   25              4
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
    16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5

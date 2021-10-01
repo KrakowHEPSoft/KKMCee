@@ -80,6 +80,9 @@ void ROBOL::Initialize(long &NevTot)
   sca_vXcPR_Eex2 = new TH2D("sca_vXcPR_Eex2",   "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vXcPR_Ceex2->Sumw2();
   sca_vXcPR_Eex2->Sumw2();
+  double delv = 0.012;
+  sca_r1r2     = new TH2D("sca_r1r2" ,    "BES spectrum", 100, -delv , delv, 100, -delv , delv);
+  sca_r1r2->Sumw2();
   //  ************* special histo  *************
   HST_KKMC_NORMA = new TH1D("HST_KKMC_NORMA","KKMC normalization &xpar",jmax,0.0,10000.0);
   for(int j=1; j<=jmax; j++)
@@ -140,6 +143,8 @@ void ROBOL::Production(long &iEvent)
   double CMSene = sqrt(s);
   double Mff    = sqrt(s1);
   double vv     = 1-s1/s;
+  double r1 = m_pbea1.E()*2/sqrt(s)-1;
+  double r2 = m_pbea2.E()*2/sqrt(s)-1;
   // ********************************************************************
   // ***   Photon trigger TrigPho is for everybory, all pions, muons etc
   double Pi=4*atan(1.0);
@@ -233,6 +238,8 @@ void ROBOL::Production(long &iEvent)
   // IFI off
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // true v, IFI off
   // Miscelaneous
+  sca_r1r2->Fill(r1, r2, WtMain);
+  //
   m_YSum  += WtMain;
   m_YSum2 += WtMain*WtMain;
   hst_weight->Fill(WtMain);              // histogramming
