@@ -9,7 +9,7 @@ KeyFix=3,4 for BES according to Patrick Janot distributions
            two equivalent implementations (with/without mapping).
 
 In order to see BES spectrum one may do the following:
-    cd ffbench
+    cd MaMar/test0
     cp test0/test0.input_1k_KeyFix=3 test0/test0.input
     make test0-start
     make Plot1
