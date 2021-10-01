@@ -21,8 +21,8 @@ line_count:
 .SUFFIXES:  .o .c .cxx .f .l  .s  .sh  .h  .a
 ################################################################################
 ###=== SLC5 on thep07
-ROOTINCDIR = /usr/local/root/include
-ROOTLIBDIR = /usr/local/root/lib
+ROOTINCDIR = {$ROOTSYS}/include
+ROOTLIBDIR = {$ROOTSYS}/lib
 ROOTLIBS = -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread
 ROOTAUXLIBS = -pthread -lm -ldl -rdynamic
 FLIB = -lgfortran -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -lgfortranbegin -lm -lgcc_s
@@ -57,11 +57,11 @@ F77 = gfortran
 #CXXFLAGS    = -O -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
 #CXXFLAGS    = -O  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
 #CXXFLAGS    =  -g  -ansi -Wall -fPIC -D_REENTRANT -I$(RPATH)/include
-CXXFLAGS    =  -g  -I$(ROOTINCDIR)
+CXXFLAGS    =  -g  -I$(ROOTINCDIR)  -std=c++11
 CXX         =  g++
 #CXX         =  insure
 #CXX         =  codewizard
-CLD         =  $(CXX)
+CLD         =  $(CXX) 
 #-------------------------------------------------------
 # Compile all c++, f77 and c  files
 .cxx.o:
@@ -122,7 +122,7 @@ EXT_LIBRARY = $(EXT_LIBRARYa)   # Dizet is NOT linked, look-up tables from disk 
 COMMAND2 = Test.exe
 OBJECTS2 = Test.o Semaph.o ROBOL.o KKMC.o PartLund.o
 $(COMMAND2):                    $(OBJECTS2) $(EXT_LIBRARY)
-	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB)
+	$(CLD) -o $@ $(LDFLAGS) $(OBJECTS2) $(EXT_LIBRARY) $(RLIB) $(FLIB) 
 #-----------------------------------------------------------------------
 test0-start:	$(COMMAND2)
 	(cd ./test0;  $(MAKE) start )
