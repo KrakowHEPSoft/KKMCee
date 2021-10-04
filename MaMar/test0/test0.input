@@ -35,11 +35,11 @@ BeginX
 ** From Patrick for E1 and E2 (in GeV): 45.6,    81.,      120.,  175., 182.5
 ** Typical values for half width s1 and s2 (in % of E): 0.132, 0.132, 0.165, 0.186
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-**   80         50.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
-**   81         50.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
-**   82       0.132e-2      ParBES(2) sigma1/E1
-**   83       0.132e-2      ParBES(3) sigma2/E2
-**   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
+   80         50.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
+   81         50.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     Define process
 *     LIST of Final state flavours to be generated randomly according

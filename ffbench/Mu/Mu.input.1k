@@ -9,7 +9,6 @@ BeginX
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
     1        91.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
-   25              4    =0 normal, =2 beamsstrahlung =3,4 for gaussian BES 
 ********************************************************************************
 *     Define process
   413              1      KFfin, muon

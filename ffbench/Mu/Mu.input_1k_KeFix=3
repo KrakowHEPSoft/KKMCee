@@ -9,6 +9,13 @@ BeginX
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 *     Center-of-mass energy [GeV]
     1        91.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+   25              3    KeyFix=0 normal, =2 beamsstrahlung =3,4 for gaussian BES 
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+   80          0.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
+   81          0.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
 ********************************************************************************
 *     Define process
   413              1      KFfin, muon

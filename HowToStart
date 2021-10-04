@@ -42,8 +42,12 @@ Muons only, v<0.99, wt=1 events:
 	cp Mu/Mu.input.1k Mu/Mu.input
 	kmake Mu-start
 	diff -b Mu/pro.output.1k Mu/pro.output | less
-Please note that in the Muon example include Beam Energy Scattering (BES) as well as writting the output to the LHE file
-
+	
+For Beam Energy Scattering (BES) and writting the output to the LHE file:
+    cp Mu/Mu.input_1k_KeFix=3 Mu/Mu.input
+    kmake Mu-start
+    diff -b Mu/pro.output_1k_KeFix=3 Mu/pro.output | less
+    diff -b Mu/LHE_OUT.LHE_1k_KeFix=3 Mu/LHE_OUT.LHE | less
 -------------------------------------------------------------------------------
      ****************
      **    MaMar   **

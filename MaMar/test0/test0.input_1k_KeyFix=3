@@ -19,7 +19,7 @@ BeginX
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 **\\\\KeyFix Type of ISR (=1 obsolete) see KarLud_Make, BornV_RhoFoamC
 ** 25              0      =0 normal, =2 beamsstrahlung =3,4 for gaussian BES
-   25              4
+   25              3
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
    16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
@@ -35,11 +35,11 @@ BeginX
 ** From Patrick for E1 and E2 (in GeV): 45.6,    81.,      120.,  175., 182.5
 ** Typical values for half width s1 and s2 (in % of E): 0.132, 0.132, 0.165, 0.186
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-**   80         50.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
-**   81         50.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
-**   82       0.132e-2      ParBES(2) sigma1/E1
-**   83       0.132e-2      ParBES(3) sigma2/E2
-**   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
+   80         50.0e0      ParBES(0) E1=0 will be replaced by CMSene/2
+   81         50.0e0      ParBES(1) E2=0 will be replaced by CMSene/2
+   82       0.132e-2      ParBES(2) sigma1/E1
+   83       0.132e-2      ParBES(3) sigma2/E2
+   84        0.300e0      ParBES(3) rho correlation parameter, dimensionles
 *indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
 *     Define process
 *     LIST of Final state flavours to be generated randomly according
