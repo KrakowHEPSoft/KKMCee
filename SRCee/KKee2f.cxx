@@ -41,8 +41,8 @@ KKee2f::KKee2f()
   // This constructor is for ROOT streamers ONLY
   // All pointers should be NULLed
   cout<< "----> KKee2f Default Constructor (for ROOT only) "<<endl;
-//  m_WtMainMonit = NULL;
   DB         = NULL;
+  m_WtMainMonit = NULL;
   m_BornDist = NULL;
   m_EWtabs   = NULL;
   m_Event    = NULL;
@@ -62,8 +62,8 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
 //! before calling TMCgen::Initialize
   cout<< "----> KKee2f USER Constructor "<<endl;
 ///////////////////////////////////////////////////
-//  m_WtMainMonit = NULL;
   DB         = NULL;
+  m_WtMainMonit = NULL;
   m_BornDist = NULL;
   m_EWtabs   = NULL;
   m_Event    = NULL;
@@ -104,7 +104,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
 //  m_NevTot = 0;
   m_EventCounter = 0;
-//  m_WtMainMonit = new TWtMon("WtMainMonit","WtMain",100,5.0);
+  m_WtMainMonit = new TWtMon("WtMainMonit","WtMain",100,5.0);
 
 // Initialisation input data before generation
 
@@ -717,8 +717,11 @@ m_Event->ZBoostALL();
      m_Event->PrintISR_FSR();
      m_Event->PrintISR_FSR(f_Out);
      m_Event->EventPrintAll();
+     m_Event->EventPrintAll(f_Out);
   }//m_EventCounter
-
+//////////////////////////
+// monitoring main WT
+  m_WtMainMonit->Fill(m_WtMain);
   //
   if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
 	  cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
@@ -781,4 +784,56 @@ void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
   InputFile.close();
 }// ReaData
 
+///////////////////////////////////////////////////////////////////////////////
+void KKee2f::Finalize()
+{
+*f_Out<< "   *****************************" << endl;
+*f_Out<< "   ****   KKMCee   Finalize ****" << endl;
+*f_Out<< "   *****************************" << endl;
+
+// True Crude/Primary of Foam inside all rejection loops
+double XsPrimPb = f_FoamI->GetPrimary();
+////////////////////////////////////////////////////
+double IntNorm, Errel;
+f_FoamI->Finalize(IntNorm, Errel );      // with printouts
+// f_FoamI->GetIntNorm(IntNorm, Errel ); // without printouts
+// Warning: IntNorm not always = Primary
+cout<<"||||||||| KKMCee::Finalize: IntNorm, Errel="<< IntNorm<<"  "<< Errel<<endl;
+double MCresult,MCerror;
+f_FoamI->GetIntegMC(MCresult,MCerror);   // true Foam integral
+cout<<"||||||||| KKMCee::Finalize: FOAM MCresult, MCerror ="<< MCresult<<" +- "<< MCerror<<endl;
+///////////////////////////////////////////////////
+//fort_close_(m_out);
+///////////////////////////////////////////////////
+double AveWt, ErrAbs;
+m_WtMainMonit->GetAver(AveWt, ErrAbs);
+m_XsMainPb   = XsPrimPb*AveWt;
+m_XEMainPb   = XsPrimPb*ErrAbs;
+BOXOPE;
+BOXTXT("****************************************");
+BOXTXT("******      KKMCee::Finalize      ******");
+BOXTXT("****************************************");
+BOX1F(" XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
+BOX1F(" <WtMain>",   AveWt,     " average WtMain           ");
+BOX1F("       +-",  ErrAbs,     " error abs.               ");
+BOX1F("   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
+BOX1F("       +-",m_XEMainPb,   " error abs.               ");
+BOXCLO;
+///////////////////////////////////
+BXOPE(*f_Out);
+BXTXT(*f_Out,"****************************************");
+BXTXT(*f_Out,"******      KKMCee::Finalize      ******");
+BXTXT(*f_Out,"****************************************");
+BX1F(*f_Out," XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
+BX1F(*f_Out," <WtMain>",   AveWt,     " average WtMain           ");
+BX1F(*f_Out,"       +-",  ErrAbs,     " error abs.               ");
+BX1F(*f_Out,"   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
+BX1F(*f_Out,"       +-",m_XEMainPb,   " error abs.               ");
+BXCLO(*f_Out);
+///////////////////////////////////
+// Finilize the LHE output
+//  if (DB->KeyLHE == 1 ) {
+//      m_Event->LH_Fin();
+//  }
+}//Finalize
 

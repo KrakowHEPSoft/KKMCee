@@ -22,7 +22,7 @@ using namespace std;
 ///   mainly functions with analytical results and tools for histograms
 ///////////////////////////////////////////////////////////////////////////////
 
-class TKfig {
+class TKfig  : public TObject {
 
  public:
   TString m_PlotSelector;

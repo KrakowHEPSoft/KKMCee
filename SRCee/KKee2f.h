@@ -31,11 +31,13 @@ using namespace std;
 #include "KKqed3.h"
 #include "KKceex.h"
 #include "KKlasa.h"
+#include "TWtMon.h"
 
 
 class KKee2f: public TMCgen{
  public:
  KKdbase *DB;                     // Database
+ TWtMon  *m_WtMainMonit;          // Monitoring WtMain
  KKborn  *m_BornDist;             // Born differential distribution
  KKdizet *m_EWtabs;               // EW formfactors
  KKevent *m_Event;                // MC event ISR+FSR in KKMC format
@@ -100,6 +102,8 @@ class KKee2f: public TMCgen{
   double   m_WtCrude;                 // Crude weight
   double   m_WtFoam;                  // Foam weight
 //-------------------------------------------
+  double   m_XsMainPb;
+  double   m_XEMainPb;
  public:
  KKee2f();                // explicit default constructor for streamer
  KKee2f(const char*);     // user constructor
@@ -126,7 +130,7 @@ class KKee2f: public TMCgen{
   void   MapPlus( double r, double gam, double vvmax, double &v, double &dJac);
 
   void   Generate();
-
+  void   Finalize();
   ////////////////////////////////////////////////////////////////////////////
       ClassDef(KKee2f,2); // Monte Carlo generator
   };

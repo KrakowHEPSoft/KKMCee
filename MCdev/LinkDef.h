@@ -7,5 +7,6 @@
 #pragma link C++ class TSemaf+;
 #pragma link C++ class TRobol+;
 #pragma link C++ class TMCgen+;
-#pragma link C++ class THwtMon+;
+#pragma link C++ class TWtMon+;
+
 #endif
