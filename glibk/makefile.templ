@@ -27,7 +27,7 @@ $(ARLIB1): $(OBJECT1)
 	$(AR)     $(ARLIB1) $(OBJECT1)
 #============================================================================
 COMMAND = combine.exe
-OBJECTS = combine.o GLK.o
+OBJECTS = combine.o GLK.o PseuMar.o ReaData.o
 # Link procedure
 $(COMMAND): $(OBJECTS)
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS)
