@@ -649,6 +649,9 @@ c]]]]]]]
       m_WtSet(74) =   fYFS*( m_Beta03 +m_xBet12 +m_yBet12
      $                    +m_xxBet21 +m_xyBet21 +m_yyBet21
      $                    +m_xxxBet30 +m_xxyBet30 +m_xyyBet30 )/DisCru
+c[[[[[[[[[[[[[[[[[[[[[[[[
+      if(icont .le.10) write(16,*) '>>>QED3_Make: m_WtSet( 71-73)=', m_WtSet( 71), m_WtSet( 72), m_WtSet( 73)
+c]]]]]]]]]]]]]]]]]]]]]]]]
 * First order, individual beta's -------------
       m_WtSet(80) =   fYFS*m_Beta01/DisCru
       m_WtSet(81) =   fYFS*(m_xBet10+m_yBet10)/DisCru
@@ -687,6 +690,9 @@ c]]]]]]]
       m_WtSet( 3) =   ForIni*(m_beti02+m_sbti11+m_sbti20)/DisCru
 !!!NEW
       m_WtSet( 4) =   ForIni*(m_beti03+m_sbti12+m_sbti21+m_sbti30)/DisCru
+c[[[[[[[[[[[[[[[[[[[[[[[[
+      if(icont .le.10) write(16,*) '>>>QED3_Make:  m_WtSet( 1-3)=', m_WtSet( 1), m_WtSet( 2), m_WtSet( 3)
+c]]]]]]]]]]]]]]]]]]]]]]]]
 * First order, individual beta's -------------
       m_WtSet(10) =   ForIni*m_beti01/DisCru
       m_WtSet(11) =   ForIni*m_sbti10/DisCru

@@ -67,22 +67,34 @@ $(top_builddir)/jetset/libJetset.a:
 	(cd $(top_builddir)/jetset/; make)
 $(top_builddir)/bornv/libBornvDizet.a:
 	(cd $(top_builddir)/bornv/; make)
+$(top_builddir)/dizet/libDizet.a:
+	(cd $(top_builddir)/dizet/; make)
+$(top_builddir)/dizet/libBornvTabs.a:
+	(cd $(top_builddir)/dizet/; make)
 $(top_builddir)/tauola/libTauola.a:
 	(cd $(top_builddir)/tauola/; make)
 $(top_builddir)/photos/libPhotos.a:
 	(cd $(top_builddir)/photos/; make)
-$(top_builddir)/dizet/libDizet.a:
-	(cd $(top_builddir)/dizet/; make)
 ############### extras ##################
 $(top_builddir)/KKsem/libKKsem.a:
 	(cd $(top_builddir)/KKsem/; make)
 ############################################
-KK2f_Libs= \
+# predefines EW tables from disk
+KK2f_Libs_a= \
+	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
+	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvTabs.a \
+	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
+	$(top_builddir)/dizet/libDizet2.a   \
+	$(top_builddir)/KKsem/libKKsem.a  -lstdc++
+# in flight EW tables
+KK2f_Libs_d= \
 	$(top_builddir)/KK2f/libKK2f.a     $(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a $(top_builddir)/bornv/libBornvDizet.a \
 	$(top_builddir)/tauola/libTauola.a $(top_builddir)/photos/libPhotos.a \
 	$(top_builddir)/dizet/libDizet.a   \
 	$(top_builddir)/KKsem/libKKsem.a  -lstdc++
+#KK2f_Libs = $(KK2f_Libs_a)
+KK2f_Libs = $(KK2f_Libs_d)
 #/////////////////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
 bin_PROGRAMS = Prod0 ProdZinv ProdFSR ProdFoam0 MainFOAM MainKKMC

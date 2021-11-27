@@ -485,12 +485,18 @@ C]]]]]]]]]]
          m_WtSet( 53) =   m_RhoExp2 /m_RhoCrud
          m_WtSet( 63) =   m_RhoExp2p/m_RhoCrud    !!! Pairs ON
          m_WtBest     =   m_WtSet( 53)
+c[[[[[[[[[[[[[[[[[[[[
+         write(m_out,*) '>>>GPS_Make:  m_WtSet( 51-53)=', m_WtSet( 51), m_WtSet( 52), m_WtSet( 53)
+c]]]]]]]]]]]]]]]]]]]]
       ELSE
          m_WtSet( 1)  =   m_RhoExp0 /m_RhoCrud    !!! Interference ON
          m_WtSet( 2)  =   m_RhoExp1 /m_RhoCrud
          m_WtSet( 3)  =   m_RhoExp2 /m_RhoCrud
          m_WtSet(13)  =   m_RhoExp2p/m_RhoCrud    !!! Pairs ON
          m_WtBest     =   m_WtSet( 3)
+c[[[[[[[[[[[[[[[[[[[[
+         write(m_out,*) '>>>GPS_Make:  m_WtSet( 1-3)=', m_WtSet( 1), m_WtSet( 2), m_WtSet( 3)
+c]]]]]]]]]]]]]]]]]]]]
       ENDIF
 */////////////////////////////////////////////////////////////////////////////////
 *//                     X-Checks   Printouts                                    //
@@ -803,6 +809,8 @@ c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          CALL BornV_GetParticle(KFf, dummy, Qf,T3f,NCf)
          CALL KK2f_GetMasPhot(MasPhot)
 *=============================================================
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '=================================GPS_BornPlus=========================================='
 * Loop below correcponds to
 ****> CALL GPS_Born(KFi,KFf,PX, p1,Mbeam, p2,-Mbeam,  p3,Massf, p4,-Massf,m_AmpBorn) !!!!<****
          DO j1 = 1,2
@@ -827,9 +835,18 @@ c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                      SpinoUU(j1,j2,j3,j4) =  UU
                   ENDDO
                ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,2(i1,a),16f22.11)') 'SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j,k),k=1,2),j=1,2)
+c      write(16,'(a,2(i1,a),16f22.11)') 'SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j,k),k=1,2),j=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
             ENDDO
          ENDDO
       ENDIF                     !!! Mode.EQ.1
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                          Partition (PX) dependent part                                 //
 *////////////////////////////////////////////////////////////////////////////////////////////
@@ -935,6 +952,10 @@ c            write(m_out,'(a,i5,5g22.14)') 'j1,FFacUU,TT= ',j1,FFacUU(j1),FFacTT
 c         ENDIF
 c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
+      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *///////////////////////////////////////////////////////////////////////////////////
 *//       QED vertex  FFactor F1 minus B-vrtual (IR removed), exact mass terms    //
 *///////////////////////////////////////////////////////////////////////////////////
@@ -1023,6 +1044,10 @@ C--------
             ENDDO
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('m_AmpBorn(',j1,',',j2,',*,*)=',((m_AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+cc      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       Xborn = BornSum
       Xboxy = BoxySum
 * debug variables for tests
@@ -1217,6 +1242,10 @@ c]]]]
             ENDDO
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,*) '=================================GPS_BornWPlus=========================================='
+      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]
 !      write(*,*) ampbornw
 !      stop
       Xborn = BornSum
@@ -1299,6 +1328,12 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
            WVPi= WVPi*(GSW(5)+DeLW)
         ENDIF
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '///////////////////////////////GPS_EWFFactW//////////////////////////////////////////////'
+      write(16,*) 'm_KeyElw,Jak=',m_KeyElw,Jak
+      write(16,*) 'm_MW,m_GammW, s,t=',m_MW,m_GammW, s,t
+      write(16,*) 'PropW,WVPi=',PropW,WVPi
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END
 
 
@@ -1365,6 +1400,9 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
       CALL BornV_GetParticle(KFi, dummy, Qe,T3e,NCe)
       CALL BornV_GetParticle(KFf, dummy, Qf,T3f,NCf)
 *=============================================================
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '=================================GPS_Born=================================================='
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       DO j1 = 1,2
          DO j2 = 1,2
             DO j3 = 1,2
@@ -1389,6 +1427,10 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
             ENDDO
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                        ElectroWeak Corrections                                         //
 *//   CosThetD = 0d0 is not mistake, we neglect miniscule second order effects only        //
@@ -1418,6 +1460,10 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
          FFacUU(j1) = PropGam*GamVPi *Qe*Qf *RsqV
      $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
+      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                     Total result = Spinors*Formfactor                                  //
 *////////////////////////////////////////////////////////////////////////////////////////////
@@ -1431,11 +1477,16 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
                   AmpBorn(j1,j2,j3,j4) =  SpinoTT(j1,j2,j3,j4)* FFacTT(j1)
      $                                   +SpinoUU(j1,j2,j3,j4)* FFacUU(j1)
 !>>>>     $                                   +AmpBornW(j1,j2,j3,j4)
-
                ENDDO                  
             ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,2(i1,a),16f22.11)') 'AmpBorn(',j1,',',j2,',*,*)=',((AmpBorn(j1,j2,j,k),k=1,2),j=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      write(16,'(a,i1,a,i1,a,8f22.11)') (('AmpBorn(',j1,',',j2,',*,*)=',((AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_Born!!!
 
 
@@ -2140,8 +2191,8 @@ C --   tests are below
 * ISR non-infrared two parts: (1) p1 -> photon, contracted with U-matrix
 *                             (2) p2 -> photon, contracted with V-matrix
 * Calculate Born spin amplitudes
-      CALL GPS_Born     (    KFi,KFf,PX,       p1,Fleps,  p2,-Fleps,  p3,m3,   p4,-m4,AmpBornX) !!!!<****
-      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,   p4,-m4,AmpBornXm) !!!!<****
+cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,Fleps,  p2,-Fleps,  p3,m3,   p4,-m4,AmpBornX) !!!!<****
+cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,   p4,-m4,AmpBornXm) !!!!<****
       CALL GPS_Born     (    KFi,KFf,PX,       ph,mph,    p2,-Fleps,  p3,m3,   p4,-m4,   AmpBornU)
       CALL GPS_Born(         KFi,KFf,PX,       p1,Fleps,  ph,-mph,    p3,m3,   p4,-m4,   AmpBornV)
 

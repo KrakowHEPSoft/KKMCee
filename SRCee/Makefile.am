@@ -33,6 +33,8 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKarFin.cxx \
 						KKceex.cxx KKpart.cxx KKbvir.cxx
 libKKee_la_LIBADD =  \
+	$(top_builddir)/glibk/libGlibk.a \
+	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////

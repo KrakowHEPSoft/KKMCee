@@ -442,6 +442,7 @@ C end
       INCLUDE 'BornV.h'
       DOUBLE PRECISION   R,Rho, BornV_Crude
       DOUBLE PRECISION   gamiCR, gami, alfi, beta, RJac
+      INTEGER NevGen
 *-----------------------------------------------
       m_XXXene =  m_CMSene                 ! hidden input for BornV_Crude
 *-----------------------------------------------
@@ -452,6 +453,25 @@ C end
 *     If not, then problems with m_fleps for weak bremsstrahlung! 
       beta = -0.5d0
       CALL BornV_ReBin1(R,gami,beta,m_vvmax,m_vv,RJac)
+
+c[[[[[[[[[[[[[[[[[[[[[[[[[
+      CALL KarLud_GetNevGen(NevGen)
+      IF(NevGen.gt.0) THEN
+      IF(NevGen.eq.1) m_vv=0.2
+      IF(NevGen.eq.2) m_vv=0.4
+      IF(NevGen.eq.3) m_vv=0.6
+      IF(NevGen.eq.4) m_vv=0.8
+      write(*,*)     '================================================================================================='
+      write(*,*)      '$$$ BornV_RhoVesko1:  m_vv=', m_vv
+      write(m_out,*) '================================================================================================='
+      write(m_out,*) '================================================================================================='
+      write(m_out,*) '================================================================================================='
+      write(m_out,*) '================================================================================================='
+      write(m_out,*) '$$$ BornV_RhoVesko1:  m_vv=', m_vv
+      ENDIF
+c]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
       CALL BornV_MakeISR(Rho)              ! uses m_XXXene and m_vv
       Rho = Rho*RJac
 *-----------------------------------------------

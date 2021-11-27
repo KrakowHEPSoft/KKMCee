@@ -6,7 +6,13 @@ ClassImp(KKcmplx4);
 ClassImp(KKcmplx2);
 
 #define SW20 setw(20)<<setprecision(14)
+#define SW208 setw(30)<<setprecision(8)
 
+extern "C" {
+//
+   void pseumar_initialize_(const int&, const int&, const int&);
+   void pseumar_makevec_(float rvec[], const int&);
+}//
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -152,12 +158,13 @@ void KKceex::Initialize()
 ///______________________________________________________________________________________
 void KKceex::Make(){
   m_icont++;
-
-  // axial vectors (arbitrary lightlike ) for photon polarization
-
-  m_HasFSR = DB->KeyFSR;     // temporary arangement
   int    KFini   = m_Event->m_KFini;
   int    KFfin   = m_Event->m_KFfin;
+
+  m_HasFSR = DB->KeyFSR;     // general FSR switch
+  // but exception for neutrinos
+  if( KFfin == 12 || KFfin == 12 || KFfin == 16) m_HasFSR = 0;
+
   double Mbeam = DB->fmass[KFini];  // to be refined, current or constituent?
   double Massf = DB->fmass[KFfin];
   int      NCf = DB->Nc[KFfin];
@@ -334,7 +341,9 @@ void KKceex::Make(){
 //////////////////////////////////////////////////////////////////
 //             Define (randomly) photon helicities              //
 //////////////////////////////////////////////////////////////////
-    PhelRandom();
+//[[[[ mooved up
+//    PhelRandom();
+//]]]]
 
 //////////////////////////////////////////////////////////////////////
 //  *************************************************************   //
@@ -467,16 +476,22 @@ e300:
      m_WtSet[ 52] =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 53] =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 53];
+     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 51,52,53] ="<< m_WtSet[ 51]<<"  "<< m_WtSet[ 52]<<"  "<< m_WtSet[ 53]<<endl;
+     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   } else {
      m_WtSet[ 1]  =   m_RhoExp0 /m_RhoCrud;    //!!! Interference ON
      m_WtSet[ 2]  =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 3]  =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 3];
+     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 1,2,3] ="<< m_WtSet[ 1]<<"  "<< m_WtSet[ 2]<<"  "<< m_WtSet[ 3]<<endl;
+     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   }
 }// Make
 
 void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
-		     KKpart &p1, KKpart &p2, KKpart &p3, KKpart &p4, KKcmplx4 &AmpBorn){
+                 KKpart &p1, KKpart &p2, KKpart &p3, KKpart &p4, KKcmplx4 &AmpBorn){
 /////////////////////////////////////////////////////////////////////////////////////
 //                                                                                 //
 //   Used in construction of the hard Non-IR parts: in GPS_HiniPlus, GPS_HfinPlus  //
@@ -498,9 +513,12 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
   dcmplx TT, UU;
   int Hel1,Hel2,Hel3,Hel4;
   dcmplx s31,s24,s32,s14;
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<< "----------------------------------------KKceex::Born----------------------------------------------------"<<endl;
+  //]]]]]]]]]]]]]]]]]]]]]]]]]]]
   for(int j1 = 0; j1<=1; j1++)
      for(int j2 = 0; j2<=1; j2++){
-        for(int j3 = 0; j3<=1; j3++)
+        for(int j3 = 0; j3<=1; j3++){
            for(int j4 = 0; j4<=1; j4++){
               Hel1 = 1-2*j1;
               Hel2 = 1-2*j2;
@@ -518,8 +536,19 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
               }//if
               m_SpinoTT[j1][j2][j3][j4] =  TT;
               m_SpinoUU[j1][j2][j3][j4] =  UU;
-           }//j3,j4
+           }//j4,
+        }//j3
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  (*m_Out)<< "m_SpinoTT="; for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoTT[j1][j2][j][k];(*m_Out)<<endl;
+//  (*m_Out)<< "m_SpinoUU="; for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoUU[j1][j2][j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
   }// j1,j2
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_SpinoTT("<<j1<<","<<j2<<",*,*)=";
+       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoTT[j1][j2][j][k];(*m_Out)<<endl;}
+    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_SpinoUU("<<j1<<","<<j2<<",*,*)=";
+       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoUU[j1][j2][j][k];(*m_Out)<<endl;}
+  //]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   double SvarX= PX*PX;
   double MZ    = m_DZ->m_MZ;    // the same as DB->_MZ i.e. xpar
@@ -588,21 +617,139 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
       m_FFacUZ[j1] = PropZet*ZetVPi *(Ve*Vf*VVcor*RsqV -dcmplx(Hel1)*Ae*Vf*RsqV -dcmplx(Hel1)*Ve*Af*RsqA +Ae*Af*RsqA);
       m_FFacTT[j1] = m_FFacTG[j1]+m_FFacTZ[j1];
       m_FFacUU[j1] = m_FFacUG[j1]+m_FFacUZ[j1];
+//      (*m_Out)<<"*** m_FFacTZ[j1]="<< m_FFacTZ[j1]<<"    m_FFacUZ[j1]="<< m_FFacUZ[j1]<<endl;
     }//for
   }//if
+
+//[[[[[[[[[[[[[[[[[[[[[[[[
+//      (*m_Out)<<"********************************************************************************"<<endl;
+//      (*m_Out)<<"***    SvarX=" << SvarX  <<"  CosThetD="<< CosThetD <<endl;
+//      (*m_Out)<<"***    PropGam="<< PropGam<<"    PropZet="<< PropZet<<endl;
+//      (*m_Out)<<"***    Ve="<< Ve<<"  Vf="<< Vf<<"  Ae="<< Ae<<" Af="<< Af<<endl;
+//      (*m_Out)<<"***    VVcor="<< VVcor<<endl;
+//      (*m_Out)<<"***    GamVPi="<< GamVPi<<"  ZetVPi="<< ZetVPi<<"  RsqV="<< RsqV<<" RsqA="<< RsqA<<endl;
+//      (*m_Out)<<"********************************************************************************"<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+  (*m_Out)<< "m_FFacTT="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacTT[j];(*m_Out)<<endl;
+  (*m_Out)<< "m_FFacUU="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacUU[j];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 /////////////////////////////////////////////////////
 // Dresed Born 16 amplitudes
   for(int j1 = 0; j1<=1; j1++)
-    for(int j2 = 0; j2<=1; j2++)
-      for(int j3 = 0; j3<=1; j3++)
+    for(int j2 = 0; j2<=1; j2++){
+      for(int j3 = 0; j3<=1; j3++){
         for(int j4 = 0; j4<=1; j4++){
             AmpBorn.m_A[j1][j2][j3][j4] =
                    m_SpinoTT[j1][j2][j3][j4]* m_FFacTT[j1]
                   +m_SpinoUU[j1][j2][j3][j4]* m_FFacUU[j1];
-        }// for j1...j4
+        }//j4
+      }//j3
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//     (*m_Out)<< "AmpBorn="; for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBorn.m_A[j1][j2][j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
+    }//j1,j2
+
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBorn("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBorn.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 }//KKceex::Born
+
+
+void KKceex::BornW(int KFini, int KFfin, TLorentzVector &PX, double s, double t,
+                 KKpart &p1, KKpart &p2, KKpart &p3, KKpart &p4, KKcmplx4 &AmpBornW){
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//   Used in construction of the hard Non-IR parts: in GPS_HiniPlus, GPS_HfinPlus  //
+//   CAREFUL!!! p_i are sometimes be substituted for photons!!!                    //
+//   Input:                                                                        //
+//   KFini, Kffin = beam and final fermion flavour codes (to define charges)       //
+//   PX       = s-chanel momentum for gamma and Z propagators (not for spinors)    //
+//   pi,    are for spinors,  not for gamma and Z propagators                      //
+//   p1,p2    =fermion momentum and mass (beam) <-- m_r1, m_r2                     //
+//   p3,p4    =fermion momentum and mass final state                               //
+//   Output:                                                                       //
+//   AmpBorn   = spin amplitudes                                                   //
+//   Notes:                                                                        //
+//   Electron mass neglected in spinors, this is why we may use Chisholm!          //
+//   Final fermion mass kept exactly.                                              //
+//   Gamma and Z in s-channel.                                                      //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+Amp4Zer(AmpBornW);
+if(abs(KFfin) != 12)  return;
+dcmplx TT, UU;
+int Hel1,Hel2,Hel3,Hel4;
+dcmplx s31,s24,s32,s14;
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<< "----------------------------------------KKceex::BornW----------------------------------------------------"<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
+for(int j1 = 0; j1<=1; j1++)
+   for(int j2 = 0; j2<=1; j2++){
+      for(int j3 = 0; j3<=1; j3++){
+         for(int j4 = 0; j4<=1; j4++){
+            Hel1 = 1-2*j1;
+            Hel2 = 1-2*j2;
+            Hel3 = 1-2*j3;
+            Hel4 = 1-2*j4;
+            TT  = dcmplx(0.0,0.0);
+            UU  = dcmplx(0.0,0.0);
+            if( Hel2 == -Hel1) { //!!! <--helicity conservation imposed
+               s31 = iProd2( 1,   Hel3, p3,  1,    Hel1, p1);
+               s24 = iProd2(-1,   Hel2, p2, -1,    Hel4, p4);
+               s32 = iProd2( 1,   Hel3, p3,  1,    Hel2, p2);
+               s14 = iProd2(-1,   Hel1, p1, -1,    Hel4, p4);
+               TT  = s31*s24;
+               UU  = s32*s14;
+            }//if
+            m_SpinoTT[j1][j2][j3][j4] =  TT;
+            m_SpinoUU[j1][j2][j3][j4] =  UU;
+         }//j4,
+      }//j3
+   }//j1,j2
+/////////////////////////
+//double  s =  PX*PX;
+//double  t = -s*(1.0-CosThetD)/2;
+//double  u = -s*(1.0+CosThetD)/2;
+////////////////////////////////////////////////////////////////////////////////////////////
+double Sw2 = m_DZ->D_swsq;
+double Coef  =1.0/2.0/Sw2;
+dcmplx PropW,WVPi;
+GPS_EWFFactW(KFini,KFfin,s,t,PropW,WVPi);
+double Ve= 0.5;
+double Vf= 0.5;
+double Ae= 0.5;
+double Af= 0.5;
+dcmplx      FFacTT[2],   FFacUU[2];
+for(int j1 =0; j1<=1;j1++){
+   Hel1 = 1-2*j1;
+   FFacTT[j1] = Coef* PropW*WVPi *(Ve*Vf -Hel1*Ae*Vf +Hel1*Ve*Af -Ae*Af);
+   FFacUU[j1] = Coef* PropW*WVPi *(Ve*Vf -Hel1*Ae*Vf -Hel1*Ve*Af +Ae*Af);
+}//j1
+///////////////////////////////////////////////////////////////////////////////////
+//                      Total result = Spinors*Formfactor                        //
+///////////////////////////////////////////////////////////////////////////////////
+for(int j1 = 0; j1<=1; j1++)
+  for(int j2 = 0; j2<=1; j2++){
+    for(int j3 = 0; j3<=1; j3++)
+      for(int j4 = 0; j4<=1; j4++){
+// Born,  Zero order
+            AmpBornW.m_A[j1][j2][j3][j4]=
+                       m_SpinoTT[j1][j2][j3][j4]* FFacTT[j1]
+                      +m_SpinoUU[j1][j2][j3][j4]* FFacUU[j1];
+      }//j3,j4
+  }//j1,j2
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+(*m_Out)<<"**************************************KKceex::BornW***********************************************"<<endl;
+  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBornW("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
+}//KKceex::BornW
 
 double  KKceex::BornFoam0(int KFini, int KFfin, double SvarX, double CosThetD){
 /////////////////////////////////////////////////////////////////////////////////////
@@ -913,8 +1060,17 @@ for(int j1 = 0; j1<=1; j1++)
                  +Cfac*AmpBoxy ;                                                   // O(alf1) boxes
      }//for j3,j4
 
+//===================================================================
+BornW(KFini, KFfin, PX, s, t, m_r1, m_r2, m_p3, m_p4, m_AmpBornW);
+//===================================================================
+
 }//for j1,j2
 //---------------------
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+dcmplx PropW, WVPi;
+GPS_EWFFactW(KFini, KFfin, s,t, PropW, WVPi);
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
 }//BornPlus
 
 void KKceex::ZerAmplit(){
@@ -1113,7 +1269,102 @@ for(int j1 = 0; j1<=1; j1++)
   AmpAdd( m_AmpExpo2, sProd*Vir2,m_BornC);
 }// GPS_HiniPlus
 
+//*NEW*
+void KKceex::HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
+               KKpart &ph1, int Hel, dcmplx &Sactu, dcmplx &sProd){
+////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//   IR-finite part od 1-photon amplitudes for ISR  (equiv. to GPS_HiniW)           //
+//   Photon helicity imported from the calling program                             //
+//                                                                                 //
+//   m_AmpExpo*  is working space                                                  //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+double Qe  = DB->Qf[ KFini];
+dcmplx Vir1,Vir2;  // Virtual corrections
+MakeVini(m_p1, m_p2, ph1, Vir1,Vir2);
 
+double CosThetD;
+m_Event->ThetaD(PX,CosThetD);
+double s0,t0;
+s0 = PX*PX;
+t0 = -s0*(1.0-CosThetD)/2.0;
+//double u0 = -s0*(1.0+CosThetD)/2.0; //not used
+
+int IFONE;
+//Where is dominant other photon?  It is instead of reduction procedure
+if( (m_p3.P[3]+m_p4.P[3])*m_p1.P[3] < 0.0) IFONE=1; else IFONE=0;
+if(IFONE) {
+   s0=  2*(m_p3*m_p4); t0= -2*(m_p4*m_p2);
+} else {
+   s0=  2*(m_p3*m_p4); t0= -2*(m_p3*m_p1);
+}//if
+BornW(KFini, KFfin, PX, s0, t0,  m_r1, m_r2, m_p3, m_p4, m_AmpBornW); // for WW graph
+//--------------------------------------------------------------
+KKcmplx4 AmpBornU, AmpBornV; // dressed Born spin amplitudes
+KKpart ph1r = ph1; ph1r.C=-1;
+double sa,ta;
+//Where is dominant other photon?  It is instead of reduction procedure
+if( (ph1.P[3]+m_p3.P[3]+m_p4.P[3]) * m_p1.P[3] < 0.0) {
+ IFONE= 1;      // We assume all extra photons were emitted from p1
+} else {
+ IFONE= 0;      // We assume all extra photons were emitted from p2
+}
+if(IFONE) {sa=  2*(m_p3*m_p4); ta= -2*(m_p4*m_p2);}
+else      {sa=  2*(m_p3*m_p4); ta= -2*(m_p3*m_p1);}
+if(Ibeta == 0) {sa=s0;ta=t0;} // for tests only
+BornW(KFini, KFfin, PX, sa, ta,  ph1, m_r2, m_p3, m_p4, AmpBornU); // single W, vector-like
+//--------------------------------------------------------------------------------
+double sb,tb;
+if (IFONE) {sb=  2*(m_p3*m_p4); tb= -2*(m_p4*m_p2);}
+else       {sb=  2*(m_p3*m_p4); tb= -2*(m_p3*m_p1);}
+if(Ibeta == 0) { sb=s0; tb=t0;} // for tests only
+BornW(KFini, KFfin, PX, sb, tb, m_r1, ph1r, m_p3, m_p4, AmpBornV); // single W
+//--------------------------------------------------------------------------------
+dcmplx PropW0,WVPi0,PropWa,WVPia,PropWb,WVPib;
+GPS_EWFFactW(KFini,KFfin,s0,t0,PropW0,WVPi0);
+GPS_EWFFactW(KFini,KFfin,sa,ta,PropWa,WVPia);
+GPS_EWFFactW(KFini,KFfin,sb,tb,PropWb,WVPib);
+WVPia=WVPi0; // to keep gauge invariance we install t-transfer in formfactor at 0 order
+WVPib=WVPi0; // to keep gauge invariance we install t-transfer in formfactor at 0 order
+// Fermion propagarotors
+double pr1  = 1.0/(m_p1*ph1)/2.0;
+double pr2  =-1.0/(m_p2*ph1)/2.0;
+int Sig = 1-2*Hel;
+
+dcmplx gI = dcmplx(Qe *m_e_QED);
+dcmplx Cone = dcmplx(1.0);
+KKcmplx2 U,V, UW,VW, UWX,VWX;
+//CALL GPS_MakeU(ph,Sig,  ph,mph,  p1,m1,    U)
+//CALL GPS_MakeV(ph,Sig,  p2,m2,   ph,mph,   V)
+GPS_MakeU(Cone, ph1, Sig,  ph1,  m_p1,   U);
+GPS_MakeV(Cone, ph1, Sig,  m_p2,  ph1,   V);
+//CALL GPS_MakeUW(Cnor,ph,Sig,  p3,m3,   p1,m1,    UW)
+//CALL GPS_MakeVW(Cnor,ph,Sig,  p2,m2,   p4,m4,    VW)
+GPS_MakeUW(Cone, ph1, Sig,  m_p3,  m_p1,   UW);
+GPS_MakeVW(Cone, ph1, Sig,  m_p2,  m_p2,   VW);
+//CALL GPS_MakeUX(Cnor,ph,Fleps, p3,m3,   p1,m1,    UWX) ! v-a inside
+//CALL GPS_MakeVX(Cnor,ph,Fleps, p2,m2,   p4,m4,    VWX) ! v-a inside
+GPS_MakeUX(Cone, ph1, Sig, m_p3, m_p1, UWX);
+GPS_MakeVX(Cone, ph1, Sig, m_p2, m_p4, VWX);
+dcmplx s1v[2],s2v[2],EpsDot[2]; // soft factors
+//s1v(1)  = -GPS_Sof1( 1,phv,p1v)
+//s2v(1)  =  GPS_Sof1( 1,phv,p2v)
+s1v[0]  = -GPS_Sof1( 1,ph1,m_p1);
+s2v[0]  = -GPS_Sof1( 1,ph1,m_p2);
+//IF (IFONE) THEN
+//  EpsDot(1)=(+GPS_Sof1x( 1,phv,p2v)-GPS_Sof1x( 1,phv,p4v)) ! minis sign is in pr2/4
+//ELSE
+//  EpsDot(1)=(-GPS_Sof1x( 1,phv,p1v)+GPS_Sof1x( 1,phv,p3v)) ! minis sign is in pr2/4
+//ENDIF
+if(IFONE) EpsDot[0]= +GPS_Sof1x( 1,ph1,m_p2)-GPS_Sof1x( 1,ph1,m_p4); // minus is in pr2/4
+else      EpsDot[0]= -GPS_Sof1x( 1,ph1,m_p1)+GPS_Sof1x( 1,ph1,m_p3); // minus is in pr2/4
+s1v[1]   = -conj(s1v[0]);
+s2v[1]   = -conj(s2v[0]);
+EpsDot[1]= -conj(EpsDot[0]);
+
+
+}//HiniPlusW
 
 void KKceex::HfinPlus(int KFini, int KFfin, TLorentzVector &PX,
              KKpart &ph1, int Hel, dcmplx &Sactu, dcmplx &sProd, double &CKine){
@@ -1914,6 +2165,43 @@ void KKceex::GPS_HifPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
 }//GPS_HifPlus
 
 
+void KKceex::Amp2WCplus(KKcmplx2 &V, const double Sw2){
+//    Cnor   = sqrt(1.d0/2.d0/m_Sw2)
+//    V[0,1] = Cnor*0D0 !(+-)
+//    V(2,1) = Cnor*0D0 !(-+)
+//    V(2,2) = Cnor*0D0 !(--)
+//    V(1,1) = Cnor*1D0 !(++)
+    V.m_A[0][1] = dcmplx(0.0); // (+-)
+    V.m_A[1][0] = dcmplx(0.0); // (-+)
+    V.m_A[1][1] = dcmplx(0.0); // (--)
+    V.m_A[0][0] = dcmplx( sqrt(1.0/2.0/Sw2)); //(++)
+}//KKceex::Amp2WCplus
+
+void KKceex::Amp2WCminus(KKcmplx2 &V, const double Sw2){
+//    Cnor   = sqrt(1.d0/2.d0/m_Sw2)
+//    V(1,2) = Cnor*0D0 !(+-)
+//    V(2,1) = Cnor*0D0 !(-+)
+//    V(2,2) = Cnor*1D0 !(--)
+//    V(1,1) = Cnor*0D0 !(++)
+    V.m_A[0][1] = dcmplx(0.0); // (+-)
+    V.m_A[1][0] = dcmplx(0.0); // (-+)
+    V.m_A[1][1] = dcmplx( sqrt(1.0/2.0/Sw2)); // (--)
+    V.m_A[0][0] = dcmplx(0.0); //(++)
+}//KKceex::Amp2WCminus
+
+
+void KKceex::Amp2Mult(KKcmplx2 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U){
+// Res = Fact* V * U
+dcmplx Csum;
+for(int j1 = 0; j1<=1; j1++)
+  for(int j2 = 0; j2<=1; j2++){
+       Csum=dcmplx(0.0,0.0);
+       for(int  j= 0; j<=1; j++)
+          Csum += (V.m_A[j1])[j] *(U.m_A[j])[j2];
+       (Res.m_A[j1])[j2] = Fact*Csum;
+  }// j1,j2
+}//KKceex::Amp2Mult
+
 void KKceex::Amp4Zer(KKcmplx4 &Born){
 for(int j1 = 0; j1<=1; j1++)
   for(int j2 = 0; j2<=1; j2++)
@@ -2095,7 +2383,8 @@ for(int j1 = 0; j1<=1; j1++)
 
 
 
-void KKceex::EWFFact(int KFini, int KFfin, double Svar, dcmplx &Ve, dcmplx &Vf, dcmplx &Ae, dcmplx &Af ){
+void KKceex::EWFFact(int KFini, int KFfin, double Svar,
+                     dcmplx &Ve, dcmplx &Vf, dcmplx &Ae, dcmplx &Af ){
 ////////////////////////////////////////////////////////////////////////////////////////////
 //                   ElectroWeak Couplings for effective Born                             //
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2119,7 +2408,7 @@ Af     =  2*T3f           /Deno;
 }//EWFFact LO
 
 
-void KKceex::EWFFact(int KFini, int KFfin, double Svar, double CosThetD,
+void KKceex::EWFFact(const int KFini,const  int KFfin,const  double Svar,const  double CosThetD,
              dcmplx &Ve,    dcmplx &Vf,     dcmplx  &Ae,     dcmplx &Af,
              dcmplx &VVcor, dcmplx &GamVPi, dcmplx  &ZetVPi, double &RsqV, double & RsqA){
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2149,6 +2438,11 @@ double Sw2 = m_DZ->D_swsq;       // from Dizet
   ZetVPi = DB->GFermi *sqr(DB->MZ) *DB->Alfinv0 /(sqrt(2.0)*8.0*M_PI)
             *(Sw2*(1.0-Sw2)) *16.0
             *RhoEW;
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  (*m_Out)<<" KKceex::EWFFact: Svar="<<Svar<<"  CosThetD="<<CosThetD<<endl;
+//  (*m_Out)<<" KKceex::EWFFact: RhoEW="<<RhoEW<<"  CorEle="<< CorEle<<endl;
+//  (*m_Out)<<" KKceex::EWFFact: CorFin="<<CorFin<<"  CorEleFin="<< CorEleFin<<" VPgamma="<<VPgamma<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // Coupling costants times EW form-factors
   double Deno   = sqrt(16.0*Sw2*(1.0-Sw2));
   Ve     = (2*T3e -4*Qe*Sw2*CorEle)/Deno;
@@ -2163,8 +2457,63 @@ double Sw2 = m_DZ->D_swsq;       // from Dizet
   VVcor  = VVCef/(Ve*Vf);
 //--- SY: The following looks like a misprint - corrected
 // CosThetD = 1d0 is special
-  if( CosThetD == 0.0) VVcor  = dcmplx(1.0); //????
+//  if( CosThetD == 0.0) VVcor  = dcmplx(1.0); //????
 }//
+
+
+void KKceex::GPS_EWFFactW(int KFi, int KFf,double s,double t, dcmplx &PropW, dcmplx &WVPi)
+{ //*new*
+////////////////////////////////////////////////////////////////////////////////////////////
+//                        ElectroWeak Corrections                                         //
+//                        empty prepared for nunu chanel                                  //
+////////////////////////////////////////////////////////////////////////////////////////////
+// we do it like for photon. I was unable to properly understand normalization
+// this is half-guess half observation of the KK-KORALZ differences in code.
+// it can be easily wrong. nothing like this tem is present in KORALZ,
+// nonetheless KORALZ results are 137/127 higher than KK for pure W exchange.
+// in koralz this vacpol factor is installed at born step mode 1/0 ratio, here not
+  int KeyElw = DB->KeyElw;
+  double MW  = DB->MZ *sqrt(1.0-DB->swsq);
+  if( DB->KeyElw > 0) {
+//         next will be mass fro common /cdzwsm/ from  DZface.f it is actually raw mass as above ...
+    MW = m_DZ->D_MW;
+  }
+  PropW   =    1.0/dcmplx(t-MW*MW,0.0 );
+//  WVPi=DCMPLX(1.06794821,-0.0185004916)
+  WVPi=dcmplx(1.0,0.0);
+  double Sw2 = m_DZ->D_swsq;
+  double Coef  =1.0/2.0/Sw2;
+  double Coef1= DB->GFermi *MW*MW* DB->Alfinv0 /(sqrt(2.0)*M_PI);
+  double CosThetD;
+  if( KeyElw >0) {
+    WVPi= WVPi*Coef1/Coef ;  // effective coupling
+    CosThetD=1+2*t/s;
+// DIRTY trick to get around the problem. Anyway problem appears in non used
+//           WVPi's where it is later overwritten.
+//           Physically it is ambiguity of order alpha**2 ?????
+    if( abs(1+2*t/s) > 1) {
+       CosThetD=1.0/(1+2*t/s);
+    }
+    m_DZ->InterpoGSW(KFi, KFf, s, CosThetD);
+    dcmplx GSW5 = m_DZ->m_GSW[5-1];
+//     use of rhocc forbiden, disk-mode does not work
+//           CALL rhocc(s,-t,-s-t,-1D0,1D0,0D0,0D0,ROW)
+//           IF(icont.LE.100) WRITE(*,*) '%%%%%%   ',GSW(5),ROW,'   ',s,t
+//           IF (ABS(row-gsw(5)).GT.0.0002.AND.s.GT.10000) WRITE(*,*) GSW(5),ROW,'   ',s,t
+//           IF (ABS(row-1).gt.0.016) STOP
+// this was added to GSW(5) in BornV_Dizet
+    double DelW= 1.0/DB->Alfinv0/M_PI/2*(-3.0/2*log(s/MW/MW)+1.0/2*sqr(log(-t/s))-4.0/6.0*sqr(M_PI)+2.0); // (b);
+//ccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2-1d0/6d0*m_pi**2+2D0) ! (a)
+     WVPi= WVPi*(GSW5+dcmplx(DelW,0.0));
+  }
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<< "///////////////////////////////GPS_EWFFactW//////////////////////////////////////////////"<<endl;
+(*m_Out)<< "KeyElw="<< KeyElw <<endl;
+(*m_Out)<< "MW"<< MW<<" s="<< s<<" t="<<t<<endl;
+(*m_Out)<< "PropW"<< PropW <<" WVPi="<<WVPi<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//
+}//GPS_EWFFactW
 
 
 void KKceex::PartitionStart(int &last){
@@ -2244,12 +2593,12 @@ if( m_KeyArb == 0 ) {
   if(     sigma == 1 ) {
      U.m_A[0][0] =  Sqr2*( XiProd(p2,ph) *iProd1(1,ph,p1));           // (++)
      U.m_A[1][1] =  Sqr2*( XiProd(p1,ph) *iProd1(1,ph,p2));           // (--)
-     U.m_A[0][1] =  0.0;                                                      // (+-)
+     U.m_A[0][1] =  0.0;                                              // (+-)
      U.m_A[1][0] =  Sqr2*( -m1*XiProd(p2,p1) +m2*XiProd(p1,p2));      // (-+)
   }else  if(sigma == -1 ) {
      U.m_A[0][0] =  Sqr2*( XiProd(p1,ph) *iProd1(-1,ph,p2));          // (++)
      U.m_A[1][1] =  Sqr2*( XiProd(p2,ph) *iProd1(-1,ph,p1));          // (--)
-     U.m_A[1][0] =  0.0;                                                      // (-+)
+     U.m_A[1][0] =  0.0;                                              // (-+)
      U.m_A[0][1] =  Sqr2*( -m1*XiProd(p2,p1) +m2*XiProd(p1,p2));      // (+-)
   }//if sigma
 }else{
@@ -2329,6 +2678,112 @@ if( m_KeyArb == 0 ) {
   }// if sigma
 }//if keyarb
 }// GPS_MakeV
+
+void KKceex::GPS_MakeUW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U){
+//SUBROUTINE GPS_MakeUW(Norm,ph,sigma,p1,m1,p2,m2,U)
+/////////////////////////////////////////////////////////////////////////////////////
+// like GPS_MakeU  but with W v-a coupling included                                //
+/////////////////////////////////////////////////////////////////////////////////////
+//   CALL GPS_MakeU(ph,Sigma,  p1,m1,   p2,m2,    UW0)
+//   CALL  GPS_MatrWm(WC)             ! W-e-nu couplingss
+//   CALL  GPS_times(Cnor,WC,UW0,U) ! we add v-a coupl
+KKcmplx2 UW0,WC;
+double Sw2 = m_DZ->D_swsq;
+dcmplx Cone = dcmplx(1.0);
+Amp2WCminus(WC,Sw2);           // W-e-nu couplingss
+GPS_MakeU(Cfac, ph,sigma, p1, p2, UW0);
+Amp2Mult( U, Cone, WC, UW0);  // we add v-a coupl
+}//KKceex::GPS_MakeUW
+
+void KKceex::GPS_MakeVW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V){
+//SUBROUTINE GPS_MakeVW(Norm,ph,sigma,p1,m1,p2,m2,V)
+/////////////////////////////////////////////////////////////////////////////////////
+// like GPS_MakeV  but with W v-a coupling included                                //
+/////////////////////////////////////////////////////////////////////////////////////
+//   CALL GPS_MakeV(ph,Sigma,  p1,m1,   p2,m2,    VW0)
+//   CALL  GPS_MatrW(WC)             ! W-e-nu couplingss
+//   CALL  GPS_times(Cnor,VW0,WC,V) ! we add v-a coupl
+KKcmplx2 VW0,WC;
+double Sw2 = m_DZ->D_swsq;
+dcmplx Cone = dcmplx(1.0);
+Amp2WCplus(WC,Sw2);           // W-e-nu couplingss
+GPS_MakeV(Cfac, ph,sigma, p1, p2, VW0);
+Amp2Mult( V, Cone, VW0,WC);  // we add v-a coupl
+}//KKceex::GPS_MakeVW
+
+void KKceex::GPS_MatrS(KKpart &p1, KKpart &p2, KKcmplx2 &V){
+//SUBROUTINE GPS_MatrS(p1,m1,p2,m2,V)
+/////////////////////////////////////////////////////////////////////////////////////
+//   S matrix for spinor products (matrix version of  GPS_iProd1                   //
+//   p1,p2   = fermion 4-momenta                                                   //
+/////////////////////////////////////////////////////////////////////////////////////
+//   V(1,2) =      GPS_iProd1(  1,p1, p2)   !(+-)
+//   V(2,1) =      GPS_iProd1( -1,p1,p2)    !(-+)
+//   V(2,2) = 0D0                            !(--)
+//   V(1,1) = 0D0                            !(++)
+   V.m_A[0][1] = iProd1(  1, p1, p2); // (+-)
+   V.m_A[1][0] = iProd1( -1, p1, p2); // (-+)
+   V.m_A[1][1] = dcmplx(0.0); // (--)
+   V.m_A[0][0] = dcmplx(0.0); // (++)
+}//KKceex::GPS_MatrS
+
+void KKceex::GPS_MakeUX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U){
+//SUBROUTINE GPS_MakeUX(Cn,ph,mh,p1,m1,p2,m2,U)
+///////////////////////////////////////////////////////////////////////////////////////
+//   Transition matrix U, (ph-slash sandwiched between ubar-u spinors)             //
+//   mass terms not tested   !!!                                                   //
+//   ph      = photon  4-momentum                                                  //
+//   p1,p2   = fermion 4-momenta                                                   //
+/////////////////////////////////////////////////////////////////////////////////////
+//DOUBLE COMPLEX   U(2,2),A(2,2),B(2,2),AB(2,2),C(2,2)
+//Cnor=1D0
+//CALL  GPS_MatrS(p1,m1,ph,mh,A)
+//CALL  GPS_MatrWm(C)
+//CALL  GPS_MatrS(ph,mh,p2,m2,B)
+//CALL  GPS_times(Cnor,A,B,AB)
+//CALL  GPS_times(Cn,C,AB,U)
+KKcmplx2 A,B,AB,C;
+double Sw2 = m_DZ->D_swsq;
+dcmplx Cone = dcmplx(1.0);
+Amp2WCminus(C,Sw2);           // W-e-nu couplingss
+GPS_MatrS(p1,ph,A);
+GPS_MatrS(ph,p2,B);
+Amp2Mult( AB, Cone, A, B);
+Amp2Mult(  U, Cfac, C,AB);
+}//KKceex::GPS_MakeUX
+
+void KKceex::GPS_MakeVX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V){
+//SUBROUTINE GPS_MakeVX(Cn,ph,mh,p1,m1,p2,m2,V)
+/////////////////////////////////////////////////////////////////////////////////////
+//   Transition matrix V, (ph-slash sandwiched between vbar-v spinors)             //
+//   mass terms not studied !!!                                                    //
+//   ph      = photon  4-momentum                                                  //
+//   p1,p2   = fermion 4-momenta                                                   //
+//   massles limit                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+//    DOUBLE COMPLEX   V(2,2),A(2,2),B(2,2),C(2,2),AB(2,2)
+//    DOUBLE COMPLEX   Cn,Cnor,XX
+//    Cnor=1D0
+//    CALL  GPS_MatrS(p1,m1,ph,mh,A)
+//    CALL  GPS_MatrWm(C)
+//    CALL  GPS_MatrS(ph,mh,p2,m2,B)
+//    CALL  GPS_times(Cnor,A,B,AB)
+//    CALL  GPS_times(Cn,AB,C,V)
+//    XX=V(1,1)
+//    V(1,1)=V(2,2)
+//    V(2,2)=XX
+KKcmplx2 A,B,AB,C;
+double Sw2 = m_DZ->D_swsq;
+dcmplx Cone = dcmplx(1.0);
+Amp2WCminus(C,Sw2);           // W-e-nu couplings ???? Amp2WCplus???
+GPS_MatrS(p1,ph,A);
+GPS_MatrS(ph,p2,B);
+Amp2Mult( AB, Cone,  A, B);
+Amp2Mult(  V, Cfac, AB, C);
+dcmplx XX = V.m_A[0][0];
+V.m_A[0][0]=V.m_A[1][1];
+V.m_A[1][1]=XX;
+}//KKceex::GPS_MakeUX
 
 
 dcmplx KKceex::iProd1(int L, KKpart &p, KKpart &q){
@@ -2502,12 +2957,10 @@ return Soft;
 
 dcmplx KKceex::GPS_Sof1(int sigma, KKpart &ph, KKpart &pf){
 /////////////////////////////////////////////////////////////////////////////////////
-//                                                                                 //
 //   Single soft photon contribution to Soft factor at amplitude level             //
 //   sigma   = photon polarization (+1,-1)                                         //
 //   ph      = photon  4-momentum                                                  //
 //   pf      = fermion 4-momenta                                                   //
-//                                                                                 //
 /////////////////////////////////////////////////////////////////////////////////////
 dcmplx Sof1;
 if(m_KeyArb == 0) {
@@ -2518,7 +2971,21 @@ if(m_KeyArb == 0) {
 return Sof1;
 }//GPS_Sof1
 
-
+dcmplx KKceex::GPS_Sof1x(int sigma, KKpart &ph, KKpart &pf){
+/////////////////////////////////////////////////////////////////////////////////////
+//   Single soft photon contribution to Soft factor at amplitude level             //
+//   sigma   = photon polarization (+1,-1)                                         //
+//   ph      = photon  4-momentum                                                  //
+//   pf      = fermion 4-momenta                                                   //
+/////////////////////////////////////////////////////////////////////////////////////
+dcmplx Sof1x;
+if(m_KeyArb == 0) {
+  Sof1x = sqrt(2.0)*iProd1(sigma,ph,pf)*XiProd(pf,ph);
+} else {
+  Sof1x = Bfacb(sigma,ph,pf);
+}
+return Sof1x;
+}//GPS_Sof1x
 
 dcmplx KKceex::Bfacb(int sigma, KKpart &phot, KKpart &pferm){
 /////////////////////////////////////////////////////////////////////////////////////
@@ -2546,9 +3013,14 @@ void KKceex::PhelRandom(){
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-double rvec[101];
-m_RNgen->RndmArray(m_nPhot, rvec);
-
+m_nPhot = m_Event->m_nPhot;
+//[[[[[[[[[[[[[
+  float              rvec[101];
+  pseumar_makevec_(rvec,m_nPhot);
+//----------------
+//double rvec[101];
+//m_RNgen->RndmArray(m_nPhot, rvec);
+//]]]]]]]]]]]]]
 for(int i=1; i<=m_nPhot; i++){      //f77 indexing
    if( rvec[i-1] > 0.5 ) {
       m_Phel[i] =  0;
@@ -2556,6 +3028,10 @@ for(int i=1; i<=m_nPhot; i++){      //f77 indexing
       m_Phel[i] = +1;
    }
 }//for
+//[[[[[[[[[[[[[[
+(*m_Out) << "%%% m_Phel= ";
+for(int i=1; i<=m_nPhot;i++ ) (*m_Out)<<" "<<m_Phel[i]; (*m_Out)<<endl;
+//]]]]]]]]]]]]]]
 //if(m_icont <200){for(int i=1; i<=m_nPhot;i++ ) cout<<" "<<m_Phel[i]; cout<<endl;}
 }//PhelRandom
 

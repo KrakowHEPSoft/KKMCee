@@ -221,9 +221,18 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
       DOUBLE PRECISION    wtt, wt_ISR
       DOUBLE PRECISION    ph(4)
       DOUBLE PRECISION    EBeam1,EBeam2
-      INTEGER             k,j 
+      INTEGER             k,j,seed
+      REAL                rvec(10)
 *
       m_NevGen =  m_NevGen+1
+c[[[[[[[[[[[[[[[[[[[[[[
+      IF( m_NevGen .eq.1) THEN
+        seed = 54217317
+        CALL pseumar_initialize(seed, 0, 0)
+        CALL PseuMar_MakeVec(rvec,1)
+        write(m_out,*) '@@@@ KarLud_Make: rvec(1)=', rvec(1)
+      ENDIF
+c]]]]]]]]]]]]]]]]]]]]]]
       m_exe    = 1d0
       m_XXXene = m_CMSene
       IF(m_KeyISR .EQ. 1) THEN
@@ -480,6 +489,15 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
       DOUBLE PRECISION    DilJac0,DilJac,AvMult,WtIni
       DOUBLE PRECISION    WtDil0,WtCut0
       REAL                rvec(10)
+      INTEGER seed
+c[[[[[[[[[[[[[[[[[[[[[[
+c      IF( m_NevGen .eq.1) THEN
+c      seed = 54217317
+c      CALL pseumar_initialize(seed, 0, 0)
+c      CALL PseuMar_MakeVec(rvec,1)
+c      write(m_out,*) '@@@@ KarLud_YFSini: rvec(1)=', rvec(1)
+c      ENDIF
+c]]]]]]]]]]]]]]]]]]]]]]
 *---------------------------------------
       Ene  = XXXene/2d0
 * Define 4-momenta of the initial charged particles (emitters)
@@ -1076,6 +1094,16 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
       INTEGER KeyFix
 *
       KeyFix = m_KeyFix
+      END
+
+      SUBROUTINE KarLud_GetNevGen(NevGen)
+*///////////////////////////////////////////////////////////////////////////////
+*//                                                                           //
+*///////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'KarLud.h'
+      INTEGER NevGen
+      NevGen = m_NevGen
       END
 
 *///////////////////////////////////////////////////////////////////////////////

@@ -1,3 +1,6 @@
+// make PlotBES-run
+// use work1_100GeV_BES.input
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>

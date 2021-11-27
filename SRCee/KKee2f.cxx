@@ -5,13 +5,15 @@
 
 ClassImp(KKee2f);
 
-/*
+
 extern "C" {
-// SRChh/ffff_aux.f
+//
    void fort_open_( const int&, const char*, int);
    void fort_close_(const int&);
+   void pseumar_initialize_(const int&, const int&, const int&);
+   void pseumar_makevec_(float rvec[], const int&);
 }//
-*/
+
 
 #define SW20 setw(20)<<setprecision(14)
 #define SP15 setw(15)<<setprecision(9)
@@ -114,6 +116,15 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout  << "   *******************************" << endl;
   cout  << "   ****   KKee2f   Initialize ****" << endl;
   cout  << "   *******************************" << endl;
+
+//=============================================================
+//   opening disk fime for fortran part of code
+  m_out = 16;
+  const char *output_file = "./pro77.output";
+  int sl2 = strlen(output_file);
+  fort_open_(m_out,output_file,sl2);
+  int seed = 54217317; pseumar_initialize_(seed, 0, 0);
+//=============================================================
 
 //////////////////////////////////////////////////////////////
 // Presently globux is eliminated, may come back temporarily
@@ -433,6 +444,20 @@ if ( DB->KeyISR == 1) {
   // alternative mapping from KKeeFoam
   // probably safer, more stable numerically
   MapPlus( R, GamI, vvmax, m_vv, dJac);
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  if( m_EventCounter == 1 ) { m_vv=0.2;
+    for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
+    *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
+  if( m_EventCounter == 2 ) {m_vv=0.4;
+    for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
+    *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
+  if( m_EventCounter == 3 ) { m_vv=0.6;
+    for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
+    *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
+  if( m_EventCounter == 4 ) {m_vv=0.8;
+    for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
+    *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
+  //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   RhoISR *= dJac;
   /////////////// No mapping at all
   //m_vv = R*vvmax;
@@ -656,6 +681,9 @@ if(m_WtCrude != 0 ) {
    if( (DB->KeyGPS != 0) && (SvarQ > sqr(m_MminCEEX[m_KFfin])) ) {
       int KeyInt0=0;
       m_GPS->SetKeyInt(KeyInt0);
+      //[[[[[[[[[[ moved out from Make()
+      m_GPS->PhelRandom();
+      //]]]]]]]]]]
       m_GPS->Make();
       m_WtSetNew[51]=m_GPS->m_WtSet[51];
       m_WtSetNew[52]=m_GPS->m_WtSet[52];
@@ -715,7 +743,7 @@ m_Event->ZBoostALL();
   if(m_EventCounter <= 20) {
      m_Event->PrintISR();
      m_Event->PrintISR_FSR();
-     m_Event->PrintISR_FSR(f_Out);
+     //m_Event->PrintISR_FSR(f_Out);
      m_Event->EventPrintAll();
      m_Event->EventPrintAll(f_Out);
   }//m_EventCounter
@@ -803,7 +831,7 @@ double MCresult,MCerror;
 f_FoamI->GetIntegMC(MCresult,MCerror);   // true Foam integral
 cout<<"||||||||| KKMCee::Finalize: FOAM MCresult, MCerror ="<< MCresult<<" +- "<< MCerror<<endl;
 ///////////////////////////////////////////////////
-//fort_close_(m_out);
+fort_close_(m_out);
 ///////////////////////////////////////////////////
 double AveWt, ErrAbs;
 m_WtMainMonit->GetAver(AveWt, ErrAbs);

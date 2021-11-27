@@ -171,16 +171,15 @@ void KKdizet::InterpoGSW(int KFi0, int KFf0, double svar, double CosThe){
 //  Calculates GSW formfactors from tables using linear interpolation
 //  of the matrix in KFi and KFf constructed in hhDizet.
 //  For compatibility with KKMC, KFi is passed in the BornV common block.
-//  Modified for KKMC-hh so it behaves gracefully beyond table limits.
-//  A new calculation is done if the request is outside the table.
 //
 //////////////////////////////////////////////////////////////////////////
 //	Projecting into flavours recorded in the EW tables
-	int KFi, KFf;
-	if(KFi0==1  || KFi0==3  || KFi0==5 )  KFi=1;  // d,s,b
-	if(KFi0==2  || KFi0==4 )              KFi=2;  // u,c
-	if(KFf0==11 || KFf0==13 || KFf0==15 ) KFf=13; // mu,tau
-	if(KFf0==12 || KFf0==14 || KFf0==16 ) KFf=14; // nue,numu,nutau
+    int KFi=1; // always electron
+    int KFf=KFf0;
+//  if(KFi0==1  || KFi0==3  || KFi0==5 )  KFi=1;  // d,s,b
+//  if(KFi0==2  || KFi0==4 )              KFi=2;  // u,c
+//    if(KFf0==11 || KFf0==13 || KFf0==15 ) KFf=13; // mu,tau
+//    if(KFf0==12 || KFf0==14 || KFf0==16 ) KFf=14; // nue,numu,nutau
 //
     double ww = sqrt(svar);
     //[[[[[[[[[[[[[[[[[[[[[

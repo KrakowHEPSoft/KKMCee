@@ -105,7 +105,7 @@
       m_out   = 16
       m_KFfin = KFfin
 cc      m_KFini = xpar(400) !!!
-      m_KFini = KFini
+      m_KFini = KFini   ! =11, electron
 *
       m_MZ      = xpar(502) !!!
 *
@@ -324,15 +324,15 @@ cc      m_KFini = xpar(400) !!!
       DOUBLE PRECISION ww, x, cosi, amz, amh, amtop, QCDcorR(20)
       DOUBLE PRECISION amzD, gammz1, gammw1
       DOUBLE COMPLEX GSW(100)
-      INTEGER i, j, k, kk
+      INTEGER i, j, k, kk, KFone
 *-------------------------------------------------------------------------------
 * Initialization
       CALL hhDizet_GetPrm(amzD, m_gammz, gammz1, m_MW, m_GammW, gammw1, m_swsq)
       WRITE(6,'(a)') 'amzD, amh, amtop, swsq, gammz, amw, gammw = '
       WRITE(6,'(a,10f12.7)') '     =',amzD, m_amh, m_amtop, m_swsq, m_gammz, m_MW, m_GammW
-
 c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
 *-------------------------------------------------------------------------------
+      KFone =  1 ! index for beam (electron) in the tables
 * basic s range LEP1 and below 
       write(*,*) 'hhDizet_Tabluj: basic LEP1 range pretabulation.'
       CALL hhDizet_MakeGSW(-1, ww, 0d0, GSW, QCDcorR) ! just sets parameters
@@ -341,11 +341,11 @@ c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
          IF(MOD(i,10)  .EQ.  0) WRITE(    6,*) 'a: i,ww= ',i,ww
          CALL hhDizet_MakeGSW( 0, ww, 0d0, GSW, QCDcorR) ! at theta=pi, ibox=0
          DO kk=1,m_poinG
-            m_cyys(i+1, kk, m_KFini, m_KFfin) = GSW(kk)
+            m_cyys(i+1, kk, KFone, m_KFfin) = GSW(kk)
          ENDDO
          IF (m_KeyQCD.NE.0) THEN  ! a bit OCD... we don't have QCD FSR
             DO kk=1,m_poinQ
-               m_syys(i+1, kk, m_KFini, m_KFfin) = QCDcorR(kk)
+               m_syys(i+1, kk, KFone, m_KFfin) = QCDcorR(kk)
             ENDDO
          END IF 
       ENDDO
@@ -362,7 +362,7 @@ c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
             cosi=0d0
             CALL hhDizet_MakeGSW( 0, ww, cosi, GSW, QCDcorR) ! at theta=pi, ibox=0
             DO kk=1,m_poinG
-               m_czzs(i+1,1,kk,m_KFini,m_KFfin)=GSW(kk)
+               m_czzs(i+1,1,kk,KFone,m_KFfin)=GSW(kk)
             ENDDO
          ELSE
             DO  j=0,m_poTh2
@@ -371,13 +371,13 @@ c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
                IF(j  .EQ.  m_poTh2) cosi=cosi-.3d0/DFLOAT(m_poTh2)
                CALL hhDizet_MakeGSW( m_ibox, ww, cosi, GSW, QCDcorR) ! ibox from input
                DO kk=1,m_poinG
-                  m_czzs(i+1,j+1,kk,m_KFini,m_KFfin)=GSW(kk)
+                  m_czzs(i+1,j+1,kk,KFone,m_KFfin)=GSW(kk)
                ENDDO
             ENDDO
          ENDIF
          IF (m_KeyQCD.NE.0) THEN 
             DO kk=1,m_poinQ
-               m_szzs(i+1,kk,m_KFini,m_KFfin) = QCDcorR(kk)
+               m_szzs(i+1,kk,KFone,m_KFfin) = QCDcorR(kk)
             ENDDO
          ENDIF 
       ENDDO
@@ -394,12 +394,12 @@ c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
             IF(j  .EQ.  m_poTh3) cosi=cosi-.3d0/DFLOAT(m_poTh3)
             CALL hhDizet_MakeGSW( m_ibox, ww, cosi, GSW, QCDcorR) ! ibox from input
             DO  kk=1,m_poinG
-               m_ctts(i+1,j+1,kk,m_KFini,m_KFfin)=GSW(kk)
+               m_ctts(i+1,j+1,kk,KFone,m_KFfin)=GSW(kk)
             ENDDO
          ENDDO
          IF (m_keyQCD.GT.0) THEN 
             DO kk=1,m_poinQ
-               m_stts(i+1,kk,m_KFini,m_KFfin) = QCDcorR(kk)
+               m_stts(i+1,kk,KFone,m_KFfin) = QCDcorR(kk)
             ENDDO
          END IF 
       END DO
@@ -416,12 +416,12 @@ c     CALL hhDizet_MakeGSW(-1, 0d0, 0d0, GSW, QCDcorR) ! just sets parameters
             IF(j  .EQ.  m_poTh4) cosi=cosi-.3d0/DFLOAT(m_poTh4)
             CALL hhDizet_MakeGSW( m_ibox, ww, cosi, GSW, QCDcorR) ! ibox from input
             DO  kk=1,m_poinG
-               m_clcs(i+1,j+1,kk,m_KFini,m_KFfin) = GSW(kk)
+               m_clcs(i+1,j+1,kk,KFone,m_KFfin) = GSW(kk)
             ENDDO
          ENDDO
          IF (m_KeyQCD.NE.0) THEN 
             DO kk=1,m_poinQ
-               m_slcs(i+1,kk,m_KFini,m_KFfin) = QCDcorR(kk)
+               m_slcs(i+1,kk,KFone,m_KFfin) = QCDcorR(kk)
             ENDDO
          ENDIF 
       ENDDO
@@ -584,16 +584,17 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
       IMPLICIT NONE
       INCLUDE 'BornV.h'
       INCLUDE 'hhDizet.h'
-      INTEGER KFi, KFf, hhIO_OpenFile, i, j, k
+      INTEGER KFi, KFf, hhIO_OpenFile, i, j, k, KFone
       DOUBLE PRECISION ww, cosi, amzD, gammz1, gammw1
       CHARACTER(LEN=60) tableFile
 
-      IF ((KFi.GT.5).OR.(KFi.LT.1)) THEN
-         write(*,*) 'hhDizet_WriteTable: Invalid quark code ', KFi
-      END IF
-      IF ((KFf.GT.16).OR.(KFf.LT.11)) THEN
-         write(*,*)'hhDizet_WriteTable: Invalid lepton code ', KFf
-      END IF
+      KFone=1  ! fixed index in tables for beam
+c      IF ((KFi.GT.5).OR.(KFi.LT.1)) THEN
+c         write(*,*) 'hhDizet_WriteTable: Invalid quark code ', KFi
+c      END IF
+c      IF ((KFf.GT.16).OR.(KFf.LT.11)) THEN
+c         write(*,*)'hhDizet_WriteTable: Invalid lepton code ', KFf
+c      END IF
 
       write(m_ndisk,*) "hhDizet_WriteTable: KFi, KFf =", KFi, KFf
 *-- params out of dizet 
@@ -605,8 +606,8 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
       DO i=0, m_poin1
          ww = m_WminLEP1 *(m_WmaxLEP1/m_WminLEP1)**(DFLOAT(i)/DFLOAT(m_poin1)) !
          WRITE(m_ndisk,m_fmt1) 'a',i,ww
-         WRITE(m_ndisk,     *)                    (m_cyys(i+1,    k,KFi,KFf),k=1,m_poinG) ! EW
-         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_syys(i+1,    k,KFi,KFf),k=1,m_poinQ) ! QCD
+         WRITE(m_ndisk,     *)                    (m_cyys(i+1,    k,KFone,KFf),k=1,m_poinG) ! EW
+         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_syys(i+1,    k,KFone,KFf),k=1,m_poinQ) ! QCD
       ENDDO
 */////////////////////////////////////////////////////////////////
 */              near Z0 resonance    m_czz(m_poin2+1, 7)        //
@@ -620,9 +621,9 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
             IF(j  .EQ.        0) cosi=cosi+.3d0/DFLOAT(m_poTh2)
             IF(j  .EQ.  m_poTh2) cosi=cosi-.3d0/DFLOAT(m_poTh2)
             WRITE(m_ndisk,m_fmt1) 'b',i,ww,j,cosi
-            WRITE(m_ndisk,     *)                 (m_czzs(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
+            WRITE(m_ndisk,     *)                 (m_czzs(i+1,j+1,k,KFone,KFf),k=1,m_poinG) ! EW
          ENDDO
-         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_szzs(i+1,    k,KFi,KFf),k=1,m_poinQ) ! QCD
+         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_szzs(i+1,    k,KFone,KFf),k=1,m_poinQ) ! QCD
       ENDDO
 */////////////////////////////////////////////////////////////////////
 *//   the region of boxes, LEP2,   m_ctt(m_poin3+1, m_poTh3+1, 7)   //
@@ -635,9 +636,9 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
             IF(j  .EQ.        0) cosi=cosi+.3d0/DFLOAT(m_poTh3)
             IF(j  .EQ.  m_poTh3) cosi=cosi-.3d0/DFLOAT(m_poTh3)
             WRITE(m_ndisk,m_fmt1) 'c',i,ww,j,cosi
-            WRITE(m_ndisk,    *)                  (m_ctts(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
+            WRITE(m_ndisk,    *)                  (m_ctts(i+1,j+1,k,KFone,KFf),k=1,m_poinG) ! EW
          ENDDO
-         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_stts(i+1,    k,KFi,KFf),k=1,m_poinQ) ! QCD
+         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_stts(i+1,    k,KFone,KFf),k=1,m_poinQ) ! QCD
       ENDDO
 */////////////////////////////////////////////////////////////////////
 *//   the region of boxes, NLC,    m_clc(m_poin4+1, m_poTh4+1, 7)   //
@@ -649,9 +650,9 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
             IF(j  .EQ.        0) cosi=cosi+.3d0/DFLOAT(m_poTh4)
             IF(j  .EQ.  m_poTh4) cosi=cosi-.3d0/DFLOAT(m_poTh4)
             WRITE(m_ndisk,m_fmt1) 'd',i,ww,j,cosi
-            WRITE(m_ndisk,     *)                 (m_clcs(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
+            WRITE(m_ndisk,     *)                 (m_clcs(i+1,j+1,k,KFone,KFf),k=1,m_poinG) ! EW
          ENDDO
-         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_slcs(i+1,    k,KFi,KFf),k=1,m_poinQ) ! QCD
+         IF (m_KeyQCD.NE.0) WRITE(m_ndisk,m_fmt2) (m_slcs(i+1,    k,KFone,KFf),k=1,m_poinQ) ! QCD
       ENDDO
       END ! hhDizet_WriteTable
 

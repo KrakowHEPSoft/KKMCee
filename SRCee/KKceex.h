@@ -144,7 +144,10 @@ class KKceex: public TObject{
  KKcmplx4    m_AmpExpo0;  // O(alf0)_exp
  KKcmplx4    m_AmpExpo1;  // O(alf1)_exp
  KKcmplx4    m_AmpExpo2;  // O(alf2)_exp
+ KKcmplx4    m_AmpBornW;  // W exchange for e-neutrino
  KKcmplx4    m_AmpTemp;   // auxiliary temporary
+ KKcmplx4    m_AmpTemp1;  // auxiliary temporary
+ KKcmplx4    m_AmpTemp2;  // auxiliary temporary
 
  dcmplx      m_SpinoTT[2][2][2][2];
  dcmplx      m_SpinoUU[2][2][2][2];
@@ -211,9 +214,18 @@ double MakeRhoFoam();
 void MakeAmpBox();
 void Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
          KKpart &p1, KKpart &p2, KKpart &p3, KKpart &p4, KKcmplx4 &AmpBorn);
+void BornW(int KFini, int KFfin, TLorentzVector &PX, double s, double t,
+         KKpart &p1, KKpart &p2, KKpart &p3, KKpart &p4, KKcmplx4 &AmpBornW);
+
 void BornPlus(int KFi, int KFf, dcmplx Cfac, TLorentzVector &PX);
+// NEW!!!
+void GPS_EWFFactW(int KFi, int KFf,double s,double t, dcmplx &PropW, dcmplx &WVPi);
+
 void HiniPlus(int KFini, int KFfin, TLorentzVector &PX,
          KKpart &ph, int Hel, dcmplx &Sactu, dcmplx &sProd);
+void HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
+         KKpart &ph, int Hel, dcmplx &Sactu, dcmplx &sProd);
+
 double BornFoam0(int KFini, int KFfin, double SvarX, double CosThetD);
 void   BornFoam2(int Mode, int KFini, int KFfin, double SvarX, double CosThetD, double &Yint);
 
@@ -225,6 +237,10 @@ void GPS_HffPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
 		 KKpart ph1, int Hel1, KKpart ph2, int Hel2);
 void GPS_HifPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
          KKpart ph1, int Hel1, KKpart ph2, int Hel2);
+
+void Amp2Mult(KKcmplx2 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U);
+void Amp2WCplus( KKcmplx2 &V, const double sw2);
+void Amp2WCminus(KKcmplx2 &V, const double Sw2);
 
 void Amp4Zer(KKcmplx4 &Born);
 void AmpAdd( KKcmplx4 &Work, dcmplx Fact, const KKcmplx4 &Born);
@@ -241,7 +257,7 @@ void AmpAddF(KKcmplx4 &Work, dcmplx Fact, const KKcmplx4 &Born, const KKcmplx2 &
 void AmpAddF(KKcmplx4 &Work, dcmplx Fact, const KKcmplx2 &U1, const KKcmplx2 &U2, const KKcmplx4 &Born);
 
 void EWFFact(int KFini, int KFfin, double Svar, dcmplx &Ve, dcmplx &Vf, dcmplx &Ae, dcmplx &Af );
-void EWFFact(int KFini, int KFfin, double Svar, double CosThetD,
+void EWFFact(const int KFini, const int KFfin, const double Svar, const double CosThetD,
 		         dcmplx &Ve,    dcmplx &Vf,     dcmplx  &Ae,     dcmplx &Af,
 		         dcmplx &VVcor, dcmplx &GamVPi, dcmplx  &ZetVPi, double &RsqV, double & RsqA);
 
@@ -258,6 +274,14 @@ dcmplx Bfacb(int sigma, KKpart &phot, KKpart &pferm);
 void   GPS_MakeU(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
 void   GPS_MakeV(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
 dcmplx GPS_Sof1(int sigma, KKpart &ph, KKpart &pf);
+dcmplx GPS_Sof1x(int sigma, KKpart &ph, KKpart &pf);
+
+void GPS_MakeUW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
+void GPS_MakeVW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
+void GPS_MatrS(KKpart &p1, KKpart &p2, KKcmplx2 &V);
+void GPS_MakeUX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
+void GPS_MakeVX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
+
 // soft formfactors
 double SForFac(double alfpic, KKpart &p1, KKpart &p2, double Emin, double MasPhot);
 double TForFac(double alfpic, KKpart &p1, KKpart &p2, double Emin, double MasPhot);

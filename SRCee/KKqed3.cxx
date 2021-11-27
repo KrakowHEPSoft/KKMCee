@@ -68,7 +68,11 @@ void KKqed3::Make(){
   double amfin = DB->fmass[KFfin];
   double chain2 = sqr(DB->Qf[KFini] );
   double chafi2 = sqr(DB->Qf[KFfin] );
-  int IsFSR = DB->KeyFSR;
+//
+  int IsFSR = DB->KeyFSR; // general FSR switch
+  // but exception for neutrinos
+  if( KFfin == 12 || KFfin == 12 || KFfin == 16) IsFSR = 0;
+//
   TLorentzVector pp = m_Event->m_Pf1 + m_Event->m_Pf2;
   TLorentzVector qq = m_Event->m_Qf1 + m_Event->m_Qf2;
   TLorentzVector xx = qq + m_Event->m_PhotFSR[0];  // m_PhotFSR[0] is sum of all
@@ -106,6 +110,7 @@ void KKqed3::Make(){
   }
   //
   // DisCru has to be the same as in FOAM!!!
+
   double DisCru = m_BornV->BornSimple(KFini,KFfin,svar1,0.0);
   DisCru *= 4.0/3.0;
 
@@ -118,6 +123,10 @@ void KKqed3::Make(){
   double andi12= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth12);
   double andi21= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth21);
   double andi22= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth22);
+//[[[[[[[[[[[[[[[[[
+//  (*m_Out)<<"/// QED3: cth11,cth12,cth21,cth22="    <<cth11<<" "<<cth12<<" "<<cth21<<" "<<cth22<<endl;
+//  (*m_Out)<<"/// QED3: andi11,andi12,andi21,andi22="<<andi11<<" "<<andi12<<" "<<andi21<<" "<<andi22<<endl;
+//]]]]]]]]]]]]]]]]]
 
   double deli1=0, deli2=0, deli3=0;
   if( DB->KeyISR == 1) bvirt0( DB->Alfinv0, chain2,  svar , amini, &deli1, &deli2, &deli3);
@@ -577,9 +586,6 @@ void KKqed3::Make(){
    m_WtSet[74] =   fYFS*( m_Beta03 +m_xBet12 +m_yBet12
                        +m_xxBet21 +m_xyBet21 +m_yyBet21
                        +m_xxxBet30 +m_xxyBet30 +m_xyyBet30 )/DisCru;
-
-//   cout<<"*** KKqed3, m_WtSet[71-74]="<<m_WtSet[71]<<" "<<m_WtSet[72]<<" "<<m_WtSet[73]<<" "<<m_WtSet[74]<<endl;
-
 // First order, individual beta's -------------
    m_WtSet[80] =   fYFS*m_Beta01/DisCru;
    m_WtSet[81] =   fYFS*(m_xBet10+m_yBet10)/DisCru;

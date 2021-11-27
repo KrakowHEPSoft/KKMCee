@@ -16,9 +16,14 @@ CLASS=qunlimitted
 ##############
 .KK2f_defaults:
 	(ln -s ../../.KK2f_defaults ./)
+
+EWtables:
+	(cd $(top_builddir)/dizet; make;)
+	(cd $(top_builddir)/dizet; ./TabMain;)
+###check_all: .KK2f_defaults EWtables
 check_all: .KK2f_defaults
 	(cd $(top_srcdir); make)
-start_n: check_all
+start_n: check_all 
 	rm -f ./pro.output ./histo.root ./mcgen.root
 	cp ./$(DSET).input ./pro.input
 	$(ROOTEXEC)  -b -q -l ./Start.C

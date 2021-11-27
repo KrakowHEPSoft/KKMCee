@@ -3,6 +3,11 @@
 
 ClassImp(KKarFin);
 
+extern "C" {
+//
+   void pseumar_initialize_(const int&, const int&, const int&);
+   void pseumar_makevec_(float rvec[], const int&);
+}//
 
 #define SW20 setw(20)<<setprecision(14)
 
@@ -87,12 +92,9 @@ double CharSq = sqr(DB->Qf[m_KFfin]);
 //     as seen from the LAB system.
 //////////////////////
 
-m_IsFSR = DB->KeyFSR;
-
-// check for neutrinos
-if( m_KFfin == 12) m_IsFSR = 0;   // ! nu_el
-if( m_KFfin == 14) m_IsFSR = 0;   // ! nu_mu
-if( m_KFfin == 16) m_IsFSR = 0;   // ! nu_tau
+m_IsFSR = DB->KeyFSR; // general FSR switch
+// but exception for neutrinos
+if( m_KFfin == 12 || m_KFfin == 12 || m_KFfin == 16) m_IsFSR = 0;
 //-----------------------------------------------------------------------
 double WtFin;
 if(m_IsFSR == 1) {
@@ -110,9 +112,17 @@ if(m_IsFSR == 1) {
 //-----------------------------------------------------------------------
 // Final state bremss, fermion momenta defined in Z frame if no ISR
 // In case of ISR they are reassigned one more time.
-   double cth= 1 -2*m_RNgen->Rndm();
-   double the= acos(cth);
-   double phi= 2*M_PI*m_RNgen->Rndm();
+    //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+        float rvec[10];
+        pseumar_makevec_(rvec,2);
+        double cth= 1 -2*rvec[0];
+        double the= acos(cth);
+        double phi= 2*M_PI*rvec[1];
+        //(*m_Out) <<"@@@ KKarFin::Make: the, phi= "<< the<<"  "<< phi <<endl;
+    //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+   //double cth= 1 -2*m_RNgen->Rndm();
+   //double the= acos(cth);
+   //double phi= 2*M_PI*m_RNgen->Rndm();
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
    m_nphot = 0;

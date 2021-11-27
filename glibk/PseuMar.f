@@ -151,6 +151,9 @@
             rvec(ivec) = zuni
          ENDIF
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[
+c      write(*,*) '###PseuMar_MakeVec=',lenv, (rvec(ivec), ivec=1,lenv)
+c]]]]]]]]]]]]]]]]]]]]]
       m_ntot  = m_ntot + lenv
       IF (m_ntot  .GE.  modcns)  THEN
          m_ntot2  =  m_ntot2 + 1

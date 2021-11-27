@@ -550,6 +550,9 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
          CALL KarLud_GetXXXene(CMSE)            !<-- It is this realy OK, see above
          svar1     = CMSE**2*(1d0-vv)
          m_BornCru = 4d0/3d0*BornV_Differential(0,KFfin,svar1,0d0,0d0,0d0,0d0,0d0)
+c[[[[[[[[[[[[[[[[[[[[
+         write(16,*) '%%%%% KK2f_Make: svar1, m_BornCru=',svar1, m_BornCru
+c]]]]]]]]]]]]]]]]]]]]
          CALL QED3_Make                         !<-- EEX
 * WtSet from QED3 is filled in the range (1:200)
          CALL QED3_GetWtSet(WtBest,m_WtSet)     !<-- WtBest initialized
@@ -1067,6 +1070,9 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
             m_Phel(i)=1
          ENDIF
       ENDDO
+c[[[[[[[[[[[[[[[[[
+      write(m_out,*) '%%% m_Phel= ', (m_Phel(i),i=1,m_nphot)
+c]]]]]]]]]]]]]]]]]
       END
 
 

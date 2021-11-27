@@ -19,7 +19,7 @@ AC_LANG([Fortran 77])
 
 AC_F77_LIBRARY_LDFLAGS
 
-MY_F77_FLAGS="-O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash"
+MY_F77_FLAGS="-O -g -fno-second-underscore -fno-automatic -ffixed-line-length-132 -fbackslash -fPIC"
 AC_SUBST(MY_F77_FLAGS)
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

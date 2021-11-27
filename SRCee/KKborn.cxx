@@ -66,8 +66,12 @@ double KKborn::BornSimple(int KFi, int KFf, double svar, double costhe){
 double ss = svar;
 // Z and gamma couplings to beams (electrons)
 double MZ    = DB->MZ;
-double swsq  = DB->swsq;
-double gammz = DB->GamZ;
+//double swsq  = DB->swsq;
+//double gammz = DB->GamZ;
+//////////
+double swsq  = DZ->D_swsq; // from Dizet!!!
+double gammz = DZ->D_GamZ; // from Dizet!!!
+//////////
 double deno= 4*sqrt(swsq*(1-swsq));
 // initial state
 double T3e = DB->T3f[KFi];  // isospin, L-hand component
@@ -98,10 +102,6 @@ if (DB->KeyZet == -1) {   // <--! fixed width with redefined parameters
    chi2 = sqr(ss)/BWD;
    rechi=(ss-sqr(MZ))*ss/BWD;
 }
-//[[[[[[[[[[[
-//m_icont++;
-//if(m_icont<20)  cout<<"BornSimple: MZ, gammz, swsq, svar = "<< MZ <<"  "<< gammz <<"  "<< swsq<<"  "<< svar<<endl;
-//]]]]]]]]]]
 double xe= Ve*Ve +Ae*Ae;
 double xf= Vf*Vf +Af*Af;
 double ye= 2*Ve*Ae;
@@ -109,9 +109,14 @@ double yf= 2*Vf*Af;
 double ff0= Qe*Qe *Qf*Qf +2*rechi*Qe*Qf*Ve*Vf +chi2*xe*xf;
 double ff1=              +2*rechi*Qe*Qf*Ae*Af +chi2*ye*yf;
 double Born    = (1+ sqr(costhe) )*ff0 +2*costhe*ff1;
-//[[[[[[[[[[[
-//if(m_icont<20)  cout<<"BornSimple: chi2, rechi,f0, f1 =' = "<< chi2 <<"  "<< rechi <<"  "<< ff0<<"  "<< ff1<<endl;
-//]]]]]]]]]]
+/*
+IF(ABS(KFf).EQ.12) THEN
+* Electron neutrino, approximate, actually matters costhe=0 for primary spectrum ....
+  Coef  =1.d0/2.d0/m_swsq
+  Born  = Born+0.25*(0.75D0*(1d0-costhe)**2+0.75*(1d0+costhe)**2)
+$                   *Coef**2*ss**2/(m_MZ**2*(1-m_swsq))**2
+ENDIF
+*/
 //     Colour factor
 Born = NCf*Born;
 if( abs(costhe) > 1) cout<< "------------> BornV: costhe="<<costhe<<endl;

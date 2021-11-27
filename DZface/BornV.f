@@ -1,3 +1,9 @@
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*//   Presently ONLY BornV_Initialize() is used in MainTabC.xx
+*//   The rest is kept only for reference as a history record
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *//////////////////////////////////////////////////////////////////////////////
 *//      This is truncated version of original BornV.f
 *//      Only BornV_Initialize is really used in TabMain.f
@@ -7,8 +13,6 @@
 *//   Provide Born angular distribution and integrated x-section             //
 *//   NOTES: Modified for KKMC-hh by S. Yost and S.J.                        //
 *//                                                                          //
-*//   Presently only BornV_Initialize() is used in MainTab.f                 //
-*//   The rest is kept only for reference as a history record                //
 *//////////////////////////////////////////////////////////////////////////////
 *
       SUBROUTINE BornV_Initialize(xpar_input)
@@ -104,9 +108,7 @@ cc      xpar_input(400) = m_KFini ! (reset to what it was)
       WRITE(m_out,bxl1f) m_swsq,     'sin(theta_w)**2    ','sinw2 ','a5'
       WRITE(m_out,bxl1f) m_AlfInv,   '1/alfa_QED  at  Q=0','AlfInv','a6'
       WRITE(m_out,bxl1f) m_HadMin,   'MassCut light qqbar','HadMin','a6'
-      IF (m_KFini.GT.0d0) THEN 
-          WRITE(m_out,bxl1i) m_KFini ,   'KF code of beam    ','KFini ','a7'
-      END IF
+      WRITE(m_out,bxl1i) m_KFini ,   'KF code of beam    ','KFini ','a7'
       WRITE(m_out,bxl1g) m_vvmax,    'Input vvmax        ','vvmax ','a8'
       WRITE(m_out,bxtxt) 'Test switches:                         '
       WRITE(m_out,bxl1i) m_KeyElw,   'Electroweak lib.   ','KeyElw','10'
@@ -117,12 +119,16 @@ cc      xpar_input(400) = m_KFini ! (reset to what it was)
       END
 
       DOUBLE PRECISION FUNCTION BornV_Dizet(Mode,KFi,KFf,svar,CosThe,eps1,eps2,ta,tb)
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 c!!!! translated to c++ but keep it for debug for some time
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //
 *//   Calculates differential born cross section.                            //
 *//   For Mode=0 pure Born and for Mode=1 electroweak corrs. are added.      //
-*//   KFi,KFf can be also negative for antiparticle, in this case it is      //
+*//   KFi,KFf can be also negative ??? for antiparticle, in this case it is  //
 *//   important to produce tables with correct input KFini, KFfin !!!        //
 *//                                                                          //
 *//////////////////////////////////////////////////////////////////////////////
@@ -483,7 +489,11 @@ cc      CALL BornV_SetKFini(KFi)
       END ! BornV_PrintGSW
 
       SUBROUTINE BornV_InterpoGSW(KFf,svar,CosThe)
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 c  translated to c++ but keep it for debug
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *//////////////////////////////////////////////////////////////////////////
 *//  KKMC-hh Version. - SY
 *//  Calculates GSW formfactors from tables using linear interpolation
@@ -634,7 +644,11 @@ c]]]]]]]]]]]]]
 
 
       SUBROUTINE BornV_givizo(idferm,ihelic,sizo3,charge,kolor)
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 * keep it for debug
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //
 *// Provides electric charge and weak izospin of a family fermion where      //
