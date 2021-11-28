@@ -1273,24 +1273,19 @@ for(int j1 = 0; j1<=1; j1++)
 void KKceex::HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
                KKpart &ph1, int Hel, dcmplx &Sactu, dcmplx &sProd){
 ////////////////////////////////////////////////////////////////////////////////////
-//                                                                                 //
 //   IR-finite part od 1-photon amplitudes for ISR  (equiv. to GPS_HiniW)           //
 //   Photon helicity imported from the calling program                             //
-//                                                                                 //
 //   m_AmpExpo*  is working space                                                  //
-//                                                                                 //
 /////////////////////////////////////////////////////////////////////////////////////
 double Qe  = DB->Qf[ KFini];
 dcmplx Vir1,Vir2;  // Virtual corrections
 MakeVini(m_p1, m_p2, ph1, Vir1,Vir2);
-
 double CosThetD;
 m_Event->ThetaD(PX,CosThetD);
 double s0,t0;
 s0 = PX*PX;
 t0 = -s0*(1.0-CosThetD)/2.0;
 //double u0 = -s0*(1.0+CosThetD)/2.0; //not used
-
 int IFONE;
 //Where is dominant other photon?  It is instead of reduction procedure
 if( (m_p3.P[3]+m_p4.P[3])*m_p1.P[3] < 0.0) IFONE=1; else IFONE=0;
@@ -1331,8 +1326,6 @@ WVPib=WVPi0; // to keep gauge invariance we install t-transfer in formfactor at 
 double pr1  = 1.0/(m_p1*ph1)/2.0;
 double pr2  =-1.0/(m_p2*ph1)/2.0;
 int Sig = 1-2*Hel;
-
-dcmplx gI = dcmplx(Qe *m_e_QED);
 dcmplx Cone = dcmplx(1.0);
 KKcmplx2 U,V, UW,VW, UWX,VWX;
 //CALL GPS_MakeU(ph,Sig,  ph,mph,  p1,m1,    U)
@@ -1362,8 +1355,34 @@ else      EpsDot[0]= -GPS_Sof1x( 1,ph1,m_p1)+GPS_Sof1x( 1,ph1,m_p3); // minus is
 s1v[1]   = -conj(s1v[0]);
 s2v[1]   = -conj(s2v[0]);
 EpsDot[1]= -conj(EpsDot[0]);
-
-
+//-----------------------------------------------------------
+//O(alf1)
+//    Csum1=Csum1 +Ibeta*DCMPLX(Qe *m_e_QED) *U(j,j1)*pr1 *AmpBornU( j,j2,j3,j4)
+//    Csum2=Csum2 +Ibeta*DCMPLX(Qe *m_e_QED) *V(j2,j)*pr2 *AmpBornV(j1, j,j3,j4)
+dcmplx gI = dcmplx(Qe *m_e_QED); //??? what about Qe?
+dcmplx Fact0= dcmplx(Ibeta)*gI*sProd/Sactu;
+AmpAddI(m_AmpExpo1, Fact0*dcmplx(pr1), AmpBornU, U);
+AmpAddI(m_AmpExpo1, Fact0*dcmplx(pr2), V, AmpBornV);
+/////////////////
+//Csum4=Csum4 +Ibeta*DCMPLX(    m_e_QED)*PropWa*WVPia*PropWb*WVPib/WVpi0 !denominator for gauge invariance see up
+//$                    *2            ! from  feynman diagram
+//$                    *(-0.5D0)     ! fixup originating from  test in  GPS_BornWPlusT
+//$                    *(UW(j3,j1)*VWX(j2,j4)-VW(j2,j4)*UWX(j3,j1)) ! non-infrared part of emission from W
+dcmplx Fact4= dcmplx(Ibeta)*dcmplx(m_e_QED)*PropWa*WVPia*PropWb*WVPib/WVPi0
+                       *2.0           // from  feynman diagram
+                       *(-0.5);       // fixup originating from  test in  GPS_BornWPlusT
+AmpAdd( m_AmpExpo1, Fact4 , UW, VWX, VW, UWX);
+/////////////////
+//Csum3=Csum3 +Ibeta*DCMPLX(m_e_QED)*AmpBornW(j1,j2,j3,j4)/PropW0/WVPi0*(
+//$                      Qe*s1v(Hel) *(PropWa*WVPia-PropW0*WVPi0)         ! t-channel W-prop variation
+//$                    + Qe*s2v(Hel) *(PropWb*WVPib-PropW0*WVPi0)         ! t-channel W-prop variation
+//$                    + EpsDot(Hel)* PropWa*WVPia*PropWb*WVPib/  WVPib   ! basically IR emis. from W, reduction procedure used only here
+dcmplx Fact3= dcmplx(Ibeta)*dcmplx(m_e_QED)/PropW0/WVPi0*(
+      Qe*s1v[Hel] *(PropWa*WVPia-PropW0*WVPi0)           // t-channel W-prop variation
+    + Qe*s2v[Hel] *(PropWb*WVPib-PropW0*WVPi0)           // t-channel W-prop variation
+    + EpsDot[Hel]* PropWa*WVPia*PropWb*WVPib/WVPib   );  // basically IR emis. from W, reduction procedure used only here
+AmpAdd( m_AmpExpo1, Fact3,m_AmpBornW);
+//
 }//HiniPlusW
 
 void KKceex::HfinPlus(int KFini, int KFfin, TLorentzVector &PX,
@@ -2221,6 +2240,16 @@ for(int j1 = 0; j1<=1; j1++)
       }//for
 }// KKceex::AmpAddI
 
+void KKceex::AmpAdd(KKcmplx4 &Work, dcmplx Fact,
+       const KKcmplx2 &U, const KKcmplx2 &VX, const KKcmplx2 &V, const KKcmplx2 &UX){
+//$  *(U(j3,j1)*VX(j2,j4)-V(j2,j4)*UX(j3,j1)) ! non-infrared part of emission from W
+for(int j1 = 0; j1<=1; j1++)
+  for(int j2 = 0; j2<=1; j2++)
+    for(int j3 = 0; j3<=1; j3++)
+      for(int j4 = 0; j4<=1; j4++){
+         Work.m_A[j1][j2][j3][j4] += Fact*((U.m_A)[j3][j1]*(VX.m_A)[j2][j4]-(V.m_A)[j2][j4]*(UX.m_A)[j3][j1]);
+      }
+}//KKceex::AmpAdd
 
 void KKceex::AmpAddI(KKcmplx4 &Work, dcmplx Fact, const KKcmplx4 &Born, const KKcmplx2 &U){
 dcmplx Csum;
