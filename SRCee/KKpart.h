@@ -45,11 +45,18 @@ class KKpart : public TObject {
     KKpart& operator+=(const  KKpart&);       // +=; add 4-vector u+=v      (FAST)
     KKpart& operator-=(const  KKpart&);       // +=; add 4-vector u+=v      (FAST)
     KKpart& operator*=(const  double&);       // *=; mult. by scalar v*=x   (FAST)
-//    KKpart  operator+( const  KKpart&);     // +;  u=v+s, NEVER USE IT, SLOW!!!
-//    KKpart  operator-( const  KKpart&);     // -;  u=v-s, NEVER USE IT, SLOW!!!
 
     double operator*(const KKpart &p2){ // operator * ; dot product of 2 vectors;
            return (*this).P[0]*p2.P[0] -(*this).P[1]*p2.P[1] -(*this).P[2]*p2.P[2]-(*this).P[3]*p2.P[3];}
+
+    KKpart  operator+( const  KKpart &p){     // u=v+s, C imherited from v, might be SLOW!!!
+        KKpart res = *this; res +=p; return res;
+    }
+    KKpart  operator-( const  KKpart &p){     // u=v-s, C imherited from v, might be SLOW!!!
+        KKpart res = *this; res -=p; return res;
+    }
+    double M2(){ KKpart Q =(*this) ; return Q*Q;}; // square of fourvector component
+
     void SetMom(const TLorentzVector &);  // USER constructor
     void SetAll(const int C0, const int Hel0, const double M0, TLorentzVector &P0);
     void Print(void);                  // Prints vector

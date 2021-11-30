@@ -810,7 +810,8 @@ c]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          CALL KK2f_GetMasPhot(MasPhot)
 *=============================================================
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(16,*) '=================================GPS_BornPlus=========================================='
+c      write(16,*) '=================================GPS_BornPlus=========================================='
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 * Loop below correcponds to
 ****> CALL GPS_Born(KFi,KFf,PX, p1,Mbeam, p2,-Mbeam,  p3,Massf, p4,-Massf,m_AmpBorn) !!!!<****
          DO j1 = 1,2
@@ -835,16 +836,12 @@ c[[[[[[[[[[[[[[[[[[[[[[[[[[[
                      SpinoUU(j1,j2,j3,j4) =  UU
                   ENDDO
                ENDDO
-c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-c      write(16,'(a,2(i1,a),16f22.11)') 'SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j,k),k=1,2),j=1,2)
-c      write(16,'(a,2(i1,a),16f22.11)') 'SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j,k),k=1,2),j=1,2)
-c]]]]]]]]]]]]]]]]]]]]]]]]]]]
             ENDDO
          ENDDO
       ENDIF                     !!! Mode.EQ.1
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 *////////////////////////////////////////////////////////////////////////////////////////////
@@ -953,8 +950,8 @@ c         ENDIF
 c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
-      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
+c      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
+c      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *///////////////////////////////////////////////////////////////////////////////////
 *//       QED vertex  FFactor F1 minus B-vrtual (IR removed), exact mass terms    //
@@ -1045,7 +1042,7 @@ C--------
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('m_AmpBorn(',j1,',',j2,',*,*)=',((m_AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('m_AmpBorn(',j1,',',j2,',*,*)=',((m_AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 cc      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       Xborn = BornSum
@@ -1243,8 +1240,8 @@ c]]]]
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,*) '=================================GPS_BornWPlus=========================================='
-      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '=================================GPS_BornWPlus=========================================='
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]
 !      write(*,*) ampbornw
 !      stop
@@ -1329,10 +1326,10 @@ cccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2
         ENDIF
       ENDIF
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(16,*) '///////////////////////////////GPS_EWFFactW//////////////////////////////////////////////'
-      write(16,*) 'm_KeyElw,Jak=',m_KeyElw,Jak
-      write(16,*) 'm_MW,m_GammW, s,t=',m_MW,m_GammW, s,t
-      write(16,*) 'PropW,WVPi=',PropW,WVPi
+c      write(16,*) '///////////////////////////////GPS_EWFFactW//////////////////////////////////////////////'
+c      write(16,*) 'm_KeyElw,Jak=',m_KeyElw,Jak
+c      write(16,*) 'm_MW,m_GammW, s,t=',m_MW,m_GammW, s,t
+c      write(16,*) 'PropW,WVPi=',PropW,WVPi
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END
 
@@ -1401,7 +1398,7 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       CALL BornV_GetParticle(KFf, dummy, Qf,T3f,NCf)
 *=============================================================
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(16,*) '=================================GPS_Born=================================================='
+c      write(16,*) '=================================GPS_Born=================================================='
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       DO j1 = 1,2
          DO j2 = 1,2
@@ -1428,8 +1425,8 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoTT(',j1,',',j2,',*,*)=',((SpinoTT(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('SpinoUU(',j1,',',j2,',*,*)=',((SpinoUU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                        ElectroWeak Corrections                                         //
@@ -1461,8 +1458,8 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]
      $               +PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
-      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
+c      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
+c      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *////////////////////////////////////////////////////////////////////////////////////////////
 *//                     Total result = Spinors*Formfactor                                  //
@@ -1479,13 +1476,10 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 !>>>>     $                                   +AmpBornW(j1,j2,j3,j4)
                ENDDO                  
             ENDDO
-c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-c      write(16,'(a,2(i1,a),16f22.11)') 'AmpBorn(',j1,',',j2,',*,*)=',((AmpBorn(j1,j2,j,k),k=1,2),j=1,2)
-c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,'(a,i1,a,i1,a,8f22.11)') (('AmpBorn(',j1,',',j2,',*,*)=',((AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (('AmpBorn(',j1,',',j2,',*,*)=',((AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_Born!!!
 
@@ -2285,7 +2279,9 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,  
       INTEGER Ibeta,Ikey,kk,nn
       DOUBLE PRECISION ssum0,ssuma,ssumb
 *----------------------------------------
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&GPS_HiniPlusW&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
       IF (ABS(KFf).NE.12) RETURN
 !      IF (IBETA.LT.0)  RETURN
@@ -2325,7 +2321,9 @@ C--------
            t0=(p3(4)-p1(4))**2-(p3(3)-p1(3))**2-(p3(2)-p1(2))**2-(p3(1)-p1(1))**2
            u0=(p4(4)-p1(4))**2-(p4(3)-p1(3))**2-(p4(2)-p1(2))**2-(p4(1)-p1(1))**2
          ENDIF
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'GPS_HiniPlusW: IFONE= ', IFONE, '  s0= ',s0,'  t0= ',t0
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
         CALL GPS_BornZero(AmpBornW)
         CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, p1,Fleps,    p2,-Fleps,  p3,m3,   p4,-m4,   AmpBornW)
 C --   call on test routine
@@ -2361,6 +2359,9 @@ C--------
             ta=t0
             ua=t0
          ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'GPS_HiniPlusW:  IFONE= ', IFONE, '  sa= ',sa,'  ta= ',ta, '  Ibeta=',Ibeta
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          CALL GPS_BornWPlus(1,0,KFi,KFf,sa,ta,ua, ph,mph,    p2,-Fleps,  p3,m3,   p4,-m4,   AmpBornU)
 
 C--------
@@ -2378,6 +2379,9 @@ C--------
             tb=t0
             ub=t0
          ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'GPS_HiniPlusW: IFONE= ', IFONE, '   sb= ',sb,'  tb= ',tb
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          CALL GPS_BornWPlus(1,0,KFi,KFf,sb,tb,ub, p1,Fleps,  ph,-mph,    p3,m3,   p4,-m4,   AmpBornV)
          JakKoralZ=0 ! warning: defined in 2 places
          IF(JakKoralZ.eq.1) then
@@ -2400,6 +2404,9 @@ C--------
       pr1vx= 1d0/(p1v(4)*phv(4))/2d0 * 1D4  ! arbitrary cut off set at 1D4
       pr2vx=-1d0/(p2v(4)*phv(4))/2d0 * 1D4
       Sig = 3-2*Hel
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'GPS_HiniPlusW: WVPi0= ', WVPi0, '   pr1= ',pr1,'  pr2= ',pr2
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       IF( m_KeyArb .EQ. 0 ) THEN
          CALL GPS_MakeU(ph,Sig,  ph,mph,  p1,m1,    U)
          CALL GPS_MakeV(ph,Sig,  p2,m2,   ph,mph,   V)
@@ -2414,6 +2421,14 @@ C--------
 
          CALL GPS_MakeUX(Cnor,ph,Fleps, p3,m3,   p1,m1,    UWX) ! v-a inside
          CALL GPS_MakeVX(Cnor,ph,Fleps, p2,m2,   p4,m4,    VWX) ! v-a inside
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'U(*,*)= ',((U(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V(*,*)= ',((V(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UW(*,*)= ',((UW(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VW(*,*)= ',((VW(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UWX(*,*)= ',((UWX(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VWX(*,*)= ',((VWX(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
          CALL  GPS_MakeUt(KFf,ph,Sig, p2,m2,   p4,m4, p3,m3,   p1,m1,UW,VW) ! test routine !!
          EpsDot(1)=0d0
@@ -2449,7 +2464,23 @@ C>>>     $                      +GPS_Sof1bx( 1,phv,p2v,m2)-GPS_Sof1bx( 1,phv,p4v
       s2v(2) = -DCONJG(s2v(1))
       EpsDot(2)=-DCONJG(EpsDot(1))
 *
-      
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,4f22.11)') 's1v(*)= ',(s1v(j1),j1=1,2)
+c      write(16,'(a,4f22.11)') 's2v(*)= ',(s2v(j1),j1=1,2)
+c      write(16,'(a,4f22.11)') 'EpsDot(*)= ',(EpsDot(j1),j1=1,2)
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,*) '=================================GPS_BornWPlus=========================================='
+      write(16,*) '----------------------------------------------------------------------------------------'
+      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) 'PropW0=',PropW0,'WVPi0=',WVPi0
+c      write(16,*) 'PropWa=',PropWa,'WVPia=',WVPia
+c      write(16,*) 'PropWb=',PropWb,'WVPib=',WVPib
+c      write(16,*) 's1v(Hel)= ',s1v(Hel), 's2v(Hel)= ',s2v(Hel),'EpsDot(Hel)= ',EpsDot(Hel)
+c      write(16,*) 'm_e_QED=',m_e_QED
+      write(16,*) 'Hel= ',Hel,'  Sig= ',Sig
+c]]]]]]]]]]]]]]]]]]]]]]]
+
       DO j1=1,2
          DO j2=1,2
             DO j3=1,2
@@ -2515,6 +2546,11 @@ C      include 'GPS-t.h'   !!  printouts for tests
             ENDDO
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,*) '=================================GPS_BornWPlus=========================================='
+      write(16,*) '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!! GPS_HiniPlusW
 
 
