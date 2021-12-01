@@ -486,7 +486,9 @@ C]]]]]]]]]]
          m_WtSet( 63) =   m_RhoExp2p/m_RhoCrud    !!! Pairs ON
          m_WtBest     =   m_WtSet( 53)
 c[[[[[[[[[[[[[[[[[[[[
-         write(m_out,*) '>>>GPS_Make:  m_WtSet( 51-53)=', m_WtSet( 51), m_WtSet( 52), m_WtSet( 53)
+c      write(m_out,*) '>>>GPS_Make:  CrudSum =',CrudSum,'   CrudNorm=',CrudNorm
+c      write(m_out,*) '>>>GPS_Make:  m_RhoCrud =',m_RhoCrud
+c      write(m_out,*) '>>>GPS_Make:  m_WtSet(51-53)=', m_WtSet(51), m_WtSet(52), m_WtSet(53)
 c]]]]]]]]]]]]]]]]]]]]
       ELSE
          m_WtSet( 1)  =   m_RhoExp0 /m_RhoCrud    !!! Interference ON
@@ -495,7 +497,7 @@ c]]]]]]]]]]]]]]]]]]]]
          m_WtSet(13)  =   m_RhoExp2p/m_RhoCrud    !!! Pairs ON
          m_WtBest     =   m_WtSet( 3)
 c[[[[[[[[[[[[[[[[[[[[
-         write(m_out,*) '>>>GPS_Make:  m_WtSet( 1-3)=', m_WtSet( 1), m_WtSet( 2), m_WtSet( 3)
+c      write(m_out,*) '>>>GPS_Make:  m_WtSet( 1-3 )=', m_WtSet( 1), m_WtSet( 2), m_WtSet( 3)
 c]]]]]]]]]]]]]]]]]]]]
       ENDIF
 */////////////////////////////////////////////////////////////////////////////////
@@ -628,6 +630,15 @@ c]]]]]]]]]]]]]]]]]]]]
       m_RhoExp1 = Sum1 *ExpoNorm
       m_RhoExp2 = Sum2 *ExpoNorm
       m_RhoExp2p = Sum2p *ExpoNorm
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPS_MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+      write(16,*) 'ExpoNorm=',ExpoNorm
+      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo0(',j1,',',j2,',*,*)=',((m_AmpExpo0(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+      write(16,*) '---------------------------------------------------------------------------------------------------------------'
+      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo1(',j1,',',j2,',*,*)=',((m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+      write(16,*) 'm_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_MakeRho!!!
 
       SUBROUTINE GPS_MakeRho2(wt0,wt1,wt2)
@@ -2469,16 +2480,16 @@ c      write(16,'(a,4f22.11)') 's1v(*)= ',(s1v(j1),j1=1,2)
 c      write(16,'(a,4f22.11)') 's2v(*)= ',(s2v(j1),j1=1,2)
 c      write(16,'(a,4f22.11)') 'EpsDot(*)= ',(EpsDot(j1),j1=1,2)
 c[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,*) '=================================GPS_BornWPlus=========================================='
-      write(16,*) '----------------------------------------------------------------------------------------'
-      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '=================================GPS_BornWPlus=========================================='
+c      write(16,*) '----------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c      write(16,'(a,i1,a,i1,a,8g22.11)')(('AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c      write(16,*) 'PropW0=',PropW0,'WVPi0=',WVPi0
 c      write(16,*) 'PropWa=',PropWa,'WVPia=',WVPia
 c      write(16,*) 'PropWb=',PropWb,'WVPib=',WVPib
 c      write(16,*) 's1v(Hel)= ',s1v(Hel), 's2v(Hel)= ',s2v(Hel),'EpsDot(Hel)= ',EpsDot(Hel)
 c      write(16,*) 'm_e_QED=',m_e_QED
-      write(16,*) 'Hel= ',Hel,'  Sig= ',Sig
+c      write(16,*) 'Hel= ',Hel,'  Sig= ',Sig
 c]]]]]]]]]]]]]]]]]]]]]]]
 
       DO j1=1,2
@@ -2547,9 +2558,9 @@ C      include 'GPS-t.h'   !!  printouts for tests
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,*) '=================================GPS_BornWPlus=========================================='
-      write(16,*) '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '=================================GPS_BornWPlus=========================================='
+c      write(16,*) '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo1(',j1,',',j2,',*,*)=',(( m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!! GPS_HiniPlusW
 

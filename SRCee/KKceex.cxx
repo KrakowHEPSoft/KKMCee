@@ -477,17 +477,19 @@ e300:
      m_WtSet[ 52] =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 53] =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 53];
-     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 51,52,53] ="<< m_WtSet[ 51]<<"  "<< m_WtSet[ 52]<<"  "<< m_WtSet[ 53]<<endl;
-     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//     (*m_Out)<< ">>>KKceex::Make:  CrudSum= "<<CrudSum << " CrudNorm= "<<CrudNorm<<endl;
+//     (*m_Out)<< ">>>KKceex::Make:  m_RhoCrud= "<<m_RhoCrud<<endl;
+//     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 51,52,53] ="<< m_WtSet[ 51]<<"  "<< m_WtSet[ 52]<<"  "<< m_WtSet[ 53]<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   } else {
      m_WtSet[ 1]  =   m_RhoExp0 /m_RhoCrud;    //!!! Interference ON
      m_WtSet[ 2]  =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 3]  =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 3];
-     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 1,2,3] ="<< m_WtSet[ 1]<<"  "<< m_WtSet[ 2]<<"  "<< m_WtSet[ 3]<<endl;
-     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 1,2,3] ="<< m_WtSet[ 1]<<"  "<< m_WtSet[ 2]<<"  "<< m_WtSet[ 3]<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   }
 }// Make
 
@@ -1114,6 +1116,17 @@ for(int j1 = 0; j1<=1; j1++)
 m_RhoExp0 = Sum0 *m_ExpoNorm;
 m_RhoExp1 = Sum1 *m_ExpoNorm;
 m_RhoExp2 = Sum2 *m_ExpoNorm;
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
+(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@KKceex::MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
+//(*m_Out)<<"m_ExpoNorm= "<<m_ExpoNorm<<endl;
+  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo0("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo0.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+(*m_Out)<<"m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//MakeRho
 
 
@@ -1385,10 +1398,10 @@ EpsDot[1]= -conj(EpsDot[0]);
 //(*m_Out)<< "s1v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s1v[j];(*m_Out)<<endl;
 //(*m_Out)<< "s2v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s2v[j];(*m_Out)<<endl;
 //(*m_Out)<< "EpsDot(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<EpsDot[j];(*m_Out)<<endl;
-(*m_Out)<< "Hel="<<Hel<< "  Sig="<<Sig<<endl;
-(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<< "Hel="<<Hel<< "  Sig="<<Sig<<endl;
+//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 //  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpBornW("<<j1<<","<<j2<<",*,*)=";
 //     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 //ZerAmplit();
@@ -1429,9 +1442,9 @@ AmpAdd( m_AmpExpo1, Fact3,m_AmpBornW);
 //(*m_Out)<< "s1v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s1v[j];(*m_Out)<<endl;
 //(*m_Out)<< "s2v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s2v[j];(*m_Out)<<endl;
 //(*m_Out)<< "EpsDot(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<EpsDot[j];(*m_Out)<<endl;
-(*m_Out)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
+//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 //]]]]]]]]]]]]]]]]]]]]]
 //
 }//HiniPlusW
