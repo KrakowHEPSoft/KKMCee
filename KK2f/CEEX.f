@@ -424,7 +424,7 @@ C]]]]]]]]]]
                      CALL GPS_HiniPlusW(-1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph2,mph,Hel2,SactuB,sProd) !
 
                      CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2) 
-                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p)
+c[[[                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p)
                   ELSEIF( (m_isr(j1) .EQ. 0) .AND. (m_isr(j2) .EQ. 0) ) THEN ! fin-fin
                      CALL GPS_HffPlus(Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2) !
                      CALL GPS_HffPlus(Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p) !
@@ -3586,6 +3586,11 @@ C--------
            t0=(pCo(4)-pAo(4))**2-(pCo(3)-pAo(3))**2-(pCo(2)-pAo(2))**2-(pCo(1)-pAo(1))**2
            u0=(pDo(4)-pAo(4))**2-(pDo(3)-pAo(3))**2-(pDo(2)-pAo(2))**2-(pDo(1)-pAo(1))**2
          ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '============================================================================================='
+      write(16,*) '=========================================GPS_HiiPlusW========================================'
+      write(16,*) 'GPS_HiniPlusW: IFONE= ', IFONE, '  s0= ',s0,'  t0= ',t0
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 C--------
 C reduction procedure (not used anymore) ....
@@ -3659,6 +3664,10 @@ C transfers
         u12=(pD(4)-pA(4)+ph1(4)+ph2(4))**2-(pD(3)-pA(3)+ph1(3)+ph2(3))**2
      $     -(pD(2)-pA(2)+ph1(2)+ph2(2))**2-(pD(1)-pA(1)+ph1(1)+ph2(1))**2
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'GPS_HiniPlusW:  s= ',s,'  t= ',t,' s1= ',s1,'  t1= ',t1,' s2= ',s2,'  t2= ',t2
+c      write(16,*) 'GPS_HiniPlusW:  s12= ',s12,'  t12= ',t12
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 C all W propagators ... some simplifications on vac pol set
           CALL GPS_EWFFactW(KFi,KFf,s0,t0,PropW0,WVPi0)
@@ -3675,7 +3684,12 @@ C all W propagators ... some simplifications on vac pol set
           CPF1 =PropW1 *WVPi1
           CPF2 =PropW2 *WVPi2
           CPF12=PropW12*WVPi12
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'PropW0=',PropW0, '   PropW=',PropW
+c      write(16,*) 'PropW1=',PropW1,'  PropW2=',PropW2, ' PropW12=',PropW12
+c      write(16,*) 'WVPi0=',WVPi0,'   WVPi=',WVPi
+c      write(16,*) 'WVPi1=',WVPi1,'  WVPi2=',WVPi2,' WVPi12=',WVPi12
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       IF( m_KeyArb  .EQ.  0 ) THEN
          sA(1,1)  = -gI*GPS_Sof1( 1,ph1,pA)
          sA(2,1)  = -gI*GPS_Sof1( 1,ph2,pA)
@@ -3733,7 +3747,14 @@ C all W propagators ... some simplifications on vac pol set
       EpsDot12(2) = -DCONJG(EpsDot12(1))
       EpsDot2 (2) = -DCONJG(EpsDot2 (1))
       EpsDot21(2) = -DCONJG(EpsDot21(1))
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'sA(*,*)= ',((sA(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'sB(*,*)= ',((sB(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,4f22.11)') ' EpsDot1(*,*)= ',(EpsDot1(j1),j1=1,2)
+c      write(16,'(a,4f22.11)') ' EpsDot2(*,*)= ',(EpsDot2(j1),j1=1,2)
+c      write(16,'(a,4f22.11)') 'EpsDot12(*,*)= ',(EpsDot12(j1),j1=1,2)
+c      write(16,'(a,4f22.11)') 'EpsDot21(*,*)= ',(EpsDot21(j1),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 C photon polarization 4-vectors calculated explicitelly ...
       Sig = 3-2*Hel1
       CALL GPS_Make_eps(ph1,Sig,eps1)
@@ -3751,6 +3772,14 @@ C photon polarization 4-vectors calculated explicitelly ...
       eps1p2=eps1(4)*ph2(4)-eps1(3)*ph2(3)-eps1(2)*ph2(2)-eps1(1)*ph2(1)
       eps2p1=eps2(4)*ph1(4)-eps2(3)*ph1(3)-eps2(2)*ph1(2)-eps2(1)*ph1(1)
         p2p1=ph2(4)*ph1(4)-ph2(3)*ph1(3)-ph2(2)*ph1(2)-ph2(1)*ph1(1)
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) 'eps1pA=',eps1pA,' eps2pA=',eps2pA
+c      write(16,*) 'eps1pB=',eps1pB,' eps2pB=',eps2pB
+c      write(16,*) 'eps1pC=',eps1pC,' eps2pC=',eps2pC
+c      write(16,*) 'eps1pD=',eps1pD,' eps2pD=',eps2pD
+c      write(16,*) 'eps1p2=',eps1p2,' eps2p1=',eps2p1
+c      write(16,*) 'eps1D2=',eps1D2,' p2p1=',p2p1
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 * Calculate Born spin amplitudes
       CALL GPS_BornZero(BornABCD)
 
@@ -3778,6 +3807,18 @@ C      CALL GPS_Born(KFi,KFf,PX, ph2,mph,  pB,-mB,      pC,mC,   pD,-mD,   Born2
 C      CALL GPS_Born(KFi,KFf,PX, pA,mA,    ph2,-mph,    pC,mC,   pD,-mD,   BornA2CD) ! B->2
 C      CALL GPS_Born(KFi,KFf,PX, ph1,mph,  ph2,-mph,    pC,mC,   pD,-mD,   Born12CD) ! A->1,B->2
 C      CALL GPS_Born(KFi,KFf,PX, ph2,mph,  ph1,-mph,    pC,mC,   pD,-mD,   Born21CD) ! A->2,B->1
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+c      write(16,*) '----------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'BornABCD(',j1,',',j2,',*,*)=  ',((BornABCD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'Born1BCD(',j1,',',j2,',*,*)=',((Born1BCD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'BornA1CD(',j1,',',j2,',*,*)=  ',((BornA1CD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '----------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'Born2BCD(',j1,',',j2,',*,*)=',((Born2BCD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'BornA2CD(',j1,',',j2,',*,*)=  ',((BornA2CD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '----------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'Born12CD(',j1,',',j2,',*,*)=',((Born12CD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'Born21CD(',j1,',',j2,',*,*)=  ',((Born21CD(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]
 
 * Fermion propagarotors ini1
       prA1= 1d0/(pA(4)*ph1(4)-pA(3)*ph1(3)-pA(2)*ph1(2)-pA(1)*ph1(1))/2d0
@@ -3798,8 +3839,12 @@ C      CALL GPS_Born(KFi,KFf,PX, ph2,mph,  ph1,-mph,    pC,mC,   pD,-mD,   Born2
       Fprop2 =(1d0/prB1+1d0/prB2)*prB12*CPF/CPF0-1d0
       Fprop1B=CPF12/CPF0-1d0
       Fprop2B=CPF/CPF0-1d0
-
-      
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+      write(16,*) 'prA1 = ',prA1,'   prB1 = ',prB1,' prA2= ',prA2,'  prB2= ',prB2
+      write(16,*) 'prA12= ',prA12,'  prB12= ',prB12
+      write(16,*) 'Fprop1=   ',Fprop1, '  Fprop2=  ',Fprop2
+      write(16,*) 'Fprop1B= ',Fprop1B,'  Fprop2B= ',Fprop2B
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       Sig = 3-2*Hel1
       IF( m_KeyArb  .EQ.  0 ) THEN
          CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, pA,mA,     U11a) ! <1|[1]|a>
@@ -3832,6 +3877,18 @@ C      CALL GPS_Born(KFi,KFf,PX, ph2,mph,  ph1,-mph,    pC,mC,   pD,-mD,   Born2
          CALL GPS_MatrUb(gI, ph1,Sig,  ph2,mph, ph2,mph,   U212)
          CALL GPS_MatrVb(gI, ph1,Sig,  ph2,mph, ph2,mph,   V212)
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'U11a(*,*)= ',((U11a(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Vb11(*,*)= ',((Vb11(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U21a(*,*)= ',((U21a(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Vb12(*,*)= ',((Vb12(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Ua12(*,*)= ',((Ua12(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V21b(*,*)= ',((V21b(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U112(*,*)= ',((U112(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V211(*,*)= ',((V211(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U212(*,*)= ',((U212(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V212(*,*)= ',((V212(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       Sig = 3-2*Hel2
       IF( m_KeyArb  .EQ.  0 ) THEN
          CALL GPS_MatrU( gI, ph2,Sig,  ph2,mph,  pA,mA,    U22a) ! <2|[2]|a>
@@ -3864,6 +3921,18 @@ c for the case when there was ph1 first xk-xk term
          CALL GPS_MatrUb(gI, ph2,Sig,  ph1,mph, ph1,mph,   U121)
          CALL GPS_MatrVb(gI, ph2,Sig,  ph1,mph, ph1,mph,   V121)
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'U22a(*,*)= ',((U22a(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Vb22(*,*)= ',((Vb22(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U12a(*,*)= ',((U12a(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Vb21(*,*)= ',((Vb21(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'Ua21(*,*)= ',((Ua21(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V12b(*,*)= ',((V12b(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U221(*,*)= ',((U221(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V122(*,*)= ',((V122(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'U121(*,*)= ',((U121(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V121(*,*)= ',((V121(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 C fermion lines including v-a coupling contracted with photon polarization ... 
          Cnor=1D0
       IF( m_KeyArb .EQ. 0 ) THEN
@@ -3889,6 +3958,16 @@ C fermion lines including v-a coupling contracted with photon polarization ...
          CALL GPS_MakeUWb(Cnor,ph2,Sig, pC,  mC,   ph1, mph,    UC1W2) ! v-a inside
          CALL GPS_MakeVWb(Cnor,ph2,Sig, ph1,mph,   pD,   mD,    V1DW2) ! v-a inside
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UCAW1(*,*)= ',((UCAW1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDW1(*,*)= ',((VBDW1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC2W1(*,*)= ',((UC2W1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V2DW1(*,*)= ',((V2DW1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UCAW2(*,*)= ',((UCAW2(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDW2(*,*)= ',((VBDW2(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC1W2(*,*)= ',((UC1W2(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V1DW2(*,*)= ',((V1DW2(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 C fermion lines including v-a coupling contracted with incoming momentum ...
 
          CALL GPS_MakeUX(Cnor,ph1,mph, pC,mC,   pA,mA,    UCAWX1) ! v-a inside
@@ -3896,33 +3975,65 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
          CALL GPS_MakeUX(Cnor,ph2,mph, pC,mC,   pA,mA,    UCAWX2) ! v-a inside
          CALL GPS_MakeVX(Cnor,ph2,mph, pB,mB,   pD,mD,    VBDWX2) ! v-a inside
 
- 
          CALL GPS_MakeUX(Cnor,pB,mB, pC,mC,   pA,mA,    UCAWXB) ! v-a inside
          CALL GPS_MakeVX(Cnor,pA,mA, pB,mB,   pD,mD,    VBDWXA) ! v-a inside
          CALL GPS_MakeUX(Cnor,pD,mD, pC,mC,   pA,mA,    UCAWXD) ! v-a inside
          CALL GPS_MakeVX(Cnor,pC,mC, pB,mB,   pD,mD,    VBDWXC) ! v-a inside
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UCAWX1(*,*)= ',((UCAWX1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDWX1(*,*)= ',((VBDWX1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UCAWX2(*,*)= ',((UCAWX2(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDWX2(*,*)= ',((VBDWX2(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UCAWXB(*,*)= ',((UCAWXB(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDWXA(*,*)= ',((VBDWXA(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UCAWXD(*,*)= ',((UCAWXD(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'VBDWXC(*,*)= ',((VBDWXC(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
          CALL GPS_MakeUX(Cnor,ph1,mph, pC, mC,   ph2,mph,    UC2WX1) ! v-a inside
          CALL GPS_MakeUX(Cnor,pA, mA,  pC, mC,   ph2,mph,    UC2WXA) ! v-a inside
          CALL GPS_MakeVX(Cnor,ph1,mph, ph2,mph,  pD, mD,     V2DWX1) ! v-a inside
          CALL GPS_MakeUX(Cnor,ph2,mph, pC, mC,   ph1,mph,    UC1WX2) ! v-a inside
          CALL GPS_MakeVX(Cnor,ph2,mph, ph1,mph,  pD, mD,     V1DWX2) ! v-a inside
-
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UC2WX1(*,*)= ',((UC2WX1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC2WXA(*,*)= ',((UC2WXA(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V2DWX1(*,*)= ',((V2DWX1(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V1DWX2(*,*)= ',((V1DWX2(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
          CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph2,mph,    UC2WXB) ! v-a inside
          CALL GPS_MakeVX(Cnor,pA,mA, ph2,mph,  pD, mD,     V2DWXA) ! v-a inside
          CALL GPS_MakeVX(Cnor,pB,mB, ph2,mph,  pD, mD,     V2DWXB) ! v-a inside
          CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph1,mph,    UC1WXB) ! v-a inside
          CALL GPS_MakeUX(Cnor,pA,mA, pC, mC,   ph1,mph,    UC1WXA) ! v-a inside
          CALL GPS_MakeVX(Cnor,pA,mA, ph1,mph,  pD, mD,     V1DWXA) ! v-a inside
-
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UC2WXB(*,*)= ',((UC2WXB(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V2DWXA(*,*)= ',((V2DWXA(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V2DWXB(*,*)= ',((V2DWXB(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC1WXB(*,*)= ',((UC1WXB(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC1WXA(*,*)= ',((UC1WXA(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V1DWXA(*,*)= ',((V1DWXA(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
          CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph2,mph,    UC2WXD) ! v-a inside
          CALL GPS_MakeVX(Cnor,pC,mC, ph2,mph,  pD, mD,     V2DWXC) ! v-a inside
          CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph1,mph,    UC1WXD) ! v-a inside
          CALL GPS_MakeVX(Cnor,pC,mC, ph1,mph,  pD, mD,     V1DWXC) ! v-a inside
          CALL GPS_MakeVX(Cnor,pB,mB, ph1,mph,  pD, mD,     V1DWXB) ! v-a inside
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,'(a,8f22.11)') 'UC2WXD(*,*)= ',((UC2WXD(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V2DWXC(*,*)= ',((V2DWXC(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'UC1WXD(*,*)= ',((UC1WXD(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V1DWXC(*,*)= ',((V1DWXC(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V1DWXB(*,*)= ',((V1DWXB(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]
 
+c[[[[[[[[[[[[[[
+      CALL GPS_BornZero(AmpWork)
+c]]]]]]]]]]]]]]
       DO j1=1,2
          DO j2=1,2
             DO j3=1,2
@@ -3945,55 +4056,55 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
 *        //      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
 *        //      v  ------<----O--------<---------U-------<-------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
-                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
-                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
+cc                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
+cc                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
+cc                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  1               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+2       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----S--------<---------V--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1+( sB(2,Hel2)*(-prB1+prB12))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]1|X|a>
-                     Su1=Su1+( sB(2,Hel2)*( prB1      ))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9Y!<b|(2)b[1]1|X|a>
-                     Su1=Su1+( sB(2,Hel2)*(      prB12))*Vb12(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]2|X|a>
+cc                     Su1=Su1+( sB(2,Hel2)*(-prB1+prB12))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]1|X|a>
+cc                     Su1=Su1+( sB(2,Hel2)*( prB1      ))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9Y!<b|(2)b[1]1|X|a>
+cc                     Su1=Su1+( sB(2,Hel2)*(      prB12))*Vb12(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]2|X|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  2               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+1       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----S--------<---------V--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +(sB(1,Hel1)*(-prB2+prB12))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]2|X|a>
-                     Su1=Su1 +(sB(1,Hel1)*( prB2      ))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9T!<b|(1)b[2]2|X|a>
-                     Su1=Su1 +(sB(1,Hel1)*(      prB12))*Vb21(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]1|X|a>
+cc                     Su1=Su1 +(sB(1,Hel1)*(-prB2+prB12))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]2|X|a>
+cc                     Su1=Su1 +(sB(1,Hel1)*( prB2      ))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9T!<b|(1)b[2]2|X|a>
+cc                     Su1=Su1 +(sB(1,Hel1)*(      prB12))*Vb21(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]1|X|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  |               1                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
 *        //      v  ------<----S--------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +sB(2,Hel2)    *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1/CPF0*Y_IR1*I9X !<b|(2)2|X|1[1]|a>
+cc                     Su1=Su1 +sB(2,Hel2)    *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1/CPF0*Y_IR1*I9X !<b|(2)2|X|1[1]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  |               2                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
 *        //      v  ------<----S--------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +sB(1,Hel1)    *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2/CPF0*Y_IR1*I9Z !<b|(1)1|X|2[2]|a>
+cc                     Su1=Su1 +sB(1,Hel1)    *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2/CPF0*Y_IR1*I9Z !<b|(1)1|X|2[2]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  |               2                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
 *        //      v  ------<----V--------<---------O--------<------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *sA(2,Hel2) *CPF2/CPF0   *Y_IR1*I9Y !<b|[1]1|X|a[2]|a>
+cc                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *sA(2,Hel2) *CPF2/CPF0   *Y_IR1*I9Y !<b|[1]1|X|a[2]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  |               1                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
 *        //      v  ------<----V--------<---------O--------<------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                      Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel1)*CPF1/CPF0      *Y_IR1*I9T !<b|[2]2|X|a(1)|a>
+cc                      Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel1)*CPF1/CPF0      *Y_IR1*I9T !<b|[2]2|X|a(1)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                                       E--2                                      //
 *        //                                       |               1                         //
@@ -4001,10 +4112,10 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
 *        //      _       -b                       |     a+m-1     |      a                  //
 *        //      v  ------<-------------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +EpsDot21(Hel2)  *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1*CPF12/CPF0*I9X!<b|(2)2|X|1[1]|a>
-     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71
-     $                       *( UC1W2(j3,j )*(2*VBDWX2(j2,j4) )
-     $                         -VBDW2(j2,j4)*(2*UC1WX2(j3,j ) )                        )
+cc                     Su1=Su1 +EpsDot21(Hel2)  *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1*CPF12/CPF0*I9X!<b|(2)2|X|1[1]|a>
+cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71
+cc     $                       *( UC1W2(j3,j )*(2*VBDWX2(j2,j4) )
+cc     $                         -VBDW2(j2,j4)*(2*UC1WX2(j3,j ) )                        )
 !     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71b   ! (zeroed) included later 
 !     $                       *( 
 !     $                         -VBDW2(j2,j4)*(               -UC1WXA(j3,j) )           )
@@ -4015,10 +4126,10 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
 *        //      _       -b                       |     a+m-2     |      a                  //
 *        //      v  ------<-------------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +EpsDot12(Hel1)  *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2*CPF12/CPF0*I9Z!<b|(1)1|X|2[2]|a>
-     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72
-     $                       *( UC2W1(j3,j )*(2*VBDWX1(j2,j4) )
-     $                         -VBDW1(j2,j4)*(2*UC2WX1(j3,j )              ) )
+cc                     Su1=Su1 +EpsDot12(Hel1)  *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2*CPF12/CPF0*I9Z!<b|(1)1|X|2[2]|a>
+cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72
+cc     $                       *( UC2W1(j3,j )*(2*VBDWX1(j2,j4) )
+cc     $                         -VBDW1(j2,j4)*(2*UC2WX1(j3,j )              ) )
 !     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72b  ! (zeroed) included later 
 !     $                       *( 
 !     $                         -VBDW1(j2,j4)*(               -UC2WXA(j3,j) ) )
@@ -4029,10 +4140,10 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
 *        //      _       -b    |     -b+m+1       |                      a                  //
 *        //      v  ------<----V--------<---------O--------<-------------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *EpsDot2(Hel2) *CPF *CPF2/CPF0*I9Y  !<b|[1]1|X|a[2]|a>
-     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71
-     $                       *( UCAW2(j3,j1)*(2*V1DWX2(j ,j4)              )
-     $                         -V1DW2(j ,j4)*(2*UCAWX2(j3,j1)) )
+cc                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *EpsDot2(Hel2) *CPF *CPF2/CPF0*I9Y  !<b|[1]1|X|a[2]|a>
+cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71
+cc     $                       *( UCAW2(j3,j1)*(2*V1DWX2(j ,j4)              )
+cc     $                         -V1DW2(j ,j4)*(2*UCAWX2(j3,j1)) )
 !     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71b  ! (zeroed) included later 
 !     $                       *( UCAW2(j3,j1)*(               -V1DWXB(j,j4) )
 !     $                                                         )
@@ -4043,10 +4154,10 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
 *        //      _       -b    |     -b+m+2       |                      a                  //
 *        //      v  ------<----V--------<---------O--------<-------------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-                     Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *EpsDot1(Hel1)*CPF *CPF1/CPF0*I9T  !<b|[2]2|X|a(1)|a>
-     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72 
-     $                       *( UCAW1(j3,j1)*(2*V2DWX1(j ,j4)               )
-     $                         -V2DW1(j ,j4)*(2*UCAWX1(j3,j1) ) )
+cc                     Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *EpsDot1(Hel1)*CPF *CPF1/CPF0*I9T  !<b|[2]2|X|a(1)|a>
+cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72
+cc     $                       *( UCAW1(j3,j1)*(2*V2DWX1(j ,j4)               )
+cc     $                         -V2DW1(j ,j4)*(2*UCAWX1(j3,j1) ) )
 !     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72b  ! (zeroed) included later 
 !     $                       *( UCAW1(j3,j1)*(               -V2DWXB(j ,j4) )
 !     $                                                          )
@@ -4179,11 +4290,18 @@ C fermion lines including v-a coupling contracted with incoming momentum ...
      $  +( UCAW2(j3,j1)*(                 VBDW1(j2,j4) )                                  )*DCMPLX(-m_e_QED)*CPF*CPF2   *I9B       ! (d) plus  I71b
      $                                                                         )               
 
+c[[[[[[[[[[[[[
+                  AmpWork(j1,j2,j3,j4) =CNorm*( Su1 )
+c]]]]]]]]]]]]]
+
                ENDDO
             ENDDO
          ENDDO
       ENDDO
-
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+      write(16,*) '----------------------------------------------------------------------------------------'
+      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpWork(',j1,',',j2,',*,*)=  ',((AmpWork(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]
       END                       ! GPS_HiiPlusW
 
 

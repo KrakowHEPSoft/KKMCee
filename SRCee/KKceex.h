@@ -233,6 +233,8 @@ void HfinPlus(int KFini, int KFfin, TLorentzVector &PX,
          KKpart &ph,  int Hel, dcmplx &Sactu, dcmplx &sProd, double &CKine);
 void GPS_HiiPlus(dcmplx Cfact2, int KFini, int KFfin, TLorentzVector PX,
          KKpart ph1, int Hel1, KKpart ph2, int Hel2);
+void GPS_HiiPlusW(dcmplx Cfact2, int KFini, int KFfin, TLorentzVector PX,
+         KKpart ph1, int Hel1, KKpart ph2, int Hel2);
 void GPS_HffPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
 		 KKpart ph1, int Hel1, KKpart ph2, int Hel2);
 void GPS_HifPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
@@ -277,12 +279,13 @@ void   GPS_MakeU(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KK
 void   GPS_MakeV(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
 dcmplx GPS_Sof1(int sigma, KKpart &ph, KKpart &pf);
 dcmplx GPS_Sof1x(int sigma, KKpart &ph, KKpart &pf);
+void   GPS_Make_eps(KKpart &ph, int Sig, dcmplx eps[4]);
 
 void GPS_MakeUW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
 void GPS_MakeVW(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
 void GPS_MatrS(KKpart &p1, KKpart &p2, KKcmplx2 &V);
-void GPS_MakeUX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
-void GPS_MakeVX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
+void GPS_MakeUX(dcmplx Cfac, KKpart &ph, KKpart &p1, KKpart &p2,  KKcmplx2 &U);
+void GPS_MakeVX(dcmplx Cfac, KKpart &ph, KKpart &p1, KKpart &p2,  KKcmplx2 &V);
 
 // soft formfactors
 double SForFac(double alfpic, KKpart &p1, KKpart &p2, double Emin, double MasPhot);

@@ -392,7 +392,7 @@ void KKceex::Make(){
   if(m_nPhot == 0) goto e300;
   int Hel1,Hel2;
   KKpart ph1,ph2;
-  dcmplx Sactu1,Sactu2;
+  dcmplx Sactu1,Sactu2,SactuA,SactuB;
   dcmplx Cfact2;
   double svarX1, CKine;
   TLorentzVector QQ1;
@@ -424,7 +424,12 @@ void KKceex::Make(){
                     *( double(m_isr[j2])*m_Sini[Hel2][j2] + double(1-m_isr[j2])*m_Sfin[Hel2][j2] );
            Cfact2 = sProd/Sactu2;
            if(       (m_isr[j1] == 1) && (m_isr[j2] == 1) ) {                 // ini-ini
-              GPS_HiiPlus(Cfact2, KFini, KFfin, PX, ph1, Hel1, ph2, Hel2);
+              GPS_HiiPlus( Cfact2, KFini, KFfin, PX, ph1, Hel1, ph2, Hel2);
+              SactuA  = double(m_isr[j1])*m_Sini[Hel1][j1];
+              SactuB  = double(m_isr[j2])*m_Sini[Hel2][j2];
+              HiniPlusW(-1,KFini, KFfin, PX, ph1, Hel1, SactuA, sProd);
+              HiniPlusW(-1,KFini, KFfin, PX, ph2, Hel2, SactuB, sProd);
+              GPS_HiiPlusW(Cfact2, KFini, KFfin, PX, ph1, Hel1, ph2, Hel2);
            }else if( (m_isr[j1] == 0) && (m_isr[j2] == 0) ) {                 // fin-fin
               GPS_HffPlus(Cfact2, KFini, KFfin, PX, ph1, Hel1, ph2, Hel2);
            }//if
@@ -1288,6 +1293,7 @@ void KKceex::HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
 //   Photon helicity imported from the calling program                             //
 //   m_AmpExpo*  is working space                                                  //
 /////////////////////////////////////////////////////////////////////////////////////
+if(abs(KFfin) != 12)  return;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[
 (*m_Out)<< "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&KKceex::HiniPlusW-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]
@@ -1366,8 +1372,8 @@ GPS_MakeUW(Cone, ph1, Sig,  m_p3,  m_p1,   UW);
 GPS_MakeVW(Cone, ph1, Sig,  m_p2,  m_p4,   VW);
 //CALL GPS_MakeUX(Cnor,ph,Fleps, p3,m3,   p1,m1,    UWX) ! v-a inside
 //CALL GPS_MakeVX(Cnor,ph,Fleps, p2,m2,   p4,m4,    VWX) ! v-a inside
-GPS_MakeUX(Cone, ph1, Sig, m_p3, m_p1, UWX);
-GPS_MakeVX(Cone, ph1, Sig, m_p2, m_p4, VWX);
+GPS_MakeUX(Cone, ph1, m_p3, m_p1, UWX);
+GPS_MakeVX(Cone, ph1, m_p2, m_p4, VWX);
 //[[[[[[[[[[[[[[[[[[[[[
 //(*m_Out)<< "U(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U.m_A[j][k];(*m_Out)<<endl;
 //(*m_Out)<< "V(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V.m_A[j][k];(*m_Out)<<endl;
@@ -2068,6 +2074,498 @@ void KKceex::GPS_HiiPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
   AmpAdd(m_AmpExpo2, CNorm*(sA[0][Hel1]*sA[1][Hel2]*Fprop1+sB[0][Hel1]*sB[1][Hel2]*Fprop2), BornABCD);
   if( Y_IR) AmpAdd(m_AmpExpo2, CNorm*sProd, BornABCD);
 }//GPS_HiiPlus
+
+void KKceex::GPS_HiiPlusW(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
+                         KKpart ph1, int Hel1, KKpart ph2, int Hel2){
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+if(abs(KFfin) != 12)  return;
+//depending on Level some groups of terms are calculated. only Level=0 is used now.
+int Level = 0;
+int ICOL,ICOL1,NICOL1,NICOL;
+if(        Level == 0){
+  ICOL =1;   ICOL1=-1;  NICOL1=-1;   NICOL=-1;
+} else if( Level == 1) {
+  ICOL =0;   ICOL1=1;   NICOL1=0;    NICOL=0;
+} else if( Level == 2) {
+  ICOL =0;   ICOL1=0;   NICOL1=1;    NICOL=0;
+} else {
+  ICOL =0;   ICOL1=-1;  NICOL1=-1 ;  NICOL=-1;
+}
+// technical switches for some tests. Must be all 1 or, better know what you do.
+// numerical stability not yet checked, problems like with single brem. possible.
+int  I71=ICOL1;  //   ! single additional loop  1st photon ir-factor     >  ggchkok
+int  I72=ICOL1;  //   ! single additional loop  2nd photon ir-factor     >  ggchkok
+int  I8= ICOL;   //   ! double additional loop                           >  ggchkok
+int  IA= ICOL;   //   ! doble emission from single leg, but selfcanc     >  ggchkok
+int  I9= NICOL;  //   ! no additional loop                               >  #######ggchkok
+int  I9B=NICOL;  //   ! no additional loop                               >  #######ggchkok
+int  I9X=ICOL;   //   !NICOL1    ! first finite upperline U, second for cancel      >  ggchkok
+int  I9Y=ICOL;   //   !NICOL1    ! first finite upperline V, second for cancel      >  ggchkok
+int  I9Z=ICOL;   //   !NICOL1    ! second finite upperline U, second for cancel     >  ggchkok
+int  I9T=ICOL;   //   !NICOL1    ! second finite upperline V, second for cancel     >  ggchkok
+int  IVI=ICOL;   //   !NICOL   ! simplified IV i.e. 'true double infrared'        >  ggchkok
+int  IV2=ICOL;   //   !ICOL1 ! ICOL1   ! double photon rest (two from 1 leg) k1*k2 ....   >  ggchkok
+int  IV1=ICOL;   //   !ICOL1 ! ICOL1   ! double photon rest (two from 1 leg) k1*k2 ....   >  ggchkok
+int  I10=NICOL;  //   ! four boson (rest)                                >  #######ggchkok
+int  I9s1=ICOL1; //   ! first soft second gaugeinv nontrivial WWgamma   >  ggchkok
+int  I9s2=ICOL1; //   ! second soft first gaugeinv nontrivial WWgamma   >  ggchkok
+int  I71b=0;     //   !(NICOL)  ! non-ir remnant of I71     >  outed to I9B (ggchkok)
+int  I72b=0;     //   !(NICOL)  ! non-ir remnant of I72     >  outed to I9B (ggchkok)
+//-----
+double ChaIni =  DB->Qf[ KFini];
+dcmplx gI = dcmplx(ChaIni*m_e_QED);
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<< "========================================================================================================"<<endl;
+(*m_Out)<< "========================================KKceex::GPS_HiiPlus============================================="<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//double Qe  = DB->Qf[ KFini];
+KKpart pA= m_p1;
+KKpart pB= m_p2;
+KKpart pC= m_p3;
+KKpart pD= m_p4;
+//----------------
+double s0,t0;
+int IFONE;
+//Where is dominant other photon?  It is instead of reduction procedure
+if( (m_p3.P[3]+m_p4.P[3])*m_p1.P[3] < 0.0) IFONE=1; else IFONE=0;
+if(IFONE) { s0=  2*(m_p3*m_p4); t0= -2*(m_p4*m_p2);
+} else {    s0=  2*(m_p3*m_p4); t0= -2*(m_p3*m_p1);
+}//if
+//----------------
+if( (ph1.P[3]+ph2.P[3]+m_p3.P[3]+m_p4.P[3]) * m_p1.P[3] < 0.0) {
+ IFONE= 1;      // We assume all extra photons were emitted from p1
+} else {
+ IFONE= 0;      // We assume all extra photons were emitted from p2
+}
+double s,t,s1,t1,s2,t2,s12,t12;
+if(IFONE){
+s =(pC+pD+ph1+ph2).M2();  t =(pD-pB+ph1+ph2).M2();
+s1=(pC+pD+ph1+ph2).M2();  t1=(pD-pB+ph2).M2();
+s2=(pC+pD+ph1+ph2).M2();  t2=(pD-pB+ph1).M2();
+s12=(pC+pD+ph1+ph2).M2(); t12=(pD-pB).M2();
+} else {
+s =(pC+pD+ph1+ph2).M2();  t =(pC-pA).M2();
+s1=(pC+pD+ph1+ph2).M2();  t1=(pC-pA+ph1).M2();
+s2=(pC+pD+ph1+ph2).M2();  t2=(pC-pA+ph2).M2();
+s12=(pC+pD+ph1+ph2).M2(); t12=(pC-pA+ph1+ph2).M2();
+}
+//[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<< "KKceex::HiniPlusW: IFONE= "<< IFONE<<"  s0="<<s0<<"  t0="<<t0<<endl;
+//(*m_Out)<< "KKceex::HiniPlusW: s="<<s<<"  t="<<t<<" s1="<<s1<<"  t1="  <<t1<<" s2="<<s2<<"  t2="<<t2 <<endl;
+//(*m_Out)<< "KKceex::HiniPlusW: s12="<<s12<<"  t12="<<t12<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//CALL GPS_EWFFactW(KFi,KFf,s0,t0,PropW0,WVPi0)
+//CALL GPS_EWFFactW(KFi,KFf,s,t,PropW,WVPi)
+//CALL GPS_EWFFactW(KFi,KFf,s1,t1,PropW1,WVPi1)
+//CALL GPS_EWFFactW(KFi,KFf,s2,t2,PropW2,WVPi2)
+//CALL GPS_EWFFactW(KFi,KFf,s12,t12,PropW12,WVPi12)
+// all W propagators ... some simplifications on vac pol set
+dcmplx PropW0,PropW,PropW1,PropW2,PropW12;
+dcmplx WVPi0, WVPi, WVPi1, WVPi2, WVPi12;
+GPS_EWFFactW(KFini,KFfin,s0,t0,PropW0,WVPi0);
+GPS_EWFFactW(KFini,KFfin,s,t,PropW,WVPi);
+GPS_EWFFactW(KFini,KFfin,s1,t1,PropW1,WVPi1);
+GPS_EWFFactW(KFini,KFfin,s2,t2,PropW2,WVPi2);
+GPS_EWFFactW(KFini,KFfin,s12,t12,PropW12,WVPi12);
+WVPi  =1.0;            //!!!  WVPi0
+WVPi1 =1.0;            //!!!  WVPi0
+WVPi2 =1.0;            //!!!  WVPi0
+WVPi12=1.0;            //!!!  WVPi0
+dcmplx CPF0 =PropW0 *1.0;     //!!!   *WVPi0
+dcmplx CPF  =PropW  *WVPi;
+dcmplx CPF1 =PropW1 *WVPi1;
+dcmplx CPF2 =PropW2 *WVPi2;
+dcmplx CPF12=PropW12*WVPi12;
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "PropW0="<<PropW0<<"  PropW="   <<PropW<<endl;
+//(*m_Out)<< "PropW1="<<PropW1<<"  PropW2="  <<PropW2<<" PropW12="<<PropW12<<endl;
+//(*m_Out)<< "WVPi0="<<WVPi0<<"  WVPi="   <<WVPi<<endl;
+//(*m_Out)<< "WVPi1="<<WVPi1<<"  WVPi2="  <<WVPi2<<" WVPi12="<<WVPi12<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//sA(1,1)  = -gI*GPS_Sof1( 1,ph1,pA)
+//sA(2,1)  = -gI*GPS_Sof1( 1,ph2,pA)
+//sB(1,1)  =  gI*GPS_Sof1( 1,ph1,pB)
+//sB(2,1)  =  gI*GPS_Sof1( 1,ph2,pB)
+dcmplx sA[2][2],sB[2][2]; // soft factors
+sA[0][0]  = -gI*GPS_Sof1( 1,ph1,m_p1);
+sA[1][0]  = -gI*GPS_Sof1( 1,ph2,m_p1);
+sB[0][0]  =  gI*GPS_Sof1( 1,ph1,m_p2);
+sB[1][0]  =  gI*GPS_Sof1( 1,ph2,m_p2);
+sA[0][1] = -conj(sA[0][0]);
+sA[1][1] = -conj(sA[1][0]);
+sB[0][1] = -conj(sB[0][0]);
+sB[1][1] = -conj(sB[1][0]);
+//IF (IFONE) THEN
+//  EpsDot1(1) = -gI*(+GPS_Sof1bx( 1,ph1,pB,mB)-GPS_Sof1bx( 1,ph1,pD,mD)-GPS_Sof1bx( 1,ph1,ph2,mph))
+//  EpsDot12(1)= -gI*(+GPS_Sof1bx( 1,ph1,pB,mB)-GPS_Sof1bx( 1,ph1,pD,mD))
+//  EpsDot2(1) = -gI*(+GPS_Sof1bx( 1,ph2,pB,mB)-GPS_Sof1bx( 1,ph2,pD,mD)-GPS_Sof1bx( 1,ph2,ph1,mph))
+//  EpsDot21(1)= -gI*( GPS_Sof1bx( 1,ph2,pB,mB)-GPS_Sof1bx( 1,ph2,pD,mD))
+//ELSE
+//  EpsDot1(1) = -gI*(-GPS_Sof1bx( 1,ph1,pA,mA)+GPS_Sof1bx( 1,ph1,pC,mC))
+//  EpsDot12(1)= -gI*(-GPS_Sof1bx( 1,ph1,pA,mA)+GPS_Sof1bx( 1,ph1,pC,mC)+GPS_Sof1bx( 1,ph1,ph2,mph))
+//  EpsDot2(1) = -gI*(-GPS_Sof1bx( 1,ph2,pA,mA)+GPS_Sof1bx( 1,ph2,pC,mC))
+//  EpsDot21(1)= -gI*(-GPS_Sof1bx( 1,ph2,pA,mA)+GPS_Sof1bx( 1,ph2,pC,mC)+GPS_Sof1bx( 1,ph2,ph1,mph))
+//ENDIF
+dcmplx EpsDot1[2],EpsDot2[2],EpsDot12[2],EpsDot21[2]; // soft factors
+if(IFONE){
+  EpsDot1[0] = -gI*( GPS_Sof1x( 1,ph1,pB)-GPS_Sof1x( 1,ph1,pD)-GPS_Sof1x( 1,ph1,ph2));
+  EpsDot12[0]= -gI*( GPS_Sof1x( 1,ph1,pB)-GPS_Sof1x( 1,ph1,pD));
+  EpsDot2[0] = -gI*( GPS_Sof1x( 1,ph2,pB)-GPS_Sof1x( 1,ph2,pD)-GPS_Sof1x( 1,ph2,ph1));
+  EpsDot21[0]= -gI*( GPS_Sof1x( 1,ph2,pB)-GPS_Sof1x( 1,ph2,pD));
+} else {
+  EpsDot1[0] = -gI*(-GPS_Sof1x( 1,ph1,pA)+GPS_Sof1x( 1,ph1,pC));
+  EpsDot12[0]= -gI*(-GPS_Sof1x( 1,ph1,pA)+GPS_Sof1x( 1,ph1,pC)+GPS_Sof1x( 1,ph1,ph2));
+  EpsDot2[0] = -gI*(-GPS_Sof1x( 1,ph2,pA)+GPS_Sof1x( 1,ph2,pC));
+  EpsDot21[0]= -gI*(-GPS_Sof1x( 1,ph2,pA)+GPS_Sof1x( 1,ph2,pC)+GPS_Sof1x( 1,ph2,ph1));
+}//
+EpsDot1[1]  = -conj(EpsDot1[0]);
+EpsDot12[1] = -conj(EpsDot12[0]);
+EpsDot2[1]  = -conj(EpsDot2[0]);
+EpsDot21[1] = -conj(EpsDot21[0]);
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "sA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<sA[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "sB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<sB[j][k];(*m_Out)<<endl;
+//(*m_Out)<< " EpsDot1(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot1[j];(*m_Out)<<endl;
+//(*m_Out)<< " EpsDot2(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot2[j];(*m_Out)<<endl;
+//(*m_Out)<< "EpsDot12(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot12[j];(*m_Out)<<endl;
+//(*m_Out)<< "EpsDot21(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot21[j];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+// photon polarization 4-vectors calculated explicitelly ...
+//      Sig = 3-2*Hel1
+//      CALL GPS_Make_eps(ph1,Sig,eps1)
+//      Sig = 3-2*Hel2
+//      CALL GPS_Make_eps(ph2,Sig,eps2)
+dcmplx eps1[4],eps2[4];
+int Sig1 = 1-2*Hel1, Sig2 = 1-2*Hel2;
+GPS_Make_eps(ph1, Sig1, eps1);
+GPS_Make_eps(ph2, Sig2, eps2);
+dcmplx eps1D2=eps1[0]*eps2[0]-eps1[3]*eps2[3]-eps1[2]*eps2[2]-eps1[1]*eps2[1];
+dcmplx eps1pA=eps1[0]*pA[0]-eps1[3]*pA[3]-eps1[2]*pA[2]-eps1[1]*pA[1];
+dcmplx eps2pA=eps2[0]*pA[0]-eps2[3]*pA[3]-eps2[2]*pA[2]-eps2[1]*pA[1];
+dcmplx eps1pB=eps1[0]*pB[0]-eps1[3]*pB[3]-eps1[2]*pB[2]-eps1[1]*pB[1];
+dcmplx eps2pB=eps2[0]*pB[0]-eps2[3]*pB[3]-eps2[2]*pB[2]-eps2[1]*pB[1];
+dcmplx eps1pC=eps1[0]*pC[0]-eps1[3]*pC[3]-eps1[2]*pC[2]-eps1[1]*pC[1];
+dcmplx eps2pC=eps2[0]*pC[0]-eps2[3]*pC[3]-eps2[2]*pC[2]-eps2[1]*pC[1];
+dcmplx eps1pD=eps1[0]*pD[0]-eps1[3]*pD[3]-eps1[2]*pD[2]-eps1[1]*pD[1];
+dcmplx eps2pD=eps2[0]*pD[0]-eps2[3]*pD[3]-eps2[2]*pD[2]-eps2[1]*pD[1];
+dcmplx eps1p2=eps1[0]*ph2[0]-eps1[3]*ph2[3]-eps1[2]*ph2[2]-eps1[1]*ph2[1];
+dcmplx eps2p1=eps2[0]*ph1[0]-eps2[3]*ph1[3]-eps2[2]*ph1[2]-eps2[1]*ph1[1];
+dcmplx  Cp2p1=ph2[0]*ph1[0]-ph2[3]*ph1[3]-ph2[2]*ph1[2]-ph2[1]*ph1[1];
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<<"  eps1pA="  <<SW208<<eps1pA<<" eps2pA="<<SW208<<eps2pA<<endl;
+//(*m_Out)<<"  eps1pB="  <<SW208<<eps1pB<<" eps2pB="<<SW208<<eps2pB<<endl;
+//(*m_Out)<<"  eps1pC="  <<SW208<<eps1pC<<" eps2pC="<<SW208<<eps2pC<<endl;
+//(*m_Out)<<"  eps1pD="  <<SW208<<eps1pD<<" eps2pD="<<SW208<<eps2pD<<endl;
+//(*m_Out)<<"  eps1p2="  <<SW208<<eps1p2<<" eps2p1="<<SW208<<eps2p1<<endl;
+//(*m_Out)<<"  eps1D2="  <<SW208<<eps1D2<<"  Cp2p1="<<SW208<< Cp2p1<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//BornW(KFini, KFfin, PX, sa, ta,  ph1, m_r2, m_p3, m_p4, AmpBornU); // single W, vector-like
+
+double CosThe=0.0;
+KKpart ph1r = ph1; ph1r.C=-1;
+KKpart ph2r = ph2; ph2r.C=-1;
+// dressed Born spin amplitudes
+KKcmplx4 BornABCD, Born1BCD, BornA1CD, Born2BCD, BornA2CD,Born12CD, Born21CD;
+BornW(KFini,KFfin, PX, s0,t0, m_p1, m_p2, m_p3, m_p4, BornABCD); //Standard
+BornW(KFini,KFfin, PX, s0,t0,  ph1, m_p2, m_p3, m_p4, Born1BCD); // A->1
+BornW(KFini,KFfin, PX, s0,t0, m_p1, ph1r, m_p3, m_p4, BornA1CD); // B->1
+BornW(KFini,KFfin, PX, s0,t0,  ph2, m_p2, m_p3, m_p4, Born2BCD); // A->2
+BornW(KFini,KFfin, PX, s0,t0, m_r1, ph2r, m_p3, m_p4, BornA2CD); // B->2
+BornW(KFini,KFfin, PX, s0,t0,  ph1, ph2r, m_p3, m_p4, Born12CD); // A->1,B->2
+BornW(KFini,KFfin, PX, s0,t0,  ph2, ph1r, m_p3, m_p4, Born21CD); // A->2,B->1
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+/*
+(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornABCD("<<j1<<","<<j2<<",*,*)=  ";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornABCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born1BCD("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born1BCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornBornA1CD("<<j1<<","<<j2<<",*,*)=  ";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA1CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born2BCD("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born2BCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornA2CD("<<j1<<","<<j2<<",*,*)=  ";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA2CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born12CD("<<j1<<","<<j2<<",*,*)=";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<Born12CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born21CD("<<j1<<","<<j2<<",*,*)=  ";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born21CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+*/
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
+// Fermion propagarotors ini1
+double prA1= 1.0/(pA*ph1)/2.0;
+double prB1=-1.0/(pB*ph1)/2.0;
+// Fermion propagarotors ini2
+double prA2= 1.0/(pA*ph2)/2.0;
+double prB2=-1.0/(pB*ph2)/2.0;
+// DOUBLE propagators
+double prA12= 1.0/( pA*ph1 +pA*ph2 -ph1*ph2 )/2.0;
+double prB12=-1.0/( pB*ph1 +pB*ph2 -ph1*ph2 )/2.0;
+dcmplx Fprop1 =(1.0/prA1+1.0/prA2)*prA12*CPF12/CPF0-1.0;
+dcmplx Fprop2 =(1.0/prB1+1.0/prB2)*prB12*CPF/CPF0-1.0;
+dcmplx Fprop1B=CPF12/CPF0-1.0;
+dcmplx Fprop2B=CPF/CPF0-1.0;
+//[[[[[[[[[[[[[[[[[[[[[
+(*m_Out)<< "prA1= "<<prA1 <<" prB1 =" <<prB1<<" prA2="<<prA2<<" prB2="<<prB2<<endl;
+(*m_Out)<<" prA12="<<prA12<<" prB12="<<prB12<<endl;
+(*m_Out)<<" Fprop1="<<Fprop1<<" Fprop2="<<Fprop2<<endl;
+(*m_Out)<<" Fprop1B="<<Fprop1B<<" Fprop2B="<<Fprop2B<<endl;
+//---------------------------------------------------
+//Sig = 3-2*Hel1
+//   CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, pA,mA,     U11a) ! <1|[1]|a>
+//   CALL GPS_MatrV( gI, ph1,Sig,  pB,mB,   ph1,mph,   Vb11) ! <b|{1}|1>
+//* falSe second
+//   CALL GPS_MatrU( gI, ph1,Sig,  ph2,mph, pA,mA,     U21a) ! <2|[1]|a>
+//   CALL GPS_MatrV( gI, ph1,Sig,  pB,mB,   ph2,mph,   Vb12) ! <b|{1}|2>
+//* reverse order
+//   CALL GPS_MatrU( gI, ph1,Sig,  pA,mA,   ph2,mph,   Ua12) ! <a|[1]|2>
+//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, pB,mB,     V21b) ! <2|{1}|b>
+//* for the case when there was ph2 first xk-xk term
+//   CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, ph2,mph,   U112) ! <1|[1]|2>
+//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, ph1,mph,   V211) ! <2|{1}|1>
+//* for the case when there was ph2 first xk-xk term
+//   CALL GPS_MatrU( gI, ph1,Sig,  ph2,mph, ph2,mph,   U212) ! <2|[1]|2>
+//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, ph2,mph,   V212) ! <2|{1}|2>
+KKcmplx2 U11a,Vb11,Vb12,U21a,Ua12,V21b,U112,V211,U212,V212;
+GPS_MakeU( gI, ph1,Sig1,  ph1, pA,   U11a); // <1|[1]|a>
+GPS_MakeV( gI, ph1,Sig1,  pB,  ph1,  Vb11); // <b|{1}|1>
+// falSe second
+GPS_MakeU( gI, ph1,Sig1,  ph2, pA,   U21a); // <2|[1]|a>
+GPS_MakeV( gI, ph1,Sig1,  pB,  ph2,  Vb12); // <b|{1}|2>
+// reverse order
+GPS_MakeU( gI, ph1,Sig1,  pA,  ph2,  Ua12); // <a|[1]|2>
+GPS_MakeV( gI, ph1,Sig1,  ph2, pB,   V21b); // <2|{1}|b>
+// for the case when there was ph2 first xk-xk term
+GPS_MakeU( gI, ph1,Sig1,  ph1, ph2,  U112); // <1|[1]|2>
+GPS_MakeV( gI, ph1,Sig1,  ph2, ph1,  V211); // <2|{1}|1>
+// for the case when there was ph2 first xk-xk term
+GPS_MakeU( gI, ph1,Sig1,  ph2, ph2,  U212); // <2|[1]|2>
+GPS_MakeV( gI, ph1,Sig1,  ph2, ph2,  V212); // <2|{1}|2>
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "U11a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U11a.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "Vb11(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb11.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U21a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U21a.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "Vb12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb12.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "Ua12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Ua12.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V21b(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V21b.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U112(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U112.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V211(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V211.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U212(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U212.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V212(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V212.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//   CALL GPS_MatrU( gI, ph2,Sig,  ph2,mph,  pA,mA,    U22a) ! <2|[2]|a>
+//   CALL GPS_MatrV( gI, ph2,Sig,  pB,mB,   ph2,mph,   Vb22) ! <b|{2}|2>
+//* falSe second
+//   CALL GPS_MatrU( gI, ph2,Sig,  ph1,mph,  pA,mA,    U12a) ! <1|[2]|a>
+//   CALL GPS_MatrV( gI, ph2,Sig,  pB,mB,   ph1,mph,   Vb21) ! <b|{2}|1>
+//* reverse order
+//   CALL GPS_MatrU( gI, ph2,Sig,  pA,mA,   ph1,mph,   Ua21) ! <a|[2]|1>
+//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, pB,mB,     V12b) ! <1|{2}|b>
+//* for the case when there was ph1 first xk-xk term
+//   CALL GPS_MatrU( gI, ph2,Sig,  ph2,mph, ph1,mph,   U221) ! <2|[2]|1>
+//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, ph2,mph,   V122) ! <1|{2}|2>
+//c for the case when there was ph1 first xk-xk term
+//   CALL GPS_MatrU( gI, ph2,Sig,  ph1,mph, ph1,mph,   U121) ! <1|[2]|1>
+//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, ph1,mph,   V121) ! <1|{2}|1>
+KKcmplx2 U22a,Vb22, U12a,Vb21, Ua21,V12b, U221,V122, U121,V121;
+GPS_MakeU( gI, ph2,Sig2,  ph2, pA,   U22a); // <1|[1]|a>
+GPS_MakeV( gI, ph2,Sig2,  pB,  ph2,  Vb22); // <b|{1}|1>
+// falSe second
+GPS_MakeU( gI, ph2,Sig2,  ph1, pA,   U12a); // <2|[1]|a>
+GPS_MakeV( gI, ph2,Sig2,  pB,  ph1,  Vb21); // <b|{1}|2>
+// reverse order
+GPS_MakeU( gI, ph2,Sig2,  pA,  ph1,  Ua21); // <a|[1]|2>
+GPS_MakeV( gI, ph2,Sig2,  ph1, pB,   V12b); // <2|{1}|b>
+// for the case when there was ph2 first xk-xk term
+GPS_MakeU( gI, ph2,Sig2,  ph2, ph1,  U221); // <1|[1]|2>
+GPS_MakeV( gI, ph2,Sig2,  ph1, ph2,  V122); // <2|{1}|1>
+// for the case when there was ph2 first xk-xk term
+GPS_MakeU( gI, ph2,Sig2,  ph1, ph1,  U121); // <2|[1]|2>
+GPS_MakeV( gI, ph2,Sig2,  ph1, ph1,  V121); // <2|{1}|2>
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "U22a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U22a.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "Vb22(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb22.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U12a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U12a.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "Vb21(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb21.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "Ua21(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Ua21.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V12b(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V12b.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U221(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U221.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V122(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V122.m_A[j][k];(*m_Out)<<endl;
+//
+//(*m_Out)<< "U121(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U121.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V121(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V121.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//Sig = 3-2*Hel1
+//CALL GPS_MakeUW(Cnor,ph1,Sig, pC,  mC,   pA,  mA,     UCAW1) ! v-a inside
+//CALL GPS_MakeVW(Cnor,ph1,Sig, pB,  mB,   pD,  mD,     VBDW1) ! v-a inside
+//CALL GPS_MakeUW(Cnor,ph1,Sig, pC,  mC,   ph2, mph,    UC2W1) ! v-a inside
+//CALL GPS_MakeVW(Cnor,ph1,Sig, ph2,mph,   pD,  mD,     V2DW1) ! v-a inside
+//Sig = 3-2*Hel2
+//CALL GPS_MakeUW(Cnor,ph2,Sig, pC,  mC,   pA,   mA,    UCAW2) ! v-a inside
+//CALL GPS_MakeVW(Cnor,ph2,Sig, pB,  mB,   pD,   mD,    VBDW2) ! v-a inside
+//CALL GPS_MakeUW(Cnor,ph2,Sig, pC,  mC,   ph1, mph,    UC1W2) ! v-a inside
+//CALL GPS_MakeVW(Cnor,ph2,Sig, ph1,mph,   pD,   mD,    V1DW2) ! v-a inside
+KKcmplx2 UCAW1,VBDW1,UC2W1,V2DW1,UCAW2,VBDW2,UC1W2,V1DW2;
+dcmplx Cone=1.0;
+GPS_MakeUW(Cone, ph1, Sig1,  pC,  pA,   UCAW1);
+GPS_MakeVW(Cone, ph1, Sig1,  pB,  pD,   VBDW1);
+GPS_MakeUW(Cone, ph1, Sig1,  pC,  ph2,  UC2W1);  // v-a inside
+GPS_MakeVW(Cone, ph1, Sig1,  ph2, pD,   V2DW1);  // v-a inside
+//
+GPS_MakeUW(Cone, ph2, Sig2,  pC,  pA,   UCAW2);  // v-a inside
+GPS_MakeVW(Cone, ph2, Sig2,  pB,  pD,   VBDW2);  // v-a inside
+GPS_MakeUW(Cone, ph2, Sig2,  pC,  ph1,  UC1W2);  // v-a inside
+GPS_MakeVW(Cone, ph2, Sig2,  ph1, pD,   V1DW2);  // v-a inside
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "UCAW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAW1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDW1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC2W1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2W1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V2DW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DW1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UCAW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAW2.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDW2.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC1W2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1W2.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V1DW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DW2.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]
+//CALL GPS_MakeUX(Cnor,ph1,mph, pC,mC,   pA,mA,    UCAWX1) ! v-a inside
+//CALL GPS_MakeVX(Cnor,ph1,mph, pB,mB,   pD,mD,    VBDWX1) ! v-a inside
+//CALL GPS_MakeUX(Cnor,ph2,mph, pC,mC,   pA,mA,    UCAWX2) ! v-a inside
+//CALL GPS_MakeVX(Cnor,ph2,mph, pB,mB,   pD,mD,    VBDWX2) ! v-a inside
+//
+//CALL GPS_MakeUX(Cnor,pB,mB, pC,mC,   pA,mA,    UCAWXB) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pA,mA, pB,mB,   pD,mD,    VBDWXA) ! v-a inside
+//CALL GPS_MakeUX(Cnor,pD,mD, pC,mC,   pA,mA,    UCAWXD) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pC,mC, pB,mB,   pD,mD,    VBDWXC) ! v-a inside
+KKcmplx2 UCAWX1,VBDWX1,UCAWX2,VBDWX2,UCAWXB,VBDWXA,UCAWXD,VBDWXC;
+GPS_MakeUX(Cone, ph1, pC,   pA,  UCAWX1);  // v-a inside
+GPS_MakeVX(Cone, ph1, pB,   pD,  VBDWX1);  // v-a inside
+GPS_MakeUX(Cone, ph2, pC,   pA,  UCAWX2);  // v-a inside
+GPS_MakeVX(Cone, ph2, pB,   pD,  VBDWX2);  // v-a inside
+//
+GPS_MakeUX(Cone, pB,  pC,   pA,  UCAWXB);   // v-a inside
+GPS_MakeVX(Cone, pA,  pB,   pD,  VBDWXA);   // v-a inside
+GPS_MakeUX(Cone, pD,  pC,   pA,  UCAWXD);   // v-a inside
+GPS_MakeVX(Cone, pC,  pB,   pD,  VBDWXC);   // v-a inside
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "UCAWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWX1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWX1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UCAWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWX2.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWX2.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UCAWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWXB.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWXA.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UCAWXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWXD.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "VBDWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWXC.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//CALL GPS_MakeUX(Cnor,ph1,mph, pC, mC,   ph2,mph,    UC2WX1) ! v-a inside
+//CALL GPS_MakeUX(Cnor,pA, mA,  pC, mC,   ph2,mph,    UC2WXA) ! v-a inside
+//CALL GPS_MakeVX(Cnor,ph1,mph, ph2,mph,  pD, mD,     V2DWX1) ! v-a inside
+//CALL GPS_MakeUX(Cnor,ph2,mph, pC, mC,   ph1,mph,    UC1WX2) ! v-a inside
+//CALL GPS_MakeVX(Cnor,ph2,mph, ph1,mph,  pD, mD,     V1DWX2) ! v-a inside
+KKcmplx2 UC2WX1,UC2WXA,V2DWX1,UC1WX2,V1DWX2;
+GPS_MakeUX(Cone,ph1, pC,   ph2,  UC2WX1);   // v-a inside
+GPS_MakeUX(Cone,pA,  pC,   ph2,  UC2WXA);   // v-a inside
+GPS_MakeVX(Cone,ph1, ph2,  pD,   V2DWX1);   // v-a inside
+GPS_MakeUX(Cone,ph2, pC,   ph1,  UC1WX2);   // v-a inside
+GPS_MakeVX(Cone,ph2, ph1,  pD,   V1DWX2);   // v-a inside
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "UC2WX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WX1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC2WXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXA.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V2DWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWX1.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V1DWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWX2.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph2,mph,    UC2WXB) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pA,mA, ph2,mph,  pD, mD,     V2DWXA) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pB,mB, ph2,mph,  pD, mD,     V2DWXB) ! v-a inside
+//CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph1,mph,    UC1WXB) ! v-a inside
+//CALL GPS_MakeUX(Cnor,pA,mA, pC, mC,   ph1,mph,    UC1WXA) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pA,mA, ph1,mph,  pD, mD,     V1DWXA) ! v-a inside
+KKcmplx2 UC2WXB,V2DWXA,V2DWXB,UC1WXB,UC1WXA,V1DWXA;
+GPS_MakeUX(Cone, pB, pC,   ph2,   UC2WXB);   // v-a inside
+GPS_MakeVX(Cone, pA, ph2,  pD,    V2DWXA);   // v-a inside
+GPS_MakeVX(Cone, pB, ph2,  pD,    V2DWXB);   // v-a inside
+GPS_MakeUX(Cone, pB, pC,   ph1,   UC1WXB);   // v-a inside
+GPS_MakeUX(Cone, pA, pC,   ph1,   UC1WXA);   // v-a inside
+GPS_MakeVX(Cone, pA, ph1,  pD,    V1DWXA);   // v-a inside
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "UC2WXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXB.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V2DWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXA.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V2DWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXB.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC1WXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXB.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC1WXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXA.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V1DWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXA.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]
+//CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph2,mph,    UC2WXD) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pC,mC, ph2,mph,  pD, mD,     V2DWXC) ! v-a inside
+//CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph1,mph,    UC1WXD) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pC,mC, ph1,mph,  pD, mD,     V1DWXC) ! v-a inside
+//CALL GPS_MakeVX(Cnor,pB,mB, ph1,mph,  pD, mD,     V1DWXB) ! v-a inside
+//
+KKcmplx2 UC2WXD,V2DWXC,UC1WXD,V1DWXC,V1DWXB;
+GPS_MakeUX(Cone, pD, pC,   ph2,    UC2WXD);   // v-a inside
+GPS_MakeVX(Cone, pC, ph2,  pD,     V2DWXC);   // v-a inside
+GPS_MakeUX(Cone, pD, pC,   ph1,    UC1WXD);   // v-a inside
+GPS_MakeVX(Cone, pC, ph1,  pD,     V1DWXC);   // v-a inside
+GPS_MakeVX(Cone, pB, ph1,  pD,     V1DWXB);   // v-a inside
+//[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<< "UC2WXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXD.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V2DWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXC.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "UC1WXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXD.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V1DWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXC.m_A[j][k];(*m_Out)<<endl;
+//(*m_Out)<< "V1DWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXB.m_A[j][k];(*m_Out)<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]
+//------------------------------------------------------------------------------------------
+int Y_IR=1;        //    ! YES, IR included
+Y_IR=0;            //    ! No,  IR not included
+int Y_IR1=1;       //    ! defunct, must be 1 use I9X-T YES, IR times beta 0 included
+int N_IR=1-Y_IR1;  //
+N_IR=1;            //    ! #########################################################
+//-----------------------------------------------------------------------------------------
+
+// Assembling amplitude
+//[[[[[[[[[[[[[[[[[[[
+Amp4Zer(m_AmpExpo2);
+//]]]]]]]]]]]]]]]]]]]
+/////////////////////////////////////////////////////////////////////////////////////
+//                    |                  1               2                         //
+//                    |X                 |               |                         //
+//      _       -b    |      b+m-1-2     |      a+m-2    |      a                  //
+//      v  ------<----O--------<---------U--------<------S------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//    Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(prA12-prA1)*sA(2,Hel2)*CPF12/CPF0*IV2       !<b|X|1[1]a(2)|a>
+//    Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(      prA1)*sA(2,Hel2)*CPF12/CPF0*Y_IR1*I9X !<b|X|1[1]a(2)|a>
+//    Su1=Su1+Born2BCD(j,j2,j3,j4) *U21a(j,j1)* prA12      *sA(2,Hel2)*CPF12/CPF0*IV2       !<b|X|2[1]a(2)|a>
+AmpAddI(m_AmpExpo2, CNorm*(prA12-prA1)*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
+AmpAddI(m_AmpExpo2, CNorm*(      prA1)*sA[1][Hel2]*CPF12/CPF0*double(Y_IR1*I9X), Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
+AmpAddI(m_AmpExpo2, CNorm*(prA12     )*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born2BCD, U21a); // !<b|X|2[1]a(2)|a>
+/////////////////////////////////////////////////////////////////////////////////////
+//                    |                  2               1                         //
+//                    |X                 |               |                         //
+//      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
+//      v  ------<----O--------<---------U-------<-------S------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
+//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
+//      Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
+
+
+
+
+(*m_Out)<<"-------------------------------------------m_AmpExpo2-----------------------------------------------"<<endl;
+for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=  ";
+     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+
+}//GPS_HiiPlusW
 
 void KKceex::GPS_HifPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
                          KKpart ph1, int Hel1, KKpart ph2, int Hel2){
@@ -2820,7 +3318,7 @@ void KKceex::GPS_MatrS(KKpart &p1, KKpart &p2, KKcmplx2 &V){
    V.m_A[0][0] = dcmplx(0.0); // (++)
 }//KKceex::GPS_MatrS
 
-void KKceex::GPS_MakeUX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &U){
+void KKceex::GPS_MakeUX(dcmplx Cfac, KKpart &ph, KKpart &p1, KKpart &p2,  KKcmplx2 &U){
 //SUBROUTINE GPS_MakeUX(Cn,ph,mh,p1,m1,p2,m2,U)
 ///////////////////////////////////////////////////////////////////////////////////////
 //   Transition matrix U, (ph-slash sandwiched between ubar-u spinors)             //
@@ -2845,7 +3343,7 @@ Amp2Mult( AB, Cone, A, B);
 Amp2Mult(  U, Cfac, C,AB);
 }//KKceex::GPS_MakeUX
 
-void KKceex::GPS_MakeVX(dcmplx Cfac, KKpart &ph, int sigma, KKpart &p1, KKpart &p2,  KKcmplx2 &V){
+void KKceex::GPS_MakeVX(dcmplx Cfac, KKpart &ph, KKpart &p1, KKpart &p2,  KKcmplx2 &V){
 //SUBROUTINE GPS_MakeVX(Cn,ph,mh,p1,m1,p2,m2,V)
 /////////////////////////////////////////////////////////////////////////////////////
 //   Transition matrix V, (ph-slash sandwiched between vbar-v spinors)             //
@@ -3079,6 +3577,97 @@ if(m_KeyArb == 0) {
 }
 return Sof1x;
 }//GPS_Sof1x
+
+void KKceex::GPS_Make_eps(KKpart &ph, int Sig, dcmplx eps[4]){
+//SUBROUTINE GPS_Make_eps(ph,Sig,eps)
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//  photon polarization 4-vector explicitelly calculated                           //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+/*
+IMPLICIT NONE
+INCLUDE 'GPS.h'
+SAVE                      !!! <-- necessary !!!
+*
+DOUBLE PRECISION      k1(4),k2(4),k3(4),k4(4),ph(4)
+DOUBLE PRECISION      k1m(4),k2m(4),k3m(4),k4m(4)
+*
+DOUBLE PRECISION      Fleps
+*-----------------------------------------------------------------------------
+INTEGER    j,k
+INTEGER    Sig
+DOUBLE COMPLEX  GPS_Sof1x,GPS_Sof1bx
+DOUBLE COMPLEX  eps(4)
+DOUBLE COMPLEX  x1,x2,x3,x1m,x2m,x3m
+*/
+//   k=4
+//   k1(k)=sqrt(2D0)
+//   k2(k)=1D0
+//   k3(k)=1D0
+//   k4(k)=1D0
+//   k1m(k)=sqrt(2D0)
+//   k2m(k)=1D0
+//   k3m(k)=1D0
+//   k4m(k)=1D0
+//
+//   k1(1)=1D0
+//   k1(2)=1D0
+//   k2(2)=1D0
+//   k3(3)=1D0
+//   k4(4)=1D0
+//   k1m(1)=-1D0
+//   k1m(2)= 1D0
+//   k2m(2)=-1D0
+//   k3m(3)=-1D0
+//   k4m(4)=-1D0
+KKpart k1  = KKpart(sqrt(2.0),  1.0,  0.0,  0.0);
+KKpart k2  = KKpart(      1.0,  0.0,  1.0,  0.0);
+KKpart k3  = KKpart(      1.0,  0.0,  0.0,  1.0);
+KKpart k4  = KKpart(      1.0,  0.0,  0.0,  0.0);
+KKpart k1m = KKpart(sqrt(2.0), -1.0,  0.0,  0.0);
+KKpart k2m = KKpart(      1.0,  0.0, -1.0,  0.0);
+KKpart k3m = KKpart(      1.0,  0.0,  0.0, -1.0);
+KKpart k4m = KKpart(     -1.0,  0.0,  0.0,  0.0);
+//   x1 =   GPS_Sof1x( 1,ph,k1 )
+//   x1m=   GPS_Sof1x( 1,ph,k1m)
+//   x2 =   GPS_Sof1x( 1,ph,k2 )
+//   x2m=   GPS_Sof1x( 1,ph,k2m)
+//   x3 =   GPS_Sof1x( 1,ph,k3 )
+//   x3m=   GPS_Sof1x( 1,ph,k3m)
+dcmplx x1 =   GPS_Sof1x( 1,ph,k1 );
+dcmplx x1m=   GPS_Sof1x( 1,ph,k1m);
+dcmplx x2 =   GPS_Sof1x( 1,ph,k2 );
+dcmplx x2m=   GPS_Sof1x( 1,ph,k2m);
+dcmplx x3 =   GPS_Sof1x( 1,ph,k3 );
+dcmplx x3m=   GPS_Sof1x( 1,ph,k3m);
+//   eps(4)=(x3+x3m)/2D0
+//   eps(3)=-(x3-x3m)/2D0
+//   eps(2)=-(x2-x2m)/2D0
+//   eps(1)=-(x1-x1m)/2D0
+//DO j=1,4
+// eps(j)=eps(j)/2.0
+//ENDDO
+eps[0]= (x3+x3m)/2.0/2.0;
+eps[3]=-(x3-x3m)/2.0/2.0;
+eps[2]=-(x2-x2m)/2.0/2.0;
+eps[1]=-(x1-x1m)/2.0/2.0;
+//   IF (sig.LT.0d0) THEN
+//     DO j=1,4
+//       eps(j)=-DCONJG(eps(j))
+//     ENDDO
+//   ENDIF
+if(Sig<0) for(int j=0;j<4;j++) eps[j]=-conj(eps[j]);
+//   write(*,*) 'vec  ph=',ph
+//   write(*,*) 'sig=',sig
+//   write(*,*) 'eps(i)=',eps
+//   write(*,*) 'consistency check; product=',
+//$               ((eps(4)*ph(4)-eps(3)*ph(3)-eps(2)*ph(2)-eps(1)*ph(1)))
+//   write(*,*) 'consistency check; square=',
+//$               eps(4)*DCONJG(eps(4))-eps(3)*DCONJG(eps(3))-eps(2)*DCONJG(eps(2))-eps(1)*DCONJG(eps(1))
+}//GPS_make_eps!!!
+
+
 
 dcmplx KKceex::Bfacb(int sigma, KKpart &phot, KKpart &pferm){
 /////////////////////////////////////////////////////////////////////////////////////
