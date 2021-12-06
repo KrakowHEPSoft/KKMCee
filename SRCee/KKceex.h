@@ -243,6 +243,8 @@ void GPS_HifPlus(dcmplx CNorm, int KFini, int KFfin, TLorentzVector PX,
 void Amp2Mult(KKcmplx2 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U);
 void Amp2WCplus( KKcmplx2 &V, const double sw2);
 void Amp2WCminus(KKcmplx2 &V, const double Sw2);
+void Amp2to4(KKcmplx4 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U);
+void Amp2to4add(KKcmplx4 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U);
 
 void Amp4Zer(KKcmplx4 &Born);
 void AmpAdd( KKcmplx4 &Work, dcmplx Fact, const KKcmplx4 &Born);

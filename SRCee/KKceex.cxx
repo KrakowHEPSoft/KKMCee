@@ -2119,7 +2119,7 @@ double ChaIni =  DB->Qf[ KFini];
 dcmplx gI = dcmplx(ChaIni*m_e_QED);
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[
 (*m_Out)<< "========================================================================================================"<<endl;
-(*m_Out)<< "========================================KKceex::GPS_HiiPlus============================================="<<endl;
+(*m_Out)<< "========================================KKceex::GPS_HiiPlusW============================================="<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //double Qe  = DB->Qf[ KFini];
 KKpart pA= m_p1;
@@ -2262,23 +2262,31 @@ dcmplx  Cp2p1=ph2[0]*ph1[0]-ph2[3]*ph1[3]-ph2[2]*ph1[2]-ph2[1]*ph1[1];
 //(*m_Out)<<"  eps1p2="  <<SW208<<eps1p2<<" eps2p1="<<SW208<<eps2p1<<endl;
 //(*m_Out)<<"  eps1D2="  <<SW208<<eps1D2<<"  Cp2p1="<<SW208<< Cp2p1<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-//BornW(KFini, KFfin, PX, sa, ta,  ph1, m_r2, m_p3, m_p4, AmpBornU); // single W, vector-like
 
 double CosThe=0.0;
 KKpart ph1r = ph1; ph1r.C=-1;
 KKpart ph2r = ph2; ph2r.C=-1;
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    pB,-mB,      pC,MC,   pD,-mD,   BornABCD) ! Standard
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph1,mph,  pB,-mB,      pC,mC,   pD,-mD,   Born1BCD) ! A->1
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    ph1,-mph,    pC,mC,   pD,-mD,   BornA1CD) ! B->1
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph2,mph,  pB,-mB,      pC,mC,   pD,-mD,   Born2BCD) ! A->2
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    ph2,-mph,    pC,mC,   pD,-mD,   BornA2CD) ! B->2
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph1,mph,  ph2,-mph,    pC,mC,   pD,-mD,   Born12CD) ! A->1,B->2
+//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph2,mph,  ph1,-mph,    pC,mC,   pD,-mD,   Born21CD) ! A->2,B->1
 // dressed Born spin amplitudes
 KKcmplx4 BornABCD, Born1BCD, BornA1CD, Born2BCD, BornA2CD,Born12CD, Born21CD;
 BornW(KFini,KFfin, PX, s0,t0, m_p1, m_p2, m_p3, m_p4, BornABCD); //Standard
 BornW(KFini,KFfin, PX, s0,t0,  ph1, m_p2, m_p3, m_p4, Born1BCD); // A->1
 BornW(KFini,KFfin, PX, s0,t0, m_p1, ph1r, m_p3, m_p4, BornA1CD); // B->1
 BornW(KFini,KFfin, PX, s0,t0,  ph2, m_p2, m_p3, m_p4, Born2BCD); // A->2
-BornW(KFini,KFfin, PX, s0,t0, m_r1, ph2r, m_p3, m_p4, BornA2CD); // B->2
+//[[[BornW(KFini,KFfin, PX, s0,t0, m_r1, ph2r, m_p3, m_p4, BornA2CD); // B->2
+BornW(KFini,KFfin, PX, s0,t0, m_p1, ph2r, m_p3, m_p4, BornA2CD); // B->2
 BornW(KFini,KFfin, PX, s0,t0,  ph1, ph2r, m_p3, m_p4, Born12CD); // A->1,B->2
 BornW(KFini,KFfin, PX, s0,t0,  ph2, ph1r, m_p3, m_p4, Born21CD); // A->2,B->1
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
 /*
 (*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
+(*m_Out)<<" s0="<<s0<<" t0="<<t0<<endl;
 for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornABCD("<<j1<<","<<j2<<",*,*)=  ";
      for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornABCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born1BCD("<<j1<<","<<j2<<",*,*)=";
@@ -2311,10 +2319,10 @@ dcmplx Fprop2 =(1.0/prB1+1.0/prB2)*prB12*CPF/CPF0-1.0;
 dcmplx Fprop1B=CPF12/CPF0-1.0;
 dcmplx Fprop2B=CPF/CPF0-1.0;
 //[[[[[[[[[[[[[[[[[[[[[
-(*m_Out)<< "prA1= "<<prA1 <<" prB1 =" <<prB1<<" prA2="<<prA2<<" prB2="<<prB2<<endl;
-(*m_Out)<<" prA12="<<prA12<<" prB12="<<prB12<<endl;
-(*m_Out)<<" Fprop1="<<Fprop1<<" Fprop2="<<Fprop2<<endl;
-(*m_Out)<<" Fprop1B="<<Fprop1B<<" Fprop2B="<<Fprop2B<<endl;
+//(*m_Out)<< "prA1= "<<prA1 <<" prB1 =" <<prB1<<" prA2="<<prA2<<" prB2="<<prB2<<endl;
+//(*m_Out)<<" prA12="<<prA12<<" prB12="<<prB12<<endl;
+//(*m_Out)<<" Fprop1="<<Fprop1<<" Fprop2="<<Fprop2<<endl;
+//(*m_Out)<<" Fprop1B="<<Fprop1B<<" Fprop2B="<<Fprop2B<<endl;
 //---------------------------------------------------
 //Sig = 3-2*Hel1
 //   CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, pA,mA,     U11a) ! <1|[1]|a>
@@ -2545,25 +2553,316 @@ Amp4Zer(m_AmpExpo2);
 //    Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(prA12-prA1)*sA(2,Hel2)*CPF12/CPF0*IV2       !<b|X|1[1]a(2)|a>
 //    Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(      prA1)*sA(2,Hel2)*CPF12/CPF0*Y_IR1*I9X !<b|X|1[1]a(2)|a>
 //    Su1=Su1+Born2BCD(j,j2,j3,j4) *U21a(j,j1)* prA12      *sA(2,Hel2)*CPF12/CPF0*IV2       !<b|X|2[1]a(2)|a>
-AmpAddI(m_AmpExpo2, CNorm*(prA12-prA1)*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
-AmpAddI(m_AmpExpo2, CNorm*(      prA1)*sA[1][Hel2]*CPF12/CPF0*double(Y_IR1*I9X), Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
-AmpAddI(m_AmpExpo2, CNorm*(prA12     )*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born2BCD, U21a); // !<b|X|2[1]a(2)|a>
+//AmpAddI(m_AmpExpo2, CNorm*(prA12-prA1)*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
+//AmpAddI(m_AmpExpo2, CNorm*(      prA1)*sA[1][Hel2]*CPF12/CPF0*double(Y_IR1*I9X), Born1BCD, U11a); // !<b|X|1[1]a(2)|a>
+//AmpAddI(m_AmpExpo2, CNorm*(prA12     )*sA[1][Hel2]*CPF12/CPF0*double(IV2),       Born2BCD, U21a); // !<b|X|2[1]a(2)|a>
+
 /////////////////////////////////////////////////////////////////////////////////////
 //                    |                  2               1                         //
 //                    |X                 |               |                         //
 //      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
 //      v  ------<----O--------<---------U-------<-------S------<----- u           //
 /////////////////////////////////////////////////////////////////////////////////////
-//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
-//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
-//      Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
+//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2       !<b|X|2[2]a(1)|a>
+//      Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z !<b|X|2[2]a(1)|a>
+//      Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2       !<b|X|1[2]a(1)|a>
+//AmpAddI(m_AmpExpo2, CNorm*(prA12-prA2)*sA[0][Hel1] *CPF12/CPF0*double(IV2),       Born2BCD, U22a);
+//AmpAddI(m_AmpExpo2, CNorm*(      prA2)*sA[0][Hel1] *CPF12/CPF0*double(Y_IR1*I9Z), Born2BCD, U22a);
+//AmpAddI(m_AmpExpo2, CNorm* prA12      *sA[0][Hel1] *CPF12/CPF0*double(IV2),       Born1BCD, U12a);
 
+/////////////////////////////////////////////////////////////////////////////////////
+//                    2                  1               |                         //
+//                    |                  |               |X                        //
+//      _       -b    |     -b+m+2       |    -b+m+1+2   |      a                  //
+//      v  ------<----S--------<---------V--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//      Su1=Su1+( sB(2,Hel2)*(-prB1+prB12))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1       !<b|(2)b[1]1|X|a>
+//      Su1=Su1+( sB(2,Hel2)*( prB1      ))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9Y !<b|(2)b[1]1|X|a>
+//      Su1=Su1+( sB(2,Hel2)*(      prB12))*Vb12(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1       !<b|(2)b[1]2|X|a>
+//AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*(-prB1+prB12))*CPF/CPF0*double(IV1),       Vb11, BornA1CD);
+//AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*( prB1      ))*CPF/CPF0*double(Y_IR1*I9Y), Vb11, BornA1CD);
+//AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*(      prB12))*CPF/CPF0*double(IV1),       Vb12, BornA2CD);
+//(*m_Out)<<"sB[1][Hel2]="<<sB[1][Hel2]<<endl;
+//(*m_Out)<<"      prB12="<<prB12<<endl;
+//(*m_Out)<<" CPF, CPF0 ="<<CPF<<"  "<<CPF0<<endl;
+//(*m_Out)<< "Vb12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb12.m_A[j][k];(*m_Out)<<endl;
+//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornA2CD("<<j1<<","<<j2<<",*,*)=  ";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA2CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+/////////////////////////////////////////////////////////////////////////////////////
+//                    1                  2               |                         //
+//                    |                  |               |X                        //
+//      _       -b    |     -b+m+1       |    -b+m+1+2   |      a                  //
+//      v  ------<----S--------<---------V--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//      Su1=Su1 +(sB(1,Hel1)*(-prB2+prB12))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1       !<b|(1)b[2]2|X|a>
+//      Su1=Su1 +(sB(1,Hel1)*( prB2      ))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9T !<b|(1)b[2]2|X|a>
+//      Su1=Su1 +(sB(1,Hel1)*(      prB12))*Vb21(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1       !<b|(1)b[2]1|X|a>
+//AmpAddI(m_AmpExpo2, CNorm*(sB[0][Hel1]*(-prB2+prB12))*CPF/CPF0*double(IV1),       Vb22,  BornA2CD);
+//AmpAddI(m_AmpExpo2, CNorm*(sB[0][Hel1]*( prB2      ))*CPF/CPF0*double(Y_IR1*I9T), Vb22,  BornA2CD);
+//AmpAddI(m_AmpExpo2, CNorm*(sB[0][Hel1]*(      prB12))*CPF/CPF0*double(IV1),       Vb21,  BornA1CD);
 
+/////////////////////////////////////////////////////////////////////////////////////
+//                    2                  |               1                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
+//      v  ------<----S--------<---------O--------<------U------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//              Su1=Su1 +sB(2,Hel2)    *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1/CPF0*Y_IR1*I9X !<b|(2)2|X|1[1]|a>
+//AmpAddI(m_AmpExpo2, CNorm*sB[1][Hel2]*prA1*CPF1/CPF0*double(Y_IR1*I9X),   Born1BCD, U11a);
 
+/////////////////////////////////////////////////////////////////////////////////////
+//                    1                  |               2                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
+//      v  ------<----S--------<---------O--------<------U------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//            Su1=Su1 +sB(1,Hel1)    *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2/CPF0*Y_IR1*I9Z !<b|(1)1|X|2[2]|a>
+//AmpAddI(m_AmpExpo2, CNorm*sB[0][Hel1]*prA2*CPF2/CPF0* double(Y_IR1*I9Z) ,   Born2BCD, U22a);
 
-(*m_Out)<<"-------------------------------------------m_AmpExpo2-----------------------------------------------"<<endl;
+/////////////////////////////////////////////////////////////////////////////////////
+//                    1                  |               2                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
+//      v  ------<----V--------<---------O--------<------S------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//             Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *sA(2,Hel2) *CPF2/CPF0   *Y_IR1*I9Y !<b|[1]1|X|a[2]|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB1*sA[1][Hel2]*CPF2/CPF0*double(Y_IR1*I9Y),  Vb11,  BornA1CD);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    2                  |               1                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
+//      v  ------<----V--------<---------O--------<------S------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//             Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel1)*CPF1/CPF0      *Y_IR1*I9T !<b|[2]2|X|a(1)|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB2*sA[0][Hel1]*CPF1/CPF0 *double(Y_IR1*I9T), Vb22, BornA2CD);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                                       E--2                                      //
+//                                       |               1                         //
+//                                       |X              |                         //
+//      _       -b                       |     a+m-1     |      a                  //
+//      v  ------<-------------<---------O--------<------U------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//            Su1=Su1 +EpsDot21(Hel2)  *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1*CPF12/CPF0*I9X    !<b|(2)2|X|1[1]|a>
+//     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0             *I71
+//     $                       *( UC1W2(j3,j )*(2*VBDWX2(j2,j4) )
+//     $                         -VBDW2(j2,j4)*(2*UC1WX2(j3,j ) )                        )
+//!     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0            *I71b   ! (zeroed) included later
+//!     $                       *(
+//!     $                         -VBDW2(j2,j4)*(               -UC1WXA(j3,j) )           )
+//cccc      Su1=Su1     -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
+//cccc     &                          *VBDWX2(j2,j4) *UC1W2( j3,j ) *U11a(j,j1)
+//cccc      Su1=Su1     +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
+//cccc     &                          *VBDW2( j2,j4) *UC1WX2(j3,j ) *U11a(j,j1)
+//AmpAddI(m_AmpExpo2, CNorm*EpsDot21[Hel2]*prA1*CPF1*CPF12/CPF0*double(I9X),     Born1BCD, U11a);
+//Amp2to4(m_AmpTemp1, -2*0.5*dcmplx(  ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVPi0, VBDWX2, UC1W2);
+//Amp2to4(m_AmpTemp2, +2*0.5*dcmplx(  ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVPi0, VBDW2, UC1WX2);
+//AmpAddI(m_AmpExpo2, CNorm, m_AmpTemp1,U11a);
+//AmpAddI(m_AmpExpo2, CNorm, m_AmpTemp2,U11a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                                       E--1                                      //
+//                                       |               2                         //
+//                                       |X              |                         //
+//      _       -b                       |     a+m-2     |      a                  //
+//      v  ------<-------------<---------O--------<------U------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//                     Su1=Su1 +EpsDot12(Hel1)  *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2*CPF12/CPF0*I9Z !<b|(1)1|X|2[2]|a>
+//     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72
+//     $                       *( UC2W1(j3,j )*(2*VBDWX1(j2,j4) )
+//     $                         -VBDW1(j2,j4)*(2*UC2WX1(j3,j )              ) )
+//!     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72b  ! (zeroed) included later
+//!     $                       *(
+//!     $                         -VBDW1(j2,j4)*(               -UC2WXA(j3,j) ) )
+//cccc      Su1=Su1       -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVpi0*I72
+//cccc     &                       *VBDWX1(j2,j4) *UC2W1( j3,j) *U22a(j,j1)
+//cccc      Su1=Su1       +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVpi0*I72
+//cccc     &                       *VBDW1(j2,j4)  *UC2WX1(j3,j) *U22a(j,j1)
+//AmpAddI(m_AmpExpo2, CNorm*EpsDot12[Hel1]*prA2*CPF2*CPF12/CPF0*double(I9Z),   Born2BCD, U22a);
+//Amp2to4(m_AmpTemp1, -2*0.5*dcmplx(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVPi0*double(I72), VBDWX1, UC2W1);
+//Amp2to4(m_AmpTemp2, +2*0.5*dcmplx(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVPi0*double(I72), VBDW1, UC2WX1);
+//AmpAddI(m_AmpExpo2, CNorm, m_AmpTemp1,U22a);
+//AmpAddI(m_AmpExpo2, CNorm, m_AmpTemp2,U22a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                                       E--2                                      //
+//                    1                  |                                         //
+//                    |                  |X                                        //
+//      _       -b    |     -b+m+1       |                      a                  //
+//      v  ------<----V--------<---------O--------<-------------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *EpsDot2(Hel2) *CPF *CPF2/CPF0*I9Y  !<b|[1]1|X|a[2]|a>
+//     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71
+//     $                       *( UCAW2(j3,j1)*(2*V1DWX2(j ,j4)              )
+//     $                         -V1DW2(j ,j4)*(2*UCAWX2(j3,j1)) )
+//!     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71b  ! (zeroed) included later
+//!     $                       *( UCAW2(j3,j1)*(               -V1DWXB(j,j4) )
+//!     $                                                         )
+//cccc    Su1=Su1  -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVpi0*I71
+//cccc  &                         *Vb11(j2,j)*V1DWX2(j ,j4)*UCAW2( j3,j1)
+//cccc    Su1=Su1  +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVpi0*I71
+//cccc  &                         *Vb11(j2,j)*V1DW2( j ,j4)*UCAWX2(j3,j1)
+//AmpAddI(m_AmpExpo2, CNorm*prB1*EpsDot2[Hel2] *CPF *CPF2/CPF0*double(I9Y) ,  Vb11,  BornA1CD);
+//Amp2to4(m_AmpTemp1, -2*0.5*dcmplx(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVPi0*double(I71), V1DWX2, UCAW2);
+//Amp2to4(m_AmpTemp2, +2*0.5*dcmplx(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVPi0*double(I71), V1DW2, UCAWX2);
+//AmpAddI(m_AmpExpo2, CNorm, Vb11, m_AmpTemp1);
+//AmpAddI(m_AmpExpo2, CNorm, Vb11, m_AmpTemp2);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                                       E--1                                      //
+//                    2                  |                                         //
+//                    |                  |X                                        //
+//      _       -b    |     -b+m+2       |                      a                  //
+//      v  ------<----V--------<---------O--------<-------------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//                     Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *EpsDot1(Hel1)*CPF *CPF1/CPF0*I9T  !<b|[2]2|X|a(1)|a>
+//     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72
+//     $                       *( UCAW1(j3,j1)*(2*V2DWX1(j ,j4)               )
+//     $                         -V2DW1(j ,j4)*(2*UCAWX1(j3,j1) ) )
+//!     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72b  ! (zeroed) included later
+//!     $                       *( UCAW1(j3,j1)*(               -V2DWXB(j ,j4) )
+//!     $                                                          )
+//cccc      Su1=Su1  -2*0.5D0*DCMPLX(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVpi0  *I72
+//cccc     &                           *Vb22(j2,j) *V2DWX1(j,j4) *UCAW1( j3,j1)
+//cccc      Su1=Su1  +2*0.5D0*DCMPLX(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVpi0  *I72
+//cccc     &                           *Vb22(j2,j) *V2DW1( j,j4) *UCAWX1(j3,j1)
+//AmpAddI(m_AmpExpo2, CNorm*prB2*EpsDot1[Hel1]*CPF *CPF1/CPF0*double(I9T),   Vb22,  BornA2CD);
+//Amp2to4(m_AmpTemp1, -2*0.5*dcmplx(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVPi0*double(I72), V2DWX1, UCAW1);
+//Amp2to4(m_AmpTemp2, +2*0.5*dcmplx(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVPi0*double(I72), V2DW1, UCAWX1);
+//AmpAddI(m_AmpExpo2, CNorm, Vb22, m_AmpTemp1);
+//AmpAddI(m_AmpExpo2, CNorm, Vb22, m_AmpTemp2);
+
+//-----------------------------------------------------------------------------------
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    2                  |               1                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
+//      v  ------<----*--------<---------O--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//           Su2=Su2  +Vb22(j2,l)*prB2  *Born12CD(j,l,j3,j4 )  *U11a(j,j1)*prA1*CPF1/CPF0*I8 ! <b|[2]2|X|1[1]|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB2*prA1*CPF1/CPF0*double(I8),   Vb22,  Born12CD, U11a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    1                  |               2                         //
+//                    |                  |X              |                         //
+//      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
+//      v  ------<----*--------<---------O--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//           Su2=Su2  +Vb11(j2,l)*prB1  *Born21CD(j,l,j3,j4 )  *U22a(j,j1)*prA2*CPF2/CPF0*I8 ! <b|[1]1|X|2[2]|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB1*prA2*CPF2/CPF0*double(I8) ,   Vb11,  Born21CD, U22a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    |                  2               1                         //
+//                    |X                 |               |                         //
+//      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
+//      v  ------<----O--------<---------O--------<------*------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//           Su2=Su2 +Born1BCD(j,j2,j3,j4) *U121(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|1[2]1(1)|a>
+//           Su2=Su2 +Born2BCD(j,j2,j3,j4) *U221(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IA  ! <b|X|2[2]1(1)|a>
+//           Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua21(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|a[2]1(1)|a>
+//AmpAddI(m_AmpExpo2, CNorm*prA12*prA1*CPF12/CPF0*double(IV2),   Born1BCD, U121, U11a);
+//AmpAddI(m_AmpExpo2, CNorm*prA12*prA1*CPF12/CPF0*double(IA),    Born2BCD, U221, U11a);
+//AmpAddI(m_AmpExpo2,-CNorm*prA12*prA1*CPF12/CPF0*double(IV2),   BornABCD, Ua21, U11a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    |                  1               2                         //
+//                    |X                 |               |                         //
+//      _       -b    |      b+m-1-2     |      a+m-2    |      a                  //
+//      v  ------<----O--------<---------O--------<------*------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//           Su2=Su2 +Born2BCD(j,j2,j3,j4) *U212(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|2[1]2(2)|a>
+//           Su2=Su2 +Born1BCD(j,j2,j3,j4) *U112(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IA  ! <b|X|1[1]2(2)|a>
+//           Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua12(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|a[1]2(2)|a>
+//AmpAddI(m_AmpExpo2, CNorm*prA12*prA2*CPF12/CPF0*double(IV2),   Born2BCD, U212, U22a);
+//AmpAddI(m_AmpExpo2, CNorm*prA12*prA2*CPF12/CPF0*double(IA),    Born1BCD, U112, U22a);
+//AmpAddI(m_AmpExpo2,-CNorm*prA12*prA2*CPF12/CPF0*double(IV2),   BornABCD, Ua12, U22a);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    1                  2               |                         //
+//                    |                  |               |X                        //
+//      _       -b    |     -b+m+1       |    -b+m+1+2   |      a                  //
+//      v  ------<----*--------<---------O--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//            Su2=Su2 +Vb11(j2,l)*prB1 *V121(l,j)*prB12 *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]1|X|a>
+//            Su2=Su2 +Vb11(j2,l)*prB1 *V122(l,j)*prB12 *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IA  ! <b|(1)1[2]2|X|a>
+//            Su2=Su2 -Vb11(j2,l)*prB1 *V12b(l,j)*prB12 *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]b|X|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB1*prB12*CPF/CPF0*double(IV1),  Vb11, V121, BornA1CD);
+//AmpAddI(m_AmpExpo2, CNorm*prB1*prB12*CPF/CPF0*double(IA ),  Vb11, V122, BornA2CD);
+//AmpAddI(m_AmpExpo2,-CNorm*prB1*prB12*CPF/CPF0*double(IV1),  Vb11, V12b, BornABCD);
+
+/////////////////////////////////////////////////////////////////////////////////////
+//                    2                  1               |                         //
+//                    |                  |               |X                        //
+//      _       -b    |     -b+m+2       |    -b+m+1+2   |      a                  //
+//      v  ------<----*--------<---------O--------<------O------<----- u           //
+/////////////////////////////////////////////////////////////////////////////////////
+//            Su2=Su2 +Vb22(j2,l)*prB2 *V212(l,j)*prB12  *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[1]2|X|a>
+//            Su2=Su2 +Vb22(j2,l)*prB2 *V211(l,j)*prB12  *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IA  ! <b|(2)2[1]1|X|a>
+//            Su2=Su2 -Vb22(j2,l)*prB2 *V21b(l,j)*prB12  *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[2]b|X|a>
+//AmpAddI(m_AmpExpo2, CNorm*prB2*prB12*CPF/CPF0*double(IV1),  Vb22, V212, BornA2CD);
+//AmpAddI(m_AmpExpo2, CNorm*prB2*prB12*CPF/CPF0*double(IA ),  Vb22, V211, BornA1CD);
+//AmpAddI(m_AmpExpo2,-CNorm*prB2*prB12*CPF/CPF0*double(IV1),  Vb22, V21b, BornABCD);
+
+//===========================
+//      sProd = ( sA(1,Hel1)+sB(1,Hel1))*( sA(2,Hel2)+sB(2,Hel2))
+//      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! non-infrared part: Fprop1- Fprop1B) is prop to ph1*ph2
+//     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*(Fprop1- Fprop1B)      *IV2 !
+//     $                                               +sB(1,Hel1)*sB(2,Hel2)*(Fprop2- Fprop2B)      *IV1
+//     $                                                                                      ) !
+//dcmplx cFactX = CNorm*( sA[0][Hel1]*sA[1][Hel2]*(Fprop1- Fprop1B)*double(IV2)
+//                       +sB[0][Hel1]*sB[1][Hel2]*(Fprop2- Fprop2B)*double(IV1) );
+//AmpAdd( m_AmpExpo2,  cFactX ,BornABCD);
+//c===========================
+//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! infrared-type part
+//c     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*Fprop1B                      *IVI !
+//c     $                                               +sA(1,Hel1)*sB(2,Hel2)*(CPF1/CPF0-1d0)              *IVI
+//c     $                                               +sB(1,Hel1)*sA(2,Hel2)*(CPF2/CPF0-1d0)              *IVI
+//c     $                                               +sB(1,Hel1)*sB(2,Hel2)*Fprop2B                      *IVI
+//c     $                                               +sA(1,Hel1)*CPF1*CPF12/CPF0*EpsDot21(Hel2)          *IVI! terms due to diag WWgamma
+//c     $                                               +sA(2,Hel2)*CPF2*CPF12/CPF0*EpsDot12(Hel1)          *IVI
+//c     $                                               +sB(1,Hel1)*CPF*CPF2/CPF0*EpsDot2(Hel2)             *IVI
+//c     $                                               +sB(2,Hel2)*CPF*CPF1/CPF0*EpsDot1(Hel1)             *IVI
+//c     $                                               +CPF*CPF1*CPF12/CPF0*EpsDot1(Hel1)*EpsDot21(Hel2)   *IVI
+//c     $                                               +CPF*CPF2*CPF12/CPF0*EpsDot2(Hel2)*EpsDot12(Hel1)   *IVI
+//c     $                                                                                      ) !
+//c     $                 +CNorm*BornABCD(j1,j2,j3,j4)* sProd                   *Y_IR                        !
+dcmplx cFactY=
+        CNorm*( sA[0][Hel1]*sA[1][Hel2]*Fprop1B                     *double(IVI)
+               +sA[0][Hel1]*sB[1][Hel2]*(CPF1/CPF0-1.0)             *double(IVI)
+               +sB[0][Hel1]*sA[1][Hel2]*(CPF2/CPF0-1.0)             *double(IVI)
+               +sB[0][Hel1]*sB[1][Hel2]*Fprop2B                     *double(IVI)
+               +sA[0][Hel1]*CPF1*CPF12/CPF0*EpsDot21[Hel2]          *double(IVI)  // terms due to diag WWgamma
+               +sA[1][Hel2]*CPF2*CPF12/CPF0*EpsDot12[Hel1]          *double(IVI)
+               +sB[0][Hel1]*CPF*CPF2/CPF0*EpsDot2[Hel2]             *double(IVI)
+               +sB[1][Hel2]*CPF*CPF1/CPF0*EpsDot1[Hel1]             *double(IVI)
+               +CPF*CPF1*CPF12/CPF0*EpsDot1[Hel1]*EpsDot21[Hel2]    *double(IVI)
+               +CPF*CPF2*CPF12/CPF0*EpsDot2[Hel2]*EpsDot12[Hel1]    *double(IVI) );
+AmpAdd( m_AmpExpo2,  cFactY ,BornABCD);
+dcmplx sProd =( sA[0][Hel1]+sB[0][Hel1])*( sA[1][Hel2]+sB[1][Hel2]);
+AmpAdd( m_AmpExpo2,  sProd*double(Y_IR) ,BornABCD);
+
+(*m_Out)<<"////////////////////////////////////////////////////////////////////////////////////////////////////"<<endl;
+(*m_Out)<<"///////////////////////////////////////////m_AmpExpo2///////////////////////////////////////////////"<<endl;
 for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=  ";
      for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//===========================
+//! terms due to ph1 ph2 attached to W
+//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF1*CPF12*WVpi0*(
+//c     $  ! absorbed to infraed-type      BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps1pC-2*eps1pA)*(2*eps2pB-2*eps2pD)* *IV ! 1
+//c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(               -2*UCAWX2(j3,j1)) *I9s1 ! 2
+//c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(-UCAWX1(j3,j1)                 ) *I9   ! 2
+//c     $ +EpsDot1 (hel1)*2*VBDWX2(j2,j4) * UCAW2 (j3,j1)                *I9s1 ! 3
+//c     $ - 2*UCAWX1(j3,j1)*EpsDot21(hel2)* VBDW1 (j2,j4)                *I9s2 ! 4
+//c     $ -UCAWX1(j3,j1)* VBDW2 (j2,j4) *(-EpsDot12(hel1)-2*eps1p2*DCMPLX(-ChaIni*m_e_QED))         *I9   ! 5
+//c     $ + eps1D2*(-2*UCAWX1(j3,j1))*        2* VBDWX2(j2,j4)                *I9   *DCMPLX(-ChaIni*m_e_QED)! 6
+//c     $ + UCAW1(j3,j1)*(2*VBDWX1(j2,j4)              )*EpsDot21(hel2)  *I9s2 ! 7
+//c     $ + UCAW1(j3,j1)*(                VBDWX2(j2,j4))*EpsDot21(hel2)  *I9   ! 7
+//!!!!     $ + UCAW1(j3,j1)*(t1-2*p2p1 )*VBDW2(j2,j4)                           *I9   *DCMPLX(-ChaIni*m_e_QED)! 8 (out)
+//c     $ + UCAW1(j3,j1)*(1D0/CPF2-2*p2p1 )*VBDW2(j2,j4)                      *I9   *DCMPLX(-ChaIni*m_e_QED)! 8    'Higgs' contrib added
+//c     $ + UCAW1(j3,j1)*VBDWX2(j2,j4)*(-EpsDot2(hel2)+2*eps2p1*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
+//c     $                                                                            )
 
 }//GPS_HiiPlusW
 
@@ -2770,6 +3069,28 @@ void KKceex::Amp2WCminus(KKcmplx2 &V, const double Sw2){
     V.m_A[0][0] = dcmplx(0.0); //(++)
 }//KKceex::Amp2WCminus
 
+
+void KKceex::Amp2to4(KKcmplx4 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U){
+// Born-like 4-dim. tensor product of two 2-dim. transition matrices
+for(int j1 = 0; j1<=1; j1++)
+  for(int j2 = 0; j2<=1; j2++)
+      for(int j3 = 0; j3<=1; j3++)
+         for(int j4 = 0; j4<=1; j4++){
+           Res.m_A[j1][j2][j3][j4] = Fact* V.m_A[j2][j4] *U.m_A[j3][j1];
+//           VBDWX2(j2,j4) *UC1W2( j3,j ) *U11a(j,j1)
+  }// j1,j2,j3,j4
+}//KKceex::Amp2to4
+
+void KKceex::Amp2to4add(KKcmplx4 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U){
+// Born-like 4-dim. tensor product of two 2-dim. transition matrices
+// Additive version
+for(int j1 = 0; j1<=1; j1++)
+  for(int j2 = 0; j2<=1; j2++)
+      for(int j3 = 0; j3<=1; j3++)
+         for(int j4 = 0; j4<=1; j4++){
+           Res.m_A[j1][j2][j3][j4] += Fact* V.m_A[j2][j4] *U.m_A[j3][j1];
+  }// j1,j2,j3,j4
+}//KKceex::Amp2to4
 
 void KKceex::Amp2Mult(KKcmplx2 &Res, dcmplx Fact, const KKcmplx2 &V, const KKcmplx2 &U){
 // Res = Fact* V * U
