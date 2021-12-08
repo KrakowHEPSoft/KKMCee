@@ -4061,64 +4061,64 @@ c]]]]]]]]]]]]]]
 *        //      _       -b    |      b+m-1-2     |      a+m-2    |      a                  //
 *        //      v  ------<----O--------<---------U--------<------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(prA12-prA1)*sA(2,Hel2)*CPF12/CPF0*IV2 !<b|X|1[1]a(2)|a>
-cc                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(      prA1)*sA(2,Hel2)*CPF12/CPF0*Y_IR1*I9X !<b|X|1[1]a(2)|a>
-cc                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U21a(j,j1)* prA12      *sA(2,Hel2)*CPF12/CPF0*IV2 !<b|X|2[1]a(2)|a>
+                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(prA12-prA1)*sA(2,Hel2)*CPF12/CPF0*IV2 !<b|X|1[1]a(2)|a>
+                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U11a(j,j1)*(      prA1)*sA(2,Hel2)*CPF12/CPF0*Y_IR1*I9X !<b|X|1[1]a(2)|a>
+                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U21a(j,j1)* prA12      *sA(2,Hel2)*CPF12/CPF0*IV2 !<b|X|2[1]a(2)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    |                  2               1                         //
 *        //                    |X                 |               |                         //
 *        //      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
 *        //      v  ------<----O--------<---------U-------<-------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
-cc                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
-cc                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
+                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(prA12-prA2)*sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|2[2]a(1)|a>
+                     Su1=Su1+Born2BCD(j,j2,j3,j4) *U22a(j,j1)*(      prA2)*sA(1,Hel1) *CPF12/CPF0*Y_IR1*I9Z!<b|X|2[2]a(1)|a>
+                     Su1=Su1+Born1BCD(j,j2,j3,j4) *U12a(j,j1)* prA12      *sA(1,Hel1) *CPF12/CPF0*IV2!<b|X|1[2]a(1)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  1               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+2       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----S--------<---------V--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1+( sB(2,Hel2)*(-prB1+prB12))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]1|X|a>
-cc                     Su1=Su1+( sB(2,Hel2)*( prB1      ))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9Y!<b|(2)b[1]1|X|a>
-cc                     Su1=Su1+( sB(2,Hel2)*(      prB12))*Vb12(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]2|X|a>
+                     Su1=Su1+( sB(2,Hel2)*(-prB1+prB12))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]1|X|a>
+                     Su1=Su1+( sB(2,Hel2)*( prB1      ))*Vb11(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9Y!<b|(2)b[1]1|X|a>
+                     Su1=Su1+( sB(2,Hel2)*(      prB12))*Vb12(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(2)b[1]2|X|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  2               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+1       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----S--------<---------V--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +(sB(1,Hel1)*(-prB2+prB12))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]2|X|a>
-cc                     Su1=Su1 +(sB(1,Hel1)*( prB2      ))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9T!<b|(1)b[2]2|X|a>
-cc                     Su1=Su1 +(sB(1,Hel1)*(      prB12))*Vb21(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]1|X|a>
+                     Su1=Su1 +(sB(1,Hel1)*(-prB2+prB12))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]2|X|a>
+                     Su1=Su1 +(sB(1,Hel1)*( prB2      ))*Vb22(j2,j)*BornA2CD(j1,j,j3,j4)*CPF/CPF0*Y_IR1*I9T!<b|(1)b[2]2|X|a>
+                     Su1=Su1 +(sB(1,Hel1)*(      prB12))*Vb21(j2,j)*BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1!<b|(1)b[2]1|X|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  |               1                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
 *        //      v  ------<----S--------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +sB(2,Hel2)    *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1/CPF0*Y_IR1*I9X !<b|(2)2|X|1[1]|a>
+                     Su1=Su1 +sB(2,Hel2)    *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1/CPF0*Y_IR1*I9X !<b|(2)2|X|1[1]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  |               2                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
 *        //      v  ------<----S--------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +sB(1,Hel1)    *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2/CPF0*Y_IR1*I9Z !<b|(1)1|X|2[2]|a>
+                     Su1=Su1 +sB(1,Hel1)    *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2/CPF0*Y_IR1*I9Z !<b|(1)1|X|2[2]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  |               2                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
 *        //      v  ------<----V--------<---------O--------<------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *sA(2,Hel2) *CPF2/CPF0   *Y_IR1*I9Y !<b|[1]1|X|a[2]|a>
+                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *sA(2,Hel2) *CPF2/CPF0   *Y_IR1*I9Y !<b|[1]1|X|a[2]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  |               1                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
 *        //      v  ------<----V--------<---------O--------<------S------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                      Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel1)*CPF1/CPF0      *Y_IR1*I9T !<b|[2]2|X|a(1)|a>
+                      Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel1)*CPF1/CPF0      *Y_IR1*I9T !<b|[2]2|X|a(1)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                                       E--2                                      //
 *        //                                       |               1                         //
@@ -4126,14 +4126,14 @@ cc                      Su1=Su1 +Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *sA(1,Hel
 *        //      _       -b                       |     a+m-1     |      a                  //
 *        //      v  ------<-------------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +EpsDot21(Hel2)  *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1*CPF12/CPF0*I9X  !<b|(2)2|X|1[1]|a>
-cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71
-cc     $                       *( UC1W2(j3,j )*(2*VBDWX2(j2,j4) )
-cc     $                         -VBDW2(j2,j4)*(2*UC1WX2(j3,j ) )                        )
-cc      Su1=Su1     -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
-cc     &                          *VBDWX2(j2,j4) *UC1W2( j3,j ) *U11a(j,j1)
-cc      Su1=Su1     +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
-cc     &                          *VBDW2( j2,j4) *UC1WX2(j3,j ) *U11a(j,j1)
+                     Su1=Su1 +EpsDot21(Hel2)  *Born1BCD(j,j2,j3,j4) *prA1*U11a(j,j1) *CPF1*CPF12/CPF0*I9X  !<b|(2)2|X|1[1]|a>
+     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71
+     $                       *( UC1W2(j3,j )*(2*VBDWX2(j2,j4) )
+     $                         -VBDW2(j2,j4)*(2*UC1WX2(j3,j ) )                        )
+      Su1=Su1     -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
+     &                          *VBDWX2(j2,j4) *UC1W2( j3,j ) *U11a(j,j1)
+      Su1=Su1     +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*CPF1*CPF12*WVpi0
+     &                          *VBDW2( j2,j4) *UC1WX2(j3,j ) *U11a(j,j1)
 !!!     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA1*U11a(j,j1)*CPF1*CPF12*WVpi0                       *I71b   ! (zeroed) included later
 !!!     $                       *(
 !!!     $                         -VBDW2(j2,j4)*(               -UC1WXA(j3,j) )           )
@@ -4144,10 +4144,10 @@ cc     &                          *VBDW2( j2,j4) *UC1WX2(j3,j ) *U11a(j,j1)
 *        //      _       -b                       |     a+m-2     |      a                  //
 *        //      v  ------<-------------<---------O--------<------U------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +EpsDot12(Hel1)  *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2*CPF12/CPF0*I9Z!<b|(1)1|X|2[2]|a>
-cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72
-cc     $                       *( UC2W1(j3,j )*(2*VBDWX1(j2,j4) )
-cc     $                         -VBDW1(j2,j4)*(2*UC2WX1(j3,j )              ) )
+                     Su1=Su1 +EpsDot12(Hel1)  *Born2BCD(j,j2,j3,j4) *prA2*U22a(j,j1) *CPF2*CPF12/CPF0*I9Z!<b|(1)1|X|2[2]|a>
+     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*U22a(j,j1)*CPF2*CPF12*WVpi0*I72
+     $                       *( UC2W1(j3,j )*(2*VBDWX1(j2,j4) )
+     $                         -VBDW1(j2,j4)*(2*UC2WX1(j3,j )              ) )
 cccc      Su1=Su1       -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVpi0*I72
 cccc     &                       *VBDWX1(j2,j4) *UC2W1( j3,j) *U22a(j,j1)
 cccc      Su1=Su1       +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prA2*CPF2*CPF12*WVpi0*I72
@@ -4162,10 +4162,10 @@ cccc     &                       *VBDW1(j2,j4)  *UC2WX1(j3,j) *U22a(j,j1)
 *        //      _       -b    |     -b+m+1       |                      a                  //
 *        //      v  ------<----V--------<---------O--------<-------------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *EpsDot2(Hel2) *CPF *CPF2/CPF0*I9Y  !<b|[1]1|X|a[2]|a>
-cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71
-cc     $                       *( UCAW2(j3,j1)*(2*V1DWX2(j ,j4)              )
-cc     $                         -V1DW2(j ,j4)*(2*UCAWX2(j3,j1)) )
+                     Su1=Su1 +Vb11(j2,j)*prB1 *BornA1CD(j1,j,j3,j4) *EpsDot2(Hel2) *CPF *CPF2/CPF0*I9Y  !<b|[1]1|X|a[2]|a>
+     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb11(j2,j)*prB1*CPF*CPF2*WVpi0*I71
+     $                       *( UCAW2(j3,j1)*(2*V1DWX2(j ,j4)              )
+     $                         -V1DW2(j ,j4)*(2*UCAWX2(j3,j1)) )
 cccc      Su1=Su1  -2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVpi0*I71
 cccc     &                         *Vb11(j2,j)*V1DWX2(j ,j4)*UCAW2( j3,j1)
 cccc      Su1=Su1  +2*0.5D0*DCMPLX(ChaIni*m_e_QED)*prB1*CPF*CPF2*WVpi0*I71
@@ -4180,10 +4180,10 @@ cccc     &                         *Vb11(j2,j)*V1DW2( j ,j4)*UCAWX2(j3,j1)
 *        //      _       -b    |     -b+m+2       |                      a                  //
 *        //      v  ------<----V--------<---------O--------<-------------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                     Su1=Su1 !+Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *EpsDot1(Hel1)*CPF *CPF1/CPF0*I9T  !<b|[2]2|X|a(1)|a>
-cc     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72
-cc     $                       *( UCAW1(j3,j1)*(2*V2DWX1(j ,j4)               )
-cc     $                         -V2DW1(j ,j4)*(2*UCAWX1(j3,j1) ) )
+                     Su1=Su1 !+Vb22(j2,j)*prB2 *BornA2CD(j1,j,j3,j4) *EpsDot1(Hel1)*CPF *CPF1/CPF0*I9T  !<b|[2]2|X|a(1)|a>
+     $                       -0.5D0*DCMPLX(ChaIni*m_e_QED)*Vb22(j2,j)*prB2*CPF*CPF1*WVpi0*I72
+     $                       *( UCAW1(j3,j1)*(2*V2DWX1(j ,j4)               )
+     $                         -V2DW1(j ,j4)*(2*UCAWX1(j3,j1) ) )
 cccc      Su1=Su1  -2*0.5D0*DCMPLX(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVpi0  *I72
 cccc     &                           *Vb22(j2,j) *V2DWX1(j,j4) *UCAW1( j3,j1)
 cccc      Su1=Su1  +2*0.5D0*DCMPLX(ChaIni*m_e_QED) *prB2*CPF*CPF1*WVpi0  *I72
@@ -4202,61 +4202,61 @@ cccc     &                           *Vb22(j2,j) *V2DW1( j,j4) *UCAWX1(j3,j1)
 *        //      _       -b    |     -b+m+2       |     a+m-1     |      a                  //
 *        //      v  ------<----*--------<---------O--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2  +Vb22(j2,l)*prB2  *Born12CD(j,l,j3,j4 )  *U11a(j,j1)*prA1*CPF1/CPF0*I8 ! <b|[2]2|X|1[1]|a>
+                        Su2=Su2  +Vb22(j2,l)*prB2  *Born12CD(j,l,j3,j4 )  *U11a(j,j1)*prA1*CPF1/CPF0*I8 ! <b|[2]2|X|1[1]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  |               2                         //
 *        //                    |                  |X              |                         //
 *        //      _       -b    |     -b+m+1       |     a+m-2     |      a                  //
 *        //      v  ------<----*--------<---------O--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2  +Vb11(j2,l)*prB1  *Born21CD(j,l,j3,j4 )  *U22a(j,j1)*prA2*CPF2/CPF0*I8 ! <b|[1]1|X|2[2]|a>
+                        Su2=Su2  +Vb11(j2,l)*prB1  *Born21CD(j,l,j3,j4 )  *U22a(j,j1)*prA2*CPF2/CPF0*I8 ! <b|[1]1|X|2[2]|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    |                  2               1                         //
 *        //                    |X                 |               |                         //
 *        //      _       -b    |      b+m-1-2     |      a+m-1    |      a                  //
 *        //      v  ------<----O--------<---------O--------<------*------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2 +Born1BCD(j,j2,j3,j4) *U121(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|1[2]1(1)|a>
-cc                        Su2=Su2 +Born2BCD(j,j2,j3,j4) *U221(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IA  ! <b|X|2[2]1(1)|a>
-cc                        Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua21(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|a[2]1(1)|a>
+                        Su2=Su2 +Born1BCD(j,j2,j3,j4) *U121(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|1[2]1(1)|a>
+                        Su2=Su2 +Born2BCD(j,j2,j3,j4) *U221(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IA  ! <b|X|2[2]1(1)|a>
+                        Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua21(j,l)*prA12 *U11a(l,j1)*prA1*CPF12/CPF0*IV2  ! <b|X|a[2]1(1)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    |                  1               2                         //
 *        //                    |X                 |               |                         //
 *        //      _       -b    |      b+m-1-2     |      a+m-2    |      a                  //
 *        //      v  ------<----O--------<---------O--------<------*------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2 +Born2BCD(j,j2,j3,j4) *U212(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|2[1]2(2)|a>
-cc                        Su2=Su2 +Born1BCD(j,j2,j3,j4) *U112(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IA ! <b|X|1[1]2(2)|a>
-cc                        Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua12(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|a[1]2(2)|a>
+                        Su2=Su2 +Born2BCD(j,j2,j3,j4) *U212(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|2[1]2(2)|a>
+                        Su2=Su2 +Born1BCD(j,j2,j3,j4) *U112(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IA ! <b|X|1[1]2(2)|a>
+                        Su2=Su2 -BornABCD(j,j2,j3,j4) *Ua12(j,l)*prA12  *U22a(l,j1)*prA2*CPF12/CPF0*IV2 ! <b|X|a[1]2(2)|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    1                  2               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+1       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----*--------<---------O--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2 +Vb11(j2,l)*prB1 *V121(l,j)*prB12 *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]1|X|a>
-cc                        Su2=Su2 +Vb11(j2,l)*prB1 *V122(l,j)*prB12 *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IA ! <b|(1)1[2]2|X|a>
-cc                        Su2=Su2 -Vb11(j2,l)*prB1 *V12b(l,j)*prB12 *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]b|X|a>
+                        Su2=Su2 +Vb11(j2,l)*prB1 *V121(l,j)*prB12 *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]1|X|a>
+                        Su2=Su2 +Vb11(j2,l)*prB1 *V122(l,j)*prB12 *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IA ! <b|(1)1[2]2|X|a>
+                        Su2=Su2 -Vb11(j2,l)*prB1 *V12b(l,j)*prB12 *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(1)1[2]b|X|a>
 *        /////////////////////////////////////////////////////////////////////////////////////
 *        //                    2                  1               |                         //
 *        //                    |                  |               |X                        //
 *        //      _       -b    |     -b+m+2       |    -b+m+1+2   |      a                  //
 *        //      v  ------<----*--------<---------O--------<------O------<----- u           //
 *        /////////////////////////////////////////////////////////////////////////////////////
-cc                        Su2=Su2 +Vb22(j2,l)*prB2 *V212(l,j)*prB12  *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[1]2|X|a>
-cc                        Su2=Su2 +Vb22(j2,l)*prB2 *V211(l,j)*prB12  *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IA ! <b|(2)2[1]1|X|a>
-cc                        Su2=Su2 -Vb22(j2,l)*prB2 *V21b(l,j)*prB12  *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[2]b|X|a>
+                        Su2=Su2 +Vb22(j2,l)*prB2 *V212(l,j)*prB12  *BornA2CD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[1]2|X|a>
+                        Su2=Su2 +Vb22(j2,l)*prB2 *V211(l,j)*prB12  *BornA1CD(j1,j,j3,j4)*CPF/CPF0*IA ! <b|(2)2[1]1|X|a>
+                        Su2=Su2 -Vb22(j2,l)*prB2 *V21b(l,j)*prB12  *BornABCD(j1,j,j3,j4)*CPF/CPF0*IV1 ! <b|(2)2[2]b|X|a>
                      ENDDO
                   ENDDO
 c===========================
       AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)
      $                 +CNorm*( Su1+Su2 )
 c===========================
-c      sProd = ( sA(1,Hel1)+sB(1,Hel1))*( sA(2,Hel2)+sB(2,Hel2))
-c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! non-infrared part: Fprop1- Fprop1B) is prop to ph1*ph2
-c     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*(Fprop1- Fprop1B)      *IV2 !
-c     $                                               +sB(1,Hel1)*sB(2,Hel2)*(Fprop2- Fprop2B)      *IV1
-c     $                                                                                      ) !
+      sProd = ( sA(1,Hel1)+sB(1,Hel1))*( sA(2,Hel2)+sB(2,Hel2))
+      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! non-infrared part: Fprop1- Fprop1B) is prop to ph1*ph2
+     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*(Fprop1- Fprop1B)      *IV2 !
+     $                                               +sB(1,Hel1)*sB(2,Hel2)*(Fprop2- Fprop2B)      *IV1
+     $                                                                                      ) !
 c===========================
       AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! infrared-type part
      $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*Fprop1B                      *IVI !
@@ -4273,54 +4273,54 @@ c===========================
      $                 +CNorm*BornABCD(j1,j2,j3,j4)* sProd                   *Y_IR                        !
 c===========================
 ! terms due to ph1 ph2 attached to W
-c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF1*CPF12*WVpi0*(
-c     $  ! absorbed to infraed-type      BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps1pC-2*eps1pA)*(2*eps2pB-2*eps2pD)* *IV ! 1
-c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(               -2*UCAWX2(j3,j1)) *I9s1 ! 2
-c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(-UCAWX1(j3,j1)                 ) *I9   ! 2
-c     $ +EpsDot1 (hel1)*2*VBDWX2(j2,j4) * UCAW2 (j3,j1)                *I9s1 ! 3
-c     $ - 2*UCAWX1(j3,j1)*EpsDot21(hel2)* VBDW1 (j2,j4)                *I9s2 ! 4
-c     $ -UCAWX1(j3,j1)* VBDW2 (j2,j4) *(-EpsDot12(hel1)-2*eps1p2*DCMPLX(-ChaIni*m_e_QED))         *I9   ! 5
-c     $ + eps1D2*(-2*UCAWX1(j3,j1))*        2* VBDWX2(j2,j4)                *I9   *DCMPLX(-ChaIni*m_e_QED)! 6
-c     $ + UCAW1(j3,j1)*(2*VBDWX1(j2,j4)              )*EpsDot21(hel2)  *I9s2 ! 7
-c     $ + UCAW1(j3,j1)*(                VBDWX2(j2,j4))*EpsDot21(hel2)  *I9   ! 7
-!!!!     $ + UCAW1(j3,j1)*(t1-2*p2p1 )*VBDW2(j2,j4)                           *I9   *DCMPLX(-ChaIni*m_e_QED)! 8 (out)
-c     $ + UCAW1(j3,j1)*(1D0/CPF2-2*p2p1 )*VBDW2(j2,j4)                      *I9   *DCMPLX(-ChaIni*m_e_QED)! 8    'Higgs' contrib added
-c     $ + UCAW1(j3,j1)*VBDWX2(j2,j4)*(-EpsDot2(hel2)+2*eps2p1*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
-c     $                                                                            )
+      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF1*CPF12*WVpi0*(
+ccc     $  ! absorbed to infraed-type      BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps1pC-2*eps1pA)*(2*eps2pB-2*eps2pD)* *IV ! 1
+     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(               -2*UCAWX2(j3,j1)) *I9s1 ! 2
+     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(-UCAWX1(j3,j1)                 ) *I9   ! 2
+     $ +EpsDot1 (hel1)*2*VBDWX2(j2,j4) * UCAW2 (j3,j1)                *I9s1 ! 3
+     $ -2*UCAWX1(j3,j1)*EpsDot21(hel2)* VBDW1 (j2,j4)                *I9s2 ! 4
+     $ -UCAWX1(j3,j1)* VBDW2 (j2,j4) *(-EpsDot12(hel1)-2*eps1p2*DCMPLX(-ChaIni*m_e_QED))         *I9   ! 5
+     $ + eps1D2*(-2*UCAWX1(j3,j1))*        2* VBDWX2(j2,j4)                *I9   *DCMPLX(-ChaIni*m_e_QED)! 6
+     $ + UCAW1(j3,j1)*(2*VBDWX1(j2,j4)              )*EpsDot21(hel2)  *I9s2 ! 7
+     $ + UCAW1(j3,j1)*(                VBDWX2(j2,j4))*EpsDot21(hel2)  *I9   ! 7
+ccc!!!!     $ + UCAW1(j3,j1)*(t1-2*p2p1 )*VBDW2(j2,j4)                           *I9   *DCMPLX(-ChaIni*m_e_QED)! 8 (out)
+     $ + UCAW1(j3,j1)*(1D0/CPF2-2*p2p1 )*VBDW2(j2,j4)                      *I9   *DCMPLX(-ChaIni*m_e_QED)! 8    'Higgs' contrib added
+     $ + UCAW1(j3,j1)*VBDWX2(j2,j4)*(-EpsDot2(hel2)+2*eps2p1*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
+     $                                                                            )
 c===========================
 ! terms due to ph2 ph1 attached to W
-c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF2*CPF12*WVpi0*(
-c     $   ! absorbed to infraed-type     BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps2pC-2*eps2pA)*(2*eps1pB-2*eps1pD)*IV ! 1
-c     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(               -2*UCAWX1(j3,j1)) *I9s2 ! 2
-c     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(-UCAWX2(j3,j1)                 ) *I9   ! 2
-c     $ +EpsDot2 (hel2)*2*VBDWX1(j2,j4) * UCAW1 (j3,j1)                *I9s2 ! 3
-c     $ - 2*UCAWX2(j3,j1)*EpsDot12(hel1)* VBDW2 (j2,j4)                *I9s1 ! 4
-c     $ -UCAWX2(j3,j1)* VBDW1 (j2,j4)*(-EpsDot21(hel2)-2*eps2p1*DCMPLX(-ChaIni*m_e_QED))           *I9  ! 5
-c     $ + eps1D2*(-2*UCAWX2(j3,j1))*        2* VBDWX1(j2,j4)                *I9  *DCMPLX(-ChaIni*m_e_QED) ! 6
-c     $ + UCAW2(j3,j1)*(2*VBDWX2(j2,j4)              )*EpsDot12(hel1)  *I9s1 ! 7
-c     $ + UCAW2(j3,j1)*(                VBDWX1(j2,j4))*EpsDot12(hel1)  *I9   ! 7
-!!!!     $ + UCAW2(j3,j1)*(t2-2*p2p1)*VBDW1(j2,j4)                            *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8 (out)
-c     $ + UCAW2(j3,j1)*(1D0/CPF1-2*p2p1)*VBDW1(j2,j4)                       *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8   'Higgs' contrib added
-c     $ + UCAW2(j3,j1)*VBDWX1(j2,j4)*(-EpsDot1(hel1)+2*eps1p2*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
-c     $                                                                            )
+      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF2*CPF12*WVpi0*(
+ccc     $   ! absorbed to infraed-type     BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps2pC-2*eps2pA)*(2*eps1pB-2*eps1pD)*IV ! 1
+     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(               -2*UCAWX1(j3,j1)) *I9s2 ! 2
+     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(-UCAWX2(j3,j1)                 ) *I9   ! 2
+     $ +EpsDot2 (hel2)*2*VBDWX1(j2,j4) * UCAW1 (j3,j1)                *I9s2 ! 3
+     $ - 2*UCAWX2(j3,j1)*EpsDot12(hel1)* VBDW2 (j2,j4)                *I9s1 ! 4
+     $ -UCAWX2(j3,j1)* VBDW1 (j2,j4)*(-EpsDot21(hel2)-2*eps2p1*DCMPLX(-ChaIni*m_e_QED))           *I9  ! 5
+     $ + eps1D2*(-2*UCAWX2(j3,j1))*        2* VBDWX1(j2,j4)                *I9  *DCMPLX(-ChaIni*m_e_QED) ! 6
+     $ + UCAW2(j3,j1)*(2*VBDWX2(j2,j4)              )*EpsDot12(hel1)  *I9s1 ! 7
+     $ + UCAW2(j3,j1)*(                VBDWX1(j2,j4))*EpsDot12(hel1)  *I9   ! 7
+!!!!     $ + UCAW2(j3,j1)*(t2-2*p2p1)*VBDW1(j2,j4)                          *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8 (out)
+     $ + UCAW2(j3,j1)*(1D0/CPF1-2*p2p1)*VBDW1(j2,j4)                       *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8   'Higgs' contrib added
+     $ + UCAW2(j3,j1)*VBDWX1(j2,j4)*(-EpsDot1(hel1)+2*eps1p2*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
+     $                                                                            )
 c===========================
-c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)   ! terms due to 4 boson coupling
-c     $                 +CNorm*(1D0) *(m_e_QED**2)*CPF*CPF12*WVpi0   !+CNorm*(-1D0) *DCMPLX(0,-m_e_QED**2)*CPF*CPF12*WVpi0
-c     $                 *(-BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*2*eps1D2         *IVI
-c     $                      +0.5D0 *UCAW1(j3,j1)*VBDW2(j2,j4)               *I10
-c     $                      +0.5D0 *UCAW2(j3,j1)*VBDW1(j2,j4)               *I10
-c     $                                                                )
+      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)   ! terms due to 4 boson coupling
+     $                 +CNorm*(1D0) *(m_e_QED**2)*CPF*CPF12*WVpi0*(        !!!+CNorm*(-1D0) *DCMPLX(0,-m_e_QED**2)*CPF*CPF12*WVpi0
+     $                  -BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*2*eps1D2          *IVI
+     $                      +0.5D0 *UCAW1(j3,j1)*VBDW2(j2,j4)               *I10
+     $                      +0.5D0 *UCAW2(j3,j1)*VBDW1(j2,j4)               *I10
+     $                                                                )
 c===========================
-c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)+ CNorm*(-0.5D0) *DCMPLX(ChaIni*m_e_QED)*WVpi0 *(  ! terms abcd due rem. single WWgam coupl (redistr)
-c     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4) ) -VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)             ) )*sA(2,Hel2)      *CPF2*CPF12 *I9s2      ! (a) plus below
-c     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4)               )-VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)) )*sB(2,Hel2)      *CPF *CPF1  *I9s2      ! (b) plus below
-c     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4) ) -VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)             ) )*sA(1,Hel1)      *CPF1*CPF12 *I9s1      ! (c) plus below
-c     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4)               )-VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)) )*sB(1,Hel1)      *CPF*CPF2   *I9s1      ! (d) plus below
-c     $                                      -VBDW1(j2,j4)*(                  UCAW2(j3,j1) )*DCMPLX( m_e_QED)*CPF2*CPF12 *I9B       ! (a) plus  I72b
-c     $  +( UCAW1(j3,j1)*(                 VBDW2(j2,j4)  )                                 )*DCMPLX(-m_e_QED)*CPF *CPF1  *I9B       ! (b) plus  I72b
-c     $                                      -VBDW2(j2,j4)*(                  UCAW1(j3,j1) )*DCMPLX( m_e_QED)*CPF1*CPF12 *I9B       ! (c) plus  I71b
-c     $  +( UCAW2(j3,j1)*(                 VBDW1(j2,j4) )                                  )*DCMPLX(-m_e_QED)*CPF*CPF2   *I9B       ! (d) plus  I71b
-c     $                                                                         )
+      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)+ CNorm*(-0.5D0) *DCMPLX(ChaIni*m_e_QED)*WVpi0 *(  ! terms abcd due rem. single WWgam coupl (redistr)
+     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4) ) -VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)             ) )*sA(2,Hel2)      *CPF2*CPF12 *I9s2      ! (a) plus below
+     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4)               )-VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)) )*sB(2,Hel2)      *CPF *CPF1  *I9s2      ! (b) plus below
+     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4) ) -VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)             ) )*sA(1,Hel1)      *CPF1*CPF12 *I9s1      ! (c) plus below
+     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4)               )-VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)) )*sB(1,Hel1)      *CPF*CPF2   *I9s1      ! (d) plus below
+     $                                      -VBDW1(j2,j4)*(                  UCAW2(j3,j1) )*DCMPLX( m_e_QED)*CPF2*CPF12 *I9B       ! (a) plus  I72b
+     $  +( UCAW1(j3,j1)*(                 VBDW2(j2,j4)  )                                 )*DCMPLX(-m_e_QED)*CPF *CPF1  *I9B       ! (b) plus  I72b
+     $                                      -VBDW2(j2,j4)*(                  UCAW1(j3,j1) )*DCMPLX( m_e_QED)*CPF1*CPF12 *I9B       ! (c) plus  I71b
+     $  +( UCAW2(j3,j1)*(                 VBDW1(j2,j4) )                                  )*DCMPLX(-m_e_QED)*CPF*CPF2   *I9B       ! (d) plus  I71b
+     $                                                                         )
                ENDDO
             ENDDO
          ENDDO
