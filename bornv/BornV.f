@@ -442,7 +442,7 @@ C end
       INCLUDE 'BornV.h'
       DOUBLE PRECISION   R,Rho, BornV_Crude
       DOUBLE PRECISION   gamiCR, gami, alfi, beta, RJac
-      INTEGER NevGen
+      INTEGER NevGen, seed
 *-----------------------------------------------
       m_XXXene =  m_CMSene                 ! hidden input for BornV_Crude
 *-----------------------------------------------
@@ -457,10 +457,18 @@ C end
 c[[[[[[[[[[[[[[[[[[[[[[[[[
       CALL KarLud_GetNevGen(NevGen)
       IF(NevGen.gt.0) THEN
-      IF(NevGen.eq.1) m_vv=0.2
-      IF(NevGen.eq.2) m_vv=0.4
+      IF(NevGen.eq.1) m_vv=0.4
+      IF(NevGen.eq.2) m_vv=0.2
       IF(NevGen.eq.3) m_vv=0.6
       IF(NevGen.eq.4) m_vv=0.8
+      IF(NevGen.eq.5) m_vv=0.1
+      IF(NevGen.eq.6) m_vv=0.3
+      IF(NevGen.eq.7) m_vv=0.5
+      IF(NevGen.eq.8) m_vv=0.7
+      IF(NevGen.eq.9) m_vv=0.0001
+cc      seed = 54217317+10000000*m_vv
+cc      seed = 54217317
+cc      CALL pseumar_initialize(seed, 0, 0)
       write(*,*)     '================================================================================================='
       write(*,*)      '$$$ BornV_RhoVesko1:  m_vv=', m_vv
       write(m_out,*) '================================================================================================='

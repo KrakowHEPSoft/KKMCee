@@ -119,8 +119,10 @@
       INTEGER lenv
       INTEGER ijkl_new, ntot_new,ntot2_new
       REAL              zuni,uni
-      INTEGER ivec
+      INTEGER ivec, icont
+      DATA icont /0/
 *-------------------------------------------------------------------------
+      icont = icont+1
       IF (m_iwarm  .NE.  9000009)  THEN
 * Default initialization. User has called ranmar without rmarin.
          ijkl_new  = 54217137
@@ -152,7 +154,7 @@
          ENDIF
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[
-c      write(*,*) '###PseuMar_MakeVec=',lenv, (rvec(ivec), ivec=1,lenv)
+c      write(16,*) '###PseuMar_MakeVec icont, lenv, rvec=',icont,lenv, (rvec(ivec), ivec=1,lenv)
 c]]]]]]]]]]]]]]]]]]]]]
       m_ntot  = m_ntot + lenv
       IF (m_ntot  .GE.  modcns)  THEN

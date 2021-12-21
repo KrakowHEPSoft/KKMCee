@@ -463,7 +463,7 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       INTEGER           i,j,k
       INTEGER           LevPri,Ie1Pri,Ie2Pri
       INTEGER           KFfin,NevCru
-      INTEGER           TauIsInitialized
+      INTEGER           TauIsInitialized,seed
       DOUBLE PRECISION  wt_fsr,wt_isr,WtScaled,XCruNb
       DOUBLE PRECISION  CMSE, vv, svar1, Exe, SvarQ
       DOUBLE PRECISION  charg2,amfi1,amfi2
@@ -485,6 +485,10 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
          m_WtSet(j)  =0d0
          m_WtList(j) =0d0
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[
+      seed = 54217317
+      CALL pseumar_initialize(seed, 0, 0)
+c]]]]]]]]]]]]]]]]]]]]
 * =============================================
 *                   ISR
 * =============================================

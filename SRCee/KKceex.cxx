@@ -161,9 +161,8 @@ void KKceex::Make(){
   int    KFini   = m_Event->m_KFini;
   int    KFfin   = m_Event->m_KFfin;
 
-  m_HasFSR = DB->KeyFSR;     // general FSR switch
-  // but exception for neutrinos
-  if( KFfin == 12 || KFfin == 12 || KFfin == 16) m_HasFSR = 0;
+  m_HasFSR = DB->KeyFSR;          // general FSR switch
+  m_HasFSR = m_Event->m_HasFSR;   // overruled by KKarfin (exception for neutrinos)
 
   double Mbeam = DB->fmass[KFini];  // to be refined, current or constituent?
   double Massf = DB->fmass[KFfin];
@@ -1096,12 +1095,12 @@ for(int j1 = 0; j1<=1; j1++)
 //(*m_Out)<<"////////////////////////////////////////BornPlus//////////////////////////////////////////////////"<<endl;
 //(*m_Out)<< "m_FFacTT="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacTT[j];(*m_Out)<<endl;
 //(*m_Out)<< "m_FFacUU="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacUU[j];(*m_Out)<<endl;
-(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "   m_BornC("<<j1<<","<<j2<<",*,*)=";
-   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_BornC.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "m_AmpBornW("<<j1<<","<<j2<<",*,*)=";
-   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "   m_BornC("<<j1<<","<<j2<<",*,*)=";
+//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_BornC.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "m_AmpBornW("<<j1<<","<<j2<<",*,*)=";
+//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 
@@ -1151,17 +1150,16 @@ m_RhoExp0 = Sum0 *m_ExpoNorm;
 m_RhoExp1 = Sum1 *m_ExpoNorm;
 m_RhoExp2 = Sum2 *m_ExpoNorm;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
 (*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@KKceex::MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
-(*m_Out)<<"m_ExpoNorm= "<<m_ExpoNorm<<endl;
-  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo0("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo0.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-  (*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
-       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"m_ExpoNorm= "<<m_ExpoNorm<<endl;
+//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo0("<<j1<<","<<j2<<",*,*)=";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo0.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//  (*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
+//    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
+//       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 (*m_Out)<<"@@@@@@@@ m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//MakeRho
@@ -1330,11 +1328,11 @@ for(int j1 = 0; j1<=1; j1++)
 //[[[  AmpAdd( m_AmpExpo2, sProd*Vir2,m_BornC);
   AmpAdd( m_AmpExpo2, sProd*Vir2,m_BornD);             // m_BornD inludes W-exchange!
 //[[[[[[[[[[[[[[[[[[[[
-(*m_Out)<<"++++++++++++++++++++++++++++++++++++++++++GPS_HiniPlus+++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-(*m_Out)<<" Vir1,Vir2,m_F1fin1"<< Vir1<<"  "<<Vir2<<"  "<<m_F1fin1<<endl;
-(*m_Out)<<"---------------------------------------------------------------------------------------------------"<<endl;
-  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
+//(*m_Out)<<"++++++++++++++++++++++++++++++++++++++++++GPS_HiniPlus+++++++++++++++++++++++++++++++++++++++++++++"<<endl;
+//(*m_Out)<<" Vir1,Vir2,m_F1fin1"<< Vir1<<"  "<<Vir2<<"  "<<m_F1fin1<<endl;
+//(*m_Out)<<"---------------------------------------------------------------------------------------------------"<<endl;
+//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
+//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 //]]]]]]]]]]]]]]]]]]]]]
 }// GPS_HiniPlus
 
@@ -4145,7 +4143,7 @@ for(int i=1; i<=m_nPhot; i++){      //f77 indexing
    }
 }//for
 //[[[[[[[[[[[[[[
-(*m_Out) << "%%% m_Phel= ";
+(*m_Out) << "%%%%%%%%% m_Phel= ";
 for(int i=1; i<=m_nPhot;i++ ) (*m_Out)<<" "<<m_Phel[i]; (*m_Out)<<endl;
 //]]]]]]]]]]]]]]
 //if(m_icont <200){for(int i=1; i<=m_nPhot;i++ ) cout<<" "<<m_Phel[i]; cout<<endl;}

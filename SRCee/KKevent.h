@@ -28,12 +28,14 @@ class KKevent: public TObject{
  static const int maxWT   =  1001;   // max. num. KKMC wt list +1
  double         m_CMSene;            // hadron-hadron CMS energy
  double         m_XXXene;            // parto-parton  CMS energy
- // internal MC generation variables
+ // internal MC generation variables changing event per event
  long     m_EventCounter;            // event serial counter
  int      m_KFini;                   // incoming fermion ID (negative if 1st is anti)
  int      m_KFfin;                   // outgoing fermion ID (negative if 1st is anti)
+ int      m_HasFSR;                  // =0,1 FSR absent,present
+ double   m_Xenph;                   // ISR enhancement in case of IFI, otherwise =1
  double   m_Mbeam1, m_Mbeam2;        // masses of parton (quark) beams
- double   m_vv;                      // vv of KKMC
+ double   m_vv;                      // vv ISR variable of KKMC
  double   m_CosTheta;                // cos(theta) at the crude level
  double   m_r1, m_r2;                // z variables for initial Energy Beam Spread (EBS)
  // event 4-momenta

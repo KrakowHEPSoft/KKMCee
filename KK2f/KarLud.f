@@ -230,7 +230,7 @@ c[[[[[[[[[[[[[[[[[[[[[[
         seed = 54217317
         CALL pseumar_initialize(seed, 0, 0)
         CALL PseuMar_MakeVec(rvec,1)
-        write(m_out,*) '@@@@ KarLud_Make: rvec(1)=', rvec(1)
+cc       write(m_out,*) '@@@@ KarLud_Make: rvec(1)=', rvec(1)
       ENDIF
 c]]]]]]]]]]]]]]]]]]]]]]
       m_exe    = 1d0
@@ -529,6 +529,10 @@ c]]]]]]]]]]]]]]]]]]]]]]
          CALL BornV_GetAvMult(AvMult)
  100     CONTINUE
          CALL KarLud_PoissGen(AvMult,m_nmax,m_nphot,rr)
+c[[[[[[[[[[[[[[[[[[[[
+      write(m_out,*) '@@@@ KarLud_YFSini: m_nphot=', m_nphot,' vv=',vv,'  m_vvmin=', m_vvmin,"  AvMult=",AvMult
+      write(m_out,*) '@@@@ KarLud_YFSini: ',('rr(',i,')=',rr(i),i=1,m_nphot)
+c]]]]]]]]]]]]]]]]]]]]
          m_nphot = m_nphot+1
 * For special tests of program at fixed multiplicity (for advc. users)
          IF((m_MltISR .NE. 0) .AND. (m_nphot .NE. m_MltISR)) GOTO 100
@@ -543,6 +547,9 @@ c]]]]]]]]]]]]]]]]]]]]]]
          m_WtMass=1d0
          DO i=1,m_nphot
             xk=xph(i)
+c[[[[[[[[[[[[[[[[[[[
+cc            write(m_out,*) '@@@@ KarLud_YFSini: xph(',i,')=',xph(i)
+c]]]]]]]]]]]]]]]]]]]
             am2  = (m_amel/Ene)**2
             CALL KarLud_AngBre(am2,del1,del2,cg,sg,dist0,dist1)
             dist0 = dist0 *m_Xenph
@@ -693,6 +700,7 @@ c]]]]]]]]]]]]]]]]]]]]]]
 *//         purpose (i.e.  generation of photon energies).                   //
 *//////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
+      INCLUDE 'KarLud.h'
       INTEGER           nmax,mult
       DOUBLE PRECISION  rr(*),average
 * locals
@@ -709,6 +717,9 @@ c]]]]]]]]]]]]]]]]]]]]]]
          sum=sum+y
          nn=nn+1
          rr(nn)=sum/(-average)
+c[[[[[[[[[[[[[[[[[[[[
+cc      write(m_out,*) '>>>>>>>KarLud_PoissGen: rvec=', rvec(1),'  rr=',rr(nn), '  average=',average
+c]]]]]]]]]]]]]]]]]]]]
          IF(sum .LT. -average) GOTO 130
       ENDDO
       nfail=nfail+1

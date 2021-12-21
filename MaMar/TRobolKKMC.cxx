@@ -607,7 +607,8 @@ void TRobolKKMC::Production(double &iEvent)
   double RN = KKMC_generator->f_RNgen->Rndm();
   double dalf = -m_DelAlf + 2*m_DelAlf*RN;
 //
-// Modifying alpha_QED
+// Modifying randomly alpha_QED
+/*
   double xmodif = 1 + dalf;
   bornv_setqedmodif_(xmodif);
 // recalculating WC weight
@@ -615,6 +616,7 @@ void TRobolKKMC::Production(double &iEvent)
 // Back to normal alpha !!!
   xmodif = 1.0e0;  // Back to normal !!!
   bornv_setqedmodif_( xmodif);
+  */
  /////////////////////////////
   double Wt2CEEX1 = KKMC_generator->GetWtAlter(202);    //  CEEX Weight O(alf1)
   double Wt2CEEX1n= KKMC_generator->GetWtAlter(252);    //  CEEX Weight O(alf1)

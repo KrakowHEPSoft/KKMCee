@@ -319,6 +319,13 @@
       average = average *m_Xenph
     5 CONTINUE
       CALL KarFin_PoissGen(average,m_nmax,m_nphot,rr)
+c[[[[[[[[[[[[[[[[[[[[
+c      write(m_out,*) '//// KarFin_YFSfin:amc2=',amc2,' alf1=',alf1,'  m_delta=',m_delta
+c      write(m_out,*) '//// KarFin_YFSfin:betc=',betc,' gamf2=',gamf2,'  CharSq=',CharSq
+      write(m_out,*) '//// KarFin_YFSfin: m_nphot=', m_nphot,'  average=',average, ' m_Xenph=',m_Xenph
+      write(m_out,*) '//// KarFin_YFSfin: ',('rr(',i,')=',rr(i),i=1,m_nphot)
+c]]]]]]]]]]]]]]]]]]]]
+
 ** This is for tests of program at fixed multiplicity (advanc. users)
       IF((m_MltFSR .NE. 0) .AND. (m_nphot .NE. m_MltFSR)) GOTO 5
 **

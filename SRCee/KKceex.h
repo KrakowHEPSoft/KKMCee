@@ -141,6 +141,7 @@ class KKceex: public TObject{
  KKcmplx4    m_Boxy;               // Encapsulated amplitude
  KKcmplx4    m_BornB;              // Encapsulated amplitude
  KKcmplx4    m_BornC;              // Encapsulated amplitude
+ KKcmplx4    m_BornD;              // Encapsulated amplitude
  KKcmplx4    m_AmpExpo0;  // O(alf0)_exp
  KKcmplx4    m_AmpExpo1;  // O(alf1)_exp
  KKcmplx4    m_AmpExpo2;  // O(alf2)_exp

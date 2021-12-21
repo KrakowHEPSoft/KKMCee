@@ -374,6 +374,9 @@
          iSaveCPU = 1
          IF(nphot .EQ. 0) GOTO 300
 *        =========================
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      CALL GPS_BornZero(m_AmpExpo2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
          DO j1=1,nphot
             DO k=1,4
                ph1(k) = Phot(j1,k)
@@ -383,13 +386,12 @@
                Sactu1  = m_isr(j1)*Sini(Hel1,j1) + (1-m_isr(j1))*Sfin(Hel1,j1)
                SvarX1  = (QQ(4)+ph1(4))**2-(QQ(3)+ph1(3))**2-(QQ(2)+ph1(2))**2-(QQ(1)+ph1(1))**2 !
                CKine   = (svarX1/svarQ)
-
                IF( m_isr(j1) .EQ. 1) THEN
                   CALL GPS_HiniPlus(KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph1,mph,Hel1,Sactu1,sProd) !
                   CALL GPS_HiniPlusW(1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph1,mph,Hel1,Sactu1,sProd) ! One calculates part due to W for neutrinos for 1 subtract for -1, fixed transfer approx for 0.
 C[[[[[[[[[[
 C                  IF (NPHOT.EQ.2.and.phot(1,4)/ene.gt.m_Vcut(2).and.phot(2,4)/ene.gt.m_Vcut(2)) then
-C                   CALL GPS_HiniPlusW(1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph1,mph,Hel1,Sactu1,sProd) ! check 
+C???                   CALL GPS_HiniPlusW(1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph1,mph,Hel1,Sactu1,sProd) ! check???
 C                  ENDIF
 C]]]]]]]]]]
                ELSE
@@ -423,8 +425,8 @@ C]]]]]]]]]]
                      CALL GPS_HiniPlusW(-1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph1,mph,Hel1,SactuA,sProd) !
                      CALL GPS_HiniPlusW(-1,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph2,mph,Hel2,SactuB,sProd) !
 
-                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2) 
-c[[[                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p)
+                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2)
+c[[[???                     CALL GPS_HiiPlusW(0,Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p)
                   ELSEIF( (m_isr(j1) .EQ. 0) .AND. (m_isr(j2) .EQ. 0) ) THEN ! fin-fin
                      CALL GPS_HffPlus(Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2) !
                      CALL GPS_HffPlus(Cfact2,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,Hel1,ph1,Hel2,ph2,mph,m_AmpExpo2p) !
@@ -632,12 +634,14 @@ c]]]]]]]]]]]]]]]]]]]]
       m_RhoExp2p = Sum2p *ExpoNorm
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
       write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
-      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPS_MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
-      write(16,*) 'ExpoNorm=',ExpoNorm
-      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo0(',j1,',',j2,',*,*)=',((m_AmpExpo0(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-      write(16,*) '---------------------------------------------------------------------------------------------------------------'
-      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo1(',j1,',',j2,',*,*)=',((m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-      write(16,*) 'm_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
+c      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPS_MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+c      write(16,*) 'ExpoNorm=',ExpoNorm
+c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo0(',j1,',',j2,',*,*)=',((m_AmpExpo0(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '---------------------------------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo1(',j1,',',j2,',*,*)=',((m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '---------------------------------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo2(',j1,',',j2,',*,*)=',((m_AmpExpo2(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+      write(16,*) '@@@@@@@@@ m_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_MakeRho!!!
 
@@ -954,13 +958,9 @@ c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          FFacUZ(j1) = PropZet*ZetVPi *(Ve*Vf*VVCor*RsqV -Hel1*Ae*Vf*RsqV -Hel1*Ve*Af*RsqA +Ae*Af*RsqA) !
          FFacTT(j1) = FFacTG(j1)+FFacTZ(j1)
          FFacUU(j1) = FFacUG(j1)+FFacUZ(j1)
-c[[[[[[[[[[[[[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-c         IF(icont.LE.10) THEN
-c            write(m_out,'(a,i5,5g22.14)') 'j1,FFacUU,TT= ',j1,FFacUU(j1),FFacTT(j1)
-c         ENDIF
-c]]]]]]]]]]]]]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
+c      write(16,*) '///////////////////////////////////////////GPS_BornPlus///////////////////////////////////////////////////////'
 c      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
 c      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
@@ -1038,6 +1038,9 @@ C--------
                   m_AmpExpo1(j1,j2,j3,j4) = m_AmpExpo1(j1,j2,j3,j4) 
      $                 +Cfac*AmpBorn*(1 +m_F1ini1)*(1 +m_F1fin1 )  !!! Born, O(alf1) FFactors
      $                 +Cfac*AmpBoxy                               !!! O(alf1) boxes
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+c[[[[[[test                  m_AmpExpo1(j1,j2,j3,j4) = dcmplx(0d0)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *///////// new !!!!!!!! in construction !!!!!!! ////////////////////
                   m_AmpExpo2(j1,j2,j3,j4) = m_AmpExpo2(j1,j2,j3,j4) 
      $                 +Cfac*AmpBorn*(1 +m_F1ini2)*(1 +m_F1fin2 )  !!! Born, O(alf2) FFactors
@@ -1053,8 +1056,10 @@ C--------
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+c      write(16,*) '///////////////////////////////////////////GPS_BornPlus///////////////////////////////////////////////////////'
 c      write(16,'(a,i1,a,i1,a,8f22.11)') (('m_AmpBorn(',j1,',',j2,',*,*)=',((m_AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-cc      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '--------------------------------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8f22.11)') ((' AmpBornW(',j1,',',j2,',*,*)=',(( AmpBornW(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       Xborn = BornSum
       Xboxy = BoxySum
@@ -1253,6 +1258,9 @@ c]]]]
 c[[[[[[[[[[[[[[[[[[[[[[[*debug*
 c      write(16,*) '=================================GPS_BornWPlus=========================================='
 c      write(16,'(a,i1,a,i1,a,8f22.11)') (( 'AmpBornW(',j1,',',j2,',*,*)=',(( AmpBorn(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) 's,t,PropW,WVPi=',s,t,PropW,WVPi
+c      write(16,'(a,4f22.11)') ' FFacTT=', (FFacTT(j),j=1,2)
+c      write(16,'(a,4f22.11)') ' FFacUU=', (FFacUU(j),j=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]
 !      write(*,*) ampbornw
 !      stop
@@ -2200,6 +2208,12 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,Fleps,  p2,-Fleps,  p3,m3,  
 cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,   p4,-m4,AmpBornXm) !!!!<****
       CALL GPS_Born     (    KFi,KFf,PX,       ph,mph,    p2,-Fleps,  p3,m3,   p4,-m4,   AmpBornU)
       CALL GPS_Born(         KFi,KFf,PX,       p1,Fleps,  ph,-mph,    p3,m3,   p4,-m4,   AmpBornV)
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&GPS_HiniPlus&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('AmpBornU(',j1,',',j2,',*,*)=',(( AmpBornU(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '---------------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('AmpBornV(',j1,',',j2,',*,*)=',(( AmpBornV(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 * Fermion propagarotors
       pr1 = 1d0/(p1(4)*ph(4)-p1(3)*ph(3)-p1(2)*ph(2)-p1(1)*ph(1))/2d0
@@ -2212,6 +2226,11 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,  
          CALL GPS_MakeUb(ph,Sig, ph,mph,  p1,m1,    U)
          CALL GPS_MakeVb(ph,Sig, p2,m2,   ph,mph,   V)
       ENDIF
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&GPS_HiniPlus&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
+c      write(16,'(a,8f22.11)') 'U(*,*)= ',((U(j1,j2),j2=1,2),j1=1,2)
+c      write(16,'(a,8f22.11)') 'V(*,*)= ',((V(j1,j2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 *--------------------
       IF( m_KeyArb  .EQ.  0 ) THEN
          s1(1)  = -GPS_Sof1( 1,ph,p1)
@@ -2223,7 +2242,9 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,  
       s1(2) = -DCONJG(s1(1))
       s2(2) = -DCONJG(s2(1))
 *
-      
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      CALL GPS_BornZero(m_AmpExpo1)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       DO j1=1,2
          DO j2=1,2
             DO j3=1,2
@@ -2250,6 +2271,12 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,  
             ENDDO
          ENDDO
       ENDDO
+c[[[[[[[[[[[[[[[[[[[[[[[*debug*
+c      write(16,*) '+++++++++++++++++++++++++++++++++GPS_HiniPlus++++++++++++++++++++++++++++++++++++++++++'
+c      write(16,*) 'Vir1,Vir2,m_F1fin1=',Vir1,Vir2,m_F1fin1
+c      write(16,*) '----------------------------------------------------------------------------------------'
+c      write(16,'(a,i1,a,i1,a,8g22.11)')(('m_AmpExpo2(',j1,',',j2,',*,*)=',(( m_AmpExpo2(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!! GPS_HiniPlus
 
       SUBROUTINE GPS_HiniPlusW(Ikey,KFi,KFf,PX,p1,m1,p2,m2,p3,m3,p4,m4,ph,mph,Hel,Sactu,sProd)
@@ -2291,7 +2318,7 @@ cc      CALL GPS_Born     (    KFi,KFf,PX,       p1,m1,     p2,-m2,     p3,m3,  
       DOUBLE PRECISION ssum0,ssuma,ssumb
 *----------------------------------------
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(16,*) '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&GPS_HiniPlusW&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
+c      write(16,*) '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&GPS_HiniPlusW&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
       IF (ABS(KFf).NE.12) RETURN
@@ -2536,7 +2563,7 @@ C      include 'GPS-t.h'   !!  printouts for tests
                   ENDIF
 
 
-                  AmpBorn  =  m_AmpBorn(j1,j2,j3,j4) ! this is possibly both small and wrong
+                  AmpBorn  =  m_AmpBorn(j1,j2,j3,j4) ! not used
                   AmpExpo1 =  sProd/Sactu*(Csum1+Csum2+Csum3+Csum4)
 **/////////////// under construction
 ** (1+Vir1)*AmpBorn is already included in AmpExpo0 so we drop it to avoid double counting
@@ -3587,9 +3614,9 @@ C--------
            u0=(pDo(4)-pAo(4))**2-(pDo(3)-pAo(3))**2-(pDo(2)-pAo(2))**2-(pDo(1)-pAo(1))**2
          ENDIF
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(16,*) '============================================================================================='
-      write(16,*) '=========================================GPS_HiiPlusW========================================'
-      write(16,*) 'GPS_HiniPlusW: IFONE= ', IFONE, '  s0= ',s0,'  t0= ',t0
+c      write(16,*) '============================================================================================='
+c      write(16,*) '=========================================GPS_HiiPlusW========================================'
+c      write(16,*) 'GPS_HiniPlusW: IFONE= ', IFONE, '  s0= ',s0,'  t0= ',t0
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 C--------
@@ -4033,7 +4060,7 @@ c      write(16,'(a,8f22.11)') 'V1DWXB(*,*)= ',((V1DWXB(j1,j2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 c[[[[[[[[[[[[[[
-      CALL GPS_BornZero(AmpWork)
+c      CALL GPS_BornZero(AmpWork)
 c]]]]]]]]]]]]]]
 c[[[[[[[[[[[[[[
 c      write(16,*) ' sB(2,Hel2)=',sB(2,Hel2)
@@ -4326,9 +4353,9 @@ c===========================
          ENDDO
       ENDDO
 c[[[[[[[[[[[[[[[[[[[[[[[*debug*
-      write(16,*) '////////////////////////////////////////////////////////////////////////////////////////'
-      write(16,*) '///////////////////////////////////////AmpWork//////////////////////////////////////////'
-      write(16,'(a,i1,a,i1,a,8g22.11)') (( 'AmpWork(',j1,',',j2,',*,*)=  ',((AmpWork(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
+c      write(16,*) '////////////////////////////////////////////////////////////////////////////////////////'
+c      write(16,*) '///////////////////////////////////////AmpWork//////////////////////////////////////////'
+c      write(16,'(a,i1,a,i1,a,8g22.11)') (( 'AmpWork(',j1,',',j2,',*,*)=  ',((AmpWork(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c]]]]]]]]]]]]]]]]]]]]]]]
       END                       ! GPS_HiiPlusW
 

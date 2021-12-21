@@ -92,12 +92,14 @@ double CharSq = sqr(DB->Qf[m_KFfin]);
 //     as seen from the LAB system.
 //////////////////////
 
-m_IsFSR = DB->KeyFSR; // general FSR switch
-// but exception for neutrinos
-if( m_KFfin == 12 || m_KFfin == 12 || m_KFfin == 16) m_IsFSR = 0;
+//m_IsFSR = DB->KeyFSR;        // general FSR switch
+//if( m_KFfin == 12 || m_KFfin == 12 || m_KFfin == 16) m_IsFSR = 0; // exception for neutrinos
+
+m_IsFSR = m_Event->m_HasFSR; // KeyFSR redefined in KKee2f
 //-----------------------------------------------------------------------
 double WtFin;
 if(m_IsFSR == 1) {
+//   m_Event->m_HasFSR=1;     // message for matrix element
    m_NevGen = m_NevGen+1;   // Only bremsstrahlung counts!!!
    YFSfin( PX,  amfi1, amfi2,  CharSq,  &WtFin);
    m_Event->m_Qf1 = m_q1;
@@ -105,24 +107,25 @@ if(m_IsFSR == 1) {
    m_Event->m_nPhotFSR = m_nphot;
    (m_Event->m_PhotFSR)[0].SetPxPyPzE(0.,0.,0.,0.);
    for(int i =1; i<= m_nphot; i++) {
-	   m_Event->m_PhotFSR[i] = m_phot[i];
-	   (m_Event->m_PhotFSR)[0] += m_phot[i]; // sum in zero component
+       m_Event->m_PhotFSR[i] = m_phot[i];
+      (m_Event->m_PhotFSR)[0] += m_phot[i]; // sum in zero component
    }
 } else {
 //-----------------------------------------------------------------------
 // Final state bremss, fermion momenta defined in Z frame if no ISR
 // In case of ISR they are reassigned one more time.
-    //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//   m_Event->m_HasFSR=0;   // message for matrix element
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
         float rvec[10];
         pseumar_makevec_(rvec,2);
         double cth= 1 -2*rvec[0];
         double the= acos(cth);
         double phi= 2*M_PI*rvec[1];
-        //(*m_Out) <<"@@@ KKarFin::Make: the, phi= "<< the<<"  "<< phi <<endl;
-    //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//        (*m_Out) <<"@@@ KKarFin::Make: the, phi= "<< the<<"  "<< phi <<endl;
    //double cth= 1 -2*m_RNgen->Rndm();
    //double the= acos(cth);
    //double phi= 2*M_PI*m_RNgen->Rndm();
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
    m_nphot = 0;
@@ -174,7 +177,10 @@ double   WtMlist[maxPhot];
 double   rr[maxPhot],xk[maxPhot],cgx[maxPhot],sgx[maxPhot];
 double   dis0[maxPhot];
 int      Mark[maxPhot];
-double   rvec[maxPhot];
+//[[[[[[[[[[[[[[[[[[[[[[[[
+//double   rvec[maxPhot];
+float rvec[100];
+//]]]]]]]]]]]]]]]]]]]]]]]]
 //-----------------------------------------------------------------------
 m_NevGen = m_NevGen + 1;
 
@@ -185,8 +191,8 @@ double wt3   =1;
 //-----------------------------------------------------------------------
 double svar = (*PX)*(*PX);
 double amfin = min(Mas1,Mas2);
-double amc2  = 4*sqr(amfin)/svar;  // overvalued svar for crude
-double betc  = sqrt(1-amc2);      // overvalued svar for crude
+double amc2  = 4.0*sqr(amfin)/svar;  // overvalued svar for crude
+double betc  = sqrt(1.0-amc2);      // overvalued svar for crude
 for(int i=0; i<maxPhot; i++) {
    rr[i]=0;
    Mark[i]=0;
@@ -204,12 +210,18 @@ for(int i=0; i<maxPhot;i++){
 //-----------------------------------------------------------------------
 //  generate photon multiplicity, average = average multiplicity (crude)
 //-----------------------------------------------------------------------
-double gamf2 = CharSq*alf1 *(1+sqrt(betc))/betc *log( sqr(1+betc)/amc2);
-double average = gamf2*log(1/m_delta);
-average = average *DB->Xenph;
+double gamf2 = CharSq*alf1 *(1.0+sqr(betc))/betc *log( sqr(1.0+betc)/amc2);
+double average = gamf2*log(1.0/m_delta);
+average = average *m_Event->m_Xenph;
 //
 e60:
 PoissGen(average,&m_nphot, rr);
+//[[[[[[[[[[[[[[[
+//(*m_Out)<< "KarFin_YFSfin:amc2="<<amc2<<" alf1="<<alf1<<"  m_delta="<<m_delta<<endl;
+//(*m_Out)<< "KarFin_YFSfin:betc="<<betc<<" gamf2="<<gamf2<<endl;
+(*m_Out)<< "KKarfin::YFSfin: m_nphot="<<m_nphot<<"  average="<<average<<" m_Xenph="<< m_Event->m_Xenph<<endl;
+(*m_Out)<< "KKarfin::YFSfin:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
+//]]]]]]]]]]]]]]]
 // This is for tests of program at fixed multiplicity (advanc. users)
 // if((m_MltFSR != 0) && (m_nphot != m_MltFSR)) goto 5
 double sprim;
@@ -233,7 +245,10 @@ if (m_nphot == 0) {
    for(int i=1; i<=m_nphot; i++){
       xk[i]=xk[i]*xfact;
    }
-   m_RNgen->RndmArray(m_nphot,rvec);
+////[[[[[[[[[[[[[[[[[[[[[[[[
+   pseumar_makevec_(rvec,m_nphot);
+//   m_RNgen->RndmArray(m_nphot,rvec);
+///]]]]]]]]]]]]]]]]]]]]]]]]]
    for(int i=1; i<=m_nphot; i++){
 //-----------------------------------------------------------------------
 //     simplified photon angular distribution,
@@ -341,9 +356,14 @@ for(int i=1; i<= m_nphot; i++){
 // KarFin_Kinf1(PX,m_q1,m_q2,m_r1,m_r2,m_nphot,m_phot,m_phsu)
 //-----------------------------------------------------------------------
 // Angles for Euler rotation of all FSR system
-   double cth= 1.0 -2*m_RNgen->Rndm();
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//   double cth= 1.0 -2*m_RNgen->Rndm();
+//   double phi= 2.0*M_PI*m_RNgen->Rndm();
+pseumar_makevec_(rvec,2);
+double cth= 1.0 -2*rvec[0];
+double phi=2*M_PI*rvec[1];
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    double the= acos(cth);
-   double phi= 2.0*M_PI*m_RNgen->Rndm();
    // QQk is combined momentum of q1+q2+photons in q1+q2 system
    TLorentzVector QQk= m_q1+m_q2+m_phot[0];
 // Transform fermions back to LAB/CMS through intermediate Z frame
@@ -605,12 +625,19 @@ void  KKarFin::PoissGen(double average, int *mult, double rr[]){
 //////////////////////////////////////////////////////////////////////////////
 double  rn,sum,y;
 int     nn;
+//[[[[[[[[[[[[[[[[[[[[[[[[
+float   rvec[10];
+//]]]]]]]]]]]]]]]]]]]]]]]]
 //------------------------------------------------------------------------------
 e50:
 nn=0;
 sum=0;
 for(int it=1; it< maxPhot; it++){
-   rn = m_RNgen->Rndm();
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+   pseumar_makevec_(rvec,1);
+   rn = rvec[0];
+//   rn = m_RNgen->Rndm();
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    y= log(rn);
    sum=sum+y;
    nn=nn+1;
@@ -644,8 +671,12 @@ void KKarFin::AngBre(double am2,
 //     dist0 = distribution generated, without m**2/(kp)**2 terms           //
 //     dist1 = distribution with m**2/(kp)**2 terms                         //
 //////////////////////////////////////////////////////////////////////////////
-double rn[10];
-m_RNgen->RndmArray(2,rn);
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  float              rn[10];
+  pseumar_makevec_(rn,2);
+//double rn[10];
+//m_RNgen->RndmArray(2,rn);
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 double beta =sqrt(1-am2);
 double eps  =am2/(1+beta);                      //= 1-beta
 double del1 =(2-eps)* exp( log(eps/(2-eps))*rn[0] );  //= 1-beta*costhg
