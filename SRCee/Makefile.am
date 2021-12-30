@@ -1,5 +1,5 @@
 
-all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(all_includes)
+all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 ######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
@@ -33,8 +33,8 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKarFin.cxx \
 						KKceex.cxx KKpart.cxx KKbvir.cxx
 libKKee_la_LIBADD =  \
+	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
 	$(top_builddir)/glibk/libGlibk.a \
-	$(top_builddir)/tauola/libTauola.a \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)

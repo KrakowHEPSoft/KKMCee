@@ -51,6 +51,7 @@ KK2f/Makefile \
 jetset/Makefile \
 tauola/Makefile \
 photos/Makefile  \
+tauola-photos/Makefile  \
 KKsem/Makefile \
 Foam2/Makefile \
 MCdev/Makefile MCdev/farming/Makefile \

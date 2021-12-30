@@ -1238,6 +1238,14 @@ void KKceex::MakeRho2(double h1[], double h2[], double &wt0, double &wt1, double
   wt0 = Rho0/m_RhoExp0;
   wt1 = Rho1/m_RhoExp1;
   wt2 = Rho2/m_RhoExp2;
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<<"----------------------------------KKceex::MakeRho2---------------------------------------------------"<<endl;
+  (*m_Out)<<" h1[0-3]="<<h1[0]<<" "<<h1[1]<<" "<<h1[2]<<" "<<h1[3]<<endl;
+  (*m_Out)<<" h2[0-3]="<<h2[0]<<" "<<h2[1]<<" "<<h2[2]<<" "<<h2[3]<<endl;
+//  (*m_Out)<<"HvecFer1="<<HvecFer1[0]<<" "<<HvecFer1[1]<<" "<<HvecFer1[2]<<" "<<HvecFer1[3]<<endl;
+//  (*m_Out)<<"HvecFer2="<<HvecFer2[0]<<" "<<HvecFer2[1]<<" "<<HvecFer2[2]<<" "<<HvecFer2[3]<<endl;
+  (*m_Out)<<" Rho0= "<<Rho0<<"  Rho1= "<<Rho1<<"  Rho2= "<<Rho2<<endl;
+  //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }// GPS_MakeRho2
 
 

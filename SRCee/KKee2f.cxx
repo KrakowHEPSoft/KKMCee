@@ -1,7 +1,7 @@
 //               Class   KKee2f                                               //
 #include "KKee2f.h"
 
-//#include "Globux.h"
+#include "Globux.h"
 
 ClassImp(KKee2f);
 
@@ -14,7 +14,11 @@ extern "C" {
    void pseumar_makevec_(float rvec[], const int&);
 
 // SUBROUTINE Taupair_Initialize(xpar)
-   void taupair_initialize_(double xpar[]);
+   void taupair_initialize_(double[]);
+   void taupair_getisinitialized_(const int&);
+   void taupair_make1_();        // generates tau decay
+   void taupair_imprintspin_();  // introduces spin effects by rejection
+   void taupair_make2_();        // book-keeping, Photos, HepEvt
 }//
 
 
@@ -119,6 +123,12 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout  << "   *******************************" << endl;
   cout  << "   ****   KKee2f   Initialize ****" << endl;
   cout  << "   *******************************" << endl;
+
+//////////////////////////////////////////////////////////////
+// It is exporting MC generator pointer to global visibility:
+  globux_setup_( this );
+//////////////////////////////////////////////////////////////
+
 
 //=============================================================
 //   opening disk fime for fortran part of code
@@ -228,7 +238,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
 //////////////////////////////////////////////////////////////
 // TAUOLA+PHOTOS corner
-//  taupair_initialize_(m_ypar);
+  taupair_initialize_(m_ypar);
+//////////////////////////////////////////////////////////////
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
   cout<<" TMCgen::Initialize:  xpar filled into h_NORMA  "<<endl;
@@ -751,6 +762,25 @@ m_Event->m_WT_ISR = WT_ISR;
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 m_Event->ZBoostALL();
+
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+   if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
+      int TauIsInitialized = 0;
+      taupair_getisinitialized_(TauIsInitialized);
+      if( TauIsInitialized != 0) {
+           if( DB->KeyGPS == 0 ) {
+               cout<< " #### STOP in KKhh2f_Generate: for tau decays GPS not activated !!!"<<endl;
+               exit(10);
+           }//if
+      m_GPS->TralorPrepare(1);
+      m_GPS->TralorPrepare(2);
+      taupair_make1_();        // generates tau decay
+      taupair_imprintspin_();  // introduces spin effects by rejection
+//      taupair_make2_();        // book-keeping, Photos, HepEvt
+      }
+    }//if
+
 
 //////////////////////////////////////////////////////////////////////
 // Special histogram used for control of overall normalization
