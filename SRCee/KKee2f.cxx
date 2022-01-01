@@ -13,14 +13,9 @@ extern "C" {
    void pseumar_initialize_(const int&, const int&, const int&);
    void pseumar_makevec_(float rvec[], const int&);
 
-// SUBROUTINE Taupair_Initialize(xpar)
-   void taupair_initialize_(double[]);
-   void taupair_getisinitialized_(const int&);
-   void taupair_make1_();        // generates tau decay
-   void taupair_imprintspin_();  // introduces spin effects by rejection
-   void taupair_make2_();        // book-keeping, Photos, HepEvt
+// SUBROUTINE HepEvt_Fill
+   void hepevt_fill_();
 }//
-
 
 #define SW20 setw(20)<<setprecision(14)
 #define SP15 setw(15)<<setprecision(9)
@@ -60,6 +55,7 @@ KKee2f::KKee2f()
   m_QED3     = NULL;
   m_GPS      = NULL;
   m_BVR      = NULL;
+  m_TauGen   = NULL;
   m_KKexamp  = NULL;
 }
 
@@ -81,6 +77,7 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
   m_QED3     = NULL;
   m_GPS      = NULL;
   m_BVR      = NULL;
+  m_TauGen   = NULL;
   m_KKexamp  = NULL;
   //
   m_EventCounter = 0;
@@ -238,7 +235,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
 //////////////////////////////////////////////////////////////
 // TAUOLA+PHOTOS corner
-  taupair_initialize_(m_ypar);
+  m_TauGen= new TauPair(OutFile);
+  m_TauGen->Initialize(m_ypar);
 //////////////////////////////////////////////////////////////
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
@@ -764,22 +762,21 @@ m_Event->m_WT_ISR = WT_ISR;
 m_Event->ZBoostALL();
 
 /////////////////////////////////////////////////////////////
+// hadronization interface
+if ( m_WtCrude  != 0) hepevt_fill_();
 /////////////////////////////////////////////////////////////
-   if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
-      int TauIsInitialized = 0;
-      taupair_getisinitialized_(TauIsInitialized);
-      if( TauIsInitialized != 0) {
-           if( DB->KeyGPS == 0 ) {
-               cout<< " #### STOP in KKhh2f_Generate: for tau decays GPS not activated !!!"<<endl;
-               exit(10);
-           }//if
-      m_GPS->TralorPrepare(1);
-      m_GPS->TralorPrepare(2);
-      taupair_make1_();        // generates tau decay
-      taupair_imprintspin_();  // introduces spin effects by rejection
-//      taupair_make2_();        // book-keeping, Photos, HepEvt
-      }
-    }//if
+// Tau pair generation using TAUOLA+PHOTOS
+if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
+   int IsTauInitialized = m_TauGen->IsTauInitialized();
+   if( IsTauInitialized != 0) {
+     if( DB->KeyGPS == 0 ) {
+         cout<< " #### STOP in KKhh2f_Generate: for tau decays GPS not activated !!!"<<endl;
+         exit(10); }//if
+     m_GPS->TralorPrepare(1);
+     m_GPS->TralorPrepare(2);
+     m_TauGen->Make();
+   }//TauIsInitialized
+}//if
 
 
 //////////////////////////////////////////////////////////////////////

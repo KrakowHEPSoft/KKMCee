@@ -44,8 +44,8 @@ class KKevent: public TObject{
  TLorentzVector m_Qf1;               // final fermion m_q1
  TLorentzVector m_Qf2;               // final fermion m_q2
  TLorentzVector m_PX;                // Z boson after ISR before FSR (unphysical)
- TLorentzVector m_Rem1;              // (EBS) remnant 1
- TLorentzVector m_Rem2;              // (EBS) remnant 2
+ TLorentzVector m_Rem1;              // (BES) remnant 1
+ TLorentzVector m_Rem2;              // (BES) remnant 2
  int            m_nPhot;             // No of generated photons ISR+FSR
  int      m_nPhotISR, m_nPhotFSR;    // No of generated photons ISR, FSR
  int            m_isr[maxPhot];      // marker of ISR photons, f77 indexing

@@ -194,6 +194,11 @@ C switches of tau+ tau- decay modes !!
          CALL PHOTOS(ih2)
       ENDIF
       CALL pyhepc(2)       ! HepEvt-->Pythia
+c[[[[[[[[[[[[[[[[[[[[
+      write(16,*) '====================================== Taupair_Make2: HepEvt-->Pythia ===================================='
+      CALL PYgive('MSTU(11)=16')
+      CALL PYlist(1)
+c]]]]]]]]]]]]]]]]]]]]
       END
 
       SUBROUTINE Taupair_Clone

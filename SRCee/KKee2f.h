@@ -30,6 +30,7 @@ using namespace std;
 #include "KKarFin.h"
 #include "KKqed3.h"
 #include "KKceex.h"
+#include "TauPair.h"
 #include "KKlasa.h"
 #include "TWtMon.h"
 
@@ -46,6 +47,7 @@ class KKee2f: public TMCgen{
  KKqed3  *m_QED3;                 // EEX matrix element
  KKceex  *m_GPS;                  // CEEX matrix element
  KKbvir  *m_BVR;                  // Library of virtual corrections
+ TauPair *m_TauGen;               // Interface to TAUOLA+PHOTOS
  KKlasa  *m_KKexamp;              // Template for new class
 
 // Dimensionality

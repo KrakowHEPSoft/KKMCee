@@ -17,7 +17,8 @@ dict1H = KK2fDict.h
 include_HEADERS1 = 	KKee2f.h KKdbase.h KKdizet.h KKborn.h \
 					KKevent.h KKlasa.h KKarLud.h KKqed3.h \
 					KKarFin.h \
-					KKceex.h KKpart.h KKbvir.h
+					KKceex.h KKpart.h KKbvir.h \
+					TauPair.h
 noinst_HEADERS1 = LinkDef1.h
 #  ROOT Directory generation:
 ROOTCINTHDRS1= $(include_HEADERS1) $(noinst_HEADERS1)
@@ -31,7 +32,8 @@ nodist_libKKee_la_SOURCES = $(dict1C)
 libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKevent.cxx KKlasa.cxx KKarLud.cxx KKqed3.cxx \
 						KKarFin.cxx \
-						KKceex.cxx KKpart.cxx KKbvir.cxx
+						KKceex.cxx KKpart.cxx KKbvir.cxx \
+						TauPair.cxx
 libKKee_la_LIBADD =  \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
 	$(top_builddir)/glibk/libGlibk.a \
