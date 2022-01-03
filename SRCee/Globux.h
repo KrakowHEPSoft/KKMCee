@@ -22,8 +22,8 @@ KKdizet  *g_EWtabs;
 //  Emulating f77 externals using c++ objects
 //-----------------------------------------------------------
 extern "C" {
-    // getting accsess to MC gener. object
-    void   globux_setup_( KKee2f*);
+    // getting accsess to MC generator object in f77 code
+    void globux_setup_( KKee2f*);
     // used in HepEvt
     void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
                            double pf1[], double pf2[],double qf1[], double qf2[],
@@ -31,10 +31,13 @@ extern "C" {
                            double xphot[][100], double yphot[][100],
                            double rem1[], double rem2[]);
     //
-    // used in TAUOLA interface
-    void gps_makerho2_(double HvecFer1[], double HvecFer2[], double *wt0, double *wt1, double *wt2);
-    void gps_tralordoit_(int *KTO, double P[], double Q[]);
-    void gps_tralorprepare_(int *);
+    // wrappers to c++ code used in Tauola
+    // already obsolete
+    //void gps_makerho2_(double HvecFer1[], double HvecFer2[], double *wt0, double *wt1, double *wt2);
+    //void gps_tralordoit_(int *KTO, double P[], double Q[]);
+    //void gps_tralorprepare_(int *);
+    // remains for some time
+    void tralo4_(int *KTO, float P[], float Q[], float *AM);
 }
 
 //////////////////////////////////////////////
@@ -69,6 +72,7 @@ void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
 }//globux_getevent_
 ////////////////////////////////////////////
 
+/*
 void gps_makerho2_(double HvecFer1[], double HvecFer2[], double *wt0, double *wt1, double *wt2){
 	g_KKeeGen->m_GPS->MakeRho2( HvecFer1, HvecFer2, *wt0, *wt1, *wt2);
 }
@@ -79,6 +83,12 @@ void gps_tralorprepare_(int *KTO){
 
 void gps_tralordoit_(int *KTO, double P[], double Q[]){
 	g_KKeeGen->m_GPS->TralorDoIt(*KTO, P, Q);
+}
+*/
+
+//SUBROUTINE Tralo4(Kto,P,Q,AM)
+void tralo4_(int *KTO, float P[], float Q[], float *AM){
+    g_KKeeGen->m_TauGen->Tralo4(*KTO, P, Q, *AM);
 }
 
 #endif

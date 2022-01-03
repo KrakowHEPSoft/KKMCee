@@ -1620,3 +1620,42 @@ C      NCHAN = 19
       DIMENSION RVEC(*)
       CALL PseuMar_MakeVec(RVEC,LENV)
       END
+
+      SUBROUTINE Tauface_SetFermPos(nnp1,nnp2)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//                          Mooved from TauPair                                    //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INTEGER np1,np2,nnp1,nnp2
+      COMMON /TAUPOS/ NP1,NP2
+*
+      np1 = nnp1
+      np2 = nnp2
+      END
+
+
+      SUBROUTINE FILHEP(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4,PINV,PHFLAG)
+*/////////////////////////////////////////////////////////////////////////////////////
+*//                                                                                 //
+*//  FILHEP of TAUOLA must be in single precission but double precision             //
+*//  HepEvt_Fil1 is its functional copy                                             //
+*//                                                                                 //
+*/////////////////////////////////////////////////////////////////////////////////////
+      LOGICAL PHFLAG
+      DOUBLE PRECISION  PINVD,P4D(4)
+      REAL P4(4)
+      DO k=1,4
+        P4D(k)=P4(k)
+      ENDDO
+      PINVD=PINV
+      CALL HepEvt_Fil1(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4D,PINVD,PHFLAG)
+      END
+
+
+      SUBROUTINE Tauface_Print
+      write(16,*) '====================================== Tauface_Print ===================================='
+      CALL PYgive('MSTU(11)=16')
+      CALL PYlist(1)
+      END

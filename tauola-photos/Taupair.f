@@ -182,7 +182,9 @@ c[[[      CALL GPS_tralorPrepare(p4,2)
 
       CALL HepEvt_GetF(   ih1)  ! fermion is here &&&
       CALL HepEvt_GetFbar(ih2)  ! antifermion is here
-      CALL Taupair_SetFermPos(ih1,ih2)  ! set ffbar positions in Tauola &&&
+c[[[      CALL Taupair_SetFermPos(ih1,ih2)  ! set ffbar positions in Tauola &&&
+      CALL Tauface_SetFermPos(ih1,ih2)  ! set ffbar positions in Tauola &&&
+
 
       CALL DEKAY(1+10,m_HvecTau1)
       CALL DEKAY(2+10,m_HvecTau2)
@@ -289,7 +291,7 @@ c]]]]]]]]]]]]]]]]]]]]
       SUBROUTINE Tralo4(Kto,P,Q,AM)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
-*//   This routine is strongly interrelated with Taupair_Clone!!!                    //
+*//  This routine is strongly interrelated with Taupair_Clone!!!                    //
 *//                                                                                 //
 *//  SUBSITUTE OF TRALO4                                                            // 
 *//  TRALO4 is called in TAUOLA /hepevt/ interface to boost from tau+-              //
@@ -350,22 +352,23 @@ c]]]]]]]]]]]]]]]]]]]]
       END
 
 
-      SUBROUTINE FILHEP(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4,PINV,PHFLAG)
+*********  mooved to Tauface as Tauface_SetFermPos  *********
+c      SUBROUTINE FILHEP(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4,PINV,PHFLAG)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//  FILHEP of TAUOLA must be in single precission but double precision             // 
 *//  HepEvt_Fil1 is its functional copy                                             //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
-      LOGICAL PHFLAG
-      DOUBLE PRECISION  PINVD,P4D(4)
-      REAL P4(4)
-      DO k=1,4
-        P4D(k)=P4(k)
-      ENDDO
-      PINVD=PINV
-      CALL HepEvt_Fil1(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4D,PINVD,PHFLAG)
-      END
+c      LOGICAL PHFLAG
+c      DOUBLE PRECISION  PINVD,P4D(4)
+c      REAL P4(4)
+c      DO k=1,4
+c        P4D(k)=P4(k)
+c      ENDDO
+c      PINVD=PINV
+c      CALL HepEvt_Fil1(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4D,PINVD,PHFLAG)
+c      END
 
 */////////////////////////////////////////////////////////////////////////////////////
 */////////////////////////////////////////////////////////////////////////////////////
@@ -421,19 +424,19 @@ c]]]]]]]]]]]]]]]]]]]]
       ENDDO
       END
 
-      SUBROUTINE Taupair_SetFermPos(np1,np2)
+*********  mooved to Tauface as Tauface_SetFermPos  *********
+c      SUBROUTINE Taupair_SetFermPos(np1,np2)
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
-*//   Get to know if Tauola is active (IsInitialized=1)                             //
 *//                                                                                 //
 */////////////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      INCLUDE 'Taupair.h'
-      INTEGER np1,np2
+c      IMPLICIT NONE
+c      INCLUDE 'Taupair.h'
+c      INTEGER np1,np2
 *
-      m_np1 = np1
-      m_np2 = np2
-      END
+c      m_np1 = np1
+c      m_np2 = np2
+c      END
 */////////////////////////////////////////////////////////////////////////////////////
 *//                                                                                 //
 *//                End of   Pseudo-CLASS  Taoula                                    //

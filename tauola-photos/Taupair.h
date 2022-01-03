@@ -46,9 +46,9 @@
      $    m_out               ! output unit number
       SAVE /c_Taupair/
 
-* common block of TAUOLA !!!!&&&
-      INTEGER         m_NP1, m_NP2 
-      COMMON /TAUPOS/ m_NP1, m_NP2                
+cc[[* common block of TAUOLA !!!!&&&
+cc[[      INTEGER         m_NP1, m_NP2
+cc[[      COMMON /TAUPOS/ m_NP1, m_NP2
 *-------------------------------------------------------------------------------------
 
 */////////////////////////////////////////////////////////////////////////////////////

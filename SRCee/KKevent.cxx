@@ -145,11 +145,9 @@ void KKevent::RotEuler(double alf, double bet, double gam, TLorentzVector *Pf){
 //    CALL KinLib_Rotor(3,1, beta,  qvec,qvec) ! y-rotation
 //    CALL KinLib_Rotor(1,2, gamma, qvec,qvec) ! z-rotation
 //////////////////////////////////////////////////////////////////////////////////
-	(*Pf).RotateZ(alf);
-	(*Pf).RotateY(bet);
-	(*Pf).RotateZ(gam);
-cout<<" KKevent::RotEuler NOT TESTED YET!!!"<<endl;
-exit(50);
+  (*Pf).RotateZ(alf);
+  (*Pf).RotateY(bet);
+  (*Pf).RotateZ(gam);
 }//RotEuler
 
 void KKevent::RotEul(double the, double phi, TLorentzVector *Pf){

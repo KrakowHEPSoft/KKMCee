@@ -1,6 +1,22 @@
-///////////////////////////////////////////////////////////////////////////////
-//         Template of the class with ROOT persistency
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//                         CLASS  TauPair                                          //
+//       Purpose:                                                                  //
+//       (a) Interface to Simulation of TWO tau decays                             //
+//       (b) Calculates spin weight wt using KKceex::MakeRho2 and introduces       //
+//           spin effects in tau decays by means of rejection with <wt>=1          //
+//       (c) Transforms decay products to CMS frame                                //
+//       (d) Interfaces Photos to Tauola                                           //
+//                                                                                 //
+//   Notes:                                                                        //
+//   The class is initialized by KKee2f::Initialize                                //
+//   It is called from KKee2f::generate                                            //
+//   It needs KKceex to be initialized in order to calculate spin weight (final)   //
+//                                                                                 //
+//   For the moment this file contains the interface to tauola and Photo           //
+//   The rest of code is in tauface.f and tauola.f                                 //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef TauPair_H
 #define TauPair_H
@@ -14,49 +30,107 @@ using namespace std;
 
 #include "BXFORMAT.h"
 #include "TObject.h"
+#include "TLorentzVector.h"
 
+#include "KKceex.h"
+#include "KKevent.h"
 
 extern "C" {
-//
+  void pseumar_makevec_(float rvec[], const int&);
+  /*
 // SUBROUTINE Taupair_Initialize(xpar)
-   void taupair_initialize_(double[]);
-   void taupair_getisinitialized_(const int&);
-   void taupair_make1_();        // generates tau decay
-   void taupair_imprintspin_();  // introduces spin effects by rejection
-   void taupair_make2_();        // book-keeping, Photos, HepEvt
+  void taupair_initialize_(double[]);
+  void taupair_getisinitialized_(const int&);
+  void taupair_make1_();        // generates tau decay
+  void taupair_imprintspin_();  // introduces spin effects by rejection
+  void taupair_make2_();        // book-keeping, Photos, HepEvt
+*/
+/////////////////////////////
+// HepEvt
+  void hepevt_getf_( const int&);                    // fermion is here
+  void hepevt_getfbar_(const int&);                  // antifermion is here
+// tauface
+  void tauface_setfermpos_(const int&, const int&);  // set ffbar positions in Tauola
+  void tauface_print_();                    // printing event using pythia
+// PYTHIA
+  void pyhepc_(const int&);     // HepEvt-->Pythia
+  void pylist_(const int&);
+  void pygive_(const char*, long int);
+/////////////////////////////////////////
+//      TAUOLA
+// SUBROUTINE INIETC(ITAUXPAR,xpar)
+  void inietc_( int*, double[]);
+// SUBROUTINE INIMAS(ITAUXPAR,xpar)
+  void inimas_( int *ITAUXPAR, double xpar[]);
+// SUBROUTINE INITDK(ITAUXPAR,xpar)
+  void initdk_( int *ITAUXPAR, double xpar[]);
+// SUBROUTINE INIPHY(XK00)
+  void iniphy_( double *xk0qed);
+//  SUBROUTINE DEKAY(KTO,HX)
+  void dekay_( int* , double Hvec[]);
+/////////////////////////////////////////
+//       PHOTOS
+//  SUBROUTINE PHOINI
+  void phoini_();
+  void photos_(int&);
 }//extern
+
 
 //________________________________________________________________________
 class TauPair: public TObject{
- public:
- ofstream *m_Out;     //! pointer to external Logfile for messages
 // class member data
  public:
- double   CMSene;
+ KKceex    *m_GPS;             //  CEEX matrix element
+ KKevent   *m_Event;           //  MC event ISR+FSR in KKMC format
+ ofstream  *m_Out;             //! pointer to external Logfile for messages
+ double     m_HvecTau1[4];     //! Spin Polarimeter vector first  Tau
+ double     m_HvecTau2[4];     //! Spin Polarimeter vector second Tau
+ double     m_HvClone1[4];     //! Clone Spin Polarimeter vector first  Tau
+ double     m_HvClone2[4];     //! Clone Spin Polarimeter vector second Tau
+ TLorentzVector  m_H1;     //!
+ TLorentzVector  m_H2;     //!
+ TLorentzVector  m_PP;     //!
+// TLorentzVector  m_HLveclo1;   //!
+// TLorentzVector  m_HLveclo2;   //!
+ double     m_beta1;           // Random Euler angle for cloning 1-st tau
+ double     m_alfa1;           // Random Euler angle for cloning 1-st tau
+ double     m_gamma1;          // Random Euler angle for cloning 1-st tau
+ double     m_beta2;           // Random Euler angle for cloning 2-nd tau
+ double     m_alfa2;           // Random Euler angle for cloning 2-nd tau
+ double     m_gamma2;          // Random Euler angle for cloning 2-nd tau
+ double     m_phi1;            // phi   of HvecTau1
+ double     m_thet1;           // theta of HvecTau1
+ double     m_phi2;            // phi   of HvecTau2
+ double     m_thet2;           // theta of HvecTau2
+ int        m_IsInitialized;   // super key, for inhibiting all tauola activity
+ int        m_IFPHOT;          // key for PHOTOS
+ int        m_KeyClone;        // switch for cloning procedure =1,2
 //------------------------------------
 // Obligatory members
   public:
   TauPair();                    // explicit default constructor for streamer
   TauPair(ofstream *OutFile);   // user constructor
   ~TauPair();                   // explicit destructor
-  public:
 /////////////////////////////////////////////////////////////////////////////
 // class member functions
 double sqr( const double x );
 
+void SetEvent( KKevent *Event){ m_Event = Event;};
+void SetGPS(   KKceex  *GPS){   m_GPS   = GPS;};
+
 void Initialize(double[]);
 
 int IsTauInitialized(){
-  int IsTau;
-  taupair_getisinitialized_(IsTau);
-  return IsTau;
+//  int IsTau;
+//  taupair_getisinitialized_(IsTau);
+  return m_IsInitialized;
 }
 
-void Make(){
-  taupair_make1_();        // generates tau decay
-  taupair_imprintspin_();  // introduces spin effects by rejection
-  taupair_make2_();        // book-keeping, Photos, HepEvt
-}
+void Make1();
+void Clone();
+void ImprintSpin();
+void Make2();
+void Tralo4(int Kto, float P[], float Q[], float &AM);
 
 ////////////////////////////////////////////////////////////////////////////
        ClassDef(TauPair,1); // Data base

@@ -118,10 +118,16 @@ C switches of tau+ tau- decay modes !!
 */////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
       INCLUDE 'Taupair.h'
+      integer i
 *-------------------------------------------------------------------------------------
       IF( m_IsInitialized .EQ. 0) RETURN
       CALL DEKAY(1,m_HvecTau1)
       CALL DEKAY(2,m_HvecTau2)
+c[[[[[[[[[[[[[[[[[[
+      write(16,*) '================================//// Taupair_Make1 ////========================================='
+      write(16,*) 'm_HvecTau1 = ',(m_HvecTau1(i), i=1,4)
+      write(16,*) 'm_HvecTau2 = ',(m_HvecTau2(i), i=1,4)
+c]]]]]]]]]]]]]]]]]]
       END
 
       SUBROUTINE Taupair_ImprintSpin

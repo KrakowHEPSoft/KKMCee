@@ -39,7 +39,7 @@ TAUOLA_SRC = \
 libTauolaPhotos_la_SOURCES = \
 	$(TAUOLA_SRC) \
 	photos.f \
-	Tauface.f Taupair.f \
+	Tauface.f \
 	KinLib.f \
 	HepEvt.f 
 libTauolaPhotos_la_DEPENDENCIES = Taupair.h HepEvt.h

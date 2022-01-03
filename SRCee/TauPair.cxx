@@ -3,13 +3,14 @@
 
 ClassImp(TauPair);
 
-
 TauPair::TauPair()
 {
   // This constructor is for ROOT streamers ONLY
   // all pointers has to be NULLed
   cout<< "----> TauPair Default Constructor (for ROOT only) "<<endl;
   m_Out= NULL;
+  m_Event    = NULL;
+  m_GPS      = NULL;
 }
 
 ///_____________________________________________________________
@@ -17,6 +18,8 @@ TauPair::TauPair(ofstream *OutFile)
 {
   cout<< "----> TauPair USER Constructor "<<endl;
   m_Out = OutFile;
+  m_Event    = NULL;
+  m_GPS      = NULL;
 }//TauPair
 
 ///______________________________________________________________________________________
@@ -29,16 +32,277 @@ TauPair::~TauPair()
 double TauPair::sqr( const Double_t x ){ return x*x;};
 
 ///______________________________________________________________________________________
-void TauPair::Initialize(double ypar[])
+void TauPair::Initialize(double xpar[])
 {
   cout  << "----> TauPair::Initialize, Entering "<<endl;
 //=================================================================
 // BX*** macros are in MCdev/BXFORMAT.h
   BXOPE(*m_Out);
   BXTXT(*m_Out,"========================================");
-  BXTXT(*m_Out,"======    TauPair::Initialize      ======");
+  BXTXT(*m_Out,"======    TauPair::Initialize     ======");
   BXTXT(*m_Out,"========================================");
 
-  taupair_initialize_(ypar);
-  ///////////////////////////////////////////////////
+//  taupair_initialize_(xpar);
+
+  int ITAUXPAR=2000;
+
+  m_IsInitialized = xpar[415-1];  // General mask for tau channel
+
+// switches of tau+ tau- decay modes !!
+  m_IFPHOT        = xpar[ITAUXPAR+4-1];   // QED rad. in hadronic decays (PHOTOS)
+  int Jak1        = xpar[ITAUXPAR+1-1];   // Decay Mask for first tau
+  int Jak2        = xpar[ITAUXPAR+2-1];   // Decay Mask for second tau
+  if( (Jak1 == -1) && (Jak2 == -1) ) m_IsInitialized = 0;
+
+  m_KeyClone      = 1;       // dip-switch for cloning procedure, =1,2
+  m_KeyClone      = 2;       // dip-switch for cloning procedure, =1,2
+  BXTXT(*m_Out, " KK interface of Tauola                 ");
+  BX1I( *m_Out, "  IsInit", m_IsInitialized, "xpar[415]       =");
+  BX1I( *m_Out, "    Jak1",            Jak1, "xpar[2001]      =");
+  BX1I( *m_Out, "    Jak2",            Jak2, "xpar[2002]      =");
+  BX1I( *m_Out, "  IFPHOT",        m_IFPHOT, "xpar[2004]      =");
+  BX1I( *m_Out, "KeyClone",      m_KeyClone, "Cloning proc.   =");
+  BXCLO(*m_Out);
+
+// Initialisation of tau decay package TAUOLA; ITAUXPAR is for indirect adressing.
+  inietc_(&ITAUXPAR,xpar);
+  if( m_IsInitialized == 0) {
+     BXOPE(*m_Out);
+     BXTXT(*m_Out, " !!!!! Tauola inhibited !!!!    ");
+     BXCLO(*m_Out);
+  } else {
+    inimas_(&ITAUXPAR,xpar);
+    initdk_(&ITAUXPAR,xpar);
+    double xk0qed = 0.1;            // <=== It seems to be never used
+    iniphy_(&xk0qed);
+    int JAK =-1;
+    dekay_(&JAK, m_HvecTau1);
+// Initialization of PHOTOS
+    if(m_IFPHOT == 1) phoini_();
+  }//IsInitialized
+///////////////////////////////////////////////////
 }// Initialize
+
+///______________________________________________________________________________________
+void TauPair::Make1(){
+
+//  tauface_print_();
+//  taupair_make1_();        // generates tau decay
+  int J;
+  if( m_IsInitialized != 0) {
+    J=1; dekay_(&J,m_HvecTau1); // TAUOLA
+    J=2; dekay_(&J,m_HvecTau2); // TAUOLA
+  }
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<<" ====================================//// Taupair_Make1 ////============================"<<endl;
+  (*m_Out)<<" m_HvecTau1[0-3]="<<m_HvecTau1[0]<<" "<<m_HvecTau1[1]<<" "<<m_HvecTau1[2]<<" "<<m_HvecTau1[3]<<endl;
+  (*m_Out)<<" m_HvecTau2[0-3]="<<m_HvecTau2[0]<<" "<<m_HvecTau2[1]<<" "<<m_HvecTau2[2]<<" "<<m_HvecTau2[3]<<endl;
+ //]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  tauface_print_();
+
+}//Make1
+
+///______________________________________________________________________________________
+void TauPair::Clone(){
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//   This routine is strongly interrelated with Tralor  !!!                        //
+//                                                                                 //
+//   Cloning tau decays by additional rotation tau decay products with respect     //
+//   to frames  initially used in the decay simulation.                            //
+/////////////////////////////////////////////////////////////////////////////////////
+/*
+      DOUBLE PRECISION       KinLib_AngPhi
+      DOUBLE PRECISION       Habs1,Habs2
+      DOUBLE PRECISION       hb1(4),hb2(4)
+      REAL                   rrr(10)
+*-------------------------------------------------------------------------------------
+*/
+/////////////////////////////////////////////////////////////////////////////////////
+//   Generation of random two independent Euler rotations                          //
+/////////////////////////////////////////////////////////////////////////////////////
+  float rrr[3];
+  pseumar_makevec_(rrr,3);
+  m_alfa1  = 2.0*M_PI*rrr[2];        // azimuthal angle in (0,2*pi)
+  m_beta1  = acos(2.0*rrr[0]-1.0);   // polar angle     in (0,  pi)
+  m_gamma1 = 2.0*M_PI*rrr[1];        // azimuthal angle in (0,2*pi)
+//------------------------------------------------
+  pseumar_makevec_(rrr,3);
+  m_alfa2  = 2.0*M_PI*rrr[2];        // azimuthal angle in (0,2*pi)
+  m_beta2  = acos(2.0*rrr[0]-1.0);   // polar angle     in (0,  pi)
+  m_gamma2 = 2.0*M_PI*rrr[1];        // azimuthal angle in (0,2*pi)
+//------------------------------------------------
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  (*m_Out)<<"TauPair::Clone:  m_alfa1="<<m_alfa1<<" m_beta1="<<m_beta1<<" "<<m_beta1<<" m_gamma1="<<m_gamma1<<endl;
+//  (*m_Out)<<"TauPair::Clone:  m_alfa2="<<m_alfa2<<" m_beta2="<<m_beta2<<" "<<m_beta2<<" m_gamma2="<<m_gamma2<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  if(m_KeyClone == 1) {
+/////////////////////////////////////////////////////////////////////////////////////
+//   Cloning tau decay with help of  Euler rotations FIRST method                  //
+/////////////////////////////////////////////////////////////////////////////////////
+
+/*
+         Habs1 = DSQRT( m_HvecTau1(1)**2 +m_HvecTau1(2)**2 +m_HvecTau1(3)**2 )
+         Habs2 = DSQRT( m_HvecTau2(1)**2 +m_HvecTau2(2)**2 +m_HvecTau2(3)**2 )
+* Standart phi, theta for polarimeter fectors, phi in (0,2*pi), theta in (0,pi)
+         IF(Habs1 .GT. 1d-5) THEN
+            m_phi1  = KinLib_AngPhi( m_HvecTau1(1), m_HvecTau1(2) )
+            m_thet1 = KinLib_AngPhi( m_HvecTau1(3), DSQRT(m_HvecTau1(1)**2+m_HvecTau1(2)**2) )
+         ELSE
+            m_phi1  =0d0
+            m_thet1 =0d0
+         ENDIF
+         IF(Habs2 .GT. 1d-5) THEN
+            m_phi2  = KinLib_AngPhi( m_HvecTau2(1), m_HvecTau2(2) )
+            m_thet2 = KinLib_AngPhi( m_HvecTau2(3), DSQRT(m_HvecTau2(1)**2+m_HvecTau2(2)**2) )
+         ELSE
+            m_phi2  =0d0
+            m_thet2 =0d0
+         ENDIF
+         m_HvClone1(1) =0d0
+         m_HvClone1(2) =0d0
+         m_HvClone1(3) =Habs1
+         m_HvClone1(4) =1d0
+         m_HvClone2(1) =0d0
+         m_HvClone2(2) =0d0
+         m_HvClone2(3) =Habs2
+         m_HvClone2(4) =1d0
+         CALL  KinLib_RotEul( m_beta1, m_gamma1, m_HvClone1, m_HvClone1)
+         CALL  KinLib_RotEul( m_beta2, m_gamma2, m_HvClone2, m_HvClone2)
+         */
+     (*m_Out)<< " ##### STOP in Taupair_Clone: KeyClone=1 not implemented "<< endl;
+     cout    << " ##### STOP in Taupair_Clone: KeyClone=1 not implemented "<< endl;
+     exit(9);
+  } else if(m_KeyClone == 2) {
+/////////////////////////////////////////////////////////////////////////////////////
+//   Cloning tau decay with help of  Euler rotations, SECOND method                //
+/////////////////////////////////////////////////////////////////////////////////////
+     m_H1.SetPxPyPzE(m_HvecTau1[0],m_HvecTau1[1],m_HvecTau1[2],m_HvecTau1[3]);
+     m_H2.SetPxPyPzE(m_HvecTau2[0],m_HvecTau2[1],m_HvecTau2[2],m_HvecTau2[3]);
+     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+     //(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
+     //(*m_Out)<<"TauPair::Clone: (a) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
+     //]]]]]]]]]]]]]]]]]]]]]]]]]]]
+     m_Event->RotEuler(m_alfa1, m_beta1, m_gamma1, &m_H1);
+     m_Event->RotEuler(m_alfa2, m_beta2, m_gamma2, &m_H2);
+     for(int i=0; i<4;i++) m_HvClone1[i]=m_H1[i];
+     for(int i=0; i<4;i++) m_HvClone2[i]=m_H2[i];
+     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+     //(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
+     //(*m_Out)<<"TauPair::Clone: (b) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
+     //(*m_Out)<<"TauPair::Clone: (b) m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
+     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  } else {
+     (*m_Out)<< " ##### STOP in Taupair_Clone: wrong KeyClone= "<< m_KeyClone<< endl;
+     cout <<    " ##### STOP in Taupair_Clone: wrong KeyClone= "<< m_KeyClone<< endl;
+     exit(9);
+  }
+}//Clone
+
+
+///______________________________________________________________________________________
+void TauPair::ImprintSpin(){
+//////////////////////////////////////////////////
+//     introduces spin effects by rejection     //
+//////////////////////////////////////////////////
+//  taupair_imprintspin_();
+  int loop=0;
+  float rvec[10];
+  double wt,wt0,wt1,wt2, wtmax=4.0;
+e1099:
+  loop=loop+1;
+  Clone();   // Cloning tau decay by Euler rotation
+  m_GPS->MakeRho2(m_HvClone1,m_HvClone2,wt0,wt1,wt2);
+  wt = wt1;                         // why not wt2???
+  cout<< "TauPair::ImprintSpin: LOOP ,wt = "<< loop<<"   "<< wt<<endl;
+  pseumar_makevec_(rvec,1);
+  if (wt < wtmax*rvec[0]  && loop<100) goto e1099;
+}//ImprintSpin
+
+///______________________________________________________________________________________
+void TauPair::Make2(){
+//  taupair_make2_();        // book-keeping, Photos, HepEvt
+//[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
+  cout    <<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
+//]]]]]]]]]]]]]]]]]]]]
+  int ih1,ih2;
+  hepevt_getf_(   ih1);         // fermion is here
+  hepevt_getfbar_(ih2);         // antifermion is here
+  tauface_setfermpos_(ih1,ih2);  // set ffbar positions in Tauola
+
+  int J;
+  J=11;  dekay_(&J,m_HvClone1);
+  J=12;  dekay_(&J,m_HvClone1);
+/////////////////////////////////////////////////////////////////////////////////////
+//                    Photos comes last                                            //
+/////////////////////////////////////////////////////////////////////////////////////
+//[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<<" Taupair_Make2: ih1="<<ih1<<"  ih2="<<ih2<<endl;
+//]]]]]]]]]]]]]]]]]]]]
+  if(m_IFPHOT == 1) {
+    photos_(ih1);  // Photos works on HepEvt
+    photos_(ih2);
+  }//IFPHOT
+/////////////////////////////////////////////
+  J=2; pyhepc_(J);       // HepEvt-->Pythia
+/////////////////////////////////////////////
+//[[[[[[[[[[[[[[[[[[[[
+  (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
+  tauface_print_();
+//]]]]]]]]]]]]]]]]]]]]
+}//Make2
+
+void TauPair::Tralo4(int Kto, float P[], float Q[], float &AM){
+/////////////////////////////////////////////////////////////////////////////////////
+//                                                                                 //
+//   This routine is strongly interrelated with Taupair::Clone!                    //
+//                                                                                 //
+//  SUBSITUTE OF TRALO4                                                            //
+//  TRALO4 is called in TAUOLA --> /hepevt/ interface to boost from tau+-          //
+//  restframe to lab. It includes rotations in tau rest frame due to spin effect   //
+//  implementation                                                                 //
+//                                                                                 //
+/////////////////////////////////////////////////////////////////////////////////////
+// locals
+double  Pd[4];
+//* ------------------------------------------------------------
+AM = sqrt(abs( P[3]*P[3] -P[2]*P[2] -P[1]*P[1] -P[0]*P[0] ));  // Mass
+//
+for(int k=0; k<4; k++) Pd[k]=P[k]; // from REAL to DOUBLE PRECISION
+//
+if(m_KeyClone == 1) {
+	/*
+   IF(   Kto .EQ. 1) THEN
+      CALL  KinLib_RotEulInv( m_thet1, m_phi1,   Pd,Pd)
+      CALL  KinLib_RotEul(    m_beta1, m_gamma1, Pd,Pd)
+   ELSEIF( Kto .EQ. 2) THEN
+      CALL  KinLib_RotEulInv( m_thet2, m_phi2,   Pd,Pd)
+      CALL  KinLib_RotEul(    m_beta2, m_gamma2, Pd,Pd)
+   ELSE
+   (*m_Out)<<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
+   cout    <<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
+   ENDIF
+   */
+} else if(m_KeyClone == 2) {
+   m_PP.SetPxPyPzE(Pd[0],Pd[1],Pd[2],Pd[3]);
+   if(     Kto == 1) {
+     m_Event->RotEuler(m_alfa1, m_beta1, m_gamma1, &m_PP);
+   } else if( Kto == 2) {
+     m_Event->RotEuler(m_alfa2, m_beta2, m_gamma2, &m_PP);
+   } else {
+   (*m_Out)<<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
+   cout    <<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
+   exit(9);
+   }
+   for(int i=0; i<4;i++) Pd[i]=m_PP[i];
+} else {
+   (*m_Out)<<"##### STOP in Taupair_Tralo4: wrong KeyClone="<<m_KeyClone<<endl;
+   cout    <<"##### STOP in Taupair_Tralo4: wrong KeyClone="<<m_KeyClone<<endl;
+   exit(9);
+}
+m_GPS->TralorDoIt(Kto,Pd,Pd);
+// Translation from DOUBLE PRECISION  to REAL
+for(int k=0; k<4; k++) P[k]=Pd[k];
+//----------------------------------------------
+}//Tralo4

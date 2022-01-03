@@ -237,6 +237,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 // TAUOLA+PHOTOS corner
   m_TauGen= new TauPair(OutFile);
   m_TauGen->Initialize(m_ypar);
+  m_TauGen->SetEvent(m_Event);
+  m_TauGen->SetGPS(  m_GPS);
 //////////////////////////////////////////////////////////////
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
@@ -764,6 +766,7 @@ m_Event->ZBoostALL();
 /////////////////////////////////////////////////////////////
 // hadronization interface
 if ( m_WtCrude  != 0) hepevt_fill_();
+
 /////////////////////////////////////////////////////////////
 // Tau pair generation using TAUOLA+PHOTOS
 if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
@@ -774,7 +777,10 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
          exit(10); }//if
      m_GPS->TralorPrepare(1);
      m_GPS->TralorPrepare(2);
-     m_TauGen->Make();
+//
+     m_TauGen->Make1();
+     m_TauGen->ImprintSpin();
+     m_TauGen->Make2();
    }//TauIsInitialized
 }//if
 
