@@ -1150,7 +1150,8 @@ m_RhoExp0 = Sum0 *m_ExpoNorm;
 m_RhoExp1 = Sum1 *m_ExpoNorm;
 m_RhoExp2 = Sum2 *m_ExpoNorm;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@KKceex::MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
+if( m_Event->m_EventCounter <=10){
+//(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@KKceex::MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
 //(*m_Out)<<"m_ExpoNorm= "<<m_ExpoNorm<<endl;
 //  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo0("<<j1<<","<<j2<<",*,*)=";
 //     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo0.m_A[j1][j2][j][k];(*m_Out)<<endl;}
@@ -1160,7 +1161,8 @@ m_RhoExp2 = Sum2 *m_ExpoNorm;
 //  (*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
 //    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
 //       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"@@@@@@@@ m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
+(*m_Out)<<"@@@KKceex::MakeRho: m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
+}
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//MakeRho
 
@@ -4152,8 +4154,8 @@ for(int i=1; i<=m_nPhot; i++){      //f77 indexing
    }
 }//for
 //[[[[[[[[[[[[[[
-(*m_Out) << "%%%%%%%%% m_Phel= ";
-for(int i=1; i<=m_nPhot;i++ ) (*m_Out)<<" "<<m_Phel[i]; (*m_Out)<<endl;
+//(*m_Out) << "%%%%%%%%% m_Phel= ";
+//for(int i=1; i<=m_nPhot;i++ ) (*m_Out)<<" "<<m_Phel[i]; (*m_Out)<<endl;
 //]]]]]]]]]]]]]]
 //if(m_icont <200){for(int i=1; i<=m_nPhot;i++ ) cout<<" "<<m_Phel[i]; cout<<endl;}
 }//PhelRandom

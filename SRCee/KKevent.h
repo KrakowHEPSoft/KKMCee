@@ -92,6 +92,7 @@ void RotEul(  double the, double phi, TLorentzVector *Pf);
 void BoostQ(int Mode, TLorentzVector *Q, TLorentzVector *Pf);
 
 void BoostEul(double the, double phi, TLorentzVector *QQk, TLorentzVector *PX, TLorentzVector *pvec);
+void RotEulInv(double the, double phi, TLorentzVector *Pf);
 
 void PhaSpac2(TLorentzVector *PX, double the, double phi, double amfin,
 		      TLorentzVector *Qf1, TLorentzVector *Qf2);

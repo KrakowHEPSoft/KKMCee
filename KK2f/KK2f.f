@@ -361,14 +361,14 @@
 *----------------------------------------------------------------------
 ***** CALL GLK_ListPrint(6)     ! debug
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-      write(*,*) '%%%%%%%%%%%%%%%%%%%%%%%% DEBUG in KK2f_Initialize %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+      write(m_out,*) '%%%%%%%%%%%%%%%%%%%%%%%% DEBUG in KK2f_Initialize %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 cc DOUBLE PRECISION  FUNCTION BornV_Simple(KFi,KFf,svar,costhe)
       Xsimple = BornV_Simple(11, 13, m_CMSene**2, 0.5d0)
-      write(*,*) 'Xsimple=', Xsimple
+      write(m_out,*) 'Xsimple=', Xsimple
 
 cc DOUBLE PRECISION  FUNCTION BornV_Differential(Mode,KFf,svar,CosThe,eps1,eps2,ta,tb)
       Xsimple = BornV_Differential(1, 13, m_CMSene**2, 0.5d0, 0d0,0d0,0d0,0d0)
-      write(*,*) 'Xdifferential=', Xsimple
+      write(m_out,*) 'Xdifferential=', Xsimple
 cc      STOP
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!! KK2f_Initialize !!!
@@ -555,7 +555,7 @@ c]]]]]]]]]]]]]]]]]]]]
          svar1     = CMSE**2*(1d0-vv)
          m_BornCru = 4d0/3d0*BornV_Differential(0,KFfin,svar1,0d0,0d0,0d0,0d0,0d0)
 c[[[[[[[[[[[[[[[[[[[[
-         write(16,*) '%%%%% KK2f_Make: svar1, m_BornCru=',svar1, m_BornCru
+c         write(16,*) '%%%%% KK2f_Make: svar1, m_BornCru=',svar1, m_BornCru
 c]]]]]]]]]]]]]]]]]]]]
          CALL QED3_Make                         !<-- EEX
 * WtSet from QED3 is filled in the range (1:200)
@@ -1075,7 +1075,7 @@ c]]]]]]]]]]]]]]]]]]]]
          ENDIF
       ENDDO
 c[[[[[[[[[[[[[[[[[
-      write(m_out,*) '%%% m_Phel= ', (m_Phel(i),i=1,m_nphot)
+c      write(m_out,*) '%%% m_Phel= ', (m_Phel(i),i=1,m_nphot)
 c]]]]]]]]]]]]]]]]]
       END
 

@@ -124,9 +124,9 @@ C switches of tau+ tau- decay modes !!
       CALL DEKAY(1,m_HvecTau1)
       CALL DEKAY(2,m_HvecTau2)
 c[[[[[[[[[[[[[[[[[[
-      write(16,*) '================================//// Taupair_Make1 ////========================================='
-      write(16,*) 'm_HvecTau1 = ',(m_HvecTau1(i), i=1,4)
-      write(16,*) 'm_HvecTau2 = ',(m_HvecTau2(i), i=1,4)
+c      write(16,*) '================================//// Taupair_Make1 ////========================================='
+c      write(16,*) 'm_HvecTau1 = ',(m_HvecTau1(i), i=1,4)
+c      write(16,*) 'm_HvecTau2 = ',(m_HvecTau2(i), i=1,4)
 c]]]]]]]]]]]]]]]]]]
       END
 
@@ -181,6 +181,9 @@ c]]]]]]]]]]]]]]]]]]
       INCLUDE 'Taupair.h'
       DOUBLE PRECISION     p3(4),p4(4)
       INTEGER ih1,ih2
+      integer icont
+      data icont /0/
+      icont=icont+1
 
       CALL KarFin_GetFermions( p3,p4)
       CALL GPS_tralorPrepare(p3,1)
@@ -201,9 +204,11 @@ c]]]]]]]]]]]]]]]]]]
       ENDIF
       CALL pyhepc(2)       ! HepEvt-->Pythia
 c[[[[[[[[[[[[[[[[[[[[
+      if(icont .le. 10) then
       write(16,*) '====================================== Taupair_Make2: HepEvt-->Pythia ===================================='
       CALL PYgive('MSTU(11)=16')
       CALL PYlist(1)
+      endif
 c]]]]]]]]]]]]]]]]]]]]
       END
 
@@ -238,6 +243,11 @@ c]]]]]]]]]]]]]]]]]]]]
       m_alfa2  = 2d0*m_pi*rrr(3)        ! azimuthal angle in (0,2*pi)
       m_beta2  = ACOS(2d0*rrr(1)-1d0)   ! polar angle     in (0,  pi)
       m_gamma2 = 2d0*m_pi*rrr(2)        ! azimuthal angle in (0,2*pi)
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) '-----------------------------------Taupair_Clone-----------------------------------'
+c      write(16,*) ' m_alfa1=',m_alfa1,' m_beta1=',m_beta1,' m_gamma1=',m_gamma1
+c      write(16,*) ' m_alfa2=',m_alfa2,' m_beta2=',m_beta2,' m_gamma2=',m_gamma2
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       IF(m_KeyClone .EQ. 1) THEN
 */////////////////////////////////////////////////////////////////////////////////////
 *//   Cloning tau decay with help of  Euler rotations FIRST method                  //

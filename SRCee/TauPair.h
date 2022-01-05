@@ -37,14 +37,6 @@ using namespace std;
 
 extern "C" {
   void pseumar_makevec_(float rvec[], const int&);
-  /*
-// SUBROUTINE Taupair_Initialize(xpar)
-  void taupair_initialize_(double[]);
-  void taupair_getisinitialized_(const int&);
-  void taupair_make1_();        // generates tau decay
-  void taupair_imprintspin_();  // introduces spin effects by rejection
-  void taupair_make2_();        // book-keeping, Photos, HepEvt
-*/
 /////////////////////////////
 // HepEvt
   void hepevt_getf_( const int&);                    // fermion is here

@@ -50,13 +50,19 @@ cout<<"MainMini: BornSimple=  "<<SW20<<Dist0<<endl;
 double Dist1= Born->Born_DizetS(KFi, KFf, svar, CosThe);
 cout<<"MainMini: Born_DizetS= "<<SW20<<Dist1<<endl;
 
+int NevLimPrt =100;
+int NevGen =100;
+cout<<"MainMini: ********************************** "<<endl;
+cout<<"MainMini: type in no. of events: (100?) ";
+cin>>NevGen;
+cout<<"MainMini: requested "<< NevGen <<" MC events "<<endl;
+
 /////////////////////////////////////////////////////////////
 // Small loop over MC events
-for(int iev=1; iev<=100; iev++) {
+for(int iev=1; iev<=NevGen; iev++) {
    KKMCgen->Generate();
-   if(iev <= 20) KKMCgen->m_Event->PrintISR_FSR();
-   if(iev <= 20) KKMCgen->m_Event->PrintISR_FSR(&OutFile);
-   if(iev <= 20) cout<<" iev ="<< iev<<endl;
+   if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR();
+   if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR(&OutFile);
 }
 
 /////////////////////////////////////////////////////////////

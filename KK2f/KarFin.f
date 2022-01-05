@@ -322,8 +322,8 @@
 c[[[[[[[[[[[[[[[[[[[[
 c      write(m_out,*) '//// KarFin_YFSfin:amc2=',amc2,' alf1=',alf1,'  m_delta=',m_delta
 c      write(m_out,*) '//// KarFin_YFSfin:betc=',betc,' gamf2=',gamf2,'  CharSq=',CharSq
-      write(m_out,*) '//// KarFin_YFSfin: m_nphot=', m_nphot,'  average=',average, ' m_Xenph=',m_Xenph
-      write(m_out,*) '//// KarFin_YFSfin: ',('rr(',i,')=',rr(i),i=1,m_nphot)
+c      write(m_out,*) '//// KarFin_YFSfin: m_nphot=', m_nphot,'  average=',average, ' m_Xenph=',m_Xenph
+c      write(m_out,*) '//// KarFin_YFSfin: ',('rr(',i,')=',rr(i),i=1,m_nphot)
 c]]]]]]]]]]]]]]]]]]]]
 
 ** This is for tests of program at fixed multiplicity (advanc. users)

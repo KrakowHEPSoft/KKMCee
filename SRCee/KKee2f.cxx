@@ -700,9 +700,9 @@ if(m_WtCrude != 0 ) {
       for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
       WtBest = m_WtSet[74];   // wtset[74]
 //[[[[[[[[[[[[[[[
-      if(m_EventCounter <20 ){
-        (*f_Out)<<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
-        cout    <<" m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
+      if(m_EventCounter <10 ){
+        (*f_Out)<<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
+        cout    <<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
       }
 //]]]]]]]]]]]]]]]
 // New CEEX matrix element is now default for leptons and for quarks.

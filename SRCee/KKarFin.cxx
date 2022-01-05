@@ -219,8 +219,8 @@ PoissGen(average,&m_nphot, rr);
 //[[[[[[[[[[[[[[[
 //(*m_Out)<< "KarFin_YFSfin:amc2="<<amc2<<" alf1="<<alf1<<"  m_delta="<<m_delta<<endl;
 //(*m_Out)<< "KarFin_YFSfin:betc="<<betc<<" gamf2="<<gamf2<<endl;
-(*m_Out)<< "KKarfin::YFSfin: m_nphot="<<m_nphot<<"  average="<<average<<" m_Xenph="<< m_Event->m_Xenph<<endl;
-(*m_Out)<< "KKarfin::YFSfin:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
+//(*m_Out)<< "KKarfin::YFSfin: m_nphot="<<m_nphot<<"  average="<<average<<" m_Xenph="<< m_Event->m_Xenph<<endl;
+//(*m_Out)<< "KKarfin::YFSfin:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
 //]]]]]]]]]]]]]]]
 // This is for tests of program at fixed multiplicity (advanc. users)
 // if((m_MltFSR != 0) && (m_nphot != m_MltFSR)) goto 5

@@ -157,9 +157,22 @@ void KKevent::RotEul(double the, double phi, TLorentzVector *Pf){
 //////////////////////////////////////////////////////////////////////////////////
 // CALL KinLib_Rotor(3,1,the,pvec,qvec) ! y-rotation
 // CALL KinLib_Rotor(1,2,phi,qvec,qvec) ! z-rotation
-	(*Pf).RotateY(the);
-	(*Pf).RotateZ(phi);
+  (*Pf).RotateY(the);
+  (*Pf).RotateZ(phi);
 }//RotEul
+
+
+void KKevent::RotEulInv(double the, double phi, TLorentzVector *Pf){
+//SUBROUTINE KinLib_RotEulInv(the,phi,pvec,qvec)
+//////////////////////////////////////////////////////////////////////////////////
+//      Inverse of KinLib_RotEul                                                //
+//////////////////////////////////////////////////////////////////////////////////
+//CALL KinLib_Rotor(1,2,-phi,pvec,qvec) ! z-rotation
+//CALL KinLib_Rotor(3,1,-the,qvec,qvec) ! y-rotation
+  (*Pf).RotateZ(-phi);
+  (*Pf).RotateY(-the);
+}//RotEulInv
+
 
 void KKevent::BoostQ(int Mode, TLorentzVector *Q, TLorentzVector *Pf){
 TVector3 b = (*Q).BoostVector();
@@ -168,7 +181,7 @@ if(Mode <0) b=-b;
 }//BoostQ
 
 void KKevent::PhaSpac2(TLorentzVector *PX, double the, double phi, double amfin,
-		               TLorentzVector *Qf1, TLorentzVector *Qf2){
+                       TLorentzVector *Qf1, TLorentzVector *Qf2){
 // define fermion pair in its rest frame PX along z-axis
  double PXM= (*PX).M();
  DefPair( PXM,amfin,amfin, Qf1, Qf2);

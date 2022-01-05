@@ -530,8 +530,8 @@ c]]]]]]]]]]]]]]]]]]]]]]
  100     CONTINUE
          CALL KarLud_PoissGen(AvMult,m_nmax,m_nphot,rr)
 c[[[[[[[[[[[[[[[[[[[[
-      write(m_out,*) '@@@@ KarLud_YFSini: m_nphot=', m_nphot,' vv=',vv,'  m_vvmin=', m_vvmin,"  AvMult=",AvMult
-      write(m_out,*) '@@@@ KarLud_YFSini: ',('rr(',i,')=',rr(i),i=1,m_nphot)
+c      write(m_out,*) '@@@@ KarLud_YFSini: m_nphot=', m_nphot,' vv=',vv,'  m_vvmin=', m_vvmin,"  AvMult=",AvMult
+c      write(m_out,*) '@@@@ KarLud_YFSini: ',('rr(',i,')=',rr(i),i=1,m_nphot)
 c]]]]]]]]]]]]]]]]]]]]
          m_nphot = m_nphot+1
 * For special tests of program at fixed multiplicity (for advc. users)

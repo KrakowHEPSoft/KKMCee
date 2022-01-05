@@ -633,7 +633,7 @@ c]]]]]]]]]]]]]]]]]]]]
       m_RhoExp2 = Sum2 *ExpoNorm
       m_RhoExp2p = Sum2p *ExpoNorm
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+c      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 c      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPS_MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 c      write(16,*) 'ExpoNorm=',ExpoNorm
 c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo0(',j1,',',j2,',*,*)=',((m_AmpExpo0(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
@@ -641,7 +641,7 @@ c      write(16,*) '------------------------------------------------------------
 c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo1(',j1,',',j2,',*,*)=',((m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c      write(16,*) '---------------------------------------------------------------------------------------------------------------'
 c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo2(',j1,',',j2,',*,*)=',((m_AmpExpo2(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-      write(16,*) '@@@@@@@@@ m_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
+c      write(16,*) '@@@@@@@@@ m_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_MakeRho!!!
 
@@ -665,6 +665,9 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       DOUBLE PRECISION        polar1,  polar2
       DOUBLE COMPLEX          Tensor0, Tensor1, Tensor2, SDMprod
       DOUBLE PRECISION        Rho0, Rho1, Rho2
+      integer icont
+      data icont /0/
+      icont = icont+1
 *----------------------------------
       polar1 = SQRT(ABS(m_PolBeam1(3)**2 +m_PolBeam1(2)**2 +m_PolBeam1(1)**2))
       polar2 = SQRT(ABS(m_PolBeam2(3)**2 +m_PolBeam2(2)**2 +m_PolBeam2(1)**2))
@@ -728,8 +731,7 @@ c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       wt1 = Rho1/m_RhoExp1
       wt2 = Rho2/m_RhoExp2
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
-      write(16,*) '----------------------------------GPS_MakeRho2---------------------------------------------------'
-      write(16,*) ' Rho0 =',Rho0,'  Rho1 =',Rho1,'  Rho2 =',Rho2
+      if(icont .le. 10) write(16,*) 'GPS_MakeRho2: Rho0 =',Rho0,'  Rho1 =',Rho1,'  Rho2 =',Rho2
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_MakeRho2!!!
 

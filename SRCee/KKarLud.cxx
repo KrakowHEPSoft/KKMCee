@@ -212,8 +212,8 @@ if(vv <= m_vvmin) {
 //e100:
    PoissGen(AvMult,&m_nphot, rr);
 //[[[[[[[[[[[[[[[
-   (*m_Out)<< "KKarLud::YFSgen: m_nphot="<<m_nphot<<"  m_vvmin="<<m_vvmin<<" vv="<<vv<<"  AvMult="<<AvMult<<endl;
-   (*m_Out)<< "KKarLud::YFSgen:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
+//   (*m_Out)<< "KKarLud::YFSgen: m_nphot="<<m_nphot<<"  m_vvmin="<<m_vvmin<<" vv="<<vv<<"  AvMult="<<AvMult<<endl;
+//   (*m_Out)<< "KKarLud::YFSgen:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
 //]]]]]]]]]]]]]]]
   m_nphot = m_nphot+1;
    m_Event->m_nPhotISR = m_nphot;

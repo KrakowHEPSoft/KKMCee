@@ -85,21 +85,16 @@ void TauPair::Initialize(double xpar[])
 
 ///______________________________________________________________________________________
 void TauPair::Make1(){
-
-//  tauface_print_();
-//  taupair_make1_();        // generates tau decay
   int J;
   if( m_IsInitialized != 0) {
     J=1; dekay_(&J,m_HvecTau1); // TAUOLA
     J=2; dekay_(&J,m_HvecTau2); // TAUOLA
   }
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  (*m_Out)<<" ====================================//// Taupair_Make1 ////============================"<<endl;
-  (*m_Out)<<" m_HvecTau1[0-3]="<<m_HvecTau1[0]<<" "<<m_HvecTau1[1]<<" "<<m_HvecTau1[2]<<" "<<m_HvecTau1[3]<<endl;
-  (*m_Out)<<" m_HvecTau2[0-3]="<<m_HvecTau2[0]<<" "<<m_HvecTau2[1]<<" "<<m_HvecTau2[2]<<" "<<m_HvecTau2[3]<<endl;
- //]]]]]]]]]]]]]]]]]]]]]]]]]]]
-  tauface_print_();
-
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  (*m_Out)<<" ====================================//// Taupair_Make1 ////============================"<<endl;
+//  (*m_Out)<<" m_HvecTau1[0-3]="<<m_HvecTau1[0]<<" "<<m_HvecTau1[1]<<" "<<m_HvecTau1[2]<<" "<<m_HvecTau1[3]<<endl;
+//  (*m_Out)<<" m_HvecTau2[0-3]="<<m_HvecTau2[0]<<" "<<m_HvecTau2[1]<<" "<<m_HvecTau2[2]<<" "<<m_HvecTau2[3]<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//Make1
 
 ///______________________________________________________________________________________
@@ -111,13 +106,7 @@ void TauPair::Clone(){
 //   Cloning tau decays by additional rotation tau decay products with respect     //
 //   to frames  initially used in the decay simulation.                            //
 /////////////////////////////////////////////////////////////////////////////////////
-/*
-      DOUBLE PRECISION       KinLib_AngPhi
-      DOUBLE PRECISION       Habs1,Habs2
-      DOUBLE PRECISION       hb1(4),hb2(4)
-      REAL                   rrr(10)
-*-------------------------------------------------------------------------------------
-*/
+//
 /////////////////////////////////////////////////////////////////////////////////////
 //   Generation of random two independent Euler rotations                          //
 /////////////////////////////////////////////////////////////////////////////////////
@@ -132,71 +121,54 @@ void TauPair::Clone(){
   m_beta2  = acos(2.0*rrr[0]-1.0);   // polar angle     in (0,  pi)
   m_gamma2 = 2.0*M_PI*rrr[1];        // azimuthal angle in (0,2*pi)
 //------------------------------------------------
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  (*m_Out)<<"TauPair::Clone:  m_alfa1="<<m_alfa1<<" m_beta1="<<m_beta1<<" "<<m_beta1<<" m_gamma1="<<m_gamma1<<endl;
-//  (*m_Out)<<"TauPair::Clone:  m_alfa2="<<m_alfa2<<" m_beta2="<<m_beta2<<" "<<m_beta2<<" m_gamma2="<<m_gamma2<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  m_H1.SetPxPyPzE(m_HvecTau1[0],m_HvecTau1[1],m_HvecTau1[2],m_HvecTau1[3]);
+  m_H2.SetPxPyPzE(m_HvecTau2[0],m_HvecTau2[1],m_HvecTau2[2],m_HvecTau2[3]);
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//  (*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
+//  (*m_Out)<<"TauPair::Clone:  m_alfa1="<<m_alfa1<<" m_beta1="<<m_beta1<<" m_gamma1="<<m_gamma1<<endl;
+//  (*m_Out)<<"TauPair::Clone:  m_alfa2="<<m_alfa2<<" m_beta2="<<m_beta2<<" m_gamma2="<<m_gamma2<<endl;
+//  (*m_Out)<<"---------------------------------------------------------------------------------------------------"<<endl;
+//  (*m_Out)<<"TauPair::Clone: m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
+//  (*m_Out)<<"TauPair::Clone: m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]
   if(m_KeyClone == 1) {
 /////////////////////////////////////////////////////////////////////////////////////
 //   Cloning tau decay with help of  Euler rotations FIRST method                  //
-/////////////////////////////////////////////////////////////////////////////////////
-
-/*
-         Habs1 = DSQRT( m_HvecTau1(1)**2 +m_HvecTau1(2)**2 +m_HvecTau1(3)**2 )
-         Habs2 = DSQRT( m_HvecTau2(1)**2 +m_HvecTau2(2)**2 +m_HvecTau2(3)**2 )
-* Standart phi, theta for polarimeter fectors, phi in (0,2*pi), theta in (0,pi)
-         IF(Habs1 .GT. 1d-5) THEN
-            m_phi1  = KinLib_AngPhi( m_HvecTau1(1), m_HvecTau1(2) )
-            m_thet1 = KinLib_AngPhi( m_HvecTau1(3), DSQRT(m_HvecTau1(1)**2+m_HvecTau1(2)**2) )
-         ELSE
-            m_phi1  =0d0
-            m_thet1 =0d0
-         ENDIF
-         IF(Habs2 .GT. 1d-5) THEN
-            m_phi2  = KinLib_AngPhi( m_HvecTau2(1), m_HvecTau2(2) )
-            m_thet2 = KinLib_AngPhi( m_HvecTau2(3), DSQRT(m_HvecTau2(1)**2+m_HvecTau2(2)**2) )
-         ELSE
-            m_phi2  =0d0
-            m_thet2 =0d0
-         ENDIF
-         m_HvClone1(1) =0d0
-         m_HvClone1(2) =0d0
-         m_HvClone1(3) =Habs1
-         m_HvClone1(4) =1d0
-         m_HvClone2(1) =0d0
-         m_HvClone2(2) =0d0
-         m_HvClone2(3) =Habs2
-         m_HvClone2(4) =1d0
-         CALL  KinLib_RotEul( m_beta1, m_gamma1, m_HvClone1, m_HvClone1)
-         CALL  KinLib_RotEul( m_beta2, m_gamma2, m_HvClone2, m_HvClone2)
-         */
-     (*m_Out)<< " ##### STOP in Taupair_Clone: KeyClone=1 not implemented "<< endl;
-     cout    << " ##### STOP in Taupair_Clone: KeyClone=1 not implemented "<< endl;
-     exit(9);
+    double Habs1 = (m_H1.Vect()).Mag();
+    double Habs2 = (m_H2.Vect()).Mag();
+    // Standart phi, theta for polarimeter fectors, phi in (0,2*pi), theta in (0,pi)
+    m_phi1  =0.0; m_thet1 =0.0;
+    m_phi2  =0.0; m_thet2 =0.0;
+    if(Habs1 > 1e-5) { m_phi1  = m_H1.Phi(); m_thet1 = m_H1.Theta(); }
+    if(Habs2 > 1e-5) { m_phi2  = m_H2.Phi(); m_thet2 = m_H2.Theta(); }
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<<"TauPair::Clone:  Habs1="<< Habs1 <<" m_phi1="<<m_phi1<<" m_thet1="<<m_thet1<<endl;
+//(*m_Out)<<"TauPair::Clone:  Habs2="<< Habs2 <<" m_phi2="<<m_phi2<<" m_thet2="<<m_thet2<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+    m_H1.SetPxPyPzE(0.0, 0.0, Habs1, 1.0);
+    m_H2.SetPxPyPzE(0.0, 0.0, Habs2, 1.0);
+    m_Event->RotEul(m_beta1, m_gamma1, &m_H1);
+    m_Event->RotEul(m_beta2, m_gamma2, &m_H2);
+    for(int i=0; i<4;i++) m_HvClone1[i]=m_H1[i];
+    for(int i=0; i<4;i++) m_HvClone2[i]=m_H2[i];
+    //
   } else if(m_KeyClone == 2) {
 /////////////////////////////////////////////////////////////////////////////////////
 //   Cloning tau decay with help of  Euler rotations, SECOND method                //
-/////////////////////////////////////////////////////////////////////////////////////
-     m_H1.SetPxPyPzE(m_HvecTau1[0],m_HvecTau1[1],m_HvecTau1[2],m_HvecTau1[3]);
-     m_H2.SetPxPyPzE(m_HvecTau2[0],m_HvecTau2[1],m_HvecTau2[2],m_HvecTau2[3]);
-     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-     //(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
-     //(*m_Out)<<"TauPair::Clone: (a) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
-     //]]]]]]]]]]]]]]]]]]]]]]]]]]]
      m_Event->RotEuler(m_alfa1, m_beta1, m_gamma1, &m_H1);
      m_Event->RotEuler(m_alfa2, m_beta2, m_gamma2, &m_H2);
      for(int i=0; i<4;i++) m_HvClone1[i]=m_H1[i];
      for(int i=0; i<4;i++) m_HvClone2[i]=m_H2[i];
-     //[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-     //(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
-     //(*m_Out)<<"TauPair::Clone: (b) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
-     //(*m_Out)<<"TauPair::Clone: (b) m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
-     //]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-  } else {
+ } else {
      (*m_Out)<< " ##### STOP in Taupair_Clone: wrong KeyClone= "<< m_KeyClone<< endl;
      cout <<    " ##### STOP in Taupair_Clone: wrong KeyClone= "<< m_KeyClone<< endl;
      exit(9);
   }
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
+//(*m_Out)<<"TauPair::Clone: (b) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
+//(*m_Out)<<"TauPair::Clone: (b) m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//Clone
 
 
@@ -205,7 +177,6 @@ void TauPair::ImprintSpin(){
 //////////////////////////////////////////////////
 //     introduces spin effects by rejection     //
 //////////////////////////////////////////////////
-//  taupair_imprintspin_();
   int loop=0;
   float rvec[10];
   double wt,wt0,wt1,wt2, wtmax=4.0;
@@ -214,7 +185,6 @@ e1099:
   Clone();   // Cloning tau decay by Euler rotation
   m_GPS->MakeRho2(m_HvClone1,m_HvClone2,wt0,wt1,wt2);
   wt = wt1;                         // why not wt2???
-  cout<< "TauPair::ImprintSpin: LOOP ,wt = "<< loop<<"   "<< wt<<endl;
   pseumar_makevec_(rvec,1);
   if (wt < wtmax*rvec[0]  && loop<100) goto e1099;
 }//ImprintSpin
@@ -222,10 +192,6 @@ e1099:
 ///______________________________________________________________________________________
 void TauPair::Make2(){
 //  taupair_make2_();        // book-keeping, Photos, HepEvt
-//[[[[[[[[[[[[[[[[[[[[
-  (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
-  cout    <<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
-//]]]]]]]]]]]]]]]]]]]]
   int ih1,ih2;
   hepevt_getf_(   ih1);         // fermion is here
   hepevt_getfbar_(ih2);         // antifermion is here
@@ -237,9 +203,6 @@ void TauPair::Make2(){
 /////////////////////////////////////////////////////////////////////////////////////
 //                    Photos comes last                                            //
 /////////////////////////////////////////////////////////////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[
-  (*m_Out)<<" Taupair_Make2: ih1="<<ih1<<"  ih2="<<ih2<<endl;
-//]]]]]]]]]]]]]]]]]]]]
   if(m_IFPHOT == 1) {
     photos_(ih1);  // Photos works on HepEvt
     photos_(ih2);
@@ -248,8 +211,10 @@ void TauPair::Make2(){
   J=2; pyhepc_(J);       // HepEvt-->Pythia
 /////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[
+  if( m_Event->m_EventCounter <=10){
   (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
   tauface_print_();
+  }//EventCounter
 //]]]]]]]]]]]]]]]]]]]]
 }//Make2
 
@@ -272,18 +237,18 @@ AM = sqrt(abs( P[3]*P[3] -P[2]*P[2] -P[1]*P[1] -P[0]*P[0] ));  // Mass
 for(int k=0; k<4; k++) Pd[k]=P[k]; // from REAL to DOUBLE PRECISION
 //
 if(m_KeyClone == 1) {
-	/*
-   IF(   Kto .EQ. 1) THEN
-      CALL  KinLib_RotEulInv( m_thet1, m_phi1,   Pd,Pd)
-      CALL  KinLib_RotEul(    m_beta1, m_gamma1, Pd,Pd)
-   ELSEIF( Kto .EQ. 2) THEN
-      CALL  KinLib_RotEulInv( m_thet2, m_phi2,   Pd,Pd)
-      CALL  KinLib_RotEul(    m_beta2, m_gamma2, Pd,Pd)
-   ELSE
-   (*m_Out)<<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
-   cout    <<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
-   ENDIF
-   */
+   m_PP.SetPxPyPzE(Pd[0],Pd[1],Pd[2],Pd[3]);
+   if(   Kto == 1) {
+      m_Event->RotEulInv( m_thet1, m_phi1,   &m_PP);
+      m_Event->RotEul(    m_beta1, m_gamma1, &m_PP);
+   }else if(Kto == 2) {
+      m_Event->RotEulInv( m_thet2, m_phi2,   &m_PP);
+      m_Event->RotEul(    m_beta2, m_gamma2, &m_PP);
+   } else {
+     (*m_Out)<<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
+     cout    <<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl; exit(9);
+   }
+   for(int i=0; i<4;i++) Pd[i]=m_PP[i];
 } else if(m_KeyClone == 2) {
    m_PP.SetPxPyPzE(Pd[0],Pd[1],Pd[2],Pd[3]);
    if(     Kto == 1) {
@@ -291,15 +256,13 @@ if(m_KeyClone == 1) {
    } else if( Kto == 2) {
      m_Event->RotEuler(m_alfa2, m_beta2, m_gamma2, &m_PP);
    } else {
-   (*m_Out)<<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
-   cout    <<"###### STOP in TRALO4: Wrong Kto = "<<Kto<<endl;
-   exit(9);
+   (*m_Out)<<"###### STOP in TauPair::Tralo4: Wrong Kto = "<<Kto<<endl;
+   cout    <<"###### STOP in TauPair::Tralo4: Wrong Kto = "<<Kto<<endl; exit(9);
    }
    for(int i=0; i<4;i++) Pd[i]=m_PP[i];
 } else {
    (*m_Out)<<"##### STOP in Taupair_Tralo4: wrong KeyClone="<<m_KeyClone<<endl;
-   cout    <<"##### STOP in Taupair_Tralo4: wrong KeyClone="<<m_KeyClone<<endl;
-   exit(9);
+   cout    <<"##### STOP in Taupair_Tralo4: wrong KeyClone="<<m_KeyClone<<endl; exit(9);
 }
 m_GPS->TralorDoIt(Kto,Pd,Pd);
 // Translation from DOUBLE PRECISION  to REAL

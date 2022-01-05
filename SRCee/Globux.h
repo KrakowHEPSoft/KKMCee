@@ -30,13 +30,7 @@ extern "C" {
                            int *nphx, int *nphy,
                            double xphot[][100], double yphot[][100],
                            double rem1[], double rem2[]);
-    //
-    // wrappers to c++ code used in Tauola
-    // already obsolete
-    //void gps_makerho2_(double HvecFer1[], double HvecFer2[], double *wt0, double *wt1, double *wt2);
-    //void gps_tralordoit_(int *KTO, double P[], double Q[]);
-    //void gps_tralorprepare_(int *);
-    // remains for some time
+    // wrapper to c++ code used in Tauola
     void tralo4_(int *KTO, float P[], float Q[], float *AM);
 }
 
@@ -70,22 +64,8 @@ void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
    for(int j=1;j<=*nphy;j++)
       for(int i=0; i<=3;i++) yphot[i][j-1] = g_KKeeGen->m_Event->m_PhotFSR[j][i];
 }//globux_getevent_
+
 ////////////////////////////////////////////
-
-/*
-void gps_makerho2_(double HvecFer1[], double HvecFer2[], double *wt0, double *wt1, double *wt2){
-	g_KKeeGen->m_GPS->MakeRho2( HvecFer1, HvecFer2, *wt0, *wt1, *wt2);
-}
-
-void gps_tralorprepare_(int *KTO){
-	g_KKeeGen->m_GPS->TralorPrepare(*KTO);
-}
-
-void gps_tralordoit_(int *KTO, double P[], double Q[]){
-	g_KKeeGen->m_GPS->TralorDoIt(*KTO, P, Q);
-}
-*/
-
 //SUBROUTINE Tralo4(Kto,P,Q,AM)
 void tralo4_(int *KTO, float P[], float Q[], float *AM){
     g_KKeeGen->m_TauGen->Tralo4(*KTO, P, Q, *AM);
