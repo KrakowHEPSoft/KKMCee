@@ -580,6 +580,9 @@ c]]]]]]]]]]]]]]]]]]]]
       DOUBLE PRECISION      Sum0, Sum1, Sum2, Sum2p
       DOUBLE PRECISION      polar1,  polar2
       DOUBLE COMPLEX        SDMprod, Tensor0, Tensor1, Tensor2, Tensor2p
+      integer icont
+      data icont /0/
+      icont = icont+1
 *----------------------------------
 * Normalized factor to LIPS for CEEX amplitudes is memorized for further use
       m_ExpoNorm = ExpoNorm
@@ -633,6 +636,7 @@ c]]]]]]]]]]]]]]]]]]]]
       m_RhoExp2 = Sum2 *ExpoNorm
       m_RhoExp2p = Sum2p *ExpoNorm
 c[[[[[[[[[[[[[[[[[[[[[[[[[[[ *debug*
+      if(icont .le. 10) then
 c      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 c      write(16,*) '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@GPS_MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 c      write(16,*) 'ExpoNorm=',ExpoNorm
@@ -641,7 +645,8 @@ c      write(16,*) '------------------------------------------------------------
 c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo1(',j1,',',j2,',*,*)=',((m_AmpExpo1(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
 c      write(16,*) '---------------------------------------------------------------------------------------------------------------'
 c      write(16,'(a,i1,a,i1,a,8g22.11)') (('m_AmpExpo2(',j1,',',j2,',*,*)=',((m_AmpExpo2(j1,j2,j3,j4),j4=1,2),j3=1,2),j2=1,2),j1=1,2)
-c      write(16,*) '@@@@@@@@@ m_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
+      write(16,*) '@@@@GPS_MakeRho: m_RhoExp0 =',m_RhoExp0,'  m_RhoExp1 =',m_RhoExp1,'  m_RhoExp2 =',m_RhoExp2
+      endif
 c]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END                       !!!GPS_MakeRho!!!
 

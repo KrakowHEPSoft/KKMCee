@@ -450,8 +450,8 @@ m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 ///////////////////////  ISR ////////////////////////////////////
 // ISR enhancement factor >1 for IFI on in RhoISRold and KKarlud
 m_Event->m_Xenph = DB->Xenph;      // default value, >1 for IFI on
-if( m_Event->m_HasFSR == 0) m_Event->m_Xenph = 1.0; // no enhancement for FSR off
-if( DB->KeyINT == 0)        m_Event->m_Xenph = 1.0; // no enhancement for IFI off
+//if( m_Event->m_HasFSR == 0) m_Event->m_Xenph = 1.0; // no enhancement for FSR off
+//if( DB->KeyINT == 0)        m_Event->m_Xenph = 1.0; // no enhancement for IFI off
 double R,gamiCR,gami,alfi;
 double amfin = DB->fmass[m_KFfin];
 double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
