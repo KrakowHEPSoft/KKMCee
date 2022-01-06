@@ -8,11 +8,11 @@ ClassImp(KKcmplx2);
 #define SW20 setw(20)<<setprecision(14)
 #define SW208 setw(30)<<setprecision(8)
 
-extern "C" {
+//extern "C" {
 //
-   void pseumar_initialize_(const int&, const int&, const int&);
-   void pseumar_makevec_(float rvec[], const int&);
-}//
+//   void pseumar_initialize_(const int&, const int&, const int&);
+//   void pseumar_makevec_(float rvec[], const int&);
+//}//
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -4140,11 +4140,11 @@ void KKceex::PhelRandom(){
 
 m_nPhot = m_Event->m_nPhot;
 //[[[[[[[[[[[[[
-  float              rvec[101];
-  pseumar_makevec_(rvec,m_nPhot);
+//  float              rvec[101];
+//  pseumar_makevec_(rvec,m_nPhot);
 //----------------
-//double rvec[101];
-//m_RNgen->RndmArray(m_nPhot, rvec);
+double rvec[101];
+m_RNgen->RndmArray(m_nPhot, rvec);
 //]]]]]]]]]]]]]
 for(int i=1; i<=m_nPhot; i++){      //f77 indexing
    if( rvec[i-1] > 0.5 ) {

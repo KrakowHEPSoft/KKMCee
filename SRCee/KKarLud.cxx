@@ -3,11 +3,11 @@
 
 ClassImp(KKarLud);
 
-extern "C" {
+//extern "C" {
 //
-   void pseumar_initialize_(const int&, const int&, const int&);
-   void pseumar_makevec_(float rvec[], const int&);
-}//
+//   void pseumar_initialize_(const int&, const int&, const int&);
+//   void pseumar_makevec_(float rvec[], const int&);
+//}//
 
 #define SW20 setw(20)<<setprecision(14)
 
@@ -65,15 +65,15 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
 //////////////////////////////////////////////////////////////////////////
   m_icont++;
 //[[[[[[[[[[[[[[[[[[[[[
-  float rvec[10];
+//  float rvec[10];
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-    if( m_icont == 1){
-     int seed = 54217317;
-     pseumar_initialize_(seed, 0, 0);
-     pseumar_makevec_(rvec,1);
-     (*m_Out) <<"@@@ KKarLud::Make: rvec(0)= "<<rvec[0]<<endl;
-    }
-     pseumar_makevec_(rvec,1); // emulate Vesk1_
+//    if( m_icont == 1){
+//     int seed = 54217317;
+//     pseumar_initialize_(seed, 0, 0);
+//     pseumar_makevec_(rvec,1);
+//     (*m_Out) <<"@@@ KKarLud::Make: rvec(0)= "<<rvec[0]<<endl;
+//    }
+//     pseumar_makevec_(rvec,1); // emulate Vesk1_
 //     (*m_Out) <<"@@@ KKarLud::Make: rvec(0)= "<<rvec[0]<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // import variables generated in FOAM
@@ -124,17 +124,17 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
     	  m_Event->m_PhotISR[j].SetPxPyPzE(0,0,0,0);
     } else {
   // Define final fermion momenta (NOT used in case of FSR!)
- //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-        pseumar_makevec_(rvec,1); // emulate MBrA_GenKF
-        pseumar_makevec_(rvec,2);
-        double cth= 1 -2*rvec[0];
-        double the= acos(cth);
-        double phi= 2*M_PI*rvec[1];
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//        pseumar_makevec_(rvec,1); // emulate MBrA_GenKF
+//        pseumar_makevec_(rvec,2);
+//        double cth= 1 -2*rvec[0];
+//        double the= acos(cth);
+//        double phi= 2*M_PI*rvec[1];
 //        (*m_Out) <<"@@@ KKarLud::Make: the, phi= "<< the<<"  "<< phi <<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-      //double cth= 1 -2*m_RNgen->Rndm();
-      //double the= acos(cth);
-      //double phi= 2*M_PI*m_RNgen->Rndm();
+      double cth= 1 -2*m_RNgen->Rndm();
+      double the= acos(cth);
+      double phi= 2*M_PI*m_RNgen->Rndm();
       double amfi  =DB->fmass[m_KFfin];
       m_Event->PhaSpac2(PX,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
    }// wt_ISR == 0
@@ -177,7 +177,7 @@ void KKarLud::YFSgen(double XXXene, double vv, TLorentzVector *PX, double *WtIni
 //   PX      = 4-mmentum left after photon emission                               //
 //   WtIni   = total weight from this sub-generator                               //
 ////////////////////////////////////////////////////////////////////////////////////
-float rvec[10];  //[[[[
+//float rvec[10];  //[[[[
 
 TLorentzVector   xphot[maxPhot];    // photon momenta before rescaling
 double           xph[maxPhot], rr[maxPhot];
@@ -237,10 +237,10 @@ if(vv <= m_vvmin) {
       dist0 = dist0 *m_Event->m_Xenph;
       m_WtMass    =m_WtMass *(dist1/dist0);
 ////[[[[[[[[[[[[[[[[[[[[[[[[
-      pseumar_makevec_(rvec,1);
-      double phi=2*M_PI*rvec[0];
-      //      (*m_Out) <<"@@@ KKarLud::YFSgen: rvec(0)= "<<rvec[0]<<endl;
-//      double phi=2*M_PI*m_RNgen->Rndm();
+//      pseumar_makevec_(rvec,1);
+//      double phi=2*M_PI*rvec[0];
+//      //      (*m_Out) <<"@@@ KKarLud::YFSgen: rvec(0)= "<<rvec[0]<<endl;
+      double phi=2*M_PI*m_RNgen->Rndm();
 //]]]]]]]]]]]]]]]]]]]]
       xphot[i].SetPxPyPzE(xk*sg*cos(phi), xk*sg*sin(phi), xk*cg, xk);
       m_yini[i]    =xk*del1/2;
@@ -315,7 +315,7 @@ void  KKarLud::PoissGen(double average, int *mult, double rr[]){
 double  rn,sum,y;
 int     nn;
 //[[[[[[[[[[[[[[[[[[[[[[[[
-float   rvec[10];
+//float   rvec[10];
 //]]]]]]]]]]]]]]]]]]]]]]]]
 //------------------------------------------------------------------------------
 e50:
@@ -323,9 +323,9 @@ nn=0;
 sum=0;
 for(int it=1; it< maxPhot; it++){
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-   pseumar_makevec_(rvec,1);
-   rn = rvec[0];
-//   rn = m_RNgen->Rndm();
+//   pseumar_makevec_(rvec,1);
+//   rn = rvec[0];
+   rn = m_RNgen->Rndm();
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    y= log(rn);
    sum=sum+y;
@@ -364,11 +364,11 @@ void KKarLud::AngBre(double am2,
 //     dist1 = distribution with m**2/(kp)**2 terms                         //
 //////////////////////////////////////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  float              rn[10];
-  pseumar_makevec_(rn,2);
+//  float              rn[10];
+//  pseumar_makevec_(rn,2);
 //  (*m_Out) <<"@@@ KKarLud::AngBre: rn(0)= "<<rn[0]<<endl;
-//double rn[2];
-//m_RNgen->RndmArray(2,rn);
+double rn[2];
+m_RNgen->RndmArray(2,rn);
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 double beta =sqrt(1-am2);
 double eps  =am2/(1+beta);                      //= 1-beta

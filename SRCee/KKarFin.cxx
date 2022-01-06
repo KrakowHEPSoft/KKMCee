@@ -3,11 +3,11 @@
 
 ClassImp(KKarFin);
 
-extern "C" {
+//extern "C" {
 //
-   void pseumar_initialize_(const int&, const int&, const int&);
-   void pseumar_makevec_(float rvec[], const int&);
-}//
+//   void pseumar_initialize_(const int&, const int&, const int&);
+//   void pseumar_makevec_(float rvec[], const int&);
+//}//
 
 #define SW20 setw(20)<<setprecision(14)
 
@@ -116,15 +116,15 @@ if(m_IsFSR == 1) {
 // In case of ISR they are reassigned one more time.
 //   m_Event->m_HasFSR=0;   // message for matrix element
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-        float rvec[10];
-        pseumar_makevec_(rvec,2);
-        double cth= 1 -2*rvec[0];
-        double the= acos(cth);
-        double phi= 2*M_PI*rvec[1];
+//        float rvec[10];
+//        pseumar_makevec_(rvec,2);
+//        double cth= 1 -2*rvec[0];
+//        double the= acos(cth);
+//        double phi= 2*M_PI*rvec[1];
 //        (*m_Out) <<"@@@ KKarFin::Make: the, phi= "<< the<<"  "<< phi <<endl;
-   //double cth= 1 -2*m_RNgen->Rndm();
-   //double the= acos(cth);
-   //double phi= 2*M_PI*m_RNgen->Rndm();
+   double cth= 1 -2*m_RNgen->Rndm();
+   double the= acos(cth);
+   double phi= 2*M_PI*m_RNgen->Rndm();
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
@@ -178,8 +178,8 @@ double   rr[maxPhot],xk[maxPhot],cgx[maxPhot],sgx[maxPhot];
 double   dis0[maxPhot];
 int      Mark[maxPhot];
 //[[[[[[[[[[[[[[[[[[[[[[[[
-//double   rvec[maxPhot];
-float rvec[100];
+double   rvec[maxPhot];
+//float rvec[100];
 //]]]]]]]]]]]]]]]]]]]]]]]]
 //-----------------------------------------------------------------------
 m_NevGen = m_NevGen + 1;
@@ -246,8 +246,8 @@ if (m_nphot == 0) {
       xk[i]=xk[i]*xfact;
    }
 ////[[[[[[[[[[[[[[[[[[[[[[[[
-   pseumar_makevec_(rvec,m_nphot);
-//   m_RNgen->RndmArray(m_nphot,rvec);
+//   pseumar_makevec_(rvec,m_nphot);
+   m_RNgen->RndmArray(m_nphot,rvec);
 ///]]]]]]]]]]]]]]]]]]]]]]]]]
    for(int i=1; i<=m_nphot; i++){
 //-----------------------------------------------------------------------
@@ -357,11 +357,11 @@ for(int i=1; i<= m_nphot; i++){
 //-----------------------------------------------------------------------
 // Angles for Euler rotation of all FSR system
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//   double cth= 1.0 -2*m_RNgen->Rndm();
-//   double phi= 2.0*M_PI*m_RNgen->Rndm();
-pseumar_makevec_(rvec,2);
-double cth= 1.0 -2*rvec[0];
-double phi=2*M_PI*rvec[1];
+   double cth= 1.0 -2*m_RNgen->Rndm();
+   double phi= 2.0*M_PI*m_RNgen->Rndm();
+//pseumar_makevec_(rvec,2);
+//double cth= 1.0 -2*rvec[0];
+//double phi=2*M_PI*rvec[1];
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    double the= acos(cth);
    // QQk is combined momentum of q1+q2+photons in q1+q2 system
@@ -626,7 +626,7 @@ void  KKarFin::PoissGen(double average, int *mult, double rr[]){
 double  rn,sum,y;
 int     nn;
 //[[[[[[[[[[[[[[[[[[[[[[[[
-float   rvec[10];
+//float   rvec[10];
 //]]]]]]]]]]]]]]]]]]]]]]]]
 //------------------------------------------------------------------------------
 e50:
@@ -634,9 +634,9 @@ nn=0;
 sum=0;
 for(int it=1; it< maxPhot; it++){
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-   pseumar_makevec_(rvec,1);
-   rn = rvec[0];
-//   rn = m_RNgen->Rndm();
+//   pseumar_makevec_(rvec,1);
+//   rn = rvec[0];
+   rn = m_RNgen->Rndm();
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    y= log(rn);
    sum=sum+y;
@@ -672,10 +672,10 @@ void KKarFin::AngBre(double am2,
 //     dist1 = distribution with m**2/(kp)**2 terms                         //
 //////////////////////////////////////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  float              rn[10];
-  pseumar_makevec_(rn,2);
-//double rn[10];
-//m_RNgen->RndmArray(2,rn);
+//  float              rn[10];
+//  pseumar_makevec_(rn,2);
+double rn[10];
+m_RNgen->RndmArray(2,rn);
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 double beta =sqrt(1-am2);
 double eps  =am2/(1+beta);                      //= 1-beta

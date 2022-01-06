@@ -226,12 +226,12 @@ c***        CALL  Vesk1_Initialize_ori(BornV_RhoVesko1,m_XCrude)
 *
       m_NevGen =  m_NevGen+1
 c[[[[[[[[[[[[[[[[[[[[[[
-      IF( m_NevGen .eq.1) THEN
-        seed = 54217317
-        CALL pseumar_initialize(seed, 0, 0)
-        CALL PseuMar_MakeVec(rvec,1)
+c      IF( m_NevGen .eq.1) THEN
+c        seed = 54217317
+c        CALL pseumar_initialize(seed, 0, 0)
+c        CALL PseuMar_MakeVec(rvec,1)
 cc       write(m_out,*) '@@@@ KarLud_Make: rvec(1)=', rvec(1)
-      ENDIF
+c      ENDIF
 c]]]]]]]]]]]]]]]]]]]]]]
       m_exe    = 1d0
       m_XXXene = m_CMSene

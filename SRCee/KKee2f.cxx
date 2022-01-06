@@ -10,9 +10,8 @@ extern "C" {
 //
    void fort_open_( const int&, const char*, int);
    void fort_close_(const int&);
-   void pseumar_initialize_(const int&, const int&, const int&);
-   void pseumar_makevec_(float rvec[], const int&);
-
+//   void pseumar_initialize_(const int&, const int&, const int&);
+//   void pseumar_makevec_(float rvec[], const int&);
 // SUBROUTINE HepEvt_Fill
    void hepevt_fill_();
 }//
@@ -133,7 +132,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   const char *output_file = "./pro77.output";
   int sl2 = strlen(output_file);
   fort_open_(m_out,output_file,sl2);
-  int seed = 54217317; pseumar_initialize_(seed, 0, 0);
+//  int seed = 54217317; pseumar_initialize_(seed, 0, 0);
 //=============================================================
 
 //////////////////////////////////////////////////////////////
@@ -450,8 +449,8 @@ m_XXXene =  2*sqrt(m_Ebeam1*m_Ebeam2);
 ///////////////////////  ISR ////////////////////////////////////
 // ISR enhancement factor >1 for IFI on in RhoISRold and KKarlud
 m_Event->m_Xenph = DB->Xenph;      // default value, >1 for IFI on
-//if( m_Event->m_HasFSR == 0) m_Event->m_Xenph = 1.0; // no enhancement for FSR off
-//if( DB->KeyINT == 0)        m_Event->m_Xenph = 1.0; // no enhancement for IFI off
+if( m_Event->m_HasFSR == 0) m_Event->m_Xenph = 1.0; // no enhancement for FSR off
+if( DB->KeyINT == 0)        m_Event->m_Xenph = 1.0; // no enhancement for IFI off
 double R,gamiCR,gami,alfi;
 double amfin = DB->fmass[m_KFfin];
 double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
@@ -470,21 +469,21 @@ if ( DB->KeyISR == 1) {
   // probably safer, more stable numerically
   MapPlus( R, GamI, vvmax, m_vv, dJac);
   //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  if( m_EventCounter == 1 ) m_vv=0.4;
-  if( m_EventCounter == 2 ) m_vv=0.2;
-  if( m_EventCounter == 3 ) m_vv=0.6;
-  if( m_EventCounter == 4 ) m_vv=0.8;
-  if( m_EventCounter == 5 ) m_vv=0.1;
-  if( m_EventCounter == 6 ) m_vv=0.3;
-  if( m_EventCounter == 7 ) m_vv=0.5;
-  if( m_EventCounter == 8 ) m_vv=0.7;
-  if( m_EventCounter == 9 ) m_vv=0.0001;
-  if( m_EventCounter >0 && m_EventCounter<= 9 ){
+  //if( m_EventCounter == 1 ) m_vv=0.4;
+  //if( m_EventCounter == 2 ) m_vv=0.2;
+  //if( m_EventCounter == 3 ) m_vv=0.6;
+  //if( m_EventCounter == 4 ) m_vv=0.8;
+  //if( m_EventCounter == 5 ) m_vv=0.1;
+  //if( m_EventCounter == 6 ) m_vv=0.3;
+  //if( m_EventCounter == 7 ) m_vv=0.5;
+  //if( m_EventCounter == 8 ) m_vv=0.7;
+  //if( m_EventCounter == 9 ) m_vv=0.0001;
+  //if( m_EventCounter >0 && m_EventCounter<= 9 ){
 //  int seed = 54217317+10000000*m_vv;
 //  int seed = 54217317;
 //  pseumar_initialize_(seed, 0, 0);
-  for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
-  *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
+//  for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
+//  *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
   //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   RhoISR *= dJac;
   /////////////// No mapping at all
@@ -634,8 +633,8 @@ m_Event->m_EventCounter = m_EventCounter;
 m_FoamMode = -1;   // generation mode
 ////////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[[
-  int seed = 54217317;
-  pseumar_initialize_(seed, 0, 0);
+//  int seed = 54217317;
+//  pseumar_initialize_(seed, 0, 0);
 //]]]]]]]]]]]]]]]]]]]]]
 f_FoamI->MakeEvent();
 f_FoamI->GetMCwt(m_WtFoam);
