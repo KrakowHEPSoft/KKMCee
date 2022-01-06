@@ -238,6 +238,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_TauGen->Initialize(m_ypar);
   m_TauGen->SetEvent(m_Event);
   m_TauGen->SetGPS(  m_GPS);
+  m_TauGen->SetRNgen(f_RNgen);
 //////////////////////////////////////////////////////////////
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded

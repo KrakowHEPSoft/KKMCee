@@ -32,6 +32,7 @@ extern "C" {
                            double rem1[], double rem2[]);
     // wrapper to c++ code used in Tauola
     void tralo4_(int *KTO, float P[], float Q[], float *AM);
+    void ranmar_(float rvec[], int *lenv);
 }
 
 //////////////////////////////////////////////
@@ -65,10 +66,18 @@ void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
       for(int i=0; i<=3;i++) yphot[i][j-1] = g_KKeeGen->m_Event->m_PhotFSR[j][i];
 }//globux_getevent_
 
+
 ////////////////////////////////////////////
 //SUBROUTINE Tralo4(Kto,P,Q,AM)
 void tralo4_(int *KTO, float P[], float Q[], float *AM){
     g_KKeeGen->m_TauGen->Tralo4(*KTO, P, Q, *AM);
-}
+}//tralo4
 
+// SUBROUTINE RANMAR(RVEC,LENV)
+void ranmar_(float rvec[], int *lenv){
+   if(*lenv >1000) {cout<<"+++ Stop in RANMAR wrapper in globux.h: lenv>1000"<<endl;exit(9);};
+   double drvec[1000];
+   g_KKeeGen->f_RNgen->RndmArray(*lenv, drvec);
+   for(int i=0;i<*lenv;i++) rvec[i]=drvec[i];
+}
 #endif

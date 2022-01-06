@@ -44,7 +44,6 @@ libTauolaPhotos_la_SOURCES = \
 libTauolaPhotos_la_DEPENDENCIES = HepEvt.h
 
 libTauolaPhotos_la_LIBADD =  \
-	$(top_builddir)/glibk/libGlibk.a \
 	$(top_builddir)/jetset/libJetset.a \
 	-lgfortran
 

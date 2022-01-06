@@ -31,12 +31,12 @@ using namespace std;
 #include "BXFORMAT.h"
 #include "TObject.h"
 #include "TLorentzVector.h"
+#include "TRandom.h"
 
 #include "KKceex.h"
 #include "KKevent.h"
 
 extern "C" {
-  void pseumar_makevec_(float rvec[], const int&);
 /////////////////////////////
 // HepEvt
   void hepevt_getf_( const int&);                    // fermion is here
@@ -72,9 +72,11 @@ extern "C" {
 class TauPair: public TObject{
 // class member data
  public:
+ ofstream  *m_Out;             //! pointer to external Logfile for messages
  KKceex    *m_GPS;             //  CEEX matrix element
  KKevent   *m_Event;           //  MC event ISR+FSR in KKMC format
- ofstream  *m_Out;             //! pointer to external Logfile for messages
+ TRandom   *m_RNgen;           //  central r.n. generator
+ //
  double     m_HvecTau1[4];     //! Spin Polarimeter vector first  Tau
  double     m_HvecTau2[4];     //! Spin Polarimeter vector second Tau
  double     m_HvClone1[4];     //! Clone Spin Polarimeter vector first  Tau
@@ -117,6 +119,7 @@ int IsTauInitialized(){
 //  taupair_getisinitialized_(IsTau);
   return m_IsInitialized;
 }
+void SetRNgen(TRandom *RNgen){ m_RNgen= RNgen;};
 
 void Make1();
 void Clone();

@@ -1616,10 +1616,13 @@ C      NCHAN = 19
       ENDIF
 *     =====
       END
-      SUBROUTINE RANMAR(RVEC,LENV)
-      DIMENSION RVEC(*)
-      CALL PseuMar_MakeVec(RVEC,LENV)
-      END
+
+c***********************************************************
+cc***** replaced by central r.n. generator, see globux.h
+cc      SUBROUTINE RANMAR(RVEC,LENV)
+cc      DIMENSION RVEC(*)
+cc      CALL PseuMar_MakeVec(RVEC,LENV)
+cc      END
 
       SUBROUTINE Tauface_SetFermPos(nnp1,nnp2)
 */////////////////////////////////////////////////////////////////////////////////////

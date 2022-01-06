@@ -11,6 +11,8 @@ TauPair::TauPair()
   m_Out= NULL;
   m_Event    = NULL;
   m_GPS      = NULL;
+  m_RNgen    = NULL;
+
 }
 
 ///_____________________________________________________________
@@ -20,6 +22,7 @@ TauPair::TauPair(ofstream *OutFile)
   m_Out = OutFile;
   m_Event    = NULL;
   m_GPS      = NULL;
+  m_RNgen    = NULL;
 }//TauPair
 
 ///______________________________________________________________________________________
@@ -110,13 +113,13 @@ void TauPair::Clone(){
 /////////////////////////////////////////////////////////////////////////////////////
 //   Generation of random two independent Euler rotations                          //
 /////////////////////////////////////////////////////////////////////////////////////
-  float rrr[3];
-  pseumar_makevec_(rrr,3);
+  double rrr[10];
+  m_RNgen->RndmArray(3, rrr);
   m_alfa1  = 2.0*M_PI*rrr[2];        // azimuthal angle in (0,2*pi)
   m_beta1  = acos(2.0*rrr[0]-1.0);   // polar angle     in (0,  pi)
   m_gamma1 = 2.0*M_PI*rrr[1];        // azimuthal angle in (0,2*pi)
 //------------------------------------------------
-  pseumar_makevec_(rrr,3);
+  m_RNgen->RndmArray(3, rrr);
   m_alfa2  = 2.0*M_PI*rrr[2];        // azimuthal angle in (0,2*pi)
   m_beta2  = acos(2.0*rrr[0]-1.0);   // polar angle     in (0,  pi)
   m_gamma2 = 2.0*M_PI*rrr[1];        // azimuthal angle in (0,2*pi)
@@ -178,15 +181,14 @@ void TauPair::ImprintSpin(){
 //     introduces spin effects by rejection     //
 //////////////////////////////////////////////////
   int loop=0;
-  float rvec[10];
-  double wt,wt0,wt1,wt2, wtmax=4.0;
+  double rn,wt,wt0,wt1,wt2, wtmax=4.0;
 e1099:
   loop=loop+1;
   Clone();   // Cloning tau decay by Euler rotation
   m_GPS->MakeRho2(m_HvClone1,m_HvClone2,wt0,wt1,wt2);
   wt = wt1;                         // why not wt2???
-  pseumar_makevec_(rvec,1);
-  if (wt < wtmax*rvec[0]  && loop<100) goto e1099;
+  rn = m_RNgen->Rndm();
+  if (wt < wtmax*rn  && loop<100) goto e1099;
 }//ImprintSpin
 
 ///______________________________________________________________________________________
@@ -211,7 +213,7 @@ void TauPair::Make2(){
   J=2; pyhepc_(J);       // HepEvt-->Pythia
 /////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[
-  if( m_Event->m_EventCounter <=10){
+  if( m_Event->m_EventCounter <=30){
   (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
   tauface_print_();
   }//EventCounter
