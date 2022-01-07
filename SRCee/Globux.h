@@ -19,12 +19,12 @@ KKee2f   *g_KKeeGen;
 KKdizet  *g_EWtabs;
 
 //-----------------------------------------------------------
-//  Emulating f77 externals using c++ objects
+//  Emulating f77 externals using c++ objects/ members
 //-----------------------------------------------------------
 extern "C" {
     // getting accsess to MC generator object in f77 code
     void globux_setup_( KKee2f*);
-    // used in HepEvt
+    // used in HepEvt to import c++ event object
     void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
                            double pf1[], double pf2[],double qf1[], double qf2[],
                            int *nphx, int *nphy,
@@ -40,8 +40,8 @@ extern "C" {
 // getting accsess to MC gener. object
 void globux_setup_(     KKee2f *KKhhObj){   g_KKeeGen = KKhhObj;}
 
-/////////////////////////////////////////////
-// CALL GlobuxGetEvent(KFini,KFfin)
+////////////////////////////////////////////////////////////////////////
+/// Importing c++ event object into /hepevt/ of f77 HepEvt
 void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
                        double pf1[], double pf2[],double qf1[], double qf2[],
                        int *nphx, int *nphy,
@@ -75,7 +75,8 @@ void tralo4_(int *KTO, float P[], float Q[], float *AM){
 
 // SUBROUTINE RANMAR(RVEC,LENV)
 void ranmar_(float rvec[], int *lenv){
-   if(*lenv >1000) {cout<<"+++ Stop in RANMAR wrapper in globux.h: lenv>1000"<<endl;exit(9);};
+   if(*lenv >1000) {
+       cout<<"+++ Stop in RANMAR wrapper in globux.h: lenv>1000"<<endl;exit(9);};
    double drvec[1000];
    g_KKeeGen->f_RNgen->RndmArray(*lenv, drvec);
    for(int i=0;i<*lenv;i++) rvec[i]=drvec[i];

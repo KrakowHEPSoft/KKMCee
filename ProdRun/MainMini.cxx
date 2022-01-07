@@ -66,9 +66,8 @@ for(int iev=1; iev<=NevGen; iev++) {
 }
 
 /////////////////////////////////////////////////////////////
-// final printout from BHLUMI4 goes to pro.output
-//KKMCgen->Finalize();
-
+// final printout
+KKMCgen->Finalize();
 
 cout << "  |--------------------| "<<endl<<flush;
 cout << "  |  TestMini1 Ended   | "<<endl<<flush;

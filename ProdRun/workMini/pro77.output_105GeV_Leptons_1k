@@ -1,0 +1,474 @@
+
+
+ ***************************************************************************
+ *        Parameters passed from KK  to Tauola:                            *
+ *                0                dec. type 1-st tau        Jak1      t01 *
+ *                0                dec. type 2-nd tau        Jak2      t02 *
+ *                1                current type a1 dec.      KeyA1     t03 *
+ *               15                PDG id 1-st tau           idff      t04 *
+ *                1                R.c. switch lept dec      itdkRC    t05 *
+ *   0.10000000E-02                IR-cut for lept r.c.      xk0dec    t06 *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *    TAUOLA Initialization SUBROUTINE INIMAS:                             *
+ *    Adopted to read from KK                                              *
+ *    1.7770500                        AMTAU tau-mass             **** *** *
+ *   0.51099906E-03                    AMEL  electron-mass        **** *** *
+ *   0.10565830                        AMMU  muon-mass            **** *** *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *    TAUOLA pre-sampler init SUBROUTINE INISAMPL                          *
+ ***************************************************************************
+
+
+
+ ***************************************************************************
+ *    TAUOLA Initialization SUBROUTINE INITDK:                             *
+ *    Adopted to read from KK                                              *
+ *                                                                         *
+ *    Choice Probability      --     Decay Channel                         *
+ *   0.17865208                      TAU-  -->   E-               **** *** *
+ *   0.17355204                      TAU-  -->  MU-               **** *** *
+ *   0.43654263E-01                  TAU-  --> 2PI-,  PI+,  PI0   **** *** *
+ *   0.12619076E-01                  TAU-  --> 3PI0,        PI-   **** *** *
+ *    0.0000000                      TAU-  --> nu_e e- e- e+      **** *** *
+ *    0.0000000                      TAU-  --> nu_mu mu- mu- mu+  **** *** *
+ *    0.0000000                      TAU-  --> nu_e e- mu- mu+    **** *** *
+ *    0.0000000                      TAU-  --> nu_mu mu- e- e+    **** *** *
+ *    0.0000000                      TAU-  --> K- 3PI0            **** *** *
+ *    0.0000000                      TAU-  --> 2PI0 ETA K-        **** *** *
+ *    0.0000000                      TAU-  --> 2PI0 K0  PI-       **** *** *
+ *    0.0000000                      TAU-  --> PI0  K0  ETA PI-   **** *** *
+ *    0.0000000                      TAU-  --> PI0  PI- PI+ K-    **** *** *
+ *    0.0000000                      TAU-  --> K0   PI- PI+ PI-   **** *** *
+ *    0.0000000                      TAU-  --> 2PI0 ETA PI-       **** *** *
+ *    0.0000000                      TAU-  --> K0 K0B ETA PI-     **** *** *
+ *    0.0000000                      TAU-  --> K0 K0B PI0 PI-     **** *** *
+ *    0.0000000                      TAU-  --> K0 K0B K0  PI-     **** *** *
+ *    0.0000000                      TAU-  --> K0 PI0 PI0 K-      **** *** *
+ *    0.0000000                      TAU-  --> K0 K0B PI0 K-      **** *** *
+ *    0.0000000                      TAU-  --> PI0  K0  ETA K-    **** *** *
+ *    0.0000000                      TAU-  --> PI-PI+PI-  ETA     **** *** *
+ *    0.0000000                      TAU-  --> PI-K+ K-   PI0     **** *** *
+ *    0.0000000                      TAU-  --> K- K+ K-   PI0     **** *** *
+ *    0.0000000                      TAU-  --> K- K+ K-   K0      **** *** *
+ *    0.0000000                      TAU-  --> K- PI+PI-  K0      **** *** *
+ *    0.0000000                      TAU-  --> K- K+ PI-  K0      **** *** *
+ *    0.0000000                      TAU-  --> PI-PI+PI-  OMEGA   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxx4xxxxxxxx   **** *** *
+ *   0.50110305E-02                  TAU-  --> 2PI-, PI+, 2PI0 old**** *** *
+ *    0.0000000                      TAU-  --> a1 --> rho omega   **** *** *
+ *    0.0000000                      TAU-  --> benchmark curr     **** *** *
+ *    0.0000000                      TAU-  --> 2PI- PI+ 2PI0 app08**** *** *
+ *    0.0000000                      TAU-  --> PI- 4PI0  app08    **** *** *
+ *    0.0000000                      TAU-  --> 3PI- 2PI+ app08    **** *** *
+ *    0.0000000                      TAU-  --> 2PI- 2PI+  K-      **** *** *
+ *    0.0000000                      TAU-  --> 2PI- PI+ PI0 K0    **** *** *
+ *    0.0000000                      TAU-  --> PI- 4PI0           **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx5xxxxxx   **** *** *
+ *   0.78900479E-03                  TAU-  --> 3PI-, 2PI+,        **** *** *
+ *   0.18300110E-03                  TAU-  --> 3PI-, 2PI+,  PI0   **** *** *
+ *   0.25100150E-03                  TAU-  --> 2PI-,  PI+, 3PI0   **** *** *
+ *    0.0000000                      TAU-  --> 3pi- 2pi+ 2pi0     **** *** *
+ *    0.0000000                      TAU-  --> 4PI- 3PI+          **** *** *
+ *    0.0000000                      TAU-  --> 4PI- 3PI+  PI0     **** *** *
+ *    0.0000000                      TAU-  --> 2PI- 2PI+ K- PI0   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxxnxxxxxx   **** *** *
+ *   0.15900095E-02                  TAU-  -->  K-, PI-,  K+      **** *** *
+ *   0.16720101E-02                  TAU-  -->  K0, PI-, K0B      **** *** *
+ *   0.15360093E-02                  TAU-  -->  K-,  PI0, K0      **** *** *
+ *   0.68000407E-03                  TAU-  --> PI0  PI0   K-      **** *** *
+ *   0.30090183E-02                  TAU-  -->  K-  PI-  PI+      **** *** *
+ *   0.37670226E-02                  TAU-  --> PI-  K0B  PI0      **** *** *
+ *   0.18300110E-02                  TAU-  --> ETA  PI-  PI0      **** *** *
+ *   0.80200483E-03                  TAU-  --> PI-  PI0  GAM      **** *** *
+ *   0.91783553E-01                  TAU-  --> PI0  PI0  PI-      **** *** *
+ *   0.91783553E-01                  TAU-  --> PI-  PI-  PI+      **** *** *
+ *    0.0000000                      TAU-  --> K-    K-   K+      **** *** *
+ *    0.0000000                      TAU-  --> K-    K0   K0      **** *** *
+ *    0.0000000                      TAU-  --> K-   ETA  PI0      **** *** *
+ *    0.0000000                      TAU-  --> K0   ETA  PI-      **** *** *
+ *    0.0000000                      TAU-  --> K-   K0   RHO0     **** *** *
+ *    0.0000000                      TAU-  --> PI-  PHI  PI0      **** *** *
+ *    0.0000000                      TAU-  --> K-   PHI  PI0      **** *** *
+ *    0.0000000                      TAU-  --> K0   ETA  K-       **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx3xxxxxx   **** *** *
+ *   0.25375551                      TAU-  -->  PI- PI0           **** *** *
+ *   0.90931449E-02                  TAU-  -->  PI- K0            **** *** *
+ *   0.45479368E-02                  TAU-  -->  K-  PI0           **** *** *
+ *   0.16510099E-02                  TAU-  -->  K-  K0            **** *** *
+ *    0.0000000                      TAU-  -->  mu-mu-mu+ !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- mu- e+ !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- e- mu+ !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- e- e+  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu+ e- e-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e- e- e+   !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-pi+pi-  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> mu-pi+pi-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-pi+K-  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> mu-pi+K-  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> e-pi-K+  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> mu-pi-K+  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> e-K-K+  !nu_tau    **** *** *
+ *    0.0000000                      TAU-  --> mu-K-K+  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> e-K0K0  !nu_tau    **** *** *
+ *    0.0000000                      TAU-  --> mu-K0K0  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> e+pi-pi-  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> mu+pi-pi-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e+pi-K-  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> mu+pi-K-  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> e+K-K-  !nu_tau    **** *** *
+ *    0.0000000                      TAU-  --> mu+K-K-  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> mu-mu- p+  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu-mu+ p-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  -->  e - e- p+ !nu_tau **** *** *
+ *    0.0000000                      TAU-  -->  e - e+ p- !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> eta k-             **** *** *
+ *    0.0000000                      TAU-  --> eta pi-            **** *** *
+ *    0.0000000                      TAU-  --> PI-  PHI           **** *** *
+ *    0.0000000                      TAU-  -->  K-  PHI           **** *** *
+ *    0.0000000                      TAU-  -->  PI- OMEGA         **** *** *
+ *    0.0000000                      TAU-  -->  K-  OMEGA         **** *** *
+ *    0.0000000                      TAU-  -->  PI- ETAprm        **** *** *
+ *    0.0000000                      TAU-  -->  K-  ETAprm        **** *** *
+ *    0.0000000                      TAU-  -->  e- mu+ p- !nu_tau **** *** *
+ *    0.0000000                      TAU-  -->  e+ mu- p- !nu_tau **** *** *
+ *    0.0000000                      TAU-  -->  e- mu- p+ !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e- PI0 PI0  !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> mu- PI0 PI0 !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> e- PI0 eta !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- PI0 eta !nu_tau**** *** *
+ *    0.0000000                      TAU-  -->  e- PI0 eta_p !nu_t**** *** *
+ *    0.0000000                      TAU-  --> mu- PI0 eta_p !nu_t**** *** *
+ *    0.0000000                      TAU-  --> e- eta eta  !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> mu- eta eta !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> e- eta eta_p !nu_t **** *** *
+ *    0.0000000                      TAU-  --> mu- eta eta_p !nu_t**** *** *
+ *    0.0000000                      TAU-  --> e- PI0 Ks  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- PI0 Ks !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e- eta  Ks !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- eta Ks !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e- eta_p Ks !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> mu- eta_p Ks !nu_t **** *** *
+ *    0.0000000                      TAU-  --> p- pi+ K- !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> p+ pi- K-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> p- K+ pi- !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> p- pi0 pi0 !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> p- pi0 eta !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> p- pi0 Ks !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx2xxxxxx   **** *** *
+ *   0.11084167                      TAU-  --> PI-                **** *** *
+ *   0.69460417E-02                  TAU-  --> K-                 **** *** *
+ *    0.0000000                      TAU-  --> gamma e-   !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> gamma mu-  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> PI0 e-     !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> PI0 mu-    !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> eta e-     !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> eta mu-    !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-  K0     !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- K0     !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-  omega  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- omega  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-  phi    !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- phi    !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e- rho0    !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- rho0   !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> A0-                **** *** *
+ *    0.0000000                      TAU-  --> B1-                **** *** *
+ *    0.0000000                      TAU-  --> e- K0    !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> mu- K0    !nu_tau  **** *** *
+ *    0.0000000                      TAU-  -->  p gamma  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> p pi0     !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> p eta    !nu_tau   **** *** *
+ *    0.0000000                      TAU-  -->  p K0   !nu_tau    **** *** *
+ *    0.0000000                      TAU-  --> e- eta_p  !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> mu- eta_p !nu_tau  **** *** *
+ *    0.0000000                      TAU-  --> pi- lambda !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> pi- lmb_br !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> K- lambda  !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> K- lmb_bar !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> e-  K*  !nu_tau    **** *** *
+ *    0.0000000                      TAU-  --> e-  K*_bar !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- K*_bar !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu-  K*  !nu_tau   **** *** *
+ *    0.0000000                      TAU-  --> e- a0(980) !nu_tau **** *** *
+ *    0.0000000                      TAU-  --> mu- a0(980) !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> e-  f0(980) !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> mu- f0(980) !nu_tau**** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx1xxxxxx   **** *** *
+ *    0.0000000                      TAU-  --> xxxxxxxxx1xxxxxx   **** *** *
+ *                                    In addition:                         *
+ *    1.0000000                        Vector W-tau-nu coupl.     **** *** *
+ *   -1.0000000                        Axial  W-tau-nu coupl.     **** *** *
+ *   0.11663787E-04                    Fermi Coupling             **** *** *
+ *   0.97500002                        cabibo angle               **** *** *
+ *    1.0000000                        a1 br ratio (massless)     **** *** *
+ *   0.66670001                        K* br ratio (massless)     **** *** *
+ *                0                        RChL switch        IRCHL    t05 *
+ *                0                    equal BR. switch   IFEQUALBR    t05 *
+ *                0                switch for 5 pion as    IF5PIAPP    t05 *
+ ***************************************************************************
+
+
+
+
+ ***************************************************************************
+ *                         *****TAUOLA LIBRARY: VERSION 3.1 ******         *
+ *                         ***********Sep      2016***************         *
+ *                         **AUTHORS: S.JADACH, Z.WAS*************         *
+ *                         **R. DECKER, M. JEZABEK, J.H.KUEHN*****         *
+ *                         **AVAILABLE FROM: WASM AT CERNVM ******         *
+ *                         ***** PUBLISHED IN COMP. PHYS. COMM.***         *
+ *                         *******CERN TH-6793 NOVEMBER  1992*****         *
+ *                         **5 or more pi dec.: precision limited          *
+ *                         ******* IFJ-PAN-IV-2016-24 ************         *
+ *                         ****DEKAY ROUTINE: INITIALIZATION******         *
+ *                   0     JAK1   = DECAY MODE TAU+                        *
+ *                   0     JAK2   = DECAY MODE TAU-                        *
+ ***************************************************************************
+
+
+ *************************************************** 
+   YOU ARE USING THE 4 PION DECAY MODE FORM FACTORS    
+   WHICH HAVE BEEN DESCRIBED IN:
+   R. DECKER, M. FINKEMEIER, P. HEILIGER AND H.H. JONSSON 
+   TAU DECAYS INTO FOUR PIONS 
+   UNIVERSITAET KARLSRUHE PREPRINT TTP 94-13 (1994)
+                    LNF-94/066(IR); HEP-PH/9410260  
+  
+ PLEASE NOTE THAT THIS ROUTINE IS USING PARAMETERS
+ RELATED TO THE 3 PION DECAY MODE (A1 MODE), SUCH AS
+ THE A1 MASS AND WIDTH (TAKEN FROM THE COMMON /PARMAS/)
+ AND THE 2 PION VECTOR RESONANCE FORM FACTOR (BY USING
+ THE ROUTINE FPIKM)
+ THUS IF YOU DECIDE TO CHANGE ANY OF THESE, YOU WILL
+ HAVE TO REFIT THE 4 PION PARAMETERS IN THE COMMON
+ BLOCK /TAU4PI/, OR YOU MIGHT GET A BAD DISCRIPTION
+ OF TAU -> 4 PIONS
+ for these formfactors set in routine CHOICE for
+ mnum.eq.102 -- AMRX=1.42 and GAMRX=.21
+ mnum.eq.101 -- AMRX=1.3 and GAMRX=.46 PROB1,PROB2=0.2
+ to optimize phase space parametrization
+ *************************************************** 
+ coded by M. Finkemeier and P. Heiliger, 29. sept. 1994
+ incorporated to TAUOLA by Z. Was      17. jan. 1995
+ changed by: Z. Was on 17.01.95
+ changes by: M. Finkemeier on 30.01.95
+
+ ***************************************************************************
+
+1
+ ********************************************************************************
+ *                                                                              *
+ *                          ==========================                          *
+ *                            PHOTOS, Version:  2. 3                            *
+ *                            Released at:  11/12/ 0                            *
+ *                          ==========================                          *
+ *                                                                              *
+ *                  PHOTOS QED Corrections in Particle Decays                   *
+ *                                                                              *
+ *         Monte Carlo Program - by E. Barberio, B. van Eijk and Z. Was         *
+ *         From version 2.0 on - by E.B. and Z.W.                               *
+ *                                                                              *
+ ********************************************************************************
+ *                                                                              *
+ *                  Internal input parameters:                                  *
+ *                                                                              *
+ *                  INTERF= T  ISEC= T  IFTOP= T                                *
+ *                  ALPHA_QED= 0.00730   XPHCUT= 0.01000                        *
+ *                                                                              *
+ *                  option with interference is active                          *
+ *                  option with double photons is active                        *
+ *                  emision in t tbar production is active                      *
+ *                                                                              *
+ *          WARNING (1): /HEPEVT/ is not anymore the standard common block      *
+ *                                                                              *
+ *          PHOTOS expects /HEPEVT/ to have REAL*8 variables. To change to      *
+ *          REAL*4 modify its declaration in subr. PHOTOS_GET PHOTOS_SET:       *
+ *               REAL*8  d_h_phep,  d_h_vhep                                    *
+ *          WARNING (2): check dims. of /hepevt/ /phoqed/ /ph_hepevt/.          *
+ *          HERE:                     d_h_nmxhep=4000  and  NMXHEP=10000        *
+ *                                                                              *
+ ********************************************************************************
+ Message from PHCORK(MODCOR):: initialization
+ MODOP=1 -- no corrections on event: DEFAULT
+ Message from PHOTOS: IPHQRK(MODCOR):: (re)initialization
+ MODOP=1 -- blocks emission from light quarks: DEFAULT
+ Message from PHOTOS: IPHEKL(MODCOR):: (re)initialization
+ MODOP=1 -- blocks emission in pi0 to gamma e+e-: DEFAULT
+ MODOP=1 -- blocks emission in Kl  to gamma e+e-: DEFAULT
+ ====================================== Tauface_Print ====================================
+     MSTU(11)       changed from              6 to             16
+
+
+
+                            Event listing (summary)
+
+    I particle/jet KS     KF  orig    p_x      p_y      p_z       E        m
+
+    1 !e-!         21      11    0    0.000    0.000   52.500   52.500    0.001
+    2 !e+!         21     -11    0    0.000    0.000  -52.500   52.500    0.001
+    3 (Z0)         11      23    1   -0.030   -0.049    9.049   95.697   95.269
+    4 gamma         1      22    1    0.034    0.009   -9.171    9.171    0.000
+    5 gamma         1      22    1   -0.004    0.037    0.121    0.126    0.000
+    6 gamma         1      22    1   -0.002    0.002    0.002    0.003    0.000
+    7 gamma         1      22    1    0.001    0.001   -0.001    0.002    0.000
+    8 (tau-)       11      15    3   36.164   27.484   -9.691   46.479    1.777
+    9 (tau+)       11     -15    3  -36.194  -27.533   18.741   49.218    1.777
+   10 nu_tau        1      16    8    4.007    3.541   -1.323    5.509    0.000
+   11 (W-)         11     -24    8   32.158   23.943   -8.368   40.970    1.089
+   12 pi0           1     111   11    6.977    4.873   -1.896    8.720    0.135
+   13 pi0           1     111   11   20.710   15.423   -5.185   26.338    0.135
+   14 pi-           1    -211   11    4.470    3.646   -1.287    5.912    0.140
+   15 nu_taubar     1     -16    9  -16.499  -12.504    7.589   22.049    0.000
+   16 e+            1     -11    9  -13.943  -10.758    7.902   19.302    0.001
+   17 nu_e          1      12    9   -5.752   -4.272    3.250    7.867    0.000
+                   sum:  0.00        -0.000   -0.000    0.000  105.000  105.000
+ ====================================== Tauface_Print ====================================
+     MSTU(11)       changed from             16 to             16
+
+
+
+                            Event listing (summary)
+
+    I particle/jet KS     KF  orig    p_x      p_y      p_z       E        m
+
+    1 !e-!         21      11    0    0.000    0.000   52.500   52.500    0.001
+    2 !e+!         21     -11    0    0.000    0.000  -52.500   52.500    0.001
+    3 (Z0)         11      23    1   -0.001    0.079  -16.305   88.561   87.047
+    4 gamma         1      22    1    0.040   -0.068   16.366   16.366    0.000
+    5 gamma         1      22    1    0.000   -0.000   -0.001    0.001    0.000
+    6 gamma         1      22    1   -0.039   -0.011   -0.059    0.072    0.000
+    7 (tau-)       11      15    3   42.403   -7.009   -1.450   43.040    1.777
+    8 (tau+)       11     -15    3  -42.404    7.088  -14.856   45.521    1.777
+    9 nu_tau        1      16    7    5.764   -1.134    0.126    5.875    0.000
+   10 (W-)         11     -24    7   36.639   -5.875   -1.576   37.164    1.312
+   11 pi-           1    -211   10    7.225   -1.235   -0.038    7.331    0.140
+   12 pi-           1    -211   10    8.227   -1.133   -0.361    8.313    0.140
+   13 pi+           1     211   10    4.314   -0.921   -0.120    4.415    0.140
+   14 pi0           1     111   10   13.596   -2.041   -0.859   13.776    0.135
+   15 gamma         1      22   10    3.278   -0.545   -0.197    3.329    0.000
+   16 nu_taubar     1     -16    8   -8.926    1.248   -3.725    9.752    0.000
+   17 (W+)         11      24    8  -33.478    5.840  -11.130   35.769    0.805
+   18 pi+           1     211   17   -4.710    1.068   -1.555    5.076    0.140
+   19 pi0           1     111   17  -28.768    4.772   -9.575   30.693    0.135
+                   sum:  0.00         0.000   -0.000    0.000  105.000  105.000
+ ====================================== Tauface_Print ====================================
+     MSTU(11)       changed from             16 to             16
+
+
+
+                            Event listing (summary)
+
+    I particle/jet KS     KF  orig    p_x      p_y      p_z       E        m
+
+    1 !e-!         21      11    0    0.000    0.000   52.500   52.500    0.001
+    2 !e+!         21     -11    0    0.000    0.000  -52.500   52.500    0.001
+    3 (Z0)         11      23    1   -5.144    3.016   11.543   90.537   89.600
+    4 gamma         1      22    1    5.333   -3.187   -6.645    9.097    0.000
+    5 gamma         1      22    1   -0.047    0.006   -5.042    5.042    0.000
+    6 gamma         1      22    1   -0.057   -0.020   -0.020    0.064    0.000
+    7 gamma         1      22    1   -0.085    0.184    0.163    0.261    0.000
+    8 (tau-)       11      15    3   19.264  -30.161  -17.727   39.977    1.777
+    9 (tau+)       11     -15    3  -24.408   33.177   29.270   50.560    1.777
+   10 nu_tau        1      16    8   10.746  -16.803   -9.344   22.026    0.000
+   11 e-            1      11    8    3.373   -4.413   -2.852    6.244    0.000
+   12 nu_ebar       1     -12    8    5.144   -8.944   -5.531   11.707    0.000
+   13 nu_taubar     1     -16    9   -4.614    5.318    4.724    8.479    0.000
+   14 (W+)         11      24    9  -19.793   27.858   24.546   42.081    0.668
+   15 pi+           1     211   14   -0.920    1.271    1.131    1.939    0.140
+   16 pi0           1     111   14  -18.874   26.587   23.415   40.142    0.135
+                   sum:  0.00         0.000   -0.000    0.000  105.000  105.000
+ ====================================== Tauface_Print ====================================
+     MSTU(11)       changed from             16 to             16
+
+
+
+                            Event listing (summary)
+
+    I particle/jet KS     KF  orig    p_x      p_y      p_z       E        m
+
+    1 !e-!         21      11    0    0.000    0.000   52.500   52.500    0.001
+    2 !e+!         21     -11    0    0.000    0.000  -52.500   52.500    0.001
+    3 (Z0)         11      23    1    0.107    0.077   12.777   92.219   91.330
+    4 gamma         1      22    1   -0.109   -0.080  -12.760   12.761    0.000
+    5 gamma         1      22    1   -0.000   -0.000   -0.016    0.016    0.000
+    6 gamma         1      22    1    0.002    0.002   -0.000    0.003    0.000
+    7 gamma         1      22    1    0.001    0.000   -0.000    0.001    0.000
+    8 (tau-)       11      15    3  -40.027  -12.380   24.484   48.560    1.777
+    9 (tau+)       11     -15    3   40.134   12.457  -11.707   43.659    1.777
+   10 nu_tau        1      16    8  -10.463   -3.375    6.288   12.665    0.000
+   11 (W-)         11     -24    8  -29.564   -9.005   18.196   35.895    1.488
+   12 K-            1    -321   11  -11.630   -3.451    7.163   14.096    0.494
+   13 pi-           1    -211   11   -2.050   -0.562    1.504    2.608    0.140
+   14 K+            1     321   11  -15.884   -4.992    9.529   19.190    0.494
+   15 nu_taubar     1     -16    9   15.830    4.821   -4.504   17.150    0.001
+   16 (W+)         11      24    9   24.304    7.637   -7.203   26.510    1.368
+   17 pi+           1     211   16    1.646    0.310   -0.625    1.793    0.140
+   18 K_L0          1     130   16   13.404    4.381   -4.051   14.680    0.498
+   19 pi0           1     111   16    9.255    2.946   -2.527   10.036    0.135
+                   sum:  0.00         0.000    0.000   -0.000  105.000  105.000
+ ********************************************************************************
+ *                                                                              *
+ * PHOTOS: Available Phase Space below Cut-off:       -0.004939 GeV/c^2         *
+ *                                                                              *
+ ********************************************************************************
+ ====================================== Tauface_Print ====================================
+     MSTU(11)       changed from             16 to             16
+
+
+
+                            Event listing (summary)
+
+    I particle/jet KS     KF  orig    p_x      p_y      p_z       E        m
+
+    1 !e-!         21      11    0    0.000    0.000   52.500   52.500    0.001
+    2 !e+!         21     -11    0    0.000    0.000  -52.500   52.500    0.001
+    3 (Z0)         11      23    1    3.707   -2.938    4.359   75.637   75.363
+    4 gamma         1      22    1    0.005    0.023   -3.960    3.960    0.000
+    5 gamma         1      22    1    0.000   -0.000    0.005    0.005    0.000
+    6 gamma         1      22    1   -2.869   13.383    3.609   14.155    0.000
+    7 gamma         1      22    1   -0.842  -10.469   -4.013   11.243    0.000
+    8 (tau-)       11      15    3    3.969   35.467    9.169   36.891    1.777
+    9 tau+          1     -15    3   -0.262  -38.405   -4.810   38.747    1.777
+   10 nu_tau        1      16    8    2.142   17.430    3.825   17.973    0.000
+   11 (W-)         11     -24    8    1.827   18.037    5.344   18.918    0.798
+   12 pi-           1    -211   11    0.796   10.126    3.299   10.681    0.140
+   13 (pi0)        11     111   11    1.030    7.911    2.045    8.237    0.135
+   14 nu_taubar     1     -16   13   -0.090  -22.555   -1.951   22.640    0.000
+   15 pi+           1     211   13   -0.172  -15.850   -2.859   16.107    0.140
+                   sum:  1.00        -1.292  -46.316   -6.855  135.510  127.158
