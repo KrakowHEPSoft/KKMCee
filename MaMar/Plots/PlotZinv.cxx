@@ -29,12 +29,12 @@ using namespace std;
 //
 //TFile DiskFileA("../workZinv/rmain.root");
 // Dec 2020
-TFile DiskFileA("../workZinv/rmain.root_E105GeV_6G");
+//TFile DiskFileA("../workZinv/rmain.root_E105GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E125GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E161GeV_6G");
 //  July 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_4G");
-//TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
+TFile DiskFileA("../workZinv/rmain.root_E=105GeV_5G");
 //  March 2019
 //TFile DiskFileA("../workZinv/rmain.root_E=161GeV_6G");
 //TFile DiskFileA("../workZinv/rmain.root_E=105GeV_4G");
@@ -46,12 +46,12 @@ TFile DiskFileA("../workZinv/rmain.root_E105GeV_6G");
 // ************* FSR off, pure ISR **************
 //TFile DiskFileB("../workZinv/rmain.root");
 // Dec 2020
-TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_2G");
+//TFile DiskFileB("../workZinv/rmain.root_E105GeV_ISR_2G");
 //TFile DiskFileB("../workZinv/rmain.root_E125GeV_ISR_2G");
 //TFile DiskFileB("../workZinv/rmain.root_E161GeV_ISR_2G");
 // July 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_10G");
-//TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
+TFile DiskFileB("../workZinv/rmain.root_E=105GeV_ISR_11G");
 //
 // March 2019
 //TFile DiskFileB("../workZinv/rmain.root_E=161GeV_ISR_9G");

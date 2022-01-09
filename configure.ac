@@ -66,6 +66,6 @@ fcc/Makefile fcc/workDEV/Makefile \
 SRCee/Makefile \
 DZface/Makefile \
 ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \
-ProdDigest/Makefile \
+                  ProdRun/workNU/Makefile ProdDigest/Makefile \
 ])
 AC_OUTPUT

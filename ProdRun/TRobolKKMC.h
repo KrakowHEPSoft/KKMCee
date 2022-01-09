@@ -18,18 +18,34 @@ class TRobolKKMC : public TRobol
 //
  TH1D   *hst_WtMain;          //!  No streamer!!!
  TH1D   *hst_WtFoam;          //!  No streamer!!!
-
+//
  TH1D   *hst_vvTrue;          //!  No streamer!!!
  TH1D   *hst_nPhot;           //!  No streamer!!!
  TH1D   *hst_vvBES;           //!  No streamer!!!
  TH1D   *hst_CosTheta;        //!  No streamer!!!
-
  //
  TH2D   *sca_vTcPR_Ceex2;     //!  No streamer!!!
  TH2D   *sca_vTcPR_Ceex2n;    //!  No streamer!!!
  TH2D   *sca_vTcPR_Eex0;      //!  No streamer!!!
  TH2D   *sca_vTcPR_Eex2;      //!  No streamer!!!
+//
+ TH1D   *hst_LnThPhAll;        //!  No streamer!!!
+ TH1D   *hst_LnThPhVis;        //!  No streamer!!!
+ TH1D   *hst_vtNuCeex2;        //!  No streamer!!!
+ TH1D   *hst_vaNuCeex2;        //!  No streamer!!!
 
+ TH1D   *hst_vPhotNuel;        //!  No streamer!!!
+ TH1D   *hst_vPhotNumu;        //!  No streamer!!!
+ //================================
+ TH1D   *hst_vvNuCeex1;        //!  No streamer!!!
+ TH1D   *hst_vvNuCeex2;        //!  No streamer!!!
+ TH1D   *hst_vvNuCeex12;       //!  No streamer!!!
+ //
+ TH1D   *hst_nPhAll;           //!  No streamer!!!
+ TH1D   *hst_nPhVis;           //!  No streamer!!!
+
+ TH1D   *hst_vaNuElCeex2;           //!  No streamer!!!
+ TH1D   *hst_vaNuMuCeex2;           //!  No streamer!!!
 
  //
  TH2D   *sca_r1r2;            //!  No streamer!!!

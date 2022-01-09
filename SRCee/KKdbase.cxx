@@ -126,8 +126,7 @@ void KKdbase::Initialize(double xpar[] )
   BX1F(*m_Out,"    vvmin", vvmin,  " Infrared cutoff in photon energy [16] =");
   BX1F(*m_Out,"    vvmax", vvmax,  " Maximum photon energy            [17] =");
   BX1F(*m_Out,"   delfac", delfac, " FSR photon IR cut reduction      [18] =");
-  Xenph  = xpar[40];
-//  if(KeyINT == 0)  Xenph  = 1; // it might be redefine later on in KKee2f
+  Xenph  = xpar[40];   // it might be redefine later on in KKee2f
   BX1F(*m_Out,"    Xenph", Xenph,  " Photon emiss. enhancement for IFI[40] =");
   KeyWtm = xpar[26];
   BX1I(*m_Out,"   KeyWtm",  KeyWtm, " Photon emission without mass terms [26]        =");

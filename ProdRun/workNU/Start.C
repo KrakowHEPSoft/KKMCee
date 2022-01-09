@@ -19,11 +19,12 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 TString semaf   = "START";
 double nevtot   = 1e12; // 1000G
 //nevtot = 2e5;
-//nevtot =1000;
+//nevtot =20000;
+//nevtot = 10e6;
 //nevtot =9;
 double nevgrp   = 1e5; // 100k
 //nevgrp = 1e6;          // 1M
-nevgrp = 1e4;
+//nevgrp = 1e4;
 ///------------------------------------------------------------------
 SemFile.cd();
 TSemaf *Semafor = new TSemaf(semaf, nevtot, nevgrp);
@@ -39,7 +40,7 @@ RN_gen->SetSeed(iniseed);
 RN_gen->Write("RN_gen",TObject::kOverwrite);
 ///*****************************************************************
 ///      Create new instance of MC generator
-TMCgenKKMC *MCgen = new TMCgenKKMC("MCgen");
+KKee2f *MCgen = new KKee2f("MCgen");
 //########### Change some input parameters ###########
 //MCgen->m_nSampl  = 100000;   // MC evts/cell (200)  ##
 //####################################################
@@ -51,14 +52,20 @@ TRobol *RoboT = new TRobolKKMC("RoboT");  /// base clase only
 RoboT->f_HistNormName = "HST_KKMC_NORMA";
 RoboT->Write("RoboT",TObject::kOverwrite);
 ///*****************************************************************
+cout << "========================GenFile.Write (MCgen.root)=============" << endl;
 GenFile.Write();
+cout<<"--------------------------GenFile.ls-------------------------------"<<endl;
 GenFile.ls();
-cout<<"---------------------------------------------------------"<<endl;
+//cout<<"--------------------------GenFile.ShowStreamerInfo-------------------------"<<endl;
+//GenFile.ShowStreamerInfo();
 GenFile.Close();
-cout << "===========Output written in histo.root===========" << endl;
+cout << "========================HistoFile.Write (histo.root)===========" << endl;
 HistoFile.Write();
-//HistoFile.ls();
-HistoFile.Close();
+cout<<"--------------------------HistoFile.ls-------------------------------"<<endl;
+HistoFile.ls();
+cout<<"--------------------------HistoFile.ShowStreamerInfo-------------------------"<<endl;
+//HistoFile.GetListOfKeys()->Print();
+//HistoFile.Close();
 cout<<"%%% ===============End Start.C ================== %%%%"<<endl;
 return 0;
 }

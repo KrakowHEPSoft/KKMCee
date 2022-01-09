@@ -1,4 +1,4 @@
-SUBDIRS = workMini work1 workFoam
+SUBDIRS = workMini work1 workFoam workNU
 
 all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling

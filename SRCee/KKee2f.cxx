@@ -10,8 +10,6 @@ extern "C" {
 //
    void fort_open_( const int&, const char*, int);
    void fort_close_(const int&);
-//   void pseumar_initialize_(const int&, const int&, const int&);
-//   void pseumar_makevec_(float rvec[], const int&);
 // SUBROUTINE HepEvt_Fill
    void hepevt_fill_();
 }//
@@ -377,7 +375,7 @@ m_KFfin = m_KFlist[iKF-1];
 Rho = Rho *m_nKF; // to get sum over final fermions, not average
 // FSR on/off switch for KKarfin and KKceex matrix element
 m_Event->m_HasFSR = DB->KeyFSR;        // general FSR switch
-if( m_KFfin == 12 || m_KFfin == 12 || m_KFfin == 16)
+if( m_KFfin == 12 || m_KFfin == 14 || m_KFfin == 16)
                m_Event->m_HasFSR  = 0; // exception for neutrinos
 
 //==========================================================
@@ -469,23 +467,6 @@ if ( DB->KeyISR == 1) {
   // alternative mapping from KKeeFoam
   // probably safer, more stable numerically
   MapPlus( R, GamI, vvmax, m_vv, dJac);
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  //if( m_EventCounter == 1 ) m_vv=0.4;
-  //if( m_EventCounter == 2 ) m_vv=0.2;
-  //if( m_EventCounter == 3 ) m_vv=0.6;
-  //if( m_EventCounter == 4 ) m_vv=0.8;
-  //if( m_EventCounter == 5 ) m_vv=0.1;
-  //if( m_EventCounter == 6 ) m_vv=0.3;
-  //if( m_EventCounter == 7 ) m_vv=0.5;
-  //if( m_EventCounter == 8 ) m_vv=0.7;
-  //if( m_EventCounter == 9 ) m_vv=0.0001;
-  //if( m_EventCounter >0 && m_EventCounter<= 9 ){
-//  int seed = 54217317+10000000*m_vv;
-//  int seed = 54217317;
-//  pseumar_initialize_(seed, 0, 0);
-//  for(int i=0; i<5;i++) *f_Out<< "============================================================================================"<< endl;
-//  *f_Out<< "$$$ KKee2f::RhoFoam5: m_vv="<< m_vv<< endl;}
-  //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   RhoISR *= dJac;
   /////////////// No mapping at all
   //m_vv = R*vvmax;
@@ -633,10 +614,6 @@ m_Event->m_EventCounter = m_EventCounter;
 ////////////////////////////////////////////////
 m_FoamMode = -1;   // generation mode
 ////////////////////////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[[
-//  int seed = 54217317;
-//  pseumar_initialize_(seed, 0, 0);
-//]]]]]]]]]]]]]]]]]]]]]
 f_FoamI->MakeEvent();
 f_FoamI->GetMCwt(m_WtFoam);
 
@@ -713,20 +690,17 @@ if(m_WtCrude != 0 ) {
    if( (DB->KeyGPS != 0) && (SvarQ > sqr(m_MminCEEX[m_KFfin])) ) {
       int KeyInt0=0;
       m_GPS->SetKeyInt(KeyInt0);
-      //[[[[[[[[[[ moved out from Make()
-      m_GPS->PhelRandom();
-      //]]]]]]]]]]
+      m_GPS->PhelRandom(); // photon spin randomization
       m_GPS->Make();   // IFI OFF
       m_WtSetNew[51]=m_GPS->m_WtSet[51];
       m_WtSetNew[52]=m_GPS->m_WtSet[52];
       m_WtSetNew[53]=m_GPS->m_WtSet[53];
+      m_WtSetNew[ 1]=m_GPS->m_WtSet[51];
+      m_WtSetNew[ 2]=m_GPS->m_WtSet[52];
+      m_WtSetNew[ 3]=m_GPS->m_WtSet[53];
       WtBest = m_GPS->m_WtSet[53];
       if( DB->KeyINT != 0 && m_Event->m_HasFSR != 0 ) {
-//      if( DB->KeyINT != 0 ) {
         m_GPS->SetKeyInt(DB->KeyINT);
-        //[[[[[[[[[[
-        //m_GPS->PhelRandom();
-        //]]]]]]]]]]
         m_GPS->Make(); // IFI ON
         m_WtSetNew[1]=m_GPS->m_WtSet[1];
         m_WtSetNew[2]=m_GPS->m_WtSet[2];

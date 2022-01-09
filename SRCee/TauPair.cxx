@@ -93,11 +93,6 @@ void TauPair::Make1(){
     J=1; dekay_(&J,m_HvecTau1); // TAUOLA
     J=2; dekay_(&J,m_HvecTau2); // TAUOLA
   }
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  (*m_Out)<<" ====================================//// Taupair_Make1 ////============================"<<endl;
-//  (*m_Out)<<" m_HvecTau1[0-3]="<<m_HvecTau1[0]<<" "<<m_HvecTau1[1]<<" "<<m_HvecTau1[2]<<" "<<m_HvecTau1[3]<<endl;
-//  (*m_Out)<<" m_HvecTau2[0-3]="<<m_HvecTau2[0]<<" "<<m_HvecTau2[1]<<" "<<m_HvecTau2[2]<<" "<<m_HvecTau2[3]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//Make1
 
 ///______________________________________________________________________________________
@@ -126,14 +121,6 @@ void TauPair::Clone(){
 //------------------------------------------------
   m_H1.SetPxPyPzE(m_HvecTau1[0],m_HvecTau1[1],m_HvecTau1[2],m_HvecTau1[3]);
   m_H2.SetPxPyPzE(m_HvecTau2[0],m_HvecTau2[1],m_HvecTau2[2],m_HvecTau2[3]);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  (*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
-//  (*m_Out)<<"TauPair::Clone:  m_alfa1="<<m_alfa1<<" m_beta1="<<m_beta1<<" m_gamma1="<<m_gamma1<<endl;
-//  (*m_Out)<<"TauPair::Clone:  m_alfa2="<<m_alfa2<<" m_beta2="<<m_beta2<<" m_gamma2="<<m_gamma2<<endl;
-//  (*m_Out)<<"---------------------------------------------------------------------------------------------------"<<endl;
-//  (*m_Out)<<"TauPair::Clone: m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
-//  (*m_Out)<<"TauPair::Clone: m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
   if(m_KeyClone == 1) {
 /////////////////////////////////////////////////////////////////////////////////////
 //   Cloning tau decay with help of  Euler rotations FIRST method                  //
@@ -144,10 +131,6 @@ void TauPair::Clone(){
     m_phi2  =0.0; m_thet2 =0.0;
     if(Habs1 > 1e-5) { m_phi1  = m_H1.Phi(); m_thet1 = m_H1.Theta(); }
     if(Habs2 > 1e-5) { m_phi2  = m_H2.Phi(); m_thet2 = m_H2.Theta(); }
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<<"TauPair::Clone:  Habs1="<< Habs1 <<" m_phi1="<<m_phi1<<" m_thet1="<<m_thet1<<endl;
-//(*m_Out)<<"TauPair::Clone:  Habs2="<< Habs2 <<" m_phi2="<<m_phi2<<" m_thet2="<<m_thet2<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
     m_H1.SetPxPyPzE(0.0, 0.0, Habs1, 1.0);
     m_H2.SetPxPyPzE(0.0, 0.0, Habs2, 1.0);
     m_Event->RotEul(m_beta1, m_gamma1, &m_H1);
@@ -167,11 +150,6 @@ void TauPair::Clone(){
      cout <<    " ##### STOP in Taupair_Clone: wrong KeyClone= "<< m_KeyClone<< endl;
      exit(9);
   }
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<<"----------------------------------TauPair::Clone---------------------------------------------------"<<endl;
-//(*m_Out)<<"TauPair::Clone: (b) m_H1[0-3]="<<m_H1[0]<<" "<<m_H1[1]<<" "<<m_H1[2]<<" "<<m_H1[3]<<endl;
-//(*m_Out)<<"TauPair::Clone: (b) m_H2[0-3]="<<m_H2[0]<<" "<<m_H2[1]<<" "<<m_H2[2]<<" "<<m_H2[3]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//Clone
 
 

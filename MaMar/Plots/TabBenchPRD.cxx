@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-//    make PlotIFI-run
-//    make BMarkPRD88-pdf
+//    make TableIII-pdf
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -31,9 +30,9 @@ using namespace std;
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
 //
-//TFile  DiskFileA("../workKKMC/histo.root");           // KKMCee current
+TFile  DiskFileA("../workKKMC/histo.root");           // KKMCee current
 
-TFile DiskFileA("../workKKMC/histo.root_189GeV_OldDiz_100M"); // Feb. 2021
+//TFile DiskFileA("../workKKMC/histo.root_189GeV_OldDiz_100M"); // Feb. 2021
 
 //TFile DiskFileA("../workKKMC/histo.root_189GeV_NewDiz_480M");  // Feb. 2021
 

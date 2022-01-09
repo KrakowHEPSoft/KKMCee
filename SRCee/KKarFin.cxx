@@ -3,11 +3,6 @@
 
 ClassImp(KKarFin);
 
-//extern "C" {
-//
-//   void pseumar_initialize_(const int&, const int&, const int&);
-//   void pseumar_makevec_(float rvec[], const int&);
-//}//
 
 #define SW20 setw(20)<<setprecision(14)
 
@@ -114,18 +109,9 @@ if(m_IsFSR == 1) {
 //-----------------------------------------------------------------------
 // Final state bremss, fermion momenta defined in Z frame if no ISR
 // In case of ISR they are reassigned one more time.
-//   m_Event->m_HasFSR=0;   // message for matrix element
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//        float rvec[10];
-//        pseumar_makevec_(rvec,2);
-//        double cth= 1 -2*rvec[0];
-//        double the= acos(cth);
-//        double phi= 2*M_PI*rvec[1];
-//        (*m_Out) <<"@@@ KKarFin::Make: the, phi= "<< the<<"  "<< phi <<endl;
    double cth= 1 -2*m_RNgen->Rndm();
    double the= acos(cth);
    double phi= 2*M_PI*m_RNgen->Rndm();
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
    m_nphot = 0;
@@ -133,9 +119,6 @@ if(m_IsFSR == 1) {
 //-----------------------------------------------------------------------
 //   FSR weight
 *wt = WtFin;
-//CALL GLK_Mfill(m_idyfs+69, wt,  1d0)
-//CALL GLK_Mfill(m_idyfs+60, 1d0*m_nphot,  1d0)
-// =============================================
 }//!!!KKarFin_Make!!!
 
 
@@ -177,10 +160,7 @@ double   WtMlist[maxPhot];
 double   rr[maxPhot],xk[maxPhot],cgx[maxPhot],sgx[maxPhot];
 double   dis0[maxPhot];
 int      Mark[maxPhot];
-//[[[[[[[[[[[[[[[[[[[[[[[[
 double   rvec[maxPhot];
-//float rvec[100];
-//]]]]]]]]]]]]]]]]]]]]]]]]
 //-----------------------------------------------------------------------
 m_NevGen = m_NevGen + 1;
 
@@ -216,12 +196,6 @@ average = average *m_Event->m_Xenph;
 //
 e60:
 PoissGen(average,&m_nphot, rr);
-//[[[[[[[[[[[[[[[
-//(*m_Out)<< "KarFin_YFSfin:amc2="<<amc2<<" alf1="<<alf1<<"  m_delta="<<m_delta<<endl;
-//(*m_Out)<< "KarFin_YFSfin:betc="<<betc<<" gamf2="<<gamf2<<endl;
-//(*m_Out)<< "KKarfin::YFSfin: m_nphot="<<m_nphot<<"  average="<<average<<" m_Xenph="<< m_Event->m_Xenph<<endl;
-//(*m_Out)<< "KKarfin::YFSfin:"; for(int i=1;i<=m_nphot; i++) (*m_Out)<<"rr["<<i<<"] = "<< rr[i]; (*m_Out)<<endl;
-//]]]]]]]]]]]]]]]
 // This is for tests of program at fixed multiplicity (advanc. users)
 // if((m_MltFSR != 0) && (m_nphot != m_MltFSR)) goto 5
 double sprim;
@@ -245,10 +219,7 @@ if (m_nphot == 0) {
    for(int i=1; i<=m_nphot; i++){
       xk[i]=xk[i]*xfact;
    }
-////[[[[[[[[[[[[[[[[[[[[[[[[
-//   pseumar_makevec_(rvec,m_nphot);
    m_RNgen->RndmArray(m_nphot,rvec);
-///]]]]]]]]]]]]]]]]]]]]]]]]]
    for(int i=1; i<=m_nphot; i++){
 //-----------------------------------------------------------------------
 //     simplified photon angular distribution,
@@ -286,10 +257,6 @@ if (m_nphot == 0) {
          m_phot[i] *= ener;
    }
 }// m_nphot=0
-//[[[[[[[[[[[[[[[[[[[[[
-//cout<<"##### final  wt2= "<<wt2<<endl;
-//for(int i=1; i<=m_nphot; i++) MomPrint1("m_phot[*]=", m_phot[i]);
-//]]]]]]]]]]]]]]]]]]]]]
 //-----------------------------------------------------------------------
 //     final fermion momenta
 //-----------------------------------------------------------------------
@@ -301,20 +268,6 @@ double betn,eta1,eta2;
 // define fermion pair in its rest frame along z-axix
 m_Event->GivePair(qmsene, Mas1, Mas2,&m_q1, &m_q2 ,&betn,&eta1,&eta2);   //real
 m_Event->GivePair(qmsene,amcru,amcru,&m_r1, &m_r2 ,&betc,&eta1,&eta2);   //real
-//[[[[[[[[[[[[[
-//[[[[[[[[[[[[[[[[[[[[[
-//   MomPrint1("m_q1=", m_q1);
-//   MomPrint1("m_q2=", m_q2);
-//   MomPrint1("m_r1=", m_r1);
-//   MomPrint1("m_r2=", m_r2);
-//]]]]]]]]]]]]]]]]]]]]]
-//-----------------------------------------------------------------------
-//     Mass weight for theta distribution
-//-----------------------------------------------------------------------
-//     Mass weight compensates for s'->s and droping terms -m**2/(k.q)**2
-//     Care is taken of machine rounding errors.
-//     del1 and del2 RECALCULATED out of angles sgx(i),cgx(i)
-//     with TRUE sprim, using EXACT formulas
 double amd1 = sqr(Mas1/ener);
 double amd2 = sqr(Mas2/ener);
 double del1,del2;
@@ -345,10 +298,6 @@ for(int i=1; i<= m_nphot; i++){
 //     finaly define Sudakov variables
    m_yfin[i]=del1*xk[i]/2;
    m_zfin[i]=del2*xk[i]/2;
-//[[[[[[[[[[[[[[[[[[[[[
-//   cout<<"##### final  WtMlist[i]= "<<WtMlist[i]<<endl;
-//   cout<<"##### m_yfin[i]="<<m_yfin[i]<<"  m_zfin[i]="<<m_zfin[i]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 }// for i
 //-----------------------------------------------------------------------
 // Transform from rest frame of Q=qf1+qf2 down to CMS=Lab,
@@ -356,13 +305,8 @@ for(int i=1; i<= m_nphot; i++){
 // KarFin_Kinf1(PX,m_q1,m_q2,m_r1,m_r2,m_nphot,m_phot,m_phsu)
 //-----------------------------------------------------------------------
 // Angles for Euler rotation of all FSR system
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
    double cth= 1.0 -2*m_RNgen->Rndm();
    double phi= 2.0*M_PI*m_RNgen->Rndm();
-//pseumar_makevec_(rvec,2);
-//double cth= 1.0 -2*rvec[0];
-//double phi=2*M_PI*rvec[1];
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    double the= acos(cth);
    // QQk is combined momentum of q1+q2+photons in q1+q2 system
    TLorentzVector QQk= m_q1+m_q2+m_phot[0];
@@ -396,15 +340,6 @@ if(m_nphot >= 1) {  // spurious if ???
 }//if
 // Final Monitoring weights
 *WtFin = wt1*wt2*wt3;
-//[[[[[[[[[[[[[[[[[[[[[[[[[
-//if( m_icont <50 ) {
-//	cout<<" WtFin ="<<*WtFin<<"  wt1="<<wt1<<"  wt2="<<wt2<<"  wt3="<<wt3<<endl;
-//}//if( m_icont
-//]]]]]]]]]]]]]]]]]]]]]]]]]
-//-----------------------------------------------------------------------
-//CALL GLK_Mfill(m_idyfs+61,     wt1  ,1d0)
-//CALL GLK_Mfill(m_idyfs+62,     wt2  ,1d0)
-//CALL GLK_Mfill(m_idyfs+63,     wt3  ,1d0)
 //-----------------------------------------------------------------------
 }// YFSfin
 
@@ -483,14 +418,6 @@ double YFS_IR = -2.0*alfch *(     q1q2 *m_BVR->A( q1q2, Mas1,Mas2) -1.0  )    *l
 
 // YFSkon is delegated/exported to QED3 (unused here).
 double YFSkon =  1/4.0 *2*alfch*(log(svarQ/sqr(Mass))-1) + alfch*( -0.5  + sqr(M_PI)/3.0); // Mass<<sqrt(s)
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//if(m_icont <50 && uu<0.01){
-//cout<<" *******************************************************************************nphot="<<m_nphot<<" uu="<<uu<<endl;
-//cout<<" KKarFin::Piatek VoluMC= "<<VoluMC<<" YFS_IR="<<YFS_IR<<" YFSkon="<<YFSkon<<endl;
-//cout<<" alfch="<< alfch <<" q1q2="<<q1q2<<" Mas1="<<Mas1<<"  Delta1="<<Delta1<<endl;
-//cout<<"  m_delta="<<m_delta<<"  QQk="<< QQk << " svarQ="<<svarQ<<" svarQ/svarX="<< svarQ/svarX <<endl;
-//}//if(m_icont
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //===========================================================================================
 // Corrections necessary for photon remooval scenario (now default!)
 double Mas1c  = Mass*sqrt(svarQ/svarX);
@@ -556,11 +483,6 @@ if(DB->KeyPia == 0) {
 } else {
 // Optional removal of photons below Emin from the record
 // in such a case WtMas includes exp(belb2)= <wt3> for removed ph.
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//   cout<<"KKarFin::Piatek:  m_NevGen ="<<m_NevGen<<endl;
-//   cout<<"//////KKarFin::Piatek: m_nphot="<<m_nphot<<"  m_Emin="<< m_Emin<<endl;
-//   for(int i=1; i<=m_nphot;i++) { cout<<"i="<<i<<"  "; MomPrint1("m_phot[*] =", m_phot[i]);}
-//]]]]]]]]
    int nph=m_nphot;
    for(int j=m_nphot; j>=1; j--){
 //   cout<<"///// j="<<j<<" E[j]="<< m_phot[j].E()<<endl;
@@ -579,9 +501,6 @@ if(DB->KeyPia == 0) {
          m_phot[j].SetPxPyPzE(0,0,0,0);
    }
    m_nphot=nph;
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  for(int i=1; i<=m_nphot;i++) { cout<<"i="<<i<<"  "; MomPrint1("m_phot[*] =", m_phot[i]);}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // Important to remember: EXP(YFS_IR +YFSkon)         = full YFS formfactor in QMS
 //                        EXP(YFS_IR +YFSkon +DelYFS) = full YFS formfactor in CMS
    WtRem    = wtm1;
@@ -597,18 +516,6 @@ m_Event->m_YFSkon_fin = m_YFSkon;
 //**********************************
 *Wt3 = m_WtMass *m_VoluMC *m_YFS_IR;
 //**********************************
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//if(m_icont <50 && uu<0.01){
-//cout<<" *******************************************************************************nphot="<<m_nphot<<" uu="<<uu<<endl;
-//cout<<" KKarFin::Piatek VoluMC= "<<m_VoluMC<<" YFS_IR="<<m_YFS_IR<<" YFSkon="<<m_YFSkon<<" m_WtMass="<<m_WtMass<<endl;
-//if(m_icont <100){
-//cout<<" KKarFin::Piatek *************** m_YFS_IR= "<< m_YFS_IR <<endl;
-//cout<<" KKarFin::Piatek m_WtMass= "<<m_WtMass<<"   Wt3="<< *Wt3  <<endl;
-//cout<<" KKarFin::Piatek   WtCtrl= "<<WtCtrl<<  " WtRem="<< WtRem<<endl;
-//}//if(m_icont <50
-// Monitoring
-//CALL GLK_Mfill(m_idyfs+65,       WtCtrl ,1d0)
-//CALL GLK_Mfill(m_idyfs+66,       WtRem  ,1d0)
 //
 }//!!! KarFin_Piatek !!!
 
@@ -625,19 +532,12 @@ void  KKarFin::PoissGen(double average, int *mult, double rr[]){
 //////////////////////////////////////////////////////////////////////////////
 double  rn,sum,y;
 int     nn;
-//[[[[[[[[[[[[[[[[[[[[[[[[
-//float   rvec[10];
-//]]]]]]]]]]]]]]]]]]]]]]]]
 //------------------------------------------------------------------------------
 e50:
 nn=0;
 sum=0;
 for(int it=1; it< maxPhot; it++){
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//   pseumar_makevec_(rvec,1);
-//   rn = rvec[0];
    rn = m_RNgen->Rndm();
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    y= log(rn);
    sum=sum+y;
    nn=nn+1;
@@ -671,12 +571,8 @@ void KKarFin::AngBre(double am2,
 //     dist0 = distribution generated, without m**2/(kp)**2 terms           //
 //     dist1 = distribution with m**2/(kp)**2 terms                         //
 //////////////////////////////////////////////////////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  float              rn[10];
-//  pseumar_makevec_(rn,2);
 double rn[10];
 m_RNgen->RndmArray(2,rn);
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 double beta =sqrt(1-am2);
 double eps  =am2/(1+beta);                      //= 1-beta
 double del1 =(2-eps)* exp( log(eps/(2-eps))*rn[0] );  //= 1-beta*costhg

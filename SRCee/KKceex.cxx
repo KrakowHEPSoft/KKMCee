@@ -161,7 +161,7 @@ void KKceex::Make(){
   int    KFini   = m_Event->m_KFini;
   int    KFfin   = m_Event->m_KFfin;
 
-  m_HasFSR = DB->KeyFSR;          // general FSR switch
+//  m_HasFSR = DB->KeyFSR;          // general FSR switch
   m_HasFSR = m_Event->m_HasFSR;   // overruled by KKarfin (exception for neutrinos)
 
   double Mbeam = DB->fmass[KFini];  // to be refined, current or constituent?
@@ -340,9 +340,6 @@ void KKceex::Make(){
 //////////////////////////////////////////////////////////////////
 //             Define (randomly) photon helicities              //
 //////////////////////////////////////////////////////////////////
-//[[[[ mooved up
-//    PhelRandom();
-//]]]]
 
 //////////////////////////////////////////////////////////////////////
 //  *************************************************************   //
@@ -389,9 +386,6 @@ void KKceex::Make(){
   CrudSum =       CrudSum  + DistCru;
 
   if(m_nPhot == 0) goto e300;
-  //[[[[[[[[[[[[[[[[[[[[test
-  //   Amp4Zer(m_AmpExpo2);
-  //]]]]]]]]]]]]]]]]]]]]]
   int Hel1,Hel2;
   KKpart ph1,ph2;
   dcmplx Sactu1,Sactu2,SactuA,SactuB;
@@ -484,19 +478,11 @@ e300:
      m_WtSet[ 52] =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 53] =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 53];
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//     (*m_Out)<< ">>>KKceex::Make:  CrudSum= "<<CrudSum << " CrudNorm= "<<CrudNorm<<endl;
-//     (*m_Out)<< ">>>KKceex::Make:  m_RhoCrud= "<<m_RhoCrud<<endl;
-//     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 51,52,53] ="<< m_WtSet[ 51]<<"  "<< m_WtSet[ 52]<<"  "<< m_WtSet[ 53]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   } else {
      m_WtSet[ 1]  =   m_RhoExp0 /m_RhoCrud;    //!!! Interference ON
      m_WtSet[ 2]  =   m_RhoExp1 /m_RhoCrud;
      m_WtSet[ 3]  =   m_RhoExp2 /m_RhoCrud;
      m_WtBest     =   m_WtSet[ 3];
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//     (*m_Out)<< ">>>KKceex::Make:  m_WtSet[ 1,2,3] ="<< m_WtSet[ 1]<<"  "<< m_WtSet[ 2]<<"  "<< m_WtSet[ 3]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   }
 }// Make
 
@@ -546,13 +532,6 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
            }//j4,
         }//j3
   }// j1,j2
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-//  (*m_Out)<< "----------------------------------------KKceex::Born----------------------------------------------------"<<endl;
-// for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_SpinoTT("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoTT[j1][j2][j][k];(*m_Out)<<endl;}
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_SpinoUU("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_SpinoUU[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   double SvarX= PX*PX;
   double MZ    = m_DZ->m_MZ;    // the same as DB->_MZ i.e. xpar
@@ -625,23 +604,6 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
     }//for
   }//if
 
-//[[[[[[[[[[[[[[[[[[[[[[[[
-//  (*m_Out)<< "----------------------------------------KKceex::Born----------------------------------------------------"<<endl;
-//      (*m_Out)<<"********************************************************************************"<<endl;
-//      (*m_Out)<<"***    SvarX=" << SvarX  <<"  CosThetD="<< CosThetD <<endl;
-//      (*m_Out)<<"***    PropGam="<< PropGam<<"    PropZet="<< PropZet<<endl;
-//      (*m_Out)<<"***    Ve="<< Ve<<"  Vf="<< Vf<<"  Ae="<< Ae<<" Af="<< Af<<endl;
-//      (*m_Out)<<"***    VVcor="<< VVcor<<endl;
-//      (*m_Out)<<"***    GamVPi="<< GamVPi<<"  ZetVPi="<< ZetVPi<<"  RsqV="<< RsqV<<" RsqA="<< RsqA<<endl;
-//      (*m_Out)<<"********************************************************************************"<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-//  (*m_Out)<< "----------------------------------------KKceex::Born----------------------------------------------------"<<endl;
-//  (*m_Out)<< "m_FFacTT="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacTT[j];(*m_Out)<<endl;
-//  (*m_Out)<< "m_FFacUU="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacUU[j];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
 /////////////////////////////////////////////////////
 // Dresed Born 16 amplitudes
   for(int j1 = 0; j1<=1; j1++)
@@ -653,16 +615,7 @@ void KKceex::Born(int KFini, int KFfin, TLorentzVector &PX, double CosThetD,
                   +m_SpinoUU[j1][j2][j3][j4]* m_FFacUU[j1];
         }//j4
       }//j3
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//     (*m_Out)<< "AmpBorn="; for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBorn.m_A[j1][j2][j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
     }//j1,j2
-
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBorn("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBorn.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 }//KKceex::Born
 
@@ -692,9 +645,6 @@ if(abs(KFfin) != 12)  return;
 dcmplx TT, UU;
 int Hel1,Hel2,Hel3,Hel4;
 dcmplx s31,s24,s32,s14;
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "----------------------------------------KKceex::BornW----------------------------------------------------"<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 for(int j1 = 0; j1<=1; j1++)
    for(int j2 = 0; j2<=1; j2++){
       for(int j3 = 0; j3<=1; j3++){
@@ -750,14 +700,6 @@ for(int j1 = 0; j1<=1; j1++)
                       +m_SpinoUU[j1][j2][j3][j4]* FFacUU[j1];
       }//j3,j4
   }//j1,j2
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-//(*m_Out)<<"*******************************KKceex::BornW****************************************"<<endl;
-//(*m_Out)<< "FFacTT="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<FFacTT[j];(*m_Out)<<endl;
-//(*m_Out)<< "FFacUU="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<FFacUU[j];(*m_Out)<<endl;
-//(*m_Out)<< "s,t,PropW,WVPi="<< s<<"  "<<t<<"  "<<PropW<<"  "<<WVPi <<endl;
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBornW("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//KKceex::BornW
 
 double  KKceex::BornFoam0(int KFini, int KFfin, double SvarX, double CosThetD){
@@ -875,18 +817,6 @@ Yint= TForFac( alfpmix, m_p1, m_p3, Ene, DB->MasPhot)
      *TForFac( alfpmix, m_p2, m_p4, Ene, DB->MasPhot)
      *TForFac(-alfpmix, m_p1, m_p4, Ene, DB->MasPhot)
      *TForFac(-alfpmix, m_p2, m_p3, Ene, DB->MasPhot);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//m_icont++;
-//if(m_icont<1000) {
-//	cout<<"===================================="<<endl;
-//	cout<<"m_p1= "; m_p1.Print();cout<<endl;
-//	cout<<"m_p2= "; m_p2.Print();cout<<endl;
-//	cout<<"m_p3= "; m_p3.Print();cout<<endl;
-//	cout<<"m_p4= "; m_p4.Print();cout<<endl;
-//	cout<<" BornFoam2: m_Emin ="<<m_Emin<<endl;
-//	cout<<" BornFoam2:   Yint ="<<Yint<<endl;
-//}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //===================================================================
 dcmplx cOne = dcmplx(1.0, 0.0);
   if(        Mode == 10){
@@ -1076,33 +1006,12 @@ for(int j1 = 0; j1<=1; j1++)
         m_AmpExpo1.m_A[j1][j2][j3][j4] +=
                  +Cfac*AmpBorn*(1.0 +m_F1ini1)*(1.0 +m_F1fin1 )  // Born, O(alf1) m_FFactors
                  +Cfac*AmpBoxy;                                  // O(alf1) boxes
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//[[[[[test        m_AmpExpo1.m_A[j1][j2][j3][j4] = dcmplx(0.0);
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   //
         m_AmpExpo2.m_A[j1][j2][j3][j4] +=
                  +Cfac*AmpBorn*(1.0 +m_F1ini2)*(1.0 +m_F1fin2 )  // Born, O(alf2) FFactors
                  +Cfac*AmpBoxy;                                  // O(alf1) boxes
      }//for j3,j4
   }//for j1,j2
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//dcmplx PropW, WVPi;
-//GPS_EWFFactW(KFini, KFfin, s,t, PropW, WVPi);
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-//(*m_Out)<<"////////////////////////////////////////BornPlus//////////////////////////////////////////////////"<<endl;
-//(*m_Out)<< "m_FFacTT="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacTT[j];(*m_Out)<<endl;
-//(*m_Out)<< "m_FFacUU="; for(int j=0;j<=1;j++)(*m_Out)<<"  "<<SW208<<m_FFacUU[j];(*m_Out)<<endl;
-//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "   m_BornC("<<j1<<","<<j2<<",*,*)=";
-//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_BornC.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){(*m_Out)<< "m_AmpBornW("<<j1<<","<<j2<<",*,*)=";
-//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
 
 }//BornPlus
 
@@ -1279,14 +1188,6 @@ double CosThe=0.0;
 KKpart ph1r = ph1; ph1r.C=-1;
 Born(KFini, KFfin, PX, CosThe,  ph1, m_r2, m_p3, m_p4, AmpBornU);
 Born(KFini, KFfin, PX, CosThe, m_r1, ph1r, m_p3, m_p4, AmpBornV);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&KKceex::HiniPlus&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBornU("<<j1<<","<<j2<<",*,*)=";
-//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBornU.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//(*m_Out)<< "----------------------------------------------------------------------------------------------------"<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "AmpBornV("<<j1<<","<<j2<<",*,*)=";
-//   for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<AmpBornV.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // Fermion propagarotors
 double pr1 = 1.0/(m_p1*ph1)/2.0;
 double pr2 =-1.0/(m_p2*ph1)/2.0;
@@ -1297,38 +1198,6 @@ dcmplx gI = dcmplx(Qe *m_e_QED);
 //CALL GPS_MakeV(ph,Sig,  p2,m2,   ph,mph,   V)
 GPS_MakeU(gI, ph1, Sig,  ph1,  m_p1,   U);
 GPS_MakeV(gI, ph1, Sig,  m_p2,  ph1,   V);
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&KKceex::HiniPlus&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
-//(*m_Out)<< "U(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U.m_A[j][k]/gI;(*m_Out)<<endl;
-//(*m_Out)<< "V(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V.m_A[j][k]/gI;(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//========================================================================
-/*   Version as in f77
-// ISR non-infrared two parts: (1) p1 -> photon, contracted with U-matrix
-dcmplx Csum1, Csum2;
-dcmplx AmpBorn, AmpExpo1, AmpExpo2;
-for(int j1 = 0; j1<=1; j1++)
-  for(int j2 = 0; j2<=1; j2++){
-    for(int j3 = 0; j3<=1; j3++)
-      for(int j4 = 0; j4<=1; j4++){
-            Csum1=dcmplx(0.0,0.0);
-            Csum2=dcmplx(0.0,0.0);
-            for(int  j= 0; j<=1; j++){
-               Csum1=Csum1 +dcmplx(Qe *m_e_QED) *U.m_A[j][j1]*dcmplx(pr1) *AmpBornU.m_A[ j][j2][j3][j4];
-               Csum2=Csum2 +dcmplx(Qe *m_e_QED) *V.m_A[j2][j]*dcmplx(pr2) *AmpBornV.m_A[j1][ j][j3][j4];
-            }
-            AmpBorn = m_BornC.m_A[j1][j2][j3][j4];
-            AmpExpo1 =  sProd/Sactu*(Csum1+Csum2);
-// (1+Vir1)*AmpBorn is already included in AmpExpo0 so we drop it to avoid double counting
-// Note that remaining Vir2*AmpBorn is IR-finite because Vir2->0 in the IR limit
-            AmpExpo2 =
-                 sProd/Sactu*(Csum1+Csum2) *(1.0+Vir1+Vir2)*(1.0+m_F1fin1) // non-IR sigle bremss. part
-                       +sProd*AmpBorn*Vir2;                             // add virtual_non_IR*Born
-            m_AmpExpo1.m_A[j1][j2][j3][j4]  +=  AmpExpo1;
-            m_AmpExpo2.m_A[j1][j2][j3][j4]  +=  AmpExpo2;
-      }//for  j3,j4
-  }//for j1,j2
-  */
 //========================================================================
 //O(alf1)
   dcmplx Fact0= sProd/Sactu;
@@ -1349,7 +1218,6 @@ for(int j1 = 0; j1<=1; j1++)
 //]]]]]]]]]]]]]]]]]]]]]
 }// GPS_HiniPlus
 
-//*NEW*
 void KKceex::HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
                KKpart &ph1, int Hel, dcmplx &Sactu, dcmplx &sProd){
 ////////////////////////////////////////////////////////////////////////////////////
@@ -1360,9 +1228,6 @@ void KKceex::HiniPlusW(int Ibeta, int KFini, int KFfin, TLorentzVector &PX,
 //   m_AmpExpo*  is working space                                                  //
 /////////////////////////////////////////////////////////////////////////////////////
 if(abs(KFfin) != 12)  return;
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&KKceex::HiniPlusW-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 double Qe  = DB->Qf[ KFini];
 dcmplx Vir1,Vir2;  // Virtual corrections
 MakeVini(m_p1, m_p2, ph1, Vir1,Vir2);
@@ -1379,9 +1244,6 @@ if(IFONE) { s0=  2*(m_p3*m_p4); t0= -2*(m_p4*m_p2);
 } else {    s0=  2*(m_p3*m_p4); t0= -2*(m_p3*m_p1);
 }//if
 BornW(KFini, KFfin, PX, s0, t0,  m_r1, m_r2, m_p3, m_p4, m_AmpBornW); // for WW graph
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "KKceex::HiniPlusW: IFONE= "<< IFONE<<"  s0="<<s0<<"  t0="<<t0<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 //--------------------------------------------------------------
 KKcmplx4 AmpBornU, AmpBornV; // dressed Born spin amplitudes
 KKpart ph1r = ph1; ph1r.C=-1;
@@ -1397,18 +1259,12 @@ if(IFONE) {sa= (m_p3+m_p4+ph1).M2();     // (p3+p4+ph1)^2
 else      {sa= (m_p3+m_p4+ph1).M2();     // (p3+p4+ph1)^2
            ta= (m_p3-m_p1+ph1).M2();}    // (p3-p1+ph1)^2
 BornW(KFini, KFfin, PX, sa, ta,  ph1, m_r2, m_p3, m_p4, AmpBornU); // single W, vector-like
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "KKceex::HiniPlusW: IFONE= "<< IFONE<<"  sa="<<sa<<"  ta="<<ta<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 //--------------------------------------------------------------------------------
 double sb,tb;
 if (IFONE) {sb= (m_p3+m_p4+ph1).M2();   // (p3+p4+ph1)**2
             tb= (m_p4-m_p2+ph1).M2();}  // (p4-p2+ph1)**2
 else       {sb= (m_p3+m_p4+ph1).M2();   // (p3+p4+ph1)**2
             tb= -2*(m_p3*m_p1);}        // (p3-p1)**2
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "KKceex::HiniPlusW: IFONE= "<< IFONE<<"   sb="<<sb<<"  tb="<<tb<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 BornW(KFini, KFfin, PX, sb, tb, m_r1, ph1r, m_p3, m_p4, AmpBornV); // single W
 //--------------------------------------------------------------------------------
 dcmplx PropW0,WVPi0,PropWa,WVPia,PropWb,WVPib;
@@ -1420,9 +1276,6 @@ WVPib=WVPi0; // to keep gauge invariance we install t-transfer in formfactor at 
 // Fermion propagarotors
 double pr1  = 1.0/(m_p1*ph1)/2.0;
 double pr2  =-1.0/(m_p2*ph1)/2.0;
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "KKceex::HiniPlusW:   pr1="<<pr1<<"  pr2="<<pr2<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 int Sig = 1-2*Hel;
 dcmplx Cone = dcmplx(1.0);
 KKcmplx2 U,V, UW,VW, UWX,VWX;
@@ -1438,50 +1291,14 @@ GPS_MakeVW(Cone, ph1, Sig,  m_p2,  m_p4,   VW);
 //CALL GPS_MakeVX(Cnor,ph,Fleps, p2,m2,   p4,m4,    VWX) ! v-a inside
 GPS_MakeUX(Cone, ph1, m_p3, m_p1, UWX);
 GPS_MakeVX(Cone, ph1, m_p2, m_p4, VWX);
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "U(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UW(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UW.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VW(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VW.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UWX(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UWX.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VWX(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VWX.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
 dcmplx s1v[2],s2v[2],EpsDot[2]; // soft factors
-//s1v(1)  = -GPS_Sof1( 1,phv,p1v)
-//s2v(1)  =  GPS_Sof1( 1,phv,p2v)
 s1v[0]  = -GPS_Sof1( 1,ph1,m_p1);
 s2v[0]  =  GPS_Sof1( 1,ph1,m_p2);
-//IF (IFONE) THEN
-//  EpsDot(1)=(+GPS_Sof1x( 1,phv,p2v)-GPS_Sof1x( 1,phv,p4v)) ! minis sign is in pr2/4
-//ELSE
-//  EpsDot(1)=(-GPS_Sof1x( 1,phv,p1v)+GPS_Sof1x( 1,phv,p3v)) ! minis sign is in pr2/4
-//ENDIF
 if(IFONE) EpsDot[0]= +GPS_Sof1x( 1,ph1,m_p2)-GPS_Sof1x( 1,ph1,m_p4); // minus is in pr2/4
 else      EpsDot[0]= -GPS_Sof1x( 1,ph1,m_p1)+GPS_Sof1x( 1,ph1,m_p3); // minus is in pr2/4
 s1v[1]   = -conj(s1v[0]);
 s2v[1]   = -conj(s2v[0]);
 EpsDot[1]= -conj(EpsDot[0]);
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "PropW0="<<PropW0<< "WVPi0="<<WVPi0<<endl;
-//(*m_Out)<< "PropWa="<<PropWa<< "WVPia="<<WVPia<<endl;
-//(*m_Out)<< "PropWb="<<PropWb<< "WVPib="<<WVPib<<endl;
-//(*m_Out)<< "s1v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s1v[j];(*m_Out)<<endl;
-//(*m_Out)<< "s2v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s2v[j];(*m_Out)<<endl;
-//(*m_Out)<< "EpsDot(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<EpsDot[j];(*m_Out)<<endl;
-//(*m_Out)<< "Hel="<<Hel<< "  Sig="<<Sig<<endl;
-//(*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpBornW("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpBornW.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//ZerAmplit();
-//(*m_Out)<< "m_e_QED="<<m_e_QED<<endl;
-//(*m_Out)<< "s1v[Hel]="<<s1v[Hel]<<" s2v[Hel]="<<s2v[Hel]<<" EpsDot[Hel]="<<EpsDot[Hel]<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//-----------------------------------------------------------
-//O(alf1)
-//    Csum1=Csum1 +Ibeta*DCMPLX(Qe *m_e_QED) *U(j,j1)*pr1 *AmpBornU( j,j2,j3,j4)
-//    Csum2=Csum2 +Ibeta*DCMPLX(Qe *m_e_QED) *V(j2,j)*pr2 *AmpBornV(j1, j,j3,j4)
 dcmplx gI = dcmplx(Qe *m_e_QED); //??? what about Qe?
 dcmplx Fact0= gI*sProd/Sactu;
 //
@@ -1518,15 +1335,6 @@ if(Ibeta ==  1) {
 if(Ibeta == -1){
   AmpAdd( m_AmpExpo2, dcmplx(-1.0), m_AmpTemp1);
 }
-
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "s1v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s1v[j];(*m_Out)<<endl;
-//(*m_Out)<< "s2v(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<s2v[j];(*m_Out)<<endl;
-//(*m_Out)<< "EpsDot(*)=";for(int j=0;j<=1;j++)  (*m_Out)<<"  "<<SW208<<EpsDot[j];(*m_Out)<<endl;
-//(*m_Out)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-//  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo1("<<j1<<","<<j2<<",*,*)=";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo1.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]
 //
 }//HiniPlusW
 
@@ -2192,11 +2000,6 @@ int  I72b=0;     //   !(NICOL)  ! non-ir remnant of I72     >  outed to I9B (ggc
 //-----
 double ChaIni =  DB->Qf[ KFini];
 dcmplx gI = dcmplx(ChaIni*m_e_QED);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "========================================================================================================"<<endl;
-//(*m_Out)<< "========================================KKceex::GPS_HiiPlusW============================================="<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
-//double Qe  = DB->Qf[ KFini];
 KKpart pA= m_p1;
 KKpart pB= m_p2;
 KKpart pC= m_p3;
@@ -2227,16 +2030,6 @@ s1=(pC+pD+ph1+ph2).M2();  t1=(pC-pA+ph1).M2();
 s2=(pC+pD+ph1+ph2).M2();  t2=(pC-pA+ph2).M2();
 s12=(pC+pD+ph1+ph2).M2(); t12=(pC-pA+ph1+ph2).M2();
 }
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "KKceex::HiniPlusW: IFONE= "<< IFONE<<"  s0="<<s0<<"  t0="<<t0<<endl;
-//(*m_Out)<< "KKceex::HiniPlusW: s="<<s<<"  t="<<t<<" s1="<<s1<<"  t1="  <<t1<<" s2="<<s2<<"  t2="<<t2 <<endl;
-//(*m_Out)<< "KKceex::HiniPlusW: s12="<<s12<<"  t12="<<t12<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//CALL GPS_EWFFactW(KFi,KFf,s0,t0,PropW0,WVPi0)
-//CALL GPS_EWFFactW(KFi,KFf,s,t,PropW,WVPi)
-//CALL GPS_EWFFactW(KFi,KFf,s1,t1,PropW1,WVPi1)
-//CALL GPS_EWFFactW(KFi,KFf,s2,t2,PropW2,WVPi2)
-//CALL GPS_EWFFactW(KFi,KFf,s12,t12,PropW12,WVPi12)
 // all W propagators ... some simplifications on vac pol set
 dcmplx PropW0,PropW,PropW1,PropW2,PropW12;
 dcmplx WVPi0, WVPi, WVPi1, WVPi2, WVPi12;
@@ -2254,16 +2047,6 @@ dcmplx CPF  =PropW  *WVPi;
 dcmplx CPF1 =PropW1 *WVPi1;
 dcmplx CPF2 =PropW2 *WVPi2;
 dcmplx CPF12=PropW12*WVPi12;
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "PropW0="<<PropW0<<"  PropW="   <<PropW<<endl;
-//(*m_Out)<< "PropW1="<<PropW1<<"  PropW2="  <<PropW2<<" PropW12="<<PropW12<<endl;
-//(*m_Out)<< "WVPi0="<<WVPi0<<"  WVPi="   <<WVPi<<endl;
-//(*m_Out)<< "WVPi1="<<WVPi1<<"  WVPi2="  <<WVPi2<<" WVPi12="<<WVPi12<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//sA(1,1)  = -gI*GPS_Sof1( 1,ph1,pA)
-//sA(2,1)  = -gI*GPS_Sof1( 1,ph2,pA)
-//sB(1,1)  =  gI*GPS_Sof1( 1,ph1,pB)
-//sB(2,1)  =  gI*GPS_Sof1( 1,ph2,pB)
 dcmplx sA[2][2],sB[2][2]; // soft factors
 sA[0][0]  = -gI*GPS_Sof1( 1,ph1,m_p1);
 sA[1][0]  = -gI*GPS_Sof1( 1,ph2,m_p1);
@@ -2273,17 +2056,6 @@ sA[0][1] = -conj(sA[0][0]);
 sA[1][1] = -conj(sA[1][0]);
 sB[0][1] = -conj(sB[0][0]);
 sB[1][1] = -conj(sB[1][0]);
-//IF (IFONE) THEN
-//  EpsDot1(1) = -gI*(+GPS_Sof1bx( 1,ph1,pB,mB)-GPS_Sof1bx( 1,ph1,pD,mD)-GPS_Sof1bx( 1,ph1,ph2,mph))
-//  EpsDot12(1)= -gI*(+GPS_Sof1bx( 1,ph1,pB,mB)-GPS_Sof1bx( 1,ph1,pD,mD))
-//  EpsDot2(1) = -gI*(+GPS_Sof1bx( 1,ph2,pB,mB)-GPS_Sof1bx( 1,ph2,pD,mD)-GPS_Sof1bx( 1,ph2,ph1,mph))
-//  EpsDot21(1)= -gI*( GPS_Sof1bx( 1,ph2,pB,mB)-GPS_Sof1bx( 1,ph2,pD,mD))
-//ELSE
-//  EpsDot1(1) = -gI*(-GPS_Sof1bx( 1,ph1,pA,mA)+GPS_Sof1bx( 1,ph1,pC,mC))
-//  EpsDot12(1)= -gI*(-GPS_Sof1bx( 1,ph1,pA,mA)+GPS_Sof1bx( 1,ph1,pC,mC)+GPS_Sof1bx( 1,ph1,ph2,mph))
-//  EpsDot2(1) = -gI*(-GPS_Sof1bx( 1,ph2,pA,mA)+GPS_Sof1bx( 1,ph2,pC,mC))
-//  EpsDot21(1)= -gI*(-GPS_Sof1bx( 1,ph2,pA,mA)+GPS_Sof1bx( 1,ph2,pC,mC)+GPS_Sof1bx( 1,ph2,ph1,mph))
-//ENDIF
 dcmplx EpsDot1[2],EpsDot2[2],EpsDot12[2],EpsDot21[2]; // soft factors
 if(IFONE){
   EpsDot1[0] = -gI*( GPS_Sof1x( 1,ph1,pB)-GPS_Sof1x( 1,ph1,pD)-GPS_Sof1x( 1,ph1,ph2));
@@ -2300,19 +2072,6 @@ EpsDot1[1]  = -conj(EpsDot1[0]);
 EpsDot12[1] = -conj(EpsDot12[0]);
 EpsDot2[1]  = -conj(EpsDot2[0]);
 EpsDot21[1] = -conj(EpsDot21[0]);
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "sA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<sA[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "sB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<sB[j][k];(*m_Out)<<endl;
-//(*m_Out)<< " EpsDot1(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot1[j];(*m_Out)<<endl;
-//(*m_Out)<< " EpsDot2(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot2[j];(*m_Out)<<endl;
-//(*m_Out)<< "EpsDot12(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot12[j];(*m_Out)<<endl;
-//(*m_Out)<< "EpsDot21(*,*)=";for(int j=0;j<=1;j++) (*m_Out)<<"  "<<SW208<<EpsDot21[j];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-// photon polarization 4-vectors calculated explicitelly ...
-//      Sig = 3-2*Hel1
-//      CALL GPS_Make_eps(ph1,Sig,eps1)
-//      Sig = 3-2*Hel2
-//      CALL GPS_Make_eps(ph2,Sig,eps2)
 dcmplx eps1[4],eps2[4];
 int Sig1 = 1-2*Hel1, Sig2 = 1-2*Hel2;
 GPS_Make_eps(ph1, Sig1, eps1);
@@ -2329,26 +2088,10 @@ dcmplx eps2pD=eps2[0]*pD[0]-eps2[3]*pD[3]-eps2[2]*pD[2]-eps2[1]*pD[1];
 dcmplx eps1p2=eps1[0]*ph2[0]-eps1[3]*ph2[3]-eps1[2]*ph2[2]-eps1[1]*ph2[1];
 dcmplx eps2p1=eps2[0]*ph1[0]-eps2[3]*ph1[3]-eps2[2]*ph1[2]-eps2[1]*ph1[1];
 dcmplx  Cp2p1=ph2[0]*ph1[0]-ph2[3]*ph1[3]-ph2[2]*ph1[2]-ph2[1]*ph1[1];
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<<"  eps1pA="  <<SW208<<eps1pA<<" eps2pA="<<SW208<<eps2pA<<endl;
-//(*m_Out)<<"  eps1pB="  <<SW208<<eps1pB<<" eps2pB="<<SW208<<eps2pB<<endl;
-//(*m_Out)<<"  eps1pC="  <<SW208<<eps1pC<<" eps2pC="<<SW208<<eps2pC<<endl;
-//(*m_Out)<<"  eps1pD="  <<SW208<<eps1pD<<" eps2pD="<<SW208<<eps2pD<<endl;
-//(*m_Out)<<"  eps1p2="  <<SW208<<eps1p2<<" eps2p1="<<SW208<<eps2p1<<endl;
-//(*m_Out)<<"  eps1D2="  <<SW208<<eps1D2<<"  Cp2p1="<<SW208<< Cp2p1<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 double CosThe=0.0;
 KKpart ph1r = ph1; ph1r.C=-1;
 KKpart ph2r = ph2; ph2r.C=-1;
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    pB,-mB,      pC,MC,   pD,-mD,   BornABCD) ! Standard
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph1,mph,  pB,-mB,      pC,mC,   pD,-mD,   Born1BCD) ! A->1
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    ph1,-mph,    pC,mC,   pD,-mD,   BornA1CD) ! B->1
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph2,mph,  pB,-mB,      pC,mC,   pD,-mD,   Born2BCD) ! A->2
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, pA,mA,    ph2,-mph,    pC,mC,   pD,-mD,   BornA2CD) ! B->2
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph1,mph,  ph2,-mph,    pC,mC,   pD,-mD,   Born12CD) ! A->1,B->2
-//CALL GPS_BornWPlus(1,0,KFi,KFf,s0,t0,u0, ph2,mph,  ph1,-mph,    pC,mC,   pD,-mD,   Born21CD) ! A->2,B->1
-// dressed Born spin amplitudes
 KKcmplx4 BornABCD, Born1BCD, BornA1CD, Born2BCD, BornA2CD,Born12CD, Born21CD;
 BornW(KFini,KFfin, PX, s0,t0, m_p1, m_p2, m_p3, m_p4, BornABCD); //Standard
 BornW(KFini,KFfin, PX, s0,t0,  ph1, m_p2, m_p3, m_p4, Born1BCD); // A->1
@@ -2358,28 +2101,6 @@ BornW(KFini,KFfin, PX, s0,t0,  ph2, m_p2, m_p3, m_p4, Born2BCD); // A->2
 BornW(KFini,KFfin, PX, s0,t0, m_p1, ph2r, m_p3, m_p4, BornA2CD); // B->2
 BornW(KFini,KFfin, PX, s0,t0,  ph1, ph2r, m_p3, m_p4, Born12CD); // A->1,B->2
 BornW(KFini,KFfin, PX, s0,t0,  ph2, ph1r, m_p3, m_p4, Born21CD); // A->2,B->1
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[*debug*
-/*
-(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
-(*m_Out)<<" s0="<<s0<<" t0="<<t0<<endl;
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornABCD("<<j1<<","<<j2<<",*,*)=  ";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornABCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born1BCD("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born1BCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornBornA1CD("<<j1<<","<<j2<<",*,*)=  ";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA1CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born2BCD("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born2BCD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornA2CD("<<j1<<","<<j2<<",*,*)=  ";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA2CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"--------------------------------------------------------------------------------------------"<<endl;
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born12CD("<<j1<<","<<j2<<",*,*)=";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<Born12CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "Born21CD("<<j1<<","<<j2<<",*,*)=  ";
-     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Born21CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-*/
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // Fermion propagarotors ini1
 double prA1= 1.0/(pA*ph1)/2.0;
 double prB1=-1.0/(pB*ph1)/2.0;
@@ -2393,27 +2114,6 @@ dcmplx Fprop1 =(1.0/prA1+1.0/prA2)*prA12*CPF12/CPF0-1.0;
 dcmplx Fprop2 =(1.0/prB1+1.0/prB2)*prB12*CPF/CPF0-1.0;
 dcmplx Fprop1B=CPF12/CPF0-1.0;
 dcmplx Fprop2B=CPF/CPF0-1.0;
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "prA1= "<<prA1 <<" prB1 =" <<prB1<<" prA2="<<prA2<<" prB2="<<prB2<<endl;
-//(*m_Out)<<" prA12="<<prA12<<" prB12="<<prB12<<endl;
-//(*m_Out)<<" Fprop1="<<Fprop1<<" Fprop2="<<Fprop2<<endl;
-//(*m_Out)<<" Fprop1B="<<Fprop1B<<" Fprop2B="<<Fprop2B<<endl;
-//---------------------------------------------------
-//Sig = 3-2*Hel1
-//   CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, pA,mA,     U11a) ! <1|[1]|a>
-//   CALL GPS_MatrV( gI, ph1,Sig,  pB,mB,   ph1,mph,   Vb11) ! <b|{1}|1>
-//* falSe second
-//   CALL GPS_MatrU( gI, ph1,Sig,  ph2,mph, pA,mA,     U21a) ! <2|[1]|a>
-//   CALL GPS_MatrV( gI, ph1,Sig,  pB,mB,   ph2,mph,   Vb12) ! <b|{1}|2>
-//* reverse order
-//   CALL GPS_MatrU( gI, ph1,Sig,  pA,mA,   ph2,mph,   Ua12) ! <a|[1]|2>
-//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, pB,mB,     V21b) ! <2|{1}|b>
-//* for the case when there was ph2 first xk-xk term
-//   CALL GPS_MatrU( gI, ph1,Sig,  ph1,mph, ph2,mph,   U112) ! <1|[1]|2>
-//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, ph1,mph,   V211) ! <2|{1}|1>
-//* for the case when there was ph2 first xk-xk term
-//   CALL GPS_MatrU( gI, ph1,Sig,  ph2,mph, ph2,mph,   U212) ! <2|[1]|2>
-//   CALL GPS_MatrV( gI, ph1,Sig,  ph2,mph, ph2,mph,   V212) ! <2|{1}|2>
 KKcmplx2 U11a,Vb11,Vb12,U21a,Ua12,V21b,U112,V211,U212,V212;
 GPS_MakeU( gI, ph1,Sig1,  ph1, pA,   U11a); // <1|[1]|a>
 GPS_MakeV( gI, ph1,Sig1,  pB,  ph1,  Vb11); // <b|{1}|1>
@@ -2429,36 +2129,6 @@ GPS_MakeV( gI, ph1,Sig1,  ph2, ph1,  V211); // <2|{1}|1>
 // for the case when there was ph2 first xk-xk term
 GPS_MakeU( gI, ph1,Sig1,  ph2, ph2,  U212); // <2|[1]|2>
 GPS_MakeV( gI, ph1,Sig1,  ph2, ph2,  V212); // <2|{1}|2>
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "U11a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U11a.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "Vb11(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb11.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U21a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U21a.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "Vb12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb12.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "Ua12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Ua12.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V21b(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V21b.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U112(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U112.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V211(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V211.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U212(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U212.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V212(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V212.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//   CALL GPS_MatrU( gI, ph2,Sig,  ph2,mph,  pA,mA,    U22a) ! <2|[2]|a>
-//   CALL GPS_MatrV( gI, ph2,Sig,  pB,mB,   ph2,mph,   Vb22) ! <b|{2}|2>
-//* falSe second
-//   CALL GPS_MatrU( gI, ph2,Sig,  ph1,mph,  pA,mA,    U12a) ! <1|[2]|a>
-//   CALL GPS_MatrV( gI, ph2,Sig,  pB,mB,   ph1,mph,   Vb21) ! <b|{2}|1>
-//* reverse order
-//   CALL GPS_MatrU( gI, ph2,Sig,  pA,mA,   ph1,mph,   Ua21) ! <a|[2]|1>
-//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, pB,mB,     V12b) ! <1|{2}|b>
-//* for the case when there was ph1 first xk-xk term
-//   CALL GPS_MatrU( gI, ph2,Sig,  ph2,mph, ph1,mph,   U221) ! <2|[2]|1>
-//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, ph2,mph,   V122) ! <1|{2}|2>
-//c for the case when there was ph1 first xk-xk term
-//   CALL GPS_MatrU( gI, ph2,Sig,  ph1,mph, ph1,mph,   U121) ! <1|[2]|1>
-//   CALL GPS_MatrV( gI, ph2,Sig,  ph1,mph, ph1,mph,   V121) ! <1|{2}|1>
 KKcmplx2 U22a,Vb22, U12a,Vb21, Ua21,V12b, U221,V122, U121,V121;
 GPS_MakeU( gI, ph2,Sig2,  ph2, pA,   U22a); // <1|[1]|a>
 GPS_MakeV( gI, ph2,Sig2,  pB,  ph2,  Vb22); // <b|{1}|1>
@@ -2474,32 +2144,6 @@ GPS_MakeV( gI, ph2,Sig2,  ph1, ph2,  V122); // <2|{1}|1>
 // for the case when there was ph2 first xk-xk term
 GPS_MakeU( gI, ph2,Sig2,  ph1, ph1,  U121); // <2|[1]|2>
 GPS_MakeV( gI, ph2,Sig2,  ph1, ph1,  V121); // <2|{1}|2>
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "U22a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U22a.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "Vb22(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb22.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U12a(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U12a.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "Vb21(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb21.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "Ua21(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Ua21.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V12b(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V12b.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U221(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U221.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V122(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V122.m_A[j][k];(*m_Out)<<endl;
-//
-//(*m_Out)<< "U121(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<U121.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V121(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V121.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//Sig = 3-2*Hel1
-//CALL GPS_MakeUW(Cnor,ph1,Sig, pC,  mC,   pA,  mA,     UCAW1) ! v-a inside
-//CALL GPS_MakeVW(Cnor,ph1,Sig, pB,  mB,   pD,  mD,     VBDW1) ! v-a inside
-//CALL GPS_MakeUW(Cnor,ph1,Sig, pC,  mC,   ph2, mph,    UC2W1) ! v-a inside
-//CALL GPS_MakeVW(Cnor,ph1,Sig, ph2,mph,   pD,  mD,     V2DW1) ! v-a inside
-//Sig = 3-2*Hel2
-//CALL GPS_MakeUW(Cnor,ph2,Sig, pC,  mC,   pA,   mA,    UCAW2) ! v-a inside
-//CALL GPS_MakeVW(Cnor,ph2,Sig, pB,  mB,   pD,   mD,    VBDW2) ! v-a inside
-//CALL GPS_MakeUW(Cnor,ph2,Sig, pC,  mC,   ph1, mph,    UC1W2) ! v-a inside
-//CALL GPS_MakeVW(Cnor,ph2,Sig, ph1,mph,   pD,   mD,    V1DW2) ! v-a inside
 KKcmplx2 UCAW1,VBDW1,UC2W1,V2DW1,UCAW2,VBDW2,UC1W2,V1DW2;
 dcmplx Cone=1.0;
 GPS_MakeUW(Cone, ph1, Sig1,  pC,  pA,   UCAW1);
@@ -2511,25 +2155,6 @@ GPS_MakeUW(Cone, ph2, Sig2,  pC,  pA,   UCAW2);  // v-a inside
 GPS_MakeVW(Cone, ph2, Sig2,  pB,  pD,   VBDW2);  // v-a inside
 GPS_MakeUW(Cone, ph2, Sig2,  pC,  ph1,  UC1W2);  // v-a inside
 GPS_MakeVW(Cone, ph2, Sig2,  ph1, pD,   V1DW2);  // v-a inside
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "UCAW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAW1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDW1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC2W1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2W1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V2DW1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DW1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UCAW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAW2.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDW2.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC1W2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1W2.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V1DW2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DW2.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]
-//CALL GPS_MakeUX(Cnor,ph1,mph, pC,mC,   pA,mA,    UCAWX1) ! v-a inside
-//CALL GPS_MakeVX(Cnor,ph1,mph, pB,mB,   pD,mD,    VBDWX1) ! v-a inside
-//CALL GPS_MakeUX(Cnor,ph2,mph, pC,mC,   pA,mA,    UCAWX2) ! v-a inside
-//CALL GPS_MakeVX(Cnor,ph2,mph, pB,mB,   pD,mD,    VBDWX2) ! v-a inside
-//
-//CALL GPS_MakeUX(Cnor,pB,mB, pC,mC,   pA,mA,    UCAWXB) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pA,mA, pB,mB,   pD,mD,    VBDWXA) ! v-a inside
-//CALL GPS_MakeUX(Cnor,pD,mD, pC,mC,   pA,mA,    UCAWXD) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pC,mC, pB,mB,   pD,mD,    VBDWXC) ! v-a inside
 KKcmplx2 UCAWX1,VBDWX1,UCAWX2,VBDWX2,UCAWXB,VBDWXA,UCAWXD,VBDWXC;
 GPS_MakeUX(Cone, ph1, pC,   pA,  UCAWX1);  // v-a inside
 GPS_MakeVX(Cone, ph1, pB,   pD,  VBDWX1);  // v-a inside
@@ -2540,39 +2165,12 @@ GPS_MakeUX(Cone, pB,  pC,   pA,  UCAWXB);   // v-a inside
 GPS_MakeVX(Cone, pA,  pB,   pD,  VBDWXA);   // v-a inside
 GPS_MakeUX(Cone, pD,  pC,   pA,  UCAWXD);   // v-a inside
 GPS_MakeVX(Cone, pC,  pB,   pD,  VBDWXC);   // v-a inside
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "UCAWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWX1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWX1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UCAWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWX2.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWX2.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UCAWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWXB.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWXA.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UCAWXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UCAWXD.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "VBDWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<VBDWXC.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-//CALL GPS_MakeUX(Cnor,ph1,mph, pC, mC,   ph2,mph,    UC2WX1) ! v-a inside
-//CALL GPS_MakeUX(Cnor,pA, mA,  pC, mC,   ph2,mph,    UC2WXA) ! v-a inside
-//CALL GPS_MakeVX(Cnor,ph1,mph, ph2,mph,  pD, mD,     V2DWX1) ! v-a inside
-//CALL GPS_MakeUX(Cnor,ph2,mph, pC, mC,   ph1,mph,    UC1WX2) ! v-a inside
-//CALL GPS_MakeVX(Cnor,ph2,mph, ph1,mph,  pD, mD,     V1DWX2) ! v-a inside
 KKcmplx2 UC2WX1,UC2WXA,V2DWX1,UC1WX2,V1DWX2;
 GPS_MakeUX(Cone,ph1, pC,   ph2,  UC2WX1);   // v-a inside
 GPS_MakeUX(Cone,pA,  pC,   ph2,  UC2WXA);   // v-a inside
 GPS_MakeVX(Cone,ph1, ph2,  pD,   V2DWX1);   // v-a inside
 GPS_MakeUX(Cone,ph2, pC,   ph1,  UC1WX2);   // v-a inside
 GPS_MakeVX(Cone,ph2, ph1,  pD,   V1DWX2);   // v-a inside
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "UC2WX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WX1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC2WXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXA.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V2DWX1(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWX1.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V1DWX2(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWX2.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph2,mph,    UC2WXB) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pA,mA, ph2,mph,  pD, mD,     V2DWXA) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pB,mB, ph2,mph,  pD, mD,     V2DWXB) ! v-a inside
-//CALL GPS_MakeUX(Cnor,pB,mB, pC, mC,   ph1,mph,    UC1WXB) ! v-a inside
-//CALL GPS_MakeUX(Cnor,pA,mA, pC, mC,   ph1,mph,    UC1WXA) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pA,mA, ph1,mph,  pD, mD,     V1DWXA) ! v-a inside
 KKcmplx2 UC2WXB,V2DWXA,V2DWXB,UC1WXB,UC1WXA,V1DWXA;
 GPS_MakeUX(Cone, pB, pC,   ph2,   UC2WXB);   // v-a inside
 GPS_MakeVX(Cone, pA, ph2,  pD,    V2DWXA);   // v-a inside
@@ -2580,19 +2178,6 @@ GPS_MakeVX(Cone, pB, ph2,  pD,    V2DWXB);   // v-a inside
 GPS_MakeUX(Cone, pB, pC,   ph1,   UC1WXB);   // v-a inside
 GPS_MakeUX(Cone, pA, pC,   ph1,   UC1WXA);   // v-a inside
 GPS_MakeVX(Cone, pA, ph1,  pD,    V1DWXA);   // v-a inside
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "UC2WXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXB.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V2DWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXA.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V2DWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXB.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC1WXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXB.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC1WXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXA.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V1DWXA(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXA.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]
-//CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph2,mph,    UC2WXD) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pC,mC, ph2,mph,  pD, mD,     V2DWXC) ! v-a inside
-//CALL GPS_MakeUX(Cnor,pD,mD, pC, mC,   ph1,mph,    UC1WXD) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pC,mC, ph1,mph,  pD, mD,     V1DWXC) ! v-a inside
-//CALL GPS_MakeVX(Cnor,pB,mB, ph1,mph,  pD, mD,     V1DWXB) ! v-a inside
 //
 KKcmplx2 UC2WXD,V2DWXC,UC1WXD,V1DWXC,V1DWXB;
 GPS_MakeUX(Cone, pD, pC,   ph2,    UC2WXD);   // v-a inside
@@ -2600,13 +2185,6 @@ GPS_MakeVX(Cone, pC, ph2,  pD,     V2DWXC);   // v-a inside
 GPS_MakeUX(Cone, pD, pC,   ph1,    UC1WXD);   // v-a inside
 GPS_MakeVX(Cone, pC, ph1,  pD,     V1DWXC);   // v-a inside
 GPS_MakeVX(Cone, pB, ph1,  pD,     V1DWXB);   // v-a inside
-//[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "UC2WXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC2WXD.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V2DWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V2DWXC.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "UC1WXD(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<UC1WXD.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V1DWXC(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXC.m_A[j][k];(*m_Out)<<endl;
-//(*m_Out)<< "V1DWXB(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<V1DWXB.m_A[j][k];(*m_Out)<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]
 //------------------------------------------------------------------------------------------
 int Y_IR=1;        //    ! YES, IR included
 Y_IR=0;            //    ! No,  IR not included
@@ -2614,11 +2192,6 @@ int Y_IR1=1;       //    ! defunct, must be 1 use I9X-T YES, IR times beta 0 inc
 int N_IR=1-Y_IR1;  //
 N_IR=1;            //    ! #########################################################
 //-----------------------------------------------------------------------------------------
-
-// Assembling amplitude
-//[[[[[[[[[[[[[[[[[[[
-//Amp4Zer(m_AmpExpo2);
-//]]]]]]]]]]]]]]]]]]]
 /////////////////////////////////////////////////////////////////////////////////////
 //                    |                  1               2                         //
 //                    |X                 |               |                         //
@@ -2657,12 +2230,6 @@ AmpAddI(m_AmpExpo2, CNorm* prA12      *sA[0][Hel1] *CPF12/CPF0*double(IV2),     
 AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*(-prB1+prB12))*CPF/CPF0*double(IV1),       Vb11, BornA1CD);
 AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*( prB1      ))*CPF/CPF0*double(Y_IR1*I9Y), Vb11, BornA1CD);
 AmpAddI(m_AmpExpo2, CNorm*(sB[1][Hel2]*(      prB12))*CPF/CPF0*double(IV1),       Vb12, BornA2CD);
-//(*m_Out)<<"sB[1][Hel2]="<<sB[1][Hel2]<<endl;
-//(*m_Out)<<"      prB12="<<prB12<<endl;
-//(*m_Out)<<" CPF, CPF0 ="<<CPF<<"  "<<CPF0<<endl;
-//(*m_Out)<< "Vb12(*,*)=";for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<Vb12.m_A[j][k];(*m_Out)<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "BornA2CD("<<j1<<","<<j2<<",*,*)=  ";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<BornA2CD.m_A[j1][j2][j][k];(*m_Out)<<endl;}
 /////////////////////////////////////////////////////////////////////////////////////
 //                    1                  2               |                         //
 //                    |                  |               |X                        //
@@ -2852,29 +2419,9 @@ AmpAddI(m_AmpExpo2, CNorm*prB2*prB12*CPF/CPF0*double(IV1),  Vb22, V212, BornA2CD
 AmpAddI(m_AmpExpo2, CNorm*prB2*prB12*CPF/CPF0*double(IA ),  Vb22, V211, BornA1CD);
 AmpAddI(m_AmpExpo2,-CNorm*prB2*prB12*CPF/CPF0*double(IV1),  Vb22, V21b, BornABCD);
 
-//===========================
-//c      sProd = ( sA(1,Hel1)+sB(1,Hel1))*( sA(2,Hel2)+sB(2,Hel2))
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! non-infrared part: Fprop1- Fprop1B) is prop to ph1*ph2
-//c     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*(Fprop1- Fprop1B)      *IV2 !
-//c     $                                               +sB(1,Hel1)*sB(2,Hel2)*(Fprop2- Fprop2B)      *IV1
-//c     $                                                                                      ) !
 dcmplx cFactX = CNorm*( sA[0][Hel1]*sA[1][Hel2]*(Fprop1- Fprop1B)*double(IV2)
                        +sB[0][Hel1]*sB[1][Hel2]*(Fprop2- Fprop2B)*double(IV1) );
 AmpAdd( m_AmpExpo2,  cFactX ,BornABCD);
-//c===========================
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) ! infrared-type part
-//c     $                 +CNorm*BornABCD(j1,j2,j3,j4)*( sA(1,Hel1)*sA(2,Hel2)*Fprop1B                      *IVI !
-//c     $                                               +sA(1,Hel1)*sB(2,Hel2)*(CPF1/CPF0-1d0)              *IVI
-//c     $                                               +sB(1,Hel1)*sA(2,Hel2)*(CPF2/CPF0-1d0)              *IVI
-//c     $                                               +sB(1,Hel1)*sB(2,Hel2)*Fprop2B                      *IVI
-//c     $                                               +sA(1,Hel1)*CPF1*CPF12/CPF0*EpsDot21(Hel2)          *IVI! terms due to diag WWgamma
-//c     $                                               +sA(2,Hel2)*CPF2*CPF12/CPF0*EpsDot12(Hel1)          *IVI
-//c     $                                               +sB(1,Hel1)*CPF*CPF2/CPF0*EpsDot2(Hel2)             *IVI
-//c     $                                               +sB(2,Hel2)*CPF*CPF1/CPF0*EpsDot1(Hel1)             *IVI
-//c     $                                               +CPF*CPF1*CPF12/CPF0*EpsDot1(Hel1)*EpsDot21(Hel2)   *IVI
-//c     $                                               +CPF*CPF2*CPF12/CPF0*EpsDot2(Hel2)*EpsDot12(Hel1)   *IVI
-//c     $                                                                                      ) !
-//c     $                 +CNorm*BornABCD(j1,j2,j3,j4)* sProd                   *Y_IR                        !
 dcmplx cFactY=
         CNorm*( sA[0][Hel1]*sA[1][Hel2]*Fprop1B                     *double(IVI)
                +sA[0][Hel1]*sB[1][Hel2]*(CPF1/CPF0-1.0)             *double(IVI)
@@ -2890,23 +2437,6 @@ dcmplx sProd =( sA[0][Hel1]+sB[0][Hel1])*( sA[1][Hel2]+sB[1][Hel2]);
 AmpAdd( m_AmpExpo2,  cFactY ,BornABCD);
 AmpAdd( m_AmpExpo2,  sProd*double(Y_IR) ,BornABCD);
 
-//===========================
-////dcmplx gI = dcmplx(ChaIni*m_e_QED);
-//! terms due to ph1 ph2 attached to W
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF1*CPF12*WVpi0*(
-//c     $  ! absorbed to infraed-type      BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps1pC-2*eps1pA)*(2*eps2pB-2*eps2pD)* *IV ! 1
-//c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(               -2*UCAWX2(j3,j1)) *I9s1 ! 2
-//c     $ +EpsDot1 (hel1)*VBDW2(j2,j4)*(-UCAWX1(j3,j1)                 ) *I9   ! 2
-//c     $  +EpsDot1 (hel1)*2*VBDWX2(j2,j4) * UCAW2 (j3,j1)                *I9s1 ! 3
-//c     $  - 2*UCAWX1(j3,j1)*EpsDot21(hel2)* VBDW1 (j2,j4)                *I9s2 ! 4
-//c     $ -UCAWX1(j3,j1)* VBDW2 (j2,j4) *(-EpsDot12(hel1)-2*eps1p2*DCMPLX(-ChaIni*m_e_QED))  *I9   ! 5
-//c     $ + eps1D2*(-2*UCAWX1(j3,j1))*        2* VBDWX2(j2,j4)    *DCMPLX(-ChaIni*m_e_QED)   *I9   ! 6
-//c     $ + UCAW1(j3,j1)*(2*VBDWX1(j2,j4)              )*EpsDot21(hel2)  *I9s2 ! 7
-//c     $ + UCAW1(j3,j1)*(                VBDWX2(j2,j4))*EpsDot21(hel2)  *I9   ! 7
-//!!!!     $ + UCAW1(j3,j1)*(t1-2*p2p1 )*VBDW2(j2,j4)          *DCMPLX(-ChaIni*m_e_QED)  *I9 ! 8 (out)
-//c     $ + UCAW1(j3,j1)*(1D0/CPF2-2*p2p1 )*VBDW2(j2,j4)       *DCMPLX(-ChaIni*m_e_QED)  *I9 ! 8    'Higgs' contrib added
-//c     $ + UCAW1(j3,j1)*VBDWX2(j2,j4)*(-EpsDot2(hel2)+2*eps2p1*DCMPLX(-ChaIni*m_e_QED)) *I9    ! 9
-//c     $                                                                            )
 dcmplx cFactZ= CNorm*0.5 *(-gI)*CPF*CPF1*CPF12*WVPi0;
 Amp2to4add( m_AmpExpo2, cFactZ*(-2.0)*EpsDot1[Hel1] *double(I9s1), VBDW2, UCAWX2);   // ! 1 (j2,j4)*(j3,j1)
 Amp2to4add( m_AmpExpo2, cFactZ*(-1.0)*EpsDot1[Hel1] *double(I9),   VBDW2, UCAWX1);   // ! 2
@@ -2919,21 +2449,6 @@ Amp2to4add( m_AmpExpo2, cFactZ*( 1.0)*EpsDot21[Hel2]  *double(I9),    VBDWX2, UC
 Amp2to4add( m_AmpExpo2, cFactZ*((1.0/CPF2-2.0*Cp2p1 ))*(-gI)*double(I9),      VBDW2, UCAW1);     //! 8
 Amp2to4add( m_AmpExpo2, cFactZ*(-EpsDot2[Hel2]+2.0*eps2p1*(-gI))*double(I9), VBDWX2, UCAW1);     //! 9
 //c===========================
-//! terms due to ph2 ph1 attached to W
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4) + CNorm*( 0.5D0) *DCMPLX(-ChaIni*m_e_QED)*CPF*CPF2*CPF12*WVpi0*(
-//c     $   ! absorbed to infraed-type     BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*(2*eps2pC-2*eps2pA)*(2*eps1pB-2*eps1pD)*IV ! 1
-//c     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(               -2*UCAWX1(j3,j1)) *I9s2 ! 2
-//c     $ +EpsDot2 (hel2)*VBDW1(j2,j4)*(-UCAWX2(j3,j1)                 ) *I9   ! 2
-//c     $ +EpsDot2 (hel2)*2*VBDWX1(j2,j4) * UCAW1 (j3,j1)                *I9s2 ! 3
-//c     $ - 2*UCAWX2(j3,j1)*EpsDot12(hel1)* VBDW2 (j2,j4)                *I9s1 ! 4
-//c     $ -UCAWX2(j3,j1)* VBDW1 (j2,j4)*(-EpsDot21(hel2)-2*eps2p1*DCMPLX(-ChaIni*m_e_QED))           *I9  ! 5
-//c     $ + eps1D2*(-2*UCAWX2(j3,j1))*        2* VBDWX1(j2,j4)                *I9  *DCMPLX(-ChaIni*m_e_QED) ! 6
-//c     $ + UCAW2(j3,j1)*(2*VBDWX2(j2,j4)              )*EpsDot12(hel1)  *I9s1 ! 7
-//c     $ + UCAW2(j3,j1)*(                VBDWX1(j2,j4))*EpsDot12(hel1)  *I9   ! 7
-//!!!!     $ + UCAW2(j3,j1)*(t2-2*p2p1)*VBDW1(j2,j4)                            *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8 (out)
-//c     $ + UCAW2(j3,j1)*(1D0/CPF1-2*p2p1)*VBDW1(j2,j4)                       *I9  *DCMPLX(-ChaIni*m_e_QED) ! 8   'Higgs' contrib added
-//c     $ + UCAW2(j3,j1)*VBDWX1(j2,j4)*(-EpsDot1(hel1)+2*eps1p2*DCMPLX(-ChaIni*m_e_QED))            *I9   ! 9
-//c     $                                                                            )
 cFactZ= CNorm*0.5 *(-gI)*CPF*CPF2*CPF12*WVPi0;
 Amp2to4add( m_AmpExpo2, cFactZ*(-2.0)*EpsDot2[Hel2] *double(I9s1), VBDW1, UCAWX1);   // ! 1 (j2,j4)*(j3,j1)
 Amp2to4add( m_AmpExpo2, cFactZ*(-1.0)*EpsDot2[Hel2] *double(I9),   VBDW1, UCAWX2);   // ! 2
@@ -2946,27 +2461,11 @@ Amp2to4add( m_AmpExpo2, cFactZ*( 1.0)*EpsDot12[Hel1]  *double(I9),    VBDWX1, UC
 Amp2to4add( m_AmpExpo2, cFactZ*((1.0/CPF1-2.0*Cp2p1 ))*(-gI)*double(I9),      VBDW1, UCAW2);     //! 8
 Amp2to4add( m_AmpExpo2, cFactZ*(-EpsDot1[Hel1]+2.0*eps1p2*(-gI))*double(I9), VBDWX1, UCAW2);     //! 9
 //c===========================
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)   ! terms due to 4 boson coupling
-//c     $                 +CNorm*(1D0) *(m_e_QED**2)*CPF*CPF12*WVpi0        !!!+CNorm*(-1D0) *DCMPLX(0,-m_e_QED**2)*CPF*CPF12*WVpi0
-//c     $                 *(-BornABCD(j1,j2,j3,j4)/CPF0/WVpi0*2*eps1D2         *IVI
-//c     $                      +0.5D0 *UCAW1(j3,j1)*VBDW2(j2,j4)               *I10
-//c     $                      +0.5D0 *UCAW2(j3,j1)*VBDW1(j2,j4)               *I10
-//c     $                                                                )
 cFactZ= CNorm *m_e_QED*m_e_QED *CPF*CPF12*WVPi0;
 AmpAdd(     m_AmpExpo2,  -cFactZ /CPF0/WVPi0*2.0*eps1D2*dcmplx(IVI)  ,BornABCD);   // IVI
 Amp2to4add( m_AmpExpo2, cFactZ *(0.5)*double(I10), VBDW2, UCAW1);                  // I10
 Amp2to4add( m_AmpExpo2, cFactZ *(0.5)*double(I10), VBDW1, UCAW2);                  // I10
 //c===========================
-//c      AmpWork(j1,j2,j3,j4) =AmpWork(j1,j2,j3,j4)+ CNorm*(-0.5D0) *DCMPLX(ChaIni*m_e_QED)*WVpi0 *(  ! terms abcd due rem. single WWgam coupl (redistr)
-//c     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4) ) -VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)             ) )*sA(2,Hel2)      *CPF2*CPF12 *I9s2   ! (a) plus below
-//c     $  +( UCAW1(j3,j1)*( 2*VBDWX1(j2,j4)               )-VBDW1(j2,j4)*( 2*UCAWX1(j3,j1)) )*sB(2,Hel2)      *CPF *CPF1  *I9s2   ! (b) plus below
-//c     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4) ) -VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)             ) )*sA(1,Hel1)      *CPF1*CPF12 *I9s1   ! (c) plus below
-//c     $  +( UCAW2(j3,j1)*( 2*VBDWX2(j2,j4)               )-VBDW2(j2,j4)*( 2*UCAWX2(j3,j1)) )*sB(1,Hel1)      *CPF*CPF2   *I9s1   ! (d) plus below
-//c     $                                      -VBDW1(j2,j4)*(                  UCAW2(j3,j1) )*DCMPLX( m_e_QED)*CPF2*CPF12 *I9B    ! (a) plus  I72b
-//c     $  +( UCAW1(j3,j1)*(                 VBDW2(j2,j4)  )                                 )*DCMPLX(-m_e_QED)*CPF *CPF1  *I9B    ! (b) plus  I72b
-//c     $                                      -VBDW2(j2,j4)*(                  UCAW1(j3,j1) )*DCMPLX( m_e_QED)*CPF1*CPF12 *I9B    ! (c) plus  I71b
-//c     $  +( UCAW2(j3,j1)*(                 VBDW1(j2,j4) )                                  )*DCMPLX(-m_e_QED)*CPF*CPF2   *I9B    ! (d) plus  I71b
-//c     $                                                                         )
 cFactZ= CNorm*(-0.5) *gI*WVPi0;
 Amp2to4add( m_AmpExpo2, cFactZ *(+2.0)*sA[1][Hel2]*CPF2*CPF12*double(I9s2), VBDWX1, UCAW1);           // (a) plus below
 Amp2to4add( m_AmpExpo2, cFactZ *(-2.0)*sA[1][Hel2]*CPF2*CPF12*double(I9s2), VBDW1, UCAWX1);           // (a) plus below
@@ -2980,13 +2479,6 @@ Amp2to4add( m_AmpExpo2, cFactZ *(-1.0)*dcmplx( m_e_QED)*CPF2*CPF12 *double(I9B),
 Amp2to4add( m_AmpExpo2, cFactZ *(+1.0)*dcmplx(-m_e_QED)*CPF *CPF1  *double(I9B), VBDW2, UCAW1);
 Amp2to4add( m_AmpExpo2, cFactZ *(-1.0)*dcmplx( m_e_QED)*CPF1*CPF12 *double(I9B), VBDW2, UCAW1);
 Amp2to4add( m_AmpExpo2, cFactZ *(+1.0)*dcmplx(-m_e_QED)*CPF *CPF2  *double(I9B), VBDW1, UCAW2);
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<<"////////////////////////////////////////////////////////////////////////////////////////////////////"<<endl;
-//(*m_Out)<<"/////////////////////////////////////////GPS_HiiPlusW///////////////////////////////////////////////"<<endl;
-//for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=  ";
-//     for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 }//GPS_HiiPlusW
 
@@ -3474,11 +2966,6 @@ double Sw2 = m_DZ->D_swsq;       // from Dizet
   ZetVPi = DB->GFermi *sqr(DB->MZ) *DB->Alfinv0 /(sqrt(2.0)*8.0*M_PI)
             *(Sw2*(1.0-Sw2)) *16.0
             *RhoEW;
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  (*m_Out)<<" KKceex::EWFFact: Svar="<<Svar<<"  CosThetD="<<CosThetD<<endl;
-//  (*m_Out)<<" KKceex::EWFFact: RhoEW="<<RhoEW<<"  CorEle="<< CorEle<<endl;
-//  (*m_Out)<<" KKceex::EWFFact: CorFin="<<CorFin<<"  CorEleFin="<< CorEleFin<<" VPgamma="<<VPgamma<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 // Coupling costants times EW form-factors
   double Deno   = sqrt(16.0*Sw2*(1.0-Sw2));
   Ve     = (2*T3e -4*Qe*Sw2*CorEle)/Deno;
@@ -3542,12 +3029,6 @@ void KKceex::GPS_EWFFactW(int KFi, int KFf,double s,double t, dcmplx &PropW, dcm
 //ccc       DelW= 1D0/m_AlfInv/m_pi/2*(-3D0/2*LOG(s/m_MW**2)+1D0/2*(LOG(-t/s))**2-1d0/6d0*m_pi**2+2D0) ! (a)
      WVPi= WVPi*(GSW5+dcmplx(DelW,0.0));
   }
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//(*m_Out)<< "///////////////////////////////GPS_EWFFactW//////////////////////////////////////////////"<<endl;
-//(*m_Out)<< "KeyElw="<< KeyElw <<endl;
-//(*m_Out)<< "MW"<< MW<<" s="<< s<<" t="<<t<<endl;
-//(*m_Out)<< "PropW"<< PropW <<" WVPi="<<WVPi<<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 //
 }//GPS_EWFFactW
 
@@ -4141,9 +3622,6 @@ void KKceex::PhelRandom(){
 ///////////////////////////////////////////////////////////////////////////////
 
 m_nPhot = m_Event->m_nPhot;
-//[[[[[[[[[[[[[
-//  float              rvec[101];
-//  pseumar_makevec_(rvec,m_nPhot);
 //----------------
 double rvec[101];
 m_RNgen->RndmArray(m_nPhot, rvec);
@@ -4155,11 +3633,6 @@ for(int i=1; i<=m_nPhot; i++){      //f77 indexing
       m_Phel[i] = +1;
    }
 }//for
-//[[[[[[[[[[[[[[
-//(*m_Out) << "%%%%%%%%% m_Phel= ";
-//for(int i=1; i<=m_nPhot;i++ ) (*m_Out)<<" "<<m_Phel[i]; (*m_Out)<<endl;
-//]]]]]]]]]]]]]]
-//if(m_icont <200){for(int i=1; i<=m_nPhot;i++ ) cout<<" "<<m_Phel[i]; cout<<endl;}
 }//PhelRandom
 
 void KKceex::TralorPrepare(int KTO){
@@ -4257,11 +3730,6 @@ double p1p2 =  p1*p2;
 double Breal = m_BVR->Btilda( alfpic, p1p2, p1[0],p2[0], m1, m2,  Emin, MasPhot);
 double Bvirt = m_BVR->TBvirt( alfpic, p1p2, m1, m2, MasPhot);
 double TForFac = exp( Breal + Bvirt);
-//[[[[[[[[[[[[[[[[[
-//if(m_icont<1000) cout<<"KKceex::TForFac:  Breal="<<Breal<<"  Bvirt="<<Bvirt<<endl;
-//if(m_icont<1000) cout<<"alfpic="<<alfpic<<"  p1p2="<<p1p2<<" p1[0]="<<p1[0]<<" p2[0]="<<p2[0]<<endl;
-//if(m_icont<1000) cout<<" m1="<<m1<<" m2="<<m2<<" Emin="<<Emin<<" MasPhot="<<MasPhot<<endl;
-//]]]]]]]]]]]]]]]]]
 return TForFac;
 }// TForFac !!!
 
