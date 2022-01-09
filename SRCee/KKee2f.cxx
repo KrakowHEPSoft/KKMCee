@@ -891,9 +891,5 @@ BX1F(*f_Out,"   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
 BX1F(*f_Out,"       +-",m_XEMainPb,   " error abs.               ");
 BXCLO(*f_Out);
 ///////////////////////////////////
-// Finilize the LHE output
-//  if (DB->KeyLHE == 1 ) {
-//      m_Event->LH_Fin();
-//  }
 }//Finalize
 

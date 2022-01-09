@@ -26,8 +26,9 @@ using namespace std;
 //=============================================================================
 TFile *DiskFileA;
 
-TString FileA= "../ProdRun/workNU/histo.root";
+//TString FileA= "../ProdRun/workNU/histo.root";
 
+TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
 //
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff

@@ -30,10 +30,11 @@ TFile *DiskFileA;
 TFile *DiskFileF;
 TFile *DiskFileB;
 
-TString FileA= "../ProdRun/work1/histo.root";
+//TString FileA= "../ProdRun/work1/histo.root";
 //TString FileF= "../ProdRun/workFoam/histo.root";
 //
-//TString FileA= "../ProdRun/work1/histo_189GeV_4G.root";
+TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_787M"; // Jan2022
+//TString FileA= "../ProdRun/work1/histo_189GeV_4G.root";  //old
 TString FileF= "../ProdRun/workFoam/histo_189GeV_1G.root";
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +44,7 @@ double gCMSene, gNevTot; // from KKMC run
 char   gTextEne[100], gTextNev[100], gTextNev2[100];
 int    kGold=kOrange-3, kBrune=46, kPine=kGreen+3;
 //
-float  gXcanv = 0, gYcanv = 0, gDcanv = 30;
+float  gXcanv = 0, gYcanv = 10, gDcanv = 20;
 ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -235,15 +236,11 @@ void ReMakeMChisto(){
   cout<<"==================================================================="<<endl;
 }//RemakeMChisto
 
-
 ///////////////////////////////////////////////////////////////////////////////////
 void FigInfo()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigInfo =========================== "<<endl;
-  char capt1[100];
-  double CMSene=100.0;
-  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   //
   TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
@@ -263,25 +260,14 @@ void FigInfo()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ",  gXcanv,  gYcanv,    1000,  800);
+  TCanvas *cFigInfo = new TCanvas("cFigInfo","FigInfo: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
   cFigInfo->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigInfo->Divide( 2,  2);
+  cFigInfo->Divide( 2,  1);
   ///==========plot1==============
   cFigInfo->cd(1);
-  gPad->SetLogy(); // !!!!!!
-  ///
-  CaptT->DrawLatex(0.10,0.95,"weight distribution");
-  hst_WtMain->GetXaxis()->SetLabelSize(0.05);
-  hst_WtMain->DrawCopy("h");
-
-  hst_WtFoam->SetLineColor(kRed);
-  hst_WtFoam->DrawCopy("hsame");
-
-  //==========plot2==============
-  cFigInfo->cd(2);
   //gPad->SetLogy(); // !!!!!!
   TH1D *HST = hst_nPhot;
   //HST->SetStats(0);
@@ -294,8 +280,8 @@ void FigInfo()
   CaptT->DrawLatex(0.30,0.80, gTextEne);
   CaptT->DrawLatex(0.30,0.75, gTextNev);
 
-  ///==========plot3==============
-  cFigInfo->cd(3);
+  ///==========plot2==============
+  cFigInfo->cd(2);
   //-----------------------------
   gPad->SetLogy(); // !!!!!!
   HST = HST_weight4;
@@ -313,6 +299,52 @@ void FigInfo()
 
   cFigInfo->SaveAs("cFigInfo.pdf");
 }//FigInfo
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigWtMain()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigWtMain =========================== "<<endl;
+  //
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
+  TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVplot = new TCanvas("cFigWtMain","FigVplot: general info ",  gXcanv,  gYcanv,    500,  500);
+  //                                  Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigVplot->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  //==========plot1==============
+  TH1D *HST; //
+  HST = hst_WtMain; //
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("WT");
+  HST->GetXaxis()->SetLabelSize(0.04);
+  HST->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "Events");
+  double ycapt = 0.80; double xcapt=0.20;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+
+  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
+
+  cFigVplot->SaveAs("cFigVplot.pdf");
+}//FigWtMain()
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVplot()
@@ -414,9 +446,6 @@ void FigVCplot()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigVCplot =========================== "<<endl;
-  char capt1[100];
-  double CMSene=100.0;
-  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   TH1D *hTot_vTcPR_Eex0   = (TH1D*)DiskFileB->Get("hTot_vTcPR_Eex0"); //KKMCee
   TH1D *hTot_vTcPR_Eex2   = (TH1D*)DiskFileB->Get("hTot_vTcPR_Eex2"); //KKMCee
   TH1D *hTot_vTcPR_Ceex2n = (TH1D*)DiskFileB->Get("hTot_vTcPR_Ceex2n");
@@ -525,9 +554,6 @@ void FigAFBvv()
 {
 //------------------------------------------------------------------------
   cout<<" ========================= FigAFBvv =========================== "<<endl;
-  char capt1[100];
-  double CMSene=100.0;
-  sprintf(capt1,"#sqrt{s} =%4.0fGeV", CMSene);
   TH1D *hAfb_vTcPR_Eex2  = (TH1D*)DiskFileB->Get("hAfb_vTcPR_Eex2");   // KKMCee
   TH1D *hAfb_vTcPR_Ceex2n= (TH1D*)DiskFileB->Get("hAfb_vTcPR_Ceex2n"); // KKMCee
   TH1D *hAfb_vTcPR_Ceex2 = (TH1D*)DiskFileB->Get("hAfb_vTcPR_Ceex2"); // KKMCee
@@ -618,10 +644,6 @@ void FigAFBvv()
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
-
-//  gSystem->Load("../SRCee/.libs/libKKee.so");     // needed ???
-//  gSystem->Load("../SRCee/.libs/libKKfm.so");     // NEEDED! why?
-
   DiskFileA = new TFile(FileA);
   DiskFileF = new TFile(FileF);
 //
@@ -646,6 +668,7 @@ int main(int argc, char **argv)
   ReMakeMChisto();
   //========== PLOTTING ==========
   FigInfo();
+  FigWtMain();
   FigVplot();
   FigVCplot();
   FigAFBvv();
