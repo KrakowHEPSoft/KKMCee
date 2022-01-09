@@ -33,7 +33,7 @@ TFile *DiskFileB;
 //TString FileA= "../ProdRun/work1/histo.root";
 //TString FileF= "../ProdRun/workFoam/histo.root";
 //
-TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_150M"; // Jan2022
+TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_787M"; // Jan2022
 TString FileF= "../ProdRun/workFoam/histo_189GeV_1G.root";
 
 FILE *DiskFileTeX;
