@@ -216,7 +216,7 @@ void TRobolKKMC::Production(double &iEvent)
 // ****************************************************************
   hst_WtMain->Fill(WtMain);
   hst_WtFoam->Fill(WtFoam);
-  hst_WtCeex2n->Fill(WtCEEX0n);
+  hst_WtCeex2n->Fill(WtCEEX2n);
   hst_nPhot->Fill(nPhot,WtMain);
   hst_vvTrue->Fill(vv,WtEEX2);
   hst_CosTheta->Fill(CosTheta,WtMain);
