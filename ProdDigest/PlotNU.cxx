@@ -28,7 +28,8 @@ TFile *DiskFileA;
 
 //TString FileA= "../ProdRun/workNU/histo.root";
 
-TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
+//TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
+TString FileA= "../ProdRun/workNU/histo.root_161GeV_7G";
 //
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff
@@ -73,8 +74,8 @@ void HistNormalize(){
   DiskFileA->ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
   //
-  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
-  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
@@ -96,6 +97,53 @@ void HistNormalize(){
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vaNuElCeex2") );
 
 }//HistNormalize
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigWtMain()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigWtMain =========================== "<<endl;
+  //
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
+  TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigVplot = new TCanvas("cFigWtMain","FigVplot: general info ",  gXcanv,  gYcanv,    500,  500);
+  //                                  Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigVplot->SetFillColor(10);
+  ////////////////////////////////////////////////////////////////////////////////
+  //==========plot1==============
+  TH1D *HST; //
+  HST = hst_WtMain; //
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("WT");
+  HST->GetXaxis()->SetLabelSize(0.04);
+  HST->DrawCopy("h");
+
+  CaptT->DrawLatex(0.06,0.95, "Events");
+  double ycapt = 0.80; double xcapt=0.20;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+
+//  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+//  PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
+  PlotSame2(hst_WtMain,    ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtFoam,    ycapt, kRed,    1.00, "(B)", "  Foam weight ");
+
+  cFigVplot->SaveAs("cFigVplot.pdf");
+}//FigWtMain()
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -391,6 +439,7 @@ int main(int argc, char **argv)
 
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
+  FigWtMain();
   FigNPhot();
 //
   FigVPhot2();

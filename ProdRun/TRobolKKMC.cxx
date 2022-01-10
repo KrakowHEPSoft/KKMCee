@@ -71,6 +71,7 @@ void TRobolKKMC::Hbooker()
   int nbin=100;
   hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 2.0);
   hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 2.0);
+  hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 2.0);
 //
   hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
   hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin,  0.0 , 1.0);
@@ -215,6 +216,7 @@ void TRobolKKMC::Production(double &iEvent)
 // ****************************************************************
   hst_WtMain->Fill(WtMain);
   hst_WtFoam->Fill(WtFoam);
+  hst_WtCeex2n->Fill(WtCEEX0n);
   hst_nPhot->Fill(nPhot,WtMain);
   hst_vvTrue->Fill(vv,WtEEX2);
   hst_CosTheta->Fill(CosTheta,WtMain);
