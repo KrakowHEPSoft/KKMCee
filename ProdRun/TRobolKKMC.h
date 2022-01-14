@@ -17,6 +17,8 @@ class TRobolKKMC : public TRobol
  long   m_count1;             // auxiliary event counter (debug)
 //
  TH1D   *hst_WtMain;          //!  No streamer!!!
+ TH1D   *hst_WtMain4;         //!  No streamer!!!
+ TH1D   *hst_WtMain8;         //!  No streamer!!!
  TH1D   *hst_WtFoam;          //!  No streamer!!!
  TH1D   *hst_WtCeex2n;        //!  No streamer!!!
 //

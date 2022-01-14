@@ -196,17 +196,21 @@ void FigNPhot()
   TH1D *hst_LnThPhAll  = (TH1D*)DiskFileA.Get("hst_LnThPhAll");
   TH1D *hst_LnThPhVis  = (TH1D*)DiskFileA.Get("hst_LnThPhVis");
 
+//  TH1D *hst_weight  = (TH1D*)DiskFileA.Get("hst_weight");
+
 ////////////////////////////////////////
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.04);
  ///////////////////////////////////////////////////////////////////////////////
+//[[[  TCanvas *cFigNPhot = new TCanvas("cFigNPhot","cFigNPhot", gXcanv, gYcanv,    1200, 1000);
   TCanvas *cFigNPhot = new TCanvas("cFigNPhot","cFigNPhot", gXcanv, gYcanv,    1200, 600);
   //                                      Name    Title        xoff,yoff, WidPix,HeiPix
   gXcanv += 25, gYcanv += 25;
   cFigNPhot->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
-  cFigNPhot->Divide( 2,  0);
+  cFigNPhot->Divide( 2,  2);
+//  cFigNPhot->Divide( 2,  0);
   //====================plot1========================
   cFigNPhot->cd(1);
   gPad->SetLogy(); // !!!!!!
@@ -250,10 +254,15 @@ void FigNPhot()
   PlotSame2(hst_LnThPhVis,  ycapt, kRed,     -0.5, "(b)", "Tagged #gamma's");
   //
 
+  //====================plot3========================
+  //cFigNPhot->cd(3);
+  //hst_weight->DrawCopy("h");
+
   //================================================
   if( g161GeVyes) cFigNPhot->SaveAs("cFigNPhot_161GeV.pdf");
   if( g125GeVyes) cFigNPhot->SaveAs("cFigNPhot_125GeV.pdf");
   if( g105GeVyes) cFigNPhot->SaveAs("cFigNPhot_105GeV.pdf");
+
 
 }//FigNPhot
 

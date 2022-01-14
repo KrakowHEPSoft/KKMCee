@@ -77,7 +77,7 @@ void TWtMon::Fill(const double wt){
   m_Wtsum  += wt;
   m_Wtsu2  += wt*wt;
   m_Nacc   += 1.0;
-  m_WtsuOv += wt-m_Xup;
+  if(wt>m_Xup) m_WtsuOv += wt-m_Xup;
   if( wt == 0.0 )   m_Nzer += 1.0;
   if(m_Wtmax < wt)  m_Wtmax =wt;
   if(m_Wtmin > wt)  m_Wtmin =wt;
@@ -89,9 +89,8 @@ void TWtMon::Fill(const double wt, const double rand){
   m_Ntot   += 1.0;
   m_Wtsum  += wt;
   m_Wtsu2  += wt*wt;
-  if(wt>m_Xup)
-    m_WtsuOv += wt-m_Xup;
-  if( wt <= rand )  m_Nacc += 1.0;
+  if(wt>m_Xup) m_WtsuOv += wt-m_Xup;
+  if( rand < wt/m_Xup)  m_Nacc += 1.0;
   if( wt == 0.0 )   m_Nzer += 1.0;
   if(m_Wtmax < wt)  m_Wtmax =wt;
   if(m_Wtmin > wt)  m_Wtmin =wt;

@@ -70,8 +70,11 @@ void TRobolKKMC::Hbooker()
   double delv = 0.012;
   int nbin=100;
   hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 2.0);
+  hst_WtMain4  = TH1D_UP("hst_WtMain4" , "MC weight Main",   nbin, 0.00 , 4.0);
+  hst_WtMain8  = TH1D_UP("hst_WtMain8" , "MC weight Main",   nbin, 0.00 , 8.0);
   hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 2.0);
   hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 2.0);
+
 //
   hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
   hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin,  0.0 , 1.0);
@@ -215,6 +218,9 @@ void TRobolKKMC::Production(double &iEvent)
 //          HISTOGRAMMING
 // ****************************************************************
   hst_WtMain->Fill(WtMain);
+  hst_WtMain4->Fill(WtMain);
+  hst_WtMain8->Fill(WtMain);
+//
   hst_WtFoam->Fill(WtFoam);
   hst_WtCeex2n->Fill(WtCEEX2n);
   hst_nPhot->Fill(nPhot,WtMain);

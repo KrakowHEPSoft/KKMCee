@@ -30,10 +30,10 @@ TFile *DiskFileA;
 TFile *DiskFileF;
 TFile *DiskFileB;
 
-//TString FileA= "../ProdRun/work1/histo.root";
+TString FileA= "../ProdRun/work1/histo.root";
 //TString FileF= "../ProdRun/workFoam/histo.root";
 //
-TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_787M"; // Jan2022
+//TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_787M"; // Jan2022
 //TString FileA= "../ProdRun/work1/histo_189GeV_4G.root";  //old
 TString FileF= "../ProdRun/workFoam/histo_189GeV_1G.root";
 
@@ -310,6 +310,7 @@ void FigWtMain()
   //
   TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
+  TH1D *hst_WtCeex2n  = (TH1D*)DiskFileA->Get("hst_WtCeex2n");
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
   CaptE->SetNDC(); // !!!
@@ -341,6 +342,7 @@ void FigWtMain()
 
   PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
   PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
+  PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kGold,   0.40, "(C)", "  IFI off ");
 
   cFigVplot->SaveAs("cFigVplot.pdf");
 }//FigWtMain()

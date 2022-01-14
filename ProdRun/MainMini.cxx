@@ -60,6 +60,7 @@ cout<<"MainMini: requested "<< NevGen <<" MC events "<<endl;
 /////////////////////////////////////////////////////////////
 // Small loop over MC events
 for(int iev=1; iev<=NevGen; iev++) {
+   if( (iev/20000)*20000 == iev) cout<<" iev="<<iev<<endl;
    KKMCgen->Generate();
    if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR();
    if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR(&OutFile);

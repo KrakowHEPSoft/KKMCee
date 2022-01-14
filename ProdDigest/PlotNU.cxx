@@ -26,10 +26,10 @@ using namespace std;
 //=============================================================================
 TFile *DiskFileA;
 
-//TString FileA= "../ProdRun/workNU/histo.root";
+TString FileA= "../ProdRun/workNU/histo.root";
 
 //TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
-TString FileA= "../ProdRun/workNU/histo.root_161GeV_7G";
+//TString FileA= "../ProdRun/workNU/histo.root_161GeV_7G";
 //
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff
@@ -74,8 +74,10 @@ void HistNormalize(){
   DiskFileA->ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
   //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain4") );
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain8") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
@@ -105,7 +107,7 @@ void FigWtMain()
 //------------------------------------------------------------------------
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
-  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
@@ -116,12 +118,13 @@ void FigWtMain()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVplot = new TCanvas("cFigWtMain","FigVplot: general info ",  gXcanv,  gYcanv,    500,  500);
+  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","cFigWtMain: general info ",  gXcanv,  gYcanv,    500,  500);
   //                                  Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
-  cFigVplot->SetFillColor(10);
+  cFigWtMain->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   //==========plot1==============
+  gPad->SetLogy(); // !!!!!!
   TH1D *HST; //
   HST = hst_WtMain; //
   HST->SetTitle(0);
@@ -133,7 +136,7 @@ void FigWtMain()
   CaptT->DrawLatex(0.06,0.95, "Events");
   double ycapt = 0.80; double xcapt=0.20;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #nu#bar{#nu}(+n#gamma)");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
 
 //  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
@@ -141,7 +144,7 @@ void FigWtMain()
   PlotSame2(hst_WtMain,    ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
   PlotSame2(hst_WtFoam,    ycapt, kRed,    1.00, "(B)", "  Foam weight ");
 
-  cFigVplot->SaveAs("cFigVplot.pdf");
+  cFigWtMain->SaveAs("cFigWtMain.pdf");
 }//FigWtMain()
 
 

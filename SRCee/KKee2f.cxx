@@ -105,9 +105,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 // Foam Object pointer f_FoamI is also defined, not assigned
   TMCgen::Initialize(  RNgen, OutFile, h_NORMA);
 
-//  m_NevTot = 0;
   m_EventCounter = 0;
-  m_WtMainMonit = new TWtMon("WtMainMonit","WtMain",100,5.0);
 
 // Initialisation input data before generation
 
@@ -241,6 +239,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 
   for(int j=1; j<=jmax; j++)  h_NORMA->SetBinContent(j,  m_xpar[j]  );    // xpar encoded
   cout<<" TMCgen::Initialize:  xpar filled into h_NORMA  "<<endl;
+
+  m_WtMainMonit = new TWtMon("WtMainMonit","WtMain",100,DB->WTmax);
 
   cout  << "   *******************************" << endl;
   cout  << "   **** KKee2f:Initialize END ****" << endl;
@@ -458,14 +458,14 @@ if ( DB->KeyISR == 1) {
   MakeGami(m_KFini,m_XXXene,gamiCR,gami,alfi);
   R = Xarg[iarg]; iarg++; // last dimension
   double GamI = gami;
-  //GamI = gamiCR; // about the same efficiency
+  ////////////////////////////////////////////////////////////
   //Straightforward mapping R->vv
+  //GamI = gamiCR; // about the same efficiency
   //m_vv = vvmax* exp((1.0/GamI)*log(R));
   //dJac   = exp(GamI*log(vvmax ))/(GamI/m_vv*exp(GamI*log(m_vv) ));
   //RhoISR *= dJac;
-  ///////////////
-  // alternative mapping from KKeeFoam
-  // probably safer, more stable numerically
+  ////////////////////////////////////////////////////////////
+  // mapping from KKeeFoam, safer, more stable numerically
   MapPlus( R, GamI, vvmax, m_vv, dJac);
   RhoISR *= dJac;
   /////////////// No mapping at all
@@ -611,6 +611,7 @@ f_NevGen++;
 m_Event->m_EventCounter = m_EventCounter;
 ////////////////////////////////////////////////
 // Foam here starts MC event generation
+e100:
 ////////////////////////////////////////////////
 m_FoamMode = -1;   // generation mode
 ////////////////////////////////////////////////
@@ -711,7 +712,8 @@ if(m_WtCrude != 0 ) {
    for(int j=1; j<200;j++) m_WtSet[j+200] = m_WtSetNew[j];
    }//if
 }//if wtcrude
-//[[[[[[[[[[[[[[[
+
+//[[[[[[[[[[[[[[[ debug
 if(m_EventCounter <20 ){
   (*f_Out)<<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
   cout    <<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
@@ -719,30 +721,94 @@ if(m_EventCounter <20 ){
   cout    <<"KKee2f::Generate: m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
  }
 //]]]]]]]]]]]]]]]
+/////////////////////////////////////////////////////////////
+// more DEBUG
+if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
+  cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
+  cout<<" m_WtCrude="<<m_WtCrude<<"   m_WtMain="<<m_WtMain<<endl;
+  exit(99);
+}// if nan
+/////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////
+//                                                           //
+//     Optional rejection according to principal weight      //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////
+// f_TMCgen_NORMA is Special histogram used for control of the overall
+// normalization in case of both weighted and un-weighted events.
+// NevPrim = no of events at the very bottom of all rejection loops
+// Note that crude integral XsPrimPb has zero statistical error!
+////////////////////////////////////////////////////////////////////////
+double XsPrimPb = f_FoamI->GetPrimary();
+int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
+
+//////////////////////////////////////////////////////////////////////
+m_WtMain=WtBest*m_WtCrude;
+
+double WTmax = DB->WTmax;
+if(DB->KeyWgt == 0) {
+// ***** CONSTANT-WEIGHT events *****
+  double rn = f_RNgen->Rndm();
+  m_WtMainMonit->Fill(m_WtMain,rn);  // monitoring main WT
+  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim*WTmax);
+  f_TMCgen_NORMA->SetEntries(NevPrim);
+  double WtScaled = m_WtMain/WTmax;
+  if( WtScaled > 1.0)
+      m_WtMain = WtScaled;
+  else
+      m_WtMain = 1.0;
+  if(rn > WtScaled) goto e100;
+  m_WtCrude=1.0;
+// collection of the weights for the advanced user
+  for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]/WtBest;  // f77 indexing !!!!
+} else {
+// ***** VARIABLE-WEIGHT events *****
+  m_WtMainMonit->Fill(m_WtMain);  // monitoring main WT
+  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
+  f_TMCgen_NORMA->SetEntries(NevPrim);
+//  collection of the weights for the advanced user
+  for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]*m_WtCrude;  // f77 indexing !!!!
+}//KeyWgt
+//=============================================================
+//=============================================================
+
+//[[[[[[[[[[[[[ to be removed
+//////////////////////////////////////////////////
 /////////// VARIABLE-WEIGHT events ///////////////
 // collection of the weights for the advanced user
 // This is version for WTed events only!!!!
-   for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]*m_WtCrude;  // indexing f77!!!!
+//  for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]*m_WtCrude;  // indexing f77!!!!
+//  double XsPrimPb = f_FoamI->GetPrimary();
+//  int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
+//  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
+//  f_TMCgen_NORMA->SetEntries(NevPrim);
+//////////////////////////////////////////////////
+//]]]]]]]]]]]]]
 
-/////////////////////////////////////////////////////////////////////////
 
-m_WtMain=WtBest*m_WtCrude;
-
+//////////////////////////////////////////////////////////////////////
 m_Event->m_WtCrude= m_WtCrude;
 m_Event->m_WtMain = m_WtMain;
 m_Event->m_WT_FSR = WT_FSR;
 m_Event->m_WT_ISR = WT_ISR;
+
 //////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
+// Boost due to beam spread
 m_Event->ZBoostALL();
+//////////////////////////////////////////////////////////////////////
+// At this point kinematics is complete
+//////////////////////////////////////////////////////////////////////
+
 
 /////////////////////////////////////////////////////////////
-// hadronization interface
+// Hadronization interface filling in /hepevt/ common block
 if ( m_WtCrude  != 0) hepevt_fill_();
 
 /////////////////////////////////////////////////////////////
-// Tau pair generation using TAUOLA+PHOTOS
+// Tau pair generation using TAUOLA+PHOTOS using /hepevt/
 if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
    int IsTauInitialized = m_TauGen->IsTauInitialized();
    if( IsTauInitialized != 0) {
@@ -758,36 +824,15 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
    }//TauIsInitialized
 }//if
 
-
-//////////////////////////////////////////////////////////////////////
-// Special histogram used for control of overall normalization
-// in case of both weighted and unweighted events
-// NevPrim = no of events at the very bottom of all rejection loops
-// Note that crude integral XsPrimPb has zero statistical error!
-// what about WTmax ???
-  double XsPrimPb = f_FoamI->GetPrimary();
-  int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
-  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
-  f_TMCgen_NORMA->SetEntries(NevPrim);
-
 /////////////////////////////////////////////////////////////
-//[[[[[ DEBUG
-  if(m_EventCounter <= 20) {
-     m_Event->PrintISR();
-     m_Event->PrintISR_FSR();
-     //m_Event->PrintISR_FSR(f_Out);
-     m_Event->EventPrintAll();
-     m_Event->EventPrintAll(f_Out);
-  }//m_EventCounter
-//////////////////////////
-// monitoring main WT
-  m_WtMainMonit->Fill(m_WtMain);
-  //
-  if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
-	  cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
-	  cout<<" m_WtCrude="<<m_WtCrude<<"   m_WtMain="<<m_WtMain<<endl;
-	  exit(99);
-  }// if nan
+//Control printouts of accepted events
+if(m_EventCounter <= 20) {
+   m_Event->PrintISR();
+   m_Event->PrintISR_FSR();
+   //m_Event->PrintISR_FSR(f_Out);
+   m_Event->EventPrintAll();
+   m_Event->EventPrintAll(f_Out);
+}//m_EventCounter
 
 }// Generate
 
@@ -873,22 +918,51 @@ BOXOPE;
 BOXTXT("****************************************");
 BOXTXT("******      KKMCee::Finalize      ******");
 BOXTXT("****************************************");
+BOX1I(" f_NevGen",f_NevGen,     " No. of generated events  ");
 BOX1F(" XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
 BOX1F(" <WtMain>",   AveWt,     " average WtMain           ");
 BOX1F("       +-",  ErrAbs,     " error abs.               ");
 BOX1F("   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
 BOX1F("       +-",m_XEMainPb,   " error abs.               ");
+BOX1F("       +-",ErrAbs/AveWt, " error relative           ");
 BOXCLO;
-///////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+double ERela, WtMax, WtMin, AvUnd, AvOve,
+       Ntot, Nacc,  Nneg,  Nove, Nzer ;
+//int     Ntot;
+m_WtMainMonit->GetAll(
+      AveWt, ERela, WtMax, WtMin, AvUnd, AvOve,
+      Ntot,  Nacc,  Nneg,  Nove,  Nzer );
+double sigma = ERela*sqrt(Ntot)*AveWt;
+///////////////////////////////////////////////////////////////////////////////
 BXOPE(*f_Out);
 BXTXT(*f_Out,"****************************************");
 BXTXT(*f_Out,"******      KKMCee::Finalize      ******");
 BXTXT(*f_Out,"****************************************");
+BX1I(*f_Out," f_NevGen",f_NevGen,     " No. of generated events  ");
 BX1F(*f_Out," XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
 BX1F(*f_Out," <WtMain>",   AveWt,     " average WtMain           ");
 BX1F(*f_Out,"       +-",  ErrAbs,     " error abs.               ");
 BX1F(*f_Out,"   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
-BX1F(*f_Out,"       +-",m_XEMainPb,   " error abs.               ");
+BX1F(*f_Out,"       +-",m_XEMainPb,   " error absolute           ");
+BX1F(*f_Out,"       +-",ErrAbs/AveWt, " error relative           ");
+BXTXT(*f_Out,"********** More from WtMainMonit *******");
+BX1F(*f_Out,"    AveWt",   AveWt,     " average <WtMain>         ");
+BX1F(*f_Out,"    ERela",   ERela,     " relative error           ");
+BX1F(*f_Out,"    sigma",   sigma,     " dispersion of WtMain     ");
+BX1F(*f_Out," DB_WTmax", DB->WTmax,   " input WTmax              ");
+BX1F(*f_Out,"    WtMax",   WtMax,     " maximum  WTmain          ");
+BX1F(*f_Out,"    WtMin",   WtMin,     " mainimum WTmain          ");
+BX1F(*f_Out,"    AvUnd",   AvUnd,     " underflow                ");
+BX1F(*f_Out,"    AvOve",   AvOve,     " overflow                 ");
+BX1F(*f_Out,"AvOve/<Wt>", AvOve/AveWt," relative: AvOve/AveWt    ");
+BX1F(*f_Out,"    Ntot",     Ntot,     " Ntot primary events      ");
+BX1F(*f_Out,"    Nacc",     Nacc,     " accepted events          ");
+BX1F(*f_Out,"Nacc/Ntot", Nacc/Ntot,   " acceptance rate          ");
+BX1F(*f_Out,"    Nneg",     Nneg,     " WT<0 events              ");
+BX1F(*f_Out,"    Nove",     Nove,     " WT>WTmax events          ");
+BX1F(*f_Out,"Nove/Ntot", Nove/Ntot,   " Nove/Ntot                ");
+BX1F(*f_Out,"    Nzer",     Nzer,     " WT=0 events              ");
 BXCLO(*f_Out);
 ///////////////////////////////////
 }//Finalize
