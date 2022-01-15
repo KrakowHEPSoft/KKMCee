@@ -79,7 +79,9 @@ void TRobolKKMC::Hbooker()
   hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
   hst_vvTrue   = TH1D_UP("hst_vvTrue" ,  "vv distr",    nbin,  0.0 , 1.0);
   hst_nPhot    = TH1D_UP("hst_nPhot" ,   "nPhot",         20,  0.0 ,  20);
+  //
   hst_CosTheta = TH1D_UP("hst_CosTheta", "CosTheta",    nbin,  -1.0 , 1.0);
+  hst_CosThOve = TH1D_UP("hst_CosThOve", "CosTheta",    nbin,  -1.0 , 1.0);
 //
   int nbv =100;
   int nbc = 50;
@@ -155,7 +157,7 @@ void TRobolKKMC::Production(double &iEvent)
   int NuYes = 0;
   if( KFfin==12 || KFfin==14 || KFfin==16 ) NuYes=1;
 
-  double CosTheta = KKMC_generator->m_CosTheta;
+//  double CosTheta = KKMC_generator->m_CosTheta; // dummy variable, not used
   double r1 = Event->m_r1;
   double r2 = Event->m_r2;
 //  double vv = Event->m_vv;
@@ -211,8 +213,6 @@ void TRobolKKMC::Production(double &iEvent)
   double WtCEEX2n= KKMC_generator->m_WtAlter[253];    //  CEEX Weight O(alf2) IFI off
   double WtCEEX0 = KKMC_generator->m_WtAlter[201];    //  CEEX Weight O(alf0)
   double WtCEEX0n= KKMC_generator->m_WtAlter[251];    //  CEEX Weight O(alf0) IFI off
-  //  WtEEX2=WtEEX0;    //!!!!!!!!!!!! DEBUG
-  //  WtEEX2=WtCEEX2n;  //!!!!!!!!!!!! DEBUG
 
 // ****************************************************************
 //          HISTOGRAMMING
@@ -225,7 +225,9 @@ void TRobolKKMC::Production(double &iEvent)
   hst_WtCeex2n->Fill(WtCEEX2n);
   hst_nPhot->Fill(nPhot,WtMain);
   hst_vvTrue->Fill(vv,WtEEX2);
-  hst_CosTheta->Fill(CosTheta,WtMain);
+//
+  hst_CosTheta->Fill(CosPRD,WtMain);
+  if(WtMain>1.0) hst_CosThOve->Fill(CosPRD,WtMain-1.0);
 //======================================================
 //                Muon pairs
   //======================================================

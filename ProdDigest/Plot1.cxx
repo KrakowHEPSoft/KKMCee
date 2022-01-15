@@ -99,6 +99,7 @@ void HistNormalize(){
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosThOve") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vvTrue") );
  //
@@ -184,12 +185,6 @@ void ReMakeMChisto(){
   ProjX1(sca_vTcPR_Eex0, hPro_vT_Eex0);
   hPro_vT_Eex0->SetName("hPro_vT_Eex0");
 
-/*
-  //  dsigma/dv unlimited cos(theta)
-  TH1D *Hpro_vT_Ceex2n;
-  ProjX1(sca_vTcPR_Ceex2, Hpro_vT_Ceex2n);
-  Hpro_vT_Ceex2->SetName("Hpro_vT_Ceex2n");
-*/
 //-------------------------------------------------------------------------------------------
 //-----------------------------FOAM----------------------------------------------------------
 //-------------------------------------------------------------------------------------------
@@ -246,7 +241,6 @@ void FigInfo()
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
 
   TH1D *hst_nPhot     = (TH1D*)DiskFileA->Get("hst_nPhot");
-  TH1D *hst_CosTheta  = (TH1D*)DiskFileA->Get("hst_CosTheta");
   //
   TH1D *HST_weight4    = (TH1D*)DiskFileF->Get("HST_weight4");
   TH1D *HST_weight6    = (TH1D*)DiskFileF->Get("HST_weight6");
@@ -320,10 +314,10 @@ void FigWtMain()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigVplot = new TCanvas("cFigWtMain","FigVplot: general info ",  gXcanv,  gYcanv,    500,  500);
+  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","FigWtMain: general info ",  gXcanv,  gYcanv,    500,  500);
   //                                  Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
-  cFigVplot->SetFillColor(10);
+  cFigWtMain->SetFillColor(10);
   ////////////////////////////////////////////////////////////////////////////////
   //==========plot1==============
   TH1D *HST; //
@@ -344,9 +338,55 @@ void FigWtMain()
   PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
   PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kGold,   0.40, "(C)", "  IFI off ");
 
-  cFigVplot->SaveAs("cFigVplot.pdf");
+  cFigWtMain->SaveAs("cFigWtMain.pdf");
 }//FigWtMain()
 
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCosThe()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCosThe =========================== "<<endl;
+  //
+  TH1D *hst_CosTheta  = (TH1D*)DiskFileA->Get("hst_CosTheta");
+  TH1D *hst_CosThOve  = (TH1D*)DiskFileA->Get("hst_CosThOve");
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigCosThe = new TCanvas("cFigCosThe","cFigCosThe ",  gXcanv,  gYcanv,    500,  500);
+  //                                  Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigCosThe->SetFillColor(10);
+//  cFigCosThe->Divide( 2,  1);
+  ////////////////////////////////////////////////////////////////////////////////
+  //==========plot1==============
+  cFigCosThe->cd(1);
+  TH1D *HST; //
+  HST = hst_CosTheta; //
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("cos(#theta)");
+  HST->GetXaxis()->SetLabelSize(0.04);
+  HST->SetMinimum(0.0);
+  HST->DrawCopy("h");
+  CaptT->DrawLatex(0.06,0.95, "Events");
+  double ycapt = 0.80; double xcapt=0.20;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
+  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+  PlotSame2(hst_CosTheta,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+  hst_CosThOve->Scale(100);
+  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax x100");
+
+  cFigCosThe->SaveAs("cFigCosThe.pdf");
+
+}//FigCosThe
 
 ///////////////////////////////////////////////////////////////////////////////////
 void FigVplot()
@@ -658,8 +698,8 @@ int main(int argc, char **argv)
   /////////////////////////////////////////////////////////
   // Reading directly KKMC input (farming)
   int Nodes;
-//  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
-  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
+  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA->Get("HST_KKMC_NORMA");
+//  TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileF->Get("HST_FOAM_NORMA4");
   Nodes    = HST_KKMC_NORMA->GetBinContent(511);       // No of farm nodes (trick)
   gCMSene  = HST_KKMC_NORMA->GetBinContent(1)/Nodes;   // CMSene=xpar(1), farn adjusted
   gNevTot  = HST_KKMC_NORMA->GetEntries();             // MC statistics from KKMC
@@ -671,6 +711,7 @@ int main(int argc, char **argv)
   //========== PLOTTING ==========
   FigInfo();
   FigWtMain();
+  FigCosThe();
   FigVplot();
   FigVCplot();
   FigAFBvv();
