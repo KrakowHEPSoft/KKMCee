@@ -33,6 +33,7 @@ class KKevent: public TObject{
  int      m_KFini;                   // incoming fermion ID (negative if 1st is anti)
  int      m_KFfin;                   // outgoing fermion ID (negative if 1st is anti)
  int      m_HasFSR;                  // =0,1 FSR absent,present
+ int      m_KeyDBG;                  // debug activation for =1
  double   m_Xenph;                   // ISR enhancement in case of IFI, otherwise =1
  double   m_Mbeam1, m_Mbeam2;        // masses of parton (quark) beams
  double   m_vv;                      // vv ISR variable of KKMC

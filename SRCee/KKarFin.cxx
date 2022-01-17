@@ -87,9 +87,6 @@ double CharSq = sqr(DB->Qf[m_KFfin]);
 //     as seen from the LAB system.
 //////////////////////
 
-//m_IsFSR = DB->KeyFSR;        // general FSR switch
-//if( m_KFfin == 12 || m_KFfin == 12 || m_KFfin == 16) m_IsFSR = 0; // exception for neutrinos
-
 m_IsFSR = m_Event->m_HasFSR; // KeyFSR redefined in KKee2f
 //-----------------------------------------------------------------------
 double WtFin;
@@ -104,14 +101,24 @@ if(m_IsFSR == 1) {
    for(int i =1; i<= m_nphot; i++) {
        m_Event->m_PhotFSR[i] = m_phot[i];
       (m_Event->m_PhotFSR)[0] += m_phot[i]; // sum in zero component
-   }
+   }// for i
 } else {
 //-----------------------------------------------------------------------
 // Final state bremss, fermion momenta defined in Z frame if no ISR
 // In case of ISR they are reassigned one more time.
-   double cth= 1 -2*m_RNgen->Rndm();
-   double the= acos(cth);
-   double phi= 2*M_PI*m_RNgen->Rndm();
+   double phi, cth, the, CosTheta;
+   phi= 2*M_PI*m_RNgen->Rndm();
+   if( DB->KeyThe == 0) {
+      cth= 1 -2*m_RNgen->Rndm();     // flat
+      the= acos(cth);
+   } else {
+      CosTheta =m_Event->m_CosTheta; // Born
+      the = acos(CosTheta);
+      if( m_Event->m_EventCounter <50){
+         (*m_Out)<< ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+         cout    << ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+      }//EventCounter
+   }//KeyThe
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
    m_nphot = 0;
@@ -305,9 +312,20 @@ for(int i=1; i<= m_nphot; i++){
 // KarFin_Kinf1(PX,m_q1,m_q2,m_r1,m_r2,m_nphot,m_phot,m_phsu)
 //-----------------------------------------------------------------------
 // Angles for Euler rotation of all FSR system
-   double cth= 1.0 -2*m_RNgen->Rndm();
-   double phi= 2.0*M_PI*m_RNgen->Rndm();
-   double the= acos(cth);
+   double cth, phi, the, CosTheta;
+   phi= 2.0*M_PI*m_RNgen->Rndm();
+   if( DB->KeyThe == 0) {
+      cth= 1.0 -2*m_RNgen->Rndm();
+      the= acos(cth);
+   } else {
+      CosTheta =m_Event->m_CosTheta;
+      the = acos(CosTheta);
+      if( m_Event->m_EventCounter <50){
+        (*m_Out)<< ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+        cout    << ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+      }//EventCounter
+   }//KeyThe
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    // QQk is combined momentum of q1+q2+photons in q1+q2 system
    TLorentzVector QQk= m_q1+m_q2+m_phot[0];
 // Transform fermions back to LAB/CMS through intermediate Z frame

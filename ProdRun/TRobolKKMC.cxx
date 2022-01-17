@@ -68,12 +68,13 @@ void TRobolKKMC::Hbooker()
   //  ************* user histograms  *************
   //   for muon pairs
   double delv = 0.012;
-  int nbin=100;
-  hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 2.0);
-  hst_WtMain4  = TH1D_UP("hst_WtMain4" , "MC weight Main",   nbin, 0.00 , 4.0);
+  int nbin=200;
+  hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 8.0);
+  hst_WtMain4  = TH1D_UP("hst_WtMain4" , "MC weight Main",   nbin, 0.00 , 8.0);
   hst_WtMain8  = TH1D_UP("hst_WtMain8" , "MC weight Main",   nbin, 0.00 , 8.0);
-  hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 2.0);
-  hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 2.0);
+  hst_WtMain200  = TH1D_UP("hst_WtMain200" , "MC weight Main",   10*nbin, 0.00 , 200.0);
+  hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 8.0);
+  hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 8.0);
 
 //
   hst_vvBES    = TH1D_UP("hst_vvBES" ,   "BES distr",   nbin, -delv , delv);
@@ -157,7 +158,7 @@ void TRobolKKMC::Production(double &iEvent)
   int NuYes = 0;
   if( KFfin==12 || KFfin==14 || KFfin==16 ) NuYes=1;
 
-//  double CosTheta = KKMC_generator->m_CosTheta; // dummy variable, not used
+  double CosTheta = KKMC_generator->m_CosTheta; // dummy variable, not used
   double r1 = Event->m_r1;
   double r2 = Event->m_r2;
 //  double vv = Event->m_vv;
@@ -201,6 +202,14 @@ void TRobolKKMC::Production(double &iEvent)
            /(sin(Theta1)+sin(Theta2) +fabs(sin(Theta1+Theta2)));
   s1Aleph  = s*zAleph;
 //--------------------------------------------------------------------
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+//if( Event->m_KeyDBG == 1){
+  if(m_NevGen<50){
+  (*f_Out)<< ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
+  cout    << ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
+  }//NevGen
+//}//m_KeyDBG
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 // ****************************************************************
 //          various weights
@@ -220,6 +229,7 @@ void TRobolKKMC::Production(double &iEvent)
   hst_WtMain->Fill(WtMain);
   hst_WtMain4->Fill(WtMain);
   hst_WtMain8->Fill(WtMain);
+  hst_WtMain200->Fill(WtMain);
 //
   hst_WtFoam->Fill(WtFoam);
   hst_WtCeex2n->Fill(WtCEEX2n);

@@ -377,8 +377,12 @@ void KKceex::Make(){
 
   BornPlus(KFini, KFfin, Cfact0, PX); // this is for KeyELW <=0 !!!
 // =======================================================================
-
-  BornCru = 4.0/3.0 *m_BornDist->BornSimple(KFini, KFfin, svarX, 0.0); //  4/3 = <(1+c^2)> where c in (-1,i)
+  if( DB->KeyThe == 0) {
+     BornCru = 4.0/3.0 *m_BornDist->BornSimple(KFini, KFfin, svarX, 0.0); //  4/3 = <(1+c^2)> where c in (-1,i)
+  } else {
+     double CosTheta = m_Event->m_CosTheta;  // Born from FOAM
+     BornCru = m_BornDist->BornSimple(KFini, KFfin, svarX, CosTheta);
+  }//KeyThe
   BornCru = BornCru *(svar/svarX);                                     //<-- Born(svar)*svar
   fLLux   = svarX/svarQ;                                               //<-- extra LL factor
   betaf   = sqrt( 1.0 - 4* sqr(Massf)/svarQ );                         //<-- 2-body phase spase

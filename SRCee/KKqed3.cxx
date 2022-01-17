@@ -108,12 +108,15 @@ void KKqed3::Make(){
      m_yfin[j] = 2* m_Event->m_PhotFSR[j] *m_Event->m_Qf1 /svar2;
      m_zfin[j] = 2* m_Event->m_PhotFSR[j] *m_Event->m_Qf2 /svar2;
   }
-  //
-  // DisCru has to be the same as in FOAM!!!
-
-  double DisCru = m_BornV->BornSimple(KFini,KFfin,svar1,0.0);
-  DisCru *= 4.0/3.0;
-
+//////
+  double DisCru;   // DisCru has to be the same as in FOAM!!!
+  if( DB->KeyThe == 0) {
+     DisCru = 4.0/3.0* m_BornV->BornSimple(KFini,KFfin,svar1,0.0);
+  } else {
+    double CosTheta = m_Event->m_CosTheta;
+    DisCru = m_BornV->BornSimple(KFini,KFfin,svar1,CosTheta);
+  }//KeyThe
+//
   double delp=  sqr(amini)/svar;
   double delq=  sqr(amfin)/svar2;
 //

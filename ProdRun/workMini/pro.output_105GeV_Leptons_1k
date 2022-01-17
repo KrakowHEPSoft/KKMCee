@@ -2038,7 +2038,10 @@ m_Sum  -3.0253577421036e-15-3.5388358909927e-16 1.7763568394003e-15             
 *                   ******      KKMCee::Finalize      ******                   *
 *                   ****************************************                   *
 *   f_NevGen =       1000 =                          No. of generated events   *
-*   XsPrimPb =      0.59735117   =                   Crude from Foam [pb]      *
+*   XsPrimPb =      0.59735117   =                   Primary from Foam [pb]    *
+*  FoamInteg =      0.53879574   =                   FOAM integral crude est   *
+*         +- =    0.0042298188   =                   error                     *
+*                   ****************************************                   *
 *   <WtMain> =      0.68986044   =                   average WtMain            *
 *         +- =     0.026723598   =                   error abs.                *
 *     XsMain =      0.41208894   =                   Xsection main [pb]        *

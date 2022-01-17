@@ -45,6 +45,7 @@ void KKevent::Initialize(double CMSene)
   m_CMSene = CMSene;
   m_nPhotISR=0;
   m_nPhotFSR=0;
+  m_KeyDBG=0;
   for(int i=0; i<maxPhot;i++){
 	  m_PhotAll[i].SetPxPyPzE(0,0,0,0);
 	  m_PhotISR[i].SetPxPyPzE(0,0,0,0);

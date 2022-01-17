@@ -36,6 +36,7 @@ class KKdbase: public TObject{
  int      KeyZet;
  int      KeyWtm;
  int      KeyPia;
+ int      KeyThe;
  double   MZ;
  double   GamZ;
  double   swsq;

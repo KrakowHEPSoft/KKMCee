@@ -44,16 +44,15 @@ float  gXcanv = 20, gYcanv = 20, gDcanv = 30;
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void PlotSame2(TH1D *HST, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+void PlotSame2(TH1D *HST, const double &xcapt, double &ycapt, Int_t kolor, const double xx,  TString label,  TString opis)
 {
   TLatex *CaptT = new TLatex();
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   HST->SetLineColor(kolor);
-  HST->DrawCopy("hsame");      // Magenta
+  HST->DrawCopy("hsame");
   CaptT->SetTextColor(kolor);
   ycapt += -0.04;
-  double xcapt = 0.40;
   CaptT->DrawLatex(xcapt,ycapt, opis);
   CaptT->DrawLatex(xcapt-0.05,ycapt, label);
   //
@@ -81,6 +80,7 @@ void HistNormalize(){
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosThOve") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vvTrue") );
 //
@@ -107,7 +107,8 @@ void FigWtMain()
 //------------------------------------------------------------------------
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
-  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
+//  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain200");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
@@ -139,14 +140,60 @@ void FigWtMain()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #nu#bar{#nu}(+n#gamma)");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
 
-//  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
-//  PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
-  PlotSame2(hst_WtMain,    ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
-  PlotSame2(hst_WtFoam,    ycapt, kRed,    1.00, "(B)", "  Foam weight ");
+  PlotSame2(hst_WtMain,    xcapt,  ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtFoam,    xcapt,  ycapt, kRed,    1.00, "(B)", "  Foam weight ");
 
   cFigWtMain->SaveAs("cFigWtMain.pdf");
 }//FigWtMain()
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigCosThe()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigCosThe =========================== "<<endl;
+  //
+  TH1D *hst_CosTheta  = (TH1D*)DiskFileA->Get("hst_CosTheta");
+  TH1D *hst_CosThOve  = (TH1D*)DiskFileA->Get("hst_CosThOve");
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigCosThe = new TCanvas("cFigCosThe","cFigCosThe ",  gXcanv,  gYcanv,    500,  500);
+  //                                  Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigCosThe->SetFillColor(10);
+//  cFigCosThe->Divide( 2,  1);
+  ////////////////////////////////////////////////////////////////////////////////
+  //==========plot1==============
+  cFigCosThe->cd(1);
+  TH1D *HST; //
+  HST = hst_CosTheta; //
+//  HST = hst_CosThOve;
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("cos(#theta)");
+  HST->GetXaxis()->SetLabelSize(0.04);
+  HST->SetMinimum(0.0);
+  HST->DrawCopy("h");
+  CaptT->DrawLatex(0.06,0.95, "Events");
+  double ycapt = 0.80; double xcapt=0.20;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #nu#bar{#nu}(+n#gamma)");
+  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+  PlotSame2(hst_CosTheta,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+//  hst_CosThOve->Scale(100);
+  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax");
+
+  cFigCosThe->SaveAs("cFigCosThe.pdf");
+
+}//FigCosThe
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -194,8 +241,8 @@ void FigNPhot()
   CaptT->DrawLatex(0.40, ycapt,gTextEne);
   hst_nPhAll->SetLineWidth(2);
   hst_nPhVis->SetLineWidth(2);
-  PlotSame2(hst_nPhAll,  ycapt, kBlue,  +2.0, "(a)", "All photons");
-  PlotSame2(hst_nPhVis,  ycapt, kRed,   +1.0, "(b)", "Tagged photons");
+  PlotSame2(hst_nPhAll, 0.20, ycapt, kBlue,  +2.0, "(a)", "All photons");
+  PlotSame2(hst_nPhVis, 0.20, ycapt, kRed,   +1.0, "(b)", "Tagged photons");
 
   //====================plot2========================
   cFigNPhot->cd(2);
@@ -212,8 +259,8 @@ void FigNPhot()
   CaptT->DrawLatex(0.40,ycapt,gTextEne);  ycapt += -0.04;
   CaptT->DrawLatex(0.40,ycapt,gTextNev);  ycapt += -0.01;
   //
-  PlotSame2(hst_LnThPhAll,  ycapt, kBlue,    -3.0, "(a)", "All #gamma's");
-  PlotSame2(hst_LnThPhVis,  ycapt, kRed,     -0.5, "(b)", "Tagged #gamma's");
+  PlotSame2(hst_LnThPhAll,  0.20, ycapt, kBlue,    -3.0, "(a)", "All #gamma's");
+  PlotSame2(hst_LnThPhVis,  0.20, ycapt, kRed,     -0.5, "(b)", "Tagged #gamma's");
   //
 
   //================================================
@@ -261,8 +308,8 @@ void FigVPhot2()
     double ycapt = 0.86;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
-    PlotSame2(hst_vtNuCeex2,  ycapt, kBlue, 0.4, "(a)", "#gamma's untagged, v=1-M^{2}_{#nu#bar{#nu}}/s");
-    PlotSame2(hst_vaNuCeex2,  ycapt, kRed,  0.5, "(b)", "#gamma's tagged, v=E_{#gamma}/E_{beam}");
+    PlotSame2(hst_vtNuCeex2,  0.20, ycapt, kBlue, 0.4, "(a)", "#gamma's untagged, v=1-M^{2}_{#nu#bar{#nu}}/s");
+    PlotSame2(hst_vaNuCeex2,  0.20, ycapt, kRed,  0.5, "(b)", "#gamma's tagged, v=E_{#gamma}/E_{beam}");
     //================================================
     if( g161GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_161GeV.pdf");
     if( g125GeVyes) cFigVPhot2->SaveAs("cFigVPhot2_125GeV.pdf");
@@ -312,8 +359,8 @@ void FigVPhot3()
     double ycapt = 0.85;
     CaptT->DrawLatex(0.40, ycapt,gTextEne);
  //
-    PlotSame2(hst_vaNuElCeex2,  ycapt, kBlue, 0.4, "(a)", "#nu_{e}");
-    PlotSame2(hst_vaNuMuCeex2,  ycapt, kRed,  0.5, "(b)", "#nu_{#mu}");
+    PlotSame2(hst_vaNuElCeex2,  0.20, ycapt, kBlue, 0.4, "(a)", "#nu_{e}");
+    PlotSame2(hst_vaNuMuCeex2,  0.20, ycapt, kRed,  0.5, "(b)", "#nu_{#mu}");
     //================================================
     if( g161GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_161GeV.pdf");
     if( g125GeVyes) cFigVPhot3->SaveAs("cFigVPhot3_125GeV.pdf");
@@ -385,8 +432,8 @@ void FigNuDif2()
   double ycapt = 0.40;
   double vcapt = 1.0 - sqr(91.2/gCMSene);
   CaptT->DrawLatex(0.35, ycapt,gTextEne);
-  PlotSame2(Hel,  ycapt, kBlue, vcapt-0.010, "(a)"," #nu = #nu_{el}");
-  PlotSame2(Hmu,  ycapt, kRed,  vcapt+0.010, "(b)"," #nu = #nu_{#mu}");
+  PlotSame2(Hel,  0.20, ycapt, kBlue, vcapt-0.010, "(a)"," #nu = #nu_{el}");
+  PlotSame2(Hmu,  0.20, ycapt, kRed,  vcapt+0.010, "(b)"," #nu = #nu_{#mu}");
   CaptT->DrawLatex(0.25, 0.25, CaptSigEl);
   CaptT->DrawLatex(0.25, 0.20, CaptSigMu);
   CaptT->DrawLatex(0.25, 0.15, CaptLum);
@@ -443,6 +490,7 @@ int main(int argc, char **argv)
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
   FigWtMain();
+  FigCosThe();
   FigNPhot();
 //
   FigVPhot2();

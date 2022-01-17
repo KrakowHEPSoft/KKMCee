@@ -38,6 +38,8 @@ BeginX
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
 *     KeyRes=0,1 Experim. R used to model rate of decay of gamma* and decay
    13              0      KeyRes=xpar(13) Deafault is 0, dumb parton R
+*     KeyThe     Foam genetation of the fermion Theta angle =0, flat, =1 Born
+   14              1      KeyThe=xpar(14) Default =1 for Born distribution
 *     Minimum and maximum v, where v = 1-sprim/s, v=1 alowed
    16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
 ** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
@@ -414,9 +416,9 @@ BeginX
 * FOAM GENERATION PARAMETERS
  3020       54217137      Ranmar initial random number seed (KKMC and FOAM)
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
- 3021           5000 FOAM Maximum number of cells (5000 default, 2000 for map)
+ 3021          10000 FOAM Maximum number of cells (5000 default, 2000 for map)
  3022              0 FOAM Vopt: set to 0 to save vertices, 1 to NOT save them
- 3023          80000 FOAM Number of MC samples inside single cell
+ 3023          10000 FOAM Number of MC samples inside single cell
  3024             16 FOAM Number of bins for edge-histogram in cell exploration
  3025             75 FOAM Events per bin during buildup
 * For unweighted events, FOAM KeyWgt can be 0 or 1. 

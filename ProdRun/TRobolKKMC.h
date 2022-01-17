@@ -19,6 +19,7 @@ class TRobolKKMC : public TRobol
  TH1D   *hst_WtMain;          //!  No streamer!!!
  TH1D   *hst_WtMain4;         //!  No streamer!!!
  TH1D   *hst_WtMain8;         //!  No streamer!!!
+ TH1D   *hst_WtMain200;       //!  No streamer!!!
  TH1D   *hst_WtFoam;          //!  No streamer!!!
  TH1D   *hst_WtCeex2n;        //!  No streamer!!!
 //

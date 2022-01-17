@@ -303,6 +303,7 @@ void FigWtMain()
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
   TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
+  TH1D *hst_WtMain8    = (TH1D*)DiskFileA->Get("hst_WtMain8");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   TH1D *hst_WtCeex2n  = (TH1D*)DiskFileA->Get("hst_WtCeex2n");
   //////////////////////////////////////////////
@@ -314,7 +315,7 @@ void FigWtMain()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","FigWtMain: general info ",  gXcanv,  gYcanv,    500,  500);
+  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","FigWtMain: general info ",  gXcanv,  gYcanv,    800,  500);
   //                                  Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
   cFigWtMain->SetFillColor(10);
@@ -322,6 +323,8 @@ void FigWtMain()
   //==========plot1==============
   TH1D *HST; //
   HST = hst_WtMain; //
+//  HST = hst_WtMain8; //
+  gPad->SetLogy(); // !!!!!!
   HST->SetTitle(0);
   HST->SetStats(0);
   HST->GetXaxis()->SetTitle("WT");
@@ -329,14 +332,14 @@ void FigWtMain()
   HST->DrawCopy("h");
 
   CaptT->DrawLatex(0.06,0.95, "Events");
-  double ycapt = 0.80; double xcapt=0.20;
+  double ycapt = 0.85; double xcapt=0.30;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
-  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+  CaptT->DrawLatex(xcapt+0.20,ycapt,gTextEne);
 
-  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
-  PlotSame2(hst_WtFoam,    xcapt, ycapt, kRed,    1.00, "(B)", "  Foam weight ");
-  PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kGold,   0.40, "(C)", "  IFI off ");
+  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlack,   7.00, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtFoam,    xcapt, ycapt, kBlue,    1.00, "(B)", "  Foam weight ");
+  PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kRed,     4.00, "(C)", "  CEEX2 IFI off ");
 
   cFigWtMain->SaveAs("cFigWtMain.pdf");
 }//FigWtMain()

@@ -306,6 +306,7 @@ void KKee2f::FoamInitA(){
     int nBins    = m_xpar[3024];
     int EvPerBin = m_xpar[3025];
     int KeyWgt   = m_xpar[3026]; // move to database?
+    int OptDrive = 2;            // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
     double WtMaxRej = m_xpar[3027];
     f_FoamI->SetnCells(nCells);     // Maximum number of cells
     f_FoamI->SetOptRej(1-KeyWgt);   // KeyWgt = 0 constant wt, 1 = variable wt
@@ -315,7 +316,7 @@ void KKee2f::FoamInitA(){
     f_FoamI->SetnBin(nBins);        // Number of bins for edge explorations
     f_FoamI->SetEvPerBin(EvPerBin); // Events per bin during buildup.
     f_FoamI->SetOptEdge(    0);     // OptEdge excludes vertices
-    f_FoamI->SetOptDrive(   2);     // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
+    f_FoamI->SetOptDrive(OptDrive); // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
     f_FoamI->SetOptOrd(     0);     // 0: nDim// simplices, 1: single simplex
     f_FoamI->SetOptPeek(    0);     // Choose max. cell (0) or random (1) in build
     f_FoamI->SetOptMCell(   1);     // 1: Megacell = slim memory
@@ -494,8 +495,13 @@ if( m_FoamMode<0) {  // Only in generation mode !!!!!
   m_Event->m_XXXene  = m_XXXene;
 }// Event
 //------------------
-double svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
-double BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0
+double svar1, BornCR;
+svar1  = (1-m_vv)*sqr(m_XXXene);      // = (1-m_vv)*x1*x2*sqr(DB->CMSene)
+if( DB->KeyThe == 0) {
+   BornCR  = m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, 0.0);  // costTheta=0
+} else {
+   BornCR  = 3.0/4.0 *m_BornDist->BornSimple(m_KFini, m_KFfin, svar1, m_CosTheta);
+}//KeyThe
 double sig0nb = 4.0*M_PI/( 3.0 *sqr(DB->Alfinv0)) *1.0/(sqr(m_XXXene )) *DB->gnanob;
 BornCR  *= sig0nb/(1.0-m_vv);
 Rho  *= BornCR;
@@ -630,7 +636,7 @@ m_Event->m_Rem2.SetPxPyPzE( 0, 0,-0.5*DB->CMSene*m_r2, 0.5*DB->CMSene*m_r2); //o
 
 m_XXf = m_Event->m_Pf1 + m_Event->m_Pf2;
 
-// Final fermion moment defined, to be possibly overwritten
+// Final fermion moment defined in FOAM indegrand (possibly overwritten?)
 double the= acos(m_CosTheta);
 double phi= 2*M_PI*f_RNgen->Rndm();
 double amfi  =DB->fmass[m_KFfin];
@@ -895,18 +901,15 @@ void KKee2f::Finalize()
 *f_Out<< "   *****************************" << endl;
 *f_Out<< "   ****   KKMCee   Finalize ****" << endl;
 *f_Out<< "   *****************************" << endl;
-
-// True Crude/Primary of Foam inside all rejection loops
+////////////////////////////////////////////////////
+// True Crude/Primary of Foam INSIDE all rejection loops
 double XsPrimPb = f_FoamI->GetPrimary();
 ////////////////////////////////////////////////////
 double IntNorm, Errel;
 f_FoamI->Finalize(IntNorm, Errel );      // with printouts
 // f_FoamI->GetIntNorm(IntNorm, Errel ); // without printouts
-// Warning: IntNorm not always = Primary
-cout<<"||||||||| KKMCee::Finalize: IntNorm, Errel="<< IntNorm<<"  "<< Errel<<endl;
-double MCresult,MCerror;
-f_FoamI->GetIntegMC(MCresult,MCerror);   // true Foam integral
-cout<<"||||||||| KKMCee::Finalize: FOAM MCresult, MCerror ="<< MCresult<<" +- "<< MCerror<<endl;
+double FoamInteg,FoamErr;
+f_FoamI->GetIntegMC(FoamInteg,FoamErr);   // true Foam integral
 ///////////////////////////////////////////////////
 fort_close_(m_out);
 ///////////////////////////////////////////////////
@@ -919,7 +922,9 @@ BOXTXT("****************************************");
 BOXTXT("******      KKMCee::Finalize      ******");
 BOXTXT("****************************************");
 BOX1I(" f_NevGen",f_NevGen,     " No. of generated events  ");
-BOX1F(" XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
+BOX1F(" XsPrimPb",XsPrimPb,     " Primary from Foam [pb]   ");
+BOX1F("FoamInteg",FoamInteg,    " Crude from FOAM   [pb]   ");
+BOX1F("       +-",FoamErr,      " error                    ");
 BOX1F(" <WtMain>",   AveWt,     " average WtMain           ");
 BOX1F("       +-",  ErrAbs,     " error abs.               ");
 BOX1F("   XsMain",m_XsMainPb,   " Xsection main [pb]       ");
@@ -940,7 +945,10 @@ BXTXT(*f_Out,"****************************************");
 BXTXT(*f_Out,"******      KKMCee::Finalize      ******");
 BXTXT(*f_Out,"****************************************");
 BX1I(*f_Out," f_NevGen",f_NevGen,     " No. of generated events  ");
-BX1F(*f_Out," XsPrimPb",XsPrimPb,     " Crude from Foam [pb]     ");
+BX1F(*f_Out," XsPrimPb",XsPrimPb,     " Primary from Foam [pb]   ");
+BX1F(*f_Out,"FoamInteg",FoamInteg,    " Crude from FOAM   [pb]   ");
+BX1F(*f_Out,"       +-",FoamErr,      " error                    ");
+BXTXT(*f_Out,"****************************************");
 BX1F(*f_Out," <WtMain>",   AveWt,     " average WtMain           ");
 BX1F(*f_Out,"       +-",  ErrAbs,     " error abs.               ");
 BX1F(*f_Out,"   XsMain",m_XsMainPb,   " Xsection main [pb]       ");

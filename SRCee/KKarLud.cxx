@@ -74,24 +74,21 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
   m_amel= DB->fmass[m_KFini];  // current masses
 
 // defining incomming (beam) parton momenta
-//  double  qm1 = m_amel, qm2 = m_amel;
-//  m_Event->DefPair(m_XXXene,m_amel,m_amel, &(m_Event->m_Pf1), &(m_Event->m_Pf2));
-
-  // Low-level multiphoton ISR generator (1986)
+// Low-level multiphoton ISR generator (1986)
   if (DB->KeyISR == 1) {
-       YFSgen(m_XXXene, m_vv, &(m_Event->m_PX), &(m_Event->m_WT_ISR) );
-	   *PX     = m_Event->m_PX;      // temporary solution
-	   *wt_ISR = m_Event->m_WT_ISR;  // temporary solution?
+        YFSgen(m_XXXene, m_vv, &(m_Event->m_PX), &(m_Event->m_WT_ISR) );
+        *PX     = m_Event->m_PX;      // temporary solution
+        *wt_ISR = m_Event->m_WT_ISR;  // temporary solution?
   } else if(DB->KeyISR == 0) {
-	    m_Event->DefPair( m_XXXene,m_amel,m_amel, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
-	    double cth= 1 -2*m_RNgen->Rndm();
-	    double the= acos(cth);
-	    double phi= 2*M_PI *m_RNgen->Rndm();
-	    m_Event->RotEul(the,phi,&(m_Event->m_Qf1));
-	    m_Event->RotEul(the,phi,&(m_Event->m_Qf2));
-	    m_nphot = 0;
-	    *wt_ISR = 1;
-	    *PX = m_Event->m_Qf1 + m_Event->m_Qf2;
+        m_Event->DefPair( m_XXXene,m_amel,m_amel, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
+        double cth= 1 -2*m_RNgen->Rndm();
+        double the= acos(cth);
+        double phi= 2*M_PI *m_RNgen->Rndm();
+        m_Event->RotEul(the,phi,&(m_Event->m_Qf1));
+        m_Event->RotEul(the,phi,&(m_Event->m_Qf2));
+        m_nphot = 0;
+        *wt_ISR = 1;
+        *PX = m_Event->m_Qf1 + m_Event->m_Qf2;
    } else {
        cout<< " ++++ KKarLud: wrong KeyISR="<< DB->KeyISR <<endl;
        exit(95);
@@ -103,13 +100,23 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
       m_Event->m_Qf2.SetPxPyPzE(0,0,0,0);
       m_nphot=0;
       for(int j=0; j<=maxPhot; j++)
-    	  m_Event->m_PhotISR[j].SetPxPyPzE(0,0,0,0);
+          m_Event->m_PhotISR[j].SetPxPyPzE(0,0,0,0);
     } else {
   // Define final fermion momenta (NOT used in case of FSR!)
-      double cth= 1 -2*m_RNgen->Rndm();
-      double the= acos(cth);
-      double phi= 2*M_PI*m_RNgen->Rndm();
-      double amfi  =DB->fmass[m_KFfin];
+     double amfi  =DB->fmass[m_KFfin];
+     double cth, the, phi, CosTheta;
+     phi= 2*M_PI*m_RNgen->Rndm();
+     if( DB->KeyThe == 0) {
+       cth= 1 -2*m_RNgen->Rndm();
+       the= acos(cth);
+     } else {
+       CosTheta =m_Event->m_CosTheta;
+       the = acos(CosTheta);
+       if( m_Event->m_EventCounter <50){
+         (*m_Out)<< "////KKarLud::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+         cout<<     "////KKarLud::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+       }//EventCounter
+     }//KeyThe
       m_Event->PhaSpac2(PX,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2));
    }// wt_ISR == 0
 }// Make
