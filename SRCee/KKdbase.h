@@ -37,6 +37,16 @@ class KKdbase: public TObject{
  int      KeyWtm;
  int      KeyPia;
  int      KeyThe;
+ // FOAM
+ int      Foam_nCells;
+ int      Foam_Vopt;
+ int      Foam_nSampl;
+ int      Foam_nBins;
+ int      Foam_EvPerBin;
+ int      Foam_OptRej;
+ int      Foam_OptDrive;
+ double   Foam_WtMaxRej;
+// Electroweak
  double   MZ;
  double   GamZ;
  double   swsq;

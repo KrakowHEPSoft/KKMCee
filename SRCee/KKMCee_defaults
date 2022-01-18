@@ -29,7 +29,7 @@ BeginX
 *     At present all internal monitoring fits into (idyfs+1,idyfs+100)
     8            600\\\\\\IdYFS\\\\\\\\\\\\\pointer for internal histos\\\\\\\\\
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-    9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
+    9          3.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 *     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              0      KeyWgt=xpar(10) Deafault is 0
 *     IdeWgt IDENT of the EEX principal weight, not for CEEX! NEVER TOUCH IT!
@@ -416,15 +416,14 @@ BeginX
 * FOAM GENERATION PARAMETERS
  3020       54217137      Ranmar initial random number seed (KKMC and FOAM)
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
- 3021          10000 FOAM Maximum number of cells (5000 default, 2000 for map)
+ 3021          20000 FOAM Maximum number of cells (5000 default, 2000 for map)
  3022              0 FOAM Vopt: set to 0 to save vertices, 1 to NOT save them
- 3023          10000 FOAM Number of MC samples inside single cell
+ 3023           5000 FOAM Number of MC samples inside single cell
  3024             16 FOAM Number of bins for edge-histogram in cell exploration
- 3025             75 FOAM Events per bin during buildup
-* For unweighted events, FOAM KeyWgt can be 0 or 1. 
-* For weighted events, FOAM KeyWgt must be 1. (Reset in program if not)
- 3026              1 FOAM KeyWgt=0,1 for constant, variable weights (default 1)
+ 3025             50 FOAM Events per bin during buildup
+* For unweighted events, FOAM OptRej can be 0 or 1. 
+ 3026              0 FOAM OptRej=1,0 for constant, variable weights (default 1)
  3027          1.1e0 FOAM Maximum FOAM weight for internal rejection (if used).
- 3028              1      Crude distribution for x1, x2 generation*
+ 3028              2 FOAM Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
 *******************************************************************************
 EndX

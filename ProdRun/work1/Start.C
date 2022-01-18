@@ -25,7 +25,7 @@ double nevtot   = 1e12; // 1000G
 //nevtot =200;
 //nevtot =9;
 double nevgrp   = 1e5; // 100k
-//nevgrp = 1e6;          // 1M
+nevgrp = 1e7;          // 1M
 nevgrp = 1e4;
 ///------------------------------------------------------------------
 SemFile.cd();

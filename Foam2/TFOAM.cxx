@@ -1041,7 +1041,7 @@ void TFOAM::Initialize(TRandom *PseRan, TFOAM_INTEGRAND *fun ){
     BX1I(" OptVert" ,m_OptVert, " Decides whether to store vertices of simplices   ");
     BX1I(" OptDebug",m_OptDebug, " Additional debug histogram, SetDirectory(1)      ");
     BX1I(" OptCu1st",m_OptCu1st, " Numbering of dimensions  starts with h-cubic     ");
-    BX1I("   OptRej",m_OptRej,   " MC rejection on/off for OptRej=0,1               ");
+    BX1I("   OptRej",m_OptRej,   " MC rejection on/off for OptRej=1,0               ");
     BX1F(" MaxWtRej",m_MaxWtRej, " Maximum wt in rejection for wt=1 evts");
     BXCLO;
   }

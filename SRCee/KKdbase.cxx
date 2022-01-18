@@ -133,6 +133,25 @@ void KKdbase::Initialize(double xpar[] )
   KeyWtm = xpar[26];
   BX1I(*m_Out,"   KeyWtm",  KeyWtm, " Photon emission without mass terms [26]        =");
 
+  BXTXT(*m_Out,"==== FOAM STEERING  PARAMETERS =========");
+  Foam_nCells   = m_xpar[3021]; // move to database?
+  Foam_Vopt     = m_xpar[3022];
+  Foam_nSampl   = m_xpar[3023];
+  Foam_nBins    = m_xpar[3024];
+  Foam_EvPerBin = m_xpar[3025];
+  Foam_OptRej   = m_xpar[3026]; // move to database?
+  Foam_OptDrive = m_xpar[3028];;            // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
+  Foam_WtMaxRej = m_xpar[3027];
+  BX1I(*m_Out,"   nCells", Foam_nCells,  " FOAM Maximum No. of cells            [3021]    =");
+  BX1I(*m_Out,"     Vopt", Foam_Vopt,    " Vopt: =0 to save vertices, =1 NOT    [3022]    =");
+  BX1I(*m_Out,"   nSampl", Foam_nSampl,  " No. of MC calls inside single cell   [3023]    =");
+  BX1I(*m_Out,"    nBins", Foam_nBins,   " No. of bins for edge-histogram       [3024]    =");
+  BX1I(*m_Out," EvPerBin", Foam_EvPerBin," Max eff. evts per bin during buildup [3025]    =");
+  BX1I(*m_Out,"   OptRej", Foam_OptRej,  " =1,0 for constant, variable weights  [3026]    =");
+  BX1I(*m_Out," OptDrive", Foam_OptDrive," Driver = 0,1,2 (TrueVol,Sigma,WtMax) [3028]    =");
+  BX1F(*m_Out," WtMaxRej", Foam_WtMaxRej," Max. WT for event rej. (WT=1)    [3027]  =");
+
+  BXTXT(*m_Out,"==== MORE STEERING  PARAMETERS =========");
   Vcut[0]= m_xpar[41] ;
   Vcut[1]= m_xpar[42] ;
   Vcut[2]= m_xpar[43] ;
@@ -146,8 +165,8 @@ void KKdbase::Initialize(double xpar[] )
   XXXmax = m_xpar[3004];
   BX1F(*m_Out,"   XXXmin",  XXXmin," Techn. param. init. value    [3003]   =");
   BX1F(*m_Out,"   XXXmax",  XXXmax," Techn. param. init. value    [3004]   =");
-  Nalgo  = xpar[3028];  // presently not used
-  BX1I(*m_Out,"    Nalgo",  Nalgo,    " Kinematic algorithm type (unused)[3028]        =");
+//  Nalgo  = xpar[3028];  // presently not used
+//  BX1I(*m_Out,"    Nalgo",  Nalgo,    " Kinematic algorithm type (unused)[3028]        =");
 
 
   BXTXT(*m_Out,"========= PHYSICS DATA/CONSTANTS =======");
@@ -162,8 +181,8 @@ void KKdbase::Initialize(double xpar[] )
     T3f[KF]    = xpar[500+10*KF+4]/2;  // izospin, L-hand component
     fmcon[KF]  = xpar[500+10*KF+5];    // constituent mass
     fmass[KF]  = xpar[500+10*KF+6];    // current fermion mass
-	if(IsGenerated[KF] ==1 )
-	   BX1I(*m_Out,"       KF",     KF,    " Active fermion in the initial or final state   =");
+    if(IsGenerated[KF] ==1 )
+       BX1I(*m_Out,"       KF",     KF,    " Active fermion in the initial or final state   =");
   }// for j
 
   BX1F(*m_Out,"  MasPhot", MasPhot," Photon mass, IR regulator       [510] =");

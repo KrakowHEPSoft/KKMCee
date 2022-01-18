@@ -114,7 +114,7 @@ if(m_IsFSR == 1) {
    } else {
       CosTheta =m_Event->m_CosTheta; // Born
       the = acos(CosTheta);
-      if( m_Event->m_EventCounter <50){
+      if( m_Event->m_EventCounter <5){
          (*m_Out)<< ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
          cout    << ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
       }//EventCounter
@@ -320,7 +320,7 @@ for(int i=1; i<= m_nphot; i++){
    } else {
       CosTheta =m_Event->m_CosTheta;
       the = acos(CosTheta);
-      if( m_Event->m_EventCounter <50){
+      if( m_Event->m_EventCounter <5){
         (*m_Out)<< ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
         cout    << ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
       }//EventCounter

@@ -204,7 +204,7 @@ void TRobolKKMC::Production(double &iEvent)
 //--------------------------------------------------------------------
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 //if( Event->m_KeyDBG == 1){
-  if(m_NevGen<50){
+  if(m_NevGen<5){
   (*f_Out)<< ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
   cout    << ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
   }//NevGen

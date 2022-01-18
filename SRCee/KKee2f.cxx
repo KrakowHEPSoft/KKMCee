@@ -253,8 +253,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 void KKee2f::InitParams(){
 
 for(int j=1; j<=16; j++ ) {
-	m_MminCEEX[j] = m_xpar[500+10*j +8];
-//	cout<<"KKhh2f::InitParams: j="<<j<<"  m_MminCEEX[j]="<<m_MminCEEX[j]<<endl;
+       m_MminCEEX[j] = m_xpar[500+10*j +8];
+//       cout<<"KKhh2f::InitParams: j="<<j<<"  m_MminCEEX[j]="<<m_MminCEEX[j]<<endl;
 }
 //----------------------------------------------------------------------------
 //-- The final particle flavor switches in KKMCee are parameters
@@ -280,11 +280,11 @@ cout<< "%%%%%%%%%%%%%% SetFinalStates end %%%%%%%%%%%%%%%%%%%%%%%%%%%%"<<endl;
 } //InitParams
 
 void KKee2f::FoamInitA(){
-	// Foam object initialization
+// Foam object initialization
     cout<<"-----------------------FoamInitA start-------------------------------"<<endl;
     int nDim, kDim;
     nDim = 0;                   // simplices
-	m_RhoMode = 5;              // Foam integrand type
+    m_RhoMode = 5;              // Foam integrand type
     kDim = 5;                   // hyperrectangles:  KF+BES1+BES2+ISR+Theta=5
     if(DB->KeyBES == 0) kDim=3;  // BES off
     f_FoamI->SetnDim(nDim);     // simplicial dimensions
@@ -300,31 +300,23 @@ void KKee2f::FoamInitA(){
     // cos(theta) generation is frozen
     f_FoamI->SetInhiDiv(1, 1);
 //----------------------------------------------
-    int nCells   = m_xpar[3021]; // move to database?
-    int Vopt     = m_xpar[3022];
-    int nSampl   = m_xpar[3023];
-    int nBins    = m_xpar[3024];
-    int EvPerBin = m_xpar[3025];
-    int KeyWgt   = m_xpar[3026]; // move to database?
-    int OptDrive = 2;            // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
-    double WtMaxRej = m_xpar[3027];
-    f_FoamI->SetnCells(nCells);     // Maximum number of cells
-    f_FoamI->SetOptRej(1-KeyWgt);   // KeyWgt = 0 constant wt, 1 = variable wt
-    f_FoamI->SetMaxWtRej(WtMaxRej); // Maximum weight for rejection.
-    f_FoamI->SetOptVert(Vopt);      // 0 = Vertices stored, 1 = not stored.
-    f_FoamI->SetnSampl(nSampl);     // Number of MC sampling inside single cell
-    f_FoamI->SetnBin(nBins);        // Number of bins for edge explorations
-    f_FoamI->SetEvPerBin(EvPerBin); // Events per bin during buildup.
-    f_FoamI->SetOptEdge(    0);     // OptEdge excludes vertices
-    f_FoamI->SetOptDrive(OptDrive); // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
-    f_FoamI->SetOptOrd(     0);     // 0: nDim// simplices, 1: single simplex
-    f_FoamI->SetOptPeek(    0);     // Choose max. cell (0) or random (1) in build
-    f_FoamI->SetOptMCell(   1);     // 1: Megacell = slim memory
-    f_FoamI->SetChat(       1);     // printout level =0,1,2
+    f_FoamI->SetnCells(  DB->Foam_nCells);   // Maximum number of cells
+    f_FoamI->SetOptRej(  DB->Foam_OptRej);   // OptRej =1 constant wt, =1 variable wt
+    f_FoamI->SetMaxWtRej(DB->Foam_WtMaxRej); // Maximum weight for rejection.
+    f_FoamI->SetOptVert( DB->Foam_Vopt);     // 0 = Vertices stored, 1 = not stored.
+    f_FoamI->SetnSampl(  DB->Foam_nSampl);   // Number of MC sampling inside single cell
+    f_FoamI->SetnBin(    DB->Foam_nBins);    // Number of bins for edge explorations
+    f_FoamI->SetEvPerBin(DB->Foam_EvPerBin); // Events per bin during buildup.
+    f_FoamI->SetOptDrive(DB->Foam_OptDrive); // Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
+    f_FoamI->SetOptEdge(        0); // OptEdge excludes vertices
+    f_FoamI->SetOptOrd(         0); // 0: nDim// simplices, 1: single simplex
+    f_FoamI->SetOptPeek(        0); // Choose max. cell (0) or random (1) in build
+    f_FoamI->SetOptMCell(       1); // 1: Megacell = slim memory
+    f_FoamI->SetChat(           1); // printout level =0,1,2
 
     cout<<"Creating FOAM grid in "<<nDim + kDim<< " dimensions"<<endl;
-	m_FoamMode = 1;  // initialization mode
-	m_Icont =0;
+    m_FoamMode = 1;  // initialization mode
+    m_Icont =0;
     f_FoamI->Initialize(f_RNgen,this);
 
     // Needed to determine nCalls from generation only
@@ -333,8 +325,8 @@ void KKee2f::FoamInitA(){
     //
     m_XsPrim = f_FoamI->GetPrimary();  // Primary (crude) Integral from initialization
 
-    if (KeyWgt == 0) {
-        cout<<"FOAM Initialization: fixed weight    "<<endl;
+    if (DB->Foam_OptRej == 1) {
+        cout<<"FOAM Initialization: contant weight  "<<endl;
     } else {
         cout<<"FOAM Initialization: variable weight "<<endl;
     }
@@ -753,7 +745,9 @@ int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
 
 //////////////////////////////////////////////////////////////////////
 m_WtMain=WtBest*m_WtCrude;
-
+// Important!!!!!!!
+if( DB->Foam_OptRej == 1) XsPrimPb *= DB->Foam_WtMaxRej;
+// !!!!!
 double WTmax = DB->WTmax;
 if(DB->KeyWgt == 0) {
 // ***** CONSTANT-WEIGHT events *****
@@ -880,8 +874,8 @@ void KKee2f::ReaData(const char *DiskFile, int imax, double xpar[])
     }else{
       InputFile>>indx>>value;
       if(indx<0 || indx>abs(imax) ){
-	cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
-	exit(0);
+       cout<<" ++++++++ReaData: wrong indx = "<<indx<<endl;
+       exit(0);
       }
       xpar[indx] = value;
       //xpar[indx-1] = value; // correction for fortran indexing in input file

@@ -112,7 +112,7 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
      } else {
        CosTheta =m_Event->m_CosTheta;
        the = acos(CosTheta);
-       if( m_Event->m_EventCounter <50){
+       if( m_Event->m_EventCounter <5){
          (*m_Out)<< "////KKarLud::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
          cout<<     "////KKarLud::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
        }//EventCounter
