@@ -54,6 +54,18 @@ $(BM3).pdf: $(BM3).txp
 $(BM3)-pdf: klean $(BM3).pdf
 	evince  $(BM3).pdf
 ###################################################
+###################################################
+#      make Tab2-pdf
+Tab2.phony: PlotNU
+	(./PlotNU; touch PlotNU.phony;)
+####
+BM2 = Tab2
+$(BM2).txp:   Tab2.phony
+$(BM2).pdf: $(BM2).txp
+#	pdflatex $(BM2).txp
+$(BM2)-pdf: klean $(BM2).pdf
+	evince  $(BM2).pdf
+###################################################
 
 ###################################################
 klean:

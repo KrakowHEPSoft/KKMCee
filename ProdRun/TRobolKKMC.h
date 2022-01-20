@@ -51,6 +51,11 @@ class TRobolKKMC : public TRobol
 
  TH1D   *hst_vaNuElCeex2;           //!  No streamer!!!
  TH1D   *hst_vaNuMuCeex2;           //!  No streamer!!!
+ TH1D   *hst_vaNuTaCeex2;           //!  No streamer!!!
+
+ TH1D   *hst_vxNuElCeex2;           //!  No streamer!!!
+ TH1D   *hst_vxNuMuCeex2;           //!  No streamer!!!
+ TH1D   *hst_vxNuTaCeex2;           //!  No streamer!!!
 
  //
  TH2D   *sca_r1r2;            //!  No streamer!!!

@@ -70,8 +70,6 @@ void TRobolKKMC::Hbooker()
   double delv = 0.012;
   int nbin=200;
   hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 8.0);
-  hst_WtMain4  = TH1D_UP("hst_WtMain4" , "MC weight Main",   nbin, 0.00 , 8.0);
-  hst_WtMain8  = TH1D_UP("hst_WtMain8" , "MC weight Main",   nbin, 0.00 , 8.0);
   hst_WtMain200  = TH1D_UP("hst_WtMain200" , "MC weight Main",   10*nbin, 0.00 , 200.0);
   hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 8.0);
   hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 8.0);
@@ -105,12 +103,11 @@ void TRobolKKMC::Hbooker()
   double vv1    = vvZ-0.020;
   //vv2 = vvZ*rat;
   //vv1 = vvZ/rat;
-  cout<< "TRobolKKMC::Hbooker: CMSene="<<CMSene<<"  MZ="<<MZ<<endl;
 //
   hst_LnThPhAll = TH1D_UP("hst_LnThPhAll", "ln10(sin(theta)) all phot.",  60, -6.0 ,0.0);
   hst_LnThPhVis = TH1D_UP("hst_LnThPhVis", "ln10(sin(theta)) vis. phot.", 60, -6.0 ,0.0);
 //
-  nbv =150;   // too small
+  nbv =100;   // too small
   hst_vtNuCeex2 = TH1D_UP("hst_vtNuCeex2",  "dSig/dvTrue ",    nbv, 0.000 ,1.000);
   hst_vaNuCeex2 = TH1D_UP("hst_vaNuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
 //
@@ -125,8 +122,14 @@ void TRobolKKMC::Hbooker()
   hst_nPhAll  = TH1D_UP("hst_nPhAll" , "No. of photons, all",   8, -0.5 ,7.5);
   hst_nPhVis  = TH1D_UP("hst_nPhVis" , "No. photons, E>10MeV",  8, -0.5 ,7.5);
 
+  nbv =100;
   hst_vaNuElCeex2 = TH1D_UP("hst_vaNuElCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
   hst_vaNuMuCeex2 = TH1D_UP("hst_vaNuMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vaNuTaCeex2 = TH1D_UP("hst_vaNuTaCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+
+  hst_vxNuElCeex2 = TH1D_UP("hst_vxNuElCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vxNuMuCeex2 = TH1D_UP("hst_vxNuMuCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
+  hst_vxNuTaCeex2 = TH1D_UP("hst_vxNuTaCeex2",  "dSig/dv WTmain ", nbv, 0.000 ,1.000);
 
 }//Hbooker
 ///////////////////////////////////////////////////////////////////////////////
@@ -227,8 +230,6 @@ void TRobolKKMC::Production(double &iEvent)
 //          HISTOGRAMMING
 // ****************************************************************
   hst_WtMain->Fill(WtMain);
-  hst_WtMain4->Fill(WtMain);
-  hst_WtMain8->Fill(WtMain);
   hst_WtMain200->Fill(WtMain);
 //
   hst_WtFoam->Fill(WtFoam);
@@ -289,14 +290,20 @@ if(  nph_vis > 0 )hst_nPhVis->Fill(  nph_vis,WtMain);
 /// Warning: vPhot not necessarily for the hardest triggered photon!!!
 double vPhot = 2*phEneVis/CMSene;
 //-----------------------------------------
+if( KFfin==12 ) hst_vxNuElCeex2->Fill( vv, WtCEEX2); // wide v-range
+if( KFfin==14 ) hst_vxNuMuCeex2->Fill( vv, WtCEEX2); // wide v-range
+if( KFfin==16 ) hst_vxNuTaCeex2->Fill( vv, WtCEEX2); // wide v-range
+//-----------------------------------------
+// photon tagging
 if( nph_vis >= 1){
   hst_vaNuCeex2->Fill( vPhot, WtCEEX2); /// tagged, full v-range
 /// nu_el and nu_mu separately
-  if( KFfin==12 ) hst_vaNuElCeex2->Fill( vPhot, WtCEEX2); // wide range
-  if( KFfin==14 ) hst_vaNuMuCeex2->Fill( vPhot, WtCEEX2); // wide range
+  if( KFfin==12 ) hst_vaNuElCeex2->Fill( vPhot, WtCEEX2); // wide v-range
+  if( KFfin==14 ) hst_vaNuMuCeex2->Fill( vPhot, WtCEEX2); // wide v-range
+  if( KFfin==16 ) hst_vaNuTaCeex2->Fill( vPhot, WtCEEX2); // wide v-range
 /// comparing Nuel with Numu
-  if( KFfin==12 ) hst_vPhotNuel->Fill( vPhot, WtCEEX2); // narrow
-  if( KFfin==14 ) hst_vPhotNumu->Fill( vPhot, WtCEEX2); // narrow
+  if( KFfin==12 ) hst_vPhotNuel->Fill( vPhot, WtCEEX2); // v-narrow
+  if( KFfin==14 ) hst_vPhotNumu->Fill( vPhot, WtCEEX2); // v-narrow
 /// histos with restricted v-range
   hst_vvNuCeex1->Fill( vPhot, WtCEEX1);
   hst_vvNuCeex2->Fill( vPhot, WtCEEX2);
@@ -307,6 +314,7 @@ if( nph_vis >= 1){
 //  hst_evNuCeex12->Fill(phEneVis, WtCEEX1-WtCEEX2);
   }// nph_vis
 }// NuYes
+//======================================================
 
 //-----------------------------------------------------
 //----------------- BES corner ------------------------

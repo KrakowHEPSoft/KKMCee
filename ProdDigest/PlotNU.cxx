@@ -30,7 +30,9 @@ TString FileA= "../ProdRun/workNU/histo.root";
 
 //TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
 //TString FileA= "../ProdRun/workNU/histo.root_161GeV_7G";
-//
+
+FILE *DiskFileTeX;
+
 ///////////////////////////////////////////////////////////////////////////////////
 //              GLOBAL stuff
 ///////////////////////////////////////////////////////////////////////////////////
@@ -75,8 +77,6 @@ void HistNormalize(){
   //
   //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain") );
   //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtFoam") );
-  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain4") );
-  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_WtMain8") );
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_nPhot") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_CosTheta") );
@@ -97,6 +97,11 @@ void HistNormalize(){
 
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vaNuMuCeex2") );
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vaNuElCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vaNuTaCeex2") );
+
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vxNuMuCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vxNuElCeex2") );
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA->Get("hst_vxNuTaCeex2") );
 
 }//HistNormalize
 
@@ -107,7 +112,7 @@ void FigWtMain()
 //------------------------------------------------------------------------
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
-  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
 //  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain200");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   //////////////////////////////////////////////
@@ -462,7 +467,56 @@ void FigNuDif2()
   if( g105GeVyes) cNuDif2->SaveAs("cNuDif2_105GeV.pdf");
 }//FigNuDif2
 
+///////////////////////////////////////////////////////////////////////////////////
+void Table2(){
+//------------------------------------------------------------------------
+  cout<<" ========================= Table2 start=========================== "<<endl;
+  TH1D *hst_vxNuElCeex2   = (TH1D*)DiskFileA->Get("hst_vxNuElCeex2");   //
+  TH1D *hst_vxNuMuCeex2   = (TH1D*)DiskFileA->Get("hst_vxNuMuCeex2");   //
+  TH1D *hst_vxNuTaCeex2   = (TH1D*)DiskFileA->Get("hst_vxNuTaCeex2");   //
+  //
+  TH1D  *hst_vxNuElcum   =HstCumul("hst_vxNuElcum", hst_vxNuElCeex2);
+  TH1D  *hst_vxNuMucum   =HstCumul("hst_vxNuMucum", hst_vxNuMuCeex2);
+  TH1D  *hst_vxNuTacum   =HstCumul("hst_vxNuTacum", hst_vxNuTaCeex2);
 
+// Column captions
+  int nPlt=3;   //
+  Char_t *Capt[nPlt+1];
+  for( int i=0; i<=nPlt; i++ ) Capt[i]=new char[132];
+  strcpy(Capt[0],"{\\color{blue}$v_{\\max}$}");
+  strcpy(Capt[1],"{\\color{blue} $\\nu_{e}$ }");
+  strcpy(Capt[2],"{\\color{blue} $\\nu_{\\mu}$ }");
+  strcpy(Capt[3],"{\\color{blue} $\\nu_{\\tau}$ }");
+
+// multicolumn caption
+  Char_t Mcapt[132];
+  strcpy(Mcapt,"{\\color{red}$\\sigma(v_{\\max})$ [pb]}");
+
+///************************************
+  DiskFileTeX = fopen("Tab2.txp","w");
+//************************************
+// Initialization of the latex source file
+  PlInitialize(DiskFileTeX, 2);
+
+// pointers to histograms sigma(vmax)
+  TH1D *iHst[nPlt+1];
+  iHst[1]= hst_vxNuElcum;  //
+  iHst[2]= hst_vxNuMucum;  //
+  iHst[3]= hst_vxNuTacum;  //
+  iHst[1]->Scale(1e3);    // nano- to pico-barns
+  iHst[2]->Scale(1e3);    // nano- to pico-barns
+  iHst[3]->Scale(1e3);    // nano- to pico-barns
+  PlTable2( nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "B", 2, 2, 2); // for 100 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "T",10,90,20); // for 100 bins
+  PlTable2(-nPlt, iHst, DiskFileTeX, Capt,  Mcapt, "E",99,99, 2); // for 100 bins
+
+// finalizing latex source file
+  PlEnd(DiskFileTeX);
+//************************************
+  fclose(DiskFileTeX);
+//************************************
+  cout<<" ========================= Table2 end =========================== "<<endl;
+}//Table2
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -498,6 +552,8 @@ int main(int argc, char **argv)
 
 //  FigNuDif1();
   FigNuDif2();
+
+  Table2();
   //++++++++++++++++++++++++++++++++++++++++
   DiskFileA->ls();
   //

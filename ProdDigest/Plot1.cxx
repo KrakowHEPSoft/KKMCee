@@ -303,7 +303,6 @@ void FigWtMain()
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
   TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain");
-  TH1D *hst_WtMain8    = (TH1D*)DiskFileA->Get("hst_WtMain8");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   TH1D *hst_WtCeex2n  = (TH1D*)DiskFileA->Get("hst_WtCeex2n");
   //////////////////////////////////////////////
@@ -323,7 +322,6 @@ void FigWtMain()
   //==========plot1==============
   TH1D *HST; //
   HST = hst_WtMain; //
-//  HST = hst_WtMain8; //
   gPad->SetLogy(); // !!!!!!
   HST->SetTitle(0);
   HST->SetStats(0);

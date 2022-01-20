@@ -1,0 +1,70 @@
+********************** THIS IS INPUT FILE FOR DEMO PROGRAM *********************
+*  This is input data for CEEX matrix element
+BeginX
+********************************************************************************
+*               ACTUAL DATA FOR THIS PARTICULAR RUN
+*-------------------------------------------------------------------------------
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+    0           1000      1k   NEVT = number of events
+    0      100000000      100M NEVT = number of events
+* Center-of-mass energy [GeV]
+*    1          230e0
+    1          189e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1          161e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1          105e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1         94.3e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1         91.2e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1         87.9e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+*    1         10.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
+*indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+    9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
+* KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
+   10              1      0/1 = constant/varying weight events
+* KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
+   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
+*
+   21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
+* Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
+* For the overall precision 1e-4 one should keep vmin=1e-5.
+   16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
+** IMPORTANT: vmax is the cut on v=1-s'/s where s' is not the mass^2 of the 
+** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
+** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
+   17         0.99e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+**   17         0.10e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
+   27              2      KeyINT=xpar(27)  Default is  2
+* New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
+** which overrules KeyGPS for each type of final fermion
+*   28              0      KeyGPS=xpar(28)  Default is  1
+********************************************************************************
+*indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
+*     PrintOut from generator
+    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7             20      Ie2Pri =xpar( 7)  PrintOut End   point
+********************************************************************************
+*indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
+**     Define process
+**     Beam flavour code
+  400             11      KFini = xpar(400) dont change it                |<<<<|
+**     LIST of Final state flavours to be generated randomly
+  412              1     KFfin, neutrino electron
+  414              1     KFfin, neutrino muon
+  416              1     KFfin, neutrino tau
+********************************************************************************
+* FOAM GENERATION PARAMETERS
+ 3020       54217137      Ranmar initial random number seed (KKMC and FOAM)
+*indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
+ 3021          20000 FOAM Maximum number of cells (5000 default, 2000 for map)
+ 3022              0 FOAM Vopt: set to 0 to save vertices, 1 to NOT save them
+ 3023           5000 FOAM Number of MC samples inside single cell
+ 3024             16 FOAM Number of bins for edge-histogram in cell exploration
+ 3025             50 FOAM Events per bin during buildup
+* For unweighted events, FOAM OptRej can be 0 or 1. 
+ 3026              0 FOAM OptRej=1 for constant, =0 for variable weights (default 1)
+ 3027          1.1e0 FOAM Maximum FOAM weight for internal rejection (if used).
+ 3028              2 FOAM Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
+*********************************************************************************
+EndX
