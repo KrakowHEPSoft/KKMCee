@@ -609,6 +609,7 @@ f_NevGen++;
 m_Event->m_EventCounter = m_EventCounter;
 ////////////////////////////////////////////////
 // Foam here starts MC event generation
+m_BornDist->m_KeyDBG=1; // for debug
 e100:
 ////////////////////////////////////////////////
 m_FoamMode = -1;   // generation mode
@@ -745,6 +746,7 @@ int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
 
 //////////////////////////////////////////////////////////////////////
 m_WtMain=WtBest*m_WtCrude;
+//////[[[[[[if(m_WtMain > DB->WTmax) cout<<"%%%% m_WtMain="<<m_WtMain<<endl;
 // Important!!!!!!!
 if( DB->Foam_OptRej == 1) XsPrimPb *= DB->Foam_WtMaxRej;
 // !!!!!
@@ -896,21 +898,29 @@ void KKee2f::Finalize()
 *f_Out<< "   ****   KKMCee   Finalize ****" << endl;
 *f_Out<< "   *****************************" << endl;
 ////////////////////////////////////////////////////
-// True Crude/Primary of Foam INSIDE all rejection loops
-double XsPrimPb = f_FoamI->GetPrimary();
+// True Crude/Primary of Foam INSIDE all rejection loops [pb]
+double XsPrimPb = f_FoamI->GetPrimary()*1000.0;
 ////////////////////////////////////////////////////
 double IntNorm, Errel;
 f_FoamI->Finalize(IntNorm, Errel );      // with printouts
-// f_FoamI->GetIntNorm(IntNorm, Errel ); // without printouts
 double FoamInteg,FoamErr;
-f_FoamI->GetIntegMC(FoamInteg,FoamErr);   // true Foam integral
+f_FoamI->GetIntegMC(FoamInteg,FoamErr);   // true Foam integral [nb]
+FoamInteg *= 1000.0;                      // [pb]
 ///////////////////////////////////////////////////
 fort_close_(m_out);
 ///////////////////////////////////////////////////
-double AveWt, ErrAbs;
-m_WtMainMonit->GetAver(AveWt, ErrAbs);
-m_XsMainPb   = XsPrimPb*AveWt;
-m_XEMainPb   = XsPrimPb*ErrAbs;
+// Returns NORMALIZATION integral from Foam
+// ErrelF=0 in case of WTed events
+double IntNormF, ErrelF;
+f_FoamI->GetIntNorm(IntNormF, ErrelF ); // without printouts
+///////////////////////////////////////////////////
+// Average weight from main program
+double AveWt, ErrAbs,ErelWT;
+m_WtMainMonit->GetAver(AveWt, ErrAbs);  // [nb]
+ErelWT=ErrAbs/AveWt;
+// Total cross section
+m_XsMainPb   = IntNorm*AveWt*1000.0;    // [pb]
+m_XEMainPb   = IntNorm*sqrt(sqr(ErrelF)+sqr(ErelWT));
 BOXOPE;
 BOXTXT("****************************************");
 BOXTXT("******      KKMCee::Finalize      ******");

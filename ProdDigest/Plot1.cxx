@@ -337,7 +337,7 @@ void FigWtMain()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
   CaptT->DrawLatex(xcapt+0.20,ycapt,gTextEne);
 
-  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlack,   7.00, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlack,   1.50, "(A)", "  KKMCee CEEX2 ");
   PlotSame2(hst_WtFoam,    xcapt, ycapt, kBlue,    1.00, "(B)", "  Foam weight ");
   PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kRed,     4.00, "(C)", "  CEEX2 IFI off ");
 
@@ -384,8 +384,8 @@ void FigCosThe()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
   PlotSame2(hst_CosTheta,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
-  hst_CosThOve->Scale(100);
-  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax x100");
+  hst_CosThOve->Scale(10);
+  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax x10");
 
   cFigCosThe->SaveAs("cFigCosThe.pdf");
 

@@ -107,8 +107,8 @@ void FigWtMain()
 //------------------------------------------------------------------------
   cout<<" ========================= FigWtMain =========================== "<<endl;
   //
-//  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
-  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain200");
+  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain8");
+//  TH1D *hst_WtMain    = (TH1D*)DiskFileA->Get("hst_WtMain200");
   TH1D *hst_WtFoam    = (TH1D*)DiskFileA->Get("hst_WtFoam");
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();

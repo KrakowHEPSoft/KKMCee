@@ -32,6 +32,7 @@ class KKborn: public TObject{
  public:
  double   m_CMSene;
  int      m_icont;
+ int      m_KeyDBG;
 //------------------------------------
 // Obligatory members
   public:

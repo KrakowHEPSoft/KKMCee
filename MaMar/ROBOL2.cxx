@@ -67,8 +67,8 @@ void ROBOL2::Initialize(long &NevTot)
   double rat = 0.715/0.679215;
   double vv2    = vvZ+0.020;
   double vv1    = vvZ-0.020;
-  vv2 = vvZ*rat;
-  vv1 = vvZ/rat;
+//  vv2 = vvZ*rat; ! later version for Roy
+//  vv1 = vvZ/rat;
   int nbin =NevTot/100;
   if(nbin>1000) nbin=1000;
   //[[[

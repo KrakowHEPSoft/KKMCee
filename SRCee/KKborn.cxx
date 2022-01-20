@@ -44,6 +44,7 @@ void KKborn::Initialize()
   BXTXT(*m_Out,"======    KKborn::Initialize      ======");
   BXTXT(*m_Out,"========================================");
   m_CMSene = DB->CMSene;
+  m_KeyDBG = 0;
   *m_Out<< " Testing acces to DBase "<<endl;
   *m_Out<< " KKborn::Initialize: m_CMSene = "<<m_CMSene<<endl;
 
@@ -63,6 +64,7 @@ double KKborn::BornSimple(int KFi, int KFf, double svar, double costhe){
 double ss = svar;
 // Z and gamma couplings to beams (electrons)
 double MZ    = DB->MZ;
+double MW    = DB->MW;
 //////////
 double swsq  = DZ->D_swsq; // from Dizet!!!
 double gammz = DZ->D_GamZ; // from Dizet!!!
@@ -104,14 +106,22 @@ double yf= 2*Vf*Af;
 double ff0= Qe*Qe *Qf*Qf +2*rechi*Qe*Qf*Ve*Vf +chi2*xe*xf;
 double ff1=              +2*rechi*Qe*Qf*Ae*Af +chi2*ye*yf;
 double Born    = (1+ sqr(costhe) )*ff0 +2*costhe*ff1;
-/*
-IF(ABS(KFf).EQ.12) THEN
-* Electron neutrino, approximate, actually matters costhe=0 for primary spectrum ....
-  Coef  =1.d0/2.d0/m_swsq
-  Born  = Born+0.25*(0.75D0*(1d0-costhe)**2+0.75*(1d0+costhe)**2)
-$                   *Coef**2*ss**2/(m_MZ**2*(1-m_swsq))**2
-ENDIF
-*/
+
+////////////////////////////////////////////////////////
+// electron neutrino is special,
+// eq. (9)http://arxiv.org/abs/hep-ph/0110371v1
+double ve, tt, ChiW, sig_s, sig_st, sig_t, Born2;
+dcmplx ChiZ;
+if( KFf == 12){
+  ve = 1.0 -4.0*abs(Qe)*swsq;
+  tt = -ss*(1.0 - costhe )/2.0;
+  ChiZ= sqr(MZ)/dcmplx(-ss+sqr(MZ), -ss/MZ*gammz);
+  ChiW =       MW*MW/(-tt+MW*MW);
+  sig_s  = real(ChiZ*conj(ChiZ)) *( (1.0+sqr(costhe))*(1.0+sqr(ve)) +4.0*costhe* ve  );
+  sig_st = -4.0/3.0*real(ChiZ)*ChiW*sqr(1.0+costhe)*(1+ve);
+  sig_t  = 8.0/3.0 *sqr(ChiW)*sqr(1.0+costhe);
+  Born    = 2.0*sqr(ss/sqr(MZ))/sqr(deno)/sqr(deno) *( sig_s +sig_st +sig_t);
+}//Kff
 //     Colour factor
 Born = NCf*Born;
 if( abs(costhe) > 1) cout<< "------------> BornV: costhe="<<costhe<<endl;
