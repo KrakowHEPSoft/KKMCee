@@ -1,4 +1,5 @@
 // make PlotNU-run
+// make Tab2-pdf
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +27,10 @@ using namespace std;
 //=============================================================================
 TFile *DiskFileA;
 
-TString FileA= "../ProdRun/workNU/histo.root";
+//TString FileA= "../ProdRun/workNU/histo.root";
+
+TString FileA= "../ProdRun/workNU/histo.root_161_GeV_WTed_1G";
+//TString FileA= "../ProdRun/workNU/histo.root_189GeV_WT=1_1G";
 
 //TString FileA= "../ProdRun/workNU/histo.root_105GeV_4G";
 //TString FileA= "../ProdRun/workNU/histo.root_161GeV_7G";

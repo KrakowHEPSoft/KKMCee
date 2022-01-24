@@ -20,7 +20,7 @@ BeginX
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
     9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
-   10              1      0/1 = constant/varying weight events
+   10              0      0/1 = constant/varying weight events
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
@@ -63,7 +63,7 @@ BeginX
  3024             16 FOAM Number of bins for edge-histogram in cell exploration
  3025             50 FOAM Events per bin during buildup
 * For unweighted events, FOAM OptRej can be 0 or 1. 
- 3026              0 FOAM OptRej=1 for constant, =0 for variable weights (default 1)
+ 3026              1 FOAM OptRej=1 for constant, =0 for variable weights (default 1)
  3027          1.1e0 FOAM Maximum FOAM weight for internal rejection (if used).
  3028              2 FOAM Drive = 0, 1, 2 (TrueVol, Sigma, WtMax)
 *********************************************************************************
