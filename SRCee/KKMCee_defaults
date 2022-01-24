@@ -29,7 +29,7 @@ BeginX
 *     At present all internal monitoring fits into (idyfs+1,idyfs+100)
     8            600\\\\\\IdYFS\\\\\\\\\\\\\pointer for internal histos\\\\\\\\\
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-    9          3.0e0      WtMax =xpar( 9)   Maximum weight for rejection
+    9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 *     KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              0      KeyWgt=xpar(10) Deafault is 0
 *     IdeWgt IDENT of the EEX principal weight, not for CEEX! NEVER TOUCH IT!

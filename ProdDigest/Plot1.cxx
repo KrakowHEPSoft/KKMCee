@@ -30,8 +30,11 @@ TFile *DiskFileA;
 TFile *DiskFileF;
 TFile *DiskFileB;
 
-TString FileA= "../ProdRun/work1/histo.root";
+//TString FileA= "../ProdRun/work1/histo.root";
 //TString FileF= "../ProdRun/workFoam/histo.root";
+
+TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_WT=1_100M"; // Jan2022
+//TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_WT=1_37M";
 //
 //TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_787M"; // Jan2022
 //TString FileA= "../ProdRun/work1/histo_189GeV_4G.root";  //old
@@ -335,9 +338,9 @@ void FigWtMain()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
   CaptT->DrawLatex(xcapt+0.20,ycapt,gTextEne);
 
-  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlack,   1.50, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtMain,    xcapt, ycapt, kBlack,   1.20, "(A)", "  KKMCee CEEX2 ");
   PlotSame2(hst_WtFoam,    xcapt, ycapt, kBlue,    1.00, "(B)", "  Foam weight ");
-  PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kRed,     4.00, "(C)", "  CEEX2 IFI off ");
+  PlotSame2(hst_WtCeex2n,  xcapt, ycapt, kRed,     0.80, "(C)", "  CEEX2 IFI off ");
 
   cFigWtMain->SaveAs("cFigWtMain.pdf");
 }//FigWtMain()
@@ -382,8 +385,8 @@ void FigCosThe()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #mu^{+} #mu^{-}");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
   PlotSame2(hst_CosTheta,    xcapt, ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
-  hst_CosThOve->Scale(10);
-  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax x10");
+  hst_CosThOve->Scale(100);
+  PlotSame2(hst_CosThOve,    xcapt, ycapt, kRed,    0.80, "(B)", "  WT>WTmax x100");
 
   cFigCosThe->SaveAs("cFigCosThe.pdf");
 
