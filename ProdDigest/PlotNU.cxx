@@ -128,7 +128,7 @@ void FigWtMain()
   CaptT->SetNDC(); // !!!
   CaptT->SetTextSize(0.035);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","cFigWtMain: general info ",  gXcanv,  gYcanv,    500,  500);
+  TCanvas *cFigWtMain = new TCanvas("cFigWtMain","cFigWtMain: general info ",  gXcanv,  gYcanv,    1000,  500);
   //                                  Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
   cFigWtMain->SetFillColor(10);
@@ -141,6 +141,7 @@ void FigWtMain()
   HST->SetStats(0);
   HST->GetXaxis()->SetTitle("WT");
   HST->GetXaxis()->SetLabelSize(0.04);
+  HST->SetMinimum(1e-5*HST->GetMaximum());
   HST->DrawCopy("h");
 
   CaptT->DrawLatex(0.06,0.95, "Events");
@@ -149,7 +150,7 @@ void FigWtMain()
   CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #nu#bar{#nu}(+n#gamma)");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
 
-  PlotSame2(hst_WtMain,    xcapt,  ycapt, kBlue,   0.30, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_WtMain,    xcapt,  ycapt, kBlue,   2.30, "(A)", "  KKMCee CEEX2 ");
   PlotSame2(hst_WtFoam,    xcapt,  ycapt, kRed,    1.00, "(B)", "  Foam weight ");
 
   cFigWtMain->SaveAs("cFigWtMain.pdf");

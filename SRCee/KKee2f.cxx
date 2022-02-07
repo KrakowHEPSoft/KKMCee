@@ -446,6 +446,7 @@ if( DB->KeyINT == 0)        m_Event->m_Xenph = 1.0; // no enhancement for IFI of
 double R,gamiCR,gami,alfi;
 double amfin = DB->fmass[m_KFfin];
 double vvmax = min(DB->vvmax, 1.0 - sqr(amfin/m_XXXene));
+if( vvmax< DB->vvmin) return 0.0;
 double RhoISR=1, dJac;
 if ( DB->KeyISR == 1) {
   MakeGami(m_KFini,m_XXXene,gamiCR,gami,alfi);
@@ -596,7 +597,7 @@ void KKee2f::MapPlus( double r, double gam, double vvmax, double &v, double &dJa
       }
   }
   if( v<0 || v>1) {
-      cout<<"STOP in TMCgenFOAM::MapPlus: +++ v = "<<v<<endl;
+      cout<<"STOP in TMCgenFOAM::MapPlus: +++ v = "<<v<<"   vvmax="<<vvmax<<endl;
       exit(11);
   }
 }// MapPlus

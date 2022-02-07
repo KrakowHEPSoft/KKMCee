@@ -20,7 +20,9 @@ BeginX
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
     9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
-   10              0      0/1 = constant/varying weight events
+   10              1      0/1 = constant/varying weight events
+*     KeyThe     Foam genetation of the fermion Theta angle =0, flat, =1 Born
+   14              1      KeyThe=xpar(14) Default =1 for Born distribution
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
 *

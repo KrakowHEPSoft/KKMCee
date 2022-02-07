@@ -154,8 +154,8 @@ void FigBES2()
   //OptSurf="col"; // 2D histogram, color
   //OptSurf="colz"; // 2D kolorowe paski, ze skala
   //OptSurf="surf1 "; // 3D surface color
-  //OptSurf="lego2 "; // 3D histogram color
-  OptSurf="surf3 "; // 3D histogram, z plotem "na dachu"
+  OptSurf="lego2 "; // 3D histogram color
+  //OptSurf="surf3 "; // 3D histogram, z plotem "na dachu"
   //OptSurf="surf2z"; // 3D kolorowe paski, ze skala
   //OptSurf="surf2 "; // 3D kolorowe paski bez skali
   //OptSurf="surf4 "; // 3D gladka powierchnia
@@ -173,7 +173,7 @@ void FigBES2()
   cFigBES2->cd();
 //  gPad->SetLogz(); // !!!!!!
 
-  gPad->SetTheta(25);
+  gPad->SetTheta(35);
   gPad->SetPhi( -70);
   TH2D *Scat1= sca_r1r2;
 
@@ -192,10 +192,12 @@ void FigBES2()
 
   sca_r1r2->DrawCopy(OptSurf);
 
-//  CaptT->DrawLatex(0.10,0.95,"Gaussian Beam Enegy Spread");
+//  CaptT->DrawLatex(0.10,0.95,"Gaussian Beam Energy Spread");
   CaptT->DrawLatex(0.10,0.95,"Beamstrahlung Energy Spread");
 
   cFigBES2->SaveAs("cFigBES2.pdf");
+//  cFigBES2->SaveAs("cFigBES2.jpg");
+  cFigBES2->SaveAs("cFigBES2.png");
 }//FigBES2
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -67,10 +67,11 @@ void TRobolKKMC::Hbooker()
   f_HstFile->cd();
   //  ************* user histograms  *************
   //   for muon pairs
-  double delv = 0.012;
+  double delv = 0.007;
+  delv = 0.0025; // for beamstrahlung
   int nbin=200;
   hst_WtMain   = TH1D_UP("hst_WtMain" ,  "MC weight Main",   nbin, 0.00 , 8.0);
-  hst_WtMain200  = TH1D_UP("hst_WtMain200" , "MC weight Main",   10*nbin, 0.00 , 200.0);
+  hst_WtMain200  = TH1D_UP("hst_WtMain200" , "MC weight Main",10*nbin, 0.00 , 100.0);
   hst_WtFoam   = TH1D_UP("hst_WtFoam" ,  "MC weight Foam",   nbin, 0.00 , 8.0);
   hst_WtCeex2n = TH1D_UP("hst_WtCeex2n" ,"WTmain IFI off",   nbin, 0.00 , 8.0);
 
