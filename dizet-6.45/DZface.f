@@ -38,8 +38,8 @@
 *//                                                                                     //
 */////////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-      INCLUDE '../bornv/BornV.h'
-*       INCLUDE 'BornV.h'
+**      INCLUDE '../bornv/BornV.h'
+      INCLUDE 'BornV.h'
       INCLUDE 'DZface.h'
       INCLUDE 'BXformat.h'
       DOUBLE PRECISION  xpar(*)
@@ -290,8 +290,8 @@ c))))))))))))))))))))))))))))))))))))))
 *//                                                                                     //
 */////////////////////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-      INCLUDE '../bornv/BornV.h'
-*      INCLUDE 'BornV.h'
+**      INCLUDE '../bornv/BornV.h'
+      INCLUDE 'BornV.h'
       INCLUDE 'DZface.h'
       DOUBLE PRECISION  ww,x,cosi
       DOUBLE PRECISION  QCDcorR(20)
@@ -417,8 +417,8 @@ c))))))))))))))))))))))))))))))))))))))
 *//       Write tables into DiskFile                              //
 *///////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-      INCLUDE '../bornv/BornV.h'
-*      INCLUDE 'BornV.h'
+**      INCLUDE '../bornv/BornV.h'
+      INCLUDE 'BornV.h'
       INCLUDE 'DZface.h'
       CHARACTER*(*) DiskFile
       INTEGER KFfin
@@ -502,8 +502,8 @@ c))))))))))))))))))))))))))))))))))))))
 *//   Used in Tabluj and also in program testing tables                 //
 */////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-      INCLUDE '../bornv/BornV.h'
-*      INCLUDE 'BornV.h'
+**      INCLUDE '../bornv/BornV.h'
+      INCLUDE 'BornV.h'
       INCLUDE 'DZface.h'
       INTEGER           iBox
       DOUBLE COMPLEX    GSW(*)
@@ -654,8 +654,8 @@ c[[[         GSW(6)=1 -PIRE
       SUBROUTINE DZface_MakeQCDcor(ww,QCDcor)
 */////////////////////////////////////////////////////////////////////////
       IMPLICIT NONE
-      INCLUDE '../bornv/BornV.h'
-*      INCLUDE 'BornV.h'
+**      INCLUDE '../bornv/BornV.h'
+      INCLUDE 'BornV.h'
       INCLUDE 'DZface.h'
       DOUBLE PRECISION ww, ene, AlfQED             ! Input
       DOUBLE PRECISION ALPHTT,ALPHXI, QCDcor(0:14) ! Output

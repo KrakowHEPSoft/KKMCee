@@ -1,2 +1,0 @@
-latex $1.tex
-xdvi -nogrey  $1

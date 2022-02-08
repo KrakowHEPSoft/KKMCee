@@ -1,6 +1,0 @@
-
-latex $1.tex
-dvips $1.dvi
-rm $1.dvi
-ghostview -bg white -fg black  -magstep -1  $1.ps& 
-

@@ -1,5 +1,0 @@
-
-ReaData.f is actualy not used but linked.
-It may in future help to connect with c++ programs.
-
-YFSini2.f not realy used (only for special tests) but linked.

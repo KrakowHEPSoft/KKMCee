@@ -1,6 +1,0 @@
-#!/bin/sh
-set -v
-../tbmain.exe < ./tbwork2.data
-mv ./tb.hst    ./tbwork2.hst
-mv ./tb.output ./tbwork2.output
-exit 0  

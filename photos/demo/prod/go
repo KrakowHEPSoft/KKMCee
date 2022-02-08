@@ -1,5 +1,0 @@
-
-#!/bin/sh
-set -v
-../phodem.exe #< ./dane.dat #>./tempora.out
-exit 0  

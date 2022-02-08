@@ -1,9 +1,0 @@
-latex $1.txp
-dvips -E $1.dvi -o $1.eps
-kghostview -orientation portrait $1.eps
-###gv -geometry +50+100   -magstep -1 -bg white -fg black $1.eps
-###gv -geometry 635x600+0+0   -magstep  3 -bg white -fg black $1.eps
-###gv -geometry 635x600+0+0   -magstep -1 -bg white -fg black $1.eps
-###gv -geometry 650x800+0+100 -magstep -1 -bg white -fg black $1.eps
-###gv -geometry 635x600+0+0   -magstep  1 -bg white -fg black $1.eps
-###ghostview -bg white -fg black  $1.eps

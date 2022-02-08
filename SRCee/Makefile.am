@@ -36,7 +36,6 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						TauPair.cxx
 libKKee_la_LIBADD =  \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
-	$(top_builddir)/glibk/libGlibk.a \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
 libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)

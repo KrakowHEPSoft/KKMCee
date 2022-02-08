@@ -41,28 +41,13 @@ AC_LINK_IFELSE(
 QUEUE_CMD
 CLASS_CMD 
 
-##AC_OUTPUT(Makefile \
 
 AC_CONFIG_FILES([Makefile \
-glibk/Makefile \
-bornv/Makefile \
 dizet/Makefile \
-KK2f/Makefile \
 jetset/Makefile \
-tauola/Makefile \
-photos/Makefile  \
 tauola-photos/Makefile  \
-KKsem/Makefile \
 Foam2/Makefile \
 MCdev/Makefile MCdev/farming/Makefile \
-ffbench/Makefile ffbench/Plots/Makefile \
-MaMar/Makefile MaMar/Plots/Makefile MaMar/test0/Makefile MaMar/workAFB/Makefile \
-               MaMar/workZinv/Makefile MaMar/workFSR/Makefile \
-               MaMar/workFOAM/Makefile MaMar/workFoam0/Makefile MaMar/workFoam3/Makefile  MaMar/workFOAM1/Makefile \
-               MaMar/workKKMC/Makefile \
-               yfspro/Makefile yfspro/pubfig/Makefile yfspro/libfig/Makefile \
-RHadr/Makefile RHadr/Plots/Makefile \
-fcc/Makefile fcc/workDEV/Makefile \
 SRCee/Makefile \
 DZface/Makefile \
 ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \

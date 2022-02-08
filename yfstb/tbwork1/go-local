@@ -1,4 +1,0 @@
-#!/bin/sh
-set -v
-./tbmain.exe < ./tbwork1.data
-exit 0  

@@ -81,7 +81,7 @@ C of generation variables, have to be chosen reasonably as well.
       END
 
       SUBROUTINE INISAMPL2
-      include '../tauola/TAUDCDsize.inc'
+      include 'TAUDCDsize.inc'
       COMMON /SAMPL2/ PROB1(NM2),PROB2(NM2),AM2(NM2),GAM2(NM2),AM3(NM2),GAM3(NM2)
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU             
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1                
@@ -123,7 +123,7 @@ C initialization for 2 scalars
       END
 
       SUBROUTINE INISAMPL3
-      include '../tauola/TAUDCDsize.inc'
+      include 'TAUDCDsize.inc'
       COMMON /SAMPL3/ PROB1(NM3),PROB2(NM3),AMRX(NM3),GAMRX(NM3),AMRA(NM3),GAMRA(NM3),AMRB(NM3),GAMRB(NM3)
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU             
      *                 ,AMPIZ,AMPI,AMRO,GAMRO,AMA1,GAMA1                
@@ -247,7 +247,7 @@ C     XXXXA CORRESPOND TO S2 CHANNEL !
       END
 
       SUBROUTINE INISAMPL4
-      include '../tauola/TAUDCDsize.inc'
+      include 'TAUDCDsize.inc'
       COMMON /SAMPL4/ PROB1(NM4),PROB2(NM4),AMRX(NM4),GAMRX(NM4),AMRA(NM4),GAMRA(NM4)
 
       COMMON / PARMAS / AMTAU,AMNUTA,AMEL,AMNUE,AMMU,AMNUMU             
@@ -298,7 +298,7 @@ C initialization for 4 scalars
       END
 
       SUBROUTINE INISAMPL5
-      include '../tauola/TAUDCDsize.inc'
+      include 'TAUDCDsize.inc'
       REAL*8          AMOM,GAMOM
       COMMON /SAMPL5/ PROBa2(NM5),PROBOM(NM5),ama2(NM5),gama2(NM5),AMOM(NM5),GAMOM(NM5)
 
@@ -347,7 +347,7 @@ C initialization for 5 scalars
       COMMON / TAUBRA / GAMPRT(500),JLIST(500),NCHAN
       COMMON / TAUKLE / BRA1,BRK0,BRK0B,BRKS
       REAL*4            BRA1,BRK0,BRK0B,BRKS
-      include '../tauola/TAUDCDsize.inc'
+      include 'TAUDCDsize.inc'
       INTEGER JMAX
       PARAMETER (JMAX=9)
       COMMON / TAUDCD /IDFFIN(JMAX,NMODE),MULPIK(NMODE)
@@ -1286,7 +1286,7 @@ C initialization form KK
 *
 *     called by : KORALZ
 * ----------------------------------------------------------------------
-      include '../tauola/new-currents/RChL-currents/parameter.inc'
+      include 'new-currents/RChL-currents/parameter.inc'
       INCLUDE "BXformat.h"
       INTEGER   INUT,IOUT
       COMMON /INOUT/  
