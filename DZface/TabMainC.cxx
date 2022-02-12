@@ -14,11 +14,7 @@ using namespace std;
 #include "TFile.h"
 
 extern "C" {
-  void fort_open_( const int&, const char*, int);
-  void fort_close_(const int&);
-  void bornv_initialize_(double[]);
   void hhdizet_initialize_(double[]);
-  void readataz_(const int&, const int&, double[]);
 }
 
 void ReaData(const char *DiskFile, int imax, double xpar[]);
@@ -38,14 +34,6 @@ int main()
   ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 means no-zeroing
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // c++ indexing in ypar
 
-//=============================================================
-//   opening disk fime for fortran part of code
-  int m_out = 16;
-  const char *output_file = "./TabMain77.output";
-  int sl2 = strlen(output_file);
-  fort_open_(m_out,output_file,sl2);
-//=============================================================
-  bornv_initialize_(m_ypar);
 //=========================
   hhdizet_initialize_(m_ypar);
 //==================================

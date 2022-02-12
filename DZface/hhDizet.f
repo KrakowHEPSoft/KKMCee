@@ -1,3 +1,102 @@
+
+      SUBROUTINE BornV_Initialize(xpar_input)
+*//////////////////////////////////////////////////////////////////////////////
+*//      This is initializator of original BornV.f
+*//////////////////////////////////////////////////////////////////////////////
+      IMPLICIT NONE
+      INCLUDE 'BXformat.h'
+      INCLUDE 'BornV.h'
+      INCLUDE 'hhDizet.h'
+      DOUBLE PRECISION  xpar_input(*)
+      DOUBLE PRECISION  Npar(30), alfQCDMZ, AlStrZ, AlStrT, AlfinvMZ,
+     &     AlQedZ, DAL5H, zpard(30), partz(0:11), partw(3)
+*------------------------------------------------------------------------------
+      INTEGER             k,j,kxpa,KF
+*------------------------------------------------------------------------------
+      write(*,*) '***********************************************'
+      write(*,*) '************BornV_Initialize*******************'
+
+      DO j=1,10000
+         m_xpar_input(j)=xpar_input(j)
+      ENDDO
+
+      m_QCDcor = 0d0
+      DO k=1,m_poinQ
+         m_QCDcorR(k)=0d0
+      ENDDO
+      m_CMSene = xpar_input( 1)         ! Central value of CMS energy, do not change!
+      m_XXXene = m_CMSene               ! Just initialization only
+      m_KFini = xpar_input( 400)        ! KFcode of beam, POSITIVE!!!
+      m_KeyFSR= xpar_input(  21)
+*                      <<<  ff-pair spectrum >>>
+      m_vvmin  = xpar_input(16)         ! minimum v, infrared cut
+      m_vvmax  = xpar_input(17)         ! maximum v, infrared cut (may redefine later)
+      m_HadMin = xpar_input(51)         ! minimum hadronization mass
+*                        <<< Basic QED >>>
+      m_AlfInv = xpar_input(30)         ! Alpha_QED at Thomson limit
+      m_alfpi  = 1d0/m_pi/m_AlfInv
+*                  <<< Electroweak parameters >>>
+      m_Gmu    = xpar_input(32)         ! Fermi constant
+      m_MZ     = xpar_input(502)        ! Z mass [GeV]
+      m_amh    = xpar_input(805)        ! Higgs mass, Input for Dizet
+      m_amtop  = xpar_input(806)        ! Top mass,   Input for Dizet
+* Note that gammz and swsq will be redefined in the case of EW corrs. are on
+      m_swsq   = xpar_input(503)        ! Electroweak mixing angle
+      m_Gammz  = xpar_input(504)        ! Z width
+      m_MW     = xpar_input(505)        ! W mass [GeV]
+      m_GammW  = xpar_input(506)        ! W width[GeV]
+
+*               <<< Static Table of ALL fermion parameters >>>
+      DO j=1,20
+         m_IsGenerated(j) = xpar_input(400+j)   ! Generation flag
+         kxpa = 500+10*j
+         m_KFferm(j)= xpar_input(kxpa+1)        ! fermion flavour code
+         m_NCf(j)   = xpar_input(kxpa+2)        ! number of colours
+         m_Qf(j)    = xpar_input(kxpa+3)/3d0    ! electric charge
+         m_T3f(j)   = xpar_input(kxpa+4)/2d0    ! isospin, L-hand component
+         m_helic(j) = xpar_input(kxpa+5)        ! helicity, polarization
+         m_amferm(j)= xpar_input(kxpa+6)        ! fermion mass
+         m_AuxPar(j)= xpar_input(kxpa+8)        ! auxiliary parameter
+      ENDDO
+*                       <<< Test switches >>>
+      m_KeyElw = xpar_input(12)         ! ElectroWeak library on/off
+      m_KeyZet = xpar_input(501)        ! Z-boson on/off
+      m_KeyWtm = xpar_input(26)         ! Photon emission without mass terms
+      m_KeyRes = xpar_input(13)         ! Exper. R for gamma*
+*                       <<<  Other        >>>
+      m_KeyQCD = xpar_input(53)         ! QCD FSR
+      m_KeyINT = xpar_input(27)         ! This is realy copy from KK2f
+      m_Xenph  = xpar_input(40)         ! This is realy copy from KK2f
+      IF(m_KeyINT .EQ. 0)  m_Xenph  = 1D0
+*                       <<< Miscelaneous >>>
+      m_gnanob = xpar_input(31)         ! GeV^(-2) to nanobarns
+*
+***      m_out    = xpar_input(4)
+      m_out = 16
+*
+      WRITE(m_out,bxope)
+      WRITE(m_out,bxtxt) '  BornV  Initialization                '
+      WRITE(m_out,bxl1f) m_MZ    ,   'Z mass     [GeV]   ','amz   ','a1'
+      WRITE(m_out,bxl1f) m_amh   ,   'Higgs mass [GeV]   ','amh   ','a2'
+      WRITE(m_out,bxl1f) m_amtop ,   'Top mass   [GeV]   ','amtop ','a3'
+      WRITE(m_out,bxl1f) m_gammz,    'Z width    [GeV]   ','gammz ','a4'
+      WRITE(m_out,bxl1f) m_swsq,     'sin(theta_w)**2    ','sinw2 ','a5'
+      WRITE(m_out,bxl1f) m_AlfInv,   '1/alfa_QED  at  Q=0','AlfInv','a6'
+      WRITE(m_out,bxl1f) m_HadMin,   'MassCut light qqbar','HadMin','a6'
+      WRITE(m_out,bxl1i) m_KFini ,   'KF code of beam    ','KFini ','a7'
+      WRITE(m_out,bxl1g) m_vvmax,    'Input vvmax        ','vvmax ','a8'
+      WRITE(m_out,bxtxt) 'Test switches:                         '
+      WRITE(m_out,bxl1i) m_KeyElw,   'Electroweak lib.   ','KeyElw','10'
+      WRITE(m_out,bxl1i) m_KeyZet,   'Z switch           ','KeyZet','11'
+      WRITE(m_out,bxl1i) m_KeyWtm,   'mass terms on/off  ','KeyWtm','12'
+      WRITE(m_out,bxl1i) m_KeyRes,   'R for gamma* on/off','KeyRes','12'
+      WRITE(m_out,bxclo)
+      END
+*//////////////////////////////////////////////////////////////////////////////
+
+
+
+
 *//////////////////////////////////////////////////////////////////////////////
 *//                                                                          //
 *//                                                                          //
@@ -45,6 +144,9 @@
          m_xpar(i) = xpar(i)
       ENDDO
 *********************************************************************
+      OPEN(16,file='./TabMain77.output')
+      CALL BornV_Initialize(m_xpar)
+*********************************************************************
       m_ndisk = 17
       write(*,*) '======================================================'
       write(*,*) '================= hh_InitializeDizet ================='
@@ -71,6 +173,7 @@
 ********************************************************************
       CLOSE(m_ndisk)
       write(*,*) 'KKMC-hh Multiflavor Dizet initialization completed.'
+      CLOSE(16)
       END ! hhDizet_Initialize
 
       SUBROUTINE hhDizet_InitDizet( KFini, KFfin,  xpar)
@@ -220,99 +323,9 @@ cc      m_KFini = xpar(400) !!!
       WRITE(m_out,bxope)
       WRITE(m_out,bxtxt) 'DZface_Initializion ended  '
       WRITE(m_out,bxclo)
+
       END
 
-
-      SUBROUTINE hhDizet_ReaDataX(DiskFile,iReset,imax,xpar)
-*/////////////////////////////////////////////////////////////////////////////////////
-*//                                                                                 //
-*//   Clone of KK2f_ReaDataX                                                        //
-*//                                                                                 //
-*//   DiskFile  = input file to read                                                //
-*//   imax   = maximum index in xpar                                                //
-*//   iReset = 1, resets xpar to 0d0                                                //
-*//   iTalk=1,     prints echo into standard input                                  //
-*//                                                                                 //
-*//   Single data card is:    (a1,i4,d15.0,a60)                                     //
-*//   First data card: BeginX                                                       //
-*//   Last  data card: EndX                                                         //
-*//   First character * defines comment card!                                       //
-*//                                                                                 //
-*/////////////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      CHARACTER*(*)     DiskFile
-      DOUBLE PRECISION  xpar(*)
-      CHARACTER*6       beg6
-      CHARACTER*4       end4
-      CHARACTER*1       mark1
-      CHARACTER*60      comm60
-      CHARACTER*80      comm80
-      INTEGER           imax,iReset,iTalk
-      INTEGER           ninp,i,line,index
-      DOUBLE PRECISION  value
-*////////////////////////////////////////
-*//  Clear xpar and read default Umask //
-*////////////////////////////////////////
-      iTalk = 1
-      IF(iReset .EQ. 1 ) THEN
-         iTalk = 0
-         DO i=1,imax
-            xpar(i)=0d0
-         ENDDO
-      ENDIF
-      ninp = 13
-      OPEN(ninp,file=DiskFile)
-      IF(iTalk .EQ. 1) THEN
-         WRITE(  *,*) '****************************'
-         WRITE(  *,*) '*  hhDizet_ReaDataX Starts  *'
-         WRITE(  *,*) '****************************'
-      ENDIF
-* Search for 'BeginX'
-      DO line =1,100000
-         READ(ninp,'(a6,a)') beg6,comm60
-         IF(beg6 .EQ. 'BeginX') THEN
-            IF(iTalk .EQ. 1)   WRITE( *,'(a6,a)') beg6,comm60
-            GOTO 200
-         ENDIF
-      ENDDO
- 200  CONTINUE
-* Read data, 'EndX' terminates data, '*' marks comment
-      DO line =1,100000
-         READ(ninp,'(a)') mark1
-         IF(mark1 .EQ. ' ') THEN
-            BACKSPACE(ninp)
-            READ(ninp,'(a1,i4,d15.0,a60)') mark1,index,value,comm60
-            IF(iTalk .EQ. 1)
-     $           WRITE( *,'(a1,i4,g15.6,a60)') mark1,index,value,comm60
-            IF( (index .LE. 0) .OR. (index .GE. imax)) GOTO 990
-            xpar(index) = value
-         ELSEIF(mark1 .EQ. 'E') THEN
-            BACKSPACE(ninp)
-            READ(  ninp,'(a4,a)') end4,comm60
-            IF(iTalk .EQ. 1)   WRITE( *,'(a4,a)') end4,comm60
-            IF(end4 .EQ. 'EndX') GOTO 300
-            GOTO 991
-         ELSEIF(mark1 .EQ. '*') THEN
-            BACKSPACE(ninp)
-            READ(  ninp,'(a)') comm80
-            IF(iTalk .EQ. 1)    WRITE( *,'(a)') comm80
-         ENDIF
-      ENDDO
- 300  CONTINUE
-      IF(iTalk .EQ. 1)  THEN
-         WRITE(  *,*) '**************************'
-         WRITE(  *,*) '*   hhDizet_ReaDataX Ends   *'
-         WRITE(  *,*) '**************************'
-      ENDIF
-      CLOSE(ninp)
-      RETURN
-*-----------
- 990  WRITE(    *,*) '+++ hhDizet_ReaDataX: wrong index= ',index
-      STOP
-      RETURN
- 991  WRITE(    *,*) '+++ hhDizet_ReaDataX: wrong end of data '
-      STOP
-      END
 
       SUBROUTINE hhDizet_Tabluj()
 *-------------------------------------------------------------------------------
@@ -589,12 +602,6 @@ ccc         write(*,*) 'xfem= ',xfem, ' ss= ',ss
       CHARACTER(LEN=60) tableFile
 
       KFone=1  ! fixed index in tables for beam
-c      IF ((KFi.GT.5).OR.(KFi.LT.1)) THEN
-c         write(*,*) 'hhDizet_WriteTable: Invalid quark code ', KFi
-c      END IF
-c      IF ((KFf.GT.16).OR.(KFf.LT.11)) THEN
-c         write(*,*)'hhDizet_WriteTable: Invalid lepton code ', KFf
-c      END IF
 
       write(m_ndisk,*) "hhDizet_WriteTable: KFi, KFf =", KFi, KFf
 *-- params out of dizet 
@@ -657,143 +664,6 @@ c      END IF
       END ! hhDizet_WriteTable
 
 
-      LOGICAL FUNCTION hhDizet_ReadTable(KFi, KFf)
-*------------------------------------------------------------------------------
-*      OBSOLETE !!!!   OBSOLETE !!!!   OBSOLETE !!!!   OBSOLETE !!!!
-*-- Reads an EW table file. Returns 1 if the parameters are consistent, else 0
-*------------------------------------------------------------------------------
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      INCLUDE 'hhDizet.h'
-      INTEGER KFi, KFf, hhIO_OpenRead, i, j, k, n, n1, n2
-      DOUBLE PRECISION ww, cosi, amz, amh, amtop
-      CHARACTER chr
-      CHARACTER(LEN=60) tableFile
-      LOGICAL ex
-*
-      WRITE(*,*) 'hhDizet_ReadTable: START!!!! KFi, KFf=,',KFi, KFf
-*-- See if a table file has been saved...
-      IF( KFi .EQ. 1) THEN
-          tableFile ='DIZET-table1'
-      ELSE
-          tableFile ='DIZET-table2'
-      ENDIF
-      INQUIRE(FILE=tableFile, EXIST=ex)
-      IF (ex) THEN 
-         OPEN (27, FILE=tableFile)
-         write(*,*) 'Reading saved EW table:',tableFile
-      ELSE 
-         hhDizet_ReadTable = .FALSE.
-         write(*,*) 'No compatible saved EW tables. Generating...  ', tableFile
-         RETURN
-      END IF 
-
-* Follows BornV_ReadFile in BornV_StartEW.f......
-* But consistency check has already been done. 
-      READ(27,m_fmt0) amz, amh, amtop, m_swsq, m_gammz, m_MW, m_GammW
-      WRITE(6,'(a)') 'amz, amh, amtop, swsq, gammz, amw, gammw = '
-      WRITE(6,'(a,10f12.7)') '     =',amz, amh, amtop, m_swsq, m_gammz, m_MW, m_GammW
-
-* basic range
-      DO i=0, m_poin1
-         READ(27,m_fmt1) chr,n,ww
-         READ(27,m_fmt2) (m_cyys(i+1,k,KFi,KFf),k=1,m_poinG) ! EW
-         IF (m_KeyQCD.NE.0) READ(27,m_fmt2) (m_syys(i+1,k,KFi,KFf),k=1,m_poinQ) ! QCD
-      ENDDO
-* Z pole range
-      DO i=0,m_poin2
-         DO  j=0,m_poTh2
-            READ(27,m_fmt1) chr,n,ww
-            READ(27,m_fmt2) (m_czzs(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
-         ENDDO
-         IF (m_KeyQCD.NE.0) READ(27,m_fmt2) (m_szzs(i+1,k,KFi,KFf),k=1,m_poinQ) ! QCD
-      ENDDO
-* LEP2 range
-      DO  i=0,m_poin3
-         DO  j=0,m_poTh3
-            READ(27,m_fmt1) chr,n1,ww,n2,cosi
-            READ(27,m_fmt2) (m_ctts(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
-         ENDDO
-         IF (m_KeyQCD.NE.0) READ(27,m_fmt2) (m_stts(i+1,k,KFi,KFf),k=1,m_poinQ) ! QCD
-      ENDDO
-* NLC range
-      DO  i=0,m_poin4
-         DO  j=0,m_poTh4
-            READ(27,m_fmt1) chr,n1,ww,n2,cosi
-            READ(27,m_fmt2) (m_clcs(i+1,j+1,k,KFi,KFf),k=1,m_poinG) ! EW
-         ENDDO
-         IF (m_KeyQCD.NE.0) READ(27,m_fmt2) (m_slcs(i+1,k,KFi,KFf),k=1,m_poinQ) ! QCD
-      ENDDO
-      CLOSE(27)
-      hhDizet_ReadTable = .TRUE.
-      WRITE(*,*) 'hhDizet_ReadTable: ENDED!!!!'
-      END ! hhDizet_ReadTable
-
 ********************************************************************************
 ********************************************************************************
 ********************************************************************************
-
-      SUBROUTINE hhDizet_GetSMpar(swsq, gammz, MW, GammW)
-*------------------------------------------------------------------------------
-*     Temporary inteface for transfering EW formfactors to c++ code
-*     SM parameters calculated by DIZET
-*------------------------------------------------------------------------------
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      INCLUDE 'hhDizet.h'
-      DOUBLE PRECISION swsq, gammz, MW, GammW
-      swsq   = m_swsq
-      gammz  = m_gammz
-      MW     = m_MW
-      GammW  = m_GammW
-      END
-
-      DOUBLE PRECISION FUNCTION hhDizet_GetELW(it,md,KFi,KFf,i,j,k)
-*------------------------------------------------------------------------------
-*     Temporary inteface for transfering EW formfactors to c++ code
-*------------------------------------------------------------------------------
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      INCLUDE 'hhDizet.h'
-      INTEGER KFi,KFf,i,j,k, it, md
-      DOUBLE COMPLEX z
-
-      IF( it .EQ. 1) THEN
-         z= m_cyys(i,    k,KFi,KFf)  ! single point in theta
-      ELSE IF( it .EQ. 2) THEN
-         z= m_czzs(i,j,k,KFi,KFf)    ! i,j,k f77 indexing!!!
-      ELSE IF( it .EQ. 3) THEN
-         z= m_ctts(i,j,k,KFi,KFf)
-      ELSE IF( it .EQ. 4) THEN
-         z= m_clcs(i,j,k,KFi,KFf)
-      ELSE
-         write(*,*) '+++++ hhDizet_GetELW: STOP, wrong it =',it
-         STOP
-      ENDIF
-      IF( md .EQ. 0) hhDizet_GetELW= DREAL(z)
-      IF( md .EQ. 1) hhDizet_GetELW= DIMAG(z)
-      END ! hhDizet_GetELW
-
-
-      DOUBLE PRECISION FUNCTION hhDizet_GetQCD(it,KFi,KFf,i,k)
-**------------------------------------------------------------------------------
-*     Temporary inteface for transfering QCD formfactors to c++ code
-*------------------------------------------------------------------------------
-      IMPLICIT NONE
-      INCLUDE 'BornV.h'
-      INCLUDE 'hhDizet.h'
-      INTEGER KFi,KFf,i,k, it, md
-
-      IF( it .EQ. 1) THEN
-         hhDizet_GetQCD= m_syys(i,k,KFi,KFf)  ! single point in theta
-      ELSE IF( it .EQ. 2) THEN
-         hhDizet_GetQCD= m_szzs(i,k,KFi,KFf)  ! i,k, f77 indexing
-      ELSE IF( it .EQ. 3) THEN
-         hhDizet_GetQCD= m_stts(i,k,KFi,KFf)
-      ELSE IF( it .EQ. 4) THEN
-         hhDizet_GetQCD= m_slcs(i,k,KFi,KFf)
-      ELSE
-         write(*,*) '+++++ hhDizet_GetELW: STOP, wrong it =',it
-         STOP
-      ENDIF
-      END ! hhDizet_GetQCD
