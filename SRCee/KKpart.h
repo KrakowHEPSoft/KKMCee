@@ -29,8 +29,14 @@ class KKpart : public TObject {
 	double  M;                    // Mass
 	int     Hel;                  // Helicity +-1 both for fermion and photon
 	int     C;                    // =+1 U spinor or =-1 for V spinor
-    double  P[4];                 // four-momentum
-  public:
+        double  P[4];                 // four-momentum
+       
+        int pdf_id;                   // Staszek we need to implement this 
+        double prod_vertex[3];        // Staszek we need to implement this
+
+  
+
+public:
     KKpart();                        // Constructor for Foam
     ~KKpart();                       // Destructor  for Foam
     KKpart(const KKpart &Part);      // copy constructor, is it needed ???
