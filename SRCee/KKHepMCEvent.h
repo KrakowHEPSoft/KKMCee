@@ -4,8 +4,6 @@
 #include "KKHepMCparticle.h"
 #include "KKHepMCEvent.h"
 
-#include "KKHepMCparticle.h"
-
 
 class KKHepMCEvent: public HEPEvent
 {

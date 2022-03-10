@@ -5,12 +5,11 @@
 #include "HepMC/GenParticle.h"
 #include "HepMC/GenVertex.h"
 #include "KKpart.h"
-#include "KKevent.h"
 
 class KKHepMCeven;
 
 
-class KKHepMCparticle : public KKpart
+class KKHepMCparticle : public KKevent
 {
   private:
    int id; // particle unique number
