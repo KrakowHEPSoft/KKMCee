@@ -1,6 +1,7 @@
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
-AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -std=c++11 -lstdc++      # used while compiling and linking
 METASOURCES = AUTO
+######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 ROOTLDFLAGS = -L$(ROOTLIBDIR) $(ROOTLIBS)
 
@@ -15,5 +16,6 @@ bin_PROGRAMS = basic_tree
 basic_tree_SOURCES = basic_tree.cc
 basic_tree_LDADD   = 	\
 					$(ROOTAUXLIBS) $(ROOTGLIBS)
-basic_tree_LDFLAGS = $(ROOTLDFLAGS) -no-install -g
+###basic_tree_LDFLAGS = $(ROOTLDFLAGS) -no-install -g
+basic_tree_LDFLAGS = $(LDFLAGS_HEPMC) $(ROOTLDFLAGS) -no-install -g
 ################################################################
