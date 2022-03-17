@@ -36,6 +36,15 @@ AC_LINK_IFELSE(
 	[AC_MSG_RESULT(TESTPROG OK)], [AC_MSG_RESULT(TestProg Failed)]
 	);
 
+
+###---------------------------------------------------------------------
+### HepMC
+WO_CONFIGURE_SECTION([HepMC])
+WO_PROG_HEPMC()
+###---------------------------------------------------------------------
+
+
+
 ##### macros defining different queue and class 
 ##### for NQS batch scripts
 QUEUE_CMD
@@ -52,5 +61,6 @@ SRCee/Makefile \
 DZface/Makefile \
 ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \
                   ProdRun/workNU/Makefile ProdDigest/Makefile \
+hepmc-temp/Makefile \
 ])
 AC_OUTPUT

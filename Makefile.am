@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign 1.6
 
-SUBDIRS = dizet jetset tauola-photos MCdev Foam2 SRCee DZface ProdRun ProdDigest
+SUBDIRS = dizet jetset tauola-photos MCdev Foam2 SRCee DZface ProdRun ProdDigest hepmc-temp
 
 # Automake 1.9.1 manual suggtests putting all local-macrros in m4 subdir
 # and using this:
