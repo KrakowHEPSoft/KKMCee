@@ -1,8 +1,6 @@
-###AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) $(HEPMC_INCLUDES) # used while compiling
-AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -std=c++11 -lstdc++    # used while compiling and linking
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -std=c++11 -lstdc++     # used while compiling and linking
 METASOURCES = AUTO
-######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 ROOTLDFLAGS = -L$(ROOTLIBDIR) $(ROOTLIBS)
 

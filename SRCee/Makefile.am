@@ -1,6 +1,6 @@
 
 all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(all_includes)
-AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
+AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  $(HEPMC_INCLUDES) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 ######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
@@ -18,7 +18,7 @@ include_HEADERS1 = 	KKee2f.h KKdbase.h KKdizet.h KKborn.h \
 					KKevent.h KKlasa.h KKarLud.h KKqed3.h \
 					KKarFin.h \
 					KKceex.h KKpart.h KKbvir.h \
-					TauPair.h
+					TauPair.h HepFace.h
 noinst_HEADERS1 = LinkDef1.h
 #  ROOT Directory generation:
 ROOTCINTHDRS1= $(include_HEADERS1) $(noinst_HEADERS1)
@@ -33,12 +33,12 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKevent.cxx KKlasa.cxx KKarLud.cxx KKqed3.cxx \
 						KKarFin.cxx \
 						KKceex.cxx KKpart.cxx KKbvir.cxx \
-						TauPair.cxx
+						TauPair.cxx HepFace.cxx
 libKKee_la_LIBADD =  \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
-libKKee_la_LDFLAGS = -L$(ROOTLIBDIR)
+libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////

@@ -18,5 +18,6 @@
 #pragma link C++ class KKqed3+;
 #pragma link C++ class KKceex+;
 #pragma link C++ class TauPair+;
+#pragma link C++ class HepFace+;
 #pragma link C++ class KKlasa+;
 #endif

@@ -38,11 +38,9 @@ AC_LINK_IFELSE(
 
 
 ###---------------------------------------------------------------------
-### HepMC
-##WO_CONFIGURE_SECTION([HepMC])
+### HepMC (using hepmc.m4 copied from Whizard)
 WO_PROG_HEPMC()
 ###---------------------------------------------------------------------
-
 
 
 ##### macros defining different queue and class 

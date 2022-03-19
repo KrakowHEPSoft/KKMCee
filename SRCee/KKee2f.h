@@ -31,9 +31,12 @@ using namespace std;
 #include "KKqed3.h"
 #include "KKceex.h"
 #include "TauPair.h"
+#include "HepFace.h"
 #include "KKlasa.h"
 #include "TWtMon.h"
 
+#include "HepMC3/GenEvent.h"
+using namespace HepMC3;
 
 class KKee2f: public TMCgen{
  public:
@@ -41,14 +44,16 @@ class KKee2f: public TMCgen{
  TWtMon  *m_WtMainMonit;          // Monitoring WtMain
  KKborn  *m_BornDist;             // Born differential distribution
  KKdizet *m_EWtabs;               // EW formfactors
- KKevent *m_Event;                // MC event ISR+FSR in KKMC format
  KKarLud *m_GenISR;               // ISR YFS generator
  KKarFin *m_GenFSR;               // FSR YFS generator
  KKqed3  *m_QED3;                 // EEX matrix element
  KKceex  *m_GPS;                  // CEEX matrix element
  KKbvir  *m_BVR;                  // Library of virtual corrections
  TauPair *m_TauGen;               // Interface to TAUOLA+PHOTOS
+ HepFace *m_HEPMC;                // Interface to HEPMC3 event
  KKlasa  *m_KKexamp;              // Template for new class
+ KKevent   *m_Event;              //! MC event ISR+FSR in KKMC format (no persistency)
+ GenEvent  *m_Hvent;              //! HEPMC3 event (no persistency)
 
 // Dimensionality
  static const int maxPar  = 10001;    // max. num. KKMC parameters +1

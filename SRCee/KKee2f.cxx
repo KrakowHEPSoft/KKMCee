@@ -46,14 +46,16 @@ KKee2f::KKee2f()
   m_WtMainMonit = NULL;
   m_BornDist = NULL;
   m_EWtabs   = NULL;
-  m_Event    = NULL;
   m_GenISR   = NULL;
   m_GenFSR   = NULL;
   m_QED3     = NULL;
   m_GPS      = NULL;
   m_BVR      = NULL;
   m_TauGen   = NULL;
+  m_HEPMC    = NULL;
   m_KKexamp  = NULL;
+  m_Event    = NULL;
+  m_Hvent    = NULL;
 }
 
 ///_____________________________________________________________
@@ -68,14 +70,16 @@ KKee2f::KKee2f(const char* Name): TMCgen(Name)
   m_WtMainMonit = NULL;
   m_BornDist = NULL;
   m_EWtabs   = NULL;
-  m_Event    = NULL;
   m_GenISR   = NULL;
   m_GenFSR   = NULL;
   m_QED3     = NULL;
   m_GPS      = NULL;
   m_BVR      = NULL;
   m_TauGen   = NULL;
+  m_HEPMC    = NULL;
   m_KKexamp  = NULL;
+  m_Event    = NULL;
+  m_Hvent    = NULL;
   //
   m_EventCounter = 0;
   m_icont = 0;
@@ -227,6 +231,12 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 // testing object of a new KK template class
   m_KKexamp= new KKlasa(OutFile);
   m_KKexamp->Initialize();
+
+// interface to HEPMC3 event
+  m_HEPMC= new HepFace(OutFile);
+  m_HEPMC->SetEvent(m_Event);
+  m_HEPMC->SetHvent(m_Hvent);
+  m_HEPMC->Initialize();
 
 //////////////////////////////////////////////////////////////
 // TAUOLA+PHOTOS corner
@@ -809,6 +819,10 @@ m_Event->ZBoostALL();
 /////////////////////////////////////////////////////////////
 // Hadronization interface filling in /hepevt/ common block
 if ( m_WtCrude  != 0) hepevt_fill_();
+/////////////////////////////
+//[[[[[[[[[[[[[[[[[[[[
+m_HEPMC->make1();
+//]]]]]]]]]]]]]]]]]]]]
 
 /////////////////////////////////////////////////////////////
 // Tau pair generation using TAUOLA+PHOTOS using /hepevt/
