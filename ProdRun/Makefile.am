@@ -1,6 +1,6 @@
 SUBDIRS = workMini work1 workFoam workNU
 
-all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2   $(HEPMC_INCLUDES) $(all_includes)
+all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(HEPMC_INCLUDES) $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 
@@ -30,7 +30,7 @@ libProdFoam_la_SOURCES =  TRobolFoam.cxx
 libProdFoam_la_LIBADD =  \
 	$(top_builddir)/SRCee/libKKee.la \
  	$(top_builddir)/SRCee/libKKfm.la 
-libProdFoam_la_LDFLAGS = -L$(ROOTLIBDIR)
+libProdFoam_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC)
 #################################################################]]]
 
 #///////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libProdKK_la_SOURCES = $(dict2C)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx
 libProdKK_la_LIBADD =  \
-	$(top_builddir)/SRCee/libKKee.la 
+	$(top_builddir)/SRCee/libKKee.la  $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
 #/////////////////////////////////////////////////////////////
@@ -63,17 +63,17 @@ bin_PROGRAMS = MainMini MainKKMC  MainFoam
 MainKKMC_SOURCES = MainMCdev.cxx 
 MainKKMC_LDADD = \
 			libProdKK.la
-MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) -g -no-install
+MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) $(LDFLAGS_HEPMC) -g -no-install
 #-------------------------------------------------------------------------
 # option -no-install needed for debuger
 #-------------------------------------------------------------------------
 MainFoam_SOURCES = MainMCdev.cxx 
 MainFoam_LDADD = \
 			libProdFoam.la
-MainFoam_LDFLAGS = -rpath $(ROOTRPATH) -g  -no-install
+MainFoam_LDFLAGS = -rpath $(ROOTRPATH)  $(LDFLAGS_HEPMC) -g  -no-install
 #/////////////////////////////////////////////////////////
 MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
 			$(top_builddir)/SRCee/libKKee.la
-MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -g  -no-install
+MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) $(LDFLAGS_HEPMC) -g  -no-install
 #-------------------------------------------------------------------------
