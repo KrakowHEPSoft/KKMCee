@@ -1,6 +1,6 @@
 
-all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(all_includes)
-AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  $(HEPMC_INCLUDES) # used while compiling
+all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(HEPMC_INCLUDES) $(all_includes)
+AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 ######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
