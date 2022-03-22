@@ -190,12 +190,14 @@ void HepFace::make1()
 //--------------------------------------------------------------------------
 
 ///______________________________________________________________________________________
-void HepFace::FillHep3(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG)
+void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int JDA2, float P4[], float &PINV, bool PHFLAG)
 {
   cout<<"==================================FillHep3=============================================="<<endl;
-  cout<<"  ID= "<< *ID<<"  Mass PINV="<<*PINV<< "   PHFLAG= "<<PHFLAG<<endl;
+  cout<<"   N= "<< N<<"   IST= "<< IST<<"   ID= "<< ID<<endl;
+  cout<<"   JMO1= "<< JMO1<<"   JMO2= "<< JMO2<<"   JDA1= "<< JDA1<<"   JDA2= "<< JDA2<<endl;
   for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
+  cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<endl;
+  cout<<"========================================================================================"<<endl;
 }//FillHep3
-
 
 

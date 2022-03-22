@@ -32,7 +32,7 @@ extern "C" {
                            double rem1[], double rem2[]);
     // wrapper to c++ code used in Tauola
     void tralo4_(int *KTO, float P[], float Q[], float *AM);
-    void fillhep3_(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG);
+    void filhep3_(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG);
     void ranmar_(float rvec[], int *lenv);
 }
 
@@ -40,6 +40,18 @@ extern "C" {
 // Genuine new global functions (temporary)
 // getting accsess to MC gener. object
 void globux_setup_(     KKee2f *KKhhObj){   g_KKeeGen = KKhhObj;}
+
+
+////////////////////////////////////////////
+//SUBROUTINE Tralo4(Kto,P,Q,AM)
+void tralo4_(int *KTO, float P[], float Q[], float *AM){
+    g_KKeeGen->m_TauGen->Tralo4(*KTO, P, Q, *AM);
+}//tralo4
+
+void filhep3_(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG){
+    g_KKeeGen->m_HEPMC->FillHep3(*N, *IST, *ID, *JMO1, *JMO2, *JDA1, *JDA2, P4, *PINV, *PHFLAG);
+}//fillhep3_
+
 
 ////////////////////////////////////////////////////////////////////////
 /// Importing c++ event object into /hepevt/ of f77 HepEvt
@@ -67,16 +79,6 @@ void globux_getevent_( int *KFini, int *KFfin, double *MFini, double *MFfin,
       for(int i=0; i<=3;i++) yphot[i][j-1] = g_KKeeGen->m_Event->m_PhotFSR[j][i];
 }//globux_getevent_
 
-
-////////////////////////////////////////////
-//SUBROUTINE Tralo4(Kto,P,Q,AM)
-void tralo4_(int *KTO, float P[], float Q[], float *AM){
-    g_KKeeGen->m_TauGen->Tralo4(*KTO, P, Q, *AM);
-}//tralo4
-
-void fillhep3_(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG){
-    g_KKeeGen->m_HEPMC->FillHep3(*N, *IST, *ID, *JMO1, *JMO2, *JDA1, *JDA2, P4, *PINV, *PHFLAG);
-}//fillhep3_
 
 
 // SUBROUTINE RANMAR(RVEC,LENV)
