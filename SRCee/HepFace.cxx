@@ -122,10 +122,6 @@ void HepFace::make1()
   GenParticlePtr pe3 = std::make_shared<GenParticle>( pe3_v4, m_Event->m_KFfin, status);
   GenParticlePtr pe4 = std::make_shared<GenParticle>( pe4_v4, m_Event->m_KFfin, status);
 
-
-
-
-
   for(int i=0; i< m_Event->m_nPhotFSR; i++){
       // create a HEPMC photon
       FourVector tmp_photon_v4=FourVector(Vect4(m_Event->m_PhotFSR[i]));
@@ -167,7 +163,6 @@ void HepFace::make1()
 
   }// for i
 
-
 // now decaying Z:
   GenVertexPtr vZ2 =  std::make_shared<GenVertex>();
   vZ2 ->add_particle_in(pZ);
@@ -180,3 +175,27 @@ void HepFace::make1()
   Print::content(*m_Hvent);
 
 }//make1
+
+
+////////////////////////////////////////////////////////////////////////////
+//SUBROUTINE HepEvt_Fil1( n,ist,id,jmo1,jmo2,jda1,jda2,p4,pinv,phflag)
+//INTEGER           n,ist,id,jmo1,jmo2,jda1,jda2
+//DOUBLE PRECISION  p4(4),pinv
+//LOGICAL           phflag
+//SUBROUTINE FILHEP(N,IST,ID,JMO1,JMO2,JDA1,JDA2,P4,PINV,PHFLAG)
+//LOGICAL PHFLAG
+//DOUBLE PRECISION  PINVD,P4D(4)
+//C anti electron neutrino (nu_e is 12)
+//   CALL FILHEP(0,1,-12*ISGN,NPS,NPS,0,0,PNE,AM,.TRUE.)
+//--------------------------------------------------------------------------
+
+///______________________________________________________________________________________
+void HepFace::FillHep3(int *N, int *IST, int *ID, int *JMO1, int *JMO2, int *JDA1, int *JDA2, float P4[], float *PINV, bool *PHFLAG)
+{
+  cout<<"==================================FillHep3=============================================="<<endl;
+  cout<<"  ID= "<< *ID<<"  Mass PINV="<<*PINV<< "   PHFLAG= "<<PHFLAG<<endl;
+  for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
+}//FillHep3
+
+
+
