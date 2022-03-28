@@ -58,7 +58,7 @@ MCdev/Makefile MCdev/farming/Makefile \
 SRCee/Makefile \
 DZface/Makefile \
 ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \
-                  ProdRun/workNU/Makefile ProdDigest/Makefile \
+                  ProdRun/workNU/Makefile ProdRun/workTau/Makefile ProdDigest/Makefile \
 hepmc-temp/Makefile \
 ])
 AC_OUTPUT

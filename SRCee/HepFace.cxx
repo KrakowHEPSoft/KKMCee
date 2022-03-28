@@ -3,6 +3,7 @@
 
 ClassImp(HepFace);
 
+/*
 double Scalar_product(FourVector a)
 {
   double val=0.;
@@ -11,7 +12,7 @@ double Scalar_product(FourVector a)
 
   
 }
-
+*/
 
 HepFace::HepFace()
 {
@@ -82,9 +83,10 @@ void HepFace::make1()
       // assign from which electron the photon was emmited 
       
       // we check which electron is closer to the photon 
-      double scalar1=Scalar_product( tmp_photon_v4 + pe1_v4);
-      double scalar2=Scalar_product( tmp_photon_v4 + pe2_v4);
-
+      /////double scalar1=Scalar_product( tmp_photon_v4 + pe1_v4);
+      /////double scalar2=Scalar_product( tmp_photon_v4 + pe2_v4);
+      double scalar1= m_Event->m_Pf1 * m_Event->m_PhotISR[i]; // iloczyn skalarny TLorentzvector
+      double scalar2= m_Event->m_Pf2 * m_Event->m_PhotISR[i]; // iloczyn skalarny TLorentzvector
 
       // electrons after the emission of the photon - change of kinematics 	
       GenParticlePtr e1STAR = std::make_shared<GenParticle>( pe1_v4-tmp_photon_v4, m_Event->m_KFini, 2); 
@@ -141,10 +143,10 @@ void HepFace::make1()
       // we will check which electron is more parallel to the photon 
       // for now we check the R-rap-distance separation dR = sqrt(dphi^2 + drap^2) 
 
-      double scalar3=Scalar_product( tmp_photon_v4 + pe3_v4);
-      double scalar4=Scalar_product( tmp_photon_v4 + pe3_v4);
-
-
+      /////double scalar3=Scalar_product( tmp_photon_v4 + pe3_v4);
+      /////double scalar4=Scalar_product( tmp_photon_v4 + pe3_v4);
+      double scalar3= m_Event->m_PhotFSR[i] * m_Event->m_Qf1;
+      double scalar4= m_Event->m_PhotFSR[i] * m_Event->m_Qf2;
       
       // electrons before the emission of the photon - change of kinematics
       GenParticlePtr e3STAR = std::make_shared<GenParticle>( pe3_v4+tmp_photon_v4, m_Event->m_KFini, 2);	
