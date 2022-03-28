@@ -152,6 +152,12 @@ void KKdbase::Initialize(double xpar[] )
   BX1F(*m_Out," WtMaxRej", Foam_WtMaxRej," Max. WT for event rej. (WT=1)    [3027]  =");
 
   BXTXT(*m_Out,"==== MORE STEERING  PARAMETERS =========");
+  LevPri = m_xpar[5] ;         // printout level 0,1,2
+  Ie1Pri = m_xpar[6] ;         // printout from generator start
+  Ie2Pri = m_xpar[7] ;         // printout from generator stop
+  BX1I(*m_Out,"   LevPri",     LevPri,   " Printout level 0,1,2                    [5]    =");
+  BX1I(*m_Out,"   Ie1Pri",     Ie1Pri,   " Printout event start point              [6]    =");
+  BX1I(*m_Out,"   Ie2Pri",     Ie2Pri,   " Printout event end   point              [7]    =");
   Vcut[0]= m_xpar[41] ;
   Vcut[1]= m_xpar[42] ;
   Vcut[2]= m_xpar[43] ;

@@ -843,10 +843,10 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
 
 /////////////////////////////////////////////////////////////
 //Control printouts of accepted events
-if(m_EventCounter <= 20) {
-   m_Event->PrintISR();
-   m_Event->PrintISR_FSR();
-   //m_Event->PrintISR_FSR(f_Out);
+if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 ) {
+   if(DB->LevPri>1) m_Event->PrintISR();
+   if(DB->LevPri>1) m_Event->PrintISR_FSR();
+   if(DB->LevPri>1) m_Event->PrintISR_FSR(f_Out);
    m_Event->EventPrintAll();
    m_Event->EventPrintAll(f_Out);
 }//m_EventCounter

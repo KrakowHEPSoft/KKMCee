@@ -6,7 +6,7 @@
 #    make SLfarm6; make SLsubmitall; ...
 #=======================================================================
 MAIN=MainKKMC
-DSET=work1
+DSET=workTau
 subCMD=qsub
 CLASS=qunlimitted
 ##############

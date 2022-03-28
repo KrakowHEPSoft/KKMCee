@@ -77,6 +77,9 @@ class KKdbase: public TObject{
  double   fmass[20];       // current fermion mass
  // for DEBUG
  int      KeyDebug;       // =0,1,2
+ int      LevPri;         // printout level
+ int      Ie1Pri;         // printout from generator start
+ int      Ie2Pri;         // printout from generator end
 //------------------------------------
  public:
  KKdbase();                    // explicit default constructor for streamer
