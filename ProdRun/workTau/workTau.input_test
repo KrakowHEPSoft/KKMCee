@@ -61,6 +61,6 @@ BeginX
 ** 2004              0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
  3035             -1      ProgSw  Calling program for Tauola
 *
- 2001              2      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
- 2002              2      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
+ 2001              0      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
+ 2002              0      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
 EndX
