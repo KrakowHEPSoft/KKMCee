@@ -34,6 +34,8 @@ class HepFace: public TObject{
  public:
  KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format
  GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)
+ vector<GenParticlePtr>  tauPdecay; //! tau+ decay products
+ vector<GenParticlePtr>  tauMdecay; //! tau- decay products
 //------------------------------------
 // Obligatory members
   public:
@@ -52,6 +54,7 @@ FourVector Vect4( TLorentzVector X){ return FourVector(X.Px(),X.Py(),X.Pz(),X.E(
 void Initialize();
 void make1();
 void FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int JDA2, float P4[], float &PINV, bool PHFLAG);
+void tauolaToHEPMC3();
 ////////////////////////////////////////////////////////////////////////////
        ClassDef(HepFace,1); // Data base
 };// HepFace class

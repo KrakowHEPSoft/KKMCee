@@ -838,6 +838,7 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
      m_TauGen->Make1();
      m_TauGen->ImprintSpin();
      m_TauGen->Make2();
+     m_HEPMC->tauolaToHEPMC3();
    }//TauIsInitialized
 }//if
 

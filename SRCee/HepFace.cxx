@@ -52,6 +52,9 @@ void HepFace::Initialize()
   m_Hvent = new GenEvent(Units::GEV,Units::MM);
 
   ///////////////////////////////////////////////////
+  // clear tau container
+  tauMdecay.clear();
+  tauPdecay.clear();
 }// Initialize
 
 ///______________________________________________________________________________________
@@ -70,8 +73,8 @@ void HepFace::make1()
   FourVector pe1_v4( Vect4( m_Event->m_Pf1) );
   FourVector pe2_v4( Vect4( m_Event->m_Pf2) );
   
-  GenParticlePtr pe1 = std::make_shared<GenParticle>( pe1_v4, m_Event->m_KFini, 4);
-  GenParticlePtr pe2 = std::make_shared<GenParticle>( pe2_v4, m_Event->m_KFini, 4);
+  GenParticlePtr pe1 = std::make_shared<GenParticle>( pe1_v4, m_Event->m_KFini, 4);   
+  GenParticlePtr pe2 = std::make_shared<GenParticle>( pe2_v4, - m_Event->m_KFini, 4); // - PDG id antifermion 
 
 // ISR photons:
   for(int i=0; i < m_Event->m_nPhotISR; ++i)
@@ -90,20 +93,21 @@ void HepFace::make1()
 
       // electrons after the emission of the photon - change of kinematics 	
       GenParticlePtr e1STAR = std::make_shared<GenParticle>( pe1_v4-tmp_photon_v4, m_Event->m_KFini, 2); 
-      GenParticlePtr e2STAR = std::make_shared<GenParticle>( pe2_v4-tmp_photon_v4, m_Event->m_KFini, 2);
+      GenParticlePtr e2STAR = std::make_shared<GenParticle>( pe2_v4-tmp_photon_v4, - m_Event->m_KFini, 2); // - PDG id antifermion 
 
       // create a vertex with the selected electron	
       GenVertexPtr v_tmp = std::make_shared<GenVertex>();
-      v_tmp->add_particle_in (pe1);
       if( scalar1 < scalar2)
         {
 	  v_tmp->add_particle_out(e1STAR);
+          v_tmp->add_particle_in(pe1);	  
           pe1=e1STAR;
           pe1_v4=e1STAR->data().momentum;
         }
       else
 	{
-          v_tmp->add_particle_out(e2STAR); 
+          v_tmp->add_particle_out(e2STAR);
+          v_tmp->add_particle_in(pe2); 
           pe2=e2STAR;
           pe2_v4=e2STAR->data().momentum;
         }
@@ -131,7 +135,7 @@ void HepFace::make1()
   FourVector pe4_v4( Vect4( m_Event->m_Qf2) );
 
   GenParticlePtr pe3 = std::make_shared<GenParticle>( pe3_v4, m_Event->m_KFfin, status);
-  GenParticlePtr pe4 = std::make_shared<GenParticle>( pe4_v4, m_Event->m_KFfin, status);
+  GenParticlePtr pe4 = std::make_shared<GenParticle>( pe4_v4, - m_Event->m_KFfin, status);
 
   for(int i=0; i< m_Event->m_nPhotFSR; i++){
       // create a HEPMC photon
@@ -149,8 +153,8 @@ void HepFace::make1()
       double scalar4= m_Event->m_PhotFSR[i] * m_Event->m_Qf2;
       
       // electrons before the emission of the photon - change of kinematics
-      GenParticlePtr e3STAR = std::make_shared<GenParticle>( pe3_v4+tmp_photon_v4, m_Event->m_KFini, 2);	
-      GenParticlePtr e4STAR = std::make_shared<GenParticle>( pe4_v4+tmp_photon_v4, m_Event->m_KFini, 2);
+      GenParticlePtr e3STAR = std::make_shared<GenParticle>( pe3_v4+tmp_photon_v4, m_Event->m_KFfin, 2);	
+      GenParticlePtr e4STAR = std::make_shared<GenParticle>( pe4_v4+tmp_photon_v4, - m_Event->m_KFfin, 2);
 
       // create a vertex with the selected electron     
       GenVertexPtr v_tmp = std::make_shared<GenVertex>();
@@ -185,8 +189,8 @@ void HepFace::make1()
   m_Hvent->add_vertex(vZ2);
 
 // Test print out
-  Print::listing(*m_Hvent);
-  Print::content(*m_Hvent);
+//  Print::listing(*m_Hvent);
+//  Print::content(*m_Hvent);
 
 }//make1
 
@@ -206,12 +210,69 @@ void HepFace::make1()
 ///______________________________________________________________________________________
 void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int JDA2, float P4[], float &PINV, bool PHFLAG)
 {
+  // Create a HEPMC3 particle from a tau decay
+  FourVector p_v4( Vect4(P4) );
+  GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, 2);
+  
+  //// store it in the vector which will be used later to fill the HEPMC record 
+  // N = 1 is tau-
+  if (N == 1) tauMdecay.push_back(ptemp);
+  // N = -1 is tau+
+  else if (N == -1) tauPdecay.push_back(ptemp);
+  //
+  else cout << "HepFace::FillHep3 something went wrong" << endl;
+  /*
   cout<<"==================================FillHep3=============================================="<<endl;
   cout<<"   N= "<< N<<"   IST= "<< IST<<"   ID= "<< ID<<endl;
   cout<<"   JMO1= "<< JMO1<<"   JMO2= "<< JMO2<<"   JDA1= "<< JDA1<<"   JDA2= "<< JDA2<<endl;
   for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
   cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<endl;
   cout<<"========================================================================================"<<endl;
+  */
 }//FillHep3
+
+
+///////////////////////////////////////////////////////////////////////////////////
+// tauolaToHEPMC3() after the tau decays are done this function saves it to HEPMC3 
+void HepFace::tauolaToHEPMC3(){
+  GenVertexPtr tauPlus =   std::make_shared<GenVertex>();   
+  GenVertexPtr tauMinus =  std::make_shared<GenVertex>();
+
+  for (auto p: m_Hvent->particles()){
+     if (p->pid() == 15 && p->status()==1){ // is ustable tau-
+        // add tau to the vertex
+	tauMinus->add_particle_in(p);
+        // add decay products of the tau to the vertex
+        for (auto i : tauMdecay)
+        {
+	   tauMinus->add_particle_out(i);
+        }
+     } // end if tau -
+     else if (p->pid() == -15 && p->status()==1 ){ // is unstable tau+
+        // add tau to the vertex
+        tauPlus->add_particle_in(p);
+        // add decay products of the tau to the vertex
+	for (auto i : tauPdecay)
+        {
+           tauPlus->add_particle_out(i);
+	}
+
+     }  // end if tau+
+  } // end loop over particles
+ 
+  // add vertex to the event
+  m_Hvent->add_vertex(tauMinus);
+  m_Hvent->add_vertex(tauPlus);
+
+  // clear tau container
+  tauMdecay.clear();
+  tauPdecay.clear();
+
+  // Test print out
+  cout<<"==================================tauolaToHEPMC3==============================================";
+  Print::listing(*m_Hvent);
+  Print::content(*m_Hvent);
+
+}
 
 
