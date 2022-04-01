@@ -34,8 +34,8 @@ class HepFace: public TObject{
  public:
  KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format
  GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)
- vector<GenParticlePtr>  tauPdecay; //! tau+ decay products
- vector<GenParticlePtr>  tauMdecay; //! tau- decay products
+ vector<GenParticlePtr>  m_tauPdecay; //! tau+ decay products
+ vector<GenParticlePtr>  m_tauMdecay; //! tau- decay products
 //------------------------------------
 // Obligatory members
   public:

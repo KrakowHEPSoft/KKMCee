@@ -242,8 +242,8 @@ void TRobolKKMC::Production(double &iEvent)
   if(WtMain>1.0) hst_CosThOve->Fill(CosPRD,WtMain-1.0);
 //======================================================
 //                Muon pairs
-  //======================================================
-if( KFfin == 13 ) {
+//======================================================
+if( abs(KFfin) == 13 ) {
 // big scatergrams, range vv< 1.0
   sca_vTcPR_Eex0->Fill(    vv, CosPRD, WtEEX0);
   sca_vTcPR_Eex2->Fill(    vv, CosPRD, WtEEX2);
@@ -251,7 +251,16 @@ if( KFfin == 13 ) {
   sca_vTcPR_Ceex2n->Fill(  vv, CosPRD, WtCEEX2n); // IFI off
 }// Muon pairs
 //======================================================
-//       all 3 nu+nubar + visible photons
+//                TAU pairs
+//======================================================
+if( abs(KFfin) == 15 ) {
+   cout<<"%%%%%%%%%%%%%%%%%%%%% TRobolKKMC::Production  %%%%%%%%%%%%%%%%%%%%% "<<endl;
+   Print::listing(*(KKMC_generator->m_Hvent));
+   Print::content(*(KKMC_generator->m_Hvent));
+   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
+}
+//======================================================
+//    NEUTRINOS   all 3 nu+nubar + visible photons
 //======================================================
 if( NuYes==1 ){
 /// photon acceptance data
