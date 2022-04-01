@@ -208,10 +208,10 @@ void TRobolKKMC::Production(double &iEvent)
 //--------------------------------------------------------------------
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 //if( Event->m_KeyDBG == 1){
-  if(m_NevGen<5){
-  (*f_Out)<< ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
-  cout    << ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
-  }//NevGen
+//  if(m_NevGen<5){
+//  (*f_Out)<< ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
+//  cout    << ">>>RobolKKMC::Production: CosPRD= "<<CosPRD<<" CosThePL= "<<CosThePL<<"  vv="<<vv<<endl;
+//  }//NevGen
 //}//m_KeyDBG
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
@@ -254,9 +254,25 @@ if( abs(KFfin) == 13 ) {
 //                TAU pairs
 //======================================================
 if( abs(KFfin) == 15 ) {
-   cout<<"%%%%%%%%%%%%%%%%%%%%% TRobolKKMC::Production  %%%%%%%%%%%%%%%%%%%%% "<<endl;
-   Print::listing(*(KKMC_generator->m_Hvent));
-   Print::content(*(KKMC_generator->m_Hvent));
+  cout<<"%%%%%%%%%%%%%%%%%%%%% TRobolKKMC::Production  %%%%%%%%%%%%%%%%%%%%% "<<endl;
+  GenEvent  *Hvent  = (GenEvent*)KKMC_generator->m_Hvent;
+  Print::listing(*Hvent);
+  Print::content(*Hvent);
+// checking four momentum conservation
+  double px,py,pz,e;
+  for (auto p : Hvent->particles()){
+    if (p->status() == 1){
+      HepMC3::FourVector m = p->momentum();
+      px += m.px();
+      py += m.py();
+      pz += m.pz();
+      e  += m.e();
+    }//if
+  }//auto
+  cout.precision(6);
+  cout.setf(ios_base::scientific, ios_base::floatfield);
+  cout << endl << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
+  (*f_Out)     << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
    cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
 }
 //======================================================

@@ -41,8 +41,6 @@ void HepFace::Initialize()
   BXTXT(*m_Out,"========================================");
   BXTXT(*m_Out,"======    HepFace::Initialize     ======");
   BXTXT(*m_Out,"========================================");
-
-  m_Hvent = new GenEvent(Units::GEV,Units::MM);
   ///////////////////////////////////////////////////
   // clear tau container
   m_tauMdecay.clear();

@@ -233,11 +233,11 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_KKexamp->Initialize();
 
 // interface to HEPMC3 event
+  m_Hvent= new GenEvent(Units::GEV,Units::MM);
   m_HEPMC= new HepFace(OutFile);
   m_HEPMC->SetEvent(m_Event);
   m_HEPMC->SetHvent(m_Hvent);
   m_HEPMC->Initialize();
-
 //////////////////////////////////////////////////////////////
 // TAUOLA+PHOTOS corner
   m_TauGen= new TauPair(OutFile);

@@ -114,10 +114,12 @@ if(m_IsFSR == 1) {
    } else {
       CosTheta =m_Event->m_CosTheta; // Born
       the = acos(CosTheta);
-      if( m_Event->m_EventCounter <5){
-         (*m_Out)<< ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
-         cout    << ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
-      }//EventCounter
+//[[[[[[[[[[[[[[[
+//      if( m_Event->m_EventCounter <5){
+//         (*m_Out)<< ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+//         cout    << ">>>> KKarFin::Make:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+//      }//EventCounter
+//]]]]]]]]]]]]]]]
    }//KeyThe
    m_Event->PhaSpac2(PX, the, phi, amfi1, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
    WtFin = 1;
@@ -320,10 +322,12 @@ for(int i=1; i<= m_nphot; i++){
    } else {
       CosTheta =m_Event->m_CosTheta;
       the = acos(CosTheta);
-      if( m_Event->m_EventCounter <5){
-        (*m_Out)<< ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
-        cout    << ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
-      }//EventCounter
+//[[[[[[[[[[[[[[[[[[[[
+//      if( m_Event->m_EventCounter <5){
+//        (*m_Out)<< ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+//        cout    << ">>>> KKarFin::YFSfin:  ["<< m_Event->m_EventCounter<<"]>>> m_CosTheta= "<<CosTheta<<endl;
+//      }//EventCounter
+//]]]]]]]]]]]]]]]]]]]]
    }//KeyThe
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
    // QQk is combined momentum of q1+q2+photons in q1+q2 system

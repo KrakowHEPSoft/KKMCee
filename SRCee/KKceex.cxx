@@ -1063,7 +1063,7 @@ m_RhoExp0 = Sum0 *m_ExpoNorm;
 m_RhoExp1 = Sum1 *m_ExpoNorm;
 m_RhoExp2 = Sum2 *m_ExpoNorm;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-if( m_Event->m_EventCounter <=10){
+//if( m_Event->m_EventCounter <=10){
 //(*m_Out)<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@KKceex::MakeRho@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
 //(*m_Out)<<"m_ExpoNorm= "<<m_ExpoNorm<<endl;
 //  for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo0("<<j1<<","<<j2<<",*,*)=";
@@ -1074,8 +1074,8 @@ if( m_Event->m_EventCounter <=10){
 //  (*m_Out)<<"-----------------------------------------------------------------------------------------------"<<endl;
 //    for(int j1=0; j1<=1; j1++) for(int j2=0; j2<=1; j2++){ (*m_Out)<< "m_AmpExpo2("<<j1<<","<<j2<<",*,*)=";
 //       for(int j=0;j<=1;j++) for(int k=0;k<=1;k++) (*m_Out)<<"  "<<SW208<<m_AmpExpo2.m_A[j1][j2][j][k];(*m_Out)<<endl;}
-(*m_Out)<<"@@@KKceex::MakeRho: m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
-}
+//(*m_Out)<<"@@@KKceex::MakeRho: m_RhoExp0= "<<m_RhoExp0<<"  m_RhoExp1= "<<m_RhoExp1<<"  m_RhoExp2= "<<m_RhoExp2<<endl;
+//}
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//MakeRho
 
@@ -1154,16 +1154,16 @@ void KKceex::MakeRho2(double h1[], double h2[], double &wt0, double &wt1, double
   wt1 = Rho1/m_RhoExp1;
   wt2 = Rho2/m_RhoExp2;
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  if( m_Event->m_EventCounter <=20){
-  (*m_Out)<<"----------------------------------KKceex::MakeRho2---------------------------------------------------"<<endl;
+//  if( m_Event->m_EventCounter <=20){
+//  (*m_Out)<<"----------------------------------KKceex::MakeRho2---------------------------------------------------"<<endl;
 //  (*m_Out)<<"KKceex::MakeRho2: h1[0-3]="<<h1[0]<<" "<<h1[1]<<" "<<h1[2]<<" "<<h1[3]<<endl;
 //  (*m_Out)<<"KKceex::MakeRho2: h2[0-3]="<<h2[0]<<" "<<h2[1]<<" "<<h2[2]<<" "<<h2[3]<<endl;
 //  (*m_Out)<<"HvecFer1="<<HvecFer1[0]<<" "<<HvecFer1[1]<<" "<<HvecFer1[2]<<" "<<HvecFer1[3]<<endl;
 //  (*m_Out)<<"HvecFer2="<<HvecFer2[0]<<" "<<HvecFer2[1]<<" "<<HvecFer2[2]<<" "<<HvecFer2[3]<<endl;
-  (*m_Out)<<"KKceex::MakeRho2: Rho0= "<<Rho0<<"  Rho1= "<<Rho1<<"  Rho2= "<<Rho2<<endl;
-  (*m_Out)<<"KKceex::MakeRho2:  wt0= "<< wt0<<"   wt1= "<< wt1<<"   wt2= "<< wt2<<endl;
-  }
-  //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+//  (*m_Out)<<"KKceex::MakeRho2: Rho0= "<<Rho0<<"  Rho1= "<<Rho1<<"  Rho2= "<<Rho2<<endl;
+//  (*m_Out)<<"KKceex::MakeRho2:  wt0= "<< wt0<<"   wt1= "<< wt1<<"   wt2= "<< wt2<<endl;
+//  }
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }// GPS_MakeRho2
 
 
