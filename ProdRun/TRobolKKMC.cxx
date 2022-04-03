@@ -272,6 +272,8 @@ if( abs(KFfin) == 15 ) {
   cout.precision(6);
   cout.setf(ios_base::scientific, ios_base::floatfield);
   cout << endl << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
+  int nPhotFSR = Event->m_nPhot;
+  (*f_Out)     << "TRobolKKMC::Production nPhotISR=" << Event->m_nPhotISR  << " nPhotFSR="<< Event->m_nPhotFSR<< endl;
   (*f_Out)     << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
    cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
 }

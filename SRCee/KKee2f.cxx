@@ -688,7 +688,7 @@ if(m_WtCrude != 0 ) {
       for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
       WtBest = m_WtSet[74];   // wtset[74]
 //[[[[[[[[[[[[[[[
-      if(m_EventCounter <10 ){
+      if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 ) {
         (*f_Out)<<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
         cout    <<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
       }
@@ -724,7 +724,7 @@ if(m_WtCrude != 0 ) {
 }//if wtcrude
 
 //[[[[[[[[[[[[[[[ debug
-if(m_EventCounter <20 ){
+if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 ) {
   (*f_Out)<<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
   cout    <<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
   (*f_Out)<<"KKee2f::Generate: m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
