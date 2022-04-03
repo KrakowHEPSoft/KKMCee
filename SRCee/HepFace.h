@@ -55,6 +55,7 @@ void Initialize();
 void make1();
 void FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int JDA2, float P4[], float &PINV, bool PHFLAG);
 void tauolaToHEPMC3();
+void MomentumCheck();
 ////////////////////////////////////////////////////////////////////////////
        ClassDef(HepFace,1); // Data base
 };// HepFace class

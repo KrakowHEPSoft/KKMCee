@@ -259,7 +259,7 @@ if( abs(KFfin) == 15 ) {
   Print::listing(*Hvent);
   Print::content(*Hvent);
 // checking four momentum conservation
-  double px,py,pz,e;
+  double px=0.0 , py=0.0 , pz=0.0 , e=0.0;
   for (auto p : Hvent->particles()){
     if (p->status() == 1){
       HepMC3::FourVector m = p->momentum();

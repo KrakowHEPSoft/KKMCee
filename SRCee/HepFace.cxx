@@ -3,6 +3,25 @@
 
 ClassImp(HepFace);
 
+// check energy conservation
+void HepFace::MomentumCheck(){
+
+double px = 0.0 , py = 0.0, pz = 0.0 , e = 0.0;
+
+for (auto p : m_Hvent->particles()){
+  if (p->status() == 1){
+    HepMC3::FourVector m = p->momentum();
+    cout << "px=" << m.px() << ", py=" << m.py() << ", pz=" << m.pz() << ", e=" << m.e() << endl;
+    px += m.px();
+    py += m.py(); 
+    pz += m.pz();
+    e += m.e();
+   } //end if
+  }
+  cout << "=================== check energy conservation ====================" << endl;
+  cout << "px=" << px << ", py=" << py << ", pz=" << pz << ", e=" << e << endl;
+}
+
 HepFace::HepFace()
 {
   // This constructor is for ROOT streamers ONLY
@@ -58,7 +77,7 @@ void HepFace::make1()
 /////////////////////////////////////////////////////////////////////////////////////////
   m_Hvent->clear();
 // status of outgoing fermions
-  int status=3;                                 // stable mu, neutrina
+  int status=1;                                 // stable mu, neutrina
   if(abs(m_Event->m_KFfin)==15) status=1;       // instable tau
   if(abs(m_Event->m_KFfin) >= 1 && abs(m_Event->m_KFfin)  < 5) status=1; // quarks
 //----------------------------------
@@ -114,7 +133,7 @@ void HepFace::make1()
   for(int i=0; i< m_Event->m_nPhotFSR; i++){
       // create a HEPMC photon
       FourVector tmp_photon_v4=FourVector(Vect4(m_Event->m_PhotFSR[i]));
-      GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22, 3);
+      GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22, 1);
       // assign from which electron the photon was emmited 
       // check which electron is more parallel to the photon
       double scalar3= m_Event->m_PhotFSR[i] * m_Event->m_Qf1;
@@ -148,6 +167,7 @@ void HepFace::make1()
 // Test print out
 //  Print::listing(*m_Hvent);
 //  Print::content(*m_Hvent);
+//  MomentumCheck();
 //]]]]]]]]]]]]]]]]]]]]]]]]
 }//make1
 
@@ -161,7 +181,7 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
 /////////////////////////////////////////////////////////////////////////////////////////
 // Create a HEPMC3 particle from a tau decay
   FourVector p_v4( Vect4(P4) );  // Create a HEPMC3 particle from a tau decay
-  GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, 2);
+  GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, 1);
 // store it in the vector which will be used later to fill the HEPMC record
   if (N == 1)       m_tauMdecay.push_back(ptemp); // N = 1 is tau-
   else if (N == -1) m_tauPdecay.push_back(ptemp); // N = -1 is tau+
@@ -188,11 +208,13 @@ void HepFace::tauolaToHEPMC3(){
   GenVertexPtr tauMinus =  std::make_shared<GenVertex>();
   for (auto p: m_Hvent->particles()){
     if (p->pid() == 15 && p->status()==1){ // is ustable tau-
+      p->set_status(2);
       tauMinus->add_particle_in(p);        // add tau to the vertex
       // add decay products of the tau to the vertex
       for (auto i : m_tauMdecay)  tauMinus->add_particle_out(i);
     } // end if tau -
     else if (p->pid() == -15 && p->status()==1 ){ // is unstable tau+
+      p->set_status(2);
       tauPlus->add_particle_in(p);  // add tau to the vertex
       // add decay products of the tau to the vertex
       for (auto i : m_tauPdecay) tauPlus->add_particle_out(i);
@@ -207,6 +229,6 @@ void HepFace::tauolaToHEPMC3(){
   // Test print out
   cout<<"==================================tauolaToHEPMC3==============================================";
   Print::listing(*m_Hvent);
-  Print::content(*m_Hvent);
+  // Print::content(*m_Hvent);
   //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//tauolaToHEPMC3
