@@ -260,8 +260,10 @@ if( abs(KFfin) == 15 ) {
   Print::content(*Hvent);
 // checking four momentum conservation
   double px=0.0 , py=0.0 , pz=0.0 , e=0.0;
+  int nev=0;
   for (auto p : Hvent->particles()){
     if (p->status() == 1){
+      nev++;
       HepMC3::FourVector m = p->momentum();
       px += m.px();
       py += m.py();
@@ -273,7 +275,7 @@ if( abs(KFfin) == 15 ) {
   cout.setf(ios_base::scientific, ios_base::floatfield);
   cout << endl << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
   int nPhotFSR = Event->m_nPhot;
-  (*f_Out)     << "TRobolKKMC::Production nPhotISR=" << Event->m_nPhotISR  << " nPhotFSR="<< Event->m_nPhotFSR<< endl;
+  (*f_Out)     << "TRobolKKMC::Production nPhotISR=" << Event->m_nPhotISR  << " nPhotFSR="<< Event->m_nPhotFSR<<"  nev="<<nev<< endl;
   (*f_Out)     << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
    cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
 }

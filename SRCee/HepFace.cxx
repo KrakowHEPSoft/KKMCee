@@ -181,7 +181,7 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
 /////////////////////////////////////////////////////////////////////////////////////////
 // Create a HEPMC3 particle from a tau decay
   FourVector p_v4( Vect4(P4) );  // Create a HEPMC3 particle from a tau decay
-  GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, 1);
+  GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, IST);
 // store it in the vector which will be used later to fill the HEPMC record
   if (N == 1)       m_tauMdecay.push_back(ptemp); // N = 1 is tau-
   else if (N == -1) m_tauPdecay.push_back(ptemp); // N = -1 is tau+

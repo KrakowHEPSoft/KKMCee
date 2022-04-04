@@ -58,11 +58,8 @@ BeginX
  2001              0      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
  2002              0      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
  2004            1e0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
-** 2004              0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
+ 2004              0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
 *
-** 2001            303      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
-** 2002            303      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
-*
-** 2001            159      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
-** 2002            159      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
+ 2001            159      Jak1   =xpar(71)  single pi
+ 2002            159      Jak2   =xpar(72)  single pi
 EndX
