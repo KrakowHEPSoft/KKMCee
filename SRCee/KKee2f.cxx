@@ -820,10 +820,7 @@ m_Event->ZBoostALL();
 // Hadronization interface filling in /hepevt/ common block
 if ( m_WtCrude  != 0) hepevt_fill_();
 /////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[
-m_HEPMC->make1();
-//]]]]]]]]]]]]]]]]]]]]
-
+m_HEPMC->WriteHEPC();
 /////////////////////////////////////////////////////////////
 // Tau pair generation using TAUOLA+PHOTOS using /hepevt/
 if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {

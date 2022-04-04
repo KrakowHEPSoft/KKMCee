@@ -67,7 +67,7 @@ void HepFace::Initialize()
 }// Initialize
 
 ///______________________________________________________________________________________
-void HepFace::make1()
+void HepFace::WriteHEPC()
 {
 /////////////////////////////////////////////////////////////////////////////////////////
 // This function fills in HEPMC3 event record with the initial beams,
@@ -89,7 +89,7 @@ void HepFace::make1()
   GenParticlePtr pe2 = std::make_shared<GenParticle>( pe2_v4, - m_Event->m_KFini, 4); // - PDG id antifermion 
 //-----------------------------------
 // ISR photons:
-  for(int i=0; i < m_Event->m_nPhotISR; ++i){
+  for(int i=1; i <= m_Event->m_nPhotISR; ++i){
       // create a HEPMC photon
       FourVector tmp_photon_v4=Vect4(m_Event->m_PhotISR[i]);
       GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22,1);
@@ -130,7 +130,7 @@ void HepFace::make1()
   FourVector pe4_v4( Vect4( m_Event->m_Qf2) );
   GenParticlePtr pe3 = std::make_shared<GenParticle>( pe3_v4, m_Event->m_KFfin, status);
   GenParticlePtr pe4 = std::make_shared<GenParticle>( pe4_v4, - m_Event->m_KFfin, status);
-  for(int i=0; i< m_Event->m_nPhotFSR; i++){
+  for(int i=1; i<= m_Event->m_nPhotFSR; i++){
       // create a HEPMC photon
       FourVector tmp_photon_v4=FourVector(Vect4(m_Event->m_PhotFSR[i]));
       GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22, 1);
@@ -169,7 +169,7 @@ void HepFace::make1()
 //  Print::content(*m_Hvent);
 //  MomentumCheck();
 //]]]]]]]]]]]]]]]]]]]]]]]]
-}//make1
+}//WriteHEPC
 
 
 ///______________________________________________________________________________________

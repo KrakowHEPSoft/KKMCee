@@ -14,7 +14,7 @@ BeginX
 *     PrintOut from generator
     5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
-    7              2      Ie2Pri =xpar( 7)  PrintOut End   point
+    7              5      Ie2Pri =xpar( 7)  PrintOut End   point
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
