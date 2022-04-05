@@ -195,8 +195,12 @@ void TauPair::Make2(){
 
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 // Process by photos
+  int buf = -m_Hvent->particles().size();
   PhotosHepMC3Event photosEvent(m_Hvent);
   photosEvent.process();
+  buf += m_Hvent->particles().size();
+  cout<<    ">>>>>>> TauPair::Make2:  photos added "<<buf<<" events"<<endl;
+  (*m_Out)<<">>>>>>> TauPair::Make2:  photos added "<<buf<<" events"<<endl;
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 /////////////////////////////////////////////
