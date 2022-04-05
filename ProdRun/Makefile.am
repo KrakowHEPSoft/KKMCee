@@ -1,9 +1,12 @@
 SUBDIRS = workMini work1 workFoam workNU workTau
 
-all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(HEPMC_INCLUDES) $(all_includes)
+all_includes :=  -I$(top_srcdir)/SRCee -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 $(HEPMC_INCLUDES) -I/opt/PHOTOS-install/include $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 
+PHOTOSLIBS =/opt/PHOTOS-install/lib/libPhotospp.so \
+			/opt/PHOTOS-install/lib/libPhotosppHepMC3.so
+			
 #/////////////////////////////////////////////////////////////////////////
 # -lFoam is optional in case FOAM of ROOT is used instead of local Foam2
 #LIBADD_RTF = -L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(ROOTAUXLIBS) $(FLIBS)
@@ -28,6 +31,7 @@ $(dict1C) : $(ROOTCINTHDRS1)
 nodist_libProdFoam_la_SOURCES = $(dict1C)
 libProdFoam_la_SOURCES =  TRobolFoam.cxx
 libProdFoam_la_LIBADD =  \
+	$(PHOTOSLIBS) \
 	$(top_builddir)/SRCee/libKKee.la \
  	$(top_builddir)/SRCee/libKKfm.la 
 libProdFoam_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC)
@@ -50,6 +54,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libProdKK_la_SOURCES = $(dict2C)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx
 libProdKK_la_LIBADD =  \
+	$(PHOTOSLIBS) \
 	$(top_builddir)/SRCee/libKKee.la  $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
@@ -62,18 +67,21 @@ bin_PROGRAMS = MainMini MainKKMC  MainFoam
 #-------------------------------------------------------------------------
 MainKKMC_SOURCES = MainMCdev.cxx 
 MainKKMC_LDADD = \
+			$(PHOTOSLIBS) \
 			libProdKK.la
-MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) $(LDFLAGS_HEPMC) -g -no-install
+MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) -L/opt/PHOTOS-install/lib/ $(LDFLAGS_HEPMC) -g -no-install
 #-------------------------------------------------------------------------
 # option -no-install needed for debuger
 #-------------------------------------------------------------------------
 MainFoam_SOURCES = MainMCdev.cxx 
 MainFoam_LDADD = \
+			$(PHOTOSLIBS) \
 			libProdFoam.la
-MainFoam_LDFLAGS = -rpath $(ROOTRPATH)  $(LDFLAGS_HEPMC) -g  -no-install
+MainFoam_LDFLAGS = -rpath $(ROOTRPATH) -L/opt/PHOTOS-install/lib/  $(LDFLAGS_HEPMC) -g  -no-install
 #/////////////////////////////////////////////////////////
 MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
+			$(PHOTOSLIBS) \
 			$(top_builddir)/SRCee/libKKee.la
-MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) $(LDFLAGS_HEPMC) -g  -no-install
+MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -L/opt/PHOTOS-install/lib/ $(LDFLAGS_HEPMC) -g  -no-install
 #-------------------------------------------------------------------------
