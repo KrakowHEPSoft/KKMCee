@@ -36,6 +36,19 @@ using namespace std;
 #include "KKceex.h"
 #include "KKevent.h"
 
+#include "HepMC3/GenEvent.h"
+#include "HepMC3/GenVertex.h"
+#include "HepMC3/GenParticle.h"
+#include "HepMC3/Print.h"
+#include "HepMC3/Selector.h"
+using namespace HepMC3;
+
+// PHOTOS header files
+#include "Photos/Photos.h"
+#include "Photos/PhotosHepMC3Event.h"
+#include "Photos/Log.h"
+using namespace Photospp;
+
 extern "C" {
 /////////////////////////////
 // HepEvt
@@ -74,7 +87,8 @@ class TauPair: public TObject{
  public:
  ofstream  *m_Out;             //! pointer to external Logfile for messages
  KKceex    *m_GPS;             //  CEEX matrix element
- KKevent   *m_Event;           //  MC event ISR+FSR in KKMC format
+ KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format (no persistency)
+ GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)!
  TRandom   *m_RNgen;           //  central r.n. generator
  //
  double     m_HvecTau1[4];     //! Spin Polarimeter vector first  Tau
@@ -109,7 +123,8 @@ class TauPair: public TObject{
 // class member functions
 double sqr( const double x );
 
-void SetEvent( KKevent *Event){ m_Event = Event;};
+void SetEvent( KKevent  *Event){ m_Event = Event;};
+void SetHvent( GenEvent *Hvent){ m_Hvent = Hvent;};
 void SetGPS(   KKceex  *GPS){   m_GPS   = GPS;};
 
 void Initialize(double[]);

@@ -82,6 +82,11 @@ void TauPair::Initialize(double xpar[])
     dekay_(&JAK, m_HvecTau1);
 // Initialization of PHOTOS
     if(m_IFPHOT == 1) phoini_();
+//[[[[[[[[[[[[[[[[[[[[[[[[[
+// Initialization of PHOTOS++
+//   if(m_IFPHOT == 1) Photos::initialize();
+    Photos::initialize();
+//]]]]]]]]]]]]]]]]]]]]]]]]]
   }//IsInitialized
 ///////////////////////////////////////////////////
 }// Initialize
@@ -187,6 +192,13 @@ void TauPair::Make2(){
     photos_(ih1);  // Photos works on HepEvt
     photos_(ih2);
   }//IFPHOT
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+// Process by photos
+  PhotosHepMC3Event photosEvent(m_Hvent);
+  photosEvent.process();
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
 /////////////////////////////////////////////
   J=2; pyhepc_(J);       // HepEvt-->Pythia
 /////////////////////////////////////////////

@@ -21,7 +21,6 @@ using namespace std;
 #include "HepMC3/GenParticle.h"
 #include "HepMC3/Print.h"
 #include "HepMC3/Selector.h"
-
 using namespace HepMC3;
 
 #include "BXFORMAT.h"

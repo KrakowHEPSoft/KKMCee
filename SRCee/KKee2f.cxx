@@ -243,6 +243,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   m_TauGen= new TauPair(OutFile);
   m_TauGen->Initialize(m_ypar);
   m_TauGen->SetEvent(m_Event);
+  m_TauGen->SetHvent(m_Hvent);
   m_TauGen->SetGPS(  m_GPS);
   m_TauGen->SetRNgen(f_RNgen);
 //////////////////////////////////////////////////////////////
@@ -817,25 +818,24 @@ m_Event->ZBoostALL();
 
 
 /////////////////////////////////////////////////////////////
-// Hadronization interface filling in /hepevt/ common block
-if ( m_WtCrude  != 0) hepevt_fill_();
+if ( m_WtCrude  != 0) hepevt_fill_();  // Fill in /hepevt/ with four fermions and photons
 /////////////////////////////
-m_HEPMC->WriteHEPC();
+if ( m_WtCrude  != 0) m_HEPMC->WriteHEPC(); // Fill in hepmc3 m_Hvent event
 /////////////////////////////////////////////////////////////
-// Tau pair generation using TAUOLA+PHOTOS using /hepevt/
+// Tau pair generation using TAUOLA+PHOTOS
 if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
    int IsTauInitialized = m_TauGen->IsTauInitialized();
    if( IsTauInitialized != 0) {
      if( DB->KeyGPS == 0 ) {
          cout<< " #### STOP in KKhh2f_Generate: for tau decays GPS not activated !!!"<<endl;
          exit(10); }//if
-     m_GPS->TralorPrepare(1);
+     m_GPS->TralorPrepare(1);   // preparing Lorentz transformations from tau frame to LAB
      m_GPS->TralorPrepare(2);
 //
-     m_TauGen->Make1();
-     m_TauGen->ImprintSpin();
-     m_TauGen->Make2();
-     m_HEPMC->tauolaToHEPMC3();
+     m_TauGen->Make1();         // generate tau decays (f77 Tauola) in tau rest frames
+     m_TauGen->ImprintSpin();   // implementing spin effects
+     m_TauGen->Make2();         // transform decays to LAB, appending /hepevt/, photos on hepevt/
+     m_HEPMC->tauolaToHEPMC3(); // appending  m_Hvent with tau decay products
    }//TauIsInitialized
 }//if
 
