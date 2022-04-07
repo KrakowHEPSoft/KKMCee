@@ -4661,19 +4661,22 @@ C tau neutrino (nu_tau is 16)
         IS=1
         CALL FILHEP(0,1, IDFFIN(4,JNPI)     ,-IS,-IS,0,0,PNU,AM,.TRUE.)
         CALL FILHEP3(ISGN,1, IDFFIN(4,JNPI)     ,-IS,-IS,0,0,PNU,AM,.TRUE.)
-c sigle scalar has no W
+c sigle scalar has no W (WRONG!!!!)
       ELSEIF(ND.EQ.1) THEN
-        IS=1
-        CALL FILHEP(0,1,16*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
-        CALL FILHEP3(ISGN,1,16*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
-
-      ELSE
-        CALL FILHEP(0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
+ccc        IS=1
+ccc        CALL FILHEP(    0,1,16*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
+ccc        CALL FILHEP3(ISGN,1,16*ISGN,-IS,-IS,0,0,PNU,AM,.TRUE.)
+        CALL FILHEP(    0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
         CALL FILHEP3(ISGN,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
-C
+        CALL TRALO4(KTO,PWB,PWB,AM)
+        CALL FILHEP(    0,2,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.) ! W boson (W+ is 24)
+        CALL FILHEP3(ISGN,2,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
+      ELSE
+        CALL FILHEP(    0,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
+        CALL FILHEP3(ISGN,1,16*ISGN,NPS,NPS,0,0,PNU,AM,.TRUE.)
 C W boson (W+ is 24)
         CALL TRALO4(KTO,PWB,PWB,AM)
-        CALL FILHEP(0,2,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
+        CALL FILHEP(    0,2,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
         CALL FILHEP3(ISGN,2,-24*ISGN,NPS,NPS,0,0,PWB,AM,.TRUE.)
       ENDIF
 C

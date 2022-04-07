@@ -438,6 +438,12 @@ c$$$      ih2=4  ! antifermion is here  &&&
          END IF
       END DO
 *
+c[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+c      write(16,*) '***********************************************************************'
+c      write(16,'(A,30(A,I5))') '***** HepEvt_Fil1:','   ihep=',ihep,
+c     $         '   n=',n, '   ist=',ist, '   id=',id ,'   jmo1=',jmo1, '   jmo2=',jmo2
+c      write(16,'(A,30I3)') '***** isthep(1:ihep)=',(isthep(i),i=1,ihep)
+c]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
       END
 
       SUBROUTINE HepEvt_SetPhotosFlagTrue(ihep)

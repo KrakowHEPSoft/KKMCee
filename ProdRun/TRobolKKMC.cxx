@@ -146,7 +146,8 @@ void TRobolKKMC::Production(double &iEvent)
   m_NevGen++;
   KKee2f *KKMC_generator = (KKee2f*)f_MCgen;
   KKMC_generator->Generate(); // done in user class
-  KKevent *Event = KKMC_generator->m_Event;
+  KKevent  *Event = KKMC_generator->m_Event;             // KKMC internal event
+  GenEvent *Hvent = (GenEvent*)KKMC_generator->m_Hvent;  // HEPMC3 public event
 
   double WtMain,WtCrude,WtFoam;
  // KKMC_generator->GetWt(WtMain,WtCrude);
@@ -254,31 +255,41 @@ if( abs(KFfin) == 13 ) {
 //                TAU pairs
 //======================================================
 if( abs(KFfin) == 15 ) {
-  cout<<"%%%%%%%%%%%%%%%%%%%%% TRobolKKMC::Production  %%%%%%%%%%%%%%%%%%%%% "<<endl;
-  GenEvent  *Hvent  = (GenEvent*)KKMC_generator->m_Hvent;
-  Print::listing(*Hvent);
-  Print::content(*Hvent);
+  if(m_NevGen <= 200){
+    Print::listing(*Hvent);
+    Print::content(*Hvent);
 // checking four momentum conservation
-  double px=0.0 , py=0.0 , pz=0.0 , e=0.0;
-  int nev=0;
-  for (auto p : Hvent->particles()){
-    if (p->status() == 1){
-      nev++;
-      HepMC3::FourVector m = p->momentum();
-      px += m.px();
-      py += m.py();
-      pz += m.pz();
-      e  += m.e();
-    }//if
-  }//auto
-  cout.precision(6);
-  cout.setf(ios_base::scientific, ios_base::floatfield);
-  cout << endl << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
-  int nPhotFSR = Event->m_nPhot;
-  (*f_Out)     << "TRobolKKMC::Production nPhotISR=" << Event->m_nPhotISR  << " nPhotFSR="<< Event->m_nPhotFSR<<"  nev="<<nev<< endl;
-  (*f_Out)     << "TRobolKKMC::Production VectSum: " << px << " " << py << " " << pz << " " << e << endl;
+    double px=0.0 , py=0.0 , pz=0.0 , ene=0.0;
+    for (auto pp : Hvent->particles())
+      if (pp->status() == 1){
+        HepMC3::FourVector P = pp->momentum();
+        px += P.px(); py += P.py(); pz += P.pz(); ene  += P.e();
+      }//for auto
+    cout.precision(6);
+    cout.setf(ios_base::scientific, ios_base::floatfield);
+    cout << endl <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<< endl;
+    (*f_Out)     <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<< endl;
    cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
-}
+  }// if NevGen
+  TLorentzVector Pip, Pim;
+  for (auto pp : Hvent->particles()){
+     int id = pp->pid();
+     if( id ==  211 ) {
+        Mom4toTLor( pp->momentum(), &Pip);
+//        cout<<    " pi+ found"<<endl;
+        if(m_NevGen <= 20) cout<<"TRobolKKMC::Production: Pi+ mom ="<<Pip.Px()<<"  "<<Pip.Py()<<"  "<<Pip.Pz()<<"  "<<Pip.E()<<endl;
+//        (*f_Out)<<" pi+ found"<<endl;
+     }
+     if( id == -211 ) {
+        Mom4toTLor( pp->momentum(), &Pim);
+//        cout<<    " pi- found"<<endl;
+        if(m_NevGen <= 20) cout<<"TRobolKKMC::Production: Pi- mom ="<<Pim.Px()<<"  "<<Pim.Py()<<"  "<<Pim.Pz()<<"  "<<Pim.E()<<endl;
+//        cout<<    " pi- found"<<endl;
+//        (*f_Out)<<" pi- found"<<endl;
+     }
+  }
+
+}// if KFfin==15
 //======================================================
 //    NEUTRINOS   all 3 nu+nubar + visible photons
 //======================================================

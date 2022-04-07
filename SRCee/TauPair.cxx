@@ -74,19 +74,32 @@ void TauPair::Initialize(double xpar[])
      BXTXT(*m_Out, " !!!!! Tauola inhibited !!!!    ");
      BXCLO(*m_Out);
   } else {
+// Initialisation of TAUOLA
     inimas_(&ITAUXPAR,xpar);
     initdk_(&ITAUXPAR,xpar);
     double xk0qed = 0.1;            // <=== It seems to be never used
     iniphy_(&xk0qed);
     int JAK =-1;
     dekay_(&JAK, m_HvecTau1);
-// Initialization of PHOTOS
+
+// Initialization of old fortran PHOTOS
     if(m_IFPHOT == 1) phoini_();
-//[[[[[[[[[[[[[[[[[[[[[[[[[
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 // Initialization of PHOTOS++
-//   if(m_IFPHOT == 1) Photos::initialize();
+    if(m_IFPHOT == 2){
     Photos::initialize();
-//]]]]]]]]]]]]]]]]]]]]]]]]]
+// So far does not work...
+//    Photos::suppressAll();
+//    Photos::forceBremForBranch(0, 15);
+//    Photos::forceBremForBranch(0, -15);
+//    Photos::suppressBremForDecay(3, 15, 16, 11, -12);
+//    Photos::suppressBremForDecay(3, -15, -16, -11, 12);
+//    Photos::suppressBremForDecay(3, 15, 16, 13, -14);
+//    Photos::suppressBremForDecay(3, -15, -16, -13, 14);
+    }// if m_IFPHOT
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
   }//IsInitialized
 ///////////////////////////////////////////////////
 }// Initialize
@@ -194,13 +207,17 @@ void TauPair::Make2(){
   }//IFPHOT
 
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-// Process by photos
+  if(m_IFPHOT == 2) {
+// Process HEPMC3 event by PHOTOS++
   int buf = -m_Hvent->particles().size();
   PhotosHepMC3Event photosEvent(m_Hvent);
   photosEvent.process();
   buf += m_Hvent->particles().size();
-  cout<<    ">>>>>>> TauPair::Make2:  photos added "<<buf<<" events"<<endl;
-  (*m_Out)<<">>>>>>> TauPair::Make2:  photos added "<<buf<<" events"<<endl;
+  if(buf>0 && m_Event->m_EventCounter <=200){
+     cout<<   ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    (*m_Out)<<">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    }
+  }
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 /////////////////////////////////////////////

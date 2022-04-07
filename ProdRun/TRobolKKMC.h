@@ -69,6 +69,11 @@ class TRobolKKMC : public TRobol
  virtual void Initialize(ofstream*, TFile*, TFile*);
  virtual void Hbooker();
  virtual void Production(double &);
+
+ void Mom4toTLor(HepMC3::FourVector p4, TLorentzVector *PX){
+    PX->SetPxPyPzE( p4.px(), p4.py(), p4.pz(), p4.e() );
+ };
+
  void Finalize();
 ////////////////////////////////////////////////////////////////////////////
                         ClassDef(TRobolKKMC,1)

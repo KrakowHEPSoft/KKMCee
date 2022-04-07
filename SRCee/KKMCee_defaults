@@ -338,7 +338,7 @@ BeginX
  2001            0e0      Jak1   =xpar(71)  First  Tau decay mask
  2002            0e0      Jak2   =xpar(72)  Second Tau decay mask
  2003           15e0      idff   =xpar(72)  PDG ident of the first tau
- 2004            1e0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
+ 2004            1e0      itdkRC =xpar(74)  QED rad. switch in tau decays (photos etc)
  2005        0.001e0      xk0dec =xpar(75)  IR-cut for QED rad. in leptonic decays
  2006            1e0      KeyA1  =xpar(76)  Type of a1 current
  2007        0.975e0\\\\\\Cosine of  Cabibo angle, dont change it\\\\\\\\\\\\\\

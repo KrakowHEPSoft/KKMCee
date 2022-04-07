@@ -227,8 +227,8 @@ void HepFace::tauolaToHEPMC3(){
   m_tauPdecay.clear();
   //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
   // Test print out
-  cout<<"==================================tauolaToHEPMC3==============================================";
-  Print::listing(*m_Hvent);
+  //cout<<"==================================tauolaToHEPMC3==============================================";
+  // Print::listing(*m_Hvent);
   // Print::content(*m_Hvent);
   //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//tauolaToHEPMC3

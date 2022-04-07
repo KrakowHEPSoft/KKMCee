@@ -6,6 +6,9 @@
 ///============================================================================
 gROOT->Reset();
 cout<<"%%% ================== Start.C ================== %%%%"<<endl;
+//gSystem->Load("/opt/PHOTOS-install/lib/libPhotospp.so");
+//gSystem->Load("/opt/PHOTOS-install/lib/libPhotosppHepMC3.so");
+//gSystem->Load("/opt/PHOTOS-install/lib/libPhotosppHEPEVT.so");
 TFile HistoFile("histo.root","RECREATE","Histograms");
 TFile GenFile(  "mcgen.root","RECREATE","r.n.generator, MCgens");
 TFile SemFile(  "semaf.root","RECREATE","Semaphore");
