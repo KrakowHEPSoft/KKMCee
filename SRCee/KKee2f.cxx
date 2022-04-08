@@ -910,6 +910,10 @@ void KKee2f::Finalize()
 *f_Out<< "   *****************************" << endl;
 *f_Out<< "   ****   KKMCee   Finalize ****" << endl;
 *f_Out<< "   *****************************" << endl;
+//
+if( m_TauGen->IsTauInitialized() != 0) {
+    m_TauGen->Finalize();
+}
 ////////////////////////////////////////////////////
 // True Crude/Primary of Foam INSIDE all rejection loops [pb]
 double XsPrimPb = f_FoamI->GetPrimary()*1000.0;

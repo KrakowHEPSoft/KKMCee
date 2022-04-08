@@ -5,7 +5,7 @@ AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -lstdc++ # used while compiling and linkin
 
 METASOURCES = AUTO
 
-bin_PROGRAMS = PlotBES Plot1 TabIIIPRD PlotNU
+bin_PROGRAMS = PlotBES Plot1 TabIIIPRD PlotNU PlotTau
 
 ############################################
 Plot1_SOURCES = HisNorm.cxx Plot1.cxx
@@ -23,6 +23,10 @@ PlotBES_LDFLAGS = -L$(ROOTLIBDIR)
 TabIIIPRD_SOURCES = HisNorm.cxx TabIIIPRD.cxx
 TabIIIPRD_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
 TabIIIPRD_LDFLAGS = -L$(ROOTLIBDIR)
+############################################
+PlotTau_SOURCES = HisNorm.cxx PlotTau.cxx
+PlotTau_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotTau_LDFLAGS = -L$(ROOTLIBDIR)
 
 ######################### private #############################
 SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
@@ -36,6 +40,9 @@ SUFFIXES:  .ps .dvi .tex .txp .html .bib .blg .bbl .aux .fig .pdf .eps .jpg
 #################
 PlotBES-run: PlotBES
 	./PlotBES
+#################
+PlotTau-run: PlotTau
+	./PlotTau
 #################
 Plot1-run: Plot1
 	./Plot1

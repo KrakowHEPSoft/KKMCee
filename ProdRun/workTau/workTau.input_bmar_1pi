@@ -7,7 +7,7 @@ BeginX
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0           1000      1k   NEVT = number of events (not used anymore)
 * Center-of-mass energy [GeV]
-    1        105.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1      91.1876e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 *     PrintOut from generator
     5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
@@ -53,9 +53,7 @@ BeginX
 * Tau decays
 *
 * Jak=-1: no decay; 0: inclusive; 1,2,3: e,mu,pi decays, 4,5,6,7: rho,a1,K,K*...
- 2001              0      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
- 2002              0      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
- 2004            2e0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
+ 2004            0e0      itdkRC =xpar(74)  QED rad. switch, =2 for PHOTOS++
 *
  2001            159      Jak1   =xpar(71)  single pi
  2002            159      Jak2   =xpar(72)  single pi

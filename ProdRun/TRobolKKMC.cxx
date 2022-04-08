@@ -90,8 +90,11 @@ void TRobolKKMC::Hbooker()
   sca_vTcPR_Ceex2n = TH2D_UP("sca_vTcPR_Ceex2n",  "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Eex0   = TH2D_UP("sca_vTcPR_Eex0",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
   sca_vTcPR_Eex2   = TH2D_UP("sca_vTcPR_Eex2",    "dSig/dc/dv ", nbv, 0.0 ,1.0, nbc, -1.0 ,1.0);
-
-  sca_r1r2     = TH2D_UP("sca_r1r2" ,    "BES spectrum", 100, -delv , delv, 100, -delv , delv);
+// BES
+  sca_r1r2     = TH2D_UP("sca_r1r2" ,      "BES spectrum", 100, -delv , delv, 100, -delv , delv);
+// Tau channel
+  int nbx = 20;
+  sca_x1x2     = TH2D_UP("sca_x1x2" , "Two pion spectrum", nbx, 0.0 , 1.0, nbx, 0.0 , 1.0);
 ////////////////////////////////////////////////////////
 // --------------------  for neutrinos ----------------
   KKee2f *KKMC_generator = (KKee2f*)f_MCgen;
@@ -271,6 +274,7 @@ if( abs(KFfin) == 15 ) {
     (*f_Out)     <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<< endl;
    cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
   }// if NevGen
+  // This part assumes that both taus decay into single pi
   TLorentzVector Pip, Pim;
   for (auto pp : Hvent->particles()){
      int id = pp->pid();
@@ -287,8 +291,11 @@ if( abs(KFfin) == 15 ) {
 //        cout<<    " pi- found"<<endl;
 //        (*f_Out)<<" pi- found"<<endl;
      }
-  }
-
+  }// auto
+  double x1= 2*Pim.E()/CMSene;  //pi-
+  double x2= 2*Pip.E()/CMSene;  //pi+
+  sca_x1x2->Fill(x1, x2, WtMain);
+  //
 }// if KFfin==15
 //======================================================
 //    NEUTRINOS   all 3 nu+nubar + visible photons

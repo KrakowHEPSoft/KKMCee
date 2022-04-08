@@ -59,6 +59,7 @@ class TRobolKKMC : public TRobol
 
  //
  TH2D   *sca_r1r2;            //!  No streamer!!!
+ TH2D   *sca_x1x2;            //!  No streamer!!!
 ///////////////////////////////////////////
 /// mandatory constructors and destructors
  public:

@@ -18,12 +18,12 @@ TFile SemFile(  "semaf.root","RECREATE","Semaphore");
 ///   and fill it with the MC run general parameters
 TString semaf   = "START";
 double nevtot   = 1e12; // 1000G
-//nevtot = 2e5;
+nevtot = 2e5;
 //nevtot =10000;
 //nevtot = 1e6;
 //nevtot =1e5;
 //nevtot =200;
-nevtot =60;
+//nevtot =60;
 //nevtot =1;
 double nevgrp   = 1e5; // 100k
 nevgrp = 1e7;          // 1M

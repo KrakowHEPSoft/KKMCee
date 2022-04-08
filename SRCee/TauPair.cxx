@@ -1,4 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
+// Replaces f77 module TauPair
+///////////////////////////////////////////////////////////////////////////////
 #include "TauPair.h"
 
 ClassImp(TauPair);
@@ -45,7 +47,6 @@ void TauPair::Initialize(double xpar[])
   BXTXT(*m_Out,"======    TauPair::Initialize     ======");
   BXTXT(*m_Out,"========================================");
 
-//  taupair_initialize_(xpar);
 
   int ITAUXPAR=2000;
 
@@ -201,6 +202,13 @@ void TauPair::Make2(){
 /////////////////////////////////////////////////////////////////////////////////////
 //                    Photos comes last                                            //
 /////////////////////////////////////////////////////////////////////////////////////
+//[[[[[[[[[[[[[[[[[[[[[[[[[[
+// temporary printout before photos
+  if( m_Event->m_EventCounter <=3){
+    J=2; pyhepc_(J);       // HepEvt-->Pythia
+    tauface_print_();
+  }//
+//]]]]]]]]]]]]]]]]]]]]]]]]]]
   if(m_IFPHOT == 1) {
     photos_(ih1);  // Photos works on HepEvt
     photos_(ih2);
@@ -225,11 +233,22 @@ void TauPair::Make2(){
 /////////////////////////////////////////////
 //[[[[[[[[[[[[[[[[[[[[
   if( m_Event->m_EventCounter <=30){
-//  (*m_Out)<<"====================================== Taupair_Make2: HepEvt-->Pythia ===================================="<<endl;
   tauface_print_();
   }//EventCounter
 //]]]]]]]]]]]]]]]]]]]]
 }//Make2
+
+
+void TauPair::Finalize(){
+////////////////////////////////
+// Final printout from Tauola
+////////////////////////////////
+//  CALL DEKAY(100,HvecDummy)
+//
+    int JAK =100;
+    dekay_(&JAK, m_HvecTau1);
+//
+}//Finalize
 
 void TauPair::Tralo4(int Kto, float P[], float Q[], float &AM){
 /////////////////////////////////////////////////////////////////////////////////////

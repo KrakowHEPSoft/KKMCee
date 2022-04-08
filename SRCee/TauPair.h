@@ -141,7 +141,7 @@ void Clone();
 void ImprintSpin();
 void Make2();
 void Tralo4(int Kto, float P[], float Q[], float &AM);
-
+void Finalize();
 ////////////////////////////////////////////////////////////////////////////
        ClassDef(TauPair,1); // Data base
 };// TauPair class
