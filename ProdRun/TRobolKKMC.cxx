@@ -93,8 +93,10 @@ void TRobolKKMC::Hbooker()
 // BES
   sca_r1r2     = TH2D_UP("sca_r1r2" ,      "BES spectrum", 100, -delv , delv, 100, -delv , delv);
 // Tau channel
-  int nbx = 20;
-  sca_x1x2     = TH2D_UP("sca_x1x2" , "Two pion spectrum", nbx, 0.0 , 1.0, nbx, 0.0 , 1.0);
+  int nbx = 40;
+  sca_x1x2  = TH2D_UP("sca_x1x2" , "Two pion spectrum", nbx, 0.0 , 1.0, nbx, 0.0 , 1.0);
+  sca_x1c1  = TH2D_UP("sca_x1c1" , "Pi Ene vs. cothe ", nbx, 0.0 , 1.0, nbx, -1.0 , 1.0);
+  hst_x1pi  = TH1D_UP("hst_x1pi" , "Pi Energy",          80, 0.0 , 1.0);
 ////////////////////////////////////////////////////////
 // --------------------  for neutrinos ----------------
   KKee2f *KKMC_generator = (KKee2f*)f_MCgen;
@@ -292,9 +294,12 @@ if( abs(KFfin) == 15 ) {
 //        (*f_Out)<<" pi- found"<<endl;
      }
   }// auto
-  double x1= 2*Pim.E()/CMSene;  //pi-
-  double x2= 2*Pip.E()/CMSene;  //pi+
+  double x1= 2*(Pim.Vect()).Mag()/CMSene;  //pi-
+  double x2= 2*(Pip.Vect()).Mag()/CMSene;  //pi+
+  double cthe1 = Pim.CosTheta();
   sca_x1x2->Fill(x1, x2, WtMain);
+  sca_x1c1->Fill(x1, cthe1, WtMain);
+  hst_x1pi->Fill(x1, WtMain);
   //
 }// if KFfin==15
 //======================================================

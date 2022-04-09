@@ -56,10 +56,13 @@ class TRobolKKMC : public TRobol
  TH1D   *hst_vxNuElCeex2;           //!  No streamer!!!
  TH1D   *hst_vxNuMuCeex2;           //!  No streamer!!!
  TH1D   *hst_vxNuTaCeex2;           //!  No streamer!!!
-
- //
+// BES
  TH2D   *sca_r1r2;            //!  No streamer!!!
+// Tau
  TH2D   *sca_x1x2;            //!  No streamer!!!
+ TH2D   *sca_x1c1;            //!  No streamer!!!
+ TH1D   *hst_x1pi;            //!  No streamer!!!
+//
 ///////////////////////////////////////////
 /// mandatory constructors and destructors
  public:

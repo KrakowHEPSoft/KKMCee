@@ -19,6 +19,9 @@ double MCequiv(TH1D *hst1);
 // This works for 1-dim histograms
 void HisNorm0( long   Nevt, double Xsav, TH1 *Hst);
 
+// Renormalizes 1-dim histograms to Xsav
+void HisNorm0(double Xsav, TH1 *Hst);
+
 /////////////////////////////////////////////////////////////////////
 // This works for 1-dim histograms
 void HisNorm1(TH1D *NorHst, TH1 *Hst);

@@ -22,6 +22,23 @@ void HisNorm0( long   Nevt, double Xsav, TH1 *Hst){
   Hst->Scale(Fact);
 }
 
+
+/////////////////////////////////////////////////////////////////////
+// Renormalizes 1-dim histograms to Xsav
+void HisNorm0(double Xsav, TH1 *Hst){
+  // normalize histogram in nanobarns
+ cout<<"HisNorm0: Xsav = "<<Xsav<<endl;
+  int      nbX  = Hst->GetNbinsX();
+  double sum=0.0;
+  for(int ix=1; ix <= nbX; ix++)
+        sum  += Hst->GetBinContent(ix);
+  double Xmax = Hst->GetXaxis()->GetXmax();
+  double Xmin = Hst->GetXaxis()->GetXmin();
+  double Fact =  Xsav* nbX/(Xmax-Xmin)/sum;
+  cout<<"HisNorm1: Fact = "<<Fact<<endl;
+  Hst->Scale(Fact);
+}
+
 /////////////////////////////////////////////////////////////////////
 // This works for 1-dim histograms
 void HisNorm1(TH1D *NorHst, TH1 *Hst){

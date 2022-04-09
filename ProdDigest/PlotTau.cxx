@@ -25,7 +25,10 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
-TFile DiskFileA("../ProdRun/workTau/histo.root");
+//TFile DiskFileA("../ProdRun/workTau/histo.root");
+//
+TFile DiskFileA("../ProdRun/workTau/histo.root_100M");
+TFile DiskFileBorn("../ProdRun/workTau/histo.root_100M_Born");
 //
 TFile DiskFileB("Plot1.root","RECREATE","histograms");
 //=============================================================================
@@ -41,6 +44,29 @@ float  gXcanv = 0, gYcanv = 0, gDcanv = 30;
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
+void PlotSame2(TH1D *HST, double &xcapt, double &ycapt, Int_t kolor, double xx,  TString label,  TString opis)
+{
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  HST->SetLineColor(kolor);
+  HST->DrawCopy("hsame");
+  CaptT->SetTextColor(kolor);
+  ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, opis);
+  CaptT->DrawLatex(xcapt-0.05,ycapt, label);
+  //
+  TLatex *CaptS = new TLatex();
+  CaptS->SetTextSize(0.040);
+  CaptS->SetTextAlign(21);
+  CaptS->SetTextColor(kolor);
+  int ib = HST->FindBin(xx);
+  double yy= HST->GetBinContent(ib);
+  CaptS->DrawLatex(xx,yy,label);
+}// PlotSame2
+
+
+///////////////////////////////////////////////////////////////////////////////////
 void HistNormalize(){
   //
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
@@ -48,8 +74,14 @@ void HistNormalize(){
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
   //
   HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_WtMain") );
+  // Normalization to [nb]
+  //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_x1pi") );
+  // Normalization to ONE
+  HisNorm0(1.0, (TH1D*)DiskFileA.Get("hst_x1pi") );
+  HisNorm0(1.0, (TH1D*)DiskFileBorn.Get("hst_x1pi") );
   //
-  //HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_r1r2") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_x1c1") );
+  HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_x1x2") );
   //
   cout<<"----------------DiskFileA.GetListOfKeys--------------------"<<endl;
   DiskFileA.GetListOfKeys()->Print();
@@ -60,11 +92,70 @@ void HistNormalize(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-void FigBES2()
+void FigTau1()
 {
 //------------------------------------------------------------------------
-  cout<<" ========================= FigBES2 =========================== "<<endl;
-  TH2D *sca_r1r2    = (TH2D*)DiskFileA.Get("sca_x1x2");
+  cout<<" ========================= FigTau1 =========================== "<<endl;
+  TH2D *sca_x1c1    = (TH2D*)DiskFileA.Get("sca_x1c1");
+
+  //////////////////////////////////////////////
+  TString OptSurf;
+  //OptSurf="      "; // 2D scatergram, points
+  //OptSurf="col"; // 2D histogram, color
+  //OptSurf="colz"; // 2D kolorowe paski, ze skala
+  //OptSurf="surf1 "; // 3D surface color
+  OptSurf="lego2 "; // 3D histogram color
+  //OptSurf="surf3 "; // 3D histogram, z plotem "na dachu"
+  //OptSurf="surf2z"; // 3D kolorowe paski, ze skala
+  //OptSurf="surf2 "; // 3D kolorowe paski bez skali
+  //OptSurf="surf4 "; // 3D gladka powierchnia
+  //-------------------------------------
+  //////////////////////////////////////////////
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.040);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigTau1 = new TCanvas("cFigTau1","FigTau1: general info ",  gXcanv,  gYcanv,    800,  800);
+  //                            Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigTau1->SetFillColor(10);
+
+  cFigTau1->cd();
+//  gPad->SetLogz(); // !!!!!!
+
+  gPad->SetTheta(12);
+  gPad->SetPhi( -62);
+  TH2D *Scat1= sca_x1c1;
+
+  Scat1->SetTitle(0);
+  Scat1->SetStats(0);
+
+  Scat1->GetYaxis()->CenterTitle();
+  Scat1->GetYaxis()->SetTitleOffset(1.8);
+  Scat1->GetYaxis()->SetTitleSize(0.035);
+  Scat1->GetYaxis()->SetNdivisions(5);
+  Scat1->GetYaxis()->SetTitle("x_{1}");
+  Scat1->GetXaxis()->CenterTitle();
+  Scat1->GetXaxis()->SetTitleOffset(1.8);
+  Scat1->GetXaxis()->SetNdivisions(5);
+  Scat1->GetXaxis()->SetTitle("cos(#theta)");
+  Scat1->SetMinimum(0.0);
+
+  Scat1->DrawCopy(OptSurf);
+
+  CaptT->DrawLatex(0.10,0.95,"#frac{d#sigma }{ dx_{1} dcos(#theta)}");
+
+  cFigTau1->SaveAs("cFigTau1.pdf");
+//  cFigTau1->SaveAs("cFigTau1.jpg");
+  cFigTau1->SaveAs("cFigTau1.png");
+}//FigTau1
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigTau2()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigTau2 =========================== "<<endl;
+  TH2D *sca_x1x2    = (TH2D*)DiskFileA.Get("sca_x1x2");
 
   //////////////////////////////////////////////
   TString OptSurf;
@@ -83,40 +174,88 @@ void FigBES2()
   CaptT->SetNDC(); // !!!
 //  CaptT->SetTextSize(0.060);
   ///////////////////////////////////////////////////////////////////////////////
-  TCanvas *cFigBES2 = new TCanvas("cFigBES2","FigBES2: general info ",  gXcanv,  gYcanv,    800,  800);
+  TCanvas *cFigTau2 = new TCanvas("cFigTau2","FigTau2: general info ",  gXcanv,  gYcanv,    800,  800);
   //                            Name    Title               xoff,yoff, WidPix,HeiPix
   gXcanv += gDcanv; gYcanv += gDcanv;
-  cFigBES2->SetFillColor(10);
+  cFigTau2->SetFillColor(10);
 
-  cFigBES2->cd();
+  cFigTau2->cd();
 //  gPad->SetLogz(); // !!!!!!
 
   gPad->SetTheta(35);
   gPad->SetPhi( -70);
-  TH2D *Scat1= sca_r1r2;
+  TH2D *Scat1= sca_x1x2;
 
   Scat1->SetTitle(0);
   Scat1->SetStats(0);
 
   Scat1->GetYaxis()->CenterTitle();
-  Scat1->GetYaxis()->SetTitleOffset(1.4);
+  Scat1->GetYaxis()->SetTitleOffset(1.8);
   Scat1->GetYaxis()->SetTitleSize(0.035);
   Scat1->GetYaxis()->SetNdivisions(5);
-  Scat1->GetYaxis()->SetTitle("r_{1}");
+  Scat1->GetYaxis()->SetTitle("x_{1}");
   Scat1->GetXaxis()->CenterTitle();
-  Scat1->GetXaxis()->SetTitleOffset(1.4);
+  Scat1->GetXaxis()->SetTitleOffset(1.8);
   Scat1->GetXaxis()->SetNdivisions(5);
-  Scat1->GetXaxis()->SetTitle("r_{2}");
+  Scat1->GetXaxis()->SetTitle("x_{2}");
+  Scat1->SetMinimum(0.0);
 
-  sca_r1r2->DrawCopy(OptSurf);
+  Scat1->DrawCopy(OptSurf);
 
-//  CaptT->DrawLatex(0.10,0.95,"Gaussian Beam Energy Spread");
-  CaptT->DrawLatex(0.10,0.95,"Beamstrahlung Energy Spread");
+  CaptT->DrawLatex(0.10,0.95,"Spin correlations in #pi energies");
 
-  cFigBES2->SaveAs("cFigBES2.pdf");
-//  cFigBES2->SaveAs("cFigBES2.jpg");
-  cFigBES2->SaveAs("cFigBES2.png");
-}//FigBES2
+  cFigTau2->SaveAs("cFigTau2.pdf");
+//  cFigTau2->SaveAs("cFigTau2.jpg");
+  cFigTau2->SaveAs("cFigTau2.png");
+}//FigTau2
+
+
+///////////////////////////////////////////////////////////////////////////////////
+void FigX1pi()
+{
+//------------------------------------------------------------------------
+  cout<<" ========================= FigX1pi =========================== "<<endl;
+  //
+  TH1D *hst_x1pi  = (TH1D*)DiskFileA.Get("hst_x1pi");
+  TH1D *hst_x1pi_Born  = (TH1D*)DiskFileBorn.Get("hst_x1pi");
+  //////////////////////////////////////////////
+  TLatex *CaptE = new TLatex();
+  CaptE->SetNDC(); // !!!
+  CaptE->SetTextAlign(23);
+//  CaptE->SetTextSize(0.055);
+  TLatex *CaptT = new TLatex();
+  CaptT->SetNDC(); // !!!
+  CaptT->SetTextSize(0.035);
+  ///////////////////////////////////////////////////////////////////////////////
+  TCanvas *cFigX1pi = new TCanvas("cFigX1pi","cFigX1pi ",  gXcanv,  gYcanv,    800,  800);
+  //                                  Name    Title               xoff,yoff, WidPix,HeiPix
+  gXcanv += gDcanv; gYcanv += gDcanv;
+  cFigX1pi->SetFillColor(10);
+//  cFigX1pi->Divide( 2,  1);
+  ////////////////////////////////////////////////////////////////////////////////
+  //==========plot1==============
+  cFigX1pi->cd(1);
+  TH1D *HST; //
+  HST = hst_x1pi; //
+  HST->SetTitle(0);
+  HST->SetStats(0);
+  HST->GetXaxis()->SetTitle("x_{1}");
+  HST->GetXaxis()->SetLabelSize(0.04);
+  HST->SetMinimum(0.0);
+  HST->DrawCopy("h");
+  CaptT->DrawLatex(0.06,0.95, "dP/dx_{1}");
+  double ycapt = 0.45; double xcapt=0.50;
+  CaptT->SetTextColor(kBlack); ycapt += -0.04;
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #pi^{+} #pi^{-}");
+  CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
+  PlotSame2(hst_x1pi,       xcapt, ycapt, kBlack,   0.10, "(A)", "  KKMCee CEEX2 ");
+  PlotSame2(hst_x1pi_Born,  xcapt, ycapt, kBlue,    0.20, "(B)", "  Born ");
+
+  cFigX1pi->SaveAs("cFigX1pi.pdf");
+
+}//FigX1pi
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
@@ -139,7 +278,9 @@ int main(int argc, char **argv)
  */
   HistNormalize();     // Renormalization of MC histograms
   //========== PLOTTING ==========
-  FigBES2();
+  FigTau1();
+  FigTau2();
+  FigX1pi();
  //++++++++++++++++++++++++++++++++++++++++
   DiskFileA.ls();
 //
