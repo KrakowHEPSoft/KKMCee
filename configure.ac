@@ -36,12 +36,19 @@ AC_LINK_IFELSE(
 	[AC_MSG_RESULT(TESTPROG OK)], [AC_MSG_RESULT(TestProg Failed)]
 	);
 
-
 ###---------------------------------------------------------------------
 ### HepMC (using hepmc.m4 copied from Whizard)
 WO_PROG_HEPMC()
 ###---------------------------------------------------------------------
 
+###---------------------------------------------------------------------
+### Photos++ (using modified photos.m4 from Sacrifice-1.1.2)
+AC_ARG_WITH([photos],
+  [AC_HELP_STRING([--with-photos], [Give the Photos++ library and header installation location])],
+  )
+AC_SEARCH_PHOTOS([AC_MSG_NOTICE([Found Photos++ library and headers])],
+                  [AC_MSG_ERROR([Could not find Photos++ library and headers!!])])
+###---------------------------------------------------------------------
 
 ##### macros defining different queue and class 
 ##### for NQS batch scripts
