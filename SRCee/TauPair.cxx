@@ -199,6 +199,7 @@ void TauPair::Make2(){
   int J;
   J=11;  dekay_(&J,m_HvClone1);
   J=12;  dekay_(&J,m_HvClone1);
+
 /////////////////////////////////////////////////////////////////////////////////////
 //                    Photos comes last                                            //
 /////////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +216,7 @@ void TauPair::Make2(){
   }//IFPHOT
 
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+/* This was moved to RunPhotos after Staszeks check please remove
   if(m_IFPHOT == 2) {
 // Process HEPMC3 event by PHOTOS++
   int buf = -m_Hvent->particles().size();
@@ -227,7 +229,7 @@ void TauPair::Make2(){
     }
   }
 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
+*/
 /////////////////////////////////////////////
   J=2; pyhepc_(J);       // HepEvt-->Pythia
 /////////////////////////////////////////////
@@ -238,6 +240,33 @@ void TauPair::Make2(){
 //]]]]]]]]]]]]]]]]]]]]
 }//Make2
 
+/////////////////////////////////////////////////////////////////////////////////////
+/// Run Photos
+void TauPair::RunPhotosPP(){
+// Flag for Photos c++ 
+  if(m_IFPHOT == 2) {
+// Process HEPMC3 event by PHOTOS++
+  int buf = -m_Hvent->particles().size();
+// test print before photos
+  cout <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
+  Print::listing(*m_Hvent);
+  PhotosHepMC3Event photosEvent(m_Hvent);
+  photosEvent.process();
+// test print after photos
+  cout<<        "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
+  Print::listing(*m_Hvent);
+
+  buf += m_Hvent->particles().size();
+  if(buf>0 && m_Event->m_EventCounter <=200){
+     cout<<   ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    (*m_Out) << ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    }
+  }
+} //end Run Photos
 
 void TauPair::Finalize(){
 ////////////////////////////////

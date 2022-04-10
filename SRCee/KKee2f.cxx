@@ -837,6 +837,7 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
      m_TauGen->ImprintSpin();   // implementing spin effects
      m_TauGen->Make2();         // transform decays to LAB, appending /hepevt/, photos on hepevt/
      m_HEPMC->tauolaToHEPMC3(); // appending  m_Hvent with tau decay products
+     m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus
    }//TauIsInitialized
 }//if
 

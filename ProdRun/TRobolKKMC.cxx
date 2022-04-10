@@ -261,8 +261,8 @@ if( abs(KFfin) == 13 ) {
 //======================================================
 if( abs(KFfin) == 15 ) {
   if(m_NevGen <= 200){
-    Print::listing(*Hvent);
-    Print::content(*Hvent);
+//    Print::listing(*Hvent);
+//    Print::content(*Hvent);
 // checking four momentum conservation
     double px=0.0 , py=0.0 , pz=0.0 , ene=0.0;
     for (auto pp : Hvent->particles())

@@ -87,12 +87,17 @@ void HepFace::WriteHEPC()
 //
   GenParticlePtr pe1 = std::make_shared<GenParticle>( pe1_v4, m_Event->m_KFini, 4);   
   GenParticlePtr pe2 = std::make_shared<GenParticle>( pe2_v4, - m_Event->m_KFini, 4); // - PDG id antifermion 
+  pe1->set_generated_mass(pe1_v4.m());
+  pe2->set_generated_mass(pe2_v4.m());
+
+
 //-----------------------------------
 // ISR photons:
   for(int i=1; i <= m_Event->m_nPhotISR; ++i){
       // create a HEPMC photon
       FourVector tmp_photon_v4=Vect4(m_Event->m_PhotISR[i]);
       GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22,1);
+      tmp_photon->set_generated_mass(tmp_photon_v4.m());
       // assign from which electron the photon was emmited 
       // check which electron is closer to the photon
       double scalar1= m_Event->m_Pf1 * m_Event->m_PhotISR[i]; // iloczyn skalarny TLorentzvector
@@ -118,6 +123,7 @@ void HepFace::WriteHEPC()
     } // End ISR photons
 // intermediate Z bozon:
   GenParticlePtr pZ = std::make_shared<GenParticle>( pe2_v4 + pe1_v4 , 23,  2);
+  pZ->set_generated_mass((pe2_v4+pe1_v4).m());
   GenVertexPtr vZ =  std::make_shared<GenVertex>();  
   vZ ->add_particle_in(pe1);
   vZ ->add_particle_in(pe2);
@@ -130,10 +136,15 @@ void HepFace::WriteHEPC()
   FourVector pe4_v4( Vect4( m_Event->m_Qf2) );
   GenParticlePtr pe3 = std::make_shared<GenParticle>( pe3_v4, m_Event->m_KFfin, status);
   GenParticlePtr pe4 = std::make_shared<GenParticle>( pe4_v4, - m_Event->m_KFfin, status);
+  pe3->set_generated_mass(pe3_v4.m());
+  pe4->set_generated_mass(pe4_v4.m());
+
+
   for(int i=1; i<= m_Event->m_nPhotFSR; i++){
       // create a HEPMC photon
       FourVector tmp_photon_v4=FourVector(Vect4(m_Event->m_PhotFSR[i]));
       GenParticlePtr tmp_photon=std::make_shared<GenParticle>( tmp_photon_v4, 22, 1);
+      tmp_photon->set_generated_mass(tmp_photon_v4.m());
       // assign from which electron the photon was emmited 
       // check which electron is more parallel to the photon
       double scalar3= m_Event->m_PhotFSR[i] * m_Event->m_Qf1;
@@ -141,6 +152,7 @@ void HepFace::WriteHEPC()
       // electrons before the emission of the photon - change of kinematics
       GenParticlePtr e3STAR = std::make_shared<GenParticle>( pe3_v4+tmp_photon_v4, m_Event->m_KFfin, 2);	
       GenParticlePtr e4STAR = std::make_shared<GenParticle>( pe4_v4+tmp_photon_v4, - m_Event->m_KFfin, 2);
+      
       // create a vertex with the selected electron     
       GenVertexPtr v_tmp = std::make_shared<GenVertex>();
       if( scalar3 < scalar4){
@@ -182,6 +194,8 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
 // Create a HEPMC3 particle from a tau decay
   FourVector p_v4( Vect4(P4) );  // Create a HEPMC3 particle from a tau decay
   GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, IST);
+  ptemp->set_generated_mass(p_v4.m());
+
 // store it in the vector which will be used later to fill the HEPMC record
   if (N == 1)       m_tauMdecay.push_back(ptemp); // N = 1 is tau-
   else if (N == -1) m_tauPdecay.push_back(ptemp); // N = -1 is tau+
@@ -224,7 +238,7 @@ void HepFace::tauolaToHEPMC3(){
   m_Hvent->add_vertex(tauPlus);
   // clear tau container
   m_tauMdecay.clear();
-  m_tauPdecay.clear();
+  m_tauPdecay.clear(); 
   //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
   // Test print out
   //cout<<"==================================tauolaToHEPMC3==============================================";
