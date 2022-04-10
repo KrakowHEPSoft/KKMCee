@@ -651,6 +651,7 @@ m_Event->PhaSpac2(&m_XXf,the,phi,amfi, &(m_Event->m_Qf1), &(m_Event->m_Qf2) );
 double WT_ISR=1;      // m_GenISR
 double WT_FSR=1;      // m_GenISR
 m_WtCrude = m_WtFoam;
+if( abs(m_WtCrude)  < 1e-99 ) m_WtCrude=0.0;
 
 //////////////////////////////////////
 //          ISR   KKarlud           //

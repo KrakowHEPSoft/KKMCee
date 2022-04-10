@@ -1,14 +1,10 @@
 
-all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(HEPMC_INCLUDES) -I/opt/PHOTOS-install/include  $(all_includes)
+all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(HEPMC_INCLUDES)  $(PHOTOS_CPPFLAGS) $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
 ######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
 
 METASOURCES = AUTO
-
-PHOTOSLIBS =/opt/PHOTOS-install/lib/libPhotospp.so \
-			/opt/PHOTOS-install/lib/libPhotosppHepMC3.so
-			
 
 #///////////////////////////////////////////////////////////////
 lib_LTLIBRARIES = libKKee.la libKKfm.la
@@ -39,11 +35,11 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						KKceex.cxx KKpart.cxx KKbvir.cxx \
 						TauPair.cxx HepFace.cxx
 libKKee_la_LIBADD =  \
-	$(PHOTOSLIBS) \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
-libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) -L/opt/PHOTOS-install/lib/
+#libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) -L/opt/PHOTOS-install/lib/
+libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) $(PHOTOS_LDFLAGS)
 #///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////
@@ -64,8 +60,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 #  Additional flags:
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
-libKKfm_la_LIBADD =  \
-	$(PHOTOSLIBS)
+libKKfm_la_LIBADD =  
 libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
@@ -84,10 +79,8 @@ bin_PROGRAMS = TestMini1
 #/////////////////////////////////////////////////////////
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
-			$(PHOTOSLIBS) \
 			libKKee.la 
-##TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -L/opt/PHOTOS-install/lib/ -rpath $(ROOTRPATH) -no-install -g
+TestMini1_LDFLAGS = -L$(ROOTLIBDIR) $(PHOTOS_LDFLAGS) -rpath $(ROOTRPATH) -no-install -g
 
 #/////////////////////////////////////////////////////////
 test1-start: TestMini1
