@@ -22,10 +22,10 @@ double nevtot   = 1e12; // 1000G
 //nevtot =10000;
 //nevtot = 1e6;
 //nevtot =1e5;
-//nevtot =200;
+nevtot =200;
 //nevtot =60;
-nevtot =10;
-double nevgrp   = 10; // 100k
+//nevtot =10;
+double nevgrp   = 100000; // 100k
 //nevgrp = 1e6;          // 1M
 //nevgrp = 5e4;
 ///------------------------------------------------------------------

@@ -249,20 +249,20 @@ void TauPair::RunPhotosPP(){
   int buf = -m_Hvent->particles().size();
 // test print before photos
   cout <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+//  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
   Print::listing(*m_Hvent);
   PhotosHepMC3Event photosEvent(m_Hvent);
   photosEvent.process();
 // test print after photos
   cout<<        "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+//  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
   Print::listing(*m_Hvent);
 
   buf += m_Hvent->particles().size();
   if(buf>0 && m_Event->m_EventCounter <=200){
-     cout<<   ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+     cout<<     ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
     (*m_Out) << ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
     }
   }
