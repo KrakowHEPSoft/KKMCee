@@ -21,7 +21,7 @@ $(top_builddir)/dizet/libDizet2.a:
 #/////////////////////////////////////////////////////////
 TabMainC_SOURCES = TabMainC.cxx
 TabMainC_LDADD   = 	\
-					$(top_builddir)/DZface/libDZface.a \
+					libDZface.a \
 					$(top_builddir)/dizet/libDizet2.a \
 					$(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran -lFoam $(FLIBS)
 TabMainC_LDFLAGS = $(ROOTLDFLAGS) -no-install -g
