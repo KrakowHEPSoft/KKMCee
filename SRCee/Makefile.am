@@ -39,7 +39,7 @@ libKKee_la_LIBADD =  \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
 #libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) -L/opt/PHOTOS-install/lib/
-libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) $(PHOTOS_LDFLAGS)
+libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ bin_PROGRAMS = TestMini1
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
 			libKKee.la 
-TestMini1_LDFLAGS = -L$(ROOTLIBDIR) $(PHOTOS_LDFLAGS) -rpath $(ROOTRPATH) -no-install -g
+TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
 
 #/////////////////////////////////////////////////////////
 test1-start: TestMini1
