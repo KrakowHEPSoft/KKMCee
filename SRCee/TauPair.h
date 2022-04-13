@@ -35,6 +35,7 @@ using namespace std;
 
 #include "KKceex.h"
 #include "KKevent.h"
+#include "KKdbase.h"
 
 #include "HepMC3/GenEvent.h"
 #include "HepMC3/GenVertex.h"
@@ -86,6 +87,7 @@ class TauPair: public TObject{
 // class member data
  public:
  ofstream  *m_Out;             //! pointer to external Logfile for messages
+ KKdbase   *DB;                // Database
  KKceex    *m_GPS;             //  CEEX matrix element
  KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format (no persistency)
  GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)!
@@ -111,7 +113,7 @@ class TauPair: public TObject{
  double     m_phi2;            // phi   of HvecTau2
  double     m_thet2;           // theta of HvecTau2
  int        m_IsInitialized;   // super key, for inhibiting all tauola activity
- int        m_IFPHOT;          // key for PHOTOS
+ int        m_itdkRC;          // old key for QED in tauola leptonic decays
  int        m_KeyClone;        // switch for cloning procedure =1,2
 //------------------------------------
 // Obligatory members
@@ -123,9 +125,10 @@ class TauPair: public TObject{
 // class member functions
 double sqr( const double x );
 
+void SetDB(    KKdbase  *DBase){ DB = DBase;};
 void SetEvent( KKevent  *Event){ m_Event = Event;};
 void SetHvent( GenEvent *Hvent){ m_Hvent = Hvent;};
-void SetGPS(   KKceex  *GPS){   m_GPS   = GPS;};
+void SetGPS(   KKceex   *GPS){   m_GPS   = GPS;};
 
 void Initialize(double[]);
 

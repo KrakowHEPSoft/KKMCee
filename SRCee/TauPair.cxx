@@ -10,7 +10,8 @@ TauPair::TauPair()
   // This constructor is for ROOT streamers ONLY
   // all pointers has to be NULLed
   cout<< "----> TauPair Default Constructor (for ROOT only) "<<endl;
-  m_Out= NULL;
+  m_Out  = NULL;
+  DB     = NULL;
   m_Event    = NULL;
   m_GPS      = NULL;
   m_RNgen    = NULL;
@@ -21,7 +22,8 @@ TauPair::TauPair()
 TauPair::TauPair(ofstream *OutFile)
 {
   cout<< "----> TauPair USER Constructor "<<endl;
-  m_Out = OutFile;
+  m_Out  = OutFile;
+  DB     = NULL;
   m_Event    = NULL;
   m_GPS      = NULL;
   m_RNgen    = NULL;
@@ -53,7 +55,7 @@ void TauPair::Initialize(double xpar[])
   m_IsInitialized = xpar[415-1];  // General mask for tau channel
 
 // switches of tau+ tau- decay modes !!
-  m_IFPHOT        = xpar[ITAUXPAR+4-1];   // QED rad. in hadronic decays (PHOTOS)
+  m_itdkRC        = xpar[ITAUXPAR+4-1];   // QED internal rad. in leptonic decays
   int Jak1        = xpar[ITAUXPAR+1-1];   // Decay Mask for first tau
   int Jak2        = xpar[ITAUXPAR+2-1];   // Decay Mask for second tau
   if( (Jak1 == -1) && (Jak2 == -1) ) m_IsInitialized = 0;
@@ -64,7 +66,7 @@ void TauPair::Initialize(double xpar[])
   BX1I( *m_Out, "  IsInit", m_IsInitialized, "xpar[415]       =");
   BX1I( *m_Out, "    Jak1",            Jak1, "xpar[2001]      =");
   BX1I( *m_Out, "    Jak2",            Jak2, "xpar[2002]      =");
-  BX1I( *m_Out, "  IFPHOT",        m_IFPHOT, "xpar[2004]      =");
+  BX1I( *m_Out, "  itdkRC",        m_itdkRC, "xpar[2004]      =");
   BX1I( *m_Out, "KeyClone",      m_KeyClone, "Cloning proc.   =");
   BXCLO(*m_Out);
 
@@ -83,27 +85,30 @@ void TauPair::Initialize(double xpar[])
     int JAK =-1;
     dekay_(&JAK, m_HvecTau1);
 
+//[[[[[[[[[[[[[[[[[[[[[[[[
+// old fortran PHOTOS to be removed
 // Initialization of old fortran PHOTOS
-    if(m_IFPHOT == 1) phoini_();
+//    if(DB->KeyPhts >1) phoini_();
+//]]]]]]]]]]]]]]]]]]]]]]]]
 
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 // Initialization of PHOTOS++
-    if(m_IFPHOT == 2){
-    Photos::initialize();
-// So far does not work...
-//    Photos::suppressAll();
-//    Photos::forceBremForBranch(0, 15);
-//    Photos::forceBremForBranch(0, -15);
-//    Photos::suppressBremForDecay(3, 15, 16, 11, -12);
-//    Photos::suppressBremForDecay(3, -15, -16, -11, 12);
-//    Photos::suppressBremForDecay(3, 15, 16, 13, -14);
-//    Photos::suppressBremForDecay(3, -15, -16, -13, 14);
-    }// if m_IFPHOT
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
+// KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
+    if(DB->KeyPhts ==1 ){
+      Photos::initialize();
+    } else if( DB->KeyPhts ==2){
+// Suppressing Photos for leptonic decays
+      Photos::initialize();
+      Photos::suppressAll();
+      Photos::forceBremForBranch(0, 15);
+      Photos::forceBremForBranch(0, -15);
+      Photos::suppressBremForDecay(3, 15, 16, 11, -12);
+      Photos::suppressBremForDecay(3, -15, -16, -11, 12);
+      Photos::suppressBremForDecay(3, 15, 16, 13, -14);
+      Photos::suppressBremForDecay(3, -15, -16, -13, 14);
+    }//KeyPhts
   }//IsInitialized
 ///////////////////////////////////////////////////
-}// Initialize
+}// end if Initialize
 
 ///______________________________________________________________________________________
 void TauPair::Make1(){
@@ -208,32 +213,21 @@ void TauPair::Make2(){
   if( m_Event->m_EventCounter <=3){
     J=2; pyhepc_(J);       // HepEvt-->Pythia
     tauface_print_();
-  }//
-//]]]]]]]]]]]]]]]]]]]]]]]]]]
-  if(m_IFPHOT == 1) {
-    photos_(ih1);  // Photos works on HepEvt
-    photos_(ih2);
-  }//IFPHOT
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-/* This was moved to RunPhotos after Staszeks check please remove
-  if(m_IFPHOT == 2) {
-// Process HEPMC3 event by PHOTOS++
-  int buf = -m_Hvent->particles().size();
-  PhotosHepMC3Event photosEvent(m_Hvent);
-  photosEvent.process();
-  buf += m_Hvent->particles().size();
-  if(buf>0 && m_Event->m_EventCounter <=200){
-     cout<<   ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
-    (*m_Out)<<">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
-    }
   }
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-*/
+//]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+// fortran photos to be removed
+//  if(DB->KeyPhts >0 ) {
+//    photos_(ih1);  // Photos works on HepEvt
+//    photos_(ih2);
+//  }//IFPHOT
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+// PRINTOUT of /hepevt/ USIGNG Pythia
 /////////////////////////////////////////////
   J=2; pyhepc_(J);       // HepEvt-->Pythia
-/////////////////////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[
   if( m_Event->m_EventCounter <=30){
   tauface_print_();
   }//EventCounter
@@ -244,7 +238,7 @@ void TauPair::Make2(){
 /// Run Photos
 void TauPair::RunPhotosPP(){
 // Flag for Photos c++ 
-  if(m_IFPHOT == 2) {
+  if(DB->KeyPhts > 0) {
 // Process HEPMC3 event by PHOTOS++
   int buf = -m_Hvent->particles().size();
 // test print before photos

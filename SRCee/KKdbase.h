@@ -37,6 +37,7 @@ class KKdbase: public TObject{
  int      KeyWtm;
  int      KeyPia;
  int      KeyThe;
+ int      KeyPhts;
  // FOAM
  int      Foam_nCells;
  int      Foam_Vopt;

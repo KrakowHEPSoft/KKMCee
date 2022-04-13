@@ -72,12 +72,13 @@ void KKdbase::Initialize(double xpar[] )
   BX1I(*m_Out,"   KeyGPS", KeyGPS,    " GPS/CEEX matrix element type     [28]          =");
   BX1I(*m_Out,"   KeyWgt", KeyWgt,    " WTed/unWTed events  switch       [10]          =");
   BX1I(*m_Out,"   KeyThe", KeyThe,    " Born/Flat cos(The) FOAM generat. [14]          =");
+  KeyPhts = m_xpar[35];
+  BX1I(*m_Out,"  KeyPhts", KeyPhts,   " PHOTOS++ switch                  [35]          =");
   KeyFixAlf = m_xpar[3032];
   BX1I(*m_Out,"KeyFixAlf", KeyFixAlf, " Fixed/Running alpha QED          [3032]        =");
   KeyMasQ = m_xpar[3030];         // constituent vs current quarks in kinematics
   BX1I(*m_Out,"  KeyMasQ", KeyMasQ,   " Constituent/current quarks mass  [3030]        =");
-
-  // default values
+// Electroweak input default values
   KeyZet  = m_xpar[501];
   BX1I(*m_Out,"   KeyZet",  KeyZet,   " Z resonance features             [501]         =");
   MZ      = m_xpar[502];
@@ -174,12 +175,10 @@ void KKdbase::Initialize(double xpar[] )
 //  Nalgo  = xpar[3028];  // presently not used
 //  BX1I(*m_Out,"    Nalgo",  Nalgo,    " Kinematic algorithm type (unused)[3028]        =");
 
-
   BXTXT(*m_Out,"========= PHYSICS DATA/CONSTANTS =======");
   MasPhot= m_xpar[510];
   Alfinv0 = m_xpar[30];
   AlfinvZ = m_xpar[808];
-
   for(int KF=1; KF<20;KF++){ // f77 indexing!
     IsGenerated[KF] = xpar[400+KF];    // Generation flag
     Nc[KF]     = xpar[500+10*KF+2];    // color
@@ -190,13 +189,11 @@ void KKdbase::Initialize(double xpar[] )
     if(IsGenerated[KF] ==1 )
        BX1I(*m_Out,"       KF",     KF,    " Active fermion in the initial or final state   =");
   }// for j
-
   BX1F(*m_Out,"  MasPhot", MasPhot," Photon mass, IR regulator       [510] =");
   BX1F(*m_Out,"  Alfinv0", Alfinv0," 1/alpha QED at q^2 = 0          [ 30] =");
   BX1F(*m_Out,"  AlfinvZ", Alfinv0," 1/alpha QED at MZ               [808] =");
   gnanob  = m_xpar[31];
   BX1F(*m_Out,"   gnanob", gnanob, " Conversion GeV^(-2) to nanobarns [31] =");
-
   BXCLO(*m_Out);
   cout  << "----> KKdbase::Initialize, exiting "<<endl;
 }//Initialize

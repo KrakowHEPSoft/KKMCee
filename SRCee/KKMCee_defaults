@@ -75,6 +75,8 @@ BeginX
    30  137.035999139      alfinv=xpar(30)  Inverse of alpha_QED at q^2=0
    31    389.37966e3      gnanob=xpar(31)  GeV^(-2)  --> NanoBarn conversion
    32   1.1663787e-5      Gfermi=xpar(32)  Fermi coupling ( 1.16639e-5  [GeV^(-2)])
+**    PHOTOS++ adding photons in tau decays in HEPMC3 event record
+   35            1.0   KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
 ********************************************************************************
 **     Technical cuts and internal parameters
 **\\\\\\\\\\\\\\\Enhancement factor for Crude photon multiplicity\\\\\\\\\\\\\\\

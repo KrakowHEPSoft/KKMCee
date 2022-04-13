@@ -241,6 +241,7 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
 //////////////////////////////////////////////////////////////
 // TAUOLA+PHOTOS corner
   m_TauGen= new TauPair(OutFile);
+  m_TauGen->SetDB(DB);
   m_TauGen->Initialize(m_ypar);
   m_TauGen->SetEvent(m_Event);
   m_TauGen->SetHvent(m_Hvent);

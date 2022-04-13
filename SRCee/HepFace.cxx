@@ -194,21 +194,30 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
 // Create a HEPMC3 particle from a tau decay
   FourVector p_v4( Vect4(P4) );  // Create a HEPMC3 particle from a tau decay
   GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, IST);
-  ptemp->set_generated_mass(p_v4.m());
-
+//////////////////////
+// calculating mass from 4-momentum of tauola is not precise
+// for light leptons true mass is substituted in TauPair::Tralo4
+  double mass = PINV;
+  mass = p_v4.m();     // the same as PINV
+  if( abs(ID) == 22 )  mass=0.0; // photon
+  if( abs(ID) == 12 || abs(ID) == 14 || abs(ID) == 16)  mass=0.0; // neutrinos
+  if( abs(ID) == 11 )  mass=0.51099907e-3; // electron
+  if( abs(ID) == 13 )  mass=0.1056583e0;   // muon
+  ptemp->set_generated_mass(mass);
+//////////////////////
 // store it in the vector which will be used later to fill the HEPMC record
   if (N == 1)       m_tauMdecay.push_back(ptemp); // N = 1 is tau-
   else if (N == -1) m_tauPdecay.push_back(ptemp); // N = -1 is tau+
   else cout << "HepFace::FillHep3 something went wrong" << endl;
-  //[[[[[[[[[[[[[[[[[[[[[
-  /*
+//[[[[[[[[[[[[[[[[[[[[[
+/*
   cout<<"==================================FillHep3=============================================="<<endl;
   cout<<"   N= "<< N<<"   IST= "<< IST<<"   ID= "<< ID<<endl;
   cout<<"   JMO1= "<< JMO1<<"   JMO2= "<< JMO2<<"   JDA1= "<< JDA1<<"   JDA2= "<< JDA2<<endl;
   for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
-  cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<endl;
+  cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<"   mass= "<<mass<<endl;
   cout<<"========================================================================================"<<endl;
-  */
+*/
   //]]]]]]]]]]]]]]]]]]]]]
 }//FillHep3
 

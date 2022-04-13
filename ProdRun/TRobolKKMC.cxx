@@ -263,6 +263,7 @@ if( abs(KFfin) == 15 ) {
   if(m_NevGen <= 200){
 //    Print::listing(*Hvent);
 //    Print::content(*Hvent);
+///////////////////////////////////////////////////////////////////
 // checking four momentum conservation
     double px=0.0 , py=0.0 , pz=0.0 , ene=0.0;
     for (auto pp : Hvent->particles())
@@ -270,12 +271,11 @@ if( abs(KFfin) == 15 ) {
         HepMC3::FourVector P = pp->momentum();
         px += P.px(); py += P.py(); pz += P.pz(); ene  += P.e();
       }//for auto
-    cout.precision(6);
-    cout.setf(ios_base::scientific, ios_base::floatfield);
-    cout << endl <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<< endl;
-    (*f_Out)     <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<< endl;
-   cout<<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "<<endl<<endl;
+    double rdif = (abs(px)+abs(py)+abs(pz)+abs(ene-sqrt(s)))/sqrt(s);
+    if(rdif >1e-5)
+      (*f_Out)     <<"TRobolKKMC::Production ["<< m_NevGen<<"] VectSum: "<<px<<" "<<py<<" "<<pz<<" "<<ene<<"  rdif="<<rdif<< endl;
   }// if NevGen
+  ////////////////////////////////////////////////////////////////
   // This part assumes that both taus decay into single pi
   TLorentzVector Pip, Pim;
   for (auto pp : Hvent->particles()){

@@ -61,7 +61,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
 libKKfm_la_LIBADD =  
-libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
+libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) 
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
 
@@ -80,7 +80,9 @@ bin_PROGRAMS = TestMini1
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
 			libKKee.la 
-TestMini1_LDFLAGS = -L$(ROOTLIBDIR) $(PHOTOS_LDFLAGS) -rpath $(ROOTRPATH) -no-install -g
+##TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
+##TestMini1_LDFLAGS = -L$(ROOTLIBDIR) $(PHOTOS_LDFLAGS) -rpath $(ROOTRPATH) -no-install -g
+TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath  $(ROOTRPATH) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) -no-install -g
 
 #/////////////////////////////////////////////////////////
 test1-start: TestMini1
