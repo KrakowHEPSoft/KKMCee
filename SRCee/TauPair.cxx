@@ -93,9 +93,9 @@ void TauPair::Initialize(double xpar[])
 
 // Initialization of PHOTOS++
 // KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
-    if(DB->KeyPhts ==1 ){
+    if(DB->KeyPhts ==2 ){
       Photos::initialize();
-    } else if( DB->KeyPhts ==2){
+    } else if( DB->KeyPhts ==1){
 // Suppressing Photos for leptonic decays
       Photos::initialize();
       Photos::suppressAll();
