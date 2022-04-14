@@ -101,10 +101,17 @@ void TauPair::Initialize(double xpar[])
       Photos::suppressAll();
       Photos::forceBremForBranch(0, 15);
       Photos::forceBremForBranch(0, -15);
-      Photos::suppressBremForDecay(3, 15, 16, 11, -12);
-      Photos::suppressBremForDecay(3, -15, -16, -11, 12);
-      Photos::suppressBremForDecay(3, 15, 16, 13, -14);
-      Photos::suppressBremForDecay(3, -15, -16, -13, 14);
+
+      Photos::suppressBremForDecay(3,  15,  16,  11, -12); //tau- => nutau,    e-, nuelbar
+      Photos::suppressBremForDecay(3, -15, -16, -11,  12); //tau+ => nutaubar, e+, nuel
+
+      Photos::suppressBremForDecay(3,  15,  16,  13, -14); //tau- => mu-
+      Photos::suppressBremForDecay(3, -15, -16, -13,  14); //tau+ => mu+
+
+//      Photos::suppressBremForDecay(1,  15,   11 );
+//      Photos::suppressBremForDecay(1, -15,  -11 );
+//      Photos::suppressBremForDecay(1,  15,   13);
+//      Photos::suppressBremForDecay(1, -15,  -13);
     }//KeyPhts
   }//IsInitialized
 ///////////////////////////////////////////////////

@@ -4507,8 +4507,10 @@ C
 C position of decaying particle:
       IF((KTO.EQ. 1).OR.(KTO.EQ.11)) THEN
         NPS=NP1
+        ISGN = 1
       ELSE
         NPS=NP2
+        ISGN = -1
       ENDIF
 C
       KTOS=KTO

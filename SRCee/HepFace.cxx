@@ -192,6 +192,7 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
 // for appending HEPMC3 event with tau decay products
 /////////////////////////////////////////////////////////////////////////////////////////
 // Create a HEPMC3 particle from a tau decay
+  if(  IST==1){
   FourVector p_v4( Vect4(P4) );  // Create a HEPMC3 particle from a tau decay
   GenParticlePtr ptemp = std::make_shared<GenParticle>( p_v4, ID, IST);
 //////////////////////
@@ -206,9 +207,20 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
   ptemp->set_generated_mass(mass);
 //////////////////////
 // store it in the vector which will be used later to fill the HEPMC record
-  if (N == 1)       m_tauMdecay.push_back(ptemp); // N = 1 is tau-
-  else if (N == -1) m_tauPdecay.push_back(ptemp); // N = -1 is tau+
-  else cout << "HepFace::FillHep3 something went wrong" << endl;
+  if (N == 1)
+     m_tauMdecay.push_back(ptemp); // N = 1 is tau-
+  else if (N == -1)
+     m_tauPdecay.push_back(ptemp); // N = -1 is tau+
+  else {
+     cout <<"HepFace::FillHep3 something went wrong!!!!!!!!!!" << endl;
+     cout<<"==================================FillHep3=============================================="<<endl;
+     cout<<"   N= "<< N<<"   IST= "<< IST<<"   ID= "<< ID<<endl;
+     cout<<"   JMO1= "<< JMO1<<"   JMO2= "<< JMO2<<"   JDA1= "<< JDA1<<"   JDA2= "<< JDA2<<endl;
+     for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
+     cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<"   mass= "<<mass<<endl;
+     cout<<"========================================================================================"<<endl;
+     exit(99);
+  }
 //[[[[[[[[[[[[[[[[[[[[[
 /*
   cout<<"==================================FillHep3=============================================="<<endl;
@@ -219,6 +231,7 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
   cout<<"========================================================================================"<<endl;
 */
   //]]]]]]]]]]]]]]]]]]]]]
+  }//if IST
 }//FillHep3
 
 

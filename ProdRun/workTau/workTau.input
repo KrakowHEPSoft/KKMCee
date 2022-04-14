@@ -54,14 +54,14 @@ BeginX
 *****   PHOTOS++ adding photons in tau decays in HEPMC3 event record
    35              1   KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
 *****   Tauola internal single photon emission in leptonic decays
- 2004              1   itdkRC =xpar(74) QED radiation switch  for leptonic decays
+ 2004              0   itdkRC =xpar(74) QED radiation switch  for leptonic decays
  2005        0.001e0   xk0dec =xpar(75) IR-cutoff for QED rad. in leptonic decays
 *****
 * Jak=-1: no decay; 0: inclusive; 1,2,3: e,mu,pi decays, 4,5,6,7: rho,a1,K,K*...
 ** 2001              0      Jak1 all decay modes
 ** 2002              0      Jak2 all decay modes
-** 2001            159      Jak1  single pi
-** 2002            159      Jak2  single pi
+ 2001            159      Jak1  single pi
+ 2002            159      Jak2  single pi
  2001              1      Jak1  electron
  2002              1      Jak2  electron
 ** 2001              2      Jak1  muon
