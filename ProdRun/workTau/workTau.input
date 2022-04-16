@@ -7,7 +7,7 @@ BeginX
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
     0           1000      1k   NEVT = number of events (not used anymore)
 * Center-of-mass energy [GeV]
-    1          100e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+    1      91.1876e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
 *     PrintOut from generator
     5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
@@ -49,24 +49,14 @@ BeginX
   414              0     KFfin, neutrino muon
   416              0     KFfin, neutrino tau
 *********************************************************************************
-*********************************************************************************
+*******************************************************************************
 *********************  Tau decays ***********************************************
 *****   PHOTOS++ adding photons in tau decays in HEPMC3 event record
    35              1   KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
 *****   Tauola internal single photon emission in leptonic decays
- 2004              0   itdkRC =xpar(74) QED radiation switch  for leptonic decays
+ 2004              1   itdkRC =xpar(74) QED radiation switch  for leptonic decays
  2005        0.001e0   xk0dec =xpar(75) IR-cutoff for QED rad. in leptonic decays
-*****
-* Jak=-1: no decay; 0: inclusive; 1,2,3: e,mu,pi decays, 4,5,6,7: rho,a1,K,K*...
-** 2001              0      Jak1 all decay modes
-** 2002              0      Jak2 all decay modes
- 2001            159      Jak1  single pi
- 2002            159      Jak2  single pi
- 2001              1      Jak1  electron
- 2002              1      Jak2  electron
-** 2001              2      Jak1  muon
-** 2002              2      Jak2  muon
-** 2001              3      Jak1  4pi
-** 2002              3      Jak2  4pi
-*********************************************************************************
+*
+ 2001            159      Jak1   =xpar(71)  single pi
+ 2002            159      Jak2   =xpar(72)  single pi
 EndX

@@ -118,7 +118,7 @@ void TauPair::Initialize(double xpar[])
 }// end if Initialize
 
 ///______________________________________________________________________________________
-void TauPair::Make1(){
+void TauPair::DecayInRest(){
   int J;
   if( m_IsInitialized != 0) {
     J=1; dekay_(&J,m_HvecTau1); // TAUOLA
@@ -127,7 +127,7 @@ void TauPair::Make1(){
 }//Make1
 
 ///______________________________________________________________________________________
-void TauPair::Clone(){
+void TauPair::RandRotor(){
 /////////////////////////////////////////////////////////////////////////////////////
 //                                                                                 //
 //   This routine is strongly interrelated with Tralor  !!!                        //
@@ -193,7 +193,7 @@ void TauPair::ImprintSpin(){
   double rn,wt,wt0,wt1,wt2, wtmax=4.0;
 e1099:
   loop=loop+1;
-  Clone();   // Cloning tau decay by Euler rotation
+  RandRotor();   // Cloning tau decay by Euler rotation
   m_GPS->MakeRho2(m_HvClone1,m_HvClone2,wt0,wt1,wt2);
   wt = wt1;                         // why not wt2???
   rn = m_RNgen->Rndm();
@@ -201,7 +201,7 @@ e1099:
 }//ImprintSpin
 
 ///______________________________________________________________________________________
-void TauPair::Make2(){
+void TauPair::TransExport(){
 //  taupair_make2_();        // book-keeping, Photos, HepEvt
   int ih1,ih2;
   hepevt_getf_(   ih1);         // fermion is here
@@ -244,30 +244,38 @@ void TauPair::Make2(){
 /////////////////////////////////////////////////////////////////////////////////////
 /// Run Photos
 void TauPair::RunPhotosPP(){
-// Flag for Photos c++ 
+// KeyPhts is flag for Photos c++
   if(DB->KeyPhts > 0) {
-// Process HEPMC3 event by PHOTOS++
-  int buf = -m_Hvent->particles().size();
-// test print before photos
-  cout <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-//  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
-  Print::listing(*m_Hvent);
+// test print before photos
+  int buf= -m_Hvent->particles().size();
+  int LimitPrint=200;
+  if(m_Event->m_EventCounter <= LimitPrint){
+// test print before photos
+    cout <<    "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    (*m_Out) <<"TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    Print::listing(*m_Hvent);
+  }//test print
+
+//////////////////////////////////////////
+// Process HEPMC3 event by PHOTOS++
   PhotosHepMC3Event photosEvent(m_Hvent);
   photosEvent.process();
-// test print after photos
-  cout<<        "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-//  (*m_Out) <<   "!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+//////////////////////////////////////////
 
-  Print::listing(*m_Hvent);
-
+  // test print after photos
   buf += m_Hvent->particles().size();
-  if(buf>0 && m_Event->m_EventCounter <=200){
-     cout<<     ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
-    (*m_Out) << ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
-    }
-  }
-} //end Run Photos
+  if(buf>0 && m_Event->m_EventCounter <= LimitPrint){
+    cout<<      "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    (*m_Out) << "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    Print::listing(*m_Hvent);
+    cout<<     ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    (*m_Out) <<">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+  }//test print
+
+
+  }// if KeyPhts
+}//end Run Photos
 
 void TauPair::Finalize(){
 ////////////////////////////////

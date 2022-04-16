@@ -834,9 +834,9 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
      m_GPS->TralorPrepare(1);   // preparing Lorentz transformations from tau frame to LAB
      m_GPS->TralorPrepare(2);
 //
-     m_TauGen->Make1();         // generate tau decays (f77 Tauola) in tau rest frames
-     m_TauGen->ImprintSpin();   // implementing spin effects
-     m_TauGen->Make2();         // transform decays to LAB, appending /hepevt/, photos on hepevt/
+     m_TauGen->DecayInRest();         // generate tau decays (f77 Tauola) in tau rest frames
+     m_TauGen->ImprintSpin();         // implementing spin effects
+     m_TauGen->TransExport();         // transform decays to LAB, export to HEPMC event, running Photos++
      m_HEPMC->tauolaToHEPMC3(); // appending  m_Hvent with tau decay products
      m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus
    }//TauIsInitialized

@@ -139,10 +139,10 @@ int IsTauInitialized(){
 }
 void SetRNgen(TRandom *RNgen){ m_RNgen= RNgen;};
 
-void Make1();
-void Clone();
+void DecayInRest();
+void RandRotor();
 void ImprintSpin();
-void Make2();
+void TransExport();
 void RunPhotosPP();
 void Tralo4(int Kto, float P[], float Q[], float &AM);
 void Finalize();
