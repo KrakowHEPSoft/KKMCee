@@ -838,7 +838,24 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
      m_TauGen->ImprintSpin();         // implementing spin effects
      m_TauGen->TransExport();         // transform decays to LAB, export to HEPMC event, running Photos++
      m_HEPMC->tauolaToHEPMC3(); // appending  m_Hvent with tau decay products
-     m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus
+
+
+// check if tau decayed leptonicaly 
+     bool leptonicTauDecay = false;
+     for (auto v : m_Hvent->vertices()){ // loop over vertices 
+	if (v->particles_in().size() == 1) { // search  for only decay of particles 
+           if (abs(v->particles_in()[0]->pid()) == 15){ // decay of tau+/-
+            bool fermion = false;
+            bool neutrino = false;
+	    for (auto p : v->particles_out()){ // check if leptonic decay
+             if ( abs(p->pid()) == 11 || abs(p->pid()) == 13) fermion = true;
+             if ( abs(p->pid()) == 12 || abs(p->pid()) == 14) neutrino = true;
+             leptonicTauDecay = fermion & neutrino;
+            } 
+           }  // end tau
+        }// end decay
+     } // end verticles
+     if (!leptonicTauDecay)  m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus for non leptonic dacays
    }//TauIsInitialized
 }//if
 
