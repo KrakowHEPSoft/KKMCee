@@ -10,5 +10,5 @@ EWtables: KKMCee_defaults
 	($(top_builddir)/DZface/TabMainC;)
 
 start: EWtables
-	../MainMini
+	time ../MainMini
 	

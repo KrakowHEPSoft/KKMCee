@@ -25,12 +25,17 @@ using namespace std;
 //=============================================================================
 //  ROOT  ROOT ROOT   ROOT  ROOT  ROOT  ROOT  ROOT  ROOT  ROOT   ROOT   ROOT
 //=============================================================================
-TFile DiskFileA("../ProdRun/workTau/histo.root");
+//TFile DiskFileA("../ProdRun/workTau/histo.root");
 //
-//TFile DiskFileA("../ProdRun/workTau/histo.root_100M");
-TFile DiskFileBorn("../ProdRun/workTau/histo.root_100M_Born");
+TFile DiskFileA(   "../ProdRun/workTau/histo.root_1pi_6G");
+TFile DiskFileA_P0("../ProdRun/workTau/histo.root_1pi_Phts0_1G");
+TFile DiskFileB(   "../ProdRun/workTau/histo.root_1pi_Born_400M");
+
+TFile DiskFileS0(   "../ProdRun/workTau/histo.root_1pi_Spin0_400M");
+TFile DiskFileS0_P0("../ProdRun/workTau/histo.root_1pi_Spin0_Phts0_10G");
+TFile DiskFileS0_B( "../ProdRun/workTau/histo.root_1pi_Spin0_Born_400M");
 //
-TFile DiskFileB("Plot1.root","RECREATE","histograms");
+TFile DiskFileU("Plot1.root","RECREATE","histograms");
 //=============================================================================
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -72,16 +77,22 @@ void HistNormalize(){
   cout<<"----------------------------- HistNormalize ------------------------------------"<<endl;
   DiskFileA.ls("");
   TH1D *HST_KKMC_NORMA = (TH1D*)DiskFileA.Get("HST_KKMC_NORMA");
-  //
-  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_WtMain") );
   // Normalization to [nb]
+  HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_WtMain") );
   //HisNorm1(HST_KKMC_NORMA, (TH1D*)DiskFileA.Get("hst_x1pi") );
-  // Normalization to ONE
-  HisNorm0(1.0, (TH1D*)DiskFileA.Get("hst_x1pi") );
-  HisNorm0(1.0, (TH1D*)DiskFileBorn.Get("hst_x1pi") );
-  //
+  ////////////////////////////////////
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_x1c1") );
   HisNorm2(HST_KKMC_NORMA, (TH2D*)DiskFileA.Get("sca_x1x2") );
+  ////////////////////////////////////
+  // Normalization to ONE
+  // Pi energy, spin ON
+  HisNorm0(1.0, (TH1D*)DiskFileA.Get("hst_x1pi") );     // ISR+FSR+PHTS
+  HisNorm0(1.0, (TH1D*)DiskFileA_P0.Get("hst_x1pi") );  // ISR+FSR
+  HisNorm0(1.0, (TH1D*)DiskFileB.Get("hst_x1pi") );     // Born PHTS=0?
+  // Pi energy, spin OFF
+  HisNorm0(1.0, (TH1D*)DiskFileS0.Get("hst_x1pi") );    // ISR+FSR+PHTS
+  HisNorm0(1.0, (TH1D*)DiskFileS0_P0.Get("hst_x1pi") ); // ISR+FSR
+  HisNorm0(1.0, (TH1D*)DiskFileS0_B.Get("hst_x1pi") );  // Born
   //
   cout<<"----------------DiskFileA.GetListOfKeys--------------------"<<endl;
   DiskFileA.GetListOfKeys()->Print();
@@ -216,8 +227,13 @@ void FigX1pi()
 //------------------------------------------------------------------------
   cout<<" ========================= FigX1pi =========================== "<<endl;
   //
-  TH1D *hst_x1pi  = (TH1D*)DiskFileA.Get("hst_x1pi");
-  TH1D *hst_x1pi_Born  = (TH1D*)DiskFileBorn.Get("hst_x1pi");
+  TH1D *hst_x1pi       = (TH1D*)DiskFileA.Get("hst_x1pi");     // ISR+FSR+PHTS
+  TH1D *hst_x1pi_phts0 = (TH1D*)DiskFileA_P0.Get("hst_x1pi");  // ISR+FSR
+  TH1D *hst_x1pi_Born  = (TH1D*)DiskFileB.Get("hst_x1pi");     // Born
+  //////
+  TH1D *hst_x1pi_S0       = (TH1D*)DiskFileS0.Get("hst_x1pi");    // ISR+FSR+PHTS
+  TH1D *hst_x1pi_S0_phts0 = (TH1D*)DiskFileS0_P0.Get("hst_x1pi"); // ISR+FSR
+  TH1D *hst_x1pi_S0_Born  = (TH1D*)DiskFileS0_B.Get("hst_x1pi");  // Born
   //////////////////////////////////////////////
   TLatex *CaptE = new TLatex();
   CaptE->SetNDC(); // !!!
@@ -241,16 +257,24 @@ void FigX1pi()
   HST->SetStats(0);
   HST->GetXaxis()->SetTitle("x_{1}");
   HST->GetXaxis()->SetLabelSize(0.04);
-  HST->SetMinimum(0.0);
+  HST->SetMinimum(0.8);
+  HST->SetMaximum(1.3);
   HST->DrawCopy("h");
   CaptT->DrawLatex(0.06,0.95, "dP/dx_{1}");
-  double ycapt = 0.45; double xcapt=0.50;
+  double ycapt = 0.90; double xcapt=0.40;
   CaptT->SetTextColor(kBlack); ycapt += -0.04;
-  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #pi^{+} #pi^{-}");
+  CaptT->DrawLatex(xcapt,ycapt, "e^{+}e^{-} -> #tau^{+} #tau^{-},   #tau^{#pm} -> #pi^{#pm}#nu#bar{#nu}");
   CaptT->DrawLatex(xcapt+0.40,ycapt,gTextEne);
-  PlotSame2(hst_x1pi,       xcapt, ycapt, kBlack,   0.10, "(A)", "  KKMCee CEEX2 ");
-  PlotSame2(hst_x1pi_Born,  xcapt, ycapt, kBlue,    0.20, "(B)", "  Born ");
-
+  PlotSame2(hst_x1pi,        xcapt, ycapt, kBlack,   0.10, "(a)", " ISR{#tau}+FSR{#tau}+FSR{#pi} ");
+  hst_x1pi_phts0->SetLineStyle(2);
+  PlotSame2(hst_x1pi_phts0,  xcapt, ycapt, kBlue,    0.20, "(b)", " ISR{#tau}+FSR{#tau} (dashed)");
+  PlotSame2(hst_x1pi_Born,   xcapt, ycapt, kMagenta, 0.30, "(c)", " QED off ");
+///////////
+  PlotSame2(hst_x1pi_S0,     xcapt, ycapt, kBlack,    0.10, "(f)", " ISR{#tau}+FSR{#tau}+FSR{#pi} Spin off");
+  hst_x1pi_S0_phts0->SetLineStyle(2);
+  PlotSame2(hst_x1pi_S0_phts0,  xcapt, ycapt, kBlue,  0.20, "(g)", " ISR{#tau}+FSR{#tau} Spin off ");
+  PlotSame2(hst_x1pi_S0_Born,   xcapt, ycapt, kRed,   0.30, "(h)", " QED off, Spin off ");
+////////////////
   cFigX1pi->SaveAs("cFigX1pi.pdf");
 
 }//FigX1pi

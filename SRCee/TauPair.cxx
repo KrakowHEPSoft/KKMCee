@@ -49,11 +49,8 @@ void TauPair::Initialize(double xpar[])
   BXTXT(*m_Out,"======    TauPair::Initialize     ======");
   BXTXT(*m_Out,"========================================");
 
-
   int ITAUXPAR=2000;
-
   m_IsInitialized = xpar[415-1];  // General mask for tau channel
-
 // switches of tau+ tau- decay modes !!
   m_itdkRC        = xpar[ITAUXPAR+4-1];   // QED internal rad. in leptonic decays
   int Jak1        = xpar[ITAUXPAR+1-1];   // Decay Mask for first tau
@@ -91,6 +88,8 @@ void TauPair::Initialize(double xpar[])
 //    if(DB->KeyPhts >1) phoini_();
 //]]]]]]]]]]]]]]]]]]]]]]]]
 
+
+
 // Initialization of PHOTOS++
 // KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
     if(DB->KeyPhts ==2 ){
@@ -98,20 +97,18 @@ void TauPair::Initialize(double xpar[])
     } else if( DB->KeyPhts ==1){
 // Suppressing Photos for leptonic decays
       Photos::initialize();
-      Photos::suppressAll();
-      Photos::forceBremForBranch(0, 15);
-      Photos::forceBremForBranch(0, -15);
-
-      Photos::suppressBremForDecay(3,  15,  16,  11, -12); //tau- => nutau,    e-, nuelbar
-      Photos::suppressBremForDecay(3, -15, -16, -11,  12); //tau+ => nutaubar, e+, nuel
-
-      Photos::suppressBremForDecay(3,  15,  16,  13, -14); //tau- => mu-
-      Photos::suppressBremForDecay(3, -15, -16, -13,  14); //tau+ => mu+
-
-//      Photos::suppressBremForDecay(1,  15,   11 );
-//      Photos::suppressBremForDecay(1, -15,  -11 );
-//      Photos::suppressBremForDecay(1,  15,   13);
-//      Photos::suppressBremForDecay(1, -15,  -13);
+///////////////////////////////////////////
+// Flag selections below do not work properly.
+// Leptonic tau decays are detected in the hepmc3 events
+// and photos++ does not process them for KeyPhts=1
+//      Photos::suppressAll();
+//      Photos::forceBremForBranch(0, 15);
+//      Photos::forceBremForBranch(0, -15);
+//      Photos::suppressBremForDecay(3,  15,  16,  11, -12); //tau- => nutau,    e-, nuelbar
+//      Photos::suppressBremForDecay(3, -15, -16, -11,  12); //tau+ => nutaubar, e+, nuel
+//      Photos::suppressBremForDecay(3,  15,  16,  13, -14); //tau- => mu-
+//      Photos::suppressBremForDecay(3, -15, -16, -13,  14); //tau+ => mu+
+//////////////////////////////////////////
     }//KeyPhts
   }//IsInitialized
 ///////////////////////////////////////////////////
@@ -202,20 +199,24 @@ e1099:
 
 ///______________________________________________________________________________________
 void TauPair::TransExport(){
-//  taupair_make2_();        // book-keeping, Photos, HepEvt
+// Transforming decays from tau rest frame to LAB
+// and appending event record (hepmc3) with tau decay particles
+// Replacement for f77 taupair_make2_();
   int ih1,ih2;
   hepevt_getf_(   ih1);         // fermion is here
   hepevt_getfbar_(ih2);         // antifermion is here
   tauface_setfermpos_(ih1,ih2);  // set ffbar positions in Tauola
-
+/////////// IMPORTANT!!! /////////////////////
+// Inside fortran subroutine DEKAY of Tauola
+// TauPair::Tralo4() and HepFace::FillHep3 are called!
+// Interfaced from C++ into F77 through SRCee/globux.h
   int J;
   J=11;  dekay_(&J,m_HvClone1);
   J=12;  dekay_(&J,m_HvClone1);
 
-/////////////////////////////////////////////////////////////////////////////////////
-//                    Photos comes last                                            //
-/////////////////////////////////////////////////////////////////////////////////////
-//[[[[[[[[[[[[[[[[[[[[[[[[[[
+///[[[[[[[[[[[[[[[[[[[[[[[[[[
+////////////////////////////////////////////////////////////////////////////////////
+//      Photos comes last OBSOLETE!!!!
 // temporary printout before photos
   if( m_Event->m_EventCounter <=3){
     J=2; pyhepc_(J);       // HepEvt-->Pythia
@@ -249,28 +250,53 @@ void TauPair::RunPhotosPP(){
 
 // test print before photos
   int buf= -m_Hvent->particles().size();
-  int LimitPrint=200;
+  int LimitPrint=25;
   if(m_Event->m_EventCounter <= LimitPrint){
 // test print before photos
-    cout <<    "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-    (*m_Out) <<"TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    cout <<    "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    (*m_Out) <<"TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     Print::listing(*m_Hvent);
   }//test print
 
+  // check if tau has decayed leptonicaly (to avoid photon double counting)
+  bool leptonicTauDecay = false;
+  for (auto v : m_Hvent->vertices()){ // loop over vertices
+    if (v->particles_in().size() == 1) { // search  for only decay of particles
+        if (abs(v->particles_in()[0]->pid()) == 15){ // decay of tau+/-
+          bool fermion = false;
+          bool neutrino = false;
+          for (auto p : v->particles_out()){ // check if leptonic decay
+            if ( abs(p->pid()) == 11 || abs(p->pid()) == 13) fermion = true;
+            if ( abs(p->pid()) == 12 || abs(p->pid()) == 14) neutrino = true;
+            leptonicTauDecay = fermion & neutrino;
+          }//if leptonic decay
+        }//end tau decay
+     }//end decay
+   }//end verticles
+
+//   if (!leptonicTauDecay)  m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus for non leptonic dacays
 //////////////////////////////////////////
-// Process HEPMC3 event by PHOTOS++
-  PhotosHepMC3Event photosEvent(m_Hvent);
-  photosEvent.process();
+// DB->KeyPhts ==2 requires m_itdkRC == 0
+  if( DB->KeyPhts ==2 && m_itdkRC !=0 ){
+    cout<<"TauPair::RunPhotosPP: +++STOP+++, KeyPhts ==2 && m_itdkRC ==1"<<endl;
+    exit(33);
+  }
+// Process HEPMC3 event by PHOTOS++, Leptonic decays excluded,
+// except the case of KeyPhts ==2 and m_itdkRC ==0
+  if (!leptonicTauDecay || DB->KeyPhts ==2){
+    PhotosHepMC3Event photosEvent(m_Hvent);
+    photosEvent.process();
+  }//
 //////////////////////////////////////////
 
   // test print after photos
   buf += m_Hvent->particles().size();
   if(buf>0 && m_Event->m_EventCounter <= LimitPrint){
-    cout<<      "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-    (*m_Out) << "TauPair::Make2:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    cout<<      "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+    (*m_Out) << "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     Print::listing(*m_Hvent);
-    cout<<     ">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
-    (*m_Out) <<">>>>>>> TauPair::Make2: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    cout<<     ">>>>>>> TauPair::RunPhotosPP: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
+    (*m_Out) <<">>>>>>> TauPair::RunPhotosPP: ["<<m_Event->m_EventCounter<< "] PHOTOS++ added "<<buf<<" new photons !!!!!!"<<endl;
   }//test print
 
 

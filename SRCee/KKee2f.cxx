@@ -683,8 +683,8 @@ for(int j=0; j< maxWT;j++){
    m_WtSet[j]   =0;
    m_WtAlter[j] =0;  // formely WtList
 }//for
+m_WtMain  =0.0;
 
-//m_WtMain  =m_WtCrude;
 if(m_WtCrude != 0 ) {
 // 4-momenta are transfered to QED directly through m_Event
       m_QED3->Make(); // f77 indexing!!!
@@ -734,7 +734,9 @@ if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 
   cout    <<"KKee2f::Generate: m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
  }
 //]]]]]]]]]]]]]]]
-/////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+if( m_WtCrude !=0.0 ) m_WtMain=WtBest*m_WtCrude;
+//////[[[[[[if(m_WtMain > DB->WTmax) cout<<"%%%% m_WtMain="<<m_WtMain<<endl;
 // more DEBUG
 if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
   cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
@@ -757,13 +759,9 @@ if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
 ////////////////////////////////////////////////////////////////////////
 double XsPrimPb = f_FoamI->GetPrimary();
 int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
+if( DB->Foam_OptRej == 1) XsPrimPb *= DB->Foam_WtMaxRej; // Important!!!!!!!
 
-//////////////////////////////////////////////////////////////////////
-m_WtMain=WtBest*m_WtCrude;
-//////[[[[[[if(m_WtMain > DB->WTmax) cout<<"%%%% m_WtMain="<<m_WtMain<<endl;
-// Important!!!!!!!
-if( DB->Foam_OptRej == 1) XsPrimPb *= DB->Foam_WtMaxRej;
-// !!!!!
+
 double WTmax = DB->WTmax;
 if(DB->KeyWgt == 0) {
 // ***** CONSTANT-WEIGHT events *****
@@ -791,20 +789,6 @@ if(DB->KeyWgt == 0) {
 //=============================================================
 //=============================================================
 
-//[[[[[[[[[[[[[ to be removed
-//////////////////////////////////////////////////
-/////////// VARIABLE-WEIGHT events ///////////////
-// collection of the weights for the advanced user
-// This is version for WTed events only!!!!
-//  for(int j=1; j< maxWT; j++)   m_WtAlter[j] = m_WtSet[j]*m_WtCrude;  // indexing f77!!!!
-//  double XsPrimPb = f_FoamI->GetPrimary();
-//  int NevPrim     = f_FoamI->GetnCalls() -m_nCallsFoam0; // Generation only
-//  f_TMCgen_NORMA->SetBinContent(0,XsPrimPb*NevPrim);  // Picobarns
-//  f_TMCgen_NORMA->SetEntries(NevPrim);
-//////////////////////////////////////////////////
-//]]]]]]]]]]]]]
-
-
 //////////////////////////////////////////////////////////////////////
 m_Event->m_WtCrude= m_WtCrude;
 m_Event->m_WtMain = m_WtMain;
@@ -819,12 +803,15 @@ m_Event->ZBoostALL();
 //////////////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////
+//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+// OBSOLETE to be remooved
 if ( m_WtCrude  != 0) hepevt_fill_();  // Fill in /hepevt/ with four fermions and photons
+//]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
 /////////////////////////////
 if ( m_WtCrude  != 0) m_HEPMC->WriteHEPC(); // Fill in hepmc3 m_Hvent event
 /////////////////////////////////////////////////////////////
-// Tau pair generation using TAUOLA+PHOTOS
+// Tau pair generation using TAUOLA and PHOTOS++
 if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
    int IsTauInitialized = m_TauGen->IsTauInitialized();
    if( IsTauInitialized != 0) {
@@ -833,31 +820,13 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
          exit(10); }//if
      m_GPS->TralorPrepare(1);   // preparing Lorentz transformations from tau frame to LAB
      m_GPS->TralorPrepare(2);
-//
-     m_TauGen->DecayInRest();         // generate tau decays (f77 Tauola) in tau rest frames
-     m_TauGen->ImprintSpin();         // implementing spin effects
-     m_TauGen->TransExport();         // transform decays to LAB, export to HEPMC event, running Photos++
-     m_HEPMC->tauolaToHEPMC3(); // appending  m_Hvent with tau decay products
-
-
-// check if tau decayed leptonicaly 
-     bool leptonicTauDecay = false;
-     for (auto v : m_Hvent->vertices()){ // loop over vertices 
-	if (v->particles_in().size() == 1) { // search  for only decay of particles 
-           if (abs(v->particles_in()[0]->pid()) == 15){ // decay of tau+/-
-            bool fermion = false;
-            bool neutrino = false;
-	    for (auto p : v->particles_out()){ // check if leptonic decay
-             if ( abs(p->pid()) == 11 || abs(p->pid()) == 13) fermion = true;
-             if ( abs(p->pid()) == 12 || abs(p->pid()) == 14) neutrino = true;
-             leptonicTauDecay = fermion & neutrino;
-            } 
-           }  // end tau
-        }// end decay
-     } // end verticles
-     if (!leptonicTauDecay)  m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus for non leptonic dacays
+     m_TauGen->DecayInRest();    // generate tau decays (f77 Tauola) in tau rest frames
+     m_TauGen->ImprintSpin();    // implementing spin effects
+     m_TauGen->TransExport();    // transform decays to LAB, export to HEPMC event, running Photos++
+     m_HEPMC->tauolaToHEPMC3();  // appending  m_Hvent with tau decay products
+     m_TauGen->RunPhotosPP();    // Run Photos++ for non leptonic dacays
    }//TauIsInitialized
-}//if
+}//if KFfin == 15
 
 /////////////////////////////////////////////////////////////
 //Control printouts of accepted events

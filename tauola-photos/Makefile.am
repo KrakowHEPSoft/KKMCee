@@ -38,7 +38,6 @@ TAUOLA_SRC = \
 
 libTauolaPhotos_la_SOURCES = \
 	$(TAUOLA_SRC) \
-	photos.f \
 	Tauface.f \
 	HepEvt.f \
 	IO_aux.f

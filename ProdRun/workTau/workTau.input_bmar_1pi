@@ -18,6 +18,7 @@ BeginX
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
    12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
 *
+   20              1      KeyISR=xpar(20)  Default is  1, for beams      
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
