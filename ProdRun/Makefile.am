@@ -52,7 +52,8 @@ nodist_libProdKK_la_SOURCES = $(dict2C)
 libProdKK_la_LDFLAGS = -rpath $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx
 libProdKK_la_LIBADD =  \
-	$(top_builddir)/SRCee/libKKee.la  $(LDFLAGS_HEPMC)
+	$(top_builddir)/SRCee/libKKee.la
+libProdKK_la_LDFLAGS = -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
 #/////////////////////////////////////////////////////////////
@@ -65,19 +66,17 @@ bin_PROGRAMS = MainMini MainKKMC  MainFoam
 MainKKMC_SOURCES = MainMCdev.cxx 
 MainKKMC_LDADD = \
 			libProdKK.la
-MainKKMC_LDFLAGS = -rpath $(ROOTRPATH) -rpath $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -g -no-install
+MainKKMC_LDFLAGS = -R $(ROOTRPATH) -g -no-install
 #-------------------------------------------------------------------------
 # option -no-install needed for debuger
 #-------------------------------------------------------------------------
 MainFoam_SOURCES = MainMCdev.cxx 
 MainFoam_LDADD = \
-			$(PHOTOSLIBS) \
 			libProdFoam.la
-MainFoam_LDFLAGS = -rpath $(ROOTRPATH)  -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -g  -no-install
+MainFoam_LDFLAGS = -R $(ROOTRPATH) -g  -no-install
 #/////////////////////////////////////////////////////////
 MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
-			$(PHOTOSLIBS) \
 			$(top_builddir)/SRCee/libKKee.la
-MainMini_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -g  -no-install
+MainMini_LDFLAGS = -L$(ROOTLIBDIR) -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -g  -no-install
 #-------------------------------------------------------------------------
