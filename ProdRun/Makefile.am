@@ -65,14 +65,14 @@ bin_PROGRAMS = MainMini MainKKMC  MainFoam
 MainKKMC_SOURCES = MainMCdev.cxx 
 MainKKMC_LDADD = \
 			libProdKK.la
-MainKKMC_LDFLAGS = -R $(ROOTRPATH) -g -no-install
+MainKKMC_LDFLAGS = -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) -g -no-install
 #-------------------------------------------------------------------------
 # option -no-install needed for debuger
 #-------------------------------------------------------------------------
 MainFoam_SOURCES = MainMCdev.cxx 
 MainFoam_LDADD = \
 			libProdFoam.la
-MainFoam_LDFLAGS = -R $(ROOTRPATH) -g  -no-install
+MainFoam_LDFLAGS = -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) -g  -no-install
 #/////////////////////////////////////////////////////////
 MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
