@@ -61,7 +61,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
 libKKfm_la_LIBADD =  
-libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) 
+libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
 

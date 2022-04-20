@@ -49,7 +49,6 @@ $(dict2C) : $(ROOTCINTHDRS2)
 #------------------------Local library 2---------------------------
 #  Additional flags:
 nodist_libProdKK_la_SOURCES = $(dict2C)
-libProdKK_la_LDFLAGS = -rpath $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS)
 libProdKK_la_SOURCES =  TRobolKKMC.cxx
 libProdKK_la_LIBADD =  \
 	$(top_builddir)/SRCee/libKKee.la
