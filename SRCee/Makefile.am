@@ -39,7 +39,7 @@ libKKee_la_LIBADD =  \
 	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la 
 #libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) -L/opt/PHOTOS-install/lib/
-libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) $(PHOTOS_LDFLAGS)
+libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
 #///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ $(dict2C) : $(ROOTCINTHDRS2)
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
 libKKfm_la_LIBADD =  
-libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) 
+libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
 
@@ -80,9 +80,7 @@ bin_PROGRAMS = TestMini1
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
 			libKKee.la 
-##TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath $(ROOTRPATH) -no-install -g
-##TestMini1_LDFLAGS = -L$(ROOTLIBDIR) $(PHOTOS_LDFLAGS) -rpath $(ROOTRPATH) -no-install -g
-TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -rpath  $(ROOTRPATH) -rpath $(PHOTOS_LIBDIR)  $(PHOTOS_LDFLAGS) -no-install -g
+TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
 
 #/////////////////////////////////////////////////////////
 test1-start: TestMini1

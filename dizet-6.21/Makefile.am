@@ -7,7 +7,7 @@ libDizet_a_SOURCES = \
 
 bin_PROGRAMS = TabMain
 TabMain_SOURCES = TabMain.f
-TabMain_LDADD = $(top_builddir)/dizet/libDizet.a
+TabMain_LDADD = libDizet.a
 #####################################################################
 COMMAND1 = ./TabMain
 #--------------------------------------------------------------------
