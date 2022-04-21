@@ -58,14 +58,12 @@ CLASS_CMD
 
 AC_CONFIG_FILES([Makefile \
 dizet/Makefile \
-jetset/Makefile \
 tauola-photos/Makefile  \
 Foam2/Makefile \
 MCdev/Makefile MCdev/farming/Makefile \
 SRCee/Makefile \
 DZface/Makefile \
 ProdRun/Makefile  ProdRun/workMini/Makefile  ProdRun/work1/Makefile ProdRun/workFoam/Makefile \
-                  ProdRun/workNU/Makefile ProdRun/workTau/Makefile ProdDigest/Makefile \
-hepmc-temp/Makefile \
+                  ProdRun/workNU/Makefile ProdRun/workTau/Makefile ProdDigest/Makefile
 ])
 AC_OUTPUT
