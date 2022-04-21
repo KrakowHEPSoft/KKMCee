@@ -818,13 +818,13 @@ if ( (m_WtCrude  != 0) && ( m_KFfin == 15) ) {
      if( DB->KeyGPS == 0 ) {
          cout<< " #### STOP in KKhh2f_Generate: for tau decays GPS not activated !!!"<<endl;
          exit(10); }//if
-     m_GPS->TralorPrepare(1);   // preparing Lorentz transformations from tau frame to LAB
-     m_GPS->TralorPrepare(2);
-     m_TauGen->DecayInRest();    // generate tau decays (f77 Tauola) in tau rest frames
-     m_TauGen->ImprintSpin();    // implementing spin effects
-     m_TauGen->TransExport();    // transform decays to LAB, export to HEPMC event, running Photos++
-     m_HEPMC->tauolaToHEPMC3();  // appending  m_Hvent with tau decay products
-     m_TauGen->RunPhotosPP();    // Run Photos++ for non leptonic dacays
+     m_GPS->TralorPrepare(1);  // prepare transformations tau frame -> LAB
+     m_GPS->TralorPrepare(2);  // accounting for tau spin quantization axes
+     m_TauGen->DecayInRest();  // tau decays (f77 Tauola) in tau rest frames
+     m_TauGen->ImprintSpin();  // implementing spin effects
+     m_TauGen->TransExport();  // transform decays to LAB, collect tau decays
+     m_HEPMC->tauolaToHEPMC3();// append m_Hvent with tau decay products
+     m_TauGen->RunPhotosPP();  // Run Photos for non leptonic tau dacays
    }//TauIsInitialized
 }//if KFfin == 15
 

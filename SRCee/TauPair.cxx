@@ -92,12 +92,15 @@ void TauPair::Initialize(double xpar[])
 
 // Initialization of PHOTOS++
 // KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
+    double WTmax=4.0;
     if(DB->KeyPhts ==2 ){
       Photos::initialize();
+      Photos::maxWtInterference(WTmax);
     } else if( DB->KeyPhts ==1){
 // Suppressing Photos for leptonic decays
       Photos::initialize();
-///////////////////////////////////////////
+      Photos::maxWtInterference(WTmax);
+//////////////////////////////////////////
 // Flag selections below do not work properly.
 // Leptonic tau decays are detected in the hepmc3 events
 // and photos++ does not process them for KeyPhts=1
