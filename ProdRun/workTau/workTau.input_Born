@@ -15,12 +15,6 @@ BeginX
     7              5      Ie2Pri =xpar( 7)  PrintOut End   point
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events
-* KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
-   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
-*
-**    EQD/EW bremsstrahlung flags/data
-   20              0      KeyISR=xpar(20)  Default is  1, for beams      
-   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
    16           1e-5      vvmin =xpar(16)  may  be put to  vvmin < 1e-5
@@ -28,12 +22,11 @@ BeginX
 ** final ffbar mass^2 but of the virtual object after ISR emission, before FSR.
 ** and before FSR emission. It is obviously unphysical cut due to ISR*FSR interf.
    17        0.999e0      vvmax =xpar(17)  if 1e0 then reduced inside program
-*   17             1e0      vvmax =xpar(17)  if 1e0 then reduced inside program
+**    QED/EW bremsstrahlung flags/data
+   20              0      KeyISR=xpar(20)  Default is  1, for beams      
+   21              0      KeyFSR=xpar(21)  Default is  1, for all final fermions
 ***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
    27              2      KeyINT=xpar(27)  Default is  2
-* New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
-** which overrules KeyGPS for each type of final fermion
-*   28              0      KeyGPS=xpar(28)  Default is  1
 ********************************************************************************
 *****                Entries 800-999 reserved for Electroweak libraries     ****
 **      DIZET flags NPAR(i)=NPAR(900+i)
