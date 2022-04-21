@@ -121,7 +121,8 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   cout  << "   *******************************" << endl;
 
 //////////////////////////////////////////////////////////////
-// It is exporting MC generator pointer to global visibility:
+// It is exporting MC generator pointer to global visibility.
+// necessary as long as fortran Tauola is in used.
   globux_setup_( this );
 //////////////////////////////////////////////////////////////
 
@@ -132,17 +133,12 @@ void KKee2f::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   const char *output_file = "./pro77.output";
   int sl2 = strlen(output_file);
   fort_open_(m_out,output_file,sl2);
-//  int seed = 54217317; pseumar_initialize_(seed, 0, 0);
 //=============================================================
 
 //////////////////////////////////////////////////////////////
-// Presently globux is eliminated, may come back temporarily
-// It is exporting MC generator pointer to global visibility:
-//  globux_setup_( this );
-//////////////////////////////////////////////////////////////
   const int jmax = maxPar;
   ReaData("./KKMCee_defaults", jmax, m_xpar);       // f77 indexing in xpar
-  ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 means no-zeroing
+  ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 for overwriting defaults
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // c++ indexing in ypar
 
 //////////////////////////////////////////////////////////////

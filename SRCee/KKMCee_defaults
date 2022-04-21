@@ -23,7 +23,7 @@ BeginX
     3              5      ninp   =xpar( 5)  Input  unit number (not used)
     4             16      nout   =xpar( 6)  Output unit number
 *     PrintOut from generator
-    5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2,3
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
     7              1      Ie2Pri =xpar( 7)  PrintOut End   point
 *     At present all internal monitoring fits into (idyfs+1,idyfs+100)

@@ -463,7 +463,7 @@ for(int i=1; i<= m_nPhot; i++){
 	MomtSum += m_PhotAll[i];
 }
 *Out<< "m_Sum  "; MomPrint(Out,MomtSum); *Out<<"   "<< MomtSum.M() <<endl;
-*Out<<"-------------------------------initial hadron remnants ---------------------------------------------------------"<<endl;
+*Out<<"-------------------------------initial BES/beamstrahlung -------------------------------------------------------"<<endl;
 *Out<< "m_Rem1 "; MomPrint(Out,m_Rem1); *Out<<"   "<< m_Rem1.M() <<endl;
 *Out<< "m_Rem2 "; MomPrint(Out,m_Rem2); *Out<<"   "<< m_Rem2.M() <<endl;
 MomtSum += m_Rem1+m_Rem2;

@@ -134,6 +134,7 @@ void TauPair::RandRotor(){
 //                                                                                 //
 //   Cloning tau decays by additional rotation tau decay products with respect     //
 //   to frames  initially used in the decay simulation.                            //
+//   This is perfectly legal because average spin weight is equal exactly one!!!   //
 /////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////
@@ -253,8 +254,8 @@ void TauPair::RunPhotosPP(){
 
 // test print before photos
   int buf= -m_Hvent->particles().size();
-  int LimitPrint=25;
-  if(m_Event->m_EventCounter <= LimitPrint){
+  int LimitPrint=50; // for debug only
+  if(m_Event->m_EventCounter <= LimitPrint && DB->LevPri==3){
 // test print before photos
     cout <<    "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     (*m_Out) <<"TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! Before Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
@@ -279,7 +280,7 @@ void TauPair::RunPhotosPP(){
 
 //   if (!leptonicTauDecay)  m_TauGen->RunPhotosPP();   // Run PhotosPlusPlus for non leptonic dacays
 //////////////////////////////////////////
-// DB->KeyPhts ==2 requires m_itdkRC == 0
+// Beware: DB->KeyPhts ==2 requires m_itdkRC == 0
   if( DB->KeyPhts ==2 && m_itdkRC !=0 ){
     cout<<"TauPair::RunPhotosPP: +++STOP+++, KeyPhts ==2 && m_itdkRC ==1"<<endl;
     exit(33);
@@ -294,7 +295,7 @@ void TauPair::RunPhotosPP(){
 
   // test print after photos
   buf += m_Hvent->particles().size();
-  if(buf>0 && m_Event->m_EventCounter <= LimitPrint){
+  if(buf>0 && m_Event->m_EventCounter <= LimitPrint && DB->LevPri==3){
     cout<<      "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     (*m_Out) << "TauPair::RunPhotosPP:!!!!!!!!!!!!!!!!!!!!!!!!!! After Photos !!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     Print::listing(*m_Hvent);

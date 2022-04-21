@@ -5,13 +5,18 @@ BeginX
 *               ACTUAL DATA FOR THIS PARTICULAR RUN
 *-------------------------------------------------------------------------------
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
-    0           1000      1k   NEVT = number of events
-    0      100000000      100M NEVT = number of events
+    0           1000      1k   NEVT = number of events, OBSOLETE!!!
 * Center-of-mass energy [GeV]
     1          105e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+**    1      91.1876e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
+**    1          189e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
+*     PrintOut from generator
+    5              2      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7             10      Ie2Pri =xpar( 7)  PrintOut End   point
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
-    9          3.0e0      WtMax =xpar( 9)   Maximum weight for rejection
+    9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              0      0/1 = constant/varying weight events
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
@@ -41,9 +46,9 @@ BeginX
 ********************************************************************************
 *indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator
-    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    5              2      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
-    7             20      Ie2Pri =xpar( 7)  PrintOut End   point
+    7             30      Ie2Pri =xpar( 7)  PrintOut End   point
 ********************************************************************************
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
 **     Define process
@@ -56,12 +61,19 @@ BeginX
   414              1     KFfin, neutrino muon
   416              1     KFfin, neutrino tau
 *********************************************************************************
-* Tau decays
+*****   PhotosC adding photons in tau decays in HEPMC3 event record
+   35              1   KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
+********************   Tau decays *******************
 * Jak=-1: no decay; 0: inclusive; 1,2,3: e,mu,pi decays, 4,5,6,7: rho,a1,K,K*...
- 2001              0      Jak1   =xpar(71)  First  Tau decay mask, Default is 0
- 2002              0      Jak2   =xpar(72)  Second Tau decay mask, Default is 0
- 2004            1e0      itdkRC =xpar(74)  QED rad. switch in leptonic decays
+** 2001            159      Jak1,  single pi
+** 2002            159      Jak2,  single pi
+ 2001              0      Jak1,  all inclusive
+ 2002              0      Jak2,  all inclusive
+**
+ 2004            1e0      itdkRC  QED rad. switch in leptonic decays
+ 2005        0.001e0      xk0dec  IR-cutoff for QED rad. in leptonic decays
 *******************************************************************************
+*********************** FOAM steering parameters *******************************
 *indx_____data______ccccccccc0cccc__________General_____ccc0ccccccccc0ccccccccc0
  3021          20000 FOAM Maximum number of cells (5000 default, 2000 for map)
  3022              0 FOAM Vopt: set to 0 to save vertices, 1 to NOT save them

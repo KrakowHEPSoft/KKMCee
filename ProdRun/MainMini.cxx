@@ -13,7 +13,7 @@ int nb = 10000;
 TH1D *h_NORMA= new TH1D("KKMCgen_NORMA","Normaliz. histo",nb,0,nb);
 KKMCgen->Initialize( RN_gen, &OutFile, h_NORMA);
 /////////////////////////////////////////////////////////////
-int NevLimPrt =100, NevGen =100;
+int NevGen =100;
 cout<<"MainMini: ********************************** "<<endl;
 cout<<"MainMini: type in no. of MC events: (100?) ";
 cin>>NevGen; cout<<" requested "<< NevGen <<" events"<<endl;
@@ -22,8 +22,6 @@ cin>>NevGen; cout<<" requested "<< NevGen <<" events"<<endl;
 for(int iev=1; iev<=NevGen; iev++) {
    if( (iev/20000)*20000 == iev) cout<<" iev="<<iev<<endl;
    KKMCgen->Generate();
-   if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR();
-   if(iev <= NevLimPrt) KKMCgen->m_Event->PrintISR_FSR(&OutFile);
 }// for iev
 /////////////////////////////////////////////////////////////
 KKMCgen->Finalize(); // final printout
