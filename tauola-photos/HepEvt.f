@@ -153,20 +153,20 @@ c[[[%      amfin  =BornV_GetMass(KFfin)
       CALL HepEvt_Fil1(ip,KStat,-KFfin, 3,3,0,0, qf2,amfin,.FALSE.) ! &&& parent=3
       CALL HepEvt_SetFbar(ip)
 * Finaly fill also LUND common block
-      CALL pyhepc(2)
+cc      CALL pyhepc(2)
 
-      Etot= SQRT(ABS(Psum(4)**2 -Psum(3)**2 -Psum(2)**2 -Psum(1)**2))
+cc      Etot= SQRT(ABS(Psum(4)**2 -Psum(3)**2 -Psum(2)**2 -Psum(1)**2))
 * Check on total 4-momentum conservation
-      IF( ABS(Etot/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
-         WRITE(*,*) '++++ HepEvt_Fill: something wrong with Etot=',Etot
-      ENDIF
-      IF( ABS(Psum(4)/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
-         WRITE(*,*) '++++ HepEvt_Fill: something wrong with Psum(4)=',Psum(4)
-         WRITE(*,*) '++++ HepEvt_Fill: pf1(4)+pf2(4)+aph(4)+bph(4) =',pf1(4)+pf2(4)+aph(4)+bph(4)
+cc      IF( ABS(Etot/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
+cc         WRITE(*,*) '++++ HepEvt_Fill: something wrong with Etot=',Etot
+cc      ENDIF
+cc      IF( ABS(Psum(4)/(pf1(4)+pf2(4)+aph(4)+bph(4))-1d0) .GT.5d-4) THEN
+cc         WRITE(*,*) '++++ HepEvt_Fill: something wrong with Psum(4)=',Psum(4)
+cc         WRITE(*,*) '++++ HepEvt_Fill: pf1(4)+pf2(4)+aph(4)+bph(4) =',pf1(4)+pf2(4)+aph(4)+bph(4)
 c[[[         CALL KK2f_Print1(6)
-         CALL PYgive('MSTU(11)=6')
-         CALL PYlist(1)
-      ENDIF
+cc         CALL PYgive('MSTU(11)=6')
+cc         CALL PYlist(1)
+cc      ENDIF
 c[[[[[[[[[[[[[[[[[[[[
 c      write(16,*) '========================================= HepEvt_Fill ======================================'
 c      CALL PYgive('MSTU(11)=16')
@@ -258,115 +258,6 @@ c]]]]]]]]]]]]]]]]]]]]
 
       END
       
-
-      SUBROUTINE HepEvt_Hadronize(HadMin)
-*//////////////////////////////////////////////////////////////////////////////
-*//                                                                          //
-*//          Aranging jets and hadronization                                 //
-*//                                                                          //
-*//     VERY close to HepEvt, but contain a switch for the RRes_HADGEN       //
-*//     RRes_HADGEN falls back to Jetset if qq mass > 2 GeV                  //
-*//     Maarten Boonekamp, sept. 2001                                        //
-*//                                                                          //
-*//////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      INCLUDE 'HepEvt.h'
-*
-      INTEGER  ijoin(2)
-      DOUBLE PRECISION    HadMin
-      DOUBLE PRECISION    sqrs1
-      INTEGER  ih1,ih2
-C (M.B.)
-      INTEGER KeyRes
-      DOUBLE PRECISION QQMOM(4)
-C end (M.B.)
-* ----------------------------------------------------------------------
-
-* Quarks only, KeyHad=1 required
-c$$$      ih1=3  ! fermion is here      &&&
-c$$$      ih2=4  ! antifermion is here  &&&
-      Call HepEvt_GetF(   ih1)  ! fermion is here
-      Call HepEvt_GetFbar(ih2)  ! antifermion is here
-C (M.B.) Use RRes_HADGEN if requested for KeyRes=1
-c[[[%      CALL BornV_GetKeyRes(KeyRes)
-      IF(KeyRes.EQ.0) THEN
-        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
-** Explicit string arangement:
-          ijoin(1) = ih1
-          ijoin(2) = ih2
-** q-qbar effective mass
-          sqrs1=(phep(4,ih1)+phep(4,ih2))**2
-     $         -(phep(3,ih1)+phep(3,ih2))**2
-     $         -(phep(2,ih1)+phep(2,ih2))**2
-     $         -(phep(1,ih1)+phep(1,ih2))**2
-          sqrs1=sqrt(abs(sqrs1))
-* Showering < HadMas cut-off value (this also deals with WT=0 events)
-* see also bornv
-          IF( sqrs1 .GT. HadMin**2) THEN
-            CALL pyjoin(2,ijoin)
-            CALL pyshow(ih1,ih2,sqrs1)
-            CALL pyexec
-* Finaly fill also HepEvt common block
-            CALL pyhepc(1)  ! Pythia-->HepEvt
-          ENDIF
-        ENDIF
-      ELSE ! RRes_HADGEN falls back to Jetset if qq mass > 2 GeV
-        IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
-          QQMOM(1) = phep(1,ih1)+phep(1,ih2)
-          QQMOM(2) = phep(2,ih1)+phep(2,ih2)
-          QQMOM(3) = phep(3,ih1)+phep(3,ih2)
-          QQMOM(4) = phep(4,ih1)+phep(4,ih2)
-c[[[%          CALL RRes_HADGEN(QQMOM,ih1,ih2,0)  ! PHOTOS inside!
-          CALL pyexec
-* Finaly fill also HepEvt common block
-          CALL pyhepc(1)   ! Pythia-->HepEvt
-        ENDIF
-      ENDIF
-C end (M.B.)
-      END
-
-
-      SUBROUTINE HepEvt_Hadronize_ori(HadMin)
-*//////////////////////////////////////////////////////////////////////////////
-*//                                                                          //
-*//          Aranging jets and hadronization                                 //
-*//                                                                          //
-*//////////////////////////////////////////////////////////////////////////////
-      IMPLICIT NONE
-      INCLUDE 'HepEvt.h'
-*
-      INTEGER  ijoin(2)
-      DOUBLE PRECISION    HadMin
-****      REAL                sqrs1      ! corrections of B.B.
-      DOUBLE PRECISION    sqrs1
-      INTEGER  ih1,ih2
-* ----------------------------------------------------------------------
-
-* Quarks only, KeyHad=1 required
-c$$$      ih1=3  ! fermion is here      &&&
-c$$$      ih2=4  ! antifermion is here  &&&
-      Call HepEvt_GetF(   ih1)  ! fermion is here
-      Call HepEvt_GetFbar(ih2)  ! antifermion is here
-      IF ( ABS(idhep(ih1)) .LT. 10 ) THEN 
-** Explicit string arangement:
-         ijoin(1) = ih1
-         ijoin(2) = ih2
-** q-qbar effective mass
-         sqrs1=(phep(4,ih1)+phep(4,ih2))**2
-     $        -(phep(3,ih1)+phep(3,ih2))**2
-     $        -(phep(2,ih1)+phep(2,ih2))**2
-     $        -(phep(1,ih1)+phep(1,ih2))**2
-         sqrs1=sqrt(abs(sqrs1))
-* Showering < HadMas cut-off value (this also deals with WT=0 events)
-* see also bornv
-         IF( sqrs1 .GT. HadMin**2) THEN
-            CALL pyjoin(2,ijoin)
-            CALL pyshow(ih1,ih2,sqrs1)
-            CALL pyexec
-         ENDIF
-      ENDIF
-      
-      END
 
 
       SUBROUTINE HepEvt_Fil1( n,ist,id,jmo1,jmo2,jda1,jda2,p4,pinv,phflag)

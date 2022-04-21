@@ -207,9 +207,9 @@ void TauPair::TransExport(){
 // and appending event record (hepmc3) with tau decay particles
 // Replacement for f77 taupair_make2_();
   int ih1,ih2;
-  hepevt_getf_(   ih1);         // fermion is here
-  hepevt_getfbar_(ih2);         // antifermion is here
-  tauface_setfermpos_(ih1,ih2);  // set ffbar positions in Tauola
+  hepevt_getf_(   ih1);          // fermion is here
+  hepevt_getfbar_(ih2);          // antifermion is here
+  tauface_setfermpos_(ih1,ih2);  // set ffbar positions for /hepevt/ in Tauola
 /////////// IMPORTANT!!! /////////////////////
 // Inside fortran subroutine DEKAY of Tauola
 // TauPair::Tralo4() and HepFace::FillHep3 are called!
@@ -222,10 +222,10 @@ void TauPair::TransExport(){
 ////////////////////////////////////////////////////////////////////////////////////
 //      Photos comes last OBSOLETE!!!!
 // temporary printout before photos
-  if( m_Event->m_EventCounter <=3){
-    J=2; pyhepc_(J);       // HepEvt-->Pythia
-    tauface_print_();
-  }
+//  if( m_Event->m_EventCounter <=3){
+//    J=2; pyhepc_(J);       // HepEvt-->Pythia
+//    tauface_print_();
+//  }
 //]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
@@ -239,10 +239,10 @@ void TauPair::TransExport(){
 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 // PRINTOUT of /hepevt/ USIGNG Pythia
 /////////////////////////////////////////////
-  J=2; pyhepc_(J);       // HepEvt-->Pythia
-  if( m_Event->m_EventCounter <=30){
-  tauface_print_();
-  }//EventCounter
+//  J=2; pyhepc_(J);       // HepEvt-->Pythia
+//  if( m_Event->m_EventCounter <=30){
+//  tauface_print_();
+//  }//EventCounter
 //]]]]]]]]]]]]]]]]]]]]
 }//Make2
 

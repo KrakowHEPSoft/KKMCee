@@ -1657,8 +1657,4 @@ cc      END
       END
 
 
-      SUBROUTINE Tauface_Print
-      write(16,*) '====================================== Tauface_Print ===================================='
-      CALL PYgive('MSTU(11)=16')
-      CALL PYlist(1)
-      END
+
