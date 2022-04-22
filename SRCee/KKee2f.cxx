@@ -686,12 +686,11 @@ if(m_WtCrude != 0 ) {
       m_QED3->Make(); // f77 indexing!!!
       for(int j=0; j< maxWT;j++) m_WtSet[j]=m_QED3->m_WtSet[j];
       WtBest = m_WtSet[74];   // wtset[74]
-//[[[[[[[[[[[[[[[
+//
       if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 ) {
         (*f_Out)<<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
         cout    <<"KKee2f::Generate: m_WtSet[71-74]="<<m_WtSet[71]<<"  "<<m_WtSet[72]<<"  "<<m_WtSet[73]<<"  "<<m_WtSet[74]<<endl;
       }
-//]]]]]]]]]]]]]]]
 // New CEEX matrix element is now default for leptons and for quarks.
 // Its use is controled by auxiliary parameter MinMassCEEX variable [GeV]
 // CEEX is calculated twice, with ISR*FSR interference OFF and ON
@@ -722,17 +721,15 @@ if(m_WtCrude != 0 ) {
    }//if
 }//if wtcrude
 
-//[[[[[[[[[[[[[[[ debug
+// debug
 if(m_EventCounter >= DB->Ie1Pri && m_EventCounter <= DB->Ie2Pri && DB->LevPri>0 ) {
   (*f_Out)<<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
   cout    <<"KKee2f::Generate: m_WtSet[201-203]="<<m_WtSet[201]<<"  "<<m_WtSet[202]<<"  "<<m_WtSet[203]<<endl;
   (*f_Out)<<"KKee2f::Generate: m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
   cout    <<"KKee2f::Generate: m_WtSet[251-253]="<<m_WtSet[251]<<"  "<<m_WtSet[252]<<"  "<<m_WtSet[253]<<endl;
  }
-//]]]]]]]]]]]]]]]
 //////////////////////////////////////////////////////////////////////
 if( m_WtCrude !=0.0 ) m_WtMain=WtBest*m_WtCrude;
-//////[[[[[[if(m_WtMain > DB->WTmax) cout<<"%%%% m_WtMain="<<m_WtMain<<endl;
 // more DEBUG
 if( std::isnan(m_WtCrude) || std::isnan(m_WtMain) ) {
   cout<<"+++ STOP in KKee2f::Generate:  m_EventCounter="<<m_EventCounter<<endl;
@@ -798,11 +795,8 @@ m_Event->ZBoostALL();
 // At this point kinematics is complete
 //////////////////////////////////////////////////////////////////////
 
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-// OBSOLETE to be remooved
+// OBSOLETE /hepevt/ event
 if ( m_WtCrude  != 0) hepevt_fill_();  // Fill in /hepevt/ with four fermions and photons
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
 /////////////////////////////
 if ( m_WtCrude  != 0) m_HEPMC->WriteHEPC(); // Fill in hepmc3 m_Hvent event

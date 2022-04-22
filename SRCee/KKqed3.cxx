@@ -126,10 +126,6 @@ void KKqed3::Make(){
   double andi12= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth12);
   double andi21= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth21);
   double andi22= m_BornV->Born_DizetS(  KFini,KFfin, svar1, cth22);
-//[[[[[[[[[[[[[[[[[
-//  (*m_Out)<<"/// QED3: cth11,cth12,cth21,cth22="    <<cth11<<" "<<cth12<<" "<<cth21<<" "<<cth22<<endl;
-//  (*m_Out)<<"/// QED3: andi11,andi12,andi21,andi22="<<andi11<<" "<<andi12<<" "<<andi21<<" "<<andi22<<endl;
-//]]]]]]]]]]]]]]]]]
 
   double deli1=0, deli2=0, deli3=0;
   if( DB->KeyISR == 1) bvirt0( DB->Alfinv0, chain2,  svar , amini, &deli1, &deli2, &deli3);
@@ -151,7 +147,7 @@ void KKqed3::Make(){
 // Beta0, initial+final, factorized form
   //------------------------------------------------------------
   double andis = (andi11 +andi12 +andi21 +andi22)/4;
-//[[[[[[[[[[[[[[[
+//[[[
 // Collins-Soper Angle calculated from final fermions (ATLAS definition)
 //  double Mll  = (m_Event->m_Qf1 + m_Event->m_Qf2).Mag();
 //  double PTll = (m_Event->m_Qf1 + m_Event->m_Qf2).Perp();
@@ -161,7 +157,7 @@ void KKqed3::Make(){
 //  double cosThe = (cth11 + cth12 + cth21 + cth22)/4;  // for debugging
 //  //andis =  m_BornV->BornSimple(  KFini,KFfin, svar1, cosThe);
 //  andis =  m_BornV->BornSimple(  KFini,KFfin, svar1, CosThetaCS);
-//]]]]]]]]]]]]]]]
+//]]]
 
 // KKMC-hh SY note: Beta03 is missing delf3, presumably not fully tested yet.
   m_Beta03 = andis*(1+deli1+deli2+deli3)*(1+delf1+delf2); //O(alf3)

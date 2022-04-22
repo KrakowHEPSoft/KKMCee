@@ -421,13 +421,6 @@ m_GPS->BornFoam2( 10,m_KFini,m_KFfin,sisr1,m_CosTheta,Yint);
 SetEvent( sisr2, m_CosTheta); // set input for BornFoam2
 m_GPS->BornFoam2( 11,m_KFini,m_KFfin,sisr2,m_CosTheta,Yint);
 double dSigFoam2 = m_GPS->MakeRhoFoam() *Yint;
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//if( f_NevGen>0 && f_NevGen<500) {
-//cout<<"KKeeFoam::Density6: gamint="<< gamint<<" vv="<<m_vv<<" uu="<<m_uu<<" r1="<<m_r1<<" r2="<<m_r2<<endl;
-//cout<<"KKeeFoam::Density6:  sisr1="<<sisr1<<" sisr2="<<sisr2<<" Yint="<<Yint<<sisr2<<" dSigFoam2="<<dSigFoam2<<endl;
-//}
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //======================================================================
 // alternative weights for CEEX
 double wt0  = 3.0/8.0* dSigFoam2/dBornCrude; // for CEEX0 with IFI
@@ -500,7 +493,7 @@ if( DB->KeyFSR != 0){
   RhoFSR0 = RhoFSR(0,svar2,m_uu,m_eps);
 //  double RhoFsr0 = RhoFSR(2, svar2,m_uu,m_eps);
   Rho *= RhoFSR0;
-//[[[[[[[[[[[[[[[[[
+//[[[
 //  Simplified version, works approximately the same
 //  gamf = sqr(m_chfin)*2*m_alfpi*( log(svar2/sqr(m_Mfin)) -1);
 //  double rr = Xarg[iarg]; iarg++;
@@ -509,7 +502,7 @@ if( DB->KeyFSR != 0){
 //  if( gamf < 0 )      return 0.0;    // temporary fix
 //  if( m_uu < 1e-200 ) return 0.0;    // temporary fix
 //  Rho *= gamf *exp(gamf*log(m_uu))/m_uu; // FSR distribution
-//]]]]]]]]]]]]]]]]]
+//]]]
 }// if KeyISR
 m_xx= 1-(1-m_vv)*(1-m_uu);
 
@@ -517,18 +510,15 @@ double svarZ = sqr(DB->CMSene) *(1-m_vv);
 //double svarZ = sqr(m_XXXene); // the same
 double dBornCrude = m_BornDist->BornSimple(m_KFini, m_KFfin, svarZ, 0.0);
 dBornCrude *= 1/(2.0*cmax);  // to be compatible with KKMChh (KORALZ) convention
-//[[[[[[[
-//double dBornCrude = m_BornDist->BornSimple(m_KFini, m_KFfin, svarZ, m_CosTheta);
-//dBornCrude *= 3.0/8.0;      // 3/8 corrects for KORALZ convention in BornSimple
 Rho *= dBornCrude;
 double sig0nb = 4*M_PI* 1.0/(3.0*sqr(DB->Alfinv0)) *1.0/(svarZ )*DB->gnanob;
 Rho *=  sig0nb;
 if( svarZ*(1-m_uu) < sqr(2*m_Mfin)) Rho = 1e-100;
-//[[[[[[[[[[[[[[[[[[[
+//[[[
 // Temporary cut-off on QED ISR+FSR+IFI for tests
 //double yy =  1.0 - (1-m_vv)*(1-m_uu);
 //if(  yy>0.2 ) return 0;
-//]]]]]]]]]]]]]]]]]]]
+//]]]
 ////=====================================================================//
 //// The basic/crude integrand Rho for Foam is complete at this point !! //
 //// Weight for the alternative distribution are next            //////////
@@ -538,8 +528,6 @@ double dSigSimple  = m_BornDist->BornSimple(  m_KFini, m_KFfin, svarZ, m_CosThet
 double dSigDizetS  = m_BornDist->Born_DizetS( m_KFini, m_KFfin, svarZ, m_CosTheta); // EEX
 m_GPS->m_KeyInt=0;
 double dSigFoam0   =      m_GPS->BornFoam0(   m_KFini, m_KFfin, svarZ, m_CosTheta); // CEEX
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[******************
-//if( f_NevGen>0 && f_NevGen<500 && m_KFini>2 && m_KFfin==15) {
 if( f_NevGen>0 && f_NevGen<30) {
     double ratio =  dSigFoam0/dSigSimple;
     double ratio2 = dSigFoam0/dSigDizetS;
@@ -547,7 +535,6 @@ if( f_NevGen>0 && f_NevGen<30) {
 	cout<<"KKeeFoam::Density4: KFini="<< m_KFini<<" KFfin="<<m_KFfin;
 	cout<<"KKeeFoam::Density4:  Mll= "<<sqrt(svarZ)<<" CosTheta= "<< m_CosTheta<<" Foam0/Simple= "<<ratio<<" Foam0/DizetS= "<<ratio2<< endl;
 }
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]******************
 /////////////////////////////////////////////////////////////
 // alternative weights for EEX
 m_wt0= 3.0/8.0* dSigDizetS/dBornCrude; // mainly for EEX0, also for keyISR=0, keyFSR=0
@@ -649,11 +636,6 @@ double KKeeFoam::RhoFSR(int KeyFSR, double svar, double uu, double eps){
   double delb   = gamf/4 +alf1*(-0.5  +sqr(M_PI)/3.0)
 		         -gamf/2 *log(1-uu);
   double ffact  = Fyfs(gamf)*exp(delb);
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//  if( f_NevGen>0 && f_NevGen<50) {
-//    if( uu<0.01) cout<<" RhoFSR: uu="<<uu<<"  ffact="<< ffact<<"  fyfs="<< Fyfs(gamf)<<endl;
-//  }
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   double rho,dels,delh;
   if(       KeyFSR == 0){
 /// zero   order exponentiated
@@ -790,11 +772,8 @@ void KKeeFoam::MapMinus( double r, double gam, double &v, double &dJac){
       } else {
           v    = exp( (1/gam)*(R1 -r*RV) ); // mapping
           dJac = RV/(-gam/v);               // jacobian
-//        cout<<"MapMinus:!!!!!!!!!!!!!!!!!v="<<v<<endl;
       }
   }
-  //[[[[[[[[[[[[[[[[[[[
-  //if(m_count6<1000) cout<<"MapMinus:gam="<<gam<<" eps="<<eps<<" del="<<m_del<<" vvmax="<<m_vvmax<<" v="<<v<<endl;
 
   if( v<0 || v>1) {
       cout<<"STOP in KKeeFoam::MapMinus: +++ v = "<<v<<endl;

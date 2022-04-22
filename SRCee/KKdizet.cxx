@@ -119,7 +119,6 @@ void KKdizet::ReadEWtabs(){
      for(int k=1; k<= m_poinG;k++) InputFile >> m_cyys[i][k-1][KFi-1][KFf-1];
      InputFile.getline(trail,200);
      //
-     //[[[for(int k=1; k<= m_poinG;k++) cout<<m_cyys[i][k-1][KFi-1][KFf-1]; cout<<endl;
   }// for i
 /////////////////////////////////////////////////////////////////
 //             near Z0 resonance    m_czz(m_poin2+1, 7)        //
@@ -134,7 +133,6 @@ void KKdizet::ReadEWtabs(){
 	     InputFile.getline(trail,200); //cout<<trail<<endl;
 	     for(int k=1; k<= m_poinG;k++) InputFile >> m_czzs[i][j][k-1][KFi-1][KFf-1];
 	     InputFile.getline(trail,200);
-	     //[[[for(int k=1; k<= m_poinG;k++) cout<<m_czzs[i][j][k-1][KFi-1][KFf-1]; cout<<endl;
 	  }//j
   }//i
   /////////////////////////////////////////////////////////////////////
@@ -145,7 +143,6 @@ void KKdizet::ReadEWtabs(){
 	     InputFile.getline(trail,200); //cout<<trail<<endl;
 	     for(int k=1; k<= m_poinG;k++) InputFile >> m_ctts[i][j][k-1][KFi-1][KFf-1];
 	     InputFile.getline(trail,200);
-	     //[[[for(int k=1; k<= m_poinG;k++) cout<<m_ctts[i][j][k-1][KFi-1][KFf-1]; cout<<endl;
 	  }//j
   }//i
   /////////////////////////////////////////////////////////////////////
@@ -156,7 +153,6 @@ void KKdizet::ReadEWtabs(){
 	     InputFile.getline(trail,200); //cout<<trail<<endl;
 	     for(int k=1; k<= m_poinG;k++) InputFile >> m_clcs[i][j][k-1][KFi-1][KFf-1];
 	     InputFile.getline(trail,200);
-	     //[[[for(int k=1; k<= m_poinG;k++) cout<<m_clcs[i][j][k-1][KFi-1][KFf-1]; cout<<endl;
 	  }//j
   }//i
   //-----------
@@ -182,11 +178,6 @@ void KKdizet::InterpoGSW(int KFi0, int KFf0, double svar, double CosThe){
 //    if(KFf0==12 || KFf0==14 || KFf0==16 ) KFf=14; // nue,numu,nutau
 //
     double ww = sqrt(svar);
-    //[[[[[[[[[[[[[[[[[[[[[
-    //if( isnan(ww)) {
-    //	cout<<">>>> svar="<<svar<<"  ww="<<endl;
-    //}
-    //]]]]]]]]]]]]]]]]]]]]]
     double MZ = 91.1876;
     m_WminZ = MZ-m_WdelZ;
     m_WmaxZ = MZ+m_WdelZ;
@@ -265,12 +256,7 @@ void KKdizet::InterpoGSW(int KFi0, int KFf0, double svar, double CosThe){
                       +m_clcs[i-1][j  ][kk-1][KFi-1][KFf-1]*(1-h)*hy
                       +m_clcs[i  ][j  ][kk-1][KFi-1][KFf-1]*h*hy;
         }
-   	 //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-   	 //cout<<"@@@@@ KKdizet::InterpoGSW x,i,h ="<<x<<"  "<<i<<"  "<<h<<endl;
-   	 //cout<<"@@@@@ KKdizet::InterpoGSW y,j,hy="<<x<<"  "<<j<<"  "<<hy<<endl;
-   	 //cout<<"@@@@@ KKdizet::InterpoGSWm_clcs[i-1][j-1][0][KFi-1][KFf-1]="<<m_clcs[i-1][j-1][0][KFi-1][KFf-1]<<endl;
-   	 //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-        if(m_KeyQCD != 0)
+       if(m_KeyQCD != 0)
           for(int kk=1; kk<=m_poinQ; kk++){
             m_QCDcorR[kk-1]= m_slcs[i-1][kk-1][KFi-1][KFf-1]*(1-h)
                             +m_slcs[i  ][kk-1][KFi-1][KFf-1]*h;

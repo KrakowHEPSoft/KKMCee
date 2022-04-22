@@ -175,12 +175,6 @@ void HepFace::WriteHEPC()
   vZ2->add_particle_out(pe3);
   vZ2->add_particle_out(pe4);
   m_Hvent->add_vertex(vZ2);
-//[[[[[[[[[[[[[[[[[[[[[[[[
-// Test print out
-//  Print::listing(*m_Hvent);
-//  Print::content(*m_Hvent);
-//  MomentumCheck();
-//]]]]]]]]]]]]]]]]]]]]]]]]
 }//WriteHEPC
 
 
@@ -221,16 +215,6 @@ void HepFace::FillHep3(int N, int IST, int ID, int JMO1, int JMO2, int JDA1, int
      cout<<"========================================================================================"<<endl;
      exit(99);
   }
-//[[[[[[[[[[[[[[[[[[[[[
-/*
-  cout<<"==================================FillHep3=============================================="<<endl;
-  cout<<"   N= "<< N<<"   IST= "<< IST<<"   ID= "<< ID<<endl;
-  cout<<"   JMO1= "<< JMO1<<"   JMO2= "<< JMO2<<"   JDA1= "<< JDA1<<"   JDA2= "<< JDA2<<endl;
-  for(int i=0; i<4; i++) cout<<"  P4["<<i<<"]=  "<<P4[i]; cout<<endl;
-  cout<<"  Mass PINV="<<PINV<< "   PHFLAG= "<<PHFLAG<<"   mass= "<<mass<<endl;
-  cout<<"========================================================================================"<<endl;
-*/
-  //]]]]]]]]]]]]]]]]]]]]]
   }//if IST
 }//FillHep3
 
@@ -261,10 +245,4 @@ void HepFace::tauolaToHEPMC3(){
   // clear tau container
   m_tauMdecay.clear();
   m_tauPdecay.clear(); 
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-  // Test print out
-  //cout<<"==================================tauolaToHEPMC3==============================================";
-  // Print::listing(*m_Hvent);
-  // Print::content(*m_Hvent);
-  //]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 }//tauolaToHEPMC3

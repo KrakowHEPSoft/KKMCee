@@ -62,11 +62,6 @@ dcmplx IntReson =
 //     $    +CDLN( (TT/UU) ,Eps) *CDLN( MG2/CDSQRT(TT*UU) ,Eps)
 //     $     +Spence( ((MZ2+UU)/MZ2) ,Eps)
 //     $     -Spence( ((MZ2+TT)/MZ2) ,Eps)
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-//cout<<"KKbvir::IntReson: (MZ2-SS)/MZ2 ="<< ((MZ2-SS)/MZ2) <<endl;
-//dcmplx temp = CDLN( ((MZ2-SS)/MZ2 )   ,Eps);
-//cout<<"KKbvir::IntReson: CDLN( ((MZ2-SS)/MZ2 )="<< temp <<endl;
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 return IntReson;
 }// IntReson
 

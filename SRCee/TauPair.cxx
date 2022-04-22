@@ -82,13 +82,6 @@ void TauPair::Initialize(double xpar[])
     int JAK =-1;
     dekay_(&JAK, m_HvecTau1);
 
-//[[[[[[[[[[[[[[[[[[[[[[[[
-// old fortran PHOTOS to be removed
-// Initialization of old fortran PHOTOS
-//    if(DB->KeyPhts >1) phoini_();
-//]]]]]]]]]]]]]]]]]]]]]]]]
-
-
 
 // Initialization of PHOTOS++
 // KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
@@ -218,32 +211,6 @@ void TauPair::TransExport(){
   J=11;  dekay_(&J,m_HvClone1);
   J=12;  dekay_(&J,m_HvClone1);
 
-///[[[[[[[[[[[[[[[[[[[[[[[[[[
-////////////////////////////////////////////////////////////////////////////////////
-//      Photos comes last OBSOLETE!!!!
-// temporary printout before photos
-//  if( m_Event->m_EventCounter <=3){
-//    J=2; pyhepc_(J);       // HepEvt-->Pythia
-//    tauface_print_();
-//  }
-//]]]]]]]]]]]]]]]]]]]]]]]]]]
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-// fortran photos to be removed
-//  if(DB->KeyPhts >0 ) {
-//    photos_(ih1);  // Photos works on HepEvt
-//    photos_(ih2);
-//  }//IFPHOT
-//]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
-//[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
-// PRINTOUT of /hepevt/ USIGNG Pythia
-/////////////////////////////////////////////
-//  J=2; pyhepc_(J);       // HepEvt-->Pythia
-//  if( m_Event->m_EventCounter <=30){
-//  tauface_print_();
-//  }//EventCounter
-//]]]]]]]]]]]]]]]]]]]]
 }//Make2
 
 /////////////////////////////////////////////////////////////////////////////////////
