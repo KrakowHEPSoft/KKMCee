@@ -17,6 +17,12 @@ BeginX
 *    1         87.9e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
 *    1         10.0e0      CMSene =xpar( 1) Average Center of mass energy [GeV]
     2        0.000e0      DelEne =xpar( 2) Beam energy spread [GeV]
+********************************************************************************
+*indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
+*     PrintOut from generator
+    5              2      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
+    7             50      Ie2Pri =xpar( 7)  PrintOut End   point
 *indx______data_____ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
     9          4.0e0      WtMax =xpar( 9)   Maximum weight for rejection
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
@@ -57,12 +63,6 @@ BeginX
   413              1      KFfin, muon
   638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
 ***  415              1      KFfin, tau
-********************************************************************************
-*indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
-*     PrintOut from generator
-    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
-    6              1      Ie1Pri =xpar( 6)  PrintOut Start point
-    7             20      Ie2Pri =xpar( 7)  PrintOut End   point
 ********************************************************************************
 * FOAM GENERATION PARAMETERS
  3020       54217137      Ranmar initial random number seed (KKMC and FOAM)

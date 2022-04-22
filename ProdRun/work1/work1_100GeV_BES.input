@@ -12,7 +12,6 @@ BeginX
 * KeyWgt=0 we get constant and for KeyWgt=1 variable weight events
    10              1      0/1 = constant/varying weight events
 * KeyELW=0,1 Type of Electroweak corrections, KeyElw=0 only for tests
-   12              1      KeyELW=xpar(12) Deafault is 1, for Dizet
    21              1      KeyFSR=xpar(21)  Default is  1, for all final fermions
 * Minimum and maximum v, where v = 1-sprim/s, v=1 is alowed
 * For the overall precision 1e-4 one should keep vmin=1e-5.
@@ -28,8 +27,6 @@ BeginX
    25              2      KeyBES BES, =0 none, =1 Gausian, =2 beamsstrahlung
 ***    Interference ISR/FSR to be ON/OFF, =2 for M.Greco resumation
    27              0      KeyINT=xpar(27)  Default is  2
-* New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
-** which overrules KeyGPS for each type of final fermion
 *indx_____data______ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0ccccccccc0
    80        50.00e0      ParBES(0) E1=125GeV/2
    81        50.00e0      ParBES(1) E2=125GeV/2
@@ -48,7 +45,7 @@ BeginX
 ********************************************************************************
 *indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator
-    5              0      LevPri =xpar( 5)  PrintOut Level 0,1,2
+    5              1      LevPri =xpar( 5)  PrintOut Level 0,1,2
     6              1      Ie1Pri =xpar( 6)  PrintOut Start point
     7             20      Ie2Pri =xpar( 7)  PrintOut End   point
 ********************************************************************************
