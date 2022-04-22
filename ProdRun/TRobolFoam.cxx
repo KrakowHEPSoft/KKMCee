@@ -64,7 +64,7 @@ void TRobolFoam::Initialize(
 //////////////////////////////////////////////
   KKeeFoam *MCgen = (KKeeFoam*)f_MCgen;
 //
-  int jmax = MCgen->maxPar;
+  int jmax = MCgen->maxPar-1;
 // Name of special histogram name "HST_FOAM_NORMA4" is set in Start.C
   TH1D *h_TMCgen_NORMA = (TH1D*)HstFile->Get("HST_FOAM_NORMA4");
   h_TMCgen_NORMA->SetEntries(0);

@@ -99,7 +99,7 @@ void KKarLud::Make(TLorentzVector *PX, double *wt_ISR){
       m_Event->m_Qf1.SetPxPyPzE(0,0,0,0);
       m_Event->m_Qf2.SetPxPyPzE(0,0,0,0);
       m_nphot=0;
-      for(int j=0; j<=maxPhot; j++)
+      for(int j=0; j<maxPhot; j++)
           m_Event->m_PhotISR[j].SetPxPyPzE(0,0,0,0);
     } else {
   // Define final fermion momenta (NOT used in case of FSR!)

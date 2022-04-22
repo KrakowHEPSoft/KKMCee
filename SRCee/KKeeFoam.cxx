@@ -71,7 +71,7 @@ void KKeeFoam::Initialize(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
   TMCgen::Initialize(  RNgen, OutFile, h_NORMA);
 
 //////////////////////////////////////////////////////////////
-  const int jmax = maxPar;
+  const int jmax = maxPar-1;
   ReaData("./KKMCee_defaults", jmax, m_xpar);       // f77 indexing in xpar
   ReaData("./pro.input",      -jmax, m_xpar);       // jmax<0 means no-zeroing
   for(int j=0;j<jmax;j++) m_ypar[j]=m_xpar[j+1];    // c++ indexing in ypar
