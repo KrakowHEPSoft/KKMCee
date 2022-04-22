@@ -45,7 +45,7 @@ class TKfig  : public TObject {
   //other helpful routines (to remove???)
   double sqr( const double x ){ return x*x;};
   Double_t Dilogy(double x);
-  void StopM(char* message){
+  void StopM(const char* message){
     cout <<"++++ TKfig: "<< message << endl; exit(5);}    //Error message
 };
 /////////////////////////////////////////////////////////////////////////////

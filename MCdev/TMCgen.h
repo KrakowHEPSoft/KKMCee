@@ -58,7 +58,7 @@ class TMCgen   : public TFOAM_INTEGRAND {
   double sqr( const double x ){ return x*x;};
   int Min( int &i, int &j){ if(i<j) return i; else return j;};
 /// for debug
-  void StopM(char* message){
+  void StopM(const char* message){
     cout <<"++++ TMCgen: "<< message << endl; exit(5);}    //Error message
 ///  getters
   int GetIsNewRun() const

@@ -54,7 +54,7 @@ private:
   TH2D *TH2D_UP(const char*, const char*, int, double, double, int, double, double);
   double sqr( const double x ){ return x*x;};
 /// for debug
-  void StopM(char* message){
+  void StopM(const char* message){
     cout <<"++++ TRobol: "<< message << endl; exit(5);}    //Error message
 ////////////////////////////////////////////////////////////////////////////
   ClassDef(TRobol,1); // MC Analysis module
