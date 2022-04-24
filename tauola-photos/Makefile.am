@@ -43,7 +43,8 @@ libTauolaPhotos_la_SOURCES = \
 	IO_aux.f
 libTauolaPhotos_la_DEPENDENCIES = HepEvt.h
 
-libTauolaPhotos_la_LIBADD =  -lgfortran
+libTauolaPhotos_la_LIBADD = -lgfortran -lstdc++
 ##	$(top_builddir)/jetset/libJetset.a
+libTauolaPhotos_la_LDFLAGS = #-Wl,-z,defs
 
 DISTCLEANFILES = $(BUILT_SOURCES)

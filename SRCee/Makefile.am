@@ -1,4 +1,3 @@
-
 all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(HEPMC_INCLUDES)  $(PHOTOS_CPPFLAGS) $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
@@ -37,9 +36,9 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 libKKee_la_LIBADD =  \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
 	-lgfortran \
-	$(top_builddir)/MCdev/libMCdev.la 
-#libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) $(LDFLAGS_HEPMC) -L/opt/PHOTOS-install/lib/
-libKKee_la_LDFLAGS = -L$(ROOTLIBDIR) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
+	$(top_builddir)/MCdev/libMCdev.la \
+	$(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
+libKKee_la_LDFLAGS = -R $(PHOTOS_LIBDIR) #-Wl,-z,defs
 #///////////////////////////////////////////////////////////////
 
 #///////////////////////////////////////////////////////////////
@@ -60,11 +59,10 @@ $(dict2C) : $(ROOTCINTHDRS2)
 #  Additional flags:
 nodist_libKKfm_la_SOURCES = $(dict2C)
 libKKfm_la_SOURCES =  KKeeFoam.cxx
-libKKfm_la_LIBADD =  
-libKKfm_la_LDFLAGS = -L$(ROOTLIBDIR)
+libKKfm_la_LIBADD = $(top_builddir)/Foam2/libFOAM.la libKKee.la $(LDFLAGS_HEPMC)
+libKKfm_la_LDFLAGS = #-Wl,-z,defs
 #///////////////////////////////////////////////////////////////
 CLEANFILES = $(dict2C) $(dict2H) $(dict1C) $(dict1H)
-
 
 #///////////////////////////////////////////////////////////////
 #  explicit target in ../MCdev
@@ -80,7 +78,7 @@ bin_PROGRAMS = TestMini1
 TestMini1_SOURCES = TestMini1.cxx 
 TestMini1_LDADD   = \
 			libKKee.la 
-TestMini1_LDFLAGS = -L$(ROOTLIBDIR) -R $(ROOTRPATH) -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
+TestMini1_LDFLAGS = -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
 
 #/////////////////////////////////////////////////////////
 test1-start: TestMini1

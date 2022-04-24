@@ -1,4 +1,3 @@
-
 all_includes := -I$(top_srcdir)/Foam2 -I$(top_srcdir)/MCdev $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS) # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) # used while compiling and linking
@@ -26,6 +25,7 @@ libMCdev_la_SOURCES = TMCgen.cxx  TSemaf.cxx TRobol.cxx TKfig.cxx  TWtMon.cxx
 libMCdev_la_LIBADD =	\
 			$(top_builddir)/Foam2/libFOAM.la \
 			-L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(ROOTAUXLIBS)
+libMCdev_la_LDFLAGS = #-Wl,-z,defs
 #----- explicit target needed for ../ directory
 $(top_builddir)/Foam2/libFOAM.la:
 	(cd ../Foam2; make libFOAM.la)
