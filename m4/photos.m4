@@ -22,12 +22,13 @@ if test x$found_photos != xyes ; then
   searchPaths="$searchPaths /usr/local /usr /opt/local /opt"
   for ac_photos_path_tmp in $searchPaths ; do
     AC_MSG_NOTICE([Testing $ac_photos_path_tmp for Photos++...])
-    if test -d $ac_photos_path_tmp/include && test -d $ac_photos_path_tmp/lib && test x$found_photos != xyes ; then
+    if test -d $ac_photos_path_tmp/include && test -d $ac_photos_path_tmp/lib ; then
       photos_include=$ac_photos_path_tmp/include
       photos_lib=$ac_photos_path_tmp/lib
       if test -f $photos_include/Photos/Photos.h ; then
         AC_MSG_NOTICE([...found])
         found_photos=yes
+        break
       fi
     fi
   done
