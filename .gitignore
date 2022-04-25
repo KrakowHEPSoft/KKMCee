@@ -1,0 +1,71 @@
+# editor backup files
+*~
+*.tmp
+# *.bak
+
+# LSP files for editors
+compile_commands.json
+compile_flags.txt
+tags
+
+# Autotools generated files
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.guess
+config.h
+config.h.in
+config.sub
+configure
+depcomp
+install-sh
+ltmain.sh
+missing
+stamp-h1
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
+
+# "./configure" generated files
+Makefile
+config.log
+config.status
+libtool
+
+# "make" generated files
+*.d
+*.o
+*.lo
+*.a
+*.la
+*.so
+*.so.?
+*.dirstamp
+.libs/
+.deps/
+DZface/TabMainC
+ProdDigest/Plot1
+ProdDigest/PlotBES
+ProdDigest/PlotNU
+ProdDigest/PlotTau
+ProdDigest/TabIIIPRD
+ProdRun/MainFoam
+ProdRun/MainKKMC
+ProdRun/MainMini
+SRCee/TestMini1
+dizet
+dizet-*/TabMain
+
+# ROOT generated files
+*Dict.cxx
+lib*.cxx
+lib*.h
+*_rdict.pcm
+
+# run results to ignore
+*.out.txt
+*.root
+
