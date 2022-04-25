@@ -7,7 +7,7 @@ dnl
 AC_DEFUN([WO_PROG_HEPMC],
 [dnl
 AC_REQUIRE([AC_PROG_CXX])
-AC_REQUIRE([AC_PROG_FC])
+AC_REQUIRE([AC_PROG_F77])
 
 AC_ARG_ENABLE([hepmc],
   [AS_HELP_STRING([--enable-hepmc],
