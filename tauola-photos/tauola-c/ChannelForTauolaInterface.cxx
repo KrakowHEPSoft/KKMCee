@@ -9,7 +9,7 @@ ChannelForTauola* taubra_userChannels[500] = { NULL };
 void*             leptonChannelsMEpointers[2] = { NULL };
 void            (*channelRedefinitionFunction)() = NULL;
 
-// Hidden flag that blocks redefinition outside of 'void iniofc_()' (file: channel_wrappers.c)
+// Hidden flag that blocks redefinition outside of 'void iniofc_()' (file: channel_wrappers.cxx)
 bool isInChannelRedefinitionFunction = false;
 
 void SetUserRedefinitions(void (*function)()) {

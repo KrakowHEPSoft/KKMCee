@@ -15,7 +15,7 @@
  *  This by no means help to verify if user channel definition is correct and complete.
  *  For that task one has to inspect physics sense of each parameter of the  ChannelForTauola method
  *  and of relation between function provided by the user, clalculating hadronic current  or matrix element calculation.
- *  To understand conventions see our pipi0.c  example, in case of doubts Fortran code for the routines of names used 
+ *  To understand conventions see our pipi0.cxx  example, in case of doubts Fortran code for the routines of names used 
  *  in pointer type names can be helpful.
  */
 #include <vector>

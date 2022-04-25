@@ -1,20 +1,16 @@
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = foreign subdir-objects
 ACLOCAL_AMFLAGS = -I m4
+
+# all_includes := $(all_includes)
+# AM_CPPFLAGS = $(all_includes) -fPIC -Wall -Wno-write-strings # used while compiling
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) # used while compiling and linking
+
 #F77=$(FC)
 #AM_FFLAGS=$(AM_FCFLAGS) $(FCFLAGS)
 
 lib_LTLIBRARIES = libTauolaPhotos.la
 
 AM_FFLAGS = @MY_F77_FLAGS@
-
-####################
-# KKMC doesn't have 'make.inc' and does not set C++ flags
-# so we have to hard-code them here
-CC      = g++
-CFLAGS  = -fPIC -Wall -Wno-write-strings
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
-####################
 
 TAUOLA_SRC = \
     formf.f tauola.f curr_cleo.f f3pi.f pkorb.f \
@@ -33,8 +29,8 @@ TAUOLA_SRC = \
     new-currents/RChL-currents/rcht_common/wid_a1_fitKKpi.f \
     new-currents/other-currents/binp.f \
     new-currents/other-currents/curr_karl.f \
-    tauola-c/ChannelForTauolaInterface.c \
-    tauola-c/channels_wrappers.c
+    tauola-c/ChannelForTauolaInterface.cxx \
+    tauola-c/channels_wrappers.cxx
 
 libTauolaPhotos_la_SOURCES = \
 	$(TAUOLA_SRC) \

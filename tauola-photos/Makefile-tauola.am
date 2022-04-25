@@ -7,10 +7,10 @@ lib_LIBRARIES = libTauola.a
 ########## copied blindly from KKMakefile #################
 # KKMC doesn't have 'make.inc' and does not set C++ flags
 # so we have to hard-code them here
-CC      = g++
-CFLAGS  = -fPIC -Wall -Wno-write-strings
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+#CC      = g++
+#CFLAGS  = -fPIC -Wall -Wno-write-strings
+#.c.o:
+#	$(CC) $(CFLAGS) -c $< -o $@
 ###########################################################
 
 libTauola_a_SOURCES = \
@@ -30,8 +30,8 @@ libTauola_a_SOURCES = \
     new-currents/RChL-currents/rcht_common/wid_a1_fitKKpi.f \
 	new-currents/other-currents/binp.f \
 	new-currents/other-currents/curr_karl.f \
-	tauola-c/ChannelForTauolaInterface.c \
-	tauola-c/channels_wrappers.c
+	tauola-c/ChannelForTauolaInterface.cxx \
+	tauola-c/channels_wrappers.cxx
 
 AM_FFLAGS = @MY_F77_FLAGS@
 
