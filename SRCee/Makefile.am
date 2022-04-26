@@ -1,7 +1,7 @@
 all_includes :=  -I$(top_srcdir)/MCdev -I$(top_srcdir)/Foam2 -I$(top_srcdir)/tauola-photos  $(HEPMC_INCLUDES)  $(PHOTOS_CPPFLAGS) $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)  # used while compiling
 AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2       # used while compiling and linking
-######CXXFLAGS = -g -O2 -std=c++11 -lstdc++
+######CXXFLAGS = -g -O2 -std=c++11
 
 METASOURCES = AUTO
 
@@ -35,7 +35,6 @@ libKKee_la_SOURCES =	KKee2f.cxx KKdbase.cxx KKdizet.cxx KKborn.cxx \
 						TauPair.cxx HepFace.cxx
 libKKee_la_LIBADD =  \
 	$(top_builddir)/tauola-photos/libTauolaPhotos.la \
-	-lgfortran \
 	$(top_builddir)/MCdev/libMCdev.la \
 	$(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC)
 libKKee_la_LDFLAGS = -R $(PHOTOS_LIBDIR) #-Wl,-z,defs

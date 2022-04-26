@@ -1,6 +1,6 @@
 #all_includes :=  -I$(top_srcdir)/SRCee $(all_includes)
 AM_CPPFLAGS = $(all_includes) $(ROOTCFLAGS)    # used while compiling
-AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 -lstdc++ # used while compiling and linking
+AM_CXXFLAGS = $(ROOTAUXCFLAGS) -g -O2 # used while compiling and linking
 
 
 METASOURCES = AUTO
@@ -9,23 +9,23 @@ bin_PROGRAMS = PlotBES Plot1 TabIIIPRD PlotNU PlotTau
 
 ############################################
 Plot1_SOURCES = HisNorm.cxx Plot1.cxx
-Plot1_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+Plot1_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS)
 Plot1_LDFLAGS = -L$(ROOTLIBDIR)
 ############################################
 PlotNU_SOURCES = HisNorm.cxx PlotNU.cxx
-PlotNU_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotNU_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotNU_LDFLAGS = -L$(ROOTLIBDIR)
 ############################################
 PlotBES_SOURCES = HisNorm.cxx PlotBES.cxx
-PlotBES_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotBES_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotBES_LDFLAGS = -L$(ROOTLIBDIR)
 ############################################
 TabIIIPRD_SOURCES = HisNorm.cxx TabIIIPRD.cxx
-TabIIIPRD_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+TabIIIPRD_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS)
 TabIIIPRD_LDFLAGS = -L$(ROOTLIBDIR)
 ############################################
 PlotTau_SOURCES = HisNorm.cxx PlotTau.cxx
-PlotTau_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS) -lgfortran
+PlotTau_LDADD   = $(ROOTAUXLIBS) $(ROOTGLIBS)
 PlotTau_LDFLAGS = -L$(ROOTLIBDIR)
 
 ######################### private #############################
