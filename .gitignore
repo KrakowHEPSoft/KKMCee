@@ -2,6 +2,7 @@
 *~
 *.tmp
 # *.bak
+*.swp
 
 # LSP files for editors
 compile_commands.json

@@ -1630,8 +1630,7 @@ cb         XVEET=XVET**2+XDVEET
  
        SUBROUTINE BHASTF
 *=======================================================================
-       IMPLICIT COMPLEX*16(X)
-       IMPLICIT REAL*8(A-H,O-W,Y-Z)
+       IMPLICIT REAL*8(A-H,O-Z)
 *
        PARAMETER (NP=20)
        COMMON /BHACTV/ ACOL,SINAC2,COSAC2
