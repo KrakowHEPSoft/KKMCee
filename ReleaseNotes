@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
                 Release Notes in anti-chronological order
 ********************************************************************************
-***********  First version of the KKMCee development branch   ******************
+******************    The KKMCee development branch  ***************************
 *********     (The other branch KKMChh is for hadron beams)     ****************
 ********************************************************************************
 
@@ -12,6 +12,18 @@ The DEVELOPEMENT VERSION KKMCee version 5.00, April 2022:
 3. MC events provided in the HEPMC3 format (PHOTOS is using it)
 4. KKeeFoam testing tool included (replaces KKsem)
 
+********************************************************************************
+********************************************************************************
+********************************************************************************
+Changes in the DEVELOPEMENT VERSION 4.32, Oct. 2021:
+It is last F77 version of tKKMCee.
+It features a number of important improvements:
+the electro-weak library Dizet upgraded to version 6.45, 
+Tauola upgraded to version of Ref.~\cite{Chrzaszcz:2016fte},
+MC events in the Les Houches format are provided.
+This version resides in the public github repository:
+        https://github.com/KrakowHEPSoft/KKMCee
+It will not be developed any further, except minor corrections.
 
 ********************************************************************************
 ********************************************************************************
