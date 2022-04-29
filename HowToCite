@@ -1,35 +1,65 @@
-At the moment the basic paper on KKMC and CEEX exponentiation are:
+The basic paper on KKMC and CEEX exponentiation are:
+====================================================
 
-
-@Misc{ceex2:2000,
-  title = 	 {Coherent Exclusive Exponentiation For Precision Monte Carlo Calculations},
-  author = 	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
-  year = 	 2000,
-  month =	 {March},
-  note =	 {preprint CERN-TH/2000-087,UTHEP-99-09-01, hep-ph/0006359}
+@article{Jadach:2000ir,
+      author         = "Jadach, S. and Ward, B. F. L. and W\c{a}s, Z.",
+      title          = "{Coherent exclusive exponentiation for precision Monte
+                        Carlo calculations}",
+      journal        = "Phys. Rev.",
+      volume         = "D63",
+      year           = "2001",
+      pages          = "113009",
+      doi            = "10.1103/PhysRevD.63.113009",
+      eprint         = "hep-ph/0006359",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ph",
+      reportNumber   = "CERN-TH-2000-087, UTHEP-99-09-01",
 }
 
 
-@Article{kkcpc:1999,
-  author =	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
-  title =	 {The Precision Monte Carlo Event Generator ${\cal KK}$ 
-                  For Two-Fermion Final States In $e^+e^-$ Collisions},
-  journal =      {Comput. Phys. Commun. },
-  volume =       "130",
-  pages =        "260-325",
-  year =	 2000,
-  note =	 {preprint DESY-99-106, CERN-TH/99-235,UTHEP-99-08-01}}
+@article{Jadach:1999vf,
+      author         = "Jadach, S. and Ward, B. F. L. and W\c{a}s, Z.",
+      title          = "{The Precision Monte Carlo event generator KKMC  for two
+                        fermion final states in $e^+ e^-$ collisions}",
+      journal        = "Comput. Phys. Commun.",
+      volume         = "130",
+      year           = "2000",
+      pages          = "260-325",
+      doi            = "10.1016/S0010-4655(00)00048-5",
+      eprint         = "hep-ph/9912214",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ph",
+      reportNumber   = "DESY-99-106, CERN-TH-99-235, UTHEP-99-08-01",
+}
 
+@article{Jadach:1998jb,
+      author         = "Jadach, S. and Ward, B. F. L. and W\c{a}s, Z.",
+      title          = "{Coherent exclusive exponentiation CEEX: The Case of the
+                        resonant $e^+ e^-$ collision}",
+      journal        = "Phys. Lett.",
+      volume         = "B449",
+      year           = "1999",
+      pages          = "97-108",
+      doi            = "10.1016/S0370-2693(99)00038-6",
+      eprint         = "hep-ph/9905453",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ph",
+      reportNumber   = "CERN-TH-98-253, UTHEP-98-0801",
+      SLACcitation   = "%%CITATION = HEP-PH/9905453;%%"
+}
 
-@Article{ceex1:1999,
-     author = 	 {S. Jadach and B.~F.~L. Ward and Z. W\c{a}s},
-     title = 	 {Coherent Exclusive Exponentiation (CEEX) The Case of
-                  Resonant $e^+e^-$ Annihilation},
-     journal   = "Phys. Lett.",
-     volume    = "B449",
-     year      = "1999",
-     pages     = "97-108",
-     eprint    = "hep-ph/9905453",
-     SLACcitation  = "%%CITATION = PHLTA,B449,97;%%"
+New paper on KKMCee 5.00 version in C++
+=======================================
+
+@article{Jadach:2022mbe,
+    author = "Jadach, S. and Ward, B. F. L. and Was, Z. and Yost, S. A. and Siodmok, A.",
+    title = "{Multi-photon Monte Carlo event generator KKMCee for lepton 
+              and quark pair production in lepton colliders}",
+    eprint = "2204.11949",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    reportNumber = "IFJPAN-IV-2022-6, BU-HEPP-22-02, MCnet-22",
+    month = "4",
+    year = "2022"
 }
 

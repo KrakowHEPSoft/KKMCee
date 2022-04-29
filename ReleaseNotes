@@ -5,7 +5,18 @@
 *********     (The other branch KKMChh is for hadron beams)     ****************
 ********************************************************************************
 
-Changes in the present DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
+The DEVELOPEMENT VERSION KKMCee version 5.00, April 2022:
+1. Rewritten entirely in C++, only Dizet and Tauola remain in F77
+2. FOAM used to generate most important variables
+2. Improved MC algorithm speeding up generation for neutrino pairs
+3. MC events provided in the HEPMC3 format (PHOTOS is using it)
+4. KKeeFoam testing tool included (replaces KKsem)
+
+
+********************************************************************************
+********************************************************************************
+********************************************************************************
+Changes in the DEVELOPEMENT VERSION 4.24 , February 10-th 2017:
 1. Beamstrahlung reorganized completely and simplified.
    Dirac delta component of CIRCE is modeled using very narrow gaussian peaks.
    Single Foam can cope with this distribution.

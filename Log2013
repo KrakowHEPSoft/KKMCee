@@ -1,12 +1,10 @@
-====================================================================
-Ponizej log roznych uwag na temat tego projektu KKMC
-ktory tutaj jest w calosci, razem z kartotekami nie-publicznymi:
-UWAGA!!! KK-all to absolutnie nie jest wersja CPC ani publiczna!!!
-
-Kartoteka z mojego dysku (S.J), ktora sie zywiolowo zmieniala gdzies
-do roku 2002go a potem jeszcze troche do 2005go.
-Zostala odswiezona pod linux-em SLC5 w czerwcu 2012.
-====================================================================
+=========================================================================
+The following log on the evolution of the KKMC code in 2013.
+It is relevant for the development of the F77 code
+of KKMCee and KKMChh, but we keep it because some changes 
+are also affecting present the c++ code.
+They are in the antichronologic order.
+=========================================================================
 
 -------------------------------------------------------------------
 November 2014 (for Paris FCCee workshop)
@@ -14,10 +12,9 @@ In MaMar directory:
   * NuNuGamma analysis added,
   * Autotools improved (KKMakefile is now obsolete there).
 
-
 -------------------------------------------------------------------
 June. 10th, 2013
-Beamsstrahlung repleced by the product toy-model PDFs of 
+Beamsstrahlung replaced by the product toy-model PDFs of 
 initial the q-qbar beams, see
 *[[[
 * Valence 2*x*u(x):   XUPV = 2.18 * X**0.5D0 * (1.D0-X)**3.D0
@@ -201,26 +198,9 @@ Other *.eps obtained as well, using old ../mix200/pro.hst.flat.16M
 ------------------------------------------------------------------
 feb. 5th 2013
 
-W KK-all sa dodatkowe kartoteki ktore nigdy nie byly
-jednoznacznie publiczne, albo wogole publiczne:
-np: Rhadr, 2brems, MaMar, NuProd, YRprod, yfstb, yfspro
-
-Dokladniej, to prawdopodobnie niektore z tych podkartotek
-byly byc moze udostepniane zaufanym doswiadczalnikom,
-np NuProd Zbyszek udostepnial a ja Rhadr.
-Czyli stniala tez taka "szara strefa".
-NB. Bennie i Yost chyba nie mieli calego KK-all, ale nie
-jestem pewien, byc moze zostawilem im jakas wersje na
-lokalnym komputerze na UTK w roku 2000.
-
-Publiczna wersj (CPC etc) zawsze byla tworzona przy pomocy
-"make export" i zawiarala podzbior kartotek, z grubsza polowe.
-
-Bottom line: KK-all nie nadaje sie wprost do dystrybucji,
-nawet prywatnie, bez jakichs dodatkowych ustalen.
-
-Uruchomilem wszystkie testy z pliku "HowToStart"
-i zakomitowalem drobne poprawki w mekefile'ach.
+Non-public directories
+Rhadr, 2brems, MaMar, NuProd, YRprod, yfstb, yfspro
+are made public.
 
 ------------------------------------------------------------------
 feb. 5th 2013
@@ -232,11 +212,8 @@ The entire KK-all is put into svn repository at IFJ-PAN
 ******************************************************************
                          APPEDIX
 ==================================================================
-
-
                 Email to coauhors May 14th 2012
                 ===============================
-
 Hi Bennie and Scott,
 Below are remarks on the beam type change in KKMC.
 -----------------------------------------------------------------------------------
@@ -285,7 +262,7 @@ one should take tau's as initial beam and check one of many internal semi-analyt
 cross-checks in KKMC. No external benchamrk is needed!
 My guess from looking into code is that this will work without any corrections.
 
-Below are things for which I need another round of code axamination:
+Below are things for which I need another round of code examination:
 --------------------------------------------------------------------
 The real problem is not with beam mass definition,
 but in the fact that it comes as a ratio amel/Ene,
@@ -303,82 +280,3 @@ otherwise I have to look more closely into my beamstrahlung
 implementation, into what is there done or missing.
 -------------------------------------------------------------------------
 =========================================================================
-
-
-                Email to Scott June 5th 2012
-                ============================
-
------Original Message-----
-From: Stanislaw Jadach [mailto:stanislaw.jadach@cern.ch] 
-Sent: Tuesday, June 05, 2012 5:54 PM
-To: Scott A. Yost
-Cc: Ward, B.F.L.; Zbigniew Andrzej Was; Z.Was@cern.ch
-Subject: ISR*Beamstr. generation in KKMC
-
-Dear Scott,
-I have looked into KKMC and below is what I see.
-Best regards, staszek
-
-***************
-The Initialization of ISR is managed by
-KarLud_Initialize (in KK2f/Karlud.f)
-In case of beamstrahlung KarLud_Initialize calls BStra_Initialize (of
-bornv/CStra.f)
-
-Inside BStra_Initialize 3 instances of Foam are initilized, they
-generate distribution of dimensionality 1,2,3 provided by
-BornV_RhoFoamA, BornV_RhoFoamB, BornV_RhoFoamC located in bornv/BornF.f.
-
-In the end of the initialization each of 3 Foam's provides an estimate
-of the (crude) cross section, which is fed into special tool MBrB
-managing 3 branches (Foams) in the MC.
-
-The 3-fold split of the ISR*Beamstrahlung distribution is due to
-complidated parametrization of the beamstrahlung distribution and
-probably not needed for QCD PDFs.
-
-Lets examine FoamC with BornV_RhoFoamC distribution:
-Inside BornV_RhoFoamC the 3-dim. distribution is defined in
-      Rho = Rho *SF12
-      BornV_RhoFoamC = Rho*BornV_Crude(m_vv)/(1d0-m_vv) in lines
-429-432 of BornV.f
-SF12(z1,z2) is 2dimensional beanstr. distrib. defined above, while Rho
-insludes also jacobian due to simple mapping done below line ELSEIF(
-Option .EQ. 2 ),  while Born crude xsection BornV_Crude(vv) collects
-distributions from various final state flavours, QCD overall corrections
-etc.
-(The contributions from various flavours KF are recorded in MBrA object
-for the purpose of KF generation) NB. BornV_Crude uses
-BornV_Differential, which exploits BornV_Simple, lowest order Born used
-at this stage.
-
-***************
-The Generation of ISR is done by KarLud_Make (in KK2f/Karlud.f) which
-invokes BStra_Make (of bornv/CStra.f), which calls:
-CALL FoamC_MakeEvent(BornV_RhoFoamC).
-Again BornV_RhoFoamC calculates/generates 3-dim. distribution in z1, z2
-of beamstrahlung and z=1-v of QED ISR.
-
-The choice between FoamA,B,C is done randonmy by
-      CALL MBrB_GenKF(Itype, Wt_KF)
-in BStra_Make according to probabilites predefind in the initialization
-(see above).
-NB. MBrB module also manages maximum weight<1 for the final rejection in
-case we want WT=1 events.
-The above 3-fold branching is prbably not necessary for QCD PDFs, only
-one branch (FoamcC ???) should be preserved.
-
-***************
-The final MC weight is calculated after FSR is generated
-         CALL KarFin_Make(xxf,amfi1,amfi2,charg2,wt_FSR)
-in KK2f.f, for example in the following call
-         CALL GPS_Make                   !<-- CEEX    interfer. ON
-
-
-
-========================================================================
-Phone: +48.12.6628.155
-Address:  IFJ-PAN, ul. Radzikowskiego 152,  31-342 Krakow, Poland
-http://jadach.web.cern.ch/jadach/
-========================================================================
-

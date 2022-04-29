@@ -1,75 +1,81 @@
 HOW TO START (compiling and running basic demo's)
 -------------------------------------------------------------------------------
-First link the latest dizet version:
+Preparatory steps
+=================
+  git clone git@github.com:KrakowHEPSoft/KKMCee-dev.git
+  mv KKMCee-dev KKMCee-dev-master
+  cd KKMCee-dev-master
+
+Mandatory link the latest Dizet version:
       ln -s dizet-6.45 dizet      
 Please note that we recommend version 6.45, 
-however other versions for experienced users are provided.
+however two older versions for experienced users are provided.
+Switching to another version of Dizet requires 
+re-linking the dizet\ directory
+and rebuilding the project from the scratch.
 
-Under Linux proceed as below immediately:)
-     ****************
-     **   ffbench  **
-     ****************
-Main program in f77. System of custom KKMakefile's in all 
-subdirectories is first created running master makefile ffbench/KKMakefile:
-    cd ./ffbench
-    alias kmake='make -f KKMakefile'
-    kmake makflag
-    kmake makprod
-    kmake EWtables
-If an adjustment of the fortran compilation options is needed,
-then do it only in the master ffbench/KKMakefile and repeat the above.
--------------------------------------------------------------
-BASIC DEMO:
-Inclusive, mu+tau+u+d+c+s+b, hadronization on, wt=1 events,
-as for the detector simulation:
-	cd  ./ffbench
-	cp demo/demo.input.1k demo/demo.input
-	kmake demo-start
-	diff -b demo/demo.output.1k demo/demo.output | less
--------------------------------------------------------------
-OTHER DEMOS:
-Inclusive, mu+tau+u+d+c+s+b, hadronization off, tau decays off, wt=1 events:
-	cp Inclusive/Inclusive.input.1k Inclusive/Inclusive.input
-	kmake Inclusive-start
-	diff -b Inclusive/pro.output.1k Inclusive/pro.output | less
-
-Tau's, decays on, beam polarization on:
-	cp Tau/Tau.input.1k Tau/Tau.input
-	kmake Tau-start
-	diff -b Tau/pro.output.1k Tau/pro.output | less
-
-Muons only, v<0.99, wt=1 events:
-	cp Mu/Mu.input.1k Mu/Mu.input
-	kmake Mu-start
-	diff -b Mu/pro.output.1k Mu/pro.output | less
-
-Beamstrahlung at 500GeV (takes a few minutes):
-  cp Beast/Foam500,1k.input Beast/Beast.input
-  kmake Beast-start
-  diff -b Beast/pro.output Beast/Foam500,1k.output.linux | less
--------------------------------------------------------------------------------
-     ****************
-     **    MaMar   **
-     ****************
-Main program in C++. ROOT version 5 is involved.
-Here autotools are recommended
-     make distclean       <== optionally, sometimes helps
+Building the project
+====================
      autoreconf -i --force
-     ./configure
-     make -k
-Running example program:
-     cd MaMar
-     cp test0/test0_95GeV.input test0/test0.input
-     make test0-start
-     make test0-stop
-Wait until program stops and
-     make Plot1
-See more information in MaMar/README:
+     ./configure CXXFLAGS="-std=c++11 -g -O2" 
+        --with-hepmc=/opt/hepmc3-install
+        --with-photos=/opt/PHOTOS-install
+     make
+     
+Locations of the external \hepmc3 and \photospp\ libraries must be provided
+explicitly in the configure parameters.
+
+Running a simple example
+========================
+Compile and run MainMini.exe:
+    cd ProdRun/workMini/
+    cp workMini.input_105GeV_Leptons workMini.input
+    make start
+The user will be prompted to provide the number of events 
+to be generated and the execution will start.
+The output file pro.output contains the MC result for 
+the total cross section and the multitude of statistics 
+results on the MC generation process.
+There are more input data for other similar control runs.
+
+Advanced user program examples and benchmarks
+=============================================
+Running KKMCee in the folder ProdRun/work1/ is very simple:
+      cd ProdRun/work1/
+      cp work1_189GeV.input work1.input
+      make start
+Note that no. of events to be generated is defined in Start.C
+but the execution can be stopped any time by means of
+      make stop
+One may also initiate MC runs in ProdRun/workTau, ProdRun/workNU 
+and ProdRun/workFoam using predefined input files there.
+Benchmark programs analyzing MC results from stored archive 
+files can be initiated as follows:
+      cd ProdDigest
+      make Plot1
+      make TabIIIPRD 
+      make PlotNU
+      make PlotTau
+      make PlotBES
+Archive histogram files can be replaced in the source code 
+by files from the actual run. For instance one may uncomment
+in Plot1.cxx input data file ProdRun/work1/histo.root
+or ProdRun/workTau/histo.root file in PlotTau.cxx
+
+Example of preparing/running 24 batch jobs on the PC farm
+=========================================================
+Higher statistics MC runs one may organize on linux PC farm,
+for example using predefined makefiles and scripts:
+    cd ProdRun/work1
+    make SLfarm24
+    make SLsubmitall
+    make q-nev
+    make q-sem
+    make farm-stop
+    make combine
+
 --------------------------------------------------------------------------------
-NOTE: Directories ffbech, yfspro, RHadr, YRprod and MaMar are NOT parts
-of the Monte Carlo generator but analysis packages used in various past workshops
-and publications to be used as templates for the user analysis packages!
---------------------------------------------------------------------------------
-User Manual published in Comp. Phys. Commun. 130 (2000) 260.
---------------------------------------------------------------------------------
+User Manual to be published in Comp. Phys. Commun. 
+http://arxiv.org/abs/2204.11949
+================================================================================
 
