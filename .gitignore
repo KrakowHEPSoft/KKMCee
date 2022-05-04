@@ -5,8 +5,8 @@
 *.swp
 
 # LSP files for editors
-compile_commands.json
-compile_flags.txt
+compile_commands.*
+compile_flags.*
 tags
 
 # Autotools generated files
