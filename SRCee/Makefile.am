@@ -80,6 +80,9 @@ TestMini1_LDADD   = \
 TestMini1_LDFLAGS = -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
 
 #/////////////////////////////////////////////////////////
-test1-start: TestMini1
-	(cd ../ make)
+test1-start:
+	(cd $(top_builddir); make)
+	cp TestMini1.input pro.input
+	($(top_builddir)/DZface/TabMainC;)
 	./TestMini1
+#/////////////////////////////////////////////////////////

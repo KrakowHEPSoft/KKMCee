@@ -35,14 +35,6 @@ BeginX
 * New exponentiation CEEX is now default, at least for leptons, see vmaxGPS
 ** which overrules KeyGPS for each type of final fermion
 *   28              0      KeyGPS=xpar(28)  Default is  1
-*indx_____data______ccccccccc0ccccc________Process______ccc0ccccccccc0ccccccccc0
-*     Define process
-*     LIST of Final state flavours to be generated randomly according
-*     to QED corrected x-sections, at least one line/item should be present.
-*     (Remember that electron has incomplete M.E. and top might be too heavy.)
-  413              1      KFfin, muon
-  638          0.0e0      auxiliary parameter, MinMassCEEX = min. mass for CEEX
-  415              1      KFfin, tau
 ********************************************************************************
 *indx_____data______ccccccccc0ccccc________Miscel_______ccc0ccccccccc0ccccccccc0
 *     PrintOut from generator

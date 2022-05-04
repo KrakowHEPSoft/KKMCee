@@ -1,3 +1,5 @@
+// make test1-start
+
 using namespace std;
 #include <iostream>
 #include <fstream>
@@ -34,16 +36,14 @@ KKMCgen->Initialize(  RN_gen, &OutFile, h_NORMA);
 
 /////////////////////////////////////////////////////////////
 // Small loop over MC events
-for(int iev=1; iev<=100; iev++) {
-   cout<<" iev ="<< iev<<endl;
+for(int iev=1; iev<=10000; iev++) {
    if(iev <= 10) cout<<" iev ="<< iev<<endl;
    KKMCgen->Generate();
    if(iev <= 10) KKMCgen->m_Event->PrintISR_FSR();
-}
-
+}// for iev
 /////////////////////////////////////////////////////////////
-// final printout from BHLUMI4 goes to pro.output
-//KKMCgen->Finalize();
+// final printout from KKMCee goes to pro.output
+KKMCgen->Finalize();
 
 
 cout << "  |--------------------| "<<endl<<flush;
