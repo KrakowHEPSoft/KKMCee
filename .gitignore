@@ -8,6 +8,7 @@
 compile_commands.*
 compile_flags.*
 tags
+.clang*
 
 # Autotools generated files
 Makefile.in
