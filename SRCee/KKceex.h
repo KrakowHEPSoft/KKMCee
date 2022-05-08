@@ -89,12 +89,12 @@ class KKceex: public TObject{
  ofstream *m_Out;     //! pointer to external Logfile for messages
 // class member data
  public:
- KKdbase  *DB;                     // Database
- KKdizet  *m_DZ;                   // Dizet interface
- KKevent  *m_Event;                // MC event record
- KKborn   *m_BornDist;             // Born differential distribution
- KKbvir   *m_BVR;                  // Library of virtual corrections
- TRandom  *m_RNgen;
+ KKdbase  *DB;                     //! Database
+ KKdizet  *m_DZ;                   //! Dizet interface
+ KKevent  *m_Event;                //! MC event record
+ KKborn   *m_BornDist;             //! Born differential distribution
+ KKbvir   *m_BVR;                  //! Library of virtual corrections
+ TRandom  *m_RNgen;                //! r.n. generator
  public:
  static const int maxPhot =   101;  // max. no. of KKMC photons +1
  static const int maxWT   =  1001;  // max. num. KKMC wt list +1

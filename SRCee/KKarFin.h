@@ -26,10 +26,10 @@ class KKarFin: public TObject{
  public:
  ofstream *m_Out;     //! pointer to external Logfile for messages
 // class objects
- TRandom  *m_RNgen;                // r.n.generator
- KKdbase  *DB;                     // Database
- KKevent  *m_Event;                // MC event record
- KKbvir   *m_BVR;                  // virtual formfactors
+ TRandom  *m_RNgen;                //! r.n.generator
+ KKdbase  *DB;                     //! Database
+ KKevent  *m_Event;                //! MC event record
+ KKbvir   *m_BVR;                  //! virtual formfactors
  // class member data
   public:
   int    m_KFfin;             // KF of final fermion

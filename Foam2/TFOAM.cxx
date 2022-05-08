@@ -902,7 +902,6 @@ TFOAM::TFOAM(){
   m_MCvect     = NULL;
   m_Rvec       = NULL;
   m_Rho = NULL;  // pointer to abstract class providing function to integrate
-  m_PseRan     = NULL;  // generator of pseudorandom numbers
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 TFOAM::TFOAM(const char* Name){

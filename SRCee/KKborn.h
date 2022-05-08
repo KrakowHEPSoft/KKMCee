@@ -26,8 +26,8 @@ typedef complex<double> dcmplx;
 class KKborn: public TObject{
  public:
  ofstream *m_Out;     //! pointer to external Logfile for messages
- KKdbase  *DB;
- KKdizet  *DZ;
+ KKdbase  *DB;        //!
+ KKdizet  *DZ;        //!
 // class member data
  public:
  double   m_CMSene;

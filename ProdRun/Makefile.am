@@ -58,7 +58,7 @@ libProdKK_la_LDFLAGS = -R $(PHOTOS_LIBDIR) #-Wl,-z,defs
 
 #/////////////////////////////////////////////////////////////
 # Local executables with ROOT persistency
-bin_PROGRAMS = MainMini MainKKMC MainFoam
+bin_PROGRAMS = MainKKMC MainFoam MainMini MainPers
 #/////////////////////////////////////////////////////////
 #-------------------------------------------------------------------------
 # option -no-install needed for debuger
@@ -79,4 +79,9 @@ MainMini_SOURCES = MainMini.cxx
 MainMini_LDADD   = \
 			$(top_builddir)/SRCee/libKKee.la
 MainMini_LDFLAGS = -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
+#/////////////////////////////////////////////////////////
+MainPers_SOURCES = MainPers.cxx
+MainPers_LDADD   = \
+			$(top_builddir)/SRCee/libKKee.la
+MainPers_LDFLAGS = -R $(PHOTOS_LIBDIR) $(PHOTOS_LDFLAGS) $(LDFLAGS_HEPMC) -no-install -g
 #-------------------------------------------------------------------------

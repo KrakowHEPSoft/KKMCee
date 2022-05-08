@@ -3594,7 +3594,7 @@ m_nPhot = m_Event->m_nPhot;
 //----------------
 double rvec[101];
 m_RNgen->RndmArray(m_nPhot, rvec);
-//]]]]]]]]]]]]]
+//
 for(int i=1; i<=m_nPhot; i++){      //f77 indexing
    if( rvec[i-1] > 0.5 ) {
       m_Phel[i] =  0;

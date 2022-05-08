@@ -52,8 +52,8 @@ class KKee2f: public TMCgen{
  TauPair *m_TauGen;               // Interface to TAUOLA+PHOTOS
  HepFace *m_HEPMC;                // Interface to HEPMC3 event
  KKlasa  *m_KKexamp;              // Template for new class
- KKevent   *m_Event;              //! MC event ISR+FSR in KKMC format (no persistency)
- GenEvent  *m_Hvent;              //! HEPMC3 event (no persistency)
+ KKevent  *m_Event;               // MC event ISR+FSR in KKMC format
+ GenEvent *m_Hvent;               //! HEPMC3 event (no persistency!)
 
 // Dimensionality
  static const int maxPar  = 10001;    // max. num. KKMC parameters +1
@@ -138,6 +138,8 @@ class KKee2f: public TMCgen{
 
   void   Generate();
   void   Finalize();
+
+  void   Redress(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA);
   ////////////////////////////////////////////////////////////////////////////
       ClassDef(KKee2f,2); // Monte Carlo generator
   };

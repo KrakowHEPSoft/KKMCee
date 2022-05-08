@@ -31,7 +31,7 @@ class HepFace: public TObject{
  ofstream *m_Out;     //! pointer to external Logfile for messages
 // class member data
  public:
- KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format
+ KKevent   *m_Event;           //! MC event ISR+FSR in KKMC format
  GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)
  vector<GenParticlePtr>  m_tauPdecay; //! tau+ decay products
  vector<GenParticlePtr>  m_tauMdecay; //! tau- decay products

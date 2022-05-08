@@ -27,9 +27,9 @@ class KKarLud: public TObject{
  public:
  ofstream *m_Out;     //! pointer to external Logfile for messages
 // class objects
- KKdbase  *DB;                     // Database
- TRandom  *m_RNgen;                // r.n.generator
- KKevent  *m_Event;                // MC event record
+ KKdbase  *DB;                     //! Database
+ TRandom  *m_RNgen;                //! r.n.generator
+ KKevent  *m_Event;                //! MC event record
 // class member data
  public:
  static const int maxPhot =   101; // max. num. KKMC photons +1

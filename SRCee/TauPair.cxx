@@ -10,9 +10,10 @@ TauPair::TauPair()
   // This constructor is for ROOT streamers ONLY
   // all pointers has to be NULLed
   cout<< "----> TauPair Default Constructor (for ROOT only) "<<endl;
-  m_Out  = NULL;
-  DB     = NULL;
+  m_Out      = NULL;
+  DB         = NULL;
   m_Event    = NULL;
+  m_Hvent    = NULL;
   m_GPS      = NULL;
   m_RNgen    = NULL;
 
@@ -22,9 +23,10 @@ TauPair::TauPair()
 TauPair::TauPair(ofstream *OutFile)
 {
   cout<< "----> TauPair USER Constructor "<<endl;
-  m_Out  = OutFile;
-  DB     = NULL;
+  m_Out      = OutFile;
+  DB         = NULL;
   m_Event    = NULL;
+  m_Hvent    = NULL;
   m_GPS      = NULL;
   m_RNgen    = NULL;
 }//TauPair
@@ -81,8 +83,7 @@ void TauPair::Initialize(double xpar[])
     iniphy_(&xk0qed);
     int JAK =-1;
     dekay_(&JAK, m_HvecTau1);
-
-
+////////////////////////////////////////////////
 // Initialization of PHOTOS++
 // KeyPhts =0 for off; =1 in non-leptonic; =2 in all decays
     double WTmax=4.0;

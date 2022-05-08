@@ -47,9 +47,9 @@ class KKqed3: public TObject{
  ofstream *m_Out;     //! pointer to external Logfile for messages
 // class member data
  public:
- KKdbase  *DB;                     // Database
- KKevent  *m_Event;                // MC event record
- KKborn   *m_BornV;
+ KKdbase  *DB;                     //! Database
+ KKevent  *m_Event;                //! MC event record
+ KKborn   *m_BornV;                //!
  public:
  static const int maxPhot =   101; // max. no. of KKMC photons +1
  static const int maxWT   =  1001;   // max. num. KKMC wt list +1

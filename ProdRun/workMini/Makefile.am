@@ -12,3 +12,7 @@ EWtables: KKMCee_defaults
 start: EWtables
 	time ../MainMini
 	
+start2:
+	(cd $(top_builddir); make)
+	time ../MainPers
+	

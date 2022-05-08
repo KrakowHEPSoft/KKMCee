@@ -1022,3 +1022,89 @@ BXCLO(*f_Out);
 ///////////////////////////////////
 }//Finalize
 
+///______________________________________________________________________________________
+void KKee2f::Redress(TRandom *RNgen, ofstream *OutFile, TH1D* h_NORMA)
+{
+  TMCgen::Initialize(  RNgen, OutFile, h_NORMA);
+  *f_Out<< "   *******************************" << endl;
+  *f_Out<< "   ****   KKee2f  Redress     ****" << endl;
+  *f_Out<< "   *******************************" << endl;
+  cout  << "   *******************************" << endl;
+  cout  << "   ****   KKee2f  Redress     ****" << endl;
+  cout  << "   *******************************" << endl;
+//////////////////////////////////////////////////////////////
+// Exporting MC generator pointer to global visibility.
+// Needed by fortran Tauola.
+  globux_setup_( this );
+//////////////////////////////////////////////////////////////
+//=============================================================
+//   opening disk file for fortran part of code
+  m_out = 16;
+  const char *output_file = "./pro77pers.output";
+  int sl2 = strlen(output_file);
+  fort_open_(m_out,output_file,sl2);
+//=============================================================
+//////////////////////////////////////////////////////////////
+//  Data base of static input data
+  DB->m_Out = OutFile;
+//////////////////////////////////////////////////////////////
+//  EW tables from the disk file
+  m_EWtabs->m_Out = OutFile;
+//////////////////////////////////////////////////////////////
+// This replaces BornV class of original KKMC
+  m_BornDist->m_Out = OutFile;
+  m_BornDist->SetDB(DB);
+  m_BornDist->SetDZ(m_EWtabs);  // EW tables from the disk
+//////////////////////////////////////////////////////////////
+// MC event ISR+FSR record in KKMC format
+  m_Event->m_Out = OutFile;
+//++++++++++++++++++++++++++++++++++++++++++++++++++
+  m_GenISR->m_Out = OutFile;
+  m_GenISR->SetDB(DB);
+  m_GenISR->SetRNgen(f_RNgen);
+  m_GenISR->SetEvent(m_Event);
+//++++++++++++++++++++++++++++++++++++++++++++++++++
+// Library of virtual functions
+  m_BVR ->m_Out = OutFile;
+//++++++++++++++++++++++++++++++++++++++++++++++++++
+  m_GenFSR->m_Out = OutFile;
+  m_GenFSR->SetDB(DB);
+  m_GenFSR->SetRNgen(f_RNgen);
+  m_GenFSR->SetEvent(m_Event);
+  m_GenFSR->SetBVR(m_BVR);
+//============================
+  m_QED3->m_Out = OutFile;
+  m_QED3->SetDB(DB);
+  m_QED3->SetEvent(m_Event);
+  m_QED3->SetBornV(m_BornDist);
+//============================
+  m_GPS->m_Out = OutFile;
+  m_GPS->SetDB(DB);         // input database
+  m_GPS->SetDZ(m_EWtabs);   // EW tables from the disk
+  m_GPS->SetEvent(m_Event); // MC event record
+  m_GPS->SetBornV(m_BornDist);
+  m_GPS->SetBVR(m_BVR);
+  m_GPS->SetRNgen(f_RNgen);
+//========================================
+// reset FOAM pointers
+  f_FoamI->ResetPseRan(f_RNgen);
+  f_FoamI->LinkCells();     // re-linking cells
+//========================================
+// interface to HEPMC3 event
+  m_Hvent= new GenEvent(Units::GEV,Units::MM);
+  m_HEPMC->m_Out = OutFile;
+  m_HEPMC->SetEvent(m_Event);
+  m_HEPMC->SetHvent(m_Hvent);
+////////////////////////////////////////////
+// TAUOLA+PHOTOS corner
+  m_TauGen->m_Out = OutFile;
+  m_TauGen->SetDB(DB);
+  m_TauGen->SetEvent(m_Event);
+  m_TauGen->SetHvent(m_Hvent);
+  m_TauGen->SetGPS(  m_GPS);
+  m_TauGen->SetRNgen(f_RNgen);
+// re-initialization of the f77 code is mandatory
+  m_TauGen->Initialize(m_ypar);
+///////////////////////////////////////////
+}//Redress
+

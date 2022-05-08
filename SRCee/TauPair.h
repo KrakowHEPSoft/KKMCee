@@ -87,11 +87,11 @@ class TauPair: public TObject{
 // class member data
  public:
  ofstream  *m_Out;             //! pointer to external Logfile for messages
- KKdbase   *DB;                // Database
- KKceex    *m_GPS;             //  CEEX matrix element
- KKevent   *m_Event;           //!  MC event ISR+FSR in KKMC format (no persistency)
+ KKdbase   *DB;                //! Database
+ KKceex    *m_GPS;             //! CEEX matrix element
+ KKevent   *m_Event;           //! MC event ISR+FSR in KKMC format (no persistency)
  GenEvent  *m_Hvent;           //! HEPMC3 event (no persistency)!
- TRandom   *m_RNgen;           //  central r.n. generator
+ TRandom   *m_RNgen;           //!  central r.n. generator
  //
  double     m_HvecTau1[4];     //! Spin Polarimeter vector first  Tau
  double     m_HvecTau2[4];     //! Spin Polarimeter vector second Tau
