@@ -10,9 +10,9 @@ EWtables: KKMCee_defaults
 	($(top_builddir)/DZface/TabMainC;)
 
 start: EWtables
-	time ../MainMini
+	../MainMini
 	
 start2:
 	(cd $(top_builddir); make)
-	time ../MainPers
+	../MainPers
 	
