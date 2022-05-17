@@ -2,7 +2,7 @@
 KKMCee Development
 
 ```bash
-# ... clone the KKMCee git repository. e.g.:
+# ... clone the KKMCee git repository, e.g.:
 git clone --depth=1 --branch FCC_release_cpp https://github.com/KrakowHEPSoft/KKMCee.git KKMCee-dev
 # ... and then ...
 cd KKMCee-dev
