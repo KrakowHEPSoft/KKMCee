@@ -36,7 +36,7 @@ TFile *DiskFileB;
 TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_WTed_7G"; // Jan2022
 //TString FileA= "../ProdRun/work1/histo.root_189GeV_NewDiz_WT=1_100M"; // Jan2022
 
-TString FileF= "../ProdRun/workFoam/histo_189GeV_1G.root";
+TString FileF= "../ProdRun/workFoam/histo.root_189GeV_1G";
 
 FILE *DiskFileTeX;
 
