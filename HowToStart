@@ -47,6 +47,7 @@ Running KKMCee in the folder ProdRun/work1/ is very simple:
 Note that no. of events to be generated is defined in Start.C
 but the execution can be stopped any time by means of
       make stop
+      diff pro.output pro.output_189GeV_10k
 One may also initiate MC runs in ProdRun/workTau, ProdRun/workNU 
 and ProdRun/workFoam using predefined input files there.
 Benchmark programs analyzing MC results from stored archive 
