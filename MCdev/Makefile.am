@@ -24,7 +24,7 @@ lib_LTLIBRARIES = libMCdev.la
 libMCdev_la_SOURCES = TMCgen.cxx  TSemaf.cxx TRobol.cxx TKfig.cxx  TWtMon.cxx
 libMCdev_la_LIBADD =	\
 			$(top_builddir)/Foam2/libFOAM.la \
-			-L$(ROOTLIBDIR) $(ROOTGLIBS) -lFoam $(ROOTAUXLIBS)
+			-L$(ROOTLIBDIR) $(ROOTGLIBS) $(ROOTAUXLIBS)
 libMCdev_la_LDFLAGS = #-Wl,-z,defs
 #----- explicit target needed for ../ directory
 $(top_builddir)/Foam2/libFOAM.la:
