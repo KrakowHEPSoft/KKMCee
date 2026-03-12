@@ -1,7 +1,7 @@
 # The KKMCee 5 Monte Carlo Generator version in C++ 
 ### [The main authors: S. Jadach, B. F. L. Ward, Z. Was, S. A. Yost and A. Siodmok] 
 
-KKMCee 5 is a multi-photon Monte Carlo event generator KKMCee for lepton and quark pair production in lepton colliders.
+KKMCee 5 is a multi-photon Monte Carlo event generator for lepton and quark pair production in lepton colliders.
 
 This is a web page of KKMCee 5 Monte Carlo event generator [1] for lepton and quark pair production for the high energy electron-positron annihilation process. 
 It is still the most sophisticated event generator for such processes. Its entire source code is rewritten in the modern C++ language. 
