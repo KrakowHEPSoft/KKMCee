@@ -471,8 +471,8 @@ else if(   DB->KeyBES == 1){
    double y2 = corho * x1 + sqrt(1.-corho*corho) * x2;
    m_r1= y1 * m_ParBES[2]; // can be negative
    m_r2= y2 * m_ParBES[3]; // can be negative
-   m_Ebeam1 = E1 * (1.0 + y1 * m_r1);
-   m_Ebeam2 = E2 * (1.0 + y2 * m_r2);
+   m_Ebeam1 = E1 * (1.0 + m_r1);
+   m_Ebeam2 = E2 * (1.0 + m_r2);
   }//if optGauss
 } else if( DB->KeyBES == 2){
 // Linear Collider case. Beamstrahlung following CIRCE parametrization.
